@@ -82,12 +82,6 @@ public class RoleServiceImplTest extends RiceTestCase {
 		return "kim";
 	}
 
-	@Override
-	protected List<Lifecycle> getDefaultSuiteLifecycles() {
-		List<Lifecycle> lifecycles = getInitialLifecycles();
-		return lifecycles;
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();

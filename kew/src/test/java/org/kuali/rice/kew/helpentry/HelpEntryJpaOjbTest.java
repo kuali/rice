@@ -25,7 +25,6 @@ import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.dao.HelpDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.KEWTransactionalTest;
 
 
 
@@ -35,7 +34,7 @@ import org.kuali.rice.kew.test.KEWTransactionalTest;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@KEWTransactionalTest
+//@KEWTransactionalTest
 @Ignore("KULRICE-2090")
 public class HelpEntryJpaOjbTest extends KEWTestCase {
 	
@@ -90,10 +89,11 @@ public class HelpEntryJpaOjbTest extends KEWTestCase {
     }
 		
 	@Override
-	protected void setUpTransactionInternal() throws Exception {
+	protected void setUpInternal() throws Exception {
+		super.setUpInternal();
 		this.jpaDao = (HelpDAO) KEWServiceLocator.getBean("enHelpDAO");
 		this.ojbDao = (HelpDAO) KEWServiceLocator.getBean("enHelpOJBDAO");
-		super.setUpTransactionInternal();
+
 	}
 	
 	@Test

@@ -62,7 +62,7 @@ public abstract class KIMTestCase extends RiceTestCase {
 	@Override
 	protected List<Lifecycle> getPerTestLifecycles() {
 		List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
-		lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
+		lifecycles.add(new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()));
 		lifecycles.add(new ClearCacheLifecycle());
         lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/kim/test/DefaultTestData.sql", ";"));
 		lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/kim/test/DefaultTestData.xml"));
@@ -94,22 +94,16 @@ public abstract class KIMTestCase extends RiceTestCase {
 	/**
      * Returns the List of tables that should be cleared on every test run.
      */
-	@Override
-	protected List<String> getTablesToClear() {
+	protected List<String> getPerTestTablesToClear() {
 		List<String> tablesToClear = new ArrayList<String>();
 		tablesToClear.add("KR.*");
 		return tablesToClear;
 	}
-
-	/**
-     * At this time Derby for KIM is not supported.
-     *
-     * @see org.kuali.rice.test.RiceTestCase#getDerbySQLFileLocation()
-     */
-	@Override
-	protected String getDerbySQLFileLocation() {
-		return null;
+	
+	protected List<String> getPerTestTablesNotToClear() {
+		return new ArrayList<String>();
 	}
+
 
 	/**
      * @see org.kuali.rice.test.RiceTestCase#getModuleName()

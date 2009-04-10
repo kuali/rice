@@ -36,7 +36,7 @@ public class QuickLinksServiceTest extends KEWTestCase {
     }
 
     @Override
-    protected void setUpTransaction() throws Exception {
+    protected void setUpAfterDataLoad() throws Exception {
         service = (QuickLinksService) KEWServiceLocator.getService(KEWServiceLocator.QUICK_LINKS_SERVICE);
     }
 

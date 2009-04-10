@@ -43,8 +43,8 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
     private KimPrincipal quickstartPrincipal;
 
     @Override
-    protected void setUpTransaction() throws Exception {
-        super.setUpTransaction();
+    protected void setUpAfterDataLoad() throws Exception {
+        super.setUpAfterDataLoad();
         webClient = new WebClient();
 
         // Set the user preference refresh rate to 0 to prevent a <META HTTP-EQUIV="Refresh" .../> tag from being rendered.

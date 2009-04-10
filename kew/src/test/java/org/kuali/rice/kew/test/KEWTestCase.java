@@ -13,11 +13,13 @@
  */
 package org.kuali.rice.kew.test;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.web.jetty.JettyServer;
@@ -29,28 +31,22 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.SQLDataLoader;
-import org.kuali.rice.test.TestHarnessServiceLocator;
-import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-
 /**
- * Useful superclass for all Workflow test cases. Handles setup of test utilities and a test environment. Configures the
- * Spring test environment providing a template method for custom context files in test mode. Also provides a template method
- * for running custom transactional setUp. Tear down handles automatic tear down of objects created inside the test
- * environment.
+ * Useful superclass for all KEW test cases. Handles setup of test utilities and
+ * a test environment. Configures the Spring test environment providing a
+ * template method for custom context files in test mode. Also provides a
+ * template method for running custom transactional setUp. Tear down handles
+ * automatic tear down of objects created inside the test environment.
  */
 public abstract class KEWTestCase extends RiceTestCase {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWTestCase.class);
 	/**
-	 * This is the "bootstrap", aka Rice client, Spring beans file that the KEW test harness will load
+	 * This is the "bootstrap", aka Rice client, Spring beans file that the KEW
+	 * test harness will load
 	 */
 	private static final String DEFAULT_KEW_BOOTSTRAP_SPRING_FILE = "classpath:org/kuali/rice/kew/config/TestKEWSpringBeans.xml";
-
-	private TransactionalLifecycle transactionalLifecycle;
 
 	@Override
 	protected String getModuleName() {
@@ -58,16 +54,43 @@ public abstract class KEWTestCase extends RiceTestCase {
 	}
 
 	/**
-     * Initiates loading of test data within a transaction.
-     */
-	protected void loadTestDataInternal() throws Exception {
-		// This code used to start a transaction but there were issues with the SQLDataLoader transaction not having
-		// visibility to the transaction that loads XML for ingestion which was causing problems when trying to reference
-		// data from DefaultTestData.sql from data being imported in XML, so the transaction wrapper was removed here
-		setUpTransactionInternal();
+	 * Default implementation does nothing. Subclasses should override this
+	 * method if they want to perform setup work inside of a database
+	 * transaction.
+	 */
+	protected void setUpAfterDataLoad() throws Exception {
+		// override
 	}
 
-	protected void setUpTransactionInternal() throws Exception {
+	/**
+	 * @Override
+	 */
+	protected void loadTestData() throws Exception {
+		// override this to load your own test data
+	}
+
+	protected TransactionTemplate getTransactionTemplate() {
+		return TestUtilities.getTransactionTemplate();
+	}
+
+	/**
+	 * Override the RiceTestCase setUpInternal in order to set a system property
+	 * beforehand.
+	 * 
+	 * @see org.kuali.rice.test.RiceTestCase#setUpInternal()
+	 */
+	@Override
+	protected void setUpInternal() throws Exception {
+		System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE,
+				getKEWBootstrapSpringFile());
+		super.setUpInternal();
+	}
+
+	/**
+	 * Initiates loading of per-test data
+	 */
+	@Override
+	protected void loadPerTestData() throws Exception {
 		final long t1 = System.currentTimeMillis();
 
 		loadDefaultTestData();
@@ -80,113 +103,78 @@ public abstract class KEWTestCase extends RiceTestCase {
 		final long t3 = System.currentTimeMillis();
 		report("Time to load test-specific test data: " + (t3 - t2));
 
-		setUpTransaction();
+		setUpAfterDataLoad();
 
 		final long t4 = System.currentTimeMillis();
 		report("Time to run test-specific setup: " + (t4 - t3));
 	}
 
 	/**
-     * Default implementation does nothing. Subclasses should override this method if they want to perform setup work inside
-     * of a database transaction.
-     */
-	protected void setUpTransaction() throws Exception {
-		// override
-	}
-
-	/**
-     * @Override
-     */
-	protected void loadTestData() throws Exception {
-		// override this to load your own test data
-	}
-
-	protected TransactionTemplate getTransactionTemplate() {
-		return TestUtilities.getTransactionTemplate();
-	}
-
-	/**
-	 * Override the RiceTestCase setUpInternal in order to set a system property beforehand,
-	 * and load test data afterwards
-	 * @see org.kuali.rice.test.RiceTestCase#setUpInternal()
-	 */
-	@Override
-	public void setUpInternal() throws Exception {
-	    System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, getKEWBootstrapSpringFile());
-	    super.setUpInternal();
-	    loadTestDataInternal();
-	    boolean needsTransaction = getClass().isAnnotationPresent(KEWTransactionalTest.class);
-		if (needsTransaction) {
-			transactionalLifecycle = new TransactionalLifecycle();
-			transactionalLifecycle.setTransactionManager(KEWServiceLocator.getPlatformTransactionManager());
-			transactionalLifecycle.start();
-		}
-	}
-
-	/**
-	 * Returns the "bootstrap", aka Rice client, Spring beans file that the KEW test harness will load.
-	 * KEW test cases can override this to provide an alternative bootstrap spring file.  Currently only
-	 * one file is supported, so one must override this file and then import the core file. 
-	 * @return the "bootstrap", aka Rice client, Spring beans file that the KEW test harness will load
+	 * Returns the "bootstrap", aka Rice client, Spring beans file that the KEW
+	 * test harness will load. KEW test cases can override this to provide an
+	 * alternative bootstrap spring file. Currently only one file is supported,
+	 * so one must override this file and then import the core file.
+	 * 
+	 * @return the "bootstrap", aka Rice client, Spring beans file that the KEW
+	 *         test harness will load
 	 */
 	protected String getKEWBootstrapSpringFile() {
-	    return DEFAULT_KEW_BOOTSTRAP_SPRING_FILE;
+		return DEFAULT_KEW_BOOTSTRAP_SPRING_FILE;
 	}
-	
-	@After
-    public void tearDown() throws Exception {
-	    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
-			transactionalLifecycle.stop();
-		}
-        super.tearDown();
-    }
 
 	/**
-	 * Override the standard per-test lifecycles to prepend ClearDatabaseLifecycle and ClearCacheLifecycle
+	 * Override the standard per-test lifecycles to prepend
+	 * ClearDatabaseLifecycle and ClearCacheLifecycle
+	 * 
 	 * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
 	 */
 	@Override
 	protected List<Lifecycle> getPerTestLifecycles() {
 		List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
-		lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
+		lifecycles.add(new ClearDatabaseLifecycle(getPerTestTablesToClear(),
+				getPerTestTablesNotToClear()));
 		lifecycles.add(new ClearCacheLifecycle());
-		lifecycles.add(getPerTestDataLoaderLifecycle());
+		lifecycles.addAll(super.getPerTestLifecycles());
 		return lifecycles;
 	}
 
 	/**
-	 * Override the suite lifecycles to avoid the ClearDatabaseLifecycle (which we do on a per-test basis, as above)
-	 * and to add on a JettyServer lifecycle
+	 * Override the suite lifecycles to avoid the ClearDatabaseLifecycle (which
+	 * we do on a per-test basis, as above) and to add on a JettyServer
+	 * lifecycle
+	 * 
 	 * @see org.kuali.rice.test.RiceTestCase#getSuiteLifecycles()
 	 */
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
-	    List<Lifecycle> lifeCycles = super.getInitialLifecycles();
-		// we want to only clear out the quartz tables one time, therefore we want to pass this lifecycle the
-		// opposite of what is passed to the clear database lifecycle that runs on every test execution
-		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test", "/../web/src/main/webapp/en");
+		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
+		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
+				"/../web/src/main/webapp/en");
 		server.setFailOnContextFailure(true);
 		server.setTestMode(true);
 		lifeCycles.add(server);
 		lifeCycles.add(new InitializeGRL());
+		lifeCycles.add(new BaseLifecycle() {
+			public void start() throws Exception {
+				KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), "DefaultSuiteTestData.xml");
+				super.start();
+			}
+		});
 		return lifeCycles;
 	}
 
 	protected int getJettyServerPort() {
-//	    String port = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.HTTP_SERVICE_PORT);
-//	    if (StringUtils.isNotBlank(port)) {
-//	        return Integer.valueOf(port).intValue();
-//	    }
-	    return 9952;
+		return 9952;
 	}
 
 	/**
-	 * Adds any ResourceLoaders that have been registered for WebAppClassLoaders to the GlobalResourceLoader
+	 * Adds any ResourceLoaders that have been registered for WebAppClassLoaders
+	 * to the GlobalResourceLoader
 	 */
 	private class InitializeGRL extends BaseLifecycle {
 		@Override
 		public void start() throws Exception {
-		    org.kuali.rice.test.TestUtilities.addWebappsToContext();
+			org.kuali.rice.test.TestUtilities.addWebappsToContext();
 			super.start();
 		}
 
@@ -206,74 +194,104 @@ public abstract class KEWTestCase extends RiceTestCase {
 	}
 
 	/**
-     * Returns the List of tables that should be cleared on every test run.
-     */
-	@Override
-	protected List<String> getTablesToClear() {
+	 * Returns the List of tables that should be cleared on every test run.
+	 */
+	protected List<String> getPerTestTablesToClear() {
 		List<String> tablesToClear = new ArrayList<String>();
 		tablesToClear.add("KREW_.*");
 		tablesToClear.add("KRSB_.*");
-		tablesToClear.add("KRIM_.*");
-		tablesToClear.add("KRNS_.*");
 		tablesToClear.add("KREN_.*");
 		return tablesToClear;
 	}
 
+	protected List<String> getPerTestTablesNotToClear() {
+		return new ArrayList<String>();
+	}
+
 	/**
-     * By default this loads the "default" data set from the DefaultTestData.sql and DefaultTestData.xml files. Subclasses
-     * can override this to change this behaviour
-     */
+	 * Loads the suite test data from the shared DefaultSuiteTestData.sql
+	 */
+	protected void loadSuiteTestData() throws Exception {
+		new SQLDataLoader("file:" + getBaseDir()
+				+ "/../impl/src/test/config/data/DefaultSuiteTestDataKNS.sql", "/")
+				.runSql();
+		BufferedReader reader = new BufferedReader(new FileReader(getBaseDir() + "/../impl/src/test/config/data/KIMDataLoadOrder.txt"));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			if (!StringUtils.isBlank(line)) {
+				new SQLDataLoader("file:" + getBaseDir()
+						+ "/../impl/src/test/config/data/" + line, "/")
+						.runSql();
+			}
+		}
+	
+		new SQLDataLoader(
+				"classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql", ";")
+				.runSql();
+		
+	}
+
+	/**
+	 * By default this loads the "default" data set from the DefaultTestData.sql
+	 * and DefaultTestData.xml files. Subclasses can override this to change
+	 * this behaviour
+	 */
 	protected void loadDefaultTestData() throws Exception {
 		// at this point this is constants. loading these through xml import is
 		// problematic because of cache notification
 		// issues in certain low level constants.
-		new SQLDataLoader("classpath:org/kuali/rice/kew/test/DefaultTestData.sql", ";").runSql();
+		new SQLDataLoader(
+				"classpath:org/kuali/rice/kew/test/DefaultPerTestData.sql", ";")
+				.runSql();
 
-		KEWXmlDataLoader.loadXmlClassLoaderResource(KEWTestCase.class, "DefaultTestData.xml");
+		KEWXmlDataLoader.loadXmlClassLoaderResource(KEWTestCase.class,
+				"DefaultPerTestData.xml");
 	}
 
 	protected void loadXmlFile(String fileName) {
-	    try {
-	    	KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), fileName);
-	    } catch (Exception e) {
-	        throw new WorkflowRuntimeException(e);
-	    }
+		try {
+			KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), fileName);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
 	}
 
 	protected void loadXmlFile(Class clazz, String fileName) {
-	    try {
-	        KEWXmlDataLoader.loadXmlClassLoaderResource(clazz, fileName);
-	    } catch (Exception e) {
-	        throw new WorkflowRuntimeException(e);
-	    }
+		try {
+			KEWXmlDataLoader.loadXmlClassLoaderResource(clazz, fileName);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
 	}
 
 	protected void loadXmlFileFromFileSystem(String fileName) {
-	    try {
-	        KEWXmlDataLoader.loadXmlFile(fileName);
-	    } catch (Exception e) {
-	        throw new WorkflowRuntimeException(e);
-	    }
+		try {
+			KEWXmlDataLoader.loadXmlFile(fileName);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
 	}
 
 	protected void loadXmlStream(InputStream xmlStream) {
-	    try {
-	        KEWXmlDataLoader.loadXmlStream(xmlStream);
-	    } catch (Exception e) {
-	        throw new WorkflowRuntimeException(e);
-	    }
+		try {
+			KEWXmlDataLoader.loadXmlStream(xmlStream);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
 	}
-	
+
 	protected String getPrincipalIdForName(String principalName) {
-		return KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(principalName);
+		return KEWServiceLocator.getIdentityHelperService()
+				.getIdForPrincipalName(principalName);
 	}
-	
+
 	protected String getPrincipalNameForId(String principalId) {
-		return KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId).getPrincipalName();
+		return KEWServiceLocator.getIdentityHelperService().getPrincipal(
+				principalId).getPrincipalName();
 	}
-	
-	
+
 	protected String getGroupIdForName(String namespace, String groupName) {
-		return KEWServiceLocator.getIdentityHelperService().getIdForGroupName(namespace, groupName);
+		return KEWServiceLocator.getIdentityHelperService().getIdForGroupName(
+				namespace, groupName);
 	}
 }

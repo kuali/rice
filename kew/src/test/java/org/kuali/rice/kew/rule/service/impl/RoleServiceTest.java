@@ -53,8 +53,8 @@ public class RoleServiceTest extends KEWTestCase {
 	private List<String> group2 = new ArrayList<String>();
 
 
-	protected void setUpTransaction() throws Exception {
-		super.setUpTransaction();
+	protected void setUpAfterDataLoad() throws Exception {
+		super.setUpAfterDataLoad();
 		roleService = KEWServiceLocator.getRoleService();
 		initializeAttribute();
 		documentId = routeDocument();

@@ -48,7 +48,7 @@ public class DocumentSearchTest extends KEWTestCase {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-    protected void setUpTransaction() throws Exception {
+    protected void setUpAfterDataLoad() throws Exception {
         docSearchService = (DocumentSearchService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
     }
 

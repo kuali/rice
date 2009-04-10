@@ -44,8 +44,8 @@ public class ExceptionRoutingTest extends KEWTestCase {
         loadXmlFile("RouteManagerConfig.xml");
     }
 
-    protected void setUpTransaction() throws Exception {
-		super.setUpTransaction();
+    protected void setUpAfterDataLoad() throws Exception {
+		super.setUpAfterDataLoad();
 		// reset these static constants, otherwise they will cause problems between test runs
 		ExceptionRoutingTestPostProcessor.THROW_DO_ACTION_TAKEN_EXCEPTION = false;
 		ExceptionRoutingTestPostProcessor.THROW_ROUTE_DELETE_ROUTE_HEADER_EXCEPTION = false;

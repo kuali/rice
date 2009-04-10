@@ -69,7 +69,7 @@ public class ActionListTest extends KEWTestCase {
     }
 
     private void setUpOldSchool() throws Exception {
-        super.setUpTransaction();
+        super.setUpAfterDataLoad();
         routeHeader1 = generateDocRouteHeader();
         routeHeader1.setActionItems(new ArrayList());
         routeHeader2 = generateDocRouteHeader();

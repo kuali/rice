@@ -77,8 +77,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         loadXmlFile("WorkflowUtilityConfig.xml");
     }
 
-    protected void setUpTransaction() throws Exception {
-        super.setUpTransaction();
+    protected void setUpAfterDataLoad() throws Exception {
+        super.setUpAfterDataLoad();
         utility = KEWServiceLocator.getWorkflowUtilityService();
     }
 

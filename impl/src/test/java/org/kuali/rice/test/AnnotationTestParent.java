@@ -61,11 +61,6 @@ public abstract class AnnotationTestParent extends RiceTestCase {
         return "impl";
     }
 
-    @Override
-    protected String getDerbySQLFileLocation() {
-        return "classpath:org/kuali/rice/database/derby/testharness.sql";
-    }
-
     protected void verifyCount(String valueToVerify, int count) throws SQLException {
         assertEquals(count + " value(s) should be found for id " + valueToVerify, count, countTableResults(valueToVerify));
     }

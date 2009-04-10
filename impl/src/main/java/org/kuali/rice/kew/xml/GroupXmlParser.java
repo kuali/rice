@@ -107,7 +107,7 @@ public class GroupXmlParser implements XmlConstants {
                     String key = newGroupInfo.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroupInfo.getGroupName().trim();
                     addGroupMembers(newGroupInfo, key);
                 } catch (Exception e) {
-                    throw new RuntimeException("Error creating group.", e);
+                    throw new RuntimeException("Error creating group with name '" + groupInfo.getGroupName() + "'", e);
                 }
             } else {
             	if ( LOG.isInfoEnabled() ) {

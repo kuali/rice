@@ -40,8 +40,8 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     private Object lock = new Object();
     private RouteHeaderService routeHeaderService;
 
-    protected void setUpTransaction() throws Exception {
-        super.setUpTransaction();
+    protected void setUpAfterDataLoad() throws Exception {
+        super.setUpAfterDataLoad();
         routeHeaderService = KEWServiceLocator.getRouteHeaderService();
     }
     

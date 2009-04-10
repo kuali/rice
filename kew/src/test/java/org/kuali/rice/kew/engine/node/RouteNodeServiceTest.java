@@ -38,7 +38,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
 
     private RouteNodeService routeNodeService;
     
-    protected void setUpTransaction() throws Exception {
+    protected void setUpAfterDataLoad() throws Exception {
         routeNodeService = KEWServiceLocator.getRouteNodeService();
     }
 

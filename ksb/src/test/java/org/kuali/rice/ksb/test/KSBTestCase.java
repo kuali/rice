@@ -69,24 +69,12 @@ public abstract class KSBTestCase extends RiceTestCase {
     }
 
     @Override
-    protected String getDerbySQLFileLocation() {
-        return "classpath:db/derby/bus.sql";
-    }
-
-    @Override
     protected String getModuleName() {
         return "ksb";
     }
-
-    @Override
-    protected List<String> getTablesToClear() {
-        List<String> tables = new ArrayList<String>();
-        tables.add("KRSB_MSG_QUE_T");
-        tables.add("KRSB_MSG_PYLD_T");
-        tables.add("KRSB_BAM_T");
-        tables.add("KRSB_BAM_PARM_T");
-        tables.add("KRSB_SVC_DEF_T");
-        return tables;
+    
+    protected List<String> getPerTestTablesNotToClear() {
+        return new ArrayList<String>();
     }
 
     @Override

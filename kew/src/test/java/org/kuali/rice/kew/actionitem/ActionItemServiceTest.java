@@ -54,8 +54,8 @@ public class ActionItemServiceTest extends KEWTestCase {
     	loadXmlFile("ActionItemConfig.xml");
     }
 
-    protected void setUpTransaction() throws Exception {
-		super.setUpTransaction();
+    protected void setUpAfterDataLoad() throws Exception {
+		super.setUpAfterDataLoad();
 		actionListService = KEWServiceLocator.getActionListService();
 	}
 

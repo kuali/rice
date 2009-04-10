@@ -45,9 +45,4 @@ public class RiceTestCaseTest extends RiceTestCase {
 		return "testharness";
 	}
 
-	@Override
-	protected String getDerbySQLFileLocation() {
-		return "classpath:db/derby/testharness.sql";
-	}
-
 }

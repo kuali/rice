@@ -83,11 +83,6 @@ public class ServerTestBase extends RiceTestCase {
     }
 
     @Override
-    protected String getDerbySQLFileLocation() {
-        return "classpath:db/derby/kns.sql";
-    }
-
-    @Override
     protected String getModuleName() {
         return MODULE_NAME;
     }

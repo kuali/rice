@@ -452,7 +452,7 @@ public class WebUtils {
 		return indexOfCoordinateExtension;
     }
     
-    public static String getDisplayMaskValue(String className, String fieldName, Object formObject, String propertyName){
+    public static String getFullyMaskedValue(String className, String fieldName, Object formObject, String propertyName){
     	String displayMaskValue = null;
     	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
     	
@@ -460,19 +460,29 @@ public class WebUtils {
     	AttributeDefinition a = entry.getAttributeDefinition(fieldName);
     	
     	AttributeSecurity attributeSecurity = a.getAttributeSecurity();
-    	
     	if(attributeSecurity != null && attributeSecurity.isMask()){
     		MaskFormatter maskFormatter = attributeSecurity.getMaskFormatter();
     		displayMaskValue =  maskFormatter.maskValue(propertyValue);
     		
-    	}else if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-    		MaskFormatter maskFormatter = attributeSecurity.getPartialMaskFormatter();
-    		displayMaskValue =  maskFormatter.maskValue(propertyValue);
-    	}
-        
+    	}        
     	return displayMaskValue;
     }
     
+    public static String getPartiallyMaskedValue(String className, String fieldName, Object formObject, String propertyName){
+    	String displayMaskValue = null;
+    	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
+    	
+    	DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(className);
+    	AttributeDefinition a = entry.getAttributeDefinition(fieldName);
+    	
+    	AttributeSecurity attributeSecurity = a.getAttributeSecurity();
+    	if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+    		MaskFormatter partialMaskFormatter = attributeSecurity.getPartialMaskFormatter();
+    		displayMaskValue =  partialMaskFormatter.maskValue(propertyValue);
+    		
+    	}        
+    	return displayMaskValue;
+    }
     
     public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName) {
 		    Class businessObjClass = null;

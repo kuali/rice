@@ -120,7 +120,7 @@ def detectDuplicateFiles(){
 		for(int i = 0; i < listOfSearchableFiles.size();i++){
 			File file = listOfSearchableFiles[i];
 			if(inputFile.name == file.name){						
-				listOfXMLFileObjects.push(file)
+				listOfXMLFileObjects.push(file);
 				numberOfCopies++;						
 				if(numberOfCopies > 1){							
 					if(isRecordingDuplicates){
@@ -159,8 +159,8 @@ def detectDuplicateFiles(){
  * - change the name of the beanID and then add the duplicateBean HashMap 
  */
 def processBean(beanID, file){	
-	if(beanMap.containsKey(beanID)){	 
-		duplicateBeans.putAt(beanID, beanMap.getAt(beanID))		
+	if(beanMap.containsKey(beanID) && !(beanMap.getAt(beanID).canonicalPath.toString().equals(file.canonicalPath))){	 
+		duplicateBeans.putAt(beanID, beanMap.getAt(beanID))	
 		beanID = beanID + "_" + (++numberOfDuplicateBeans)
 		duplicateBeans.putAt(beanID, file)
 	}
@@ -176,7 +176,8 @@ def detectDuplicateSpringBeans(){
 	
 	listOfXMLFileObjects.each({
 		
-		File file = new File(it.toString())			
+		File file = new File(it.toString())		
+//		println file.name;
 		def builder     = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 		def inputStream = new FileInputStream(file)
 		def elements     = builder.parse(inputStream).documentElement		
@@ -208,6 +209,7 @@ def detectDuplicateSpringBeans(){
 		println "No Duplicate Spring Beans found!"
 	}
 }
+
 
 init()
 listOfInputFiles = readInputFile(inputFile)

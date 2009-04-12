@@ -28,6 +28,9 @@
         <url>http://kuali.org/</url>
     </organization>
     <properties>
+    
+    	<test.includes>**/*Test.java</test.includes>
+    
         <spring.version>2.0.4</spring.version>
         <acegi.version>1.0.6</acegi.version>
         <servlet-api.version>2.4</servlet-api.version>
@@ -145,7 +148,7 @@
                             <useFile>false</useFile>
                             <failIfNoTests>false</failIfNoTests>
                             <includes>
-                                <include>**/*Test.java</include>
+                                <include>${test.includes}</include>
                             </includes>
                             <forkMode>once</forkMode>
                             <reportFormat>plain</reportFormat>

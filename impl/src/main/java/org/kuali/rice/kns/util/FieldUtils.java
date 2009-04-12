@@ -29,6 +29,7 @@ import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
@@ -1133,6 +1134,11 @@ public class FieldUtils {
             field.setMaxLength(100);
             fields.add(field);
 
+            // if the attrib name is "active", and BO is Inactivatable, then set the default value to Y
+            if (attributeName.equals(KNSPropertyConstants.ACTIVE) && Inactivateable.class.isAssignableFrom(businessObjectClass)) {
+            	field.setPropertyValue(KNSConstants.YES_INDICATOR_VALUE);
+            	field.setDefaultValue(KNSConstants.YES_INDICATOR_VALUE);
+            }
             // set default value
             String defaultValue = getBusinessObjectMetaDataService().getLookupFieldDefaultValue(businessObjectClass, attributeName);
             if (defaultValue != null) {

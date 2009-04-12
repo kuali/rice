@@ -18,6 +18,7 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
@@ -30,12 +31,11 @@ public class IndicatorValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List activeLabels = new ArrayList();
-        activeLabels.add(new KeyLabelPair("Y", "Yes"));
-        activeLabels.add(new KeyLabelPair("N", "No"));
+    public List<KeyLabelPair> getKeyValues() {
+        List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>();
+        activeLabels.add(new KeyLabelPair(KNSConstants.YES_INDICATOR_VALUE, "Yes"));
+        activeLabels.add(new KeyLabelPair(KNSConstants.NO_INDICATOR_VALUE, "No"));
         activeLabels.add(new KeyLabelPair("", "Both"));
         return activeLabels;
     }
-
 }

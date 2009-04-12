@@ -132,7 +132,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER = "~";
     public static final String ADD_LINE_METHOD = "addLine";
     public static final String ADD_PREFIX = "add";
-//    public static final String ACTIVE_INDICATOR = "Y";
+    public static final String YES_INDICATOR_VALUE = "Y";
+    public static final String NO_INDICATOR_VALUE = "N";
 //    public static final String AMOUNT_PROPERTY_NAME = "amount";
 //    public static final String APPROVE_METHOD = "approve";
 //    public static final String NON_ACTIVE_INDICATOR = "N";

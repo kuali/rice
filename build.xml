@@ -36,7 +36,7 @@
 		<property name="maven.home.directory" value="${env.M2_HOME}"/>
 		<!-- default environment.path.variable to 'PATH' variable from the local environment -->
 		<condition property="environment.path.variable" value="${env.PATH}">
-			<isset property="${env.PATH}"/>
+			<isset property="env.PATH"/>
 		</condition>
         <!-- if the PATH variable is not found try 'Path' for Vista/XP systems -->
         <property name="environment.path.variable" value="${env.Path}"/>

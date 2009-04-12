@@ -1,7 +1,7 @@
 
 -- assign 'WorkflowAdmin' to 'Technical Administrator' Role
 INSERT INTO KRIM_ROLE_MBR_T(ROLE_MBR_ID, VER_NBR, OBJ_ID, ROLE_ID, MBR_ID, MBR_TYP_CD)
-VALUES('1500', 1, '2eae152e-76e2-102c-b815-701c3cd98d38', '63', '2', 'G')
+VALUES('1500', 1, '2eae152e-76e2-102c-b815-701c3cd98d38', '63', '1', 'G')
 ;
 
 INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, nm, DESC_TXT, nmspc_cd, ACTV_IND) 

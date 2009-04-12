@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.KeyValue;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -74,9 +75,13 @@ public class Utilities {
     }
 
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name) {
+    	return getKNSParameterBooleanValue(nameSpace, detailType, name, false);
+    }
+    
+    public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
         Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
-        if (parameter == null) {
-            return false;
+        if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
+            return defaultValue;
         }
         if (parameter.getParameterValue().trim().equals("Y")) {
             return true;

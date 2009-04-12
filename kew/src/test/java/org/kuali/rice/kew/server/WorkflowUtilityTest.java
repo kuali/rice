@@ -540,8 +540,11 @@ public class WorkflowUtilityTest extends KEWTestCase {
     @Test public void testIsLastApproverActivation() throws Exception {
         // first test without the constant set
         //ApplicationConstant appConstant = KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
-        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
-        assertNull("The IS_LAST_APPROVER_ACTIVATE_FIRST constant should not be set.", parameter);
+        Parameter lastApproverActivateParameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
+        assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getParameterValue()));
+        String originalParameterValue = lastApproverActivateParameter.getParameterValue();
+        
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.routeDocument("");
 
@@ -622,16 +625,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // Now set up the app constant that checks ignore previous properly and try a new document
         String parameterValue = "Y";
-        parameter = new Parameter(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND, parameterValue, "A");
-        parameter.setParameterNamespaceCode(KEWConstants.KEW_NAMESPACE);
-        parameter.setParameterTypeCode("CONFG");
-        parameter.setParameterDetailTypeCode(KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE);
-        //parameter.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
-        KNSServiceLocator.getBusinessObjectService().save(parameter);
+        lastApproverActivateParameter.setParameterValue(parameterValue);
+        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
 
-        parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
-        assertNotNull("Parameter should not be null.", parameter);
-        assertEquals("Parameter should be true.", parameterValue, parameter.getParameterValue());
+        lastApproverActivateParameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
+        assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getParameterValue());
 
 
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
@@ -676,6 +675,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.approve("");
         assertTrue("Document should be processed.", document.stateIsProcessed());
 
+        // set parameter value back to it's original value
+        
+        lastApproverActivateParameter.setParameterValue("N");
+        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
     }
 
     @Test public void testIsFinalApprover() throws Exception {
@@ -1595,7 +1598,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         public static final String RULE_TEST_TEMPLATE_1 = "WorkflowDocumentTemplate";
         public static final String RULE_TEST_TEMPLATE_2 = "WorkflowDocument2Template";
         public static final String RULE_TEST_TEMPLATE_3 = "WorkflowDocument3Template";
-        public static final String RULE_TEST_GROUP_ID = "3"; // the NonSIT group
+        public static final String RULE_TEST_GROUP_ID = "3003"; // the NonSIT group
     }
 
     private class RuleTestOrgReviewSetup {

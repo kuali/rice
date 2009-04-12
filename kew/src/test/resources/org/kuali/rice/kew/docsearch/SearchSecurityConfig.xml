@@ -188,18 +188,6 @@
 			</security>
 		</documentType>
 	</documentTypes>
-	<users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
-		<user>
-			<workflowId>9876</workflowId>
-			<emplId>9867</emplId>
-			<authenticationId>security_user</authenticationId>
-			<uuId>9867</uuId>
-			<emailAddress>security_user@indiana.edu</emailAddress>
-			<displayName>Secure User</displayName>
-			<givenName>Secure</givenName>
-			<lastName>User</lastName>
-		</user>
-	</users>
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>
 			<id>9776</id>

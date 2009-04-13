@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,10 +45,10 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
- * 
+ *
  * Implementation of the <code>BusinessObjectMetaDataService</code> which uses
  * the following services to gather its meta data:
- * 
+ *
  * @see BusinessObjectDictionaryService
  * @see DataDictionaryService
  * @see PersistenceStructureService
@@ -346,7 +346,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	/**
 	 * Gets the dataDictionaryService attribute.
-	 * 
+	 *
 	 * @return Returns the dataDictionaryService.
 	 */
 	public DataDictionaryService getDataDictionaryService() {
@@ -355,7 +355,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	/**
 	 * Sets the dataDictionaryService attribute value.
-	 * 
+	 *
 	 * @param dataDictionaryService
 	 *            The dataDictionaryService to set.
 	 */
@@ -366,7 +366,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	/**
 	 * Gets the businessObjectDictionaryService attribute.
-	 * 
+	 *
 	 * @return Returns the businessObjectDictionaryService.
 	 */
 	public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
@@ -375,7 +375,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	/**
 	 * Sets the businessObjectDictionaryService attribute value.
-	 * 
+	 *
 	 * @param businessObjectDictionaryService
 	 *            The BusinessObjectDictionaryService to set.
 	 */
@@ -386,7 +386,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	/**
 	 * Gets the persistenceStructureService attribute.
-	 * 
+	 *
 	 * @return Returns the persistenceStructureService.
 	 */
 	public PersistenceStructureService getPersistenceStructureService() {
@@ -395,7 +395,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	/**
 	 * Sets the persistenceStructureService attribute value.
-	 * 
+	 *
 	 * @param persistenceStructureService
 	 *            The persistenceStructureService to set.
 	 */
@@ -405,9 +405,9 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 	}
 
 	/**
-	 * 
+	 *
 	 * This method retrieves the business object class for a specific attribute
-	 * 
+	 *
 	 * @param bo
 	 * @param attributeName
 	 * @return a business object class for a specific attribute
@@ -450,8 +450,8 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	public RelationshipDefinition getDDRelationship(Class c,
 			String attributeName) {
-		BusinessObjectEntry entryBase = dataDictionaryService
-				.getDataDictionary().getBusinessObjectEntry(c.getName());
+		DataDictionaryEntry entryBase = dataDictionaryService
+				.getDataDictionary().getDictionaryObjectEntry(c.getName());
 		if (entryBase == null) {
 			return null;
 		}
@@ -547,7 +547,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 		return relationships;
 	}
-	
+
 	/***************************************************************************
 	 * @see org.kuali.rice.kns.service.BusinessObjectMetaDataService#getReferencesForForeignKey(java.lang.Class,
 	 *      java.lang.String)
@@ -597,8 +597,8 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 		RelationshipDefinition relationshipDefinition = getDDRelationship(businessObjectClass, attributeName);
 		if(relationshipDefinition==null) return null;
-		BusinessObjectRelationship businessObjectRelationship = 
-			new BusinessObjectRelationship(relationshipDefinition.getSourceClass(), 
+		BusinessObjectRelationship businessObjectRelationship =
+			new BusinessObjectRelationship(relationshipDefinition.getSourceClass(),
 					relationshipDefinition.getObjectAttributeName(), relationshipDefinition.getTargetClass());
 		if(!StringUtils.isEmpty(attributePrefix))
 			attributePrefix += ".";
@@ -614,12 +614,12 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}*/
 		return businessObjectRelationship;
 	}
-	
+
 	public String getForeignKeyFieldName(Class businessObjectClass, String attributeName, String targetName) {
 
 		String fkName = "";
 		if(PersistableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
-			fkName = 
+			fkName =
 				getPersistenceStructureService().getForeignKeyFieldName(businessObjectClass, attributeName, targetName);
 		} else {
 			RelationshipDefinition relationshipDefinition = getDDRelationship(businessObjectClass, attributeName);

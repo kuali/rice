@@ -123,7 +123,7 @@
   <c:forEach var="note" items="${notesBo}" varStatus="status">
 
 	<c:set var="authorUniversalIdentifier" value = "${note.authorUniversalIdentifier}" />
-	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
+	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, null)}" >
       <tr>
             <kul:htmlAttributeHeaderCell literalLabel="${status.index + 1}" scope="row"/>
             <td class="datacell center">
@@ -151,7 +151,12 @@
                                   <td class="datacell center">
                                     
                                     <c:if test="${allowsNoteAttachments eq true}">
-                                      <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                      <c:if test="${(!empty note.attachment)}">
+										<c:set var="attachmentTypeCode" value ="${note.attachment.attachmentTypeCode}" />
+									  </c:if>
+                                      <c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
+                                        <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                      </c:if>
                                       <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].attachment.attachmentFileName"/>
                                       &nbsp;
                                       &nbsp;

@@ -116,6 +116,7 @@ if (textAreaFieldLabel == null) {
 	<html:hidden property="documentWebScope" value="${documentWebScope}"/>
 	<html:hidden property="formKey" value="${formKey}"/>
 	<html:hidden property="docFormKey" value="${docFormKey}"/>
+	<html:hidden property="refreshCaller" value="TextAreaRefresh"/>
 
     <c:if test="${not empty parameters}">
       <c:forEach items="${parameters}" var="mapEntry" >

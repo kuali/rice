@@ -323,7 +323,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			documentNumber = request.getParameter(KNSConstants.DOC_NUM);
 		}
 
-		if (mapping.getPath().startsWith(KNSConstants.REFRESH_MAPPING_PREFIX) || KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) || KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+		if (mapping.getPath().startsWith(KNSConstants.REFRESH_MAPPING_PREFIX) || KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) ||
+				KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.TEXT_AREA_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
 			ActionForm form = null;
 			// check for search result storage and clear
 			GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_LIST_KEY_PREFIX);

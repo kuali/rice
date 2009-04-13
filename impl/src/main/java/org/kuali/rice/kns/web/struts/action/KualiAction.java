@@ -966,16 +966,17 @@ public abstract class KualiAction extends DispatchAction {
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getAnchor())) {
             request.setAttribute(TEXT_AREA_FIELD_ANCHOR,((KualiForm) form).getAnchor());
         }
-
+        
         // Set document related parameter
         String docWebScope=(String)request.getAttribute(KNSConstants.DOCUMENT_WEB_SCOPE);
         if (docWebScope != null && docWebScope.trim().length() >= 0) {
             request.setAttribute(KNSConstants.DOCUMENT_WEB_SCOPE, docWebScope);
         }
-        String docFormKey=(String)request.getAttribute(KNSConstants.DOC_FORM_KEY);
-        if (docFormKey != null && docFormKey.trim().length() >= 0) {
-            request.setAttribute(KNSConstants.DOC_FORM_KEY, docFormKey);
-        }
+        //String docFormKey=(String)request.getAttribute(KNSConstants.DOC_FORM_KEY);
+        //if (docFormKey != null && docFormKey.trim().length() >= 0) {
+        //    request.setAttribute(KNSConstants.DOC_FORM_KEY, docFormKey);
+        //}
+        request.setAttribute(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
         
         ActionForward forward=mapping.findForward(FORWARD_TEXT_AREA_UPDATE);
 

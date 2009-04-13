@@ -362,6 +362,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String RETURN_LOCATION_PARAMETER = "returnLocation";
     public static final String RETURN_METHOD_TO_CALL = "refresh";
 //    public static final String ROUTE_METHOD = "route";
+    // Another possible value for the "refreshCaller" request parameter, as a fix for KULRICE-2903.
+    public static final String TEXT_AREA_REFRESH = "TextAreaRefresh";
     // below field used in tag files
 
     // KualiDocumentActionBase Method Names

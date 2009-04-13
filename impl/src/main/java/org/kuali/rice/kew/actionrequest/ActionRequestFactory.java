@@ -499,24 +499,9 @@ public class ActionRequestFactory {
     	}
     	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, ignorePrevious, null, ruleId, annotation);
     	delegationRequest.setDelegationType(delegationType);
-    	if ( delegationType.equals( KEWConstants.DELEGATION_PRIMARY ) ) {
-    	    // if the action request already has a parent, replace it in the child list for the parent with
-    	    // the delegation request
-    	    if ( parentRequest.hasParent() ) {
-    	    	ActionRequestValue parentParentActionRequest = parentRequest.getParentActionRequest();
-    	    	// remove the parent request from its parent's child list
-    	    	parentParentActionRequest.getChildrenRequests().remove(parentRequest);
-    	    	// assign this new request in that place
-        	    delegationRequest.setParentActionRequest(parentParentActionRequest);
-    	    	parentParentActionRequest.getChildrenRequests().add(delegationRequest);
-    	    }
-    	    // place the original parent request UNDER the primary delegation
-    	    delegationRequest.getChildrenRequests().add(parentRequest);
-    	    parentRequest.setParentActionRequest(delegationRequest);
-    	} else {
-        	parentRequest.getChildrenRequests().add(delegationRequest); 
-        	delegationRequest.setParentActionRequest(parentRequest);
-    	}
+    	
+        parentRequest.getChildrenRequests().add(delegationRequest); 
+        delegationRequest.setParentActionRequest(parentRequest);
 
     	return delegationRequest;
     }

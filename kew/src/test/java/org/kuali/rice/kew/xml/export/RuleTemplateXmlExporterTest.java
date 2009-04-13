@@ -47,7 +47,7 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
 
         // now clear the tables
-        new ClearDatabaseLifecycle().start();
+        new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()).start();
 
         // import the exported xml
         loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));

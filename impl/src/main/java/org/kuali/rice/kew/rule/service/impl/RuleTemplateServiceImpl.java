@@ -137,18 +137,14 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         ruleTemplateAttributeDAO.save(ruleTemplateAttribute);
     }
 
-    public void save(RuleBaseValues ruleBaseValues) {
-        ruleDAO.save(ruleBaseValues);
-    }
-
     /**
-     * TODO: explain...
-     * @see org.kuali.rice.kew.rule.service.RuleTemplateService#save(org.kuali.rice.kew.rule.RuleDelegation, org.kuali.rice.kew.rule.RuleBaseValues)
+     * Saves the given RuleDelegation and RuleBaseValues as the defaults for this RuleTemplate
      */
-    public void save(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues) {
-        save(ruleBaseValues);
+    public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues) {
+        KEWServiceLocator.getRuleService().saveRule(ruleBaseValues, false);
         if (ruleDelegation != null) {
-            ruleDelegationDAO.save(ruleDelegation);
+        	KEWServiceLocator.getRuleService().saveRule(ruleDelegation.getDelegationRuleBaseValues(), false);
+            KEWServiceLocator.getRuleDelegationService().save(ruleDelegation);
         }
     }
 

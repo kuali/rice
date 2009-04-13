@@ -36,8 +36,7 @@ public interface RuleTemplateService extends XmlLoader, XmlExporter {
 
     public void save(RuleTemplate ruleTemplate);
     public void save(RuleTemplateAttribute ruleTemplateAttribute);
-    public void save(RuleBaseValues ruleBaseValues);
-    public void save(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues);
+    public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues);
     public RuleTemplate findByRuleTemplateId(Long ruleTemplateId);
     public List findAll();
     public List findByRuleTemplate(RuleTemplate ruleTemplate);

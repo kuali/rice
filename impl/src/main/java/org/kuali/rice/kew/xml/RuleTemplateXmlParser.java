@@ -327,7 +327,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             }
 
             // explicitly save the new rule delegation defaults and default rule
-            KEWServiceLocator.getRuleTemplateService().save(ruleDelegationDefaults, ruleDefaults);
+            KEWServiceLocator.getRuleTemplateService().saveRuleDefaults(ruleDelegationDefaults, ruleDefaults);
         } else {
             // do nothing, rule defaults will be deleted if ruleDefaults element is omitted
         }

@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -38,13 +37,10 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ObjectUtils;
-
 
 public class ActionItemServiceTest extends KEWTestCase {
 
@@ -71,7 +67,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         document.setTitle("");
         document.routeDocument("");
 
-        GroupInfo oldGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
+        GroupInfo oldGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
         KimGroupImpl oldWorkgroup = this.getGroupImpl(oldGroup.getGroupId());
 
 
@@ -137,9 +133,9 @@ public class ActionItemServiceTest extends KEWTestCase {
         }
 
         assertTrue("rkirkend should still have an AI because he is in 2 workgroups that are routed to.", foundrkirkend);
-        assertTrue("user1 should have an AI because they were added to 'WorkflowAdmin'", founduser1);
-        assertTrue("user2 should have an AI because they were added to 'WorkflowAdmin'", founduser2);
-        assertFalse("lshen should not have an AI because they were removed from 'WorkflowAdmin'", foundlshen);
+        assertTrue("user1 should have an AI because they were added to 'AIWG-Admin'", founduser1);
+        assertTrue("user2 should have an AI because they were added to 'AIWG-Admin'", founduser2);
+        assertFalse("lshen should not have an AI because they were removed from 'AIWG-Admin'", foundlshen);
 
     }
 
@@ -155,7 +151,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
         document.setTitle("");
 
-        GroupInfo workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
+        GroupInfo workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
         document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",workgroup1.getGroupId(), "", true);
         document.routeDocument("");
 
@@ -195,7 +191,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionItemDocumentType");
          document.setTitle("");
 
-         workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "NestedWorgroup");
+         workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested1");
          document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "",workgroup1.getGroupId(), "", true);
          document.routeDocument("");
 
@@ -203,7 +199,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
 
          //get the subgroup so we can remove the member.
-         GroupInfo workgroupSub = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "NonSIT");
+         GroupInfo workgroupSub = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested2");
          KIMServiceLocator.getIdentityManagementService().removePrincipalFromGroup(user1.getPrincipalId(), workgroupSub.getGroupId());
 
          assertEquals("Workgroup should have 5 members.", 5, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
@@ -227,8 +223,8 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 
-        KimGroup testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
-        KimGroup adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
+        KimGroup testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
+        KimGroup adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
 
         ActionRequestDTO[] ars = document.getActionRequests();
         boolean routedWorkflowAdmin = false;
@@ -243,15 +239,15 @@ public class ActionItemServiceTest extends KEWTestCase {
         }
 
         //verify that our test is sane
-        assertTrue("Should have routed to 'TestWorkgroup'", routedTestWorkgroup);
-        assertTrue("Should have routed to 'WorkflowAdmin'", routedWorkflowAdmin);
-        assertTrue("Approve should be requested to member of 'TestWorkgroup'", document.isApprovalRequested());
+        assertTrue("Should have routed to 'AIWG-Test'", routedTestWorkgroup);
+        assertTrue("Should have routed to 'AIWG-Admin'", routedWorkflowAdmin);
+        assertTrue("Approve should be requested to member of 'AIWG-Test'", document.isApprovalRequested());
 
         document.approve("");
 
         Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
 
-        assertEquals("There should be 6 action items to the WorkflowAdmin.", 6, actionItems.size());
+        assertEquals("There should be 6 action items to the AIWG-Admin.", 6, actionItems.size());
 
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem)iter.next();
@@ -269,7 +265,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         document.setTitle("");
         document.routeDocument("");
 
-        // now the document should be at both the WorkflowAdmin workgroup and the TestWorkgroup
+        // now the document should be at both the AIWG-Admin workgroup and the AIWG-Test
         // ewestfal is a member of both Workgroups so verify that he has two action items
         String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
         String jitruePrincipalId = getPrincipalIdForName("jitrue");

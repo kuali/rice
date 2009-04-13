@@ -47,6 +47,64 @@
           </groupName>
         </members>
       </group>
+      <group>
+		<id>AIWG-Admin</id>
+		<name>AIWG-Admin</name>
+		<namespace>KR-WKFLW</namespace>
+		<description>AIWG-Admin</description>
+		<members>
+			<principalName>ewestfal</principalName>
+			<principalName>rkirkend</principalName>
+			<principalName>jhopf</principalName>
+			<principalName>bmcgough</principalName>
+			<principalName>shenl</principalName>
+			<principalName>quickstart</principalName>
+		</members>
+	  </group>
+	  <group>
+		    <id>AIWG-Test</id>
+			<name>AIWG-Test</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>AIWG-Test</description>
+			<members>
+				<principalName>ewestfal</principalName>
+				<principalName>rkirkend</principalName>
+				<principalName>jhopf</principalName>
+				<principalName>bmcgough</principalName>
+				<principalName>temay</principalName>
+				<principalName>xqi</principalName>
+				<principalName>natjohns</principalName>
+				<principalName>pmckown</principalName>
+				<principalName>jthomas</principalName>
+				<principalName>jitrue</principalName>
+			</members>
+		</group>
+		<group>
+			<id>AIWG-Nested2</id>
+			<name>AIWG-Nested2</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>AIWG-Nested2</description>
+			<members>
+				<principalName>user1</principalName>
+				<principalName>user2</principalName>
+				<principalName>user3</principalName>
+				<principalName>dewey</principalName>
+			</members>
+		</group>
+		<group>
+			<id>AIWG-Nested1</id>
+			<name>AIWG-Nested1</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>AIWG-Nested1</description>
+			<members>
+				<principalName>ewestfal</principalName>
+				<principalName>rkirkend</principalName>
+				<groupName>
+					<name>AIWG-Nested2</name>
+					<namespace>KR-WKFLW</namespace>
+				</groupName>
+			</members>
+		</group>
     </groups>
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -68,10 +126,10 @@
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:AIWG-Test</superUserWorkgroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:AIWG-Test</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:AIWG-Test</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -117,10 +175,10 @@
 			<name>BAOrphanedRequestDocumentType</name>
 			<label>Document Type used to test that Blanket Approval is not orphaning Action Requests</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserWorkgroupName>KR-WKFLW:AIWG-Test</superUserWorkgroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:AIWG-Test</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:AIWG-Test</defaultExceptionWorkgroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -162,7 +220,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
+					<groupName namespace="KR-WKFLW">AIWG-Test</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -175,7 +233,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
+					<groupName namespace="KR-WKFLW">AIWG-Admin</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -216,7 +274,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
+					<groupName namespace="KR-WKFLW">AIWG-Test</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

@@ -42,6 +42,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.test.TransactionalTest;
 
 /**
  * Tests Role-based routing integration between KEW and KIM.
@@ -49,6 +50,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@TransactionalTest
 public class RoleRouteModuleTest extends KEWTestCase {
 
 	private String namespace = KEWConstants.KEW_NAMESPACE;

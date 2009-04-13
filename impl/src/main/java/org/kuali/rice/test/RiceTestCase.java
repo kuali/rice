@@ -35,6 +35,8 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -303,6 +305,11 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      */
     protected List<Lifecycle> getPerTestLifecycles() {
     	List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+    	if (getClass().isAnnotationPresent(TransactionalTest.class)) {
+    		String transactionManagerName = getClass().getAnnotation(TransactionalTest.class).transactionManager();
+			TransactionalLifecycle transactionalLifecycle = new TransactionalLifecycle(transactionManagerName);
+			lifecycles.add(transactionalLifecycle);
+		}
         lifecycles.add(getPerTestDataLoaderLifecycle());
         lifecycles.add(new BaseLifecycle() {
             public void start() throws Exception {

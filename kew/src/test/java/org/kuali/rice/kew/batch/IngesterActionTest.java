@@ -40,7 +40,9 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.test.web.MockFormFile;
 import org.kuali.rice.kew.test.web.WorkflowServletRequest;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.UserLoginFilter;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 
@@ -127,14 +129,21 @@ public class IngesterActionTest extends KEWTestCase {
         mapping.addForwardConfig(new ActionForward("view", "/nowhere", false));
         WorkflowServletRequest request = new WorkflowServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
-        request.setUser("quickstart");
+        request.setUser("admin");
         // add the user to the session
         new UserLoginFilter().doFilter(request, response, new FilterChain() {
             public void doFilter(ServletRequest req, ServletResponse res) {
             }
         });
         request.setMethod("post");
-        action.execute(mapping, form, request, response);
+        try {
+        	UserSession userSession = (UserSession)request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
+        	assertNotNull("UserSession should have been established.", userSession);
+        	UserSession.setAuthenticatedUser(userSession);
+        	action.execute(mapping, form, request, response);
+        } finally {
+        	UserSession.setAuthenticatedUser(null);
+        }
 
         // test result
         List messages = (List) request.getAttribute("messages");

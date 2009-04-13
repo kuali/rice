@@ -16,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.test.lifecycles.TransactionalLifecycle;
+import org.kuali.rice.test.TransactionalLifecycle;
 
 @Ignore
 public class TestBase extends KNSTestCase {

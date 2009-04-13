@@ -231,19 +231,5 @@
 				<principalName>jitrue</principalName>
 			</members>
 		</group>
-		<group>
-			<id>3005</id>
-			<name>NestedWorgroup</name>
-			<namespace>KR-WKFLW</namespace>
-			<description>NestedWorkgroup</description>
-			<members>
-				<principalName>ewestfal</principalName>
-				<principalName>rkirkend</principalName>
-				<groupName>
-					<name>NonSIT</name>
-					<namespace>KR-WKFLW</namespace>
-				</groupName>
-			</members>
-		</group>
 	</groups>
 </data>

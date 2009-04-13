@@ -36,11 +36,10 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 public class KEWHtmlUnitTestCase extends KEWTestCase {
 
     public static final String URL_PREFIX = "http://localhost:9952/en-test/";
-    public static final String QUICKSTART_USER_NETWORK_ID = "quickstart";
-    public static final String QUICKSTART_USER_EMPLOYEE_ID = "1005";
+    public static final String ADMIN_USER_NETWORK_ID = "admin";
 
     private WebClient webClient;
-    private KimPrincipal quickstartPrincipal;
+    private KimPrincipal adminPrincipal;
 
     @Override
     protected void setUpAfterDataLoad() throws Exception {
@@ -49,10 +48,10 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
 
         // Set the user preference refresh rate to 0 to prevent a <META HTTP-EQUIV="Refresh" .../> tag from being rendered.
         // If it is rendered than HtmlUnit will immediately redirect, causing an error to be thrown.
-        this.quickstartPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("quickstart");
-        Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(quickstartPrincipal.getPrincipalId());
+        this.adminPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(ADMIN_USER_NETWORK_ID);
+        Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(adminPrincipal.getPrincipalId());
         preferences.setRefreshRate("0");
-        KEWServiceLocator.getPreferencesService().savePreferences(quickstartPrincipal.getPrincipalId(), preferences);
+        KEWServiceLocator.getPreferencesService().savePreferences(adminPrincipal.getPrincipalId(), preferences);
     }
 
     protected HtmlPage performLogin(String loginUserNetworkId, String urlActionSuffix) throws Exception {
@@ -79,12 +78,8 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
         this.webClient = webClient;
     }
 
-    public KimPrincipal getQuickstartPrincipal() {
-        return this.quickstartPrincipal;
-    }
-
-    public void setQuickstartPrincipal(KimPrincipal quickstartPrincipal) {
-        this.quickstartPrincipal = quickstartPrincipal;
+    public KimPrincipal getAdminPrincipal() {
+        return this.adminPrincipal;
     }
 
 }

@@ -21,7 +21,7 @@
 			<ignorePrevious>false</ignorePrevious>
 			<responsibilities>
 				<responsibility>
-					<principalId>1001</principalId>
+					<principalId>user1</principalId>
 				</responsibility>
 			</responsibilities>
 		</rule>

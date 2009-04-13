@@ -387,7 +387,10 @@ public class RuleXmlParserTest extends KEWTestCase {
 
     @Test public void testInvalidTemplatelessNamedRule() {
         testNamedRule();
-        loadXmlFile("InvalidTemplatelessNamedRule.xml");
+        try {
+        	loadXmlFile("InvalidTemplatelessNamedRule.xml");
+        	fail("Rule should have failed to load because it attempts to define extensions on a templateless rule.");
+        } catch (Exception e) {}
     }
     
     @Test public void testRulesWithDifferentResponsibilityTypes() throws Exception {
@@ -397,17 +400,17 @@ public class RuleXmlParserTest extends KEWTestCase {
     	RuleBaseValues rule = ruleService.getRuleByName("RespTypeTest1");
     	assertNotNull(rule);
     	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a principal id of 1001", "1001", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a principal id of user1", "user1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest2");
     	assertNotNull(rule);
     	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a principal id of 1001", "1001", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a principal id of user1", "user1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest3");
     	assertNotNull(rule);
     	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a group id of 1", "1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a group id of 3001", "3001", rule.getResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest4");
     	assertNotNull(rule);

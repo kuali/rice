@@ -199,7 +199,7 @@ public class KSBConfigurer extends ModuleConfigurer {
     @Override
     public void onEvent(RiceConfigEvent event) throws Exception {
         if (event instanceof AfterStartEvent) {
-            LOG.info("Refreshing Service Regsitry to export services to the bus.");
+            LOG.info("Refreshing Service Registry to export services to the bus.");
             KSBServiceLocator.getServiceDeployer().refresh();
         }
     }

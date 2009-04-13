@@ -54,7 +54,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 	 * Tests the mass action list.
 	 */
 	@Test public void testMassActionList() throws Exception {
-        HtmlPage page = performLogin(QUICKSTART_USER_NETWORK_ID, ACTION_LIST_URL_SUFFIX);
+        HtmlPage page = performLogin(ADMIN_USER_NETWORK_ID, ACTION_LIST_URL_SUFFIX);
 
 		// we should be on the Action List now, check that theres a form here
 		assertEquals("Should be one form.", 1, page.getForms().size());
@@ -63,13 +63,13 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		int numDocs = 10;
 		for (int i = 0; i < numDocs; i++) {
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
-			document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName(QUICKSTART_USER_NETWORK_ID), "", true);
+			document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName(ADMIN_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			assertTrue("Document should be FINAL.", document.stateIsFinal());
 		}
 
 		// check that the quickstart user has 10 action items
-		Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
+		Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getAdminPrincipal().getPrincipalId());
 		assertEquals("Should have 10 items.", 10, actionList.size());
 
 		// now refresh the Action List
@@ -102,7 +102,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		anchor.click();
 
 		// after taking mass actions, user should have no requests left in their action list
-		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
+		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getAdminPrincipal().getPrincipalId());
 		assertEquals("Should have 0 items.", 0, actionList.size());
 
 		// now let's route some and intersperse them with documents that won't have the Mass Action option,
@@ -114,7 +114,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 			boolean isMassActionable = (i % 2 == 0);
 			String actionRequested = (isMassActionable ? KEWConstants.ACTION_REQUEST_FYI_REQ : KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "MassActionListTest");
-			document.adHocRouteDocumentToPrincipal(actionRequested, "", getPrincipalIdForName(QUICKSTART_USER_NETWORK_ID), "", true);
+			document.adHocRouteDocumentToPrincipal(actionRequested, "", getPrincipalIdForName(ADMIN_USER_NETWORK_ID), "", true);
 			document.routeDocument("");
 			if (isMassActionable) {
 				massActionable.add(new Doc(i, document.getRouteHeaderId()));
@@ -124,7 +124,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		}
 
 		// check that the quickstart user has 10 action items
-		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
+		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getAdminPrincipal().getPrincipalId());
 		assertEquals("Should have 10 items.", 10, actionList.size());
 
 		// refresh the Action List
@@ -167,7 +167,7 @@ public class ActionListActionTest extends KEWHtmlUnitTestCase {
 		anchor.click();
 
 		// since only half the actions were "mass actionable", we should have 5 now
-		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getQuickstartPrincipal().getPrincipalId());
+		actionList = KEWServiceLocator.getActionListService().findByPrincipalId(getAdminPrincipal().getPrincipalId());
 		assertEquals("Should have 5 items.", 5, actionList.size());
 		// check that the documents remaining are the ones which are approve requests and not the mass actionable fyi requests
 		for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {

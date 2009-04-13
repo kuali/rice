@@ -58,7 +58,7 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         Map<String,String> expectedValues = new HashMap<String,String>();
         expectedValues.put("criteria.docTypeFullName", DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
 
-        HtmlPage basicSearchPage = performLogin(QUICKSTART_USER_NETWORK_ID, "DocumentSearch.do?criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
+        HtmlPage basicSearchPage = performLogin(ADMIN_USER_NETWORK_ID, "DocumentSearch.do?criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
         checkStandardCriteriaFields(basicSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","fromDateCreated"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,basicSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), true);
         HtmlPage basicSearchResultPage = (HtmlPage) basicSearchPage.getFormByName(DOCUMENT_SEARCH_FORM_NAME).getInputByName("methodToCall.doDocSearch").click();
@@ -89,7 +89,7 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         expectedValuesAfterClear.put("criteria.docTypeFullName", "");
 
         // check basic search clear function
-        HtmlPage basicSearchPage = performLogin(QUICKSTART_USER_NETWORK_ID, "DocumentSearch.do?criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
+        HtmlPage basicSearchPage = performLogin(ADMIN_USER_NETWORK_ID, "DocumentSearch.do?criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
         checkStandardCriteriaFields(basicSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","fromDateCreated"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,basicSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), true);
 
@@ -121,10 +121,10 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         expectedValues.put("criteria.initiator", "delyea");
         String idType = "principalName";
         String searchAttributeUrlValue = "CURRENT_USER." + idType;
-        expectedValues.put(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, QUICKSTART_USER_NETWORK_ID);
+        expectedValues.put(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, ADMIN_USER_NETWORK_ID);
 
         // check basic search
-        HtmlPage basicSearchPage = performLogin(QUICKSTART_USER_NETWORK_ID, "DocumentSearch.do?criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((Utilities.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
+        HtmlPage basicSearchPage = performLogin(ADMIN_USER_NETWORK_ID, "DocumentSearch.do?criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((Utilities.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
         checkStandardCriteriaFields(basicSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","fromDateCreated"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,basicSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), false);
         // test that header bar is hidden

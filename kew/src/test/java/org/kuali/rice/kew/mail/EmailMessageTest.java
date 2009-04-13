@@ -248,7 +248,10 @@ public class EmailMessageTest extends KEWTestCase {
      */
     @Test
     public void testBadCustomStyleSheet() throws Exception {
-        loadXmlFile("badCustomEmailStyleData.xml");
+    	try {
+    		loadXmlFile("badCustomEmailStyleData.xml");
+    		fail("Loading of badCustomEmailStyleData.xml should have failed!");
+    	} catch (Exception e) {}
         // this doesn't get loaded
         assertNull(KEWServiceLocator.getStyleService().getStyle("bad.kew.email.style"));
     }

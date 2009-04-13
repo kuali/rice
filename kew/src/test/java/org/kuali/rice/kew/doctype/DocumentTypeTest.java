@@ -25,7 +25,6 @@ import java.util.Set;
 import mocks.MockPostProcessor;
 
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;

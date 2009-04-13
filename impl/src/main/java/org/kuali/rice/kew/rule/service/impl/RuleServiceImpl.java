@@ -374,9 +374,9 @@ public class RuleServiceImpl implements RuleService {
         	rule.setVersionNbr(getNextVersionNumber(oldRule));
         }
         Map<String, Long> notifyMap = new HashMap<String, Long>();
-        for (RuleBaseValues ruleToSave : rulesToSave.values()) {
-            getRuleDAO().save(ruleToSave);
-            performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
+        for (RuleBaseValues ruleToSave : rulesToSave.values()) {        	
+        	getRuleDAO().save(ruleToSave);
+        	performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
             installNotification(ruleToSave, notifyMap);
         }
         if (ruleDelegation != null) {
@@ -418,10 +418,13 @@ public class RuleServiceImpl implements RuleService {
      * Ensure that we don't have any notification duplication.
      */
     private void installNotification(RuleBaseValues rule, Map<String, Long> notifyMap) {
-        String key = getRuleCacheKey(rule.getRuleTemplateName(), rule.getDocTypeName());
-        if (!notifyMap.containsKey(key)) {
-            notifyMap.put(key, rule.getRuleBaseValuesId());
-        }
+    	// don't notify the cache if it's a "template" rule!
+    	if (!rule.getTemplateRuleInd()) {
+    		String key = getRuleCacheKey(rule.getRuleTemplateName(), rule.getDocTypeName());
+    		if (!notifyMap.containsKey(key)) {
+    			notifyMap.put(key, rule.getRuleBaseValuesId());
+    		}
+    	}
     }
 
     public RuleBaseValues getParentRule(Long ruleBaseValuesId) {

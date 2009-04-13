@@ -114,9 +114,7 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     /**
-     * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Document search fails when users are missing
-     * Tests that we can safely search on docs by initiator workflow id when the initiator no longer exists in the identity management system
-     * This test searches by initiator criteria.
+     * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Tests that we get an error if we try and search on an initiator that doesn't exist in the IDM system
      * @throws Exception
      */
     @Test public void testDocSearch_SearchOnMissingInitiator() throws Exception {
@@ -140,10 +138,10 @@ public class DocumentSearchTest extends KEWTestCase {
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setInitiator("bogus user");
-        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertNotNull(result);
-        assertNotNull(result.getSearchResults());
-        assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
+        try {
+        	DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
+        	fail("Searching by an invalid initiator should throw an exception.");
+        } catch (Exception e) {}
     }
 
     @Test public void testDocSearch_RouteNodeName() throws Exception {

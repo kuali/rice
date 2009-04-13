@@ -598,14 +598,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docCriteriaDTO.setInitiatorWorkflowId(rs.getString("INITR_PRNCPL_ID"));
 
         Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
-        KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
-
-        docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
-        docCriteriaDTO.setInitiatorName(user.getName());
-        docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
-        docCriteriaDTO.setInitiatorLastName(user.getLastName());
-        docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), principal));
-        docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
+        
+        if (user != null) {
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
+        
+        	docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
+        	docCriteriaDTO.setInitiatorName(user.getName());
+        	docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
+        	docCriteriaDTO.setInitiatorLastName(user.getLastName());
+        	docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), principal));
+        	docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
+        }
 
         if (usingAtLeastOneSearchAttribute) {
             populateRowSearchableAttributes(docCriteriaDTO,searchAttributeStatement);

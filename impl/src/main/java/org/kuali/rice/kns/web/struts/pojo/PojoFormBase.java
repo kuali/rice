@@ -556,7 +556,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
 	 */
 	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request) {
-		if (StringUtils.equalsIgnoreCase("session", getStrutsActionMappingScope())) {
+		if (StringUtils.equalsIgnoreCase("scope", getStrutsActionMappingScope())) {
 		   return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName);
 		}
     	return true;

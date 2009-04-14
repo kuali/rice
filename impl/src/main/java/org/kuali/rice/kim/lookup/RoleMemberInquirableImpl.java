@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -46,10 +46,10 @@ public class RoleMemberInquirableImpl extends KualiInquirableImpl {
     	return KNSServiceLocator.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
 
-    protected KimRoleImpl getKimRoleImpl(String roleId){ 
+    protected RoleImpl getRoleImpl(String roleId){ 
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("roleId", roleId);
-		return (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
+		return (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
     }
 
 }

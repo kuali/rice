@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -81,7 +81,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		roleService = KIMServiceLocator.getRoleService();
 		
 		// set up Role "r1" with principal p1
-		KimRoleImpl role1 = new KimRoleImpl();
+		RoleImpl role1 = new RoleImpl();
 		role1.setRoleId(role1Id);
 		role1.setActive(true);
 		role1.setKimTypeId(getDefaultKimType().getKimTypeId());
@@ -99,7 +99,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		KNSServiceLocator.getBusinessObjectService().save(role1);
 		
 		// set up Role "r2" with principal p3, group g1 and role r1
-		KimRoleImpl role2 = new KimRoleImpl();
+		RoleImpl role2 = new RoleImpl();
 		role2.setRoleId(role2Id);
 		role2.setActive(true);
 		role2.setKimTypeId(getDefaultKimType().getKimTypeId());

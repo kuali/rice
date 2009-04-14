@@ -25,9 +25,23 @@ import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
  */
 public interface Role extends ExternalizableBusinessObject {
 
-	public String getRoleId();
-	public String getRoleName();
-	public String getNamespaceCode();
-	//public KimTypeImpl getKimRoleType();
+	public static final String GROUP_MEMBER_TYPE = "G";
+	public static final String PRINCIPAL_MEMBER_TYPE = "P";
+	public static final String ROLE_MEMBER_TYPE = "R";
+	
+	/** Unique identifier for this role. */
+	String getRoleId();
+	
+	/** Namespace for this role - identifies the system/module to which this role applies */
+	String getNamespaceCode();
+	
+	/** Name for this role.  This value will be seen by the users. */
+	String getRoleName();
+	
+	/** Verbose description of the role and functionally what permissions it implies. */
+	String getRoleDescription();
+	
+	/** Type identifier for this role.  This will control what additional attributes are available */
+	String getKimTypeId();
 	
 }

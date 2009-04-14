@@ -15,14 +15,31 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -30,13 +47,34 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleImpl extends TransientBusinessObjectBase implements Role {
+@Entity
+@Table(name="KRIM_ROLE_T")
+public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@Column(name="ROLE_ID")
 	protected String roleId;
+	@Column(name="ROLE_NM")
 	protected String roleName;
+	@Column(name="DESC_TXT",length=4000)
+	protected String roleDescription;
+	@Column(name="ACTV_IND")
+	protected boolean active;
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
+	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
+
+	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
+	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
+
+	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
+	@Transient
+	protected KimTypeImpl kimRoleType; 
+	
 	protected String principalName;
 	protected String groupNamespaceCode;
 	protected String groupName;
@@ -48,19 +86,19 @@ public class RoleImpl extends TransientBusinessObjectBase implements Role {
 	protected String respName;
 	protected String respTmplNamespaceCode;
 	protected String respTmplName;
-	protected KimTypeImpl kimRoleType; 
-
+	
 	/**
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
-		m.put("kimTypeId", getKimTypeId());
-		m.put("roleName", getRoleName());
-		m.put("principalName", getPrincipalName());
+		m.put( "roleId", roleId );
+		m.put( "namespaceCode", namespaceCode );
+		m.put( "roleName", roleName );
 		return m;
 	}
 
@@ -184,11 +222,54 @@ public class RoleImpl extends TransientBusinessObjectBase implements Role {
 		this.respTmplName = respTmplName;
 	}
 
+	/**
+	 * @return the roleDescription
+	 */
+	public String getRoleDescription() {
+		return this.roleDescription;
+	}
+
+	/**
+	 * @param roleDescription the roleDescription to set
+	 */
+	public void setRoleDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
+	}
+
+	protected List<String> getMembersOfType( String memberTypeCode ) {
+		List<String> roleMembers = new ArrayList<String>();
+		for ( RoleMemberImpl member : getMembers() ) {
+			if ( member.getMemberTypeCode().equals ( memberTypeCode )
+					&& member.isActive() ) {
+				roleMembers.add( member.getMemberId() );
+			}
+		}
+		return roleMembers;
+	}
+
+
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if ( !(object instanceof Role) ) {
+			return false;
+		}
+		Role rhs = (Role)object;
+		return new EqualsBuilder().append( this.roleId, rhs.getRoleId() ).isEquals();
+	}
+
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder( -460627871, 746615189 ).append( this.roleId ).toHashCode();
+	}
+
 	public KimTypeImpl getKimRoleType() {
-		if (kimRoleType == null) {
-			Map pkMap = new HashMap();
-			pkMap.put("kimTypeId", kimTypeId);
-			setKimRoleType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap));			
+		if (StringUtils.isNotBlank(this.kimTypeId) && this.kimRoleType == null) {
+			this.refreshReferenceObject("kimRoleType");
 		}
 		return this.kimRoleType;
 	}
@@ -196,5 +277,54 @@ public class RoleImpl extends TransientBusinessObjectBase implements Role {
 	public void setKimRoleType(KimTypeImpl kimRoleType) {
 		this.kimRoleType = kimRoleType;
 	}
+	
+	public KimRoleInfo toSimpleInfo() {
+		KimRoleInfo dto = new KimRoleInfo();
+		
+		dto.setRoleId( getRoleId() );
+		dto.setRoleName( getRoleName() );
+		dto.setNamespaceCode( getNamespaceCode() );
+		dto.setRoleDescription( getRoleDescription() );
+		dto.setKimTypeId( getKimTypeId() );
+		dto.setActive( isActive() );
+		
+		return dto;
+	}
 
+	public List<RoleMemberImpl> getMembers() {
+		return this.members;
+	}
+
+	public void setMembers(List<RoleMemberImpl> members) {
+		this.members = members;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
+	 */
+	@Override
+    public String toStringBuilder(LinkedHashMap mapper) {
+        if(getKimRoleType() != null){
+        	return getKimRoleType().getName()+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+        				getNamespaceCode()+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+        				getRoleName()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
+        }
+        else {
+            return super.toStringBuilder(mapper);
+        }
+    }
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return this.active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 }

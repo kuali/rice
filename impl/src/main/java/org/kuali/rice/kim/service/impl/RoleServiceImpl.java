@@ -25,20 +25,18 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -76,9 +74,9 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     private static final long CACHE_MAX_AGE_SECONDS = 60L;
 
-    private Map<String,MaxAgeSoftReference<KimRoleImpl>> roleCache = new HashMap<String,MaxAgeSoftReference<KimRoleImpl>>();
+    private Map<String,MaxAgeSoftReference<RoleImpl>> roleCache = new HashMap<String,MaxAgeSoftReference<RoleImpl>>();
     private Map<String,MaxAgeSoftReference<List<String>>> impliedRoleCache = new HashMap<String,MaxAgeSoftReference<List<String>>>();
-    private Map<Collection<String>,MaxAgeSoftReference<Map<String,KimRoleImpl>>> roleImplMapCache = new HashMap<Collection<String>,MaxAgeSoftReference<Map<String,KimRoleImpl>>>();
+    private Map<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>> roleImplMapCache = new HashMap<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>>();
 
     private Map<String,KimRoleTypeService> roleTypeServiceCache = new HashMap<String,KimRoleTypeService>();
     private Map<String,KimDelegationTypeService> delegationTypeServiceCache = new HashMap<String,KimDelegationTypeService>();
@@ -87,28 +85,28 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     // Role Data
     // --------------------
 
-	protected KimRoleImpl getRoleFromCache( String roleId ) {
-    	KimRoleImpl cachedResult = null;
-    	MaxAgeSoftReference<KimRoleImpl> cacheRef = roleCache.get( roleId );
+	protected RoleImpl getRoleFromCache( String roleId ) {
+    	RoleImpl cachedResult = null;
+    	MaxAgeSoftReference<RoleImpl> cacheRef = roleCache.get( roleId );
     	if ( cacheRef != null ) {
     		cachedResult = cacheRef.get();
     	}
     	return cachedResult;
     }
 
-	protected KimRoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
-    	KimRoleImpl cachedResult = null;
-    	MaxAgeSoftReference<KimRoleImpl> cacheRef = roleCache.get( namespaceCode + "-" + roleName );
+	protected RoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
+    	RoleImpl cachedResult = null;
+    	MaxAgeSoftReference<RoleImpl> cacheRef = roleCache.get( namespaceCode + "-" + roleName );
     	if ( cacheRef != null ) {
     		cachedResult = cacheRef.get();
     	}
     	return cachedResult;
     }
 
-    protected void addRoleImplToCache( KimRoleImpl role ) {
+    protected void addRoleImplToCache( RoleImpl role ) {
     	if (role != null) {
-    		roleCache.put( role.getRoleId(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
-    		roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    		roleCache.put( role.getRoleId(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    		roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
     	}
     }
 
@@ -126,32 +124,32 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	impliedRoleCache.put( roleId, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
     }
 
-	protected Map<String,KimRoleImpl> getRoleImplMapFromCache( Collection<String> roleIds ) {
-		Map<String,KimRoleImpl> cachedResult = null;
-    	MaxAgeSoftReference<Map<String,KimRoleImpl>> cacheRef = roleImplMapCache.get( roleIds );
+	protected Map<String,RoleImpl> getRoleImplMapFromCache( Collection<String> roleIds ) {
+		Map<String,RoleImpl> cachedResult = null;
+    	MaxAgeSoftReference<Map<String,RoleImpl>> cacheRef = roleImplMapCache.get( roleIds );
     	if ( cacheRef != null ) {
     		cachedResult = cacheRef.get();
     	}
     	return cachedResult;
     }
 
-    protected void addRoleImplMapToCache( Collection<String> roleIds, Map<String,KimRoleImpl> roleMap ) {
-    	roleImplMapCache.put( roleIds, new MaxAgeSoftReference<Map<String,KimRoleImpl>>( CACHE_MAX_AGE_SECONDS, roleMap ) );
+    protected void addRoleImplMapToCache( Collection<String> roleIds, Map<String,RoleImpl> roleMap ) {
+    	roleImplMapCache.put( roleIds, new MaxAgeSoftReference<Map<String,RoleImpl>>( CACHE_MAX_AGE_SECONDS, roleMap ) );
     }
 
-	protected KimRoleImpl getRoleImpl(String roleId) {
+	protected RoleImpl getRoleImpl(String roleId) {
 		if ( StringUtils.isBlank( roleId ) ) {
 			return null;
 		}
 		// check for a non-null result in the cache, return it if found
-		KimRoleImpl cachedResult = getRoleFromCache( roleId );
+		RoleImpl cachedResult = getRoleFromCache( roleId );
 		if ( cachedResult != null ) {
 			return cachedResult;
 		}
 		// otherwise, run the query
 		AttributeSet criteria = new AttributeSet();
 		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
-		KimRoleImpl result = (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
+		RoleImpl result = (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
 		addRoleImplToCache( result );
 		return result;
 	}
@@ -160,7 +158,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	 * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.String)
 	 */
 	public KimRoleInfo getRole(String roleId) {
-		KimRoleImpl role = getRoleImpl( roleId );
+		RoleImpl role = getRoleImpl( roleId );
 		if ( role == null ) {
 			return null;
 		}
@@ -171,7 +169,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleIdByName(java.lang.String, java.lang.String)
 	 */
 	public String getRoleIdByName(String namespaceCode, String roleName) {
-		KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+		RoleImpl role = getRoleImplByName( namespaceCode, roleName );
 		if ( role == null ) {
 			return null;
 		}
@@ -182,20 +180,20 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleByName(java.lang.String, java.lang.String)
 	 */
 	public KimRoleInfo getRoleByName( String namespaceCode, String roleName ) {
-		KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+		RoleImpl role = getRoleImplByName( namespaceCode, roleName );
 		if ( role != null ) {
 			return role.toSimpleInfo();
 		}
 		return null;
 	}
 
-	protected KimRoleImpl getRoleImplByName( String namespaceCode, String roleName ) {
+	protected RoleImpl getRoleImplByName( String namespaceCode, String roleName ) {
 		if ( StringUtils.isBlank( namespaceCode )
 				|| StringUtils.isBlank( roleName ) ) {
 			return null;
 		}
 		// check for a non-null result in the cache, return it if found
-		KimRoleImpl cachedResult = getRoleFromCache( namespaceCode, roleName );
+		RoleImpl cachedResult = getRoleFromCache( namespaceCode, roleName );
 		if ( cachedResult != null ) {
 			return cachedResult;
 		}
@@ -204,27 +202,27 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		criteria.put(KimConstants.UniqueKeyConstants.ROLE_NAME, roleName);
 		criteria.put(KNSPropertyConstants.ACTIVE, "Y");
 		// while this is not actually the primary key - there will be at most one row with these criteria
-		KimRoleImpl result = (KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria);
+		RoleImpl result = (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
 		addRoleImplToCache( result );
 		return result;
 	}
 
-	protected Map<String,KimRoleImpl> getRoleImplMap(Collection<String> roleIds) {
+	protected Map<String,RoleImpl> getRoleImplMap(Collection<String> roleIds) {
 		// check for a non-null result in the cache, return it if found
-		Map<String,KimRoleImpl> cachedResult = getRoleImplMapFromCache( roleIds );
+		Map<String,RoleImpl> cachedResult = getRoleImplMapFromCache( roleIds );
 		if ( cachedResult != null ) {
 			return cachedResult;
 		}
 		// otherwise, run the query
-		Map<String,KimRoleImpl> result = roleDao.getRoleImplMap(roleIds);
+		Map<String,RoleImpl> result = roleDao.getRoleImplMap(roleIds);
 		addRoleImplMapToCache( roleIds, result );
 		return result;
 	}
 
 	public List<KimRoleInfo> getRoles(List<String> roleIds) {
-		Collection<KimRoleImpl> roles = getRoleImplMap(roleIds).values();
+		Collection<RoleImpl> roles = getRoleImplMap(roleIds).values();
 		List<KimRoleInfo> roleInfos = new ArrayList<KimRoleInfo>( roles.size() );
-		for ( KimRoleImpl r : roles ) {
+		for ( RoleImpl r : roles ) {
 			roleInfos.add( r.toSimpleInfo() );
 		}
 		return roleInfos;
@@ -233,16 +231,16 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
 	@SuppressWarnings("unchecked")
 	public List<KimRoleInfo> lookupRoles(Map<String, String> searchCriteria) {
-		Collection<KimRoleImpl> results = getBusinessObjectService().findMatching(KimRoleImpl.class, searchCriteria);
+		Collection<RoleImpl> results = getBusinessObjectService().findMatching(RoleImpl.class, searchCriteria);
 		ArrayList<KimRoleInfo> infoResults = new ArrayList<KimRoleInfo>( results.size() );
-		for ( KimRoleImpl role : results ) {
+		for ( RoleImpl role : results ) {
 			infoResults.add( role.toSimpleInfo() );
 		}
 		return infoResults;
 	}
 
 	public boolean isRoleActive( String roleId ) {
-		KimRoleImpl role = getRoleImpl( roleId );
+		RoleImpl role = getRoleImpl( roleId );
 		return role != null && role.isActive();
 	}
 
@@ -258,7 +256,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, List<String> roleIds, AttributeSet qualification ) {
 		List<AttributeSet> results = new ArrayList<AttributeSet>();
 
-    	Map<String,KimRoleImpl> roles = getRoleImplMap(roleIds);
+    	Map<String,RoleImpl> roles = getRoleImplMap(roleIds);
 
     	// get the person's groups
     	List<String> groupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
@@ -268,8 +266,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	for ( RoleMemberImpl rm : rms ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rm.getRoleId() );
     		// gather up the qualifier sets and the service they go with
-    		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE )
-					|| rm.getMemberTypeCode().equals( KimRole.GROUP_MEMBER_TYPE ) ) {
+    		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE )
+					|| rm.getMemberTypeCode().equals( Role.GROUP_MEMBER_TYPE ) ) {
 	    		if ( roleTypeService != null ) {
 	    			List<RoleMembershipInfo> las = roleIdToMembershipMap.get( rm.getRoleId() );
 	    			if ( las == null ) {
@@ -281,15 +279,15 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	    		} else {
 	    			results.add(rm.getQualifier());
 	    		}
-    		} else if ( rm.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE )  ) {
+    		} else if ( rm.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE )  ) {
     			// find out if the user has the role
     			// need to convert qualification using this role's service
     			AttributeSet nestedQualification = qualification;
     			if ( roleTypeService != null ) {
-    				KimRoleImpl role = roles.get(rm.getRoleId());
+    				RoleImpl role = roles.get(rm.getRoleId());
     				// pulling from here as the nested role is not necessarily (and likely is not)
     				// in the roles Map created earlier
-    				KimRoleImpl nestedRole = getRoleImpl(rm.getMemberId());
+    				RoleImpl nestedRole = getRoleImpl(rm.getMemberId());
     				nestedQualification = roleTypeService.convertQualificationForMemberRoles(role.getNamespaceCode(), role.getRoleName(), nestedRole.getNamespaceCode(), nestedRole.getRoleName(), qualification);
     			}
     			List<String> nestedRoleId = new ArrayList<String>(1);
@@ -321,7 +319,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
     	for ( RoleMemberImpl rm : rms ) {
     		// gather up the qualifier sets and the service they go with
-    		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE )) {
+    		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE )) {
 	    		KimRoleTypeService roleTypeService = getRoleTypeService( rm.getRoleId() );
 	    		if ( roleTypeService != null ) {
 	    			List<RoleMembershipInfo> las = roleIdToMembershipMap.get( rm.getRoleId() );
@@ -375,7 +373,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		Set<String> principalIds = new HashSet<String>();
 		List<String> roleIds = Collections.singletonList(getRoleIdByName(namespaceCode, roleName));
     	for (RoleMembershipInfo roleMembershipInfo : getRoleMembers(roleIds, qualification, false)) {
-    		if (KimRole.GROUP_MEMBER_TYPE.equals(roleMembershipInfo.getMemberTypeCode())) {
+    		if (Role.GROUP_MEMBER_TYPE.equals(roleMembershipInfo.getMemberTypeCode())) {
     			principalIds.addAll(getIdentityManagementService().getGroupMemberPrincipalIds(roleMembershipInfo.getMemberId()));
     		}
     		else {
@@ -418,7 +416,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
     	Set<String> matchingRoleIds = new HashSet<String>( allRoleIds.size() );
     	// for efficiency, retrieve all roles and store in a map
-    	Map<String,KimRoleImpl> roles = getRoleImplMap(allRoleIds);
+    	Map<String,RoleImpl> roles = getRoleImplMap(allRoleIds);
 
     	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIds( allRoleIds, null );
     	// build a map of role ID to membership information
@@ -428,14 +426,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			RoleMembershipInfo mi = new RoleMembershipInfo( rm.getRoleId(), rm.getRoleMemberId(), rm.getMemberId(), rm.getMemberTypeCode(), rm.getQualifier() );
 			// if the qualification check does not need to be made, just add the result
 			if ( qualification == null || getRoleTypeService( rm.getRoleId() ) == null ) {
-				if ( rm.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE ) ) {
+				if ( rm.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE ) ) {
 					// if a role member type, do a non-recursive role member check
 					// to obtain the group and principal members of that role
 					// given the qualification
 					AttributeSet nestedRoleQualification = qualification;
 					if ( getRoleTypeService( rm.getRoleId() ) != null ) {
 	                    // get the member role object
-					    KimRoleImpl memberRole = getRoleImpl( mi.getMemberId() );
+					    RoleImpl memberRole = getRoleImpl( mi.getMemberId() );
 						nestedRoleQualification = getRoleTypeService( rm.getRoleId() )
 						         .convertQualificationForMemberRoles(
 						                 roles.get(rm.getRoleId()).getNamespaceCode(),
@@ -473,12 +471,12 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
     			// loop over the matching entries, adding them to the results
     			for ( RoleMembershipInfo mi : matchingMembers ) {
-    				if ( mi.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE ) ) {
+    				if ( mi.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE ) ) {
     					// if a role member type, do a non-recursive role member check
     					// to obtain the group and principal members of that role
     					// given the qualification
                         // get the member role object
-                        KimRoleImpl memberRole = getRoleImpl( mi.getMemberId() );
+                        RoleImpl memberRole = getRoleImpl( mi.getMemberId() );
     					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
     					        roles.get(mi.getRoleId()).getNamespaceCode(),
     					        roles.get(mi.getRoleId()).getRoleName(),
@@ -503,7 +501,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
     		// check if an application role
     		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-    			KimRoleImpl role = roles.get( roleId );
+    			RoleImpl role = roles.get( roleId );
                 // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
     			List<RoleMembershipInfo> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getRoleName(), qualification);
     			if ( !roleMembers.isEmpty()  ) {
@@ -564,7 +562,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     protected KimRoleTypeService getRoleTypeService( String roleId ) {
     	KimRoleTypeService service = roleTypeServiceCache.get( roleId );
     	if ( service == null && !roleTypeServiceCache.containsKey( roleId ) ) {
-    		KimRoleImpl role = getRoleImpl( roleId );
+    		RoleImpl role = getRoleImpl( roleId );
     		KimTypeImpl roleType = role.getKimRoleType();
     		if ( roleType != null ) {
 	    		String serviceName = roleType.getKimTypeServiceName();
@@ -681,7 +679,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 				// purge any entries that do not match per the type service
 				if ( delegationTypeService == null || delegationTypeService.doesDelegationQualifierMatchQualification( qualification, di.getQualifier() )) {
 					// check if a role type which needs to be resolved
-					if ( di.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE ) ) {
+					if ( di.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE ) ) {
 					    i.remove();
             			// loop over delegation roles and extract the role IDs where the qualifications match
         				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
@@ -720,7 +718,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
      */
     public List<String> getPrincipalIdSubListWithRole( List<String> principalIds, String roleNamespaceCode, String roleName, AttributeSet qualification ) {
     	List<String> subList = new ArrayList<String>();
-    	KimRoleImpl role = getRoleImplByName( roleNamespaceCode, roleName );
+    	RoleImpl role = getRoleImplByName( roleNamespaceCode, roleName );
     	for ( String principalId : principalIds ) {
     		if ( principalHasRole( principalId, Collections.singletonList( role.getRoleId() ), qualification ) ) {
     			subList.add( principalId );
@@ -790,7 +788,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		return false;
     	}
     	// for efficiency, retrieve all roles and store in a map
-    	Map<String,KimRoleImpl> roles = getRoleImplMap(allRoleIds);
+    	Map<String,RoleImpl> roles = getRoleImplMap(allRoleIds);
     	// get all roles to which the principal is assigned
     	List<RoleMemberImpl> rps = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(allRoleIds, principalId);
 
@@ -839,12 +837,12 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// check member roles
     	// first, check that the qualifiers on the role membership match
     	// then, perform a principalHasRole on the embedded role
-    	List<RoleMemberImpl> rrs = roleDao.getRoleMembersForRoleIds( roleIds, KimRole.ROLE_MEMBER_TYPE );
+    	List<RoleMemberImpl> rrs = roleDao.getRoleMembersForRoleIds( roleIds, Role.ROLE_MEMBER_TYPE );
     	for ( RoleMemberImpl rr : rrs ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rr.getRoleId() );
     		if ( roleTypeService != null ) {
     			if ( roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
-                    KimRoleImpl memberRole = getRoleImpl( rr.getMemberId() );
+                    RoleImpl memberRole = getRoleImpl( rr.getMemberId() );
 					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
 					        roles.get(rr.getRoleId()).getNamespaceCode(),
 					        roles.get(rr.getRoleId()).getRoleName(),
@@ -878,7 +876,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
     		// check if an application role
     		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-    			KimRoleImpl role = roles.get( roleId );
+    			RoleImpl role = roles.get( roleId );
     			if ( roleTypeService.hasApplicationRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getRoleName(), qualification) ) {
     				return true;
     			}
@@ -923,17 +921,17 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		KimRoleTypeService roleTypeService = getRoleTypeService( delegation.getRoleId() );
     		for ( KimDelegationMemberImpl dmi : delegation.getMembers() ) {
     			// check if this delegation record applies to the given person
-    			if ( dmi.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE )
+    			if ( dmi.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE )
     					&& !dmi.getMemberId().equals( principalId ) ) {
     				continue; // no match on principal
     			}
     			// or if a group
-    			if ( dmi.getMemberTypeCode().equals( KimRole.GROUP_MEMBER_TYPE )
+    			if ( dmi.getMemberTypeCode().equals( Role.GROUP_MEMBER_TYPE )
     					&& !principalGroupIds.contains( dmi.getMemberId() ) ) {
     				continue; // no match on group
     			}
     			// or if a role
-    			if ( dmi.getMemberTypeCode().equals( KimRole.ROLE_MEMBER_TYPE )
+    			if ( dmi.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE )
     					&& !principalHasRole( principalId, Collections.singletonList( dmi.getMemberId() ), qualification, false ) ) {
     				continue; // no match on role
     			}
@@ -990,7 +988,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	protected List<RoleMemberImpl> getRolesForDirectGroup(String groupId) {
 		AttributeSet criteria = new AttributeSet();
 		criteria.put(KIMPropertyConstants.RoleMember.MEMBER_ID, groupId);
-		criteria.put(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, KimRole.GROUP_MEMBER_TYPE );
+		criteria.put(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
 
 		List<RoleMemberImpl> roles = (List<RoleMemberImpl>) getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
 
@@ -1055,9 +1053,9 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier) {
     	// look up the role
-    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), principalId, KimRole.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
+    	if ( doAnyMemberRecordsMatch( role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
     		return;
     	}
     	// create the new role member object
@@ -1067,7 +1065,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	newRoleMember.setRoleId( role.getRoleId() );
     	newRoleMember.setMemberId( principalId );
-    	newRoleMember.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
+    	newRoleMember.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 
     	// build role member attribute objects from the given AttributeSet
     	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
@@ -1079,9 +1077,9 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
     	// look up the role
-    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), groupId, KimRole.GROUP_MEMBER_TYPE, qualifier ) ) {
+    	if ( doAnyMemberRecordsMatch( role.getMembers(), groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
     		return;
     	}
     	// create the new role member object
@@ -1091,7 +1089,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	newRoleMember.setRoleId( role.getRoleId() );
     	newRoleMember.setMemberId( groupId );
-    	newRoleMember.setMemberTypeCode( KimRole.GROUP_MEMBER_TYPE );
+    	newRoleMember.setMemberTypeCode( Role.GROUP_MEMBER_TYPE );
 
     	// build role member attribute objects from the given AttributeSet
     	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
@@ -1102,11 +1100,11 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier ) {
     	// look up the role
-    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// pull all the principal members
     	// look for an exact qualifier match
 		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
+			if ( doesMemberMatch( rm, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
 		    	// if found, remove
 				// When members are removed from roles, clients must be notified.
 		    	KIMServiceLocator.getResponsibilityInternalService().removeRoleMember(rm);
@@ -1116,11 +1114,11 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
     	// look up the role
-    	KimRoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// pull all the group role members
     	// look for an exact qualifier match
 		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, groupId, KimRole.GROUP_MEMBER_TYPE, qualifier ) ) {
+			if ( doesMemberMatch( rm, groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
 		    	// if found, remove
 				// When members are removed from roles, clients must be notified.
 		    	KIMServiceLocator.getResponsibilityInternalService().removeRoleMember(rm);
@@ -1169,7 +1167,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		this.roleDao = roleDao;
 	}
 
-    public List<KimRoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues) {
+    public List<RoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues) {
     	return roleDao.getRoles(fieldValues);
     }
 
@@ -1188,7 +1186,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	getBusinessObjectService().save(roleMembers);
     	// find all distinct role IDs and type services
     	for ( String roleId : roleIds ) {
-    		KimRoleImpl role = getRoleImpl(roleId);
+    		RoleImpl role = getRoleImpl(roleId);
     		KimRoleTypeService roleTypeService = getRoleTypeService(roleId);
     		try {
 	    		if ( roleTypeService != null ) {

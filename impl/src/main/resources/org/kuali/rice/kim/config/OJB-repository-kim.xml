@@ -458,7 +458,7 @@
   <!-- ******************************************************************* -->
 
 
-  <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" table="KRIM_ROLE_T">
+  <class-descriptor class="org.kuali.rice.kim.bo.impl.RoleImpl" table="KRIM_ROLE_T">
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleName" column="ROLE_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="roleDescription" column="DESC_TXT" jdbc-type="VARCHAR" />

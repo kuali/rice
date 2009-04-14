@@ -25,13 +25,13 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -57,7 +57,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	private KimAttributeImpl documentTypeAttribute;
 	private KimAttributeImpl nodeNameAttribute;
 	private KimTypeImpl kimRespType;
-	private KimRoleImpl role;
+	private RoleImpl role;
 	private RoleMemberImpl user1RolePrincipal;
 	private RoleMemberImpl user2RolePrincipal;
 	private RoleMemberImpl adminRolePrincipal;
@@ -126,7 +126,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          */
 
         String roleId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        role = new KimRoleImpl();
+        role = new RoleImpl();
         role.setRoleId(roleId);
         role.setNamespaceCode(namespace);
         role.setRoleDescription("");
@@ -141,7 +141,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimPrincipal adminPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
         assertNotNull(adminPrincipal);
         adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
-        adminRolePrincipal.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
+        adminRolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 
         String roleMemberId2 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         user2RolePrincipal = new RoleMemberImpl();
@@ -149,7 +149,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimPrincipal user2Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
         assertNotNull(user2Principal);
         user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
-        user2RolePrincipal.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
+        user2RolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 
         String roleMemberId3 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         user1RolePrincipal = new RoleMemberImpl();
@@ -157,7 +157,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimPrincipal user1Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
         assertNotNull(user1Principal);
         user1RolePrincipal.setMemberId(user1Principal.getPrincipalId());
-        user1RolePrincipal.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
+        user1RolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 
         List<RoleMemberImpl> memberPrincipals = new ArrayList<RoleMemberImpl>();
         memberPrincipals.add(adminRolePrincipal);
@@ -689,7 +689,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 //        KimPrincipal user1Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 //        assertNotNull(user1Principal);
 //        user1RoleDelegate.setMemberId(user1Principal.getPrincipalId());
-//        user1RoleDelegate.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
+//        user1RoleDelegate.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 //
 //        user1RoleDelegate.setDelegationId(delegate.getDelegationId());
 //
@@ -754,7 +754,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	     * this is checked when adding delegates in both the ActionRequestFactory
 	     * and RoleServiceImpl
 	     */
-	    user1RoleDelegate.setMemberTypeCode( KimRole.PRINCIPAL_MEMBER_TYPE );
+	    user1RoleDelegate.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 
 	    // attach it to the delegate we created above
 	    user1RoleDelegate.setDelegationId(delegate.getDelegationId());

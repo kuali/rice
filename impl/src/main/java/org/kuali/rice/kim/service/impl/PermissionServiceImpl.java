@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -290,9 +290,9 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	}
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
-    		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
+    		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
     			results.add( new PermissionAssigneeInfo( rm.getMemberId(), null, rm.getDelegates() ) );
-    		} else if ( rm.getMemberTypeCode().equals( KimRole.GROUP_MEMBER_TYPE ) ) {
+    		} else if ( rm.getMemberTypeCode().equals( Role.GROUP_MEMBER_TYPE ) ) {
     			results.add( new PermissionAssigneeInfo( null, rm.getMemberId(), rm.getDelegates() ) );
     		}
     	}
@@ -307,7 +307,7 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	}
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
-    		if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
+    		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
     			results.add( new PermissionAssigneeInfo( rm.getMemberId(), null, rm.getDelegates() ) );
     		} else { // a group membership
     			results.add( new PermissionAssigneeInfo( null, rm.getMemberId(), rm.getDelegates() ) );

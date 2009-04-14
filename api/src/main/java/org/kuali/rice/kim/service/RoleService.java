@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -125,7 +125,7 @@ public interface RoleService {
 	 * 
 	 * This method get search results for role lookup
 	 */
-	List<? extends KimRole> getRolesSearchResults(java.util.Map<String,String> fieldValues);
+	List<? extends Role> getRolesSearchResults(java.util.Map<String,String> fieldValues);
 	
 	/**
 	 * Notifies all of a principal's roles and role types that the principal has been inactivated.

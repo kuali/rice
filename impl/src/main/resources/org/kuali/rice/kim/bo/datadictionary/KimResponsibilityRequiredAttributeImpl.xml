@@ -83,7 +83,7 @@
   </bean>
 
   <bean id="KimResponsibilityRequiredAttributeImpl-kimAttribute.namespaceCode" parent="KimResponsibilityRequiredAttributeImpl-kimAttribute.namespaceCode-parentBean" />
-  <bean id="KimResponsibilityRequiredAttributeImpl-kimAttribute.namespaceCode-parentBean" parent="KimRoleImpl-namespaceCode" abstract="true"
+  <bean id="KimResponsibilityRequiredAttributeImpl-kimAttribute.namespaceCode-parentBean" parent="RoleImpl-namespaceCode" abstract="true"
         p:name="kimAttribute.namespaceCode"
         p:label="Attribute Namespace Code"
         p:shortLabel="Attribute Namespace Code">

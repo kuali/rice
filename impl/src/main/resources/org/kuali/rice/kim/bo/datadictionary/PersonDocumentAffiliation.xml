@@ -57,6 +57,7 @@
       <bean parent="SelectControlDefinition"
             p:businessObjectClass="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl"
             p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder"
+            p:includeBlankRow="true"
             p:includeKeyInLabel="false"
             p:keyAttribute="code"
             p:labelAttribute="name" />

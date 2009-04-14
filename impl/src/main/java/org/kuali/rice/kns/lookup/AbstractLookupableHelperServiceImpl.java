@@ -440,7 +440,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         Properties parameters = new Properties();
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
+        parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
+        return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+    }
 
+    protected Properties getParametersFromPrimaryKey(BusinessObject businessObject, List pkNames){
+        Properties parameters = new Properties();
         for (Iterator iter = pkNames.iterator(); iter.hasNext();) {
             String fieldNm = (String) iter.next();
 
@@ -471,10 +476,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
             parameters.put(fieldNm, fieldVal.toString());
         }
-
-        return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+        return parameters;
     }
-
+    
     /**
      *
      * This method generates and returns title text for action urls.

@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
@@ -70,7 +70,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
@@ -78,16 +78,16 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
 		for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
 			if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
-			    members.add( new RoleMembershipInfo( null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), KimRole.PRINCIPAL_MEMBER_TYPE, null));
+			    members.add( new RoleMembershipInfo( null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), Role.PRINCIPAL_MEMBER_TYPE, null));
 			} else if (StringUtils.isNotBlank(permissionAssigneeInfo.getGroupId())) {
-                members.add( new RoleMembershipInfo( null/*roleId*/, null, permissionAssigneeInfo.getGroupId(), KimRole.GROUP_MEMBER_TYPE, null));
+                members.add( new RoleMembershipInfo( null/*roleId*/, null, permissionAssigneeInfo.getGroupId(), Role.GROUP_MEMBER_TYPE, null));
 			}
 		}
 		return members;
 	}
 	
     /***
-     * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
     @Override
     public boolean hasApplicationRole(

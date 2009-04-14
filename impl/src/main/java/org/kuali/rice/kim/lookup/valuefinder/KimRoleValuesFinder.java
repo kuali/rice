@@ -18,7 +18,7 @@ package org.kuali.rice.kim.lookup.valuefinder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
@@ -36,10 +36,10 @@ public class KimRoleValuesFinder extends KeyValuesBase {
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
     public List getKeyValues() {
-        List<KimRoleImpl> roles = (List)KNSServiceLocator.getBusinessObjectService().findAll(KimRoleImpl.class);
+        List<RoleImpl> roles = (List)KNSServiceLocator.getBusinessObjectService().findAll(RoleImpl.class);
         List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
 
-        for (KimRoleImpl role: roles) {
+        for (RoleImpl role: roles) {
         	keyValues.add(new KeyLabelPair(role.getRoleName(), role.getRoleName()));
         }
 

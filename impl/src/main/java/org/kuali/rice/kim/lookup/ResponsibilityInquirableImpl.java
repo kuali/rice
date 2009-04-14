@@ -22,22 +22,18 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
-import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -119,7 +115,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 
     protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
     	ResponsibilityImpl responsibility = (ResponsibilityImpl)businessObject;
-    	List<KimRoleImpl> assignedToRoles = responsibility.getAssignedToRoles();
+    	List<RoleImpl> assignedToRoles = responsibility.getAssignedToRoles();
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ROLE_ID);
@@ -129,10 +125,10 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 			KimRoleInfo roleInfo;
 			KimTypeImpl kimType;
 			AnchorHtmlData inquiryHtmlData;
-			for(KimRoleImpl roleImpl: assignedToRoles){
+			for(RoleImpl roleImpl: assignedToRoles){
 				roleInfo = roleService.getRole(roleImpl.getRoleId());
 				kimType = kimTypeInternalService.getKimType(roleInfo.getKimTypeId());
-				inquiryHtmlData = getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleInfo, primaryKeys, 
+				inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleImpl.class, roleInfo, primaryKeys, 
         				roleInfo.getNamespaceCode()+" "+
         				roleInfo.getRoleName());
 				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
@@ -175,9 +171,9 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		criteria.put("responsibilityId", responsibilitySearchResultCopy.getResponsibilityId());
 		List<RoleResponsibilityImpl> roleResponsibilitys = 
 			(List<RoleResponsibilityImpl>)KNSServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
-		List<KimRoleImpl> assignedToRoles = new ArrayList<KimRoleImpl>();
+		List<RoleImpl> assignedToRoles = new ArrayList<RoleImpl>();
 		for(RoleResponsibilityImpl roleResponsibilityImpl: roleResponsibilitys){
-			assignedToRoles.add(getKimRoleImpl(roleResponsibilityImpl.getRoleId()));
+			assignedToRoles.add(getRoleImpl(roleResponsibilityImpl.getRoleId()));
 		}
 		responsibilitySearchResultCopy.setAssignedToRoles(assignedToRoles);
 		return responsibilitySearchResultCopy;

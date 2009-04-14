@@ -29,8 +29,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.KimDelegation;
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -135,15 +135,15 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	}
 
 	public List<String> getMemberGroupIds() {
-		return getMembersOfType( KimRole.GROUP_MEMBER_TYPE );
+		return getMembersOfType( Role.GROUP_MEMBER_TYPE );
 	}
 
 	public List<String> getMemberPrincipalIds() {
-		return getMembersOfType( KimRole.PRINCIPAL_MEMBER_TYPE );
+		return getMembersOfType( Role.PRINCIPAL_MEMBER_TYPE );
 	}
 
 	public List<String> getMemberRoleIds() {
-		return getMembersOfType( KimRole.ROLE_MEMBER_TYPE );
+		return getMembersOfType( Role.ROLE_MEMBER_TYPE );
 	}
 
 	protected List<String> getMembersOfType( String memberTypeCode ) {

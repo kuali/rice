@@ -44,6 +44,10 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	protected String delegationMemberId;
 	
 	@Id
+	@Column(name="ROLE_MBR_ID")
+	protected String roleMemberId;
+	
+	@Id
 	@Column(name="DLGN_ID")
 	protected String delegationId;
 	
@@ -186,6 +190,32 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	 */
 	public void setMemberNamespaceCode(String memberNamespaceCode) {
 		this.memberNamespaceCode = memberNamespaceCode;
+	}
+
+	/**
+	 * @return the roleMemberId
+	 */
+	public String getRoleMemberId() {
+		return this.roleMemberId;
+	}
+
+	/**
+	 * @param roleMemberId the roleMemberId to set
+	 */
+	public void setRoleMemberId(String roleMemberId) {
+		this.roleMemberId = roleMemberId;
+	}
+
+	public boolean isRole(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+	}
+	
+	public boolean isGroup(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+	}
+
+	public boolean isPrincipal(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
 	}
 
 }

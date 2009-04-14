@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -32,11 +31,11 @@ public class PermissionImpl extends KimPermissionImpl {
 
 	private static final long serialVersionUID = 1L;
 	
-	List<KimRoleImpl> assignedToRoles = new TypedArrayList(KimRoleImpl.class);
+	List<RoleImpl> assignedToRoles = new TypedArrayList(RoleImpl.class);
 	
 	protected String assignedToRoleNamespaceForLookup;
 	protected String assignedToRoleNameForLookup;
-	protected KimRoleImpl assignedToRole;
+	protected RoleImpl assignedToRole;
 	protected String assignedToPrincipalNameForLookup;
 	protected Person assignedToPrincipal;
 	protected String assignedToGroupNamespaceForLookup;
@@ -51,13 +50,13 @@ public class PermissionImpl extends KimPermissionImpl {
 	 */
 	public String getAssignedToRolesToDisplay() {
 		StringBuffer assignedToRolesToDisplay = new StringBuffer();
-		for(KimRoleImpl roleImpl: assignedToRoles){
+		for(RoleImpl roleImpl: assignedToRoles){
 			assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleImpl));
 		}
 		return StringUtils.chomp( assignedToRolesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
 	}
 
-	public String getRoleDetailsToDisplay(KimRoleImpl roleImpl){
+	public String getRoleDetailsToDisplay(RoleImpl roleImpl){
 		return roleImpl.getNamespaceCode()+" "+roleImpl.getRoleName()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
@@ -151,14 +150,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToRoles
 	 */
-	public List<KimRoleImpl> getAssignedToRoles() {
+	public List<RoleImpl> getAssignedToRoles() {
 		return this.assignedToRoles;
 	}
 
 	/**
 	 * @param assignedToRoles the assignedToRoles to set
 	 */
-	public void setAssignedToRoles(List<KimRoleImpl> assignedToRoles) {
+	public void setAssignedToRoles(List<RoleImpl> assignedToRoles) {
 		this.assignedToRoles = assignedToRoles;
 	}
 
@@ -193,14 +192,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToRole
 	 */
-	public KimRoleImpl getAssignedToRole() {
+	public RoleImpl getAssignedToRole() {
 		return this.assignedToRole;
 	}
 
 	/**
 	 * @param assignedToRole the assignedToRole to set
 	 */
-	public void setAssignedToRole(KimRoleImpl assignedToRole) {
+	public void setAssignedToRole(RoleImpl assignedToRole) {
 		this.assignedToRole = assignedToRole;
 	}
 

@@ -24,8 +24,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -77,7 +77,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	private List<PermissionImpl> getCombinedSearchResults(
 			Map<String, String> permissionSearchCriteria, Map<String, String> roleSearchCriteria){
 		List<PermissionImpl> permissionSearchResults = searchPermissions(permissionSearchCriteria);
-		List<KimRoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
+		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
 		List<PermissionImpl> permissionsForRoleSearchResults = getPermissionsForRoleSearchResults(roleSearchResults);
 		List<PermissionImpl> matchedPermissions = new ArrayList<PermissionImpl>();
 		if((permissionSearchResults!=null && !permissionSearchResults.isEmpty()) && 
@@ -91,7 +91,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		}
 		/*for(PermissionImpl permission: permissionSearchResults){
 			for(RolePermissionImpl rolePermission: permission.getRolePermissions()){
-				for(KimRoleImpl roleImpl: roleSearchResults){
+				for(RoleImpl roleImpl: roleSearchResults){
 					if(roleImpl.getRoleId().equals(rolePermission.getRoleId())){
 						permission.getAssignedToRoles().add(roleImpl);
 						matchedPermissions.add(permission);
@@ -110,22 +110,22 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
-		return (List<KimRoleImpl>)getLookupService().findCollectionBySearchHelper(
-					KimRoleImpl.class, roleSearchCriteria, true);
+	private List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
+		return (List<RoleImpl>)getLookupService().findCollectionBySearchHelper(
+					RoleImpl.class, roleSearchCriteria, true);
 	}
 	
 	private List<PermissionImpl> getPermissionsWithRoleSearchCriteria(Map<String, String> roleSearchCriteria){
-		List<KimRoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
+		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
 		return getPermissionsForRoleSearchResults(roleSearchResults);
 	}
 
-	private List<PermissionImpl> getPermissionsForRoleSearchResults(List<KimRoleImpl> roleSearchResults){
+	private List<PermissionImpl> getPermissionsForRoleSearchResults(List<RoleImpl> roleSearchResults){
 		List<PermissionImpl> permissions = new ArrayList<PermissionImpl>();
 		List<PermissionImpl> tempPermissions;
 		List<String> collectedPermissionIds = new ArrayList<String>();
 		Map<String, String> permissionCriteria;
-		for(KimRoleImpl roleImpl: roleSearchResults){
+		for(RoleImpl roleImpl: roleSearchResults){
 			permissionCriteria = new HashMap<String, String>();
 			permissionCriteria.put("rolePermissions.roleId", roleImpl.getRoleId());
 			tempPermissions = searchPermissions(permissionCriteria);
@@ -145,7 +145,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		for(RolePermissionImpl rolePermission: permission.getRolePermissions()){
 			criteria = new AttributeSet();
 			criteria.put("roleId", rolePermission.getRoleId());
-			permission.getAssignedToRoles().add((KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria));
+			permission.getAssignedToRoles().add((RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria));
 		}
 	}
 	

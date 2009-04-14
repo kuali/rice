@@ -22,19 +22,16 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -116,7 +113,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 
     protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
     	PermissionImpl permission = (PermissionImpl)businessObject;
-    	List<KimRoleImpl> assignedToRoles = permission.getAssignedToRoles();
+    	List<RoleImpl> assignedToRoles = permission.getAssignedToRoles();
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ROLE_ID);
@@ -124,9 +121,9 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 			RoleService roleService = KIMServiceLocator.getRoleService();
 			KimRoleInfo roleInfo;
 			AnchorHtmlData inquiryHtmlData;
-			for(KimRoleImpl roleImpl: assignedToRoles){
+			for(RoleImpl roleImpl: assignedToRoles){
 				roleInfo = roleService.getRole(roleImpl.getRoleId());
-				inquiryHtmlData = getInquiryUrlForPrimaryKeys(KimRoleImpl.class, roleInfo, primaryKeys, 
+				inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleImpl.class, roleInfo, primaryKeys, 
         				roleInfo.getNamespaceCode()+" "+
         				roleInfo.getRoleName());
 				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
@@ -170,9 +167,9 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		criteria.put("permissionId", permissionSearchResultCopy.getPermissionId());
 		List<RolePermissionImpl> rolePermissions = 
 			(List<RolePermissionImpl>)KNSServiceLocator.getBusinessObjectService().findMatching(RolePermissionImpl.class, criteria);
-		List<KimRoleImpl> assignedToRoles = new ArrayList<KimRoleImpl>();
+		List<RoleImpl> assignedToRoles = new ArrayList<RoleImpl>();
 		for(RolePermissionImpl rolePermissionImpl: rolePermissions){
-			assignedToRoles.add(getKimRoleImpl(rolePermissionImpl.getRoleId()));
+			assignedToRoles.add(getRoleImpl(rolePermissionImpl.getRoleId()));
 		}
 		permissionSearchResultCopy.setAssignedToRoles(assignedToRoles);
 		return permissionSearchResultCopy;

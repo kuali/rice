@@ -19,6 +19,7 @@
         <ref bean="RoleImpl-kimRoleType.name" />
         <ref bean="RoleImpl-roleName" />
         <ref bean="RoleImpl-namespaceCode" />
+        <ref bean="RoleImpl-active" />
         <ref bean="RoleImpl-principalName" />
         <ref bean="RoleImpl-groupNamespaceCode" />
         <ref bean="RoleImpl-groupName" />
@@ -50,9 +51,7 @@
         
   </bean>
  
- 
- 
-   <bean id="RoleImpl-roleId" parent="RoleImpl-roleId-parentBean" />
+  <bean id="RoleImpl-roleId" parent="RoleImpl-roleId-parentBean" />
   <bean id="RoleImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleId"
         p:forceUppercase="false"
@@ -106,29 +105,24 @@
   
   
   <bean id="RoleImpl-namespaceCode" parent="RoleImpl-namespaceCode-parentBean" />
-  <bean id="RoleImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="RoleImpl-namespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="namespaceCode"
         p:forceUppercase="false"
-        p:label="Name Space"
-        p:shortLabel="Name Space"
+        p:label="Namespace"
+        p:shortLabel="Namespace"
         p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-      <!-- <bean parent="SelectControlDefinition"
-            p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.NamespaceValuesFinder"
-            p:includeKeyInLabel="false" 
-            p:keyAttribute="code"
-            p:labelAttribute="codeAndDescription" /> -->
-    </property>
   </bean>
+  
+  <bean id="RoleImpl-active" parent="RoleImpl-active-parentBean" />
+  <bean id="RoleImpl-active-parentBean" parent="KimTypeImpl-active" abstract="true" p:label="Active?"/>
   
   <bean id="RoleImpl-principalName" parent="RoleImpl-principalName-parentBean" />
   <bean id="RoleImpl-principalName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="principalName"
         p:forceUppercase="false"
         p:label="Principal Name"
-        p:shortLabel="Principal Nam"
+        p:shortLabel="Principal Name"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
@@ -137,16 +131,13 @@
   </bean>
   
   <bean id="RoleImpl-groupNamespaceCode" parent="RoleImpl-groupNamespaceCode-parentBean" />
-  <bean id="RoleImpl-groupNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="RoleImpl-groupNamespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="groupNamespaceCode"
         p:forceUppercase="false"
-        p:label="Group Name Space"
-        p:shortLabel="Group Name Space"
+        p:label="Group Namespace"
+        p:shortLabel="Group Namespace"
         p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
   </bean>
   
   <bean id="RoleImpl-groupName" parent="RoleImpl-groupName-parentBean" />
@@ -163,24 +154,21 @@
   </bean>
   
   <bean id="RoleImpl-permTmplNamespaceCode" parent="RoleImpl-permTmplNamespaceCode-parentBean" />
-  <bean id="RoleImpl-permTmplNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="RoleImpl-permTmplNamespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="permTmplNamespaceCode"
         p:forceUppercase="false"
-        p:label="Permission Tmpl Name Space"
-        p:shortLabel="Permission Tmpl Name Space"
+        p:label="Permission Template Namespace"
+        p:shortLabel="Permission Template Namespace"
         p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
   </bean>
   
   <bean id="RoleImpl-permTmplName" parent="RoleImpl-permTmplName-parentBean" />
   <bean id="RoleImpl-permTmplName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="permTmplName"
         p:forceUppercase="false"
-        p:label="Permission Tmpl Name"
-        p:shortLabel="Permission Tmpl Name"
+        p:label="Permission Template Name"
+        p:shortLabel="Permission Template Name"
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
@@ -189,16 +177,13 @@
   </bean>
   
     <bean id="RoleImpl-permNamespaceCode" parent="RoleImpl-permNamespaceCode-parentBean" />
-  <bean id="RoleImpl-permNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="RoleImpl-permNamespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="permNamespaceCode"
         p:forceUppercase="false"
-        p:label="Permission Name Space"
-        p:shortLabel="Permission Name Space"
+        p:label="Permission Namespace"
+        p:shortLabel="Permission Namespace"
         p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
   </bean>
   
   <bean id="RoleImpl-permName" parent="RoleImpl-permName-parentBean" />
@@ -215,16 +200,13 @@
   </bean>
   
   <bean id="RoleImpl-respNamespaceCode" parent="RoleImpl-respNamespaceCode-parentBean" />
-  <bean id="RoleImpl-respNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="RoleImpl-respNamespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="respNamespaceCode"
         p:forceUppercase="false"
-        p:label="Responsibility Name Space"
-        p:shortLabel="Responsibility Name Space"
+        p:label="Responsibility Namespace"
+        p:shortLabel="Responsibility Namespace"
         p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
   </bean>
   
   <bean id="RoleImpl-respName" parent="RoleImpl-respName-parentBean" />
@@ -241,24 +223,21 @@
   </bean>
   
   <bean id="RoleImpl-respTmplNamespaceCode" parent="RoleImpl-respTmplNamespaceCode-parentBean" />
-  <bean id="RoleImpl-respTmplNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
+  <bean id="RoleImpl-respTmplNamespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true"
         p:name="respTmplNamespaceCode"
         p:forceUppercase="false"
-        p:label="Responsibility Tmpl Name Space"
-        p:shortLabel="Responsibility Tmpl Name Space"
+        p:label="Responsibility Template Namespace"
+        p:shortLabel="Responsibility Template Namespace"
         p:maxLength="40"
         p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="10" />
-    </property>
   </bean>
   
   <bean id="RoleImpl-respTmplName" parent="RoleImpl-respTmplName-parentBean" />
   <bean id="RoleImpl-respTmplName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="respTmplName"
         p:forceUppercase="false"
-        p:label="Responsibility Tmpl Name"
-        p:shortLabel="Responsibility Tmpl Name"
+        p:label="Responsibility Template Name"
+        p:shortLabel="Responsibility Template Name"
         p:maxLength="100"
         p:required="false" >
     <property name="control" >
@@ -280,13 +259,14 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="roleId" />
               <bean parent="FieldDefinition" p:attributeName="roleName" />
-              <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+              <bean parent="FieldDefinition" p:attributeName="kimRoleType.name" />
         	  <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
             </list>
           </property>
         </bean>
       </list>
     </property>
+	<property name="inquirableClass" value="org.kuali.rice.kim.lookup.RoleInquirableImpl" />
   </bean>
 
   <bean id="RoleImpl-lookupDefinition" parent="RoleImpl-lookupDefinition-parentBean" />

@@ -92,7 +92,7 @@
   
   <bean id="KimAttributes-namespaceCode" parent="Namespace-code" p:name="namespaceCode" />
   <bean id="KimAttributes-componentName" parent="ParameterDetailType-parameterDetailTypeCode" p:name="componentName" />
-  <bean id="KimAttributes-roleName" parent="KimRoleImpl-roleName" />
+  <bean id="KimAttributes-roleName" parent="RoleImpl-roleName" />
   <bean id="KimAttributes-groupName" parent="KimGroupImpl-groupName" />
   <bean id="KimAttributes-documentNumber" parent="DocumentHeader-documentNumber" />
   <bean id="KimAttributes-parameterName" parent="Parameter-parameterName" />

@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
@@ -96,7 +96,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		    	if ( StringUtils.isBlank( rm.getMemberId() ) ) {
 		    		continue;
 		    	}
-		        if ( rm.getMemberTypeCode().equals( KimRole.PRINCIPAL_MEMBER_TYPE ) ) {
+		        if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
 		            if ( rm.getMemberId().equals( principalId ) ) {
 		                return true;
 		            }

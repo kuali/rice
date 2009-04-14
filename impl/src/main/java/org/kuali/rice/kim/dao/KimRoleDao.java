@@ -19,9 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 
 /**
@@ -41,7 +41,7 @@ public interface KimRoleDao {
 	
 	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds );
 	
-	Map<String,KimRoleImpl> getRoleImplMap( Collection<String> roleIds );
+	Map<String,RoleImpl> getRoleImplMap( Collection<String> roleIds );
 	
 	Map<String,KimDelegationImpl> getDelegationImplMapFromRoleIds(Collection<String> roleIds);
 	
@@ -55,7 +55,7 @@ public interface KimRoleDao {
 	
 	Map<String,List<KimDelegationMemberImpl>> getDelegationMembersForDelegationIds( List<String> delegationIds );
 	
-    List<KimRoleImpl> getRoles(Map<String,String> fieldValues);
+    List<RoleImpl> getRoles(Map<String,String> fieldValues);
 
 
 }

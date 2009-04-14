@@ -24,8 +24,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
@@ -80,7 +80,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	private List<ResponsibilityImpl> getCombinedSearchResults(
 			Map<String, String> responsibilitySearchCriteria, Map<String, String> roleSearchCriteria){
 		List<ResponsibilityImpl> responsibilitySearchResults = searchResponsibilities(responsibilitySearchCriteria);
-		List<KimRoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
+		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
 		List<ResponsibilityImpl> responsibilitiesForRoleSearchResults = getResponsibilitiesForRoleSearchResults(roleSearchResults);
 		List<ResponsibilityImpl> matchedResponsibilities = new ArrayList<ResponsibilityImpl>();
 		if((responsibilitySearchResults!=null && !responsibilitySearchResults.isEmpty()) && 
@@ -94,7 +94,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		}
 		/*for(ResponsibilityImpl responsibility: responsibilitySearchResults){
 			for(RoleResponsibilityImpl roleResponsibility: responsibility.getRoleResponsibilities()){
-				for(KimRoleImpl roleImpl: roleSearchResults){
+				for(RoleImpl roleImpl: roleSearchResults){
 					if(roleImpl.getRoleId().equals(roleResponsibility.getRoleId())){
 						responsibility.getAssignedToRoles().add(roleImpl);
 						matchedResponsibilities.add(responsibility);
@@ -113,22 +113,22 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<KimRoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
-		return (List<KimRoleImpl>)getLookupService().findCollectionBySearchHelper(
-					KimRoleImpl.class, roleSearchCriteria, true);
+	private List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
+		return (List<RoleImpl>)getLookupService().findCollectionBySearchHelper(
+					RoleImpl.class, roleSearchCriteria, true);
 	}
 	
 	private List<ResponsibilityImpl> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria){
-		List<KimRoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
+		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
 		return getResponsibilitiesForRoleSearchResults(roleSearchResults);
 	}
 
-	private List<ResponsibilityImpl> getResponsibilitiesForRoleSearchResults(List<KimRoleImpl> roleSearchResults){
+	private List<ResponsibilityImpl> getResponsibilitiesForRoleSearchResults(List<RoleImpl> roleSearchResults){
 		List<ResponsibilityImpl> responsibilities = new ArrayList<ResponsibilityImpl>();
 		List<ResponsibilityImpl> tempResponsibilities;
 		List<String> collectedResponsibilityIds = new ArrayList<String>();
 		Map<String, String> responsibilityCriteria;
-		for(KimRoleImpl roleImpl: roleSearchResults){
+		for(RoleImpl roleImpl: roleSearchResults){
 			responsibilityCriteria = new HashMap<String, String>();
 			responsibilityCriteria.put("roleResponsibilities.roleId", roleImpl.getRoleId());
 			tempResponsibilities = searchResponsibilities(responsibilityCriteria);
@@ -148,7 +148,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		if ( responsibility.getAssignedToRoles().isEmpty() ) {
 			for(RoleResponsibilityImpl roleResponsibility: responsibility.getRoleResponsibilities()){
 				criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleResponsibility.getRoleId());
-				responsibility.getAssignedToRoles().add((KimRoleImpl)getBusinessObjectService().findByPrimaryKey(KimRoleImpl.class, criteria));
+				responsibility.getAssignedToRoles().add((RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria));
 			}
 		}
 	}

@@ -61,7 +61,7 @@
                             </td>
                             <td>
                             	<c:forEach var="role" items="${KualiForm.permissionRoles[perm.permissionId]}">
-                            		<kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" 
+                            		<kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.RoleImpl" 
                             					 keyValues="roleId=${role.roleId}" render="true">
                             			<c:out value="${role.namespaceCode} ${role.roleName}" />
                             		</kul:inquiry>

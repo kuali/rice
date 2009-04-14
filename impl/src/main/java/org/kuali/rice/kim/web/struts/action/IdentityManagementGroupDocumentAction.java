@@ -31,8 +31,7 @@ import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
@@ -165,7 +164,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	groupMemberTypeClass = KimGroupImpl.class;
         	groupMemberIdName = "groupId";
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	groupMemberTypeClass = KimRoleImpl.class;
+        	groupMemberTypeClass = RoleImpl.class;
         	groupMemberIdName = "roleId";
         }
         Map<String, String> criteria = new HashMap<String, String>();
@@ -187,7 +186,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	groupMemberName = ((KimGroupImpl)object).getGroupName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	groupMemberName = ((KimRoleImpl)object).getRoleName();
+        	groupMemberName = ((RoleImpl)object).getRoleName();
         }
         return groupMemberName;
     }

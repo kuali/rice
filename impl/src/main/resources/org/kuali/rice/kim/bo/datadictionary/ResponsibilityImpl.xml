@@ -133,7 +133,7 @@
   </bean>
 
   <bean id="ResponsibilityImpl-template.namespaceCode" parent="ResponsibilityImpl-template.namespaceCode-parentBean" />
-  <bean id="ResponsibilityImpl-template.namespaceCode-parentBean" parent="KimRoleImpl-namespaceCode" abstract="true"
+  <bean id="ResponsibilityImpl-template.namespaceCode-parentBean" parent="RoleImpl-namespaceCode" abstract="true"
         p:name="template.namespaceCode"
         p:label="Template Namespace"
         p:shortLabel="Template Namespace">
@@ -205,7 +205,7 @@
   
   
   <bean id="ResponsibilityImpl-namespaceCode" parent="ResponsibilityImpl-namespaceCode-parentBean" />
-  <bean id="ResponsibilityImpl-namespaceCode-parentBean" parent="KimRoleImpl-namespaceCode" abstract="true"
+  <bean id="ResponsibilityImpl-namespaceCode-parentBean" parent="RoleImpl-namespaceCode" abstract="true"
         p:name="namespaceCode"
         p:label="Responsibility Namespace"
         p:shortLabel="Responsibility Namespace">
@@ -234,14 +234,14 @@
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup" parent="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean" />
-  <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean" parent="KimRoleImpl-namespaceCode" abstract="true"
+  <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean" parent="RoleImpl-namespaceCode" abstract="true"
         p:name="assignedToRoleNamespaceForLookup"
         p:label="Role Namespace"
         p:shortLabel="Role Namespace">
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToRoleNameForLookup" parent="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" />
-  <bean id="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" parent="KimRoleImpl-roleName" abstract="true" 
+  <bean id="ResponsibilityImpl-assignedToRoleNameForLookup-parentBean" parent="RoleImpl-roleName" abstract="true" 
 	  	p:name="assignedToRole.roleName">
   </bean>
 
@@ -383,6 +383,14 @@
 		                          p:attributeName="attributeValue" />
 		                </list>
 		            </property>
+		            <property name="summaryFields" >
+		                  <list>
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="kimAttribute.attributeName" />
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="attributeValue" />
+		                  </list>
+	                </property>
 		        </bean>
 			</list>
 		  </property>
@@ -401,6 +409,12 @@
 		                          p:attributeName="kimAttribute.attributeName" />
 		                </list>
 		            </property>
+		            <property name="summaryFields" >
+		                  <list>
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="kimAttribute.attributeName" />
+		                  </list>
+	                </property>
 		        </bean>
 			</list>
 		  </property>
@@ -411,7 +425,7 @@
             <list>
 				<bean parent="InquiryCollectionDefinition">
 	                <property name="attributeName" value="assignedToRoles" />
-	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.role.impl.KimRoleImpl" />
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.impl.RoleImpl" />
 	                <property name="numberOfColumns" value="3" />
 	                <property name="inquiryFields" >
 						<list>
@@ -423,6 +437,16 @@
 		                          p:attributeName="kimRoleType.name" />
 		                </list>
 		            </property>
+		            <property name="summaryFields" >
+		                  <list>
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="namespaceCode" />
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="roleName" />
+		                    <bean parent="FieldDefinition"
+		                          p:attributeName="kimRoleType.name" />
+		                  </list>
+	                </property>
 		        </bean>
 			</list>
 		  </property>

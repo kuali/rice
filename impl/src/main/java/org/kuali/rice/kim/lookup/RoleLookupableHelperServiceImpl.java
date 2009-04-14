@@ -26,13 +26,14 @@ import java.util.Properties;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -47,6 +48,7 @@ import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
@@ -72,13 +74,13 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 	
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
-    	KimRoleImpl roleImpl = (KimRoleImpl) bo;
+    	RoleImpl roleImpl = (RoleImpl) bo;
         List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
     	anchorHtmlDataList.add(getEditRoleUrl(roleImpl));	
     	return anchorHtmlDataList;
     }
     
-    protected HtmlData getEditRoleUrl(KimRoleImpl roleImpl) {
+    protected HtmlData getEditRoleUrl(RoleImpl roleImpl) {
     	String href = "";
     	if(!KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
 	        Properties parameters = new Properties();
@@ -89,11 +91,20 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 	        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
     	}        
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
-        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_ACTION);
-        anchorHtmlData.setTarget("blank");
+        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+        //anchorHtmlData.setTarget("blank");
         return anchorHtmlData;
     }
 
+    protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
+    	RoleImpl roleImpl = (RoleImpl) businessObject;
+    	HtmlData anchorHtmlData = super.getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys, businessObjectRestrictions);
+    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+    		((AnchorHtmlData)anchorHtmlData).setHref("");
+    	}
+    	return anchorHtmlData;
+    }
+    
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 //    	String principalName = fieldValues.get("principalName");
@@ -105,8 +116,8 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
         		break;
         	}
         }
-  //  	List<KimRoleImpl> roles = roleDao.getRoles(fieldValues, kimTypeId);
-        List<KimRoleImpl> baseLookup = (List<KimRoleImpl>)super.getSearchResults(fieldValues);
+  //  	List<RoleImpl> roles = roleDao.getRoles(fieldValues, kimTypeId);
+        List<RoleImpl> baseLookup = (List<RoleImpl>)super.getSearchResults(fieldValues);
 
         return baseLookup;
     }

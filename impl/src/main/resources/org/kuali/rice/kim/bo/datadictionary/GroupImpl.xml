@@ -84,8 +84,8 @@
   <bean id="GroupImpl-namespaceCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="namespaceCode"
         p:forceUppercase="true"
-        p:label="Name Space"
-        p:shortLabel="Name Space"
+        p:label="Namespace"
+        p:shortLabel="Namespace"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >

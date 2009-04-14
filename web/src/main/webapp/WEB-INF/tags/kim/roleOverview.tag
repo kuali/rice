@@ -1,6 +1,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="roleAttributes" value="${DataDictionary.KimRoleImpl.attributes}" />
+<c:set var="roleAttributes" value="${DataDictionary.RoleImpl.attributes}" />
 <c:set var="roleTypeAttributes" value="${DataDictionary.KimTypeImpl.attributes}" />
 <c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 

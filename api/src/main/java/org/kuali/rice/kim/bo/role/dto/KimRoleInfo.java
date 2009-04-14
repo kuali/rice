@@ -17,9 +17,9 @@ package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.kuali.rice.kim.bo.Role;
 
 
 /**
@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimRoleInfo implements KimRole, Serializable {
+public class KimRoleInfo implements Role, Serializable {
 
 	protected String roleId;
 	protected String roleName;
@@ -86,4 +86,12 @@ public class KimRoleInfo implements KimRole, Serializable {
 				.toString();
 	}
 	
+    public void refresh(){
+    	
+    }
+   
+    public void prepareForWorkflow(){
+    	
+    }
+
 }

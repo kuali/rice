@@ -21,8 +21,8 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
@@ -66,17 +66,17 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 			try{
 				if (INITIATOR_ROLE_NAME.equals(roleName)) {
 				    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong);
-                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
 				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
 				    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
 				    for ( String id : ids ) {
 				    	if ( StringUtils.isNotBlank(id) ) {
-				    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+				    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, Role.PRINCIPAL_MEMBER_TYPE, null) );
 				    	}
 				    }
 				} else if(ROUTER_ROLE_NAME.equals(roleName)) {
 				    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);
-                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
 				}
 			} catch(WorkflowException wex){
 				throw new RuntimeException(

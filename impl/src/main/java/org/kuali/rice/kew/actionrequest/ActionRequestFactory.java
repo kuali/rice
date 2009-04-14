@@ -42,11 +42,11 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -411,8 +411,8 @@ public class ActionRequestFactory {
     	List<DelegateInfo> delegates = responsibility.getDelegates();
     	for (DelegateInfo delegate : delegates) {
     		Recipient recipient = null;
-    		boolean isPrincipal = delegate.getMemberTypeCode().equals(KimRole.PRINCIPAL_MEMBER_TYPE);
-            boolean isGroup = delegate.getMemberTypeCode().equals(KimRole.GROUP_MEMBER_TYPE);
+    		boolean isPrincipal = delegate.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
+            boolean isGroup = delegate.getMemberTypeCode().equals(Role.GROUP_MEMBER_TYPE);
     		if (isPrincipal) {
     			recipient = new KimPrincipalRecipient(delegate.getMemberId());
     		} else if (isGroup) {

@@ -37,7 +37,7 @@
   </bean>
 
   <bean id="KimPermissionTemplateImpl-namespaceCode" parent="KimPermissionTemplateImpl-namespaceCode-parentBean" />
-  <bean id="KimPermissionTemplateImpl-namespaceCode-parentBean" parent="KimRoleImpl-namespaceCode" abstract="true"
+  <bean id="KimPermissionTemplateImpl-namespaceCode-parentBean" parent="RoleImpl-namespaceCode" abstract="true"
         p:name="namespaceCode"
         p:label="Template Namespace"
         p:shortLabel="Template Namespace">

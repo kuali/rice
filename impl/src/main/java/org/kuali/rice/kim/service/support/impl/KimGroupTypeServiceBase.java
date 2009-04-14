@@ -15,15 +15,7 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.role.KimRole;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.

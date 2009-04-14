@@ -24,8 +24,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -466,7 +466,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRolesSearchResults(java.util.Map)
 	 */
-	public List<? extends KimRole> getRolesSearchResults(
+	public List<? extends Role> getRolesSearchResults(
 			Map<String, String> fieldValues) {
 		return getRoleService().getRolesSearchResults(fieldValues);
 	}

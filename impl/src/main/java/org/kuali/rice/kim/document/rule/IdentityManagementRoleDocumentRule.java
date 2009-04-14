@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -51,7 +51,6 @@ import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
@@ -140,7 +139,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("roleName", roleDoc.getRoleName());
     	criteria.put("namespaceCode", roleDoc.getRoleNamespace());
-    	List<KimRoleImpl> roleImpls = (List<KimRoleImpl>)getBusinessObjectService().findMatching(KimRoleImpl.class, criteria);
+    	List<RoleImpl> roleImpls = (List<RoleImpl>)getBusinessObjectService().findMatching(RoleImpl.class, criteria);
     	boolean rulePassed = true;
     	if(roleImpls!=null && roleImpls.size()>0){
     		if(roleImpls.size()==1 && roleImpls.get(0).getRoleId().equals(roleDoc.getRoleId()))

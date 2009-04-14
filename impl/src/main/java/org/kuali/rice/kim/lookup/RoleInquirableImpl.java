@@ -18,8 +18,7 @@ package org.kuali.rice.kim.lookup;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
@@ -49,7 +48,7 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(ROLE_ID);
 		    //((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementRoleDocument.do?methodToCall=inquiry&command=initiate&docTypeName=IdentityManagementRoleDocument"+href.substring(idx1, idx2));
-		    String href = (getInquiryUrlForPrimaryKeys(KimRoleImpl.class, businessObject, primaryKeys, null)).getHref();
+		    String href = (getInquiryUrlForPrimaryKeys(RoleImpl.class, businessObject, primaryKeys, null)).getHref();
 		    AnchorHtmlData htmlData = new AnchorHtmlData();
 		    htmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(href));
 			return htmlData;

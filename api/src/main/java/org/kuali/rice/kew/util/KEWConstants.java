@@ -82,9 +82,9 @@ public class KEWConstants extends JSTLConstants {
      */
     public static final String DELEGATION_EITHER = "E";
     
-    public static final String DELEGATION_PRIMARY_LABEL = "PRIMARY";
-    public static final String DELEGATION_SECONDARY_LABEL = "SECONDARY";
-    public static final String DELEGATION_EITHER_LABEL = "EITHER";
+    public static final String DELEGATION_PRIMARY_LABEL = "Primary";
+    public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
+    public static final String DELEGATION_EITHER_LABEL = "Either";
     
     // Linked hash amap to preseve order for iteration
     public static final Map<String, String> DELEGATION_TYPES = new LinkedHashMap<String, String>();

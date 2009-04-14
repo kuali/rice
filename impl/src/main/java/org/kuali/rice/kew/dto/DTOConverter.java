@@ -491,7 +491,6 @@ public class DTOConverter {
     }
 
     public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) {
-        // TODO some newly added actionrequest properties are not here (delegation stuff)
         ActionRequestDTO actionRequestVO = new ActionRequestDTO();
         actionRequestVO.setActionRequested(actionRequest.getActionRequested());
         actionRequestVO.setActionRequestId(actionRequest.getActionRequestId());
@@ -519,15 +518,13 @@ public class DTOConverter {
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
         actionRequestVO.setStatus(actionRequest.getStatus());
-        if (actionRequest.isGroupRequest()) {
-        	actionRequestVO.setGroupId(actionRequest.getGroupId());
-        }
+        actionRequestVO.setGroupId(actionRequest.getGroupId());
+        actionRequestVO.setDelegationType(actionRequest.getDelegationType());
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
         int index = 0;
         for (ActionRequestValue childRequest : actionRequest.getChildrenRequests()) {
             ActionRequestDTO childRequestVO = convertActionRequest(childRequest);
-            childRequestVO.setParentActionRequest(actionRequestVO);
             childRequestVOs[index++] = childRequestVO;
         }
         actionRequestVO.setChildrenRequests(childRequestVOs);
@@ -632,7 +629,7 @@ public class DTOConverter {
         if (actionRequestDTO == null) {
             return null;
         }
-        if (actionRequestDTO.getParentActionRequest() != null || actionRequestDTO.getParentActionRequestId() != null) {
+        if (actionRequestDTO.getParentActionRequestId() != null) {
             throw new IllegalArgumentException("Cannot convert a non-root ActionRequestVO");
         }
         ActionRequestValue actionRequest = new ActionRequestFactory().createBlankActionRequest();

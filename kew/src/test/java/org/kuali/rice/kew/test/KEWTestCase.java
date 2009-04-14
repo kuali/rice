@@ -188,6 +188,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 		public void stop() throws Exception {
 			KEWServiceLocator.getCacheAdministrator().flushAll();
 			KIMServiceLocator.getIdentityManagementService().flushAllCaches();
+			KIMServiceLocator.getRoleManagementService().flushRoleCaches();
 			super.stop();
 		}
 

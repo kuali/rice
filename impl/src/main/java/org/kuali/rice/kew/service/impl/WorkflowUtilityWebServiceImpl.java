@@ -276,6 +276,11 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return getActionRequests(routeHeaderId, null, null);
     }
 
+    /**
+     * Returns a flattened list of ActionRequests which match the given criteria.
+     * Because the list is flattened, that means that all children requests from
+     * all graphs are returned in the top-level list.
+     */
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");

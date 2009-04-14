@@ -56,7 +56,6 @@ public class ActionRequestDTO implements Serializable {
     private Boolean ignorePrevAction;
     private String principalId;
     private String delegationType;
-    private ActionRequestDTO parentActionRequest;
     private Long parentActionRequestId;
     private String qualifiedRoleName;
     private String qualifiedRoleNameLabel;
@@ -278,12 +277,6 @@ public class ActionRequestDTO implements Serializable {
         this.delegationType = delegationType;
     }
 
-    public ActionRequestDTO getParentActionRequest() {
-        return parentActionRequest;
-    }
-    public void setParentActionRequest(ActionRequestDTO parentActionRequest) {
-        this.parentActionRequest = parentActionRequest;
-    }
     public Long getParentActionRequestId() {
         return parentActionRequestId;
     }
@@ -352,16 +345,6 @@ public class ActionRequestDTO implements Serializable {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-	
-    public boolean isDelegateRequest() {
-        if (getParentActionRequest() != null) {
-            if (getParentActionRequest().isRoleRequest()) {
-                return getParentActionRequest().isDelegateRequest();
-            }
-            return true;
-        }
-        return false;
-    }
 
     public boolean isAdHocRequest() {
     	return KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());

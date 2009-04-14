@@ -18,10 +18,7 @@ package org.kuali.rice.kew.routemodule;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -30,7 +27,6 @@ import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.ResponsibleParty;
 
@@ -66,10 +62,9 @@ public class RouteModuleRemoteAdapter implements RouteModule {
             DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
             ActionRequestDTO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
             if (actionRequestVOs != null && actionRequestVOs.length > 0) {
-                Set rootRequests = findRootRequests(actionRequestVOs);
+            	assertRootRequests(actionRequestVOs);
 
-                for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
-                    ActionRequestDTO actionRequestVO = (ActionRequestDTO) iterator.next();
+                for (ActionRequestDTO actionRequestVO : actionRequestVOs) {
                     actionRequestVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
                     
                     // TODO this should be moved to a validate somewhere's...
@@ -99,28 +94,16 @@ public class RouteModuleRemoteAdapter implements RouteModule {
             throw new WorkflowException("Remote exception when resolving responsibility ids from route module "+routeModule.toString(), e);
         }
     }
-
-    private Set findRootRequests(ActionRequestDTO[] actionRequestVOs) {
-        Set rootRequests = new HashSet();
-        for (int index = 0; index < actionRequestVOs.length; index++) {
-            rootRequests.add(findRootRequest(actionRequestVOs[index], new HashSet()));
-        }
-        return rootRequests;
-    }
-
+    
     /**
-     * Walks to the top of the request graph and returns the root request.  Also attempts to
-     * avoid bad data by detecting cycles in the graph.
+     * Asserts that the given array of ActionRequestDTOs are only root requests (as required by the RouteModuleRemote API)
      */
-    private ActionRequestDTO findRootRequest(ActionRequestDTO actionRequestVO, Set parents) {
-        if (actionRequestVO.getParentActionRequest() != null) {
-            if (parents.contains(actionRequestVO.getParentActionRequest())) {
-                throw new WorkflowRuntimeException("Detected a cycle in action request graph returned from route module "+routeModule.getClass());
-            }
-            parents.add(actionRequestVO.getParentActionRequest());
-            return findRootRequest(actionRequestVO.getParentActionRequest(), parents);
-        }
-        return actionRequestVO;
+    private void assertRootRequests(ActionRequestDTO[] actionRequestVOs) throws WorkflowException {
+    	for (ActionRequestDTO actionRequest : actionRequestVOs) {
+    		if (actionRequest.getParentActionRequestId() != null) {
+    			throw new WorkflowException("Encountered an action request in the graph which was NOT a root request.  RouteModuleRemote.findActionRequests should only produce root ActionRequestDTO objects.");
+    		}
+    	}
     }
 
 }

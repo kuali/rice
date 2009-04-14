@@ -28,6 +28,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
@@ -42,7 +43,6 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.test.TransactionalTest;
 
 /**
  * Tests Role-based routing integration between KEW and KIM.
@@ -50,21 +50,23 @@ import org.kuali.rice.test.TransactionalTest;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@TransactionalTest
+
 public class RoleRouteModuleTest extends KEWTestCase {
 
 	private String namespace = KEWConstants.KEW_NAMESPACE;
-	private KimAttributeImpl documentTypeAttribute;
-	private KimAttributeImpl nodeNameAttribute;
-	private KimTypeImpl kimRespType;
-	private RoleImpl role;
-	private RoleMemberImpl user1RolePrincipal;
-	private RoleMemberImpl user2RolePrincipal;
-	private RoleMemberImpl adminRolePrincipal;
+	
+	private static boolean suiteDataInitialized = false;
+	private static boolean suiteCreateDelegateInitialized = false;
 
 	protected void loadTestData() throws Exception {
         loadXmlFile("RoleRouteModuleTestConfig.xml");
 
+        // only create this data once per suite!
+        
+        if (suiteDataInitialized) {
+        	return;
+        }
+        
         /**
          * First we need to set up:
          *
@@ -82,7 +84,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartAttribute.setAttributeLabel("chart");
         chartAttribute.setActive(true);
         KNSServiceLocator.getBusinessObjectService().save(chartAttribute);
-
+        
         // create "org" KimAttribute
         Long orgAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeImpl orgAttribute = new KimAttributeImpl();
@@ -126,7 +128,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          */
 
         String roleId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        role = new RoleImpl();
+        RoleImpl role = new RoleImpl();
         role.setRoleId(roleId);
         role.setNamespaceCode(namespace);
         role.setRoleDescription("");
@@ -136,7 +138,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         role.setKimTypeId(kimType.getKimTypeId());
 
         String roleMemberId1 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        adminRolePrincipal = new RoleMemberImpl();
+        RoleMemberImpl adminRolePrincipal = new RoleMemberImpl();
         adminRolePrincipal.setRoleMemberId(roleMemberId1);
         KimPrincipal adminPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
         assertNotNull(adminPrincipal);
@@ -144,7 +146,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         adminRolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 
         String roleMemberId2 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        user2RolePrincipal = new RoleMemberImpl();
+        RoleMemberImpl user2RolePrincipal = new RoleMemberImpl();
         user2RolePrincipal.setRoleMemberId(roleMemberId2);
         KimPrincipal user2Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
         assertNotNull(user2Principal);
@@ -152,7 +154,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         user2RolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
 
         String roleMemberId3 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
-        user1RolePrincipal = new RoleMemberImpl();
+        RoleMemberImpl user1RolePrincipal = new RoleMemberImpl();
         user1RolePrincipal.setRoleMemberId(roleMemberId3);
         KimPrincipal user1Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
         assertNotNull(user1Principal);
@@ -260,7 +262,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         // create "documentType" KimAttribute
         Long documentTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
-        documentTypeAttribute = new KimAttributeImpl();
+        KimAttributeImpl documentTypeAttribute = new KimAttributeImpl();
         documentTypeAttribute.setKimAttributeId("" + documentTypeAttributeId);
         documentTypeAttribute.setAttributeName(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
         documentTypeAttribute.setNamespaceCode(namespace);
@@ -270,7 +272,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         // create "node name" KimAttribute
         Long nodeNameAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
-        nodeNameAttribute = new KimAttributeImpl();
+        KimAttributeImpl nodeNameAttribute = new KimAttributeImpl();
         nodeNameAttribute.setKimAttributeId("" + nodeNameAttributeId);
         nodeNameAttribute.setAttributeName(KEWConstants.ROUTE_NODE_NAME_DETAIL);
         nodeNameAttribute.setNamespaceCode(namespace);
@@ -280,7 +282,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         // create KimType for responsibility details
         Long kimRespTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
-        kimRespType = new KimTypeImpl();
+        KimTypeImpl kimRespType = new KimTypeImpl();
         kimRespType.setKimTypeId("" + kimRespTypeId);
         kimRespType.setName("RespDetails");
         kimRespType.setNamespaceCode(namespace);
@@ -306,11 +308,13 @@ public class RoleRouteModuleTest extends KEWTestCase {
         nodeNameTypeAttribute.setKimTypeId(kimType.getKimTypeId());
         KNSServiceLocator.getBusinessObjectService().save(nodeNameTypeAttribute);
 
-        createResponsibilityForRoleRouteModuleTest1();
-        createResponsibilityForRoleRouteModuleTest2();
+        createResponsibilityForRoleRouteModuleTest1(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal);
+        createResponsibilityForRoleRouteModuleTest2(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal);
+                
+        suiteDataInitialized = true;
     }
 
-	private void createResponsibilityForRoleRouteModuleTest1() {
+	private void createResponsibilityForRoleRouteModuleTest1(RoleImpl role, KimAttributeImpl documentTypeAttribute, KimAttributeImpl nodeNameAttribute, KimTypeImpl kimRespType, RoleMemberImpl user1RolePrincipal, RoleMemberImpl user2RolePrincipal, RoleMemberImpl adminRolePrincipal) {
 
 		/**
          * Create the responsibility template
@@ -424,7 +428,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
 	}
 
-	private void createResponsibilityForRoleRouteModuleTest2() {
+	private void createResponsibilityForRoleRouteModuleTest2(RoleImpl role, KimAttributeImpl documentTypeAttribute, KimAttributeImpl nodeNameAttribute, KimTypeImpl kimRespType, RoleMemberImpl user1RolePrincipal, RoleMemberImpl user2RolePrincipal, RoleMemberImpl adminRolePrincipal) {
 
 		/**
          * Create the responsibility template
@@ -535,9 +539,70 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setPriorityNumber(1);
         KNSServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 	}
+	
+	private void createDelegate(){
+		
+		if (suiteCreateDelegateInitialized) {
+			return;
+		}
+
+		// create delegation KimType
+        Long kimDlgnTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
+        KimTypeImpl kimDlgnType = new KimTypeImpl();
+        kimDlgnType.setKimTypeId("" + kimDlgnTypeId);
+        kimDlgnType.setName("TestBaseDelegationType");
+        kimDlgnType.setNamespaceCode(namespace);
+        kimDlgnType.setKimTypeServiceName("testBaseDelegationTypeService");
+        kimDlgnType.setActive(true);
+        KNSServiceLocator.getBusinessObjectService().save(kimDlgnType);
+
+		/*
+		 * Manually create a delegate
+		 */
+		String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+		KimDelegationImpl delegate = new KimDelegationImpl();
+
+		delegate.setDelegationId(id);
+		delegate.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
+		delegate.setActive(true);
+		delegate.setKimType(kimDlgnType);
+		delegate.setKimTypeId("" + kimDlgnTypeId);
+		/*
+		 * Assign it a role that was created above.  This should mean that every
+		 * principle in the role can have the delegate added below as a delegate
+		 */
+		KimRoleInfo role = KIMServiceLocator.getRoleService().getRoleByName(namespace, "RoleRouteModuleTestRole");
+		assertNotNull("Role should exist.", role);
+		delegate.setRoleId(role.getRoleId());
+		KNSServiceLocator.getBusinessObjectService().save(delegate);
+
+		// BC of the way the jpa is handled we have to create the delagate, then the members
+		String delgMemberId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+	    KimDelegationMemberImpl user1RoleDelegate = new KimDelegationMemberImpl();
+	    user1RoleDelegate.setDelegationMemberId(delgMemberId);
+	    // This is the user the delegation requests should be sent to.
+	    KimPrincipal kPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+	    assertNotNull(kPrincipal);
+	    user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
+	    /*
+	     * this is checked when adding delegates in both the ActionRequestFactory
+	     * and RoleServiceImpl
+	     */
+	    user1RoleDelegate.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
+
+	    // attach it to the delegate we created above
+	    user1RoleDelegate.setDelegationId(delegate.getDelegationId());
+
+	    KNSServiceLocator.getBusinessObjectService().save(user1RoleDelegate);
+
+	    suiteCreateDelegateInitialized = true;
+	    
+	}
+
 
 	@Test
 	public void testRoleRouteModule_FirstApprove() throws Exception {
+		
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "RoleRouteModuleTest1");
 		document.routeDocument("");
 
@@ -590,6 +655,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
 	@Test
 	public void testRoleRouteModule_AllApprove() throws Exception {
+
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "RoleRouteModuleTest2");
 		document.routeDocument("");
 
@@ -604,7 +670,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
 		// examine the action requests
 		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
-		assertEquals("Should have 6 action requests.", 6, actionRequests.length);
+		assertEquals("Should have 3 action requests.", 3, actionRequests.length);
 		int numRoots = 0;
 		for (ActionRequestDTO actionRequest : actionRequests) {
 			if (actionRequest.getApprovePolicy() != null) {
@@ -639,8 +705,8 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
 	@Test
     public void testDelegate() throws Exception{
-        this.createDelegate();
-
+		this.createDelegate();
+		
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "RoleRouteModuleTest2");
         document.routeDocument("");
 
@@ -658,7 +724,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         for (ActionRequestDTO actionRequest : actionRequests) {
         	if (ewestfalPrincipalId.equals(actionRequest.getPrincipalId())) {
         		ewestfalHasRequest = true;
-        		if (actionRequest.isDelegateRequest()) {
+        		if (actionRequest.getParentActionRequestId() != null) {
         			ewestfalHasDelegateRequest = true;
         			assertEquals("Delegation type should been PRIMARY", KEWConstants.DELEGATION_PRIMARY, actionRequest.getDelegationType());
         		}
@@ -667,35 +733,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         assertTrue("ewestfal should have had a request", ewestfalHasRequest);
         assertTrue("ewestfal should have had a delegate request", ewestfalHasDelegateRequest);
     }
-
-//    private void createDelegate(){
-//
-//        String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
-//        KimDelegationImpl delegate = new KimDelegationImpl();
-//
-//        delegate.setDelegationId(id);
-//        delegate.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
-//        delegate.setActive(true);
-//        delegate.setRoleId(role.getRoleId());
-//
-//
-//
-//        KNSServiceLocator.getBusinessObjectService().save(delegate);
-//
-//        // BC of the way the jpa is handled we have to create the delagate, then the members
-//        String delgMemberId3 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
-//        KimDelegationMemberImpl user1RoleDelegate = new KimDelegationMemberImpl();
-//        user1RoleDelegate.setDelegationMemberId(delgMemberId3);
-//        KimPrincipal user1Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
-//        assertNotNull(user1Principal);
-//        user1RoleDelegate.setMemberId(user1Principal.getPrincipalId());
-//        user1RoleDelegate.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
-//
-//        user1RoleDelegate.setDelegationId(delegate.getDelegationId());
-//
-//        KNSServiceLocator.getBusinessObjectService().save(user1RoleDelegate);
-//
-//    }
 
 	@Test
 	public void testDelegateApproval() throws Exception{
@@ -712,54 +749,4 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		assertTrue("Document should have been approved by the delegate.", document.stateIsFinal());
 	}
 
-	private void createDelegate(){
-
-		// create delegation KimType
-        Long kimDlgnTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
-        KimTypeImpl kimDlgnType = new KimTypeImpl();
-        kimDlgnType.setKimTypeId("" + kimDlgnTypeId);
-        kimDlgnType.setName("TestBaseDelegationType");
-        kimDlgnType.setNamespaceCode(namespace);
-        kimDlgnType.setKimTypeServiceName("testBaseDelegationTypeService");
-        kimDlgnType.setActive(true);
-        KNSServiceLocator.getBusinessObjectService().save(kimDlgnType);
-
-		/*
-		 * Manually create a delagate
-		 */
-		String id = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
-		KimDelegationImpl delegate = new KimDelegationImpl();
-
-		delegate.setDelegationId(id);
-		delegate.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
-		delegate.setActive(true);
-		delegate.setKimType(kimDlgnType);
-		delegate.setKimTypeId("" + kimDlgnTypeId);
-		/*
-		 * Assign it a role that was created above.  This should mean that every
-		 * principle in the role can have the delegate added below as a delegate
-		 */
-		delegate.setRoleId(role.getRoleId());
-		KNSServiceLocator.getBusinessObjectService().save(delegate);
-
-		// BC of the way the jpa is handled we have to create the delagate, then the members
-		String delgMemberId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
-	    KimDelegationMemberImpl user1RoleDelegate = new KimDelegationMemberImpl();
-	    user1RoleDelegate.setDelegationMemberId(delgMemberId);
-	    // This is the user the delegation requests should be sent to.
-	    KimPrincipal kPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
-	    assertNotNull(kPrincipal);
-	    user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
-	    /*
-	     * this is checked when adding delegates in both the ActionRequestFactory
-	     * and RoleServiceImpl
-	     */
-	    user1RoleDelegate.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
-
-	    // attach it to the delegate we created above
-	    user1RoleDelegate.setDelegationId(delegate.getDelegationId());
-
-	    KNSServiceLocator.getBusinessObjectService().save(user1RoleDelegate);
-
-	}
 }

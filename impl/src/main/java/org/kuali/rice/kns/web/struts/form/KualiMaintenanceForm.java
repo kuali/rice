@@ -501,11 +501,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 	public boolean shouldPropertyBePopulatedInForm(
 			String requestParameterName, HttpServletRequest request) {
 		// the user clicked on a document initiation link
-		String methodToCallParameterName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-		if (StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+		String methodToCallActionName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+		if (StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
 			return true;
 		}
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
@@ -521,10 +521,10 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 			String methodToCallParameterName,
 			String methodToCallParameterValue, HttpServletRequest request) {
 		// the user clicked on a document initiation link
-		if (StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+		if (StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
 			return true;
 		}
 		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,

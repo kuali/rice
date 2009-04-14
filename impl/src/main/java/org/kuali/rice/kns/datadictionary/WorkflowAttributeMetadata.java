@@ -22,6 +22,8 @@ package org.kuali.rice.kns.datadictionary;
  *
  */
 public class WorkflowAttributeMetadata extends DataDictionaryDefinitionBase {
+	private static final long serialVersionUID = -6250577044174437101L;
+
 	/**
 	 * This overridden method ...
 	 * 

@@ -55,8 +55,9 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
         initially created.
  */
 public class MaintainableFieldDefinition extends MaintainableItemDefinition implements FieldDefinitionI{
-
-    protected boolean required = false;
+    private static final long serialVersionUID = -1176087424343479963L;
+    
+	protected boolean required = false;
     protected boolean unconditionallyReadOnly = false;
     protected boolean readOnlyAfterAdd = false;
     private boolean noLookup = false;

@@ -34,8 +34,9 @@ import org.kuali.rice.kns.inquiry.InquiryPresentationController;
         * inquiryFields (Map)
  */
 public class InquiryDefinition extends DataDictionaryDefinitionBase {
-
-    protected String title;
+    private static final long serialVersionUID = -2506403061297774668L;
+    
+	protected String title;
     protected List<InquirySectionDefinition> inquirySections = new ArrayList<InquirySectionDefinition>();
     protected Class<? extends Inquirable> inquirableClass;
     protected Class<? extends InquiryPresentationController> presentationControllerClass;

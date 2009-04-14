@@ -36,7 +36,9 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
  *
  */
 public class ReferenceDefinition extends DataDictionaryDefinitionBase {
-    protected String attributeName;
+    private static final long serialVersionUID = 1737968024207302931L;
+    
+	protected String attributeName;
     protected String attributeToHighlightOnFail;
     protected String displayFieldName;
     protected String collection;

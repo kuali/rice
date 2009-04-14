@@ -51,10 +51,12 @@ import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
  *
  */
 public class MaintainableCollectionDefinition extends MaintainableItemDefinition implements CollectionDefinitionI{
-    // logger
+    private static final long serialVersionUID = -5617868782623587053L;
+
+	// logger
     //private static Log LOG = LogFactory.getLog(MaintainableCollectionDefinition.class);
 
-    protected Class<? extends BusinessObject> businessObjectClass;
+	protected Class<? extends BusinessObject> businessObjectClass;
 
     protected Class<? extends BusinessObject> sourceClassName;
     protected String summaryTitle;

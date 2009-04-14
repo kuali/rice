@@ -35,8 +35,9 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
                     the object being referenced by objectAttributeName.
  */
 public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
-
-    protected String sourceName;
+    private static final long serialVersionUID = -715128943756700821L;
+    
+	protected String sourceName;
     protected String targetName;
 
     public PrimitiveAttributeDefinition() {}

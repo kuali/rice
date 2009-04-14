@@ -35,8 +35,9 @@ import org.kuali.rice.kns.util.KNSConstants;
         * maintainableItems (Map)
  */
 public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase {
+    private static final long serialVersionUID = -8615694293159113523L;
 
-    protected String title;
+	protected String title;
 
     protected List<MaintainableItemDefinition> maintainableItems = new ArrayList<MaintainableItemDefinition>();
     

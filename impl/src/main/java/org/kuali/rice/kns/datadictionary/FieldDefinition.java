@@ -29,8 +29,9 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
  *
  */
 public class FieldDefinition extends DataDictionaryDefinitionBase implements FieldDefinitionI {
-
-    protected String attributeName;
+    private static final long serialVersionUID = -3426603523049661524L;
+    
+	protected String attributeName;
     protected boolean required = false;
     protected boolean forceInquiry = false;
     protected boolean noInquiry = false;

@@ -20,6 +20,7 @@ package org.kuali.rice.kns.datadictionary;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KimNonDataDictionaryAttributeDefinition extends AttributeDefinition {
+	private static final long serialVersionUID = -1889598053944123008L;
 	
 	private String sortCode;
 	protected String kimAttrDefnId;

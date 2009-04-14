@@ -22,8 +22,9 @@ package org.kuali.rice.kns.datadictionary;
     into sub-sections, each with its own name.
  */
 public class MaintainableSubSectionHeaderDefinition extends MaintainableItemDefinition implements SubSectionHeaderDefinitionI{
+    private static final long serialVersionUID = 3752757590555028866L;
 
-    public MaintainableSubSectionHeaderDefinition() {
+	public MaintainableSubSectionHeaderDefinition() {
     }
 
     /**

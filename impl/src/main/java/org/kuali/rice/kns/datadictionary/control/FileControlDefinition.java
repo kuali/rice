@@ -25,7 +25,9 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 public class FileControlDefinition extends ControlDefinitionBase {
-    // logger
+    private static final long serialVersionUID = 8778523411471162513L;
+    
+	// logger
     private static Log LOG = LogFactory.getLog(FileControlDefinition.class);
 
     public FileControlDefinition() {

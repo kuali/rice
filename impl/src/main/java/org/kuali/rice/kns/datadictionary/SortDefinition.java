@@ -38,8 +38,9 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
                 tag will have been converted into the first contained sortAttribute
  */
 public class SortDefinition extends DataDictionaryDefinitionBase {
-
-    protected boolean sortAscending = true;
+    private static final long serialVersionUID = -1092811342186612461L;
+    
+	protected boolean sortAscending = true;
     protected List<String> attributeNames = new ArrayList<String>();
 
     public SortDefinition() {}

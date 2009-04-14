@@ -30,8 +30,9 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
  *
  */
 public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase implements ControlDefinition {
-
-    protected boolean datePicker;
+    private static final long serialVersionUID = 4372435175782501152L;
+    
+	protected boolean datePicker;
     protected String script;
     protected Class<? extends KeyValuesFinder> valuesFinderClass;
     protected Class<? extends BusinessObject> businessObjectClass;

@@ -26,6 +26,8 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
  *
  */
 public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase implements InactivationBlockingMetadata {
+	private static final long serialVersionUID = -8765429636173190984L;
+	
 	protected  Class blockingReferenceBusinessObjectClass;
     protected  String blockedReferencePropertyName;
     protected  Class blockedBusinessObjectClass;

@@ -22,8 +22,9 @@ package org.kuali.rice.kns.datadictionary.control;
     The rows and cols attributes define the size of the field.
  */
 public class TextareaControlDefinition extends ControlDefinitionBase {
+    private static final long serialVersionUID = 8378481767935057649L;
 
-    public TextareaControlDefinition() {
+	public TextareaControlDefinition() {
     }
 
     /**

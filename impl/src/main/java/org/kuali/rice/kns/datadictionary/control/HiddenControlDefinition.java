@@ -22,8 +22,9 @@ package org.kuali.rice.kns.datadictionary.control;
     be displayed.
  */
 public class HiddenControlDefinition extends ControlDefinitionBase {
+    private static final long serialVersionUID = -557648224354274301L;
 
-    public HiddenControlDefinition() {
+	public HiddenControlDefinition() {
     }
 
     /**

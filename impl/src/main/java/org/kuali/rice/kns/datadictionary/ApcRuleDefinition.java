@@ -32,8 +32,9 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
     * errorMessage (String) a property key usually defined in ApplicationResources.properties
  */
 public class ApcRuleDefinition extends DataDictionaryDefinitionBase {
-
-    protected String attributeName;
+    private static final long serialVersionUID = 8600032669267029028L;
+    
+	protected String attributeName;
     protected String parameterNamespace;
     protected String parameterDetailType;
     protected String parameterName;

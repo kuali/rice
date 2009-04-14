@@ -24,8 +24,9 @@ package org.kuali.rice.kns.datadictionary.control;
     to select a date from a popup calendar.
  */
 public class TextControlDefinition extends ControlDefinitionBase {
+    private static final long serialVersionUID = 6075633623507085548L;
 
-    public TextControlDefinition() {
+	public TextControlDefinition() {
     }
 
     /**

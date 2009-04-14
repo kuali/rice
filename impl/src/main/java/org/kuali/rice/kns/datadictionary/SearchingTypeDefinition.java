@@ -25,6 +25,8 @@ import java.util.List;
  *
  */
 public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
+	private static final long serialVersionUID = -8779609937539520677L;
+	
 	private SearchingAttribute searchingAttribute;
 	private List<String> paths;
 	

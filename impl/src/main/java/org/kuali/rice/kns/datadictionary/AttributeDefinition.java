@@ -35,8 +35,9 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  */
 public class AttributeDefinition extends DataDictionaryDefinitionBase implements InitializingBean {
+    private static final long serialVersionUID = -2490613377818442742L;
 
-    protected Boolean forceUppercase = Boolean.FALSE;
+	protected Boolean forceUppercase = Boolean.FALSE;
 
     protected String name;
     protected String label;

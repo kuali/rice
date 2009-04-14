@@ -22,6 +22,8 @@ package org.kuali.rice.kns.datadictionary.control;
  control.
  */
 public class ButtonControlDefinition extends ControlDefinitionBase {
+	 private static final long serialVersionUID = -4014804850405243606L;
+	 
 	 protected String imageSrc;
 	 protected String styleClass;
 	 

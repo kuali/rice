@@ -32,8 +32,9 @@ import org.apache.commons.lang.StringUtils;
             parameterDetailType: detail type of the parameter that has the path to the help page
  */
 public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
-
-    protected String parameterNamespace;
+    private static final long serialVersionUID = -6869646654597012863L;
+    
+	protected String parameterNamespace;
     protected String parameterDetailType;
     protected String parameterName;
 

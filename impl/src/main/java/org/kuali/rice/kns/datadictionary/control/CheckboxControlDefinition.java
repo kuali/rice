@@ -22,8 +22,9 @@ package org.kuali.rice.kns.datadictionary.control;
                         control.  It is used for boolean fields.
  */
 public class CheckboxControlDefinition extends ControlDefinitionBase {
+    private static final long serialVersionUID = -2658505826476098781L;
 
-    public CheckboxControlDefinition()
+	public CheckboxControlDefinition()
     {
         super();
     }

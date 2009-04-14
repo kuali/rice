@@ -38,6 +38,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * 
  */
 public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition {
+	private static final long serialVersionUID = -3204870440281417429L;
+
 	// logger
 	private static Log LOG = LogFactory
 			.getLog(ExternalizableAttributeDefinitionProxy.class);

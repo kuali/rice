@@ -27,8 +27,9 @@ package org.kuali.rice.kns.datadictionary.control;
 
  */
 public class WorkflowWorkgroupControlDefinition extends ControlDefinitionBase {
+    private static final long serialVersionUID = -7423968769245455072L;
 
-    public WorkflowWorkgroupControlDefinition() {
+	public WorkflowWorkgroupControlDefinition() {
     }
 
     /**

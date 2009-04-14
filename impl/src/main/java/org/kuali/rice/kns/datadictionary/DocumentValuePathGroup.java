@@ -25,6 +25,8 @@ import java.util.List;
  *
  */
 public class DocumentValuePathGroup  extends DataDictionaryDefinitionBase{
+	private static final long serialVersionUID = 6285682208264817105L;
+	
 	private List<String> paths; 
 	private DocumentCollectionPath documentCollectionPath;
 

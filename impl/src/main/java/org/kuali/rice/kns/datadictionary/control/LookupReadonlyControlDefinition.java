@@ -23,8 +23,9 @@ package org.kuali.rice.kns.datadictionary.control;
     of the field only by use of the magnifying glass.
  */
 public class LookupReadonlyControlDefinition extends ControlDefinitionBase {
+    private static final long serialVersionUID = -5036539644716405540L;
 
-    public LookupReadonlyControlDefinition() {
+	public LookupReadonlyControlDefinition() {
     }
 
     /**

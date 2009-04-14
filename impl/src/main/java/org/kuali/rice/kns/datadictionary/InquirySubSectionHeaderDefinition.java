@@ -28,8 +28,9 @@ package org.kuali.rice.kns.datadictionary;
  *
  */
 public class InquirySubSectionHeaderDefinition extends FieldDefinition implements SubSectionHeaderDefinitionI{
+    private static final long serialVersionUID = -4979343188029630857L;
 
-    public String getName() {
+	public String getName() {
         return getAttributeName();
     }
 

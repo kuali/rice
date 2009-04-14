@@ -42,6 +42,7 @@ import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
  */
 public class InquiryCollectionDefinition extends FieldDefinition implements
 		CollectionDefinitionI {
+	private static final long serialVersionUID = 2257743293609536893L;
 
 	protected Class<? extends BusinessObject> businessObjectClass;
 

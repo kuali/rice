@@ -27,8 +27,9 @@ package org.kuali.rice.kns.datadictionary.control;
     value.
  */
 public class SelectControlDefinition extends MultivalueControlDefinitionBase {
+    private static final long serialVersionUID = 7176759040882704084L;
 
-    public SelectControlDefinition() {
+	public SelectControlDefinition() {
     }
 
     /**

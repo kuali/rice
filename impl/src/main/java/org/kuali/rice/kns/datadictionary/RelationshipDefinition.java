@@ -46,8 +46,9 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
  * 
  */
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
-
-    protected String objectAttributeName; //Same as parentAttributeName of BusinessObjectRelationship
+    private static final long serialVersionUID = 2946722646095412576L;
+    
+	protected String objectAttributeName; //Same as parentAttributeName of BusinessObjectRelationship
     protected Class<? extends BusinessObject> sourceClass; //parentClass
     /**
      * For 1:1 relationships, this class represents the type of the reference class.  For 1:n references, this class represents the type of the element

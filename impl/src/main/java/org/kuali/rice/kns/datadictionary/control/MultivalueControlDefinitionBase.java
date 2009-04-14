@@ -22,7 +22,9 @@ import org.kuali.rice.kns.datadictionary.exception.CompletionException;
  * Base class for control which provide a list of values to choose between. 
  */
 public abstract class MultivalueControlDefinitionBase extends ControlDefinitionBase {
-    /**
+    private static final long serialVersionUID = -9164657952021540261L;
+
+	/**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {

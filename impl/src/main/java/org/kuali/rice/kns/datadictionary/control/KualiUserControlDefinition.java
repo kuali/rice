@@ -39,8 +39,9 @@ import org.apache.commons.lang.StringUtils;
                                 attribute that provides the User Name - e.g. JONES,JOHN P
  */
 public class KualiUserControlDefinition extends ControlDefinitionBase {
-
-    protected String universalIdAttributeName;
+    private static final long serialVersionUID = 4749994521411547705L;
+    
+	protected String universalIdAttributeName;
     protected String userIdAttributeName;
     protected String personNameAttributeName;
 

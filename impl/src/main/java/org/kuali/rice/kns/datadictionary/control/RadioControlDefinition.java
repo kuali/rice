@@ -23,8 +23,9 @@ package org.kuali.rice.kns.datadictionary.control;
                         that returns a list of KeyLabelPair objects.
  */
 public class RadioControlDefinition extends MultivalueControlDefinitionBase {
+    private static final long serialVersionUID = -7578183583825935850L;
 
-    public RadioControlDefinition() {
+	public RadioControlDefinition() {
     }
 
     /**

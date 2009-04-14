@@ -25,6 +25,8 @@ import java.util.List;
  *
  */
 public class RoutingTypeDefinition extends DataDictionaryDefinitionBase {
+	private static final long serialVersionUID = -5455042765223753531L;
+	
 	private List<RoutingAttribute> routingAttributes; 
 	private List<DocumentValuePathGroup> documentValuePathGroups; 
 

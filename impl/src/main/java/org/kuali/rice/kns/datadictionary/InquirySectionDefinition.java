@@ -40,8 +40,9 @@ import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
  */
 public class InquirySectionDefinition extends DataDictionaryDefinitionBase {
-
-    protected String title;
+    private static final long serialVersionUID = 1565114894539391362L;
+    
+	protected String title;
     protected List<FieldDefinition> inquiryFields = new ArrayList<FieldDefinition>();
     protected Map<String, FieldDefinition> inquiryFieldMap = new LinkedHashMap<String, FieldDefinition>();
     protected Map inquiryCollections;

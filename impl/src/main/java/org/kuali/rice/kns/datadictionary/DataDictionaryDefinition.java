@@ -16,14 +16,14 @@
 
 package org.kuali.rice.kns.datadictionary;
 
-
+import java.io.Serializable;
 
 /**
  * Defines methods common to all DataDictionaryDefinition types.
  * 
  * 
  */
-public interface DataDictionaryDefinition {
+public interface DataDictionaryDefinition extends Serializable {
     /**
      * Performs complete intra-definition validation which couldn't be done earlier - for example, verifies that field references
      * refer to actual fields of some specific class.

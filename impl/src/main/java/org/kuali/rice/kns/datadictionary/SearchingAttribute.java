@@ -23,6 +23,8 @@ package org.kuali.rice.kns.datadictionary;
  *
  */
 public class SearchingAttribute extends WorkflowAttributeMetadata {
+	private static final long serialVersionUID = -612461988789474893L;
+	
 	private String businessObjectClassName; 
 	private String attributeName;
 	private boolean showAttributeInSearchCriteria = true;

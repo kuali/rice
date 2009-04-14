@@ -26,7 +26,9 @@ package org.kuali.rice.kns.datadictionary.control;
                         Used Properties: size, formattedMaxLength
  */
 public class CurrencyControlDefinition extends ControlDefinitionBase {
-    /**
+    private static final long serialVersionUID = 1650000676894176080L;
+    
+	/**
      * the maxLength for text that has been formatted. ie if maxLength=5. [12345]. but after going through the formatter the value
      * is [12,345.00] and will no longer fit in a field whos maxLength=5. formattedMaxLength solves this problem.
      */

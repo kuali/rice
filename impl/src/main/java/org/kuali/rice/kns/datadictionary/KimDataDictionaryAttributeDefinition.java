@@ -26,6 +26,7 @@ import org.kuali.rice.kns.web.format.Formatter;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
+	private static final long serialVersionUID = 7006569761728813805L;
 	
 	protected Class<? extends Formatter> formatterClass;
 	protected Mask mask;

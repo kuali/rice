@@ -24,6 +24,8 @@ import java.util.List;
  *
  */
 public class DocumentCollectionPath extends DataDictionaryDefinitionBase{
+	private static final long serialVersionUID = -8165456163213868710L;
+	
 	private String collectionPath;
 	private List<String> paths; 
 	private DocumentCollectionPath nestedCollection;

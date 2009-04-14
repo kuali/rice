@@ -31,7 +31,8 @@ import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
  * 
  */
 public class AttributeSecurity extends DataDictionaryDefinitionBase {
-
+	private static final long serialVersionUID = -7923499408946975318L;
+	
 	boolean readOnly = false;
 	boolean hide = false;
 	boolean mask = false;

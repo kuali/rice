@@ -27,8 +27,9 @@ import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
         values will be derived
  */
 public class ApcSelectControlDefinition extends SelectControlDefinition {
-
-    protected String parameterNamespace;
+    private static final long serialVersionUID = 7068651175290924411L;
+    
+	protected String parameterNamespace;
     protected String parameterDetailType;
     protected String parameterName;
 

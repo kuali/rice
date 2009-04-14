@@ -21,8 +21,9 @@ import org.apache.commons.lang.StringUtils;
  * Abstract superclass for all maintainable fields and collections.  Never used directly.
  */
 public abstract class MaintainableItemDefinition extends DataDictionaryDefinitionBase {
-
-    private String name;
+    private static final long serialVersionUID = 4564613758722159747L;
+    
+	private String name;
 
     public MaintainableItemDefinition() {
     }

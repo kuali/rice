@@ -23,8 +23,9 @@ package org.kuali.rice.kns.datadictionary.control;
                         return a value which will appear in another field.
  */
 public class LookupHiddenControlDefinition extends ControlDefinitionBase {
+    private static final long serialVersionUID = -2145156789968831921L;
 
-    public LookupHiddenControlDefinition() {
+	public LookupHiddenControlDefinition() {
     }
 
     /**

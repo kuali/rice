@@ -54,8 +54,9 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  */
 public class LookupDefinition extends DataDictionaryDefinitionBase {
-
-    protected String lookupableID;
+    private static final long serialVersionUID = 6733008572890721359L;
+    
+	protected String lookupableID;
     protected String title;
     protected String menubar;
     protected String instructions;

@@ -25,7 +25,8 @@ The link element is used to render an HTML link control.
 */
 
 public class LinkControlDefinition extends ControlDefinitionBase {
-
+	 private static final long serialVersionUID = -7568912421829207545L;
+	 
 	 protected String styleClass;
 	 protected String target;
 	 protected String hrefText;

@@ -23,6 +23,8 @@ package org.kuali.rice.kns.datadictionary;
  *
  */
 public class RoutingAttribute extends WorkflowAttributeMetadata {
+	private static final long serialVersionUID = -8232868861868863394L;
+	
 	private String qualificationAttributeName;
 
 	public String getQualificationAttributeName() {

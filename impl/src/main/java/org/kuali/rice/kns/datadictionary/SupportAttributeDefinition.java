@@ -33,8 +33,9 @@ import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
                at most one supportAttribute for each relationship should be defined as identifier="true"
  */
 public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
-
-    protected boolean identifier;
+    private static final long serialVersionUID = -1719022365280776405L;
+    
+	protected boolean identifier;
     
     public SupportAttributeDefinition() {}
 

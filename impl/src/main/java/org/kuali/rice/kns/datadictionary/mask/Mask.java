@@ -15,13 +15,17 @@
  */
 package org.kuali.rice.kns.datadictionary.mask;
 
+import java.io.Serializable;
+
 /**
     The displayMask element specifies the type of masking to
     be used to hide the value from un-authorized users.
     There are three types of masking.
  */
-public class Mask {   
-    protected MaskFormatter maskFormatter;
+public class Mask implements Serializable {   
+    private static final long serialVersionUID = 4035984416568235531L;
+    
+	protected MaskFormatter maskFormatter;
     protected Class<? extends MaskFormatter> maskFormatterClass;
 
     /**

@@ -29,7 +29,9 @@ import java.util.Map;
  *
  */
 public class WorkflowAttributes extends DataDictionaryDefinitionBase {
-    private List<SearchingTypeDefinition> searchingTypeDefinitions;
+    private static final long serialVersionUID = 6435015497886060280L;
+    
+	private List<SearchingTypeDefinition> searchingTypeDefinitions;
     private Map<String, RoutingTypeDefinition> routingTypeDefinitions;
     
     public WorkflowAttributes() {

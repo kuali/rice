@@ -26,8 +26,9 @@ import java.io.Serializable;
 
  */
 public class HeaderNavigation extends DataDictionaryDefinitionBase implements Serializable {
-
-    protected String headerTabMethodToCall;
+    private static final long serialVersionUID = 4317341111287854436L;
+    
+	protected String headerTabMethodToCall;
     protected String headerTabNavigateTo;
     protected String headerTabDisplayName;
     protected HelpDefinition helpDefinition;

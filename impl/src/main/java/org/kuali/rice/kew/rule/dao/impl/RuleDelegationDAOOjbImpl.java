@@ -88,7 +88,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, String workflowIdDirective) {
         Criteria crit = new Criteria(); //getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegationType, activeInd, extensionValues);
 
-        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_EITHER)) {
+        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_BOTH)) {
         	crit.addEqualTo("delegationType", delegationType);
         }
         
@@ -119,7 +119,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = new Criteria();
         
-        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_EITHER)) {
+        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_BOTH)) {
         	crit.addEqualTo("delegationType", delegationType);
         }
         

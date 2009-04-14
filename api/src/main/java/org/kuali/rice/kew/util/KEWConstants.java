@@ -80,18 +80,18 @@ public class KEWConstants extends JSTLConstants {
     /**
      * This is a UI option, not valid data for a delgationType value.
      */
-    public static final String DELEGATION_EITHER = "E";
+    public static final String DELEGATION_BOTH = "E";
     
     public static final String DELEGATION_PRIMARY_LABEL = "Primary";
     public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
-    public static final String DELEGATION_EITHER_LABEL = "Either";
+    public static final String DELEGATION_BOTH_LABEL = "Both";
     
-    // Linked hash amap to preseve order for iteration
+    // Linked hash map to preseve order for iteration
     public static final Map<String, String> DELEGATION_TYPES = new LinkedHashMap<String, String>();
     static {
     	DELEGATION_TYPES.put(DELEGATION_PRIMARY, DELEGATION_PRIMARY_LABEL);
     	DELEGATION_TYPES.put(DELEGATION_SECONDARY, DELEGATION_SECONDARY_LABEL);
-    	DELEGATION_TYPES.put(DELEGATION_EITHER, DELEGATION_EITHER_LABEL);
+    	DELEGATION_TYPES.put(DELEGATION_BOTH, DELEGATION_BOTH_LABEL);
     }
 
     public static final String FLEX_RM_NAME = "FRM";

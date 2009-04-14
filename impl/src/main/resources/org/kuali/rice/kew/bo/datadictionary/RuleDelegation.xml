@@ -269,7 +269,8 @@
     <property name="control" >
       <bean parent="RadioControlDefinition"
         p:valuesFinderClass="org.kuali.rice.kew.rule.bo.DelegationTypeValuesFinder"
-        p:includeKeyInLabel="true"/>
+        p:includeKeyInLabel="true"
+        p:keyAttribute="Both"/>
     </property>
     <property name="name" value="delegationType" />
     <property name="label" value="Delegation Type" />

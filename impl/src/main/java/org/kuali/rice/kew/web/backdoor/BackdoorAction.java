@@ -22,10 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -40,15 +39,23 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class BackdoorAction extends WorkflowAction {
+public class BackdoorAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BackdoorAction.class);
+
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        this.initForm(request, form);
+        return super.execute(mapping, form, request, response);
+    }
 
     public ActionForward menu(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("start");
         BackdoorForm backdoorForm = (BackdoorForm) form;
         backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
-        return mapping.findForward("viewBackdoor");
+        return mapping.findForward("basic");
     }
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -87,11 +94,11 @@ public class BackdoorAction extends WorkflowAction {
         BackdoorForm backdoorForm = (BackdoorForm) form;
         if (!uSession.establishBackdoorWithPrincipalName(backdoorForm.getBackdoorId())) {
 			request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
-        	return mapping.findForward("viewBackdoor");
+			return defaultDispatch(mapping, form, request, response);
         }
         uSession.getAuthentications().clear();
         setFormGroupPermission(backdoorForm, request);
-        return mapping.findForward("viewBackdoor");
+        return defaultDispatch(mapping, form, request, response);
 
     }
 
@@ -105,7 +112,7 @@ public class BackdoorAction extends WorkflowAction {
         backdoorForm.setIsAdmin(isAdmin);
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+    public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
 
     	// default to true if not defined
@@ -116,6 +123,9 @@ public class BackdoorAction extends WorkflowAction {
         if (backdoorForm.getGraphic() != null) {
         	request.getSession().setAttribute("showGraphic", backdoorForm.getGraphic());
         }
-        return null;
+    }
+
+    public static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
     }
 }

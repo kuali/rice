@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.docsearch.web;
 
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
@@ -24,7 +25,7 @@ import org.apache.struts.action.ActionForm;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocumentSearchForm extends ActionForm {
+public class DocumentSearchForm extends KualiForm {
 //FIXME: delete this class when doc search is fully moved over
 
 //    private static final long serialVersionUID = 8680419749805107805L;

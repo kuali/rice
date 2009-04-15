@@ -27,19 +27,29 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
+import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
+import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -47,18 +57,26 @@ import org.kuali.rice.kew.web.WorkflowAction;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class SuperUserAction extends WorkflowAction {
+public class SuperUserAction extends KewKualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserAction.class);
     public static final String UNAUTHORIZED = "authorizationFailure";
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	return mapping.findForward("basic");
+    //public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    //	defaultDispatch(mapping, form, request, response);
+    //}
+
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        initForm(request, form);
+        return super.execute(mapping, form, request, response);
     }
 
     public ActionForward displaySuperUserDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         SuperUserForm superUserForm = (SuperUserForm) form;
         superUserForm.setDocHandlerUrl(KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?docId=" + superUserForm.getRouteHeaderId() + "&" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.SUPERUSER_COMMAND);
-        return mapping.findForward("basic");
+        return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward routeLevelApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -67,11 +85,11 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserNodeApproveAction(getUserSession(request).getPrincipalId(), documentId, superUserForm.getDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentActionMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting routeLevelApprove()...");
         superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
-        return mapping.findForward("basic");
+        initForm(request, form);
+        return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -80,11 +98,11 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserApprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentActionMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting approve() ...");
         superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
-        return mapping.findForward("basic");
+        initForm(request, form);
+        return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -93,11 +111,11 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserDisapprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentActionMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting disapprove() ...");
         superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
-        return mapping.findForward("basic");
+        initForm(request, form);
+        return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward cancel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -106,11 +124,11 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserCancel(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentActionMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
         LOG.info("exiting cancel() ...");
         superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
-        return mapping.findForward("basic");
+        initForm(request, form);
+        return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward returnToPreviousNode(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -119,11 +137,11 @@ public class SuperUserAction extends WorkflowAction {
         Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserReturnToPreviousNode(getUserSession(request).getPrincipalId(), documentId, superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentActionMessage("general.routing.returnedToPreviousNode", request, "document", superUserForm.getReturnDestNodeName().toString());
+        saveDocumentMessage("general.routing.returnedToPreviousNode", request, "document", superUserForm.getReturnDestNodeName().toString());
         LOG.info("exiting returnToPreviousRouteLevel() ...");
         superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
-        return mapping.findForward("basic");
+        initForm(request, form);
+        return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward test(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -139,8 +157,8 @@ public class SuperUserAction extends WorkflowAction {
             LOG.info("Action request checkbox array is null");
         }
         superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
-        return mapping.findForward("basic");
+        initForm(request, form);
+        return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward actionRequestApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -164,14 +182,15 @@ public class SuperUserAction extends WorkflowAction {
         }else {
         	messageString = "general.routing.superuser.actionRequestApproved";
         }
-        saveDocumentActionMessage(messageString, request, superUserForm.getRouteHeaderIdString(), superUserForm.getActionTakenActionRequestId());
+        saveDocumentMessage(messageString, request, superUserForm.getRouteHeaderIdString(), superUserForm.getActionTakenActionRequestId());
         LOG.info("exiting actionRequestApprove() ...");
         superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
-        return mapping.findForward("basic");
+        initForm(request, form);
+        return defaultDispatch(mapping, form, request, response);
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+    public ActionForward initForm(HttpServletRequest request, ActionForm form) throws Exception {
+        request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
         SuperUserForm superUserForm = (SuperUserForm) form;
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(superUserForm.getRouteHeaderId());
         superUserForm.setRouteHeader(routeHeader);
@@ -179,7 +198,7 @@ public class SuperUserAction extends WorkflowAction {
         boolean isAuthorized = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId, routeHeader.getDocumentType());
         superUserForm.setAuthorized(isAuthorized);
         if (!isAuthorized) {
-            saveDocumentActionMessage("general.routing.superuser.notAuthorized", request, superUserForm.getRouteHeaderIdString(), null);
+            saveDocumentMessage("general.routing.superuser.notAuthorized", request, superUserForm.getRouteHeaderIdString(), null);
             return null;
         }
 
@@ -205,58 +224,96 @@ public class SuperUserAction extends WorkflowAction {
         return null;
     }
 
-    public void saveDocumentActionMessage(String messageKey, HttpServletRequest request, String subVariable1, String subVariable2) {
-        ActionMessages messages = new ActionMessages();
-        ActionMessage actionMessage = null;
+    private void saveDocumentMessage(String messageKey, HttpServletRequest request, String subVariable1, String subVariable2) {
         if (subVariable2 == null) {
-            actionMessage = new ActionMessage(messageKey, subVariable1);
+            GlobalVariables.getErrorMap().putInfo("document", messageKey, subVariable1);
         } else {
-            actionMessage = new ActionMessage(messageKey, subVariable1, subVariable2);
+            GlobalVariables.getErrorMap().putInfo("document", messageKey, subVariable1, subVariable2);
         }
-        messages.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
-        saveMessages(request, messages);
     }
-/*
-    public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        SuperUserForm superUserForm = (SuperUserForm) form;
-
-        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
-        StringBuffer lookupUrl = new StringBuffer(basePath);
-        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(getUserSession(request).addObject(form)).append("&lookupableImplServiceName=");
-        lookupUrl.append(request.getParameter("lookupableImplServiceName"));
-
-        String lookupType = superUserForm.getLookupType();
-        superUserForm.setLookupType(null);
-
-        if (lookupType != null && !lookupType.equals("")) {
-            lookupUrl.append("&conversionFields=");
-            WorkflowLookupable workflowLookupable = (WorkflowLookupable) GlobalResourceLoader.getService(request.getParameter("lookupableImplServiceName"));//SpringServiceLocator.getExtensionService().getLookupable(request.getParameter("lookupableImplServiceName"));
-            for (Iterator iterator = workflowLookupable.getDefaultReturnType().iterator(); iterator.hasNext();) {
-                String returnType = (String) iterator.next();
-                lookupUrl.append(returnType).append(":").append(lookupType);
-            }
-        }
-
-        lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
-        return new ActionForward(lookupUrl.toString(), true);
-    }
-*/
 
     public ActionForward routeToAppSpecificRecipient(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	SuperUserForm superUserForm = (SuperUserForm) form;
-    	super.routeToAppSpecificRecipient(mapping, form, request, response);
+    	//super.routeToAppSpecificRecipient(mapping, form, request, response);
+
+    	//WorkflowRoutingForm routingForm = (WorkflowRoutingForm) form;
+        AppSpecificRouteRecipient recipient = superUserForm.getAppSpecificRouteRecipient();
+        recipient.setActionRequested(superUserForm.getAppSpecificRouteActionRequestCd());
+        recipient.setType(superUserForm.getAppSpecificRouteRecipientType());
+        validateAppSpecificRoute(recipient);
+
+        try {
+            String routeNodeName = getAdHocRouteNodeName(superUserForm.getWorkflowDocument().getRouteHeaderId());
+            if (KEWConstants.PERSON.equals(recipient.getType())) {
+                String recipientPrincipalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(recipient.getId());
+                superUserForm.getWorkflowDocument().adHocRouteDocumentToPrincipal(recipient.getActionRequested(), routeNodeName, superUserForm.getAnnotation(), recipientPrincipalId, "", true);
+            } else {
+                superUserForm.getWorkflowDocument().adHocRouteDocumentToGroup(recipient.getActionRequested(), routeNodeName, superUserForm.getAnnotation(), recipient.getId(), "", true);
+            }
+            superUserForm.getAppSpecificRouteList().add(recipient);
+            superUserForm.resetAppSpecificRoute();
+        } catch (Exception e) {
+            LOG.error("Error generating app specific route request", e);
+            throw new WorkflowServiceErrorException("AppSpecific Route Error", new WorkflowServiceErrorImpl("AppSpecific Route Error", "appspecificroute.systemerror"));
+        }
+
     	superUserForm.getActionRequests().clear();
-        establishRequiredState(request, form);
+    	initForm(request, form);
         return start(mapping, form, request, response);
     }
 
+
     private WorkflowDocumentActions getWorkflowDocumentActions(Long documentId) {
-	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
-	String serviceNamespace = documentType.getServiceNamespace();
-	WorkflowDocumentActions service = (WorkflowDocumentActions)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowDocumentActionsService"));
-	if (service == null) {
-	    service = KEWServiceLocator.getWorkflowDocumentActionsService();
-	}
-	return service;
+    	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
+    	String serviceNamespace = documentType.getServiceNamespace();
+    	WorkflowDocumentActions service = (WorkflowDocumentActions)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowDocumentActionsService"));
+    	if (service == null) {
+    	    service = KEWServiceLocator.getWorkflowDocumentActionsService();
+    	}
+    	return service;
+    }
+
+    protected void validateAppSpecificRoute(AppSpecificRouteRecipient recipient) {
+        if (recipient.getId() == null || recipient.getId().trim().equals("")) {
+            GlobalVariables.getErrorMap().putError("appSpecificRouteRecipient.id", "appspecificroute.recipient.required");
+        }
+
+        if (KEWConstants.PERSON.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
+            if (principal == null) {
+                LOG.error("App Specific user recipient not found");
+                GlobalVariables.getErrorMap().putError("appSpecificRouteRecipient.id", "appspecificroute.user.invalid");
+            }
+        }
+
+        if (KEWConstants.WORKGROUP.equals(recipient.getType()) && recipient.getId() != null && !recipient.getId().trim().equals("")) {
+            if (getIdentityManagementService().getGroup(recipient.getId()) == null) {
+                GlobalVariables.getErrorMap().putError("appSpecificRouteRecipient.id", "appspecificroute.workgroup.invalid");
+            }
+        }
+
+        if (GlobalVariables.getErrorMap().hasErrors()) {
+            throw new ValidationException("AppSpecific Route validation Errors");
+        }
+
+    }
+
+    protected String getAdHocRouteNodeName(Long routeHeaderId) throws WorkflowException {
+        WorkflowInfo info = new WorkflowInfo();
+        RouteNodeInstanceDTO[] nodeInstances = info.getActiveNodeInstances(routeHeaderId);
+        if (nodeInstances == null || nodeInstances.length == 0) {
+            nodeInstances = info.getTerminalNodeInstances(routeHeaderId);
+        }
+        if (nodeInstances == null || nodeInstances.length == 0) {
+            throw new WorkflowException("Could not locate a node on the document to send the ad hoc request to.");
+        }
+        return nodeInstances[0].getName();
+    }
+
+    private IdentityManagementService getIdentityManagementService() {
+        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+    }
+    public static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
     }
 }

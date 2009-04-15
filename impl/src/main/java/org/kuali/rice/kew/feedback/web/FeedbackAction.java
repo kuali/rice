@@ -36,6 +36,7 @@ import org.kuali.rice.kew.mail.EmailTo;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.mail.service.EmailService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
@@ -46,7 +47,7 @@ import org.kuali.rice.kim.bo.Person;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class FeedbackAction extends WorkflowAction {
+public class FeedbackAction extends KewKualiAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FeedbackAction.class);
 
@@ -161,9 +162,8 @@ public class FeedbackAction extends WorkflowAction {
     	return buffer.toString();
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        return null;
+    private static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
     }
-
 }
 

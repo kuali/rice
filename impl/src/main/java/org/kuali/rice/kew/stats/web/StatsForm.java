@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,28 +22,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
  * A Struts ActionForm for the {@link StatsAction}.
- * 
+ *
  * @see StatsAction
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class StatsForm extends ActionForm {
+public class StatsForm extends KualiForm {
 
 	private static final long serialVersionUID = 4587377779133823858L;
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StatsForm.class);
+	private static final String BEGIN_DATE = "begDate";
+	private static final String END_DATE = "endDate";
 
     public static final String DAY_TIME_UNIT = "DDD";
     public static final String WEEK_TIME_UNIT = "WW";
@@ -58,7 +55,7 @@ public class StatsForm extends ActionForm {
     public static final String TIME_FORMAT = " HH:mm";
 
     private Stats stats;
-    private String methodToCall = "";    
+    private String methodToCall = "";
     private String avgActionsPerTimeUnit = DAY_TIME_UNIT;
 
     private String begDate;
@@ -66,41 +63,61 @@ public class StatsForm extends ActionForm {
 
     private Date beginningDate;
     private Date endingDate;
-    
+
     public StatsForm() {
         stats = new Stats();
     }
-        
-    public void determineBeginDate() throws ParseException {
 
+    public void determineBeginDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT);
 
         beginningDate = null;
+        try {
+            if (getBegDate() == null || getBegDate().trim().equals("")) {
+                beginningDate = dateFormat.parse(DEFAULT_BEGIN_DATE + BEG_DAY_TIME);
+            } else {
+                beginningDate = dateFormat.parse(getBegDate() + BEG_DAY_TIME);
+            }
 
-        if (getBegDate() == null || getBegDate().trim().equals("")) {
-            beginningDate = dateFormat.parse(DEFAULT_BEGIN_DATE + BEG_DAY_TIME);
-        } else {
-            beginningDate = dateFormat.parse(getBegDate() + BEG_DAY_TIME);
+            dateFormat = new SimpleDateFormat(DATE_FORMAT);
+            begDate = dateFormat.format(beginningDate);
+        } catch (ParseException e) {
+            //parse error caught in validate methods
+        } finally {
+            if (beginningDate == null) {
+                try {
+                    beginningDate = dateFormat.parse(DEFAULT_BEGIN_DATE + BEG_DAY_TIME);
+                } catch (ParseException e) {
+                    throw new RuntimeException("Default Begin Date format incorrect");
+                }
+            }
         }
-
-        dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        begDate = dateFormat.format(beginningDate);
     }
 
-    public void determineEndDate() throws ParseException {
-
+    public void determineEndDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT);
 
         endingDate = null;
+        try {
+            if (getEndDate() == null || getEndDate().trim().equals("")) {
+                endingDate = dateFormat.parse(DEFAULT_END_DATE + END_DAY_TIME);
+            } else {
+                endingDate = dateFormat.parse(getEndDate() + END_DAY_TIME);
+            }
 
-        if (getEndDate() == null || getEndDate().trim().equals("")) {
-            endingDate = dateFormat.parse(DEFAULT_END_DATE + END_DAY_TIME);
-        } else {
-            endingDate = dateFormat.parse(getEndDate() + END_DAY_TIME);
+            dateFormat = new SimpleDateFormat(DATE_FORMAT);
+            endDate = dateFormat.format(endingDate);
+        } catch (ParseException e) {
+            //parse error caught in validate methods
+        } finally {
+            if (endingDate == null) {
+                try {
+                    endingDate = dateFormat.parse(DEFAULT_END_DATE + END_DAY_TIME);
+                } catch (ParseException e) {
+                    throw new RuntimeException("Default End Date format incorrect");
+                }
+            }
         }
-
-        dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        endDate = dateFormat.format(endingDate);
     }
 
     public Map makePerUnitOfTimeDropDownMap() {
@@ -113,27 +130,25 @@ public class StatsForm extends ActionForm {
         return dropDownMap;
 
     }
-   
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
+
+    public void validateDates() {
         LOG.debug("validate()");
 
-        ActionErrors errors = new ActionErrors();
-
-        this.validateDate(this.getBegDate(), errors, "error.stats.BegDate");
-        this.validateDate(this.getEndDate(), errors, "error.stats.EndDate");
-
-        return errors;
-    }
-
-    private void validateDate(String date, ActionErrors errors, String key) {
-
-        if (date == null || date.trim().equals(""))
-            return;
-
-        try {
-            new SimpleDateFormat(DATE_FORMAT).parse(date.trim());
-        } catch (ParseException ex) {
-            errors.add(Globals.ERROR_KEY, new ActionMessage(key, date));
+        //this.validateDate(BEGIN_DATE, this.getBegDate(), "general.error.fieldinvalid");
+        //this.validateDate(END_DATE, this.getEndDate(), "general.error.fieldinvalid");
+        if (getBegDate() != null && getBegDate().length() != 0) {
+            try {
+                new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT).parse(getBegDate().trim()+END_DAY_TIME);
+            } catch (ParseException e) {
+                GlobalVariables.getErrorMap().putError(BEGIN_DATE, "general.error.fieldinvalid", "Begin Date");
+            }
+        }
+        if (getEndDate() != null && getEndDate().length() != 0) {
+            try {
+                new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT).parse(getEndDate().trim()+END_DAY_TIME);
+            } catch (ParseException e) {
+                GlobalVariables.getErrorMap().putError(END_DATE, "general.error.fieldinvalid", "End Date");
+            }
         }
     }
 
@@ -231,7 +246,7 @@ public class StatsForm extends ActionForm {
     public String getDayTimeUnit() {
         return DAY_TIME_UNIT;
     }
-    
+
     public String getMonthTimeUnit() {
         return MONTH_TIME_UNIT;
     }

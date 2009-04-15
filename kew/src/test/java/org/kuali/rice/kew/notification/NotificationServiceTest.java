@@ -27,6 +27,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.util.ErrorMap;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 public class NotificationServiceTest extends KEWTestCase {
@@ -124,7 +126,7 @@ public class NotificationServiceTest extends KEWTestCase {
 	 */
 	@Test public void testDocumentTypeNotificationFromAddress() throws Exception {
 		String user1PrincipalId = getPrincipalIdForName("user1");
-		
+
 		// first test that the notification from addresses are configured correctly
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("NotificationTest");
 		assertNull("Wrong notification from address, should be null.", documentType.getNotificationFromAddress());

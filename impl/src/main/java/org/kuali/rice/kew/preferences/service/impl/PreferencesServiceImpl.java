@@ -16,18 +16,15 @@
  */
 package org.kuali.rice.kew.preferences.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -67,8 +64,8 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String DEFAULT_COLOR = "white";
     private static final String DEFAULT_ACTION_LIST_SIZE = "10";
     private static final String DEFAULT_REFRESH_RATE = "15";
-    private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.preferencesservice.refreshRate.wholenum";
-    private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.preferencesservice.pagesize.wholenum";
+    private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.refreshRate";
+    private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.pageSize";
     private static final String DELEGATOR_FILTER_KEY = "DELEGATOR_FILTER";
     public static final String USE_OUT_BOX = "USE_OUT_BOX";
     private static final String COLUMN_LAST_APPROVED_DATE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
@@ -178,29 +175,24 @@ public class PreferencesServiceImpl implements PreferencesService {
 
     private void validate(Preferences preferences) {
         LOG.debug("validating preferences");
-        Collection errors = new ArrayList();
         try {
             new Integer(preferences.getRefreshRate().trim());
         } catch (NumberFormatException e) {
-            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
-                    "minutes", ERR_KEY_REFRESH_RATE_WHOLE_NUM));
+            GlobalVariables.getErrorMap().putError(ERR_KEY_REFRESH_RATE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
         } catch (NullPointerException e1) {
-            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
-                    "minutes", ERR_KEY_REFRESH_RATE_WHOLE_NUM));
+            GlobalVariables.getErrorMap().putError(ERR_KEY_REFRESH_RATE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
         }
 
         try {
             new Integer(preferences.getPageSize().trim());
         } catch (NumberFormatException e) {
-            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
-                    "minutes", ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM));
+            GlobalVariables.getErrorMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
         } catch (NullPointerException e1) {
-            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
-                    "minutes", ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM));
+            GlobalVariables.getErrorMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
         }
         LOG.debug("end validating preferences");
-        if (! errors.isEmpty()) {
-            throw new WorkflowServiceErrorException("Preference Validation Error", errors);
+        if (GlobalVariables.getErrorMap().hasErrors()) {
+            throw new ValidationException("errors in preferences");
         }
     }
 

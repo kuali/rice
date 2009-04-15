@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,7 +49,7 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
 
         LOG.debug("NumActiveItemsReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
-        Connection conn = broker.serviceConnectionManager().getConnection();  
+        Connection conn = broker.serviceConnectionManager().getConnection();
         PreparedStatement ps = conn.prepareStatement(StatsDAOOjbImpl.SQL_NUM_ACTIVE_ITEMS);
         ResultSet rs = ps.executeQuery();
 
@@ -57,14 +57,14 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
             stats.setNumActionItems(new Integer(rs.getInt(1)).toString());
         }
 
-        closeDatabaseObjects(rs, ps, conn, broker);
+        closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
     public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
 
         LOG.debug("NumberOfDocTypesReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
-        Connection conn = broker.serviceConnectionManager().getConnection();  
+        Connection conn = broker.serviceConnectionManager().getConnection();
         PreparedStatement ps = conn.prepareStatement(StatsDAOOjbImpl.SQL_NUM_DOC_TYPES_REPORT);
         ResultSet rs = ps.executeQuery();
 
@@ -72,14 +72,14 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
             stats.setNumDocTypes(new Integer(rs.getInt(1)).toString());
         }
 
-        closeDatabaseObjects(rs, ps, conn, broker);
+        closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
     public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
 
         LOG.debug("DocumentsRoutedReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
-        Connection conn = broker.serviceConnectionManager().getConnection();  
+        Connection conn = broker.serviceConnectionManager().getConnection();
         PreparedStatement ps = conn.prepareStatement(StatsDAOOjbImpl.SQL_DOCUMENTS_ROUTED);
         ps.setTimestamp(1, new Timestamp(begDate.getTime()));
         ps.setTimestamp(2, new Timestamp(endDate.getTime()));
@@ -110,14 +110,14 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
             }
         }
 
-        closeDatabaseObjects(rs, ps, conn, broker);
+        closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
     public void NumUsersReport(Stats stats) throws SQLException, LookupException {
 
         LOG.debug("NumUsersReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
-        Connection conn = broker.serviceConnectionManager().getConnection();  
+        Connection conn = broker.serviceConnectionManager().getConnection();
         PreparedStatement ps = conn.prepareStatement(StatsDAOOjbImpl.SQL_NUM_USERS);
         ResultSet rs = ps.executeQuery();
 
@@ -125,36 +125,36 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
             stats.setNumUsers(new Integer(rs.getInt("prsn_count")).toString());
         }
 
-        closeDatabaseObjects(rs, ps, conn, broker);
+        closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
     public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
-        
+
         LOG.debug("NumInitiatedDocsByDocType()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
-        Connection conn = broker.serviceConnectionManager().getConnection();  
+        Connection conn = broker.serviceConnectionManager().getConnection();
         PreparedStatement ps = conn.prepareStatement(StatsDAOOjbImpl.SQL_NUM_DOCS_INITIATED);
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -29);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);        
+        calendar.set(Calendar.MILLISECOND, 0);
         ps.setTimestamp(1, new Timestamp(calendar.getTime().getTime()));
         ResultSet rs = ps.executeQuery();
 
         List numDocs = new ArrayList();
-        
+
         while (rs.next()) {
             numDocs.add(new KeyValue(rs.getString(2), new Integer(rs.getInt(1)).toString()));
         }
         stats.setNumInitiatedDocsByDocType(numDocs);
-        
-        closeDatabaseObjects(rs, ps, conn, broker);        
-        
+
+        closeDatabaseObjects(rs, ps, conn/*, broker*/);
+
     }
-   
-    private void closeDatabaseObjects(ResultSet rs, PreparedStatement ps, Connection conn, PersistenceBroker broker) {
+
+    private void closeDatabaseObjects(ResultSet rs, PreparedStatement ps, Connection conn/*, PersistenceBroker broker*/) {
 
         try {
             rs.close();
@@ -172,14 +172,14 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
             conn.close();
         } catch (SQLException ex) {
             LOG.warn("Failed to close Connection.", ex);
-        }        
-
+        }
+/*
         try {
             broker.close();
         } catch (Exception ex) {
             LOG.warn("Failed to close broker.", ex);
-        }     
-    
+        }
+*/
     }
-    
+
 }

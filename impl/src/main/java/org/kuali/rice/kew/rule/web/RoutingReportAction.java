@@ -44,8 +44,6 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.AttributeDocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -66,7 +64,6 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -247,13 +244,11 @@ public class RoutingReportAction extends KewKualiAction {
 
 		if (numberOfActionRequests == 0) {
 			if (numberOfRules == 0) {
-			    GlobalVariables.getErrorMap().putError("There are no rules.", "routereport.noRules");
-				//errors.add(new WorkflowServiceErrorImpl("There are no rules.", "routereport.noRules"));
+			    GlobalVariables.getErrorMap().putError("*", "routereport.noRules");
 			} else {
-			    GlobalVariables.getErrorMap().putError("There are rules, but no matches.", "routereport.noMatchingRules");
-				//errors.add(new WorkflowServiceErrorImpl("There are rules, but no matches.", "routereport.noMatchingRules"));
+			    GlobalVariables.getErrorMap().putError("*", "routereport.noMatchingRules");
 			}
-			if (!GlobalVariables.getErrorMap().isEmpty()) {
+			if (GlobalVariables.getErrorMap().hasErrors()) {
 	            throw new ValidationException("errors in search criteria");
 	        }
 		}

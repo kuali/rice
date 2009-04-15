@@ -7,8 +7,8 @@
       <param-name>environment</param-name>
       <param-value>dev</param-value>
     </context-param>
-    
-      
+
+
     <!-- Change this if you want to use a different Spring file -->
     <context-param>
       <param-name>kew.bootstrap.spring.file</param-name>
@@ -39,7 +39,7 @@
       <filter-name>BootstrapFilter</filter-name>
       <servlet-name>action</servlet-name>
     </filter-mapping>
-    
+
     <filter-mapping>
       <filter-name>BootstrapFilter</filter-name>
       <servlet-name>notification</servlet-name>
@@ -54,7 +54,7 @@
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>notification</servlet-name>
     </filter-mapping>
-    
+
     <!-- for KCB Spring Web MVC pages -->
     <filter-mapping>
         <filter-name>BootstrapFilter</filter-name>
@@ -77,11 +77,11 @@
 	<listener>
 		<listener-class>org.kuali.rice.kns.web.listener.JstlConstantsInitListener</listener-class>
 	</listener>
-	
+
 	<listener>
 		<listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener</listener-class>
 	</listener>
-	
+
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.kuali.rice.kns.web.struts.action.KualiActionServlet</servlet-class>
@@ -214,22 +214,22 @@
 
 	<servlet-mapping>
 		<servlet-name>attachment</servlet-name>
-		<url-pattern>/en/attachment/*</url-pattern>
+		<url-pattern>/kew/attachment/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>edoclite</servlet-name>
-		<url-pattern>/en/EDocLite</url-pattern>
+		<url-pattern>/kew/EDocLite</url-pattern>
 	</servlet-mapping>
 
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
-	
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
         <welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	
+
 </web-app>
 

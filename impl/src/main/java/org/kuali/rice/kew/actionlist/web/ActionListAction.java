@@ -110,7 +110,7 @@ public class ActionListAction extends KualiAction {
     	List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
     	ExtraButton eb = new ExtraButton();
     	eb.setExtraButtonSource("../kr/images/tinybutton-preferences.gif");
-    	eb.setExtraButtonOnclick("../en/Preferences.do?returnMapping=viewActionList");
+    	eb.setExtraButtonOnclick("Preferences.do?returnMapping=viewActionList");
 
     	headerButtons.add(eb);
     	eb = new ExtraButton();
@@ -120,7 +120,7 @@ public class ActionListAction extends KualiAction {
     	headerButtons.add(eb);
     	eb = new ExtraButton();
     	eb.setExtraButtonSource("../kr/images/tinybutton-filter.gif");
-    	eb.setExtraButtonOnclick("javascript: window.open('..en/ActionListFilter.do?methodToCall=start');");
+    	eb.setExtraButtonOnclick("javascript: window.open('ActionListFilter.do?methodToCall=start');");
     	headerButtons.add(eb);
 
 

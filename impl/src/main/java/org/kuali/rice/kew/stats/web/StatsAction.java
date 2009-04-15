@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,11 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.service.StatsService;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
 
 
 /**
@@ -39,7 +38,15 @@ import org.kuali.rice.kew.web.WorkflowAction;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class StatsAction extends WorkflowAction {
+public class StatsAction extends KewKualiAction {
+
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        initForm(mapping, request, form);
+        return super.execute(mapping, form, request, response);
+    }
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -47,23 +54,23 @@ public class StatsAction extends WorkflowAction {
 
             statForm.determineBeginDate();
             statForm.determineEndDate();
-            
-            this.getStatsService().NumUsersReport(statForm.getStats());
-            this.getStatsService().NumActiveItemsReport(statForm.getStats());
-            this.getStatsService().DocumentsRoutedReport(statForm.getStats(), statForm.getBeginningDate(), statForm.getEndingDate());
-            this.getStatsService().NumberOfDocTypesReport(statForm.getStats());
-            this.getStatsService().NumInitiatedDocsByDocTypeReport(statForm.getStats());
-            
+
+            StatsService statsService = this.getStatsService();
+            statsService.NumUsersReport(statForm.getStats());
+            statsService.DocumentsRoutedReport(statForm.getStats(), statForm.getBeginningDate(), statForm.getEndingDate());
+            statsService.NumActiveItemsReport(statForm.getStats());
+            statsService.NumberOfDocTypesReport(statForm.getStats());
+            statsService.NumInitiatedDocsByDocTypeReport(statForm.getStats());
+
             return mapping.findForward("basic");
 
     }
-        
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) {
+
+    public void initForm(ActionMapping mapping, HttpServletRequest request, ActionForm form) {
         StatsForm statForm = (StatsForm) form;
-       
         Map dropDownMap = statForm.makePerUnitOfTimeDropDownMap();
-        request.setAttribute("timeUnitDropDown", dropDownMap);    
-        return null;
+        request.setAttribute("timeUnitDropDown", dropDownMap);
+        statForm.validateDates();
     }
 
     public StatsService getStatsService() {

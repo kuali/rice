@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.web.backdoor;
 
-import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * A Struts ActionForm for the {@link BackdoorAction}.
@@ -25,7 +25,7 @@ import org.apache.struts.action.ActionForm;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class BackdoorForm extends ActionForm {
+public class BackdoorForm extends KualiForm {
 
 	private static final long serialVersionUID = -2720178686804392055L;
 

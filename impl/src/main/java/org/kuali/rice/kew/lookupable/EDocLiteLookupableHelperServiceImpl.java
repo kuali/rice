@@ -24,25 +24,25 @@ import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 
 /**
- * This is a description of what this class does - sp20369 don't forget to fill this in. 
- * 
+ * This is a description of what this class does - sp20369 don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 
 public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl{ //KualiLookupableHelperServiceImpl {
-    	
+
     private static final long serialVersionUID = 3157354920258155881L;
 
 	/**
-     * 
+     *
      * @returns links to action for the current edoclite
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
      */
-  
+
     public String getActionUrls(BusinessObject businessObject) {//    	System.out.println("Inside EDocLiteLookupableHelperServiceImpl++++++++");
         EDocLiteAssociation edocLite = (EDocLiteAssociation) businessObject;
-        String actionsUrl = "<a href=\"../en/EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
+        String actionsUrl = "<a href=\"../kew/EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
         return actionsUrl;
     }
 
@@ -57,6 +57,6 @@ public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperS
 		lookupForm.setShowMaintenanceLinks(true);
 		return super.performLookup(lookupForm, resultTable, bounded);
 	}
-	
-	
+
+
 }

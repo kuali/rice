@@ -30,6 +30,8 @@ import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.HelpEntryXmlParser;
 import org.kuali.rice.kew.xml.export.HelpEntryXmlExporter;
+import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -38,9 +40,13 @@ public class HelpServiceImpl implements HelpService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpServiceImpl.class);
     private HelpDAO helpDAO;
 
+    private static final String HELP_NAME_KEY = "helpEntry.helpName";
+    private static final String HELP_KEY_KEY = "helpEntry.helpKey";
+    private static final String HELP_TEXT_KEY = "helpEntry.helpText";
+    private static final String HELP_ID_KEY = "helpEntry.helpId";
+    private static final String ID_INVALID = "helpentry.id.invalid";
     private static final String NAME_EMPTY = "helpentry.name.empty";
     private static final String TEXT_EMPTY = "helpentry.text.empty";
-    private static final String ID_INVALID = "helpentry.id.invalid";
     private static final String KEY_EMPTY = "helpentry.key.empty";
     private static final String KEY_EXIST = "helpentry.key.exists";
     private static final String KEY_ILLEGAL = "helpentry.key.illegal";
@@ -62,21 +68,20 @@ public class HelpServiceImpl implements HelpService {
 
     private HelpEntry validateXmlHelpEntry(HelpEntry helpEntry){
     	LOG.debug("Enter validateXMLHelpEntry(..)");
-        List errors = new ArrayList();
 
         if (helpEntry.getHelpName() == null || "".equals(helpEntry.getHelpName().trim())) {
-            errors.add(new WorkflowServiceErrorImpl("Help Name empty.", NAME_EMPTY));
+            GlobalVariables.getErrorMap().putError(HELP_NAME_KEY, NAME_EMPTY);
         }
         if (helpEntry.getHelpText() == null || "".equals(helpEntry.getHelpText().trim())) {
-            errors.add(new WorkflowServiceErrorImpl("Help Text empty.", TEXT_EMPTY));
+            GlobalVariables.getErrorMap().putError(HELP_TEXT_KEY, TEXT_EMPTY);
         } else {
             helpEntry.setHelpText(helpEntry.getHelpText().trim());
         }
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
-            errors.add(new WorkflowServiceErrorImpl("Help Key empty.", KEY_EMPTY));
-        } else if (helpEntry.getHelpKey().indexOf("'") >= 0){
-            errors.add(new WorkflowServiceErrorImpl("Help Key illegal character.", KEY_ILLEGAL, "'"));
+            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_EMPTY);
+        } else if (helpEntry.getHelpKey().indexOf("'") >= 0) {
+            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());
             HelpEntry entry1=findByKey(helpEntry.getHelpKey());
@@ -90,8 +95,8 @@ public class HelpServiceImpl implements HelpService {
         }
 
         LOG.debug("Exit validateXmlHelpEntry(..)");
-        if (!errors.isEmpty()) {
-          throw new WorkflowServiceErrorException("Help Entry validation Error", errors);
+        if (GlobalVariables.getErrorMap().hasErrors()) {
+            throw new ValidationException("errors in help");
         }
         return helpEntry;
     }
@@ -102,28 +107,28 @@ public class HelpServiceImpl implements HelpService {
         List errors = new ArrayList();
 
         if (helpEntry.getHelpName() == null || "".equals(helpEntry.getHelpName().trim())) {
-            errors.add(new WorkflowServiceErrorImpl("Help Name empty.", NAME_EMPTY));
+            GlobalVariables.getErrorMap().putError(HELP_NAME_KEY, NAME_EMPTY);
         }
         if (helpEntry.getHelpText() == null || "".equals(helpEntry.getHelpText().trim())) {
-            errors.add(new WorkflowServiceErrorImpl("Help Text empty.", TEXT_EMPTY));
+            GlobalVariables.getErrorMap().putError(HELP_TEXT_KEY, TEXT_EMPTY);
         } else {
             helpEntry.setHelpText(helpEntry.getHelpText().trim());
         }
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
-            errors.add(new WorkflowServiceErrorImpl("Help Key empty.", KEY_EMPTY));
+            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_EMPTY);
         } else if (helpEntry.getHelpKey().indexOf("'") >= 0){
-            errors.add(new WorkflowServiceErrorImpl("Help Key illegal character.", KEY_ILLEGAL, "'"));
+            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());
             if(helpEntry.getHelpId() == null && findByKey(helpEntry.getHelpKey()) != null){
-                errors.add(new WorkflowServiceErrorImpl("Help Key exists.", KEY_EXIST, helpEntry.getHelpKey()));
+                GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_EXIST, helpEntry.getHelpKey());
             }
         }
 
         LOG.debug("Exit validateHelpEntry(..)");
-        if (!errors.isEmpty()) {
-          throw new WorkflowServiceErrorException("Help Entry validation Error", errors);
+        if (GlobalVariables.getErrorMap().hasErrors()) {
+            throw new ValidationException("errors in help");
         }
     }
 
@@ -143,12 +148,11 @@ public class HelpServiceImpl implements HelpService {
     }
 
     public List search(HelpEntry helpEntry){
-        List errors = new ArrayList();
         if(helpEntry.getHelpId() != null && helpEntry.getHelpId().longValue() == 0){
-            errors.add(new WorkflowServiceErrorImpl("Help Id invalid", ID_INVALID));
+            GlobalVariables.getErrorMap().putError(HELP_ID_KEY, ID_INVALID);
         }
-        if (!errors.isEmpty()) {
-            throw new WorkflowServiceErrorException("Help Entry search criteria error", errors);
+        if (GlobalVariables.getErrorMap().hasErrors()) {
+            throw new ValidationException("errors in help");
         }
 
         return getHelpDAO().search(helpEntry);

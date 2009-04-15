@@ -27,11 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.comparators.ComparableComparator;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -44,6 +42,7 @@ import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 
 
@@ -60,23 +59,7 @@ public class ActionListFilterAction extends KualiAction {
 			throws Exception {
     	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
     	request.setAttribute("preferences", this.getUserSession(request).getPreferences());
-		ActionMessages messages = null;
-		messages = establishRequiredState(request, form);
-		if (messages != null && !messages.isEmpty()) {
-			// XXX: HACK: FIXME:
-			// obviously this implies that we can't return both ActionErrors
-			// and ActionMessages... :(
-			// probably establishRequiredState should be refactored to have
-			// a generic 'should-we-continue'
-			// boolean return, so that control flow can be more explicitly
-			// specified by the subclass
-			if (messages instanceof ActionErrors) {
-				saveErrors(request, (ActionErrors) messages);
-			} else {
-				saveMessages(request, messages);
-			}
-			return mapping.findForward("requiredStateError");
-		}
+		initForm(request, form);
 		return super.execute(mapping, form, request, response);
 	}
 
@@ -116,7 +99,11 @@ public class ActionListFilterAction extends KualiAction {
         UserSession session = getUserSession(request);
         session.setActionListFilter(filterForm.getLoadedFilter());
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
-        return mapping.findForward("viewActionList");
+        if (GlobalVariables.getErrorMap().isEmpty()) {
+            return mapping.findForward("viewActionList");
+        } else {
+            return mapping.findForward("viewFilter");
+        }
     }
 
     public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -133,7 +120,7 @@ public class ActionListFilterAction extends KualiAction {
         return mapping.findForward("viewFilter");
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+    public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession(request).getPerson().getPrincipalId()));
         PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getPreferencesService();
@@ -145,7 +132,6 @@ public class ActionListFilterAction extends KualiAction {
         if (! filterForm.getMethodToCall().equalsIgnoreCase("clear")) {
             filterForm.validateDates();
         }
-        return null;
     }
 
     private List getUserWorkgroupsDropDownList(String principalId) {

@@ -18,11 +18,11 @@ package org.kuali.rice.kew.notes.web;
 
 import java.util.List;
 
-import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
@@ -30,7 +30,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class NoteForm extends ActionForm {
+public class NoteForm extends KualiForm {
 
 	private static final long serialVersionUID = 1L;
 	private Note note;

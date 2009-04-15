@@ -43,7 +43,8 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -56,13 +57,20 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class NoteAction extends WorkflowAction {
+public class NoteAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NoteAction.class);
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return mapping.findForward("allNotesReport");
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        initForm(request, form);
+        return super.execute(mapping, form, request, response);
     }
+    //public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    //    return mapping.findForward("allNotesReport");
+    //}
 
     public ActionForward add(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         NoteForm noteForm = (NoteForm) form;
@@ -81,7 +89,8 @@ public class NoteAction extends WorkflowAction {
     	noteForm.setDocId(note.getRouteHeaderId());
     	noteForm.setNoteIdNumber(note.getNoteId());
     	edit(mapping, form, request, response);
-    	return mapping.findForward("allNotesReport");
+    	return start(mapping, form, request, response);
+    	//return mapping.findForward("allNotesReport");
     }
 
     public ActionForward edit(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -180,7 +189,7 @@ public class NoteAction extends WorkflowAction {
 
 
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+    public ActionMessages initForm(HttpServletRequest request, ActionForm form) throws Exception {
         NoteForm noteForm = (NoteForm) form;
         noteForm.setCurrentUserName(getUserSession(request).getPerson().getName());
         noteForm.setCurrentDate(getCurrentDate());
@@ -301,5 +310,7 @@ public class NoteAction extends WorkflowAction {
     private RouteHeaderService getRouteHeaderService() {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
-
+    private static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
+    }
 }

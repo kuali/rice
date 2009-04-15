@@ -28,8 +28,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -37,14 +39,19 @@ import org.kuali.rice.kew.web.WorkflowAction;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class QuickLinksAction extends WorkflowAction {
+public class QuickLinksAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(QuickLinksAction.class);
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return mapping.findForward("basic");
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        initForm(request, form);
+        return super.execute(mapping, form, request, response);
     }
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+
+    public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
         QuickLinksForm quickLinksForm = (QuickLinksForm)form;
         String principalId = getUserSession(request).getPrincipalId();
         LOG.debug("getting Action List Stats");
@@ -70,9 +77,15 @@ public class QuickLinksAction extends WorkflowAction {
         LOG.debug("getting Watched Documents");
         quickLinksForm.setWatchedDocuments(getQuickLinksService().getWatchedDocuments(principalId));
         LOG.debug("finished getting Watched Documents");
-        return null;
     }
+
+
+
     private QuickLinksService getQuickLinksService() {
         return ((QuickLinksService)KEWServiceLocator.getService(KEWServiceLocator.QUICK_LINKS_SERVICE));
     }
+    private static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
+    }
+
 }

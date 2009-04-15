@@ -2,8 +2,8 @@
 
 <link href="<c:out value="../kr/css/${ActionListFormNew.cssFile}"/>"
 	rel="stylesheet" type="text/css">
-<script language="JavaScript" src="../en/scripts/en-common.js"></script>
-<script language="JavaScript" src="../en/scripts/actionlist-common.js"></script>
+<script language="JavaScript" src="scripts/en-common.js"></script>
+<script language="JavaScript" src="scripts/actionlist-common.js"></script>
 
 
 <%-- Setup column labels based on ApplicationsResources --%>
@@ -77,7 +77,7 @@
 	<div style="float:right">
 	  <div style="float:left; width:75px">
 	  <a
-         href='<c:out value="../en/Preferences.do?returnMapping=viewActionList" />'  title="preferences"><img
+         href='<c:out value="Preferences.do?returnMapping=viewActionList" />'  title="preferences"><img
          src="../kr/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
          border="0" /></a>
       </div>
@@ -93,9 +93,9 @@
          src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
          border="0" /></a>
         </div>
-        
+
         <!-- Delegates selection lists -->
-        
+
 		<c:if test="${! empty ActionListFormNew.delegators}">
 			<div style="float:left; width:226px; position: relative; top: -.5em;">
 	            <html-el:select property="delegationId" onchange="document.forms[0].methodToCall.value='start';document.forms[0].submit();">
@@ -118,7 +118,7 @@
 	            </html-el:select>
             </div>
 		</c:if>
-       
+
 		<c:if test="${kewUserSession.actionListFilter != null && kewUserSession.actionListFilter.filterOn}">
 		<div style="float:left; width:70px">
 	   <a
@@ -127,7 +127,7 @@
          border="0" /></a>
         </div>
 		</c:if>
-		
+
          <c:if test="${helpDeskActionList != null}">
          	<!--<p> Testing is this shows up on the screen </p> -->
             <div style="float:left">
@@ -143,7 +143,7 @@
 					</c:url>">Clear <c:out value="${kewUserSession.helpDeskActionListPerson.name}"/>'s List</a>
 			</c:if>&nbsp;&nbsp;
 		</c:if>
-		
+
     </div>
     </div>
 	</div>
@@ -155,7 +155,7 @@
               <c:set var="defaultActions" value="${ActionListFormNew.defaultActions}" scope="request" />
               <html-el:select styleId='defaultAction' property="defaultActionToTake">
                     <html-el:options collection="defaultActions" labelProperty="value" property="key" filter="false" />
-              </html-el:select>&nbsp;<html-el:img src="../en/images/tinybutton-applydflt.gif" align="absmiddle" onclick="setActions();" /><br>
+              </html-el:select>&nbsp;<html-el:img src="images/tinybutton-applydflt.gif" align="absmiddle" onclick="setActions();" /><br>
          </c:if>
     </div>
 	<c:if
@@ -170,8 +170,10 @@
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 				<td></td>
-				<td><kul:errors errorTitle="Error loading action list : "/> <br/>
-				<kul:messages/></td>
+				<td>
+                  <kul:errors errorTitle="Error loading action list : "/> <br/>
+				  <kul:messages/>
+                </td>
 			</tr>
 
 			<tr>
@@ -240,13 +242,13 @@
 
                              <br>
                              <a id='A<c:out value="${result.actionItemIndex}"/>'
-                              href="<c:url value="../en/${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
+                              href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
                              <c:param name="docId" value="${result.routeHeaderId}"/>
                              <c:param name="command" value="displayActionListInlineView" />
                              </c:url>"
                              target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
                              onclick="rend(this, false)"><img
-                             src="../en/images/tinybutton-show.gif" alt="show" width=45 height=15
+                             src="images/tinybutton-show.gif" alt="show" width=45 height=15
                              border=0 id='F<c:out value="${result.actionItemIndex}"/>'></a>
                              <br>
 
@@ -257,7 +259,7 @@
 						<c:choose>
 							<c:when test="${kewUserSession.helpDeskActionListPerson == null}">
 								<a
-									href="<c:url value="../en/${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
+									href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
                                      <c:param name="docId" value="${result.routeHeaderId}"/>
                                          <c:param name="command" value="displayActionListView" />
                                              </c:url>"
@@ -295,7 +297,7 @@
 					</c:if>
 					<c:if test="${preferences.showInitiator == Constants.PREFERENCES_YES_VAL}">
 						<display-el:column sortable="true" title="${initiatorLabel}"
-							sortProperty="routeHeader.initiatorName" class="display-column">
+							sortProperty="routeHeader.initiatorName" class="infocell">
                             <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
                                 keyValues="principalId=${result.routeHeader.actionListInitiatorPrincipal.principalId}"
                                 render="true">
@@ -402,10 +404,10 @@
                     </display-e1:column>
 					<display-el:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
-							href="<c:url value="../en/RouteLog.do"><c:param name="routeHeaderId" value="${result.routeHeaderId}"/></c:url>"
+							href="<c:url value="RouteLog.do"><c:param name="routeHeaderId" value="${result.routeHeaderId}"/></c:url>"
 							<c:if test="${ActionListFormNew.routeLogPopup}">target="_blank"</c:if>>
 						<img alt="Route Log for Document"
-							src="../en/images/my_route_log.gif" /> </a></div>
+							src="images/my_route_log.gif" /> </a></div>
 					</display-el:column>
 				</display:table></div>
                 </div>
@@ -426,7 +428,7 @@
 					<td height="0" class="tinybutton">
 					<div align="center"><a id="takeMassActions"
 						href="javascript: setMethodToCallAndSubmit('takeMassActions')">
-					<img src="../en/images/buttonsmall_takeactions.gif" /> </a></div>
+					<img src="images/buttonsmall_takeactions.gif" /> </a></div>
 					</td>
 					<td></td>
 				</tr>

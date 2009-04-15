@@ -28,6 +28,8 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.ErrorMap;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceTestCase;
 import org.kuali.rice.test.SQLDataLoader;
@@ -76,7 +78,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	/**
 	 * Override the RiceTestCase setUpInternal in order to set a system property
 	 * beforehand.
-	 * 
+	 *
 	 * @see org.kuali.rice.test.RiceTestCase#setUpInternal()
 	 */
 	@Override
@@ -114,7 +116,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	 * test harness will load. KEW test cases can override this to provide an
 	 * alternative bootstrap spring file. Currently only one file is supported,
 	 * so one must override this file and then import the core file.
-	 * 
+	 *
 	 * @return the "bootstrap", aka Rice client, Spring beans file that the KEW
 	 *         test harness will load
 	 */
@@ -125,7 +127,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	/**
 	 * Override the standard per-test lifecycles to prepend
 	 * ClearDatabaseLifecycle and ClearCacheLifecycle
-	 * 
+	 *
 	 * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
 	 */
 	@Override
@@ -142,7 +144,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 	 * Override the suite lifecycles to avoid the ClearDatabaseLifecycle (which
 	 * we do on a per-test basis, as above) and to add on a JettyServer
 	 * lifecycle
-	 * 
+	 *
 	 * @see org.kuali.rice.test.RiceTestCase#getSuiteLifecycles()
 	 */
 	@Override
@@ -225,11 +227,11 @@ public abstract class KEWTestCase extends RiceTestCase {
 						.runSql();
 			}
 		}
-	
+
 		new SQLDataLoader(
 				"classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql", ";")
 				.runSql();
-		
+
 	}
 
 	/**
@@ -247,6 +249,7 @@ public abstract class KEWTestCase extends RiceTestCase {
 
 		KEWXmlDataLoader.loadXmlClassLoaderResource(KEWTestCase.class,
 				"DefaultPerTestData.xml");
+		GlobalVariables.setErrorMap(new ErrorMap());
 	}
 
 	protected void loadXmlFile(String fileName) {

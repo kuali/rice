@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,20 +16,20 @@
  */
 package org.kuali.rice.kew.routing.web;
 
-import org.kuali.rice.kew.web.WorkflowRoutingForm;
+import org.kuali.rice.kew.web.KewRoutingKualiForm;
 
 /**
  * A Struts ActionForm for the {@link WorkflowDocHandlerAction}.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DocHandlerForm extends WorkflowRoutingForm {
+public class DocHandlerForm extends KewRoutingKualiForm /*WorkflowRoutingForm*/ {
 
 	private static final long serialVersionUID = 3054059006090336396L;
 	private String methodToCall = "";
     private String lookupableImplServiceName;
     private String docHandlerRedirectUrl;
-    
+
     public String getMethodToCall() {
         return methodToCall;
     }
@@ -44,7 +44,7 @@ public class DocHandlerForm extends WorkflowRoutingForm {
     public void setLookupableImplServiceName(String lookupableImplServiceName) {
         this.lookupableImplServiceName = lookupableImplServiceName;
     }
-   
+
     public String getDocHandlerRedirectUrl() {
         return docHandlerRedirectUrl;
     }

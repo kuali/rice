@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,107 +22,111 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.export.web.ExportServlet;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
  * Struts action for interfacing with the Help system.
- * 
+ *
  * @see HelpService
  * @see HelpEntry
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class HelpAction extends WorkflowAction {
+public class HelpAction extends KewKualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpAction.class);
+    private static final String HELP_ID_KEY = "helpId";
+    private static final String ID_INVALID = "helpentry.id.invalid";
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	return mapping.findForward("basic");
-    }
-    
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        return null;
-    }
-    
+
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
         HelpEntry helpEntry = helpForm.getHelpEntry();
         getHelpService().save(helpEntry);
-        ActionMessages messages = new ActionMessages();
-        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("helpentry.saved"));
-        saveMessages(request, messages);
+        GlobalVariables.getErrorMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.saved");
         return mapping.findForward("summary");
     }
-    
+
     public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
     	HelpForm helpForm=(HelpForm)form;
     	HelpEntry helpEntry=helpForm.getHelpEntry();
     	LOG.info(helpEntry.getHelpName());
     	getHelpService().delete(helpEntry);
         helpForm.setShowDelete("no");
-    	ActionMessages messages=new ActionMessages();
-    	messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("helpentry.deleted"));
-    	saveMessages(request,messages);
+        GlobalVariables.getErrorMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.deleted");
     	return mapping.findForward("delete");
     }
-    
+
     public ActionForward getSearch (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	LOG.debug("getSearch");
         HelpForm helpForm = (HelpForm) form;
-        // TOOD hook up KIM permissions to this
+        // TODO hook up KIM permissions to this
         helpForm.setIsAdmin(false);
        	return mapping.findForward("getSearch");
     }
-    
+
     public ActionForward search (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
         HelpEntry helpEntry = helpForm.getHelpEntry();
+        if(helpForm.getHelpId() != null && !StringUtils.isNumeric(helpForm.getHelpId())){
+            GlobalVariables.getErrorMap().putError(HELP_ID_KEY, ID_INVALID);
+        } else {
+            if (helpForm.getHelpId() != null) {
+                helpEntry.setHelpId(new Long(helpForm.getHelpId()));
+            }
+        }
+
         List searchResults = getHelpService().search(helpEntry);
-        
+
         if(searchResults != null && searchResults.size() > 0){
             request.setAttribute("reqSearchResults", searchResults);
         }
-        // TOOD hook up KIM permissions to this
+        // TODO hook up KIM permissions to this
         helpForm.setIsAdmin(false);
+
         return mapping.findForward("getSearch");
     }
-    
+
     public ActionForward clearSearch (ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
         helpForm.getHelpEntry().setHelpId(null);
         helpForm.getHelpEntry().setHelpName(null);
         helpForm.getHelpEntry().setHelpText(null);
         request.setAttribute("reqSearchResults", null);
-        // TOOD hook up KIM permissions to this
-        helpForm.setIsAdmin(false);      
+        // TODO hook up KIM permissions to this
+        helpForm.setIsAdmin(false);
         return mapping.findForward("getSearch");
     }
-    
+
     public ActionForward report(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
         helpForm.setHelpEntry(getHelpService().findById(new Long(request.getParameter("helpId"))));
         return mapping.findForward("report");
     }
-    
+
     public ActionForward showEdit(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
         if(helpForm.getHelpEntry().getHelpId() == null){
             Long helpId = new Long(request.getParameter("helpId"));
             helpForm.setHelpEntry(getHelpService().findById(helpId));
-        } 
+        }
         return mapping.findForward("basic");
     }
-    
+
     public ActionForward showDelete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
     	HelpForm helpForm=(HelpForm)form;
     	if(helpForm.getHelpEntry().getHelpId()==null){
@@ -130,14 +134,14 @@ public class HelpAction extends WorkflowAction {
     		helpForm.setHelpEntry(getHelpService().findById(helpId));
     	}
         // TOOD hook up KIM permissions to this
-        helpForm.setIsAdmin(false);   
+        helpForm.setIsAdmin(false);
     	return mapping.findForward("delete");
     }
-    
+
     private HelpService getHelpService(){
         return  (HelpService) KEWServiceLocator.getService(KEWServiceLocator.HELP_SERVICE);
     }
-    
+
     public ActionForward getHelpEntry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
         String helpKey = request.getParameter("helpKey");
@@ -145,9 +149,9 @@ public class HelpAction extends WorkflowAction {
         helpForm.setShowEdit(KEWConstants.NO_LABEL);
         return mapping.findForward("popHelp");
     }
-    
+
     /**
-     * TODO implement the help search as a lookupable, rendering this code redundant 
+     * TODO implement the help search as a lookupable, rendering this code redundant
      */
     public ActionForward export(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
@@ -158,8 +162,8 @@ public class HelpAction extends WorkflowAction {
         }
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getHelp().addAll(searchResults);
-        return exportDataSet(request, dataSet);
+        request.getSession().setAttribute(ExportServlet.EXPORT_DATA_SET_KEY, dataSet);
+        return new ActionForward(ExportServlet.generateExportPath(request, dataSet), true);
     }
-    
-   
+
 }

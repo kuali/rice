@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,9 +49,9 @@ public class KualiActionServlet extends ActionServlet {
 
     /**
      * <p>Initialize other global characteristics of the controller servlet.</p>
-     * Overridden to remove the ConvertUtils.deregister() command that caused problems 
+     * Overridden to remove the ConvertUtils.deregister() command that caused problems
      * with the concurrent data dictionary load.  (KULRNE-4405)
-     * 
+     *
      * @exception ServletException if we cannot initialize these resources
      */
     protected void initOther() throws ServletException {
@@ -88,14 +88,14 @@ public class KualiActionServlet extends ActionServlet {
         }
 
     }
-    
+
     KualiActionServletConfig serverConfigOverride = null;
-    
+
     @Override
     public ServletConfig getServletConfig() {
         if ( serverConfigOverride == null ) {
             ServletConfig config = super.getServletConfig();
-            
+
             if ( config == null ) {
                 return null;
             } else {
@@ -114,7 +114,7 @@ public class KualiActionServlet extends ActionServlet {
 
         private ServletConfig wrapped;
         private Map<String,String> initParameters = new HashMap<String, String>();
-        
+
         @SuppressWarnings("deprecation")
         public KualiActionServletConfig(ServletConfig wrapped) {
             this.wrapped = wrapped;
@@ -136,31 +136,27 @@ public class KualiActionServlet extends ActionServlet {
                 // in "embedded" or "remote" modes, the UIs are hosted on a central server
                 if ( module.shouldRenderWebInterface() ) {
                 	if ( LOG.isInfoEnabled() ) {
-                		LOG.info( "Configuring Web Content for Module: " + module.getModuleName() 
-                				+ " / " + module.getWebModuleConfigName() 
+                		LOG.info( "Configuring Web Content for Module: " + module.getModuleName()
+                				+ " / " + module.getWebModuleConfigName()
                 				+ " / " + module.getWebModuleConfigurationFiles()
                 				+ " / Base URL: " + module.getWebModuleBaseUrl() );
                 	}
                     if ( !initParameters.containsKey( module.getWebModuleConfigName() ) ) {
                         initParameters.put( module.getWebModuleConfigName(), module.getWebModuleConfigurationFiles() );
-                        // hack for EN web content
-                        if ( module.getModuleName().equals( "KEW" ) ) {
-                            initParameters.put( module.getWebModuleConfigName().replace("kew", "en"), module.getWebModuleConfigurationFiles().replace("kew", "en") );
-                        }
                     }
                 }
             }
         }
-        
+
         public String getInitParameter(String name) {
             return initParameters.get(name);
         }
-        
+
         @SuppressWarnings("unchecked")
 		public Enumeration<String> getInitParameterNames() {
             return new IteratorEnumeration( initParameters.keySet().iterator() );
         }
-        
+
         public ServletContext getServletContext() {
             return wrapped.getServletContext();
         }

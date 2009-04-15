@@ -58,8 +58,8 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * This is a description of what this class does - chris don't forget to fill this in. 
- * 
+ * This is a description of what this class does - chris don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -69,21 +69,21 @@ KualiLookupableHelperServiceImpl {
 	private static final long serialVersionUID = -5162419674659967408L;
 	DateTimeService dateTimeService;
 	DocumentLookupCriteriaProcessor processor;
-	
-	
+
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.kns.service.DateTimeService)
 	 */
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;
 	}
 
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
 	 */
 	@Override
@@ -95,37 +95,37 @@ KualiLookupableHelperServiceImpl {
 
 
 
-	
+
 
 
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#performLookup(org.kuali.rice.kns.web.struts.form.LookupForm, java.util.Collection, boolean)
 	 */
 	@Override
 	public Collection performLookup(LookupForm lookupForm,
 			Collection resultTable, boolean bounded) {
-		
+
 		//TODO: KNS updates to make this not require code from the parent
-    	
+
 
     	Map<String,String> fieldsForLookup = lookupForm.getFieldsForLookup();
     	DocSearchCriteriaDTO criteria = constructCriteria(fieldsForLookup);
-    	
+
     	//TODO: move this into actual adapter as well
     	Collection displayList=null;
     	DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
     	List<DocumentSearchResult> result = components.getSearchResults();
 //    	for (DocumentSearchResult documentSearchResult : result) {
-			displayList = result;//.getResultContainers();	
+			displayList = result;//.getResultContainers();
 //		}
-			
+
 		//####BEGIN COPIED CODE#########
         setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
-        
+
 //###COMENTED OUT
 //		  Collection displayList;
 //        // call search method to get results
@@ -136,7 +136,7 @@ KualiLookupableHelperServiceImpl {
 //            displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
 //        }
 //##COMENTED OUT
-        
+
         HashMap<String,Class> propertyTypes = new HashMap<String, Class>();
 
         boolean hasReturnableRow = false;
@@ -144,7 +144,7 @@ KualiLookupableHelperServiceImpl {
         List returnKeys = getReturnKeys();
         List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
-        
+
         // iterate through result list and wrap rows with return url and action urls
 
 //COMMENTING THIS OUT FOR NOW
@@ -155,7 +155,7 @@ KualiLookupableHelperServiceImpl {
 //            }
 //        	BusinessObject element = null;
 //        	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
-        	
+
 //            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
 //          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 //ADDED (4 lines)
@@ -179,7 +179,7 @@ KualiLookupableHelperServiceImpl {
             	  KeyValueSort keyValue = keyValues.get(i);
 //Set values from keyvalue on column
             	  col.setPropertyValue(keyValue.getUserDisplayValue());
-            	  
+
             	Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
@@ -187,7 +187,7 @@ KualiLookupableHelperServiceImpl {
 //                Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
 //ADDED
                 Object prop=col.getPropertyValue();
-                
+
                 // set comparator and formatter based on property type
                 Class propClass = propertyTypes.get(col.getPropertyName());
                 if ( propClass == null ) {
@@ -227,7 +227,7 @@ KualiLookupableHelperServiceImpl {
                 // comparator
                 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
-                
+
 //                propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
 
                 col.setPropertyValue(propValue);
@@ -238,10 +238,10 @@ KualiLookupableHelperServiceImpl {
                 	AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
                 	//TODO: change to grab URL from config variable
                 	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey())) {
-                		anchor.setHref("../en/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
+                		anchor.setHref(StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
                         col.setMaxLength(100); //for now force this
                 	}
-                	
+
                 	col.setColumnAnchor(anchor);
                 }
             }
@@ -267,13 +267,13 @@ KualiLookupableHelperServiceImpl {
         lookupForm.setHasReturnableRow(hasReturnableRow);
 
         return displayList;
-		//####END COPIED CODE#########    	
+		//####END COPIED CODE#########
 	}
 
 
 	/**
 	 * This method ...
-	 * 
+	 *
 	 * @param lookupForm
 	 * @return
 	 */
@@ -311,14 +311,14 @@ KualiLookupableHelperServiceImpl {
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		//FIXME: ctk - make sure and check that it's ok to do this here.  I may move this out to the doc search processor
 		if(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID.equals(propertyName)) {
-			
+
 			AnchorHtmlData link = new AnchorHtmlData();
 			DocumentRouteHeaderValue doc = (DocumentRouteHeaderValue)bo;
 			//if !superuser
@@ -326,17 +326,17 @@ KualiLookupableHelperServiceImpl {
 			link.setDisplayText(routeHeaderId+"");
 			String href = "../"+KEWConstants.APP_CODE + "/" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
 			link.setHref(href);
-			
+
 			return link;
 		}
-		
+
 		return super.getInquiryUrl(bo, propertyName);
 	}
 
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#setRows()
 	 */
 	@Override
@@ -346,7 +346,7 @@ KualiLookupableHelperServiceImpl {
 		//this is called by setbo in super(which is called by form) so should be called when the page needs refreshing
 
 		//TODO: move over code that checks for doctype (actually should that be in the refresh, since that's where the doc type will be coming back to?)
-		
+
 
 		//###START LOOKUP ROW CODE Not sure if we need these but they may be valuable for eventually forcing all standard field customization in the xml
 		super.setRows();
@@ -358,11 +358,11 @@ KualiLookupableHelperServiceImpl {
 		//clear out
 		super.getRows().clear();
 		//###END LOOKUP ROW CODE TODO: do something with lookupRows or delete above code
-		
-		
+
+
         processor = new DocumentLookupCriteriaProcessorKEWAdapter();
-        
-        
+
+
 
 		//TODO: get this from parameters (or bo?)
 		DocumentType docType = null;
@@ -371,43 +371,43 @@ KualiLookupableHelperServiceImpl {
 //			if(docType==oldDocType) {
 			((DocumentLookupCriteriaProcessorKEWAdapter)processor).setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
 //			} else {
-				
+
 //			}
 		} else {
 			//TODO: same Doc type
 			if(docType==null) {
 				((DocumentLookupCriteriaProcessorKEWAdapter)processor).setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
 			}// else {
-				
+
 //			}
 		}
-		
+
 		//call get rows
 		List<Row> rows = processor.getRows(docType,lookupRows,false,false);
 		super.getRows().addAll(rows);
 
 		//are we in basic or detailed, are we in super.
 		//TODO: ctk Add this code back in when KNS impacting changes are worked back
-		
 
-		
-		
-		
+
+
+
+
 	}
 
 
 	/**
 	 * This overridden method allows for overriding what the clear logic does.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#performClear()
 	 */
 	@Override
 	public void performClear(LookupForm lookupForm) {
 		Map<String,String> fieldsToClear = new HashMap<String,String>();
-		
+
 		for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
-				fieldsToClear.put(field.getPropertyName(), field.getPropertyValue());	
+				fieldsToClear.put(field.getPropertyName(), field.getPropertyValue());
 			}
 		}
 		//TODO: also check if standard here (maybe from object if use criteria)
@@ -417,14 +417,14 @@ KualiLookupableHelperServiceImpl {
 			DocSearchCriteriaDTO docCriteria = constructCriteria(fieldsToClear);
 			if(StringUtils.isNotEmpty("documentType.name")) {
 				//TODO: move these strings to constants (probably after moving this to criteria
-				getValidDocumentType(fieldsToClear.get("documentType.name")).getDocumentSearchGenerator().clearSearch(docCriteria);;		
+				getValidDocumentType(fieldsToClear.get("documentType.name")).getDocumentSearchGenerator().clearSearch(docCriteria);;
 			}
 		}
 	}
 	/**
-	 * 
+	 *
 	 * This method is taken from DocSearch to retrieve a document type
-	 * 
+	 *
 	 * @param docTypeName
 	 * @return
 	 */

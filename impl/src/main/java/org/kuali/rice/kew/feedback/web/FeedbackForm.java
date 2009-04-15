@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,17 +16,17 @@
  */
 package org.kuali.rice.kew.feedback.web;
 
-import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * Struts ActionForm for {@link FeedbackAction}.
- * 
+ *
  * @see FeedbackAction
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 /* Action Form for Feedback and Support Web form */
-public class FeedbackForm extends ActionForm {
+public class FeedbackForm extends KualiForm {
 
 	private static final long serialVersionUID = -6881094307991817497L;
 	/* Form elements */
@@ -172,6 +172,6 @@ public class FeedbackForm extends ActionForm {
 		this.phone = phone;
 	}
 
-    
-    
+
+
 }

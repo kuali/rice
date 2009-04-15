@@ -320,7 +320,13 @@ public class ModuleServiceBase implements ModuleService {
 			return null;
 		}
 		else {
-			return getModuleConfiguration().getExternalizableBusinessObjectImplementations().get(externalizableBusinessObjectInterface);			
+			Class<E> implementationClass = getModuleConfiguration().getExternalizableBusinessObjectImplementations().get(externalizableBusinessObjectInterface);
+			int implClassModifiers = implementationClass.getModifiers();
+			if (Modifier.isInterface(implClassModifiers) || Modifier.isAbstract(implClassModifiers)) {
+				throw new RuntimeException("Implementation class must be non-abstract class: ebo interface: " + externalizableBusinessObjectInterface.getName() + " impl class: "
+						+ implementationClass.getName() + " module: " + getModuleConfiguration().getNamespaceCode());
+			}
+			return implementationClass;
 		}
 
 	}

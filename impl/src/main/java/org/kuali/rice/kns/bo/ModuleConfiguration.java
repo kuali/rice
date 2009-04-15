@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kns.bo;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -109,7 +111,9 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	 * @return the externalizableBusinessObjectImplementations
 	 */
 	public Map<Class, Class> getExternalizableBusinessObjectImplementations() {
-		return this.externalizableBusinessObjectImplementations;
+		if (this.externalizableBusinessObjectImplementations == null)
+			return null;
+		return Collections.unmodifiableMap(this.externalizableBusinessObjectImplementations);
 	}
 
 	/**
@@ -117,6 +121,15 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	 */
 	public void setExternalizableBusinessObjectImplementations(
 			Map<Class, Class> externalizableBusinessObjectImplementations) {
+		if (externalizableBusinessObjectImplementations != null) {
+			for (Class implClass : externalizableBusinessObjectImplementations.values()) {
+				int implModifiers = implClass.getModifiers();
+				if (Modifier.isInterface(implModifiers) || Modifier.isAbstract(implModifiers)) {
+					throw new RuntimeException("Externalizable business object implementation class " +
+							implClass.getName() + " must be a non-interface, non-abstract class");
+				}
+			}
+		}
 		this.externalizableBusinessObjectImplementations = externalizableBusinessObjectImplementations;
 	}
 

@@ -56,7 +56,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException {
         try {
-            LOG.info(new StringBuffer("started handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getRouteHeaderId()));
+        	if ( LOG.isInfoEnabled() ) {
+        		LOG.info(new StringBuffer("started handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getRouteHeaderId()));
+        	}
             establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(statusChangeEvent.getRouteHeaderId().toString());
             if (document == null) {
@@ -79,7 +81,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 }
                 document.doRouteStatusChange(statusChangeEvent);
             }
-            LOG.info(new StringBuffer("finished handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getRouteHeaderId()));
+            if ( LOG.isInfoEnabled() ) {
+            	LOG.info(new StringBuffer("finished handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getRouteHeaderId()));
+            }
         }
         catch (Exception e) {
             logAndRethrow("route status", e);
@@ -95,7 +99,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         // are doing this here cause it's a heavy hitter, and we
         // want to avoid the user waiting for this during sync processing
         try {
-            LOG.debug(new StringBuffer("started handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug(new StringBuffer("started handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
+        	}
             establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(levelChangeEvent.getRouteHeaderId().toString());
             if (document == null) {
@@ -104,7 +110,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             document.populateDocumentForRouting();
             document.handleRouteLevelChange(levelChangeEvent);
             document.getDocumentHeader().getWorkflowDocument().saveRoutingData();
-            LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
+            if ( LOG.isDebugEnabled() ) {
+            	LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));
+            }
         }
         catch (Exception e) {
             logAndRethrow("route level", e);
@@ -124,7 +132,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         try {
-            LOG.debug(new StringBuffer("started doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getRouteHeaderId()));
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug(new StringBuffer("started doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getRouteHeaderId()));
+        	}
             establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(event.getRouteHeaderId().toString());
             if (ObjectUtils.isNull(document)) {
@@ -136,7 +146,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 }
             } else {
                 document.doActionTaken(event);
-                LOG.debug(new StringBuffer("finished doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getRouteHeaderId()));
+                if ( LOG.isDebugEnabled() ) {
+                	LOG.debug(new StringBuffer("finished doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getRouteHeaderId()));
+                }
             }
         }
         catch (Exception e) {
@@ -153,7 +165,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     public boolean afterProcess(AfterProcessEventDTO event) throws Exception {
         try {
-            LOG.debug(new StringBuffer("started after process method for document ").append(event.getRouteHeaderId()));
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug(new StringBuffer("started after process method for document ").append(event.getRouteHeaderId()));
+        	}
             establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(event.getRouteHeaderId().toString());
             if (ObjectUtils.isNull(document)) {
@@ -161,7 +175,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 LOG.warn("afterProcess() Unable to load document with id " + event.getRouteHeaderId() + "... ignoring post processing");
             } else {
                 document.afterWorkflowEngineProcess(event.isSuccessfullyProcessed());
-                LOG.debug(new StringBuffer("finished after process method for document ").append(event.getRouteHeaderId()));
+                if ( LOG.isDebugEnabled() ) {
+                	LOG.debug(new StringBuffer("finished after process method for document ").append(event.getRouteHeaderId()));
+                }
             }
         }
         catch (Exception e) {
@@ -178,7 +194,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     public boolean beforeProcess(BeforeProcessEventDTO event) throws Exception {
         try {
-            LOG.debug(new StringBuffer("started before process method for document ").append(event.getRouteHeaderId()));
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug(new StringBuffer("started before process method for document ").append(event.getRouteHeaderId()));
+        	}
             establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(event.getRouteHeaderId().toString());
             if (ObjectUtils.isNull(document)) {
@@ -186,7 +204,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 LOG.warn("beforeProcess() Unable to load document with id " + event.getRouteHeaderId() + "... ignoring post processing");
             } else {
                 document.beforeWorkflowEngineProcess();
-                LOG.debug(new StringBuffer("finished before process method for document ").append(event.getRouteHeaderId()));
+                if ( LOG.isDebugEnabled() ) {
+                	LOG.debug(new StringBuffer("finished before process method for document ").append(event.getRouteHeaderId()));
+                }
             }
         }
         catch (Exception e) {

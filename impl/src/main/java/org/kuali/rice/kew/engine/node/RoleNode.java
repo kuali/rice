@@ -225,6 +225,7 @@ public class RoleNode extends RequestsNode {
 		boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals( activationType );
 		boolean requestActivated = false;
 		String groupToActivate = null;
+		Integer priorityToActivate = null;
 		for ( ActionRequestValue request : requests ) {
 			if ( requestActivated
 					&& !isParallel
@@ -239,10 +240,20 @@ public class RoleNode extends RequestsNode {
 				continue;
 			}
 			if ( request.isApproveOrCompleteRequest() ) {
+				if ( priorityToActivate == null ) {
+				 	priorityToActivate = request.getPriority();
+				}
 				if ( groupToActivate == null ) {
 					groupToActivate = request.getResponsibilityDesc();
 				}
-				if ( StringUtils.equals( groupToActivate, request.getResponsibilityDesc() ) ) {
+				// check that the given request is found in the current group to activate
+				// check priority and grouping from the request (stored in the responsibility description)
+				if ( StringUtils.equals( groupToActivate, request.getResponsibilityDesc() )
+						&& (
+								(priorityToActivate != null && request.getPriority() != null && priorityToActivate.equals(request.getPriority()))
+							||  (priorityToActivate == null && request.getPriority() == null)
+							)
+						) {
 					if ( request.isActive() ) {
 						requestActivated = requestActivated || request.isApproveOrCompleteRequest();
 						continue;

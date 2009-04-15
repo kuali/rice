@@ -87,7 +87,7 @@ public class PostProcessorTest extends KEWTestCase {
 				WorkflowDocument ppDocument = new WorkflowDocument(new NetworkIdDTO("user1"), "testModifyDocumentInPostProcessor");
 				routedDocumentId = ppDocument.getRouteHeaderId();
 				// principal id 1 = ewestfal
-				ppDocument.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", "1", "", true);
+				ppDocument.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", "2001", "", true);
 				ppDocument.routeDocument("");
 				processedChange = true;
 			}

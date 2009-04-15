@@ -49,13 +49,6 @@ public class ActionRequestScenariosTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testInlineRequestsRouteModule() throws Exception {
-        /*WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType");
-        try {
-            document.routeDocument("");
-            fail("Bad route succeeded");
-        } catch (WorkflowException we) {
-            // should throw exception as no approvals were generated
-        }*/
 
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("arh14"), "InlineRequestsDocumentType");
         document.setApplicationContent("<blah><step>step1</step></blah>");

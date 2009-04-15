@@ -18,6 +18,7 @@ package org.kuali.rice.kew.clientapp;
 
 import javax.xml.namespace.QName;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -25,7 +26,6 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.kew.config.KEWConfigurer;
 import org.kuali.rice.kew.config.ThinClientResourceLoader;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -37,6 +37,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Ignore("once KULRICE-2792 is resolved, remove this ignore annotation so that this test executes again")
 public class SimpleWebServiceClientTest extends KEWTestCase {
 
 	@Override

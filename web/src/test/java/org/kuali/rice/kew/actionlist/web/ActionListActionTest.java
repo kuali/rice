@@ -22,11 +22,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.kew.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;

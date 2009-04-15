@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.test;
+package org.kuali.rice.kew;
 
+import java.io.InputStream;
 import java.net.URL;
 
+import org.kuali.rice.kew.batch.KEWXmlDataLoader;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.server.test.ServerTestBase;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -33,7 +37,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KEWHtmlUnitTestCase extends KEWTestCase {
+public class KEWHtmlUnitTestCase extends ServerTestBase {
 
     public static final String URL_PREFIX = "http://localhost:9952/en-test/";
     public static final String ADMIN_USER_NETWORK_ID = "admin";
@@ -41,9 +45,16 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
     private WebClient webClient;
     private KimPrincipal adminPrincipal;
 
+    
+    
     @Override
+	protected void setUpInternal() throws Exception {
+		super.setUpInternal();
+		setUpAfterDataLoad();
+	}
+
+	
     protected void setUpAfterDataLoad() throws Exception {
-        super.setUpAfterDataLoad();
         webClient = new WebClient();
 
         // Set the user preference refresh rate to 0 to prevent a <META HTTP-EQUIV="Refresh" .../> tag from being rendered.
@@ -53,6 +64,53 @@ public class KEWHtmlUnitTestCase extends KEWTestCase {
         preferences.setRefreshRate("0");
         KEWServiceLocator.getPreferencesService().savePreferences(adminPrincipal.getPrincipalId(), preferences);
     }
+    
+	protected void loadXmlFile(String fileName) {
+		try {
+			KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), fileName);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
+	}
+
+	protected void loadXmlFile(Class clazz, String fileName) {
+		try {
+			KEWXmlDataLoader.loadXmlClassLoaderResource(clazz, fileName);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
+	}
+
+	protected void loadXmlFileFromFileSystem(String fileName) {
+		try {
+			KEWXmlDataLoader.loadXmlFile(fileName);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
+	}
+
+	protected void loadXmlStream(InputStream xmlStream) {
+		try {
+			KEWXmlDataLoader.loadXmlStream(xmlStream);
+		} catch (Exception e) {
+			throw new WorkflowRuntimeException(e);
+		}
+	}
+
+	protected String getPrincipalIdForName(String principalName) {
+		return KEWServiceLocator.getIdentityHelperService()
+				.getIdForPrincipalName(principalName);
+	}
+
+	protected String getPrincipalNameForId(String principalId) {
+		return KEWServiceLocator.getIdentityHelperService().getPrincipal(
+				principalId).getPrincipalName();
+	}
+
+	protected String getGroupIdForName(String namespace, String groupName) {
+		return KEWServiceLocator.getIdentityHelperService().getIdForGroupName(
+				namespace, groupName);
+	}
 
     protected HtmlPage performLogin(String loginUserNetworkId, String urlActionSuffix) throws Exception {
         URL url = new URL (URL_PREFIX + urlActionSuffix);

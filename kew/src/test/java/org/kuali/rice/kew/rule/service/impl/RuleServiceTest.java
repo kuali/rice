@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -322,6 +323,7 @@ public class RuleServiceTest extends KEWTestCase {
         return new RuleServiceImpl().getListFromCache(ruleTemplateName, documentTypeName);
     }
 
+    @Ignore("See KULRICE-2985")
     @Test public void testReplaceRuleInvolvement() throws Exception {
         RuleBaseValues rule = KEWServiceLocator.getRuleService().getRuleByName("DTR-NotRelated");
         assertNotNull("Rule should exist", rule);
@@ -373,6 +375,7 @@ public class RuleServiceTest extends KEWTestCase {
 
     }
 
+    @Ignore("See KULRICE-2985")
     @Test public void testReplaceRuleInvolvementWithDelegations() throws Exception {
         loadXmlFile("org/kuali/rice/kew/rule/RuleRemoveReplaceWithDelegations.xml");
 
@@ -447,6 +450,7 @@ public class RuleServiceTest extends KEWTestCase {
     /**
      * Tests a fringe case where someone is their own delegate and does a replacement.
      */
+    @Ignore("See KULRICE-2985")
     @Test public void testReplaceRuleInvolvementDelegateToSelf() throws Exception {
         loadXmlFile("org/kuali/rice/kew/rule/RuleRemoveReplaceWithDelegateToSelf.xml");
 
@@ -583,6 +587,7 @@ public class RuleServiceTest extends KEWTestCase {
     /**
      * This tests removing involvement of a user from multiple delegation rules on a parent.  The setup includes a parent rule with 4 delegations on it.
      */
+    @Ignore("See KULRICE-2985")
     @Test public void testRemoveRuleInvolvementMultipleDelegations() throws Exception {
 	loadXmlFile("org/kuali/rice/kew/rule/RuleRemoveReplaceMultipleDelegations.xml");
 

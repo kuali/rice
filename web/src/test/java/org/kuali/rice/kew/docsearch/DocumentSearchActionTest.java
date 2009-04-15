@@ -21,12 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.web.DocumentSearchForm;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWHtmlUnitTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
-import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.util.Utilities;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;

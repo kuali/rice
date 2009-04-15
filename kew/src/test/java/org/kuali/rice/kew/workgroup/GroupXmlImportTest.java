@@ -42,11 +42,11 @@ public class GroupXmlImportTest extends KEWTestCase {
     	loadXmlFile("GroupXmlImportTest.xml");
 
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-        //verify the workgroup did not get into the db
+        //verify that the group was ingested
         KimGroup group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
 
-        List<String> members = identityManagementService.getGroupMemberPrincipalIds(group.getGroupId());
         assertNotNull(group);
+        List<String> members = identityManagementService.getGroupMemberPrincipalIds(group.getGroupId());
         List<String> groups = identityManagementService.getMemberGroupIds(group.getGroupId());
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getGroupId()));
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getGroupId()));

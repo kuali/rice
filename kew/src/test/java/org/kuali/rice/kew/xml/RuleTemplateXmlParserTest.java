@@ -55,7 +55,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         VALID_TEMPLATE_WITH_FULL_DEFAULTS("ValidRuleTemplateWithFullDefaults", "RuleTemplate_Valid_Defaults", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS("ValidRuleTemplateWithSomeDefaults", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE("ValidRuleTemplateWithSomeDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
-        VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT("ValidRuleTemplateWithDefaultsInstrOnly", "RuleTemplate_Valid_Instructions_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
+        VALID_TEMPLATE_WITH_DESCRIPTION_DEFAULT("ValidRuleTemplateWithDefaultsDescriptionOnly", "RuleTemplate_Valid_Description_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_REMOVED("ValidRuleTemplateWithSomeRemovedDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE})
         ;
 
@@ -349,10 +349,10 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
     /**
      * Tests loading a template with the minimal required ruleDefaults
      */
-    @Test public void testLoadValidTemplateWithInstructionsDefault() throws Exception {
-        testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.fileNameParameter, null);
+    @Test public void testLoadValidTemplateWithDescriptionDefault() throws Exception {
+        testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_DESCRIPTION_DEFAULT.fileNameParameter, null);
         
-        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.ruleTemplateName);
+        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_DESCRIPTION_DEFAULT.ruleTemplateName);
 
         // test the rule template options; this one just has the instructions, nothing else
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();

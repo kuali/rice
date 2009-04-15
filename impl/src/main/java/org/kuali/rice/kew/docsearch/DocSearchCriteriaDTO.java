@@ -433,7 +433,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
             abbreviatedString.append("Application Document Id=").append(appDocId).append("; ");
         }
         if (approver != null && !"".equals(approver.trim())) {
-            abbreviatedString.append("Approver Network Id=").append(approver).append("; ");
+            abbreviatedString.append("Approver=").append(approver).append("; ");
         }
         if (docRouteNodeId != null && !"".equals(docRouteNodeId.trim())) {
             RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(new Long(docRouteNodeId));
@@ -449,16 +449,16 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
             abbreviatedString.append("Document Type=").append(docTypeFullName).append("; ");
         }
         if (initiator != null && !"".equals(initiator.trim())) {
-            abbreviatedString.append("Initiator Network Id=").append(initiator).append("; ");
+            abbreviatedString.append("Initiator=").append(initiator).append("; ");
         }
         if (routeHeaderId != null) {
             abbreviatedString.append("Document Id=").append(routeHeaderId.toString()).append("; ");
         }
         if (viewer != null && !"".equals(viewer.trim())) {
-            abbreviatedString.append("Viewer Network Id=").append(viewer).append("; ");
+            abbreviatedString.append("Viewer=").append(viewer).append("; ");
         }
         if (workgroupViewerName != null) {
-            abbreviatedString.append("Workgroup Viewer Id=").append(workgroupViewerName).append(";");
+            abbreviatedString.append("Workgroup Viewer=").append(workgroupViewerName).append(";");
         }
         if (dateLastModifiedString != null) {
             abbreviatedString.append("Date Last Modified=").append(dateLastModifiedString).append("; ");

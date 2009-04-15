@@ -25,7 +25,6 @@ import java.util.Set;
 import mocks.MockPostProcessor;
 
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -448,7 +447,6 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Fourth ingested document is not set to Current after third ingest", Boolean.TRUE, fourthIngestDoc.getCurrentInd());
     }
 
-    @Ignore("See KULRICE-2973")
     @Test public void testDocumentTypeParentChildLinking() throws Exception {
     	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
     	verifyDocumentTypeLinking();
@@ -490,14 +488,19 @@ public class DocumentTypeTest extends KEWTestCase {
     	for (Thread thread : threads) {
     		thread.join(2*60*1000);
     	}
-    	// what should have happened here was an optimistic lock being thrown from the
-    	// document type XML import.  Currently that code is catching and just logging
-    	// those errors (not rethrowing) so there's no way for us to check that the
-    	// optimistic lock was thrown however the verifyDocumentTypeLinking should pass
-    	// because the update was never made
+    	// What should have happened here was an optimistic lock being thrown from the
+    	// document type XML import.  Currently, that code is catching and just logging
+    	// those errors (not rethrowing), so there's no way for us to check that the
+    	// optimistic lock was thrown. However, the verifyDocumentTypeLinking should pass
+    	// because the update was never made, and we can check to make sure that
+    	// at least one of the above documents failed to be ingested.
+    	boolean atLeastOneFailure = false;
     	for (Callback callback : callbacks) {
-    		callback.assertXmlLoaded();
+    		if (!callback.isXmlLoaded()) {
+    			atLeastOneFailure = true;
+    		}
     	}
+    	assertTrue("At least one of the XML files should have failed the ingestion process", atLeastOneFailure);
     	verifyDocumentTypeLinking();
 
     	// reload again for good measure
@@ -686,11 +689,14 @@ public class DocumentTypeTest extends KEWTestCase {
     		this.xmlFile = xmlFile;
     		this.t = t;
     	}
-    	public void assertXmlLoaded() {
+    	public boolean isXmlLoaded() {
     		if (t != null) {
     			t.printStackTrace();
-    			fail("Failed to load xml file " + xmlFile);
+   				//fail("Failed to load xml file " + xmlFile);
+   				LOG.info("The XML file " + xmlFile + " failed to load, but this was expected.");
+   				return false;
     		}
+    		return true;
     	}
     }
 }

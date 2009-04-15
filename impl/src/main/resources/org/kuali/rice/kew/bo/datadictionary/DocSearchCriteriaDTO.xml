@@ -260,8 +260,8 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="DocSearchCriteriaDTO-initiator-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="initiator" />
-    <property name="label" value="Initiator Network Id" />
-    <property name="shortLabel" value="InitNetId" />
+    <property name="label" value="Initiator" />
+    <property name="shortLabel" value="Init" />
     
     <property name="control" >
       <bean parent="TextControlDefinition"
@@ -274,8 +274,8 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="DocSearchCriteriaDTO-approver-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="approver" />
-    <property name="label" value="Approver Network Id" />
-    <property name="shortLabel" value="InitNetId" />
+    <property name="label" value="Approver" />
+    <property name="shortLabel" value="Approver" />
     
     <property name="control" >
       <bean parent="TextControlDefinition"
@@ -287,8 +287,8 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="DocSearchCriteriaDTO-viewer-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="viewer" />
-    <property name="label" value="Viewer Network Id" />
-    <property name="shortLabel" value="ViewNetId" />
+    <property name="label" value="Viewer" />
+    <property name="shortLabel" value="View" />
     
     <property name="control" >
       <bean parent="TextControlDefinition"
@@ -301,8 +301,8 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="DocSearchCriteriaDTO-workgroupViewerName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="workgroupViewerName" />
-    <property name="label" value="Workgroup Viewer Network Id" />
-    <property name="shortLabel" value="WorkViewNetId" />
+    <property name="label" value="Workgroup Viewer" />
+    <property name="shortLabel" value="WorkView" />
     
     <property name="control" >
       <bean parent="TextControlDefinition"

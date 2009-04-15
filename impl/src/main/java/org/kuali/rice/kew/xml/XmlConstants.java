@@ -153,7 +153,6 @@ public interface XmlConstants {
     public static final String ATTRIBUTES = "attributes";
     public static final String ATTRIBUTE = "attribute";
     public static final String RULE_DEFAULTS = "ruleDefaults";
-    public static final String RULE_INSTRUCTIONS = "ruleInstructions";
     public static final String DEFAULT_ACTION_REQUESTED = "defaultActionRequested";
     public static final String SUPPORTS_COMPLETE = "supportsComplete";
     public static final String SUPPORTS_APPROVE = "supportsApprove";

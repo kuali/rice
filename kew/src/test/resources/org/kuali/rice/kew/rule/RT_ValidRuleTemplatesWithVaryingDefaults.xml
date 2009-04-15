@@ -9,9 +9,6 @@
 			<name>RuleTemplate_With_Valid_Defaults</name>
 			<description>TestRuleTemplate</description>
 			<ruleDefaults>
-				<ruleInstructions>
-					This is the most custom instructions evar.
-				</ruleInstructions>
 				<description>Testy Me A Template</description>
 				<fromDate>01/11/2006</fromDate>
 				<toDate>01/01/2100</toDate>
@@ -28,9 +25,6 @@
 			<name>RuleTemplate_With_More_Valid_Defaults</name>
 			<description>TestRuleTemplate</description>
 			<ruleDefaults>
-				<ruleInstructions>
-					This is the most custom instructions evar.
-				</ruleInstructions>
 				<description>Testy Me A Template</description>
 				<fromDate>01/11/2006</fromDate>
 				<toDate>01/01/2100</toDate>
@@ -47,9 +41,6 @@
 			<name>Test_Rule_Template2</name>
 			<description>TestRuleTemplate</description>
 			<ruleDefaults>
-				<ruleInstructions>
-					This is the most custom instructions evar.
-				</ruleInstructions>
 				<description>Testy Me A Template</description>
 				<fromDate>01/11/2006</fromDate>
 				<toDate>01/01/2100</toDate>

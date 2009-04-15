@@ -15,7 +15,6 @@
 				</attribute>
 			</attributes>
 			<ruleDefaults>
-                <ruleInstructions>fill out</ruleInstructions>
                 <description>a rule based on RuleTemplate_Valid_Some_Defaults</description>
 				<fromDate>01/11/2006</fromDate>
 				<toDate>01/01/2100</toDate>

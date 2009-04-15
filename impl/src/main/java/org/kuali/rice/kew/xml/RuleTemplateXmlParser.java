@@ -167,7 +167,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
      * @throws InvalidXmlException
      */
     /*
-     <element name="ruleInstructions" type="c:LongStringType"/>
      <element name="description" type="c:LongStringType"/>
      <element name="fromDate" type="c:ShortStringType" minOccurs="0"/>
      <element name="toDate" type="c:ShortStringType" minOccurs="0"/>
@@ -199,8 +198,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
         // the possible defaults options
         // NOTE: the current implementation will remove any existing RuleTemplateOption records for any values which are null, i.e. not set in the incoming XML.
         // to pro-actively set default values for omitted options, simply set those values here, and records will be added if not present
-        // note, rule instructions is mandatory in rule template defaults XSD
-        String ruleInstructions = null;
         String defaultActionRequested = null;
         Boolean supportsComplete = null;
         Boolean supportsApprove = null;
@@ -213,14 +210,8 @@ public class RuleTemplateXmlParser implements XmlConstants {
         
         // read in new settings
         if (defaultsElement != null) {
-            // there's a defaults element, parse the values
-            ruleInstructions = defaultsElement.getChildText(RULE_INSTRUCTIONS, RULE_TEMPLATE_NAMESPACE);
 
-            if (ruleInstructions == null) {
-                throw new InvalidXmlException("Instructions must be specified in rule defaults");
-            }
-
-            defaultActionRequested = defaultsElement.getChildText(DEFAULT_ACTION_REQUESTED, RULE_TEMPLATE_NAMESPACE);
+        	defaultActionRequested = defaultsElement.getChildText(DEFAULT_ACTION_REQUESTED, RULE_TEMPLATE_NAMESPACE);
             supportsComplete = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_COMPLETE, RULE_TEMPLATE_NAMESPACE));
             supportsApprove = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_APPROVE, RULE_TEMPLATE_NAMESPACE));
             supportsAcknowledge = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_ACKNOWLEDGE, RULE_TEMPLATE_NAMESPACE));

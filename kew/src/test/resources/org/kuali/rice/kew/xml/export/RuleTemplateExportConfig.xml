@@ -73,9 +73,6 @@
 				</attribute>
 			</attributes>
 			<ruleDefaults>
-				<ruleInstructions>
-					This is the most custom instructions evar.
-				</ruleInstructions>
 				<description>Testy Me A Template</description>
 				<fromDate>01/11/2006</fromDate>
 				<toDate>01/01/2100</toDate>
@@ -99,9 +96,6 @@
 			</attributes>
 			<ruleDefaults>
 				<delegationType>P</delegationType>
-				<ruleInstructions>
-					This is the most R@|)! instructions evar.
-				</ruleInstructions>
 				<description>Testy Me A Delegate Template</description>
 				<ignorePrevious>false</ignorePrevious>
 				<active>true</active>

@@ -162,14 +162,6 @@ logic is executed together to determine documents match the rule -->
 	  			</documentation>
 	  		</annotation>
 	  	</element>
-	  	
-  		<element name="ruleInstructions" type="c:LongStringType">
-  			<annotation>
-  				<documentation>
-  				 Set of instructions displayed at the top of the rule creation section of the rule entry page.
-  				</documentation>
-  			</annotation>
-  		</element>
   		
   		<element name="description" type="c:LongStringType">
   			<annotation>

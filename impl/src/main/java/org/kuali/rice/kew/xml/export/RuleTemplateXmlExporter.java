@@ -104,16 +104,26 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
                 RuleTemplateOption supportsApprove = ruleTemplate.getApprove();
                 RuleTemplateOption supportsAck = ruleTemplate.getAcknowledge();
                 RuleTemplateOption supportsFYI = ruleTemplate.getFyi();
-                String defaultActionValue = (defaultActionOption == null ? KEWConstants.ACTION_REQUEST_APPROVE_REQ : defaultActionOption.getValue());
-                String supportsCompleteValue = (supportsComplete == null ? Boolean.TRUE.toString() : supportsComplete.getValue());
-                String supportsApproveValue = (supportsApprove == null ? Boolean.TRUE.toString() : supportsApprove.getValue());
-                String supportsAckValue = (supportsAck == null ? Boolean.TRUE.toString() : supportsAck.getValue());
-                String supportsFYIValue = (supportsFYI == null ? Boolean.TRUE.toString() : supportsFYI.getValue());
-                renderer.renderTextElement(defaultsElement, DEFAULT_ACTION_REQUESTED, defaultActionValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_COMPLETE, supportsCompleteValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_APPROVE, supportsApproveValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_ACKNOWLEDGE, supportsAckValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_FYI, supportsFYIValue);
+                if (defaultActionOption != null) {
+                	String defaultActionValue = (defaultActionOption == null ? null : defaultActionOption.getValue());
+                	renderer.renderTextElement(defaultsElement, DEFAULT_ACTION_REQUESTED, defaultActionValue);
+                }
+                if (supportsComplete != null) {
+                	String supportsCompleteValue = supportsComplete.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_COMPLETE, supportsCompleteValue);
+                }
+                if (supportsApprove != null) {
+                	String supportsApproveValue = supportsApprove.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_APPROVE, supportsApproveValue);
+                }
+                if (supportsAck != null) {
+                	String supportsAckValue = supportsAck.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_ACKNOWLEDGE, supportsAckValue);
+                }
+                if (supportsFYI != null) {
+                	String supportsFYIValue = supportsFYI.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_FYI, supportsFYIValue);
+                }
             }
         }
     }

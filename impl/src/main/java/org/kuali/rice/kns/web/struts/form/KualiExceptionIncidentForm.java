@@ -342,5 +342,19 @@ public class KualiExceptionIncidentForm extends KualiForm {
         this.componentName = componentName;
     }
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#shouldMethodToCallParameterBeUsed(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldMethodToCallParameterBeUsed(
+			String methodToCallParameterName,
+			String methodToCallParameterValue, HttpServletRequest request) {
+		// we will allow all method to calls since the KualiExceptionHandlerAction will ignore the methodToCall
+		return true;
+	}
+
+    
 }
 

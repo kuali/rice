@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -42,7 +43,7 @@ import org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler;
  * applications.
  * 
  */
-public class KualiExceptionHandlerAction extends KualiAction {
+public class KualiExceptionHandlerAction extends Action {
 	private static final Logger LOG = Logger
 			.getLogger(KualiExceptionHandlerAction.class);
 

@@ -106,7 +106,7 @@ public class ActionRequestFactory {
     }
 
 	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation) {
-		return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, null, null, annotation, null);
+		return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, annotation, null);
 	}
 
 	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation, String requestLabel) {

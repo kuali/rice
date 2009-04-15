@@ -55,7 +55,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	protected String roleId;
 
 	@Column(name="ACTV_IND")
-	protected boolean active;
+	protected boolean active = true;
 
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;

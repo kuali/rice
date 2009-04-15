@@ -8,8 +8,9 @@
 
 <c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 <c:set var="canAssignRole" value="${KualiForm.canAssignRole}" />
-<c:if test="${!canAssignRole}">
-	<c:set var="readOnly" value="${!canAssignRole}"/>
+<c:set var="canModifyAssignees" value="${KualiForm.canModifyAssignees}" />
+<c:if test="${!canAssignRole || !canModifyAssignees}">
+	<c:set var="readOnly" value="${!(canAssignRole && canModifyAssignees)}"/>
 </c:if>
 
 <script language="javaScript">

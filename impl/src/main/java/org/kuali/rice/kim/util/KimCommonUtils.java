@@ -133,6 +133,7 @@ public class KimCommonUtils {
 	}
 
 	public static final KimTypeService getKimTypeService(KimTypeImpl kimTypeImpl){
+		if(kimTypeImpl==null) return null;
 		String serviceName = KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName());
 		try {
 			return (KimTypeService)KIMServiceLocator.getService(serviceName);
@@ -143,6 +144,7 @@ public class KimCommonUtils {
 	}
 
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
+		if(targetToCopyTo!=null && sourceToCopyFrom!=null)
 		try{
 			PropertyUtils.copyProperties(targetToCopyTo, sourceToCopyFrom);
 		} catch(Exception ex){

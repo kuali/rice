@@ -70,7 +70,7 @@
   <bean id="DocRoleMember-memberNamespaceCode-parentBean" parent="KimAttributes-namespaceCode" abstract="true"
         p:name="memberNamespaceCode"
         p:required="false"
-        p:label="Member Namespace Code" />
+        p:label="Member Namespace" />
   
   <bean id="DocRoleMember-memberName" parent="DocRoleMember-memberName-parentBean" />
   <bean id="DocRoleMember-memberName-parentBean" parent="AttributeDefinition" abstract="true"

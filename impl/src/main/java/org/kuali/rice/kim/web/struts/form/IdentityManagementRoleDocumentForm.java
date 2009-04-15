@@ -44,6 +44,7 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	}
 	
 	private boolean canAssignRole = true;
+	private boolean canModifyAssignees = true;
 	private KimTypeImpl kimType;
 	private KimDocumentRoleMember member;
 	{
@@ -219,6 +220,20 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	 */
 	public void setCanAssignRole(boolean canAssignRole) {
 		this.canAssignRole = canAssignRole;
+	}
+
+	/**
+	 * @return the canModifyAssignees
+	 */
+	public boolean isCanModifyAssignees() {
+		return this.canModifyAssignees;
+	}
+
+	/**
+	 * @param canModifyAssignees the canModifyAssignees to set
+	 */
+	public void setCanModifyAssignees(boolean canModifyAssignees) {
+		this.canModifyAssignees = canModifyAssignees;
 	}
 
 }

@@ -82,14 +82,14 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
     
     protected HtmlData getEditRoleUrl(RoleImpl roleImpl) {
     	String href = "";
-    	if(!KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
-	        Properties parameters = new Properties();
-	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
-	        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
-	        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
-    	}        
+
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
+        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
+        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
+        
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
         		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
         //anchorHtmlData.setTarget("blank");
@@ -267,7 +267,7 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 					typeField.setFieldLabel("Type");
 					typeField.setPropertyName("kimTypeId");
 					typeField.setFieldValidValues(getRoleTypeOptions());
-					typeField.setFieldType(Field.DROPDOWN_REFRESH);
+					typeField.setFieldType(Field.DROPDOWN);
 					typeField.setMaxLength(100);
 					typeField.setSize(40);
 					fields.add(typeField);

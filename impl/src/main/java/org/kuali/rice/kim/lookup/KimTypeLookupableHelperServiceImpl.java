@@ -94,21 +94,21 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     }
 
 	static boolean hasRoleTypeService(KimTypeImpl kimTypeImpl){
-		return (kimTypeImpl.getKimTypeServiceName()==null) || 
+		return (kimTypeImpl!=null && kimTypeImpl.getKimTypeServiceName()==null) || 
 					(KimCommonUtils.getKimTypeService(kimTypeImpl) instanceof KimRoleTypeService);
 	}
 
 	static boolean hasRoleTypeService(KimTypeImpl kimTypeImpl, KimTypeService kimTypeService){
-		return (kimTypeImpl.getKimTypeServiceName()==null) || 
+		return (kimTypeImpl!=null && kimTypeImpl.getKimTypeServiceName()==null) || 
 					(kimTypeService instanceof KimRoleTypeService);
 	}
 	
     static boolean hasGroupTypeService(KimTypeImpl kimTypeImpl){
-		return (kimTypeImpl.getKimTypeServiceName()==null) || 
+		return (kimTypeImpl!=null && kimTypeImpl.getKimTypeServiceName()==null) || 
 					(KimCommonUtils.getKimTypeService(kimTypeImpl) instanceof KimGroupTypeService);
     }
 
-	static boolean hasDerivedRoleTypeService(KimTypeImpl kimTypeImpl){
+	public static boolean hasDerivedRoleTypeService(KimTypeImpl kimTypeImpl){
 		boolean hasDerivedRoleTypeService = false;
 		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimTypeImpl);
 		if(hasRoleTypeService(kimTypeImpl, kimTypeService))

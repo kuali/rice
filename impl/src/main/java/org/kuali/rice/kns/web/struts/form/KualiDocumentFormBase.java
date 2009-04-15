@@ -761,7 +761,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 		if (StringUtils.equalsIgnoreCase(getMethodToCall(), KNSConstants.DOC_HANDLER_METHOD)) {
 			return true;
 		}
-		if (WebUtils.isDocumentSession(getDocument(), this) || StringUtils.equalsIgnoreCase(getStrutsActionMappingScope(), "scope")) {
+		if (WebUtils.isDocumentSession(getDocument(), this)) {
 			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName);
 		}
 		return true;

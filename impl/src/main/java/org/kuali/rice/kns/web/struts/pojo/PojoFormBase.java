@@ -77,6 +77,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private transient Set<String> editablePropertiesFromPreviousRequest;
     protected Set<String> requiredNonEditableProperties = new HashSet<String>();
     private String strutsActionMappingScope; 
+    private boolean isNewForm = true;
 
     // removed methods: PojoFormBase()/SLActionForm(), addFormLevelMessageInfo, addGlobalMessage, addIgnoredKey, addIgnoredKeys, addLengthValidation, addMessageIfAbsent
     //     addPatternValidation, addPropertyValidationRules, addRangeValidation, addRequiredField, addRequiredFields
@@ -194,6 +195,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	            }
             }
         }
+        this.registerIsNewForm(false);
         t0.log();
     }
 
@@ -553,13 +555,27 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	}
 	
 	/**
+	 * @see PojoForm#registerStrutsActionMappingScope(String)
+	 */
+	public void registerIsNewForm(boolean isNewForm) {
+		this.isNewForm = isNewForm;
+	}
+	
+	public boolean getIsNewForm() {
+		return this.isNewForm;
+	}
+	
+	
+	/**
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
 	 */
 	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request) {
-		if (StringUtils.equalsIgnoreCase("session", getStrutsActionMappingScope())) {
-		   return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName);
+		
+		if (StringUtils.equalsIgnoreCase("session",getStrutsActionMappingScope()) && !getIsNewForm()) {
+			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName); 
 		}
-    	return true;
+		return true;
+		
 	}
 	
 	/**

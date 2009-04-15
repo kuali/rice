@@ -70,6 +70,12 @@ public interface PojoForm {
      */
     public void registerStrutsActionMappingScope(String scope);
     
+   
+    public void registerIsNewForm(boolean isNewForm);
+    
+    public boolean getIsNewForm();
+    
+    
     /**
 	 * Returns whether a request parameter should be populated as a property of the form, assuming that the request parameter name
 	 * corresponds to a property on the form.  This method makes no determination whether the request parameter is a property of the form, but rather

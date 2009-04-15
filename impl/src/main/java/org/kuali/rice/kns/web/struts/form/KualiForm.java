@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -359,6 +360,14 @@ public class KualiForm extends PojoFormBase {
 		if (requestParameterName.startsWith(KNSConstants.TAB_STATES)) {
 			return true;
 		}
+		
+		if (requestParameterName.equals(KNSConstants.DISPATCH_REQUEST_PARAMETER)) {
+			String methodToCallParameterName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+			if(StringUtils.equals(methodToCallParameterName, KNSConstants.RETURN_METHOD_TO_CALL)){
+				return true;
+			}
+		}
+		
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
 	}
     

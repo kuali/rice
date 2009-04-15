@@ -8,7 +8,7 @@
         <active>true</active>
         <type>
           <namespace>KR-WKFLW</namespace>
-          <name>TestType</name>
+          <name>Document Type, Routing Node &amp; Action Information</name>
         </type>
         <attributes>
           <attribute key="documentTypeName" value="Doc"/>
@@ -19,7 +19,7 @@
         <members>
           <principalName>ewestfal</principalName>
           <principalName>rkirkend</principalName>
-          <principalId>15</principalId>
+          <principalId>2015</principalId>
           <groupName>
             <name>TestWorkgroup</name>
             <namespace>KR-WKFLW</namespace>
@@ -34,7 +34,7 @@
         <active>true</active>
         <type>
           <namespace>KR-WKFLW</namespace>
-          <name>TestType</name>
+          <name>Document Type, Routing Node &amp; Action Information</name>
         </type>
         <attributes>
           <attribute key="required" value="false"/>
@@ -43,7 +43,7 @@
         <members>
           <principalName>ewestfal</principalName>
           <principalName>rkirkend</principalName>
-          <principalId>15</principalId>
+          <principalId>2015</principalId>
           <groupName>
             <name>TestWorkgroup</name>
             <namespace>KR-WKFLW</namespace>

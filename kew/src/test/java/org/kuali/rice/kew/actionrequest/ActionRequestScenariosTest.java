@@ -20,15 +20,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -289,15 +285,17 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	}
 
 	// see: https://test.kuali.org/jira/browse/KULRICE-2001
-	@Test public void testUnresolvableRoleAttributeRecipients() throws WorkflowException {
+	@Test public void testUnresolvableRoleAttributeRecipients() throws Exception {
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "UnresolvableRoleRecipsDocType");
-        document.routeDocument("");
-
-        // this doc has a rule with a role that produces an invalid recipient id
-        // this should not generate a bogus request that can never actually be fulfilled
-        List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
-        assertEquals(0, actionRequests.size());
-
+        try {
+        	document.routeDocument("");
+        } catch (Exception e) {
+            // this doc has a rule with a role that produces an invalid recipient id
+            // should receive an error when it attempts to route to the invalid recipient and trigger exception routing on the document
+        	TestUtilities.getExceptionThreader().join();
+        	document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
+            assertTrue("Document should be in exception routing", document.stateIsException());
+        }
 	}
 
 	private String getPrincipalIdFromPrincipalName(String principalName) {

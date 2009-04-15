@@ -18,7 +18,6 @@ package org.kuali.rice.kew.workgroup;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -40,11 +39,7 @@ public class GroupImportTest extends KEWTestCase {
      */
 
     @Test public void testGroupImportXml() throws Exception {
-        try {
-            loadXmlFile("GroupXMLImportTest.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	loadXmlFile("GroupXMLImportTest.xml");
 
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         //verify the workgroup did not get into the db
@@ -55,7 +50,7 @@ public class GroupImportTest extends KEWTestCase {
         List<String> groups = identityManagementService.getMemberGroupIds(group.getGroupId());
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getGroupId()));
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getGroupId()));
-        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipal("15").getPrincipalId(), group.getGroupId()));
+        assertTrue(identityManagementService.isMemberOfGroup("2015", group.getGroupId()));
         assertTrue(KIMServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getGroupId(), group.getGroupId()));
     }
 }

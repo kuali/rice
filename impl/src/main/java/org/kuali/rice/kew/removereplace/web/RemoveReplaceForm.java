@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.commons.collections.Factory;
 import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
+import org.kuali.rice.kew.web.KewRoutingKualiForm;
 import org.kuali.rice.kew.web.ShowHideTree;
 import org.kuali.rice.kew.web.WorkflowRoutingForm;
 import org.kuali.rice.kim.bo.Person;
@@ -32,7 +33,7 @@ import org.kuali.rice.kim.bo.Person;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class RemoveReplaceForm extends WorkflowRoutingForm {
+public class RemoveReplaceForm extends KewRoutingKualiForm {
 
     private String methodToCall = "";
     private String lookupableImplServiceName;

@@ -42,6 +42,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
@@ -55,7 +56,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RemoveReplaceAction extends WorkflowAction {
+public class RemoveReplaceAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RemoveReplaceAction.class);
 
@@ -68,7 +69,24 @@ public class RemoveReplaceAction extends WorkflowAction {
     private static final String FAILED_DOCUMENT_LOAD_MSG = "removereplace.failedDocumentLoad";
 
     @Override
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        // TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+        initForm(request, form);
+        return super.execute(mapping, form, request, response);
+    }
+
+    @Override
+    public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
+        form.getShowHide().getChild(0).setShow(true);
+        form.getShowHide().getChild(1).setShow(true);
+        return super.start(mapping, actionForm, request, response);
+    }
+
+    public ActionMessages initForm(HttpServletRequest request, ActionForm actionForm) throws Exception {
 	ActionMessages messages = new ActionMessages();
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
 	form.setActionRequestCodes(CodeTranslator.arLabels);
@@ -114,20 +132,11 @@ public class RemoveReplaceAction extends WorkflowAction {
 
 	//form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
         //form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
-	return messages;
+        return messages;
     }
 
     private WorkflowDocument createDocument() throws WorkflowException {
 	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getPrincipalId()), KEWConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
-    }
-
-    @Override
-    public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
-	    HttpServletResponse response) throws Exception {
-	RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
-        form.getShowHide().getChild(0).setShow(true);
-        form.getShowHide().getChild(1).setShow(true);
-	return mapping.findForward("basic");
     }
 
     public ActionForward selectOperation(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -487,6 +496,11 @@ public class RemoveReplaceAction extends WorkflowAction {
         }
         saveMessages(request, messages);
     }
+
+    private static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
+    }
+
 
 
 }

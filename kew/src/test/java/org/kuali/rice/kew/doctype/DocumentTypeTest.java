@@ -25,6 +25,7 @@ import java.util.Set;
 import mocks.MockPostProcessor;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -447,6 +448,7 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Fourth ingested document is not set to Current after third ingest", Boolean.TRUE, fourthIngestDoc.getCurrentInd());
     }
 
+    @Ignore("See KULRICE-2973")
     @Test public void testDocumentTypeParentChildLinking() throws Exception {
     	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
     	verifyDocumentTypeLinking();

@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -117,6 +118,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     /*
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
      */
+    @Ignore("See KULRICE-2988")
     @Test public void testGetSearchingRowsUsingRangeSearches() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
         String documentTypeName = "SearchDocType";

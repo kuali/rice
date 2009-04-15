@@ -30,6 +30,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -389,6 +390,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         } catch (WorkflowServiceErrorException wsee) {}
     }
 
+    @Ignore("See KULRICE-2988")
     @Test public void testDocumentSearchAttributeWildcarding() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
@@ -499,6 +501,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         assertEquals("Search results should be empty trying to use assumed ending wildcard.", 0, searchResults.size());
     }
 
+    @Ignore("See KULRICE-2988")
     @Test public void testDocumentSearchAttributeCaseSensitivity() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
     	String documentTypeName = "SearchDocTypeCaseSensitivity";
@@ -928,6 +931,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     /*
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchStorageValues(String)'
      */
+    @Ignore("See KULRICE-2988")
     @Test public void testGetSearchStorageValues() {
     	String attributeName = "XMLSearchableAttribute";
     	String keyName = "givenname";

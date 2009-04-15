@@ -30,7 +30,7 @@ import org.kuali.rice.kim.util.KimConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupImportTest extends KEWTestCase {
+public class GroupXmlImportTest extends KEWTestCase {
     /**
      *
      * Verify that a workgroup with a bad user in the xml is not going to be put in the db.
@@ -39,7 +39,7 @@ public class GroupImportTest extends KEWTestCase {
      */
 
     @Test public void testGroupImportXml() throws Exception {
-    	loadXmlFile("GroupXMLImportTest.xml");
+    	loadXmlFile("GroupXmlImportTest.xml");
 
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         //verify the workgroup did not get into the db

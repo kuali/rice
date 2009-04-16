@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,9 +37,9 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 public class NotificationWorkflowDocumentServiceImpl implements NotificationWorkflowDocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	.getLogger(NotificationWorkflowDocumentServiceImpl.class);
-    
+
     private NotificationMessageContentService messageContentService;
-    
+
     /**
      * Constructs a NotificationWorkflowDocumentServiceImpl instance.
      * @param messageContentService
@@ -47,24 +47,24 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
     public NotificationWorkflowDocumentServiceImpl(NotificationMessageContentService messageContentService) {
 	this.messageContentService = messageContentService;
     }
-    
+
     /**
-     * Implements by instantiating a NotificationWorkflowDocument, which in turn interacts with Workflow to set it up with an initiator of the 
+     * Implements by instantiating a NotificationWorkflowDocument, which in turn interacts with Workflow to set it up with an initiator of the
      * passed in user id.
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#createAndAdHocRouteNotificationWorkflowDocument(org.kuali.rice.ken.bo.NotificationMessageDelivery, java.lang.String, java.lang.String, java.lang.String)
      */
-    public Long createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId, 
+    public Long createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId,
 	    String recipientUserId, String annotation) throws WorkflowException {
 	// obtain a workflow user object first
 	WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
-        
+
 	// now construct the workflow document, which will interact with workflow
 	NotificationWorkflowDocument document = new NotificationWorkflowDocument(initiator);
-	
+
 	// this is our loose foreign key to our message delivery record in notification
 	document.getRouteHeader().setAppDocId(messageDelivery.getId().toString());
 	//document.setAppDocId(messageDelivery.getId().toString());
-	
+
 	// now add the content of the notification as XML to the document
 	document.setApplicationContent(messageContentService.generateNotificationMessage(messageDelivery.getNotification(), messageDelivery.getUserRecipientId()));
 
@@ -73,7 +73,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
         } else {
             LOG.error("Encountered notification with no title set: Message Delivery #" + messageDelivery.getId() + ", Notification #" + messageDelivery.getNotification().getId());
         }
-	
+
 	// now set up the ad hoc route
 	String actionRequested;
 	if(NotificationConstants.DELIVERY_TYPES.ACK.equals(messageDelivery.getNotification().getDeliveryType())) {
@@ -81,34 +81,34 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
 	} else {
 	    actionRequested = NotificationConstants.KEW_CONSTANTS.FYI_AD_HOC_ROUTE;
 	}
-	
+
 	// Clarification of ad hoc route call
 	// param 1 - actionRequested will be either ACK or FYI
 	// param 2 - annotation is whatever text we pass in to describe the transaction - this will be system generated
 	// param 3 - recipient is the person who will receive this request
 	// param 4 - this is the responsibilityParty (a.k.a the system that produced this request), so we'll put the producer name in there
-	// param 5 - this is the "ignore previous" requests - if set to true, this will be delivered to the recipients list regardless of 
-	//           whether the recipient has already taken action on this request; in our case, this doesn't really apply at this point in time, 
+	// param 5 - this is the "ignore previous" requests - if set to true, this will be delivered to the recipients list regardless of
+	//           whether the recipient has already taken action on this request; in our case, this doesn't really apply at this point in time,
 	//           so we'll set to true just to be safe
-	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipientUserId);
-	document.adHocRouteDocumentToPrincipal(actionRequested, annotation, principal.getPrincipalId(), 
+	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(recipientUserId);
+	document.adHocRouteDocumentToPrincipal(actionRequested, annotation, principal.getPrincipalId(),
 		messageDelivery.getNotification().getProducer().getName(), true);
-	
+
 	// now actually route it along its way
 	document.routeDocument(annotation);
-	
+
 	return document.getRouteHeaderId();
     }
 
     /**
-     * This service method is implemented by constructing a NotificationWorkflowDocument using the pre-existing document Id 
+     * This service method is implemented by constructing a NotificationWorkflowDocument using the pre-existing document Id
      * that is passed in.
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#findNotificationWorkflowDocumentByDocumentId(java.lang.String, java.lang.Long)
      */
     public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, Long workflowDocumentId) throws WorkflowException {
 	// construct the workflow id value object
 	WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
-	
+
 	// now return the actual document instance
 	// this handles going out and getting the workflow document
 	return new NotificationWorkflowDocument(initiator, workflowDocumentId);
@@ -131,7 +131,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
             }
         }
     }
-    
+
     /**
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#terminateWorkflowDocument(org.kuali.rice.kew.service.WorkflowDocument)
      */

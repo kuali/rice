@@ -15,7 +15,7 @@ public class KEWConstants extends JSTLConstants {
     private static final long serialVersionUID = -3897059085433394648L;
 
     public static final String WEBAPP_DIRECTORY = "/kew";
-    
+
     /**
      * Node state key under which rule selector can be specified on a per-nodeinstance basis
      */
@@ -26,7 +26,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String RULE_NAME_NODE_STATE_KEY = "__RULE_NAME__";
 
     public static final String DEFAULT_DOCUMENT_TYPE_LABEL = "Undefined";
-    
+
     public static final String DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR = "(Inherited from Parent)";
     public static final String DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR = "(System Default)";
 
@@ -81,11 +81,11 @@ public class KEWConstants extends JSTLConstants {
      * This is a UI option, not valid data for a delgationType value.
      */
     public static final String DELEGATION_BOTH = "E";
-    
+
     public static final String DELEGATION_PRIMARY_LABEL = "Primary";
     public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
     public static final String DELEGATION_BOTH_LABEL = "Both";
-    
+
     // Linked hash map to preseve order for iteration
     public static final Map<String, String> DELEGATION_TYPES = new LinkedHashMap<String, String>();
     static {
@@ -142,7 +142,7 @@ public class KEWConstants extends JSTLConstants {
         DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE,
         DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY
     };
-    
+
     //determines if route log will show the look into the future link
     public static final String LOOK_INTO_FUTURE_POLICY = "LOOK_FUTURE";
     public static final String SUPPORTS_QUICK_INITIATE_POLICY = "SUPPORTS_QUICK_INITIATE";
@@ -409,7 +409,7 @@ public class KEWConstants extends JSTLConstants {
 
     public static final String APPROVE_POLICY_ALL_APPROVE_LABEL = "ALL";
     public static final String APPROVE_POLICY_FIRST_APPROVE_LABEL = "FIRST";
-    
+
     public static final Map<String, String> APPROVE_POLICIES = new HashMap<String, String>();
     static {
     	APPROVE_POLICIES.put(APPROVE_POLICY_FIRST_APPROVE, APPROVE_POLICY_FIRST_APPROVE_LABEL);
@@ -505,11 +505,11 @@ public class KEWConstants extends JSTLConstants {
     public static final String RULE_RESPONSIBILITY_WORKFLOW_ID = "F";
     public static final String RULE_RESPONSIBILITY_GROUP_ID = "G";
     public static final String RULE_RESPONSIBILITY_ROLE_ID = "R";
-    
+
     public static final String RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL = "PERSON";
 	public static final String RULE_RESPONSIBILITY_GROUP_ID_LABEL = "GROUP";
 	public static final String RULE_RESPONSIBILITY_ROLE_ID_LABEL = "ROLE";
-    
+
     public static final Map<String, String> RULE_RESPONSIBILITY_TYPES = new HashMap<String, String>();
     static {
     	RULE_RESPONSIBILITY_TYPES.put(RULE_RESPONSIBILITY_WORKFLOW_ID, RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL);
@@ -923,7 +923,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String RULE_TEMPLATE_SEARCH_INSTRUCTION = "RULE_TEMPLATE_SEARCH_INSTRUCTION";
     public static final String SHOW_ATTACHMENTS_IND = "SHOW_ATTACHMENTS_IND";
     public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";
-    public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIl_NOTIFICATION_TEST_ADDRESS";
+    public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIL_NOTIFICATION_TEST_ADDRESS";
 
     //System parameter value comparisons
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "Y";
@@ -931,12 +931,12 @@ public class KEWConstants extends JSTLConstants {
     public static final String YES_DELEGATE_CHANGE_AR_GENERATION_VALUE = "Y";
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE = "Y";
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "Y";
-    
+
     public class PermissionNames {
         public static final String VIEW_OTHER_ACTION_LIST = "View Other Action List";
         public static final String UNRESTRICTED_DOCUMENT_SEARCH = "Unrestricted Document Search";
     }
-    
+
     // special user used when no other user is available
     public static final String SYSTEM_USER = "kr";
     public static final String ENABLE_KEN_NOTIFICATION = "rice.kew.enableKENNotification";

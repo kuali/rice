@@ -65,6 +65,8 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
         String methodToCall = findMethodToCall(form, request);
+        if(StringUtils.isEmpty(methodToCall))
+        	return mapping.findForward("close");
 		ActionForward forward;
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
@@ -94,16 +96,12 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
 		String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
+        if (StringUtils.isNotBlank(commandParam) && (commandParam.equals(KEWConstants.DOCSEARCH_COMMAND) || commandParam.equals(KEWConstants.ACTIONLIST_COMMAND))) {
+        	loadRoleDoc(methodToCall, roleDocumentForm.getRoleDocument().getRoleId(), roleDocumentForm);
+        }
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND)
 				&& StringUtils.isNotBlank(roleId)) {
-	        Role role = KIMServiceLocator.getRoleService().getRole(roleId);
-	        getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
-			roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
-			roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
-        	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
-        		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
-        	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDocumentForm.getRoleDocument().getKimType()))
-        		roleDocumentForm.setCanModifyAssignees(false);
+        	loadRoleDoc(methodToCall, roleId, roleDocumentForm);
         }
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL)){
 	        roleDocumentForm.getMember().setMemberName("");
@@ -112,6 +110,17 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		return forward;
     }
 
+    private void loadRoleDoc(String methodToCall, String roleId, IdentityManagementRoleDocumentForm roleDocumentForm){
+        Role role = KIMServiceLocator.getRoleService().getRole(roleId);
+        getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
+		roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
+		roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
+    	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
+    		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
+    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDocumentForm.getRoleDocument().getKimType()))
+    		roleDocumentForm.setCanModifyAssignees(false);
+    }
+    
 	/***
 	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
 	 */

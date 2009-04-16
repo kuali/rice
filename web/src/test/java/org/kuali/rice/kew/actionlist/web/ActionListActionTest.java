@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -42,6 +43,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Ignore
 public class ActionListActionTest extends KEWHtmlUnitTestCase {
 
     private static final String ACTION_LIST_URL_SUFFIX = "ActionList.do";

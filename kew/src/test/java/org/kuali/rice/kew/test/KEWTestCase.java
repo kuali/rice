@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -42,7 +42,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * template method for running custom transactional setUp. Tear down handles
  * automatic tear down of objects created inside the test environment.
  */
-public abstract class KEWTestCase extends RiceTestCase {
+public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 
 	/**
 	 * This is the "bootstrap", aka Rice client, Spring beans file that the KEW
@@ -64,9 +64,6 @@ public abstract class KEWTestCase extends RiceTestCase {
 		// override
 	}
 
-	/**
-	 * @Override
-	 */
 	protected void loadTestData() throws Exception {
 		// override this to load your own test data
 	}
@@ -164,11 +161,19 @@ public abstract class KEWTestCase extends RiceTestCase {
 		});
 		return lifeCycles;
 	}
-
+	
+	protected JettyServer getJettyServer() {
+		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
+			"/../web/src/main/webapp/en");
+		server.setFailOnContextFailure(true);
+		server.setTestMode(true);
+		return server;
+	}
+	
 	protected int getJettyServerPort() {
 		return 9952;
 	}
-
+	
 	/**
 	 * Adds any ResourceLoaders that have been registered for WebAppClassLoaders
 	 * to the GlobalResourceLoader
@@ -209,29 +214,6 @@ public abstract class KEWTestCase extends RiceTestCase {
 
 	protected List<String> getPerTestTablesNotToClear() {
 		return new ArrayList<String>();
-	}
-
-	/**
-	 * Loads the suite test data from the shared DefaultSuiteTestData.sql
-	 */
-	protected void loadSuiteTestData() throws Exception {
-		new SQLDataLoader("file:" + getBaseDir()
-				+ "/../impl/src/test/config/data/DefaultSuiteTestDataKNS.sql", "/")
-				.runSql();
-		BufferedReader reader = new BufferedReader(new FileReader(getBaseDir() + "/../impl/src/test/config/data/KIMDataLoadOrder.txt"));
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			if (!StringUtils.isBlank(line)) {
-				new SQLDataLoader("file:" + getBaseDir()
-						+ "/../impl/src/test/config/data/" + line, "/")
-						.runSql();
-			}
-		}
-
-		new SQLDataLoader(
-				"classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql", ";")
-				.runSql();
-
 	}
 
 	/**

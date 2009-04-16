@@ -975,7 +975,7 @@
     	<property name="kualiModuleService" ref="kualiModuleService" />
     	<property name="businessObjects">
             <list>
-				<value>org.kuali.rice.kns.bo.ParameterNamespace</value>
+				<value>org.kuali.rice.kns.bo.Namespace</value>
 				<value>org.kuali.rice.kns.bo.ParameterType</value>
 				<value>org.kuali.rice.kns.bo.ParameterDetailType</value>
 				<value>org.kuali.rice.kns.bo.Parameter</value>

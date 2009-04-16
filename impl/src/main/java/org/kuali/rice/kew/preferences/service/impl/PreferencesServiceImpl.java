@@ -16,7 +16,12 @@
  */
 package org.kuali.rice.kew.preferences.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -175,24 +180,29 @@ public class PreferencesServiceImpl implements PreferencesService {
 
     private void validate(Preferences preferences) {
         LOG.debug("validating preferences");
+        Collection errors = new ArrayList();
         try {
             new Integer(preferences.getRefreshRate().trim());
         } catch (NumberFormatException e) {
-            GlobalVariables.getErrorMap().putError(ERR_KEY_REFRESH_RATE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
+                    "minutes", ERR_KEY_REFRESH_RATE_WHOLE_NUM));
         } catch (NullPointerException e1) {
-            GlobalVariables.getErrorMap().putError(ERR_KEY_REFRESH_RATE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
+                    "minutes", ERR_KEY_REFRESH_RATE_WHOLE_NUM));
         }
 
         try {
             new Integer(preferences.getPageSize().trim());
         } catch (NumberFormatException e) {
-            GlobalVariables.getErrorMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
+                    "minutes", ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM));
         } catch (NullPointerException e1) {
-            GlobalVariables.getErrorMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
+                    "minutes", ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM));
         }
         LOG.debug("end validating preferences");
-        if (GlobalVariables.getErrorMap().hasErrors()) {
-            throw new ValidationException("errors in preferences");
+        if (! errors.isEmpty()) {
+            throw new WorkflowServiceErrorException("Preference Validation Error", errors);
         }
     }
 

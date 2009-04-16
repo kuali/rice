@@ -18,6 +18,8 @@ package org.kuali.rice.kew.preferences.web;
 
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
@@ -31,6 +33,8 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 public class PreferencesForm extends KualiForm {
 
     private static final long serialVersionUID = 4536869031291955777L;
+    private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.refreshRate";
+    private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.pageSize";
 	private Preferences preferences;
     private String methodToCall = "";
     private String returnMapping;
@@ -62,5 +66,26 @@ public class PreferencesForm extends KualiForm {
     }
     public void setShowOutbox(boolean showOutbox) {
         this.showOutbox = showOutbox;
+    }
+
+    public void validatePreferences() {
+        try {
+            new Integer(preferences.getRefreshRate().trim());
+        } catch (NumberFormatException e) {
+            GlobalVariables.getErrorMap().putError(ERR_KEY_REFRESH_RATE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+        } catch (NullPointerException e1) {
+            GlobalVariables.getErrorMap().putError(ERR_KEY_REFRESH_RATE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+        }
+
+        try {
+            new Integer(preferences.getPageSize().trim());
+        } catch (NumberFormatException e) {
+            GlobalVariables.getErrorMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+        } catch (NullPointerException e1) {
+            GlobalVariables.getErrorMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+        }
+        if (GlobalVariables.getErrorMap().hasErrors()) {
+            throw new ValidationException("errors in preferences");
+        }
     }
 }

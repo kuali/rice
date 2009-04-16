@@ -36,6 +36,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -64,8 +65,11 @@ public class PreferencesAction extends KewKualiAction {
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getService(KEWServiceLocator.PREFERENCES_SERVICE);
         PreferencesForm prefForm = (PreferencesForm) form;
-        
-        prefSrv.savePreferences(getUserSession(request).getPrincipalId(), prefForm.getPreferences());
+
+        prefForm.validatePreferences();
+        if (GlobalVariables.getErrorMap().hasNoErrors()) {
+            prefSrv.savePreferences(getUserSession(request).getPrincipalId(), prefForm.getPreferences());
+        }
         getUserSession(request).refreshPreferences();
         if (! StringUtils.isEmpty(prefForm.getReturnMapping())) {
             return mapping.findForward(prefForm.getReturnMapping());

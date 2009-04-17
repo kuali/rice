@@ -32,7 +32,7 @@ public class NamespaceServiceImpl implements NamespaceService {
 
 	public Namespace getNamespace(String namespaceCode) {
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("namespaceCode", namespaceCode);
+		criteria.put("code", namespaceCode);
 		return (Namespace) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(Namespace.class, criteria);
 	}
 

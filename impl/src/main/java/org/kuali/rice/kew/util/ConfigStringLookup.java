@@ -46,9 +46,10 @@ public class ConfigStringLookup extends StrLookup {
 		
 		String paramValue = null;
 		
-		if ( namespace != null ) {
-			paramValue = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getConfigurationParameter(namespace, propertyName);
-		}
+		// TODO temporarily disabling configuration parameter resolution against the racms because it's been causing some issues
+		//if ( namespace != null ) {
+		//	paramValue = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getConfigurationParameter(namespace, propertyName);
+		//}
 		
 		// check system parameters first
 		if ( paramValue == null ) {

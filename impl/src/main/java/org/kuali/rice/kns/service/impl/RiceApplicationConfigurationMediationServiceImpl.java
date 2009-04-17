@@ -20,8 +20,7 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.NamespaceService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
@@ -30,84 +29,29 @@ import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 //@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
-    
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService#getConfigurationParameter(java.lang.String)
-	 */
-//    public String getConfigurationParameter( String namespace, String parameterName ){
-//    	String parameterValue = null;
-//    	if ( namespace != null ) {
-//			ServiceRegistry reg = KSBServiceLocator.getIPTableService();
-//			
-//			// TODO: Do we look up by namespace or QName?  Do the 
-//			// RiceApplicationConfigurationServices need to be registered by
-//			// that name, or should we not assume as much and just perform
-//			// an instanceof instead?
-//			
-//			// also, we probably need to do some caching here!
-//		
-//			QName qname = new QName(namespace, KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE);
-//			List<ServiceInfo> services = reg.fetchActiveByQName(qname);			
-//			for ( ServiceInfo si : services ) {
-//				qname = si.getQname();
-//				// TODO: If we already had the QName in order to perform the
-//				// database lookup, why didn't we just call this directly?
-//				ServerSideRemotedServiceHolder h = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(qname);
-//				Object s = h.getService();
-//				if ( s instanceof RiceApplicationConfigurationService ) {
-//					RiceApplicationConfigurationService rac = (RiceApplicationConfigurationService)s;
-//					parameterValue = rac.getConfigurationParameter(parameterName);
-//				}
-//			}
-//		}
-//    	return parameterValue;
-//    }
-    
-    public String getConfigurationParameter( String namespace, String parameterName ){
+        
+    public String getConfigurationParameter( String namespaceCode, String parameterName ){
     	
     	// TODO we will want to do some caching here!!!
     	
     	String parameterValue = null;
-    	if ( namespace != null ) {
-    		RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(namespace);
-    		if (rac != null) {
-    			parameterValue = rac.getConfigurationParameter(parameterName);
+    	if ( namespaceCode != null ) {
+			NamespaceService nsService = KNSServiceLocator.getNamespaceService();
+			String applicationNamespaceCode = nsService.getNamespace(namespaceCode).getApplicationNamespaceCode();
+			if (applicationNamespaceCode != null) {
+				RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(applicationNamespaceCode);
+				if (rac != null) {
+					parameterValue = rac.getConfigurationParameter(parameterName);
+				}
 			}
 		}
     	return parameterValue;
     }
-
-    
-//    public List<ParameterDetailType> getNonDatabaseComponents() {
-//    	// TODO there is probably going to need to be some sort of caching here!
-//		// TODO also, i think the code that's below here will actually pull in more than
-//		// one reference to a particular application's config service if it is deployed
-//		// in a cluster, it needs to only pull a single RiceApplicationConfigurationService
-//		// implementation per service namespace.  Also, may want to consider load balancing
-//		// and failover in those cases?  It might be best to try and utilize the client-side
-//		// KSB proxies that handle a lot of this stuff for us
-//    	
-//    	RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-//    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE);
-//		
-//		List<ParameterDetailType> nonDatabaseComponents = new ArrayList<ParameterDetailType>();
-//		ServiceRegistry registry = KSBServiceLocator.getIPTableService();
-//		List<ServiceInfo> services = registry.fetchActiveByName(KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE);
-//		for ( ServiceInfo serviceInfo : services ) {
-//			ServerSideRemotedServiceHolder holder = KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceInfo.getQname());
-//			Object service = holder.getService();
-//			if ( service instanceof RiceApplicationConfigurationService ) {
-//				RiceApplicationConfigurationService rac = (RiceApplicationConfigurationService)service;
-//				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
-//			}
-//		}
-//		return nonDatabaseComponents;
-//    }
     
     public List<ParameterDetailType> getNonDatabaseComponents() {
-    	// TODO there is probably going to need to be some sort of caching here!
+    	
+    	// TODO there is going to need to be some sort of caching here!
+    	
 		// TODO also, i think the code that's below here will actually pull in more than
 		// one reference to a particular application's config service if it is deployed
 		// in a cluster, it needs to only pull a single RiceApplicationConfigurationService
@@ -129,11 +73,23 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     }
     
     private RiceApplicationConfigurationService findRiceApplicationConfigurationService(QName serviceName) {
-    	return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(serviceName);
+    	try {
+    		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(serviceName);
+    	} catch (Exception e) {
+    		// if the service doesn't exist an exception is thrown
+    		LOG.warn("Failed to locate RiceApplicationConfigurationService with name: " + serviceName);
+    	}
+    	return null;
     }
     
     private RiceApplicationConfigurationService findRiceApplicationConfigurationService(String namespace) {
-    	return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(new QName(namespace, KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE));
+    	try {
+    		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(new QName(namespace, KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE));
+    	} catch (Exception e) {
+    		// if the service doesn't exist an exception is thrown
+    		LOG.warn("Failed to locate RiceApplicationConfigurationService with namespace: " + namespace);
+    	}
+    	return null;
     }
     
 

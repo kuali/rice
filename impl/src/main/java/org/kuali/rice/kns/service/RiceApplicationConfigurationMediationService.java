@@ -31,15 +31,15 @@ import org.kuali.rice.kns.bo.ParameterDetailType;
 public interface RiceApplicationConfigurationMediationService {
 
 	/**
-	 * Returns the configuration parameter value for the given namespace and parameterName.
-	 * The namespace is used to determine which RiceApplicationConfigurationService to
-	 * call.
+	 * Returns the configuration parameter value for the given namespaceCode and parameterName.
+	 * The namespaceCode is used to determine which RiceApplicationConfigurationService to
+	 * call by looking up the applicationNamespaceCode associated with it's namespace.
 	 * 
 	 * @param namespace
 	 * @param parameterName
 	 * @return
 	 */
-	public String getConfigurationParameter(String namespace, String parameterName);
+	public String getConfigurationParameter(String namespaceCode, String parameterName);
 
 	/**
 	 * Returns the non-database components that have been published by all Rice client applications.

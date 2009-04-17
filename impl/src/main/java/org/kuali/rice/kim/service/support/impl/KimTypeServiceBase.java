@@ -341,10 +341,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	        pk.put("kimTypeId", kimTypeId);
 	        KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
 	        
-			String nsCode = kimType.getNamespaceCode();
-			NamespaceService nsService = KNSServiceLocator.getNamespaceService();
-			String namespace = nsService.getNamespace(nsCode).getNamespaceName();
-	        
+			String nsCode = kimType.getNamespaceCode();	        
 			definitions = new AttributeDefinitionMap();
 			for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
 				AttributeDefinition definition = null;
@@ -357,7 +354,7 @@ public class KimTypeServiceBase implements KimTypeService {
 				// Perform a parameterized substitution on the applicationUrl
 				KimAttributeImpl kai = typeAttribute.getKimAttribute();
 				String url = kai.getApplicationUrl();
-				url = Utilities.substituteConfigParameters(namespace, url);
+				url = Utilities.substituteConfigParameters(nsCode, url);
 				kai.setApplicationUrl(url);
 				
 				// TODO : use id for defnid ?

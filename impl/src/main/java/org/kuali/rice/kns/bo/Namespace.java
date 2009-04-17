@@ -10,6 +10,7 @@ import javax.persistence.Table;
 @Table(name="KRNS_NMSPC_T")
 @AttributeOverrides({@AttributeOverride(name="code", column=@Column(name="NMSPC_CD")), @AttributeOverride(name="name", column=@Column(name="NM"))})
 public class Namespace extends KualiCodeBase {
+	@Column(name="APPL_NMSPC_CD")
 	private String applicationNamespaceCode;
 	public String getNamespaceCode() {
 		return code;

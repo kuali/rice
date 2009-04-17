@@ -16,9 +16,10 @@
  */
 package org.kuali.rice.kew.clientapp;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -29,6 +30,9 @@ import org.kuali.rice.kew.config.ThinClientResourceLoader;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
@@ -37,9 +41,9 @@ import org.kuali.rice.kew.util.KEWConstants;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Ignore("once KULRICE-2792 is resolved, remove this ignore annotation so that this test executes again")
 public class SimpleWebServiceClientTest extends KEWTestCase {
 
+	
 	@Override
 	public void tearDown() throws Exception {
 		QName thinRLName = new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "ThinClientResourceLoader");
@@ -58,7 +62,7 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 	 */
 	@Test public void testAquiringWorkflowDocument() throws Exception {
 		this.setUpWebservices();
-
+		
 		//verify the ThinClientResourceLoader is in the GRL.
 		ResourceLoader rl = GlobalResourceLoader.getResourceLoader();
 		ResourceLoader tempThinRL = rl.getResourceLoaders().get(0);
@@ -71,25 +75,71 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 		thinRL.getWorkflowDocument().createDocument(getPrincipalIdForName("rkirkend"), routeHeader);
 
 	}
+	
+	/**
+	 * Verifies that we can aquire KIMPrincipalInfo without the need to
+	 * wire up a KSBConfigurer.
+	 */
+	@Test public void testThinIdentityService() throws Exception {
+		this.setUpWebservices();
+
+		//verify the ThinClientResourceLoader is in the GRL.
+		ResourceLoader rl = GlobalResourceLoader.getResourceLoader();
+		List<ResourceLoader> resourceLoaders = rl.getResourceLoaders();
+		ResourceLoader tempThinRL = rl.getResourceLoaders().get(0);
+		assertTrue("First resource loader should be thin", tempThinRL instanceof ThinClientResourceLoader);
+		ThinClientResourceLoader thinRL = (ThinClientResourceLoader)tempThinRL;
+
+		KimPrincipalInfo principal = thinRL.getIdentityService().getPrincipalByPrincipalName("ewestfal");
+		assertTrue(principal.getPrincipalName().equals("ewestfal"));
+	}
 
 	protected void setUpWebservices() throws Exception {
 		try {
-		    String remoteUrlLocation = ConfigContext.getCurrentContextConfig().getProperty("serviceServletUrl");
+			String workflowUtilityServiceUrl = getServiceEndpointUrl("KEW", "WorkflowUtilityService");
+			String workflowDocumentActionsServiceUrl = getServiceEndpointUrl("KEW", "WorkflowDocumentActionsService");
+			String identityServiceUrl = getServiceEndpointUrl("KIM", "kimIdentityService");
+			
 			ConfigContext.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
-            ConfigContext.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowUtilityService");
-//            ConfigContext.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowUtilityService");
-            ConfigContext.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", remoteUrlLocation + "%7BKEW%7DWorkflowDocumentActionsService");
-//            ConfigContext.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", "http://localhost:9952/en-test/remoting/%7BKEW%7DWorkflowDocumentActionsService");
+            ConfigContext.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", workflowUtilityServiceUrl);
+            ConfigContext.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", workflowDocumentActionsServiceUrl);
+            ConfigContext.getCurrentContextConfig().overrideProperty("identity.javaservice.endpoint", identityServiceUrl);
 			ConfigContext.getCurrentContextConfig().overrideProperty("secure.workflowdocument.javaservice.endpoint", "true");
 			ConfigContext.getCurrentContextConfig().overrideProperty("secure.workflowutility.javaservice.endpoint", "true");
+			ConfigContext.getCurrentContextConfig().overrideProperty("secure.identity.javaservice.endpoint", "true");
 			KEWConfigurer kewConfigurer  = new KEWConfigurer();
+			// need to set the run mode to "remote" in order to create the ThinClientResourceLoader 
+			// during KEWConfigurer startup
+			kewConfigurer.setRunMode(KEWConfigurer.REMOTE_RUN_MODE);
 			kewConfigurer.start();
+
 		} catch (Exception e) {
 			if (e instanceof RuntimeException) {
 				throw (RuntimeException)e;
 	}
 			throw new RuntimeException("Failed to start the ksb configurer to run the remotable test.", e);
 		}
+	}
+
+	
+	/**
+	 * @param serviceNamespace the namespace of the remoted service, e.g. "KEW"
+	 * @param serviceName the name of the service, e.g. "WorkflowUtilityService"
+	 * @return the service endpoint url from the remoted service registry
+	 * @throws RuntimeException if the endpoint URL can't be retrieved
+	 */
+	private String getServiceEndpointUrl(String serviceNamespace,
+			String serviceName) {
+		String result = null;
+		QName serviceQName = new QName(serviceNamespace, serviceName);
+		ServerSideRemotedServiceHolder holder =  KSBServiceLocator.getServiceDeployer().getRemotedServiceHolder(serviceQName);
+		if (holder.getServiceInfo() != null) {
+			result = holder.getServiceInfo().getActualEndpointUrl();
+		}
+		if (result == null) {
+			throw new RuntimeException("couldn't get service URL for QName " + serviceQName);
+		}
+		return result;
 	}
 
 

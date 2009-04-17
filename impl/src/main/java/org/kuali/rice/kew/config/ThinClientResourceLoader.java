@@ -38,6 +38,7 @@ import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
@@ -62,7 +63,9 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	public static final String SECURE_DOCUMENT_ENDPOINT = "secure.workflowdocument.javaservice.endpoint";
     	public static final String UTILITY_ENDPOINT = "workflowutility.javaservice.endpoint";
     	public static final String SECURE_UTILITY_ENDPOINT = "secure.workflowutility.javaservice.endpoint";
-
+    	public static final String IDENTITY_ENDPOINT = "identity.javaservice.endpoint"; 
+    	public static final String SECURE_IDENTITY_ENDPOINT = "secure.identity.javaservice.endpoint"; 
+    	
     	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
 	public ThinClientResourceLoader() {
@@ -109,6 +112,10 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 
 	public WorkflowDocumentActions getWorkflowDocument() {
 	    return (WorkflowDocumentActions)getServiceProxy(WorkflowDocumentActions.class, DOCUMENT_ENDPOINT, SECURE_DOCUMENT_ENDPOINT);
+	}
+	
+	public IdentityService getIdentityService() {
+	    return (IdentityService)getServiceProxy(IdentityService.class, IDENTITY_ENDPOINT, SECURE_IDENTITY_ENDPOINT);
 	}
 
 	protected Object getServiceProxy(Class serviceInterface, String endpointParam, String secureEndpointParam) {

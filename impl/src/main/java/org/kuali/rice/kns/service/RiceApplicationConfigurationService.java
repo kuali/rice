@@ -13,10 +13,8 @@
 package org.kuali.rice.kns.service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
-import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.bo.ParameterDetailType;
 
 /**
  * This interface defines methods that a KualiConfiguration Service must provide. Provides methods for getting string
@@ -24,11 +22,17 @@ import org.kuali.rice.kns.bo.Parameter;
  */
 public interface RiceApplicationConfigurationService {
     /**
-         * Given a property name (parameterName), returns the value associated with it.
-         * 
-         * @param parameterName
-         * @return String associated with the given parameterName
-         */
+     * Given a property name (parameterName), returns the value associated with it.
+     * 
+     * @param parameterName
+     * @return String associated with the given parameterName
+     */
     public String getConfigurationParameter( String parameterName ); 
-
+    
+    /**
+     * This method can be used to supplement the list of ParameterDetailTypes defined in the database from other sources.
+     * 
+     * @return List<ParameterDetailedType> containing the detailed types configured in non-database sources
+     */
+    public List<ParameterDetailType> getNonDatabaseComponents();
 }

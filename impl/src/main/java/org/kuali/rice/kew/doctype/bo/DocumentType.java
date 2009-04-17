@@ -573,7 +573,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     	if (StringUtils.isBlank(docHandlerUrl)) {
     		return "";
     	}
-    	return Utilities.substituteConfigParameters(docHandlerUrl);
+    	return Utilities.substituteConfigParameters(getServiceNamespace(), docHandlerUrl);
     }
 
     /**

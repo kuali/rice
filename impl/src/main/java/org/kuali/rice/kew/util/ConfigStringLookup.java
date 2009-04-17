@@ -19,6 +19,7 @@ package org.kuali.rice.kew.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrLookup;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -27,14 +28,32 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class ConfigStringLookup extends StrLookup {
-
+	private String namespace;
+	
+	public ConfigStringLookup() {
+		
+	}
+	
+	public ConfigStringLookup(String namespace) {
+		this.namespace = namespace;
+	}
+	
 	@Override
 	public String lookup(String propertyName) {
 		if (StringUtils.isBlank(propertyName)) {
 			return null;
 		}
+		
+		String paramValue = null;
+		
+		if ( namespace != null ) {
+			paramValue = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getConfigurationParameter(namespace, propertyName);
+		}
+		
 		// check system parameters first
-		String paramValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+		if ( paramValue == null ) {
+			paramValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+		}
 		if (paramValue == null) {
 			paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
 		}

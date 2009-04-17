@@ -38,6 +38,7 @@ public interface RemoteResourceServiceLocator extends ResourceLoader {
 
 	public List<RemotedServiceHolder> getAllServices(QName qName);
 	public Map<QName, List<RemotedServiceHolder>> getClients();
+	public List<QName> getServiceNamesForUnqualifiedName(String unqualifiedServiceName);
 	public void removeService(ServiceInfo serviceInfo);
 	public Object getService(QName qName, String url);
 	public MessageExceptionHandler getMessageExceptionHandler(QName qName);

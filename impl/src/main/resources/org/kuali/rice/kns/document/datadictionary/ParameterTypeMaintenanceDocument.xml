@@ -40,7 +40,6 @@
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="code"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
         <bean parent="MaintainableFieldDefinition" p:name="active"/>
-        <bean parent="MaintainableFieldDefinition" p:name="versionNumber"/>
       </list>
     </property>
     <property name="id" value="Edit Parameter Type"/>

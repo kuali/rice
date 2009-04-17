@@ -10,6 +10,7 @@
         <ref bean="NamespaceMaintenanceDocument-EditNamespace"/>
       </list>
     </property>
+    <property name="allowsNewOrCopy" value="false"/>    
     <property name="lockingKeys">
       <list>
         <value>code</value>
@@ -39,7 +40,6 @@
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
         <bean parent="MaintainableFieldDefinition" p:name="applicationNamespaceCode"/>
         <bean parent="MaintainableFieldDefinition" p:name="active"/>
-        <bean parent="MaintainableFieldDefinition" p:name="versionNumber"/>
       </list>
     </property>
     <property name="id" value="Edit Namespace"/>

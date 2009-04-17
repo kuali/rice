@@ -57,7 +57,11 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	private ScheduledFuture future;
 
 	private Map<QName, List<RemotedServiceHolder>> clients = Collections.synchronizedMap(new HashMap<QName, List<RemotedServiceHolder>>());
-
+	// You can't synchronize on an instance that may be replaced by a setter
+	// unless you want to potentially find a bunch of orphaned data in the
+	// database over time.
+	private Object clientsMutex = new Object();
+	
 	public RemoteResourceServiceLocatorImpl(QName name) {
 		super(name);
 	}
@@ -87,10 +91,10 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	}
 
 	/**
-	 * Removes a service (it's RemotedServiceHolder wrapper) from the list of
-	 * services. This isn't very effecient but for time reasons hashcode and
+	 * Removes a service (its RemotedServiceHolder wrapper) from the list of
+	 * services. This isn't very efficient but for time reasons hashcode and
 	 * equals wasn't implemented on the RemotedServiceHolder and IPTable, which
-	 * is a member of te RemotedServiceHolder.
+	 * is a member of the RemotedServiceHolder.
 	 *
 	 * @param service
 	 * @param serviceList
@@ -173,6 +177,16 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		}
 		return null;
 	}
+	
+	public List<QName> getServiceNamesForUnqualifiedName(String unqualifiedServiceName) {
+		List<QName> names = new ArrayList<QName>();
+		for (QName serviceName : clients.keySet()) {
+			if (serviceName.getLocalPart().equals(unqualifiedServiceName)) {
+				names.add(serviceName);
+			}
+		}
+		return names;
+	}
 
 	public ServiceHolder getRemotedServiceHolderFromList(List<RemotedServiceHolder> remotedServices) {
 		return remotedServices.get(this.randomNumber.nextInt(remotedServices.size()));
@@ -184,7 +198,10 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug("Client proxies are null, Re-aquiring services.  Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace());
 			}
+			
+			// TODO: What is this all about?
 			run();
+			
 			clientProxies = this.getClients().get(qName);
 			if (clientProxies == null || clientProxies.size() == 0) {
 				if ( LOG.isDebugEnabled() ) {
@@ -220,7 +237,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 			servicesOnBus = KSBServiceLocator.getIPTableService().fetchAllActive();
 		}
 
-		synchronized (getClients()) {
+		synchronized ( clientsMutex ) {
 			if (new RoutingTableDiffCalculator().calculateClientSideUpdate(this.getClients(), servicesOnBus)) {
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug("Located new services on the bus, numServices=" + servicesOnBus.size());
@@ -361,10 +378,14 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	}
 
 	public Map<QName, List<RemotedServiceHolder>> getClients() {
-	    return this.clients;
+		synchronized ( clientsMutex ) {
+		    return this.clients;			
+		}
 	}
 
 	public void setClients(Map<QName, List<RemotedServiceHolder>> clients) {
-	    this.clients = clients;
+		synchronized ( clientsMutex ) {
+			this.clients = clients;
+		}
 	}
 }

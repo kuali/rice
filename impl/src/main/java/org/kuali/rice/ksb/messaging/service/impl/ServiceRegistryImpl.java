@@ -18,10 +18,11 @@ package org.kuali.rice.ksb.messaging.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.DataAccessUtils;
-import org.kuali.rice.ksb.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
@@ -70,6 +71,18 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	    return dao.fetchAllActive();
 	}
 
+	public List<ServiceInfo> fetchActiveByName(String serviceName) {
+		return getDao().fetchActiveByName(serviceName);
+	}
+	
+	public List<ServiceInfo> fetchActiveByQName(QName qname) {
+		return getDao().fetchActiveByQName(qname);		
+	}
+	
+	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
+		return getDao().fetchActiveByNamespace(serviceNamespace);
+	}
+	
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
 		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			return new ArrayList<ServiceInfo>();

@@ -17,11 +17,14 @@ package org.kuali.rice.ksb.messaging.dao.impl;
 
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
 
 
 public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implements ServiceInfoDAO {
@@ -38,12 +41,39 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> fetchAllActive() {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("alive", Boolean.TRUE);
+		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
+			new QueryByCriteria(ServiceInfo.class, crit));
+    }
+
+    @SuppressWarnings("unchecked")
+	    public List<ServiceInfo> fetchActiveByName(String serviceName) {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("alive", Boolean.TRUE);
+		crit.addLike("serviceName", "{%}"+serviceName);
+		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
+			new QueryByCriteria(ServiceInfo.class, crit));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<ServiceInfo> fetchActiveByQName(QName qname) {
+		Criteria crit = new Criteria();
+		crit.addEqualTo("alive", Boolean.TRUE);
+		crit.addEqualTo("serviceName", qname.toString());
+		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
+			new QueryByCriteria(ServiceInfo.class, crit));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
 	Criteria crit = new Criteria();
 	crit.addEqualTo("alive", Boolean.TRUE);
+	crit.addEqualTo("serviceNamespace", "{"+serviceNamespace+"}%");	
 	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
 		new QueryByCriteria(ServiceInfo.class, crit));
     }
-
+    
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
 	Criteria crit = new Criteria();

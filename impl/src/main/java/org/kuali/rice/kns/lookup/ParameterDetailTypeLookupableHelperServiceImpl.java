@@ -15,87 +15,125 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterDetailType;
-import org.kuali.rice.kns.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.BeanPropertyComparator;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
 
 public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
-    private static HashSet<ParameterDetailType> components = new HashSet<ParameterDetailType>();
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ParameterDetailTypeLookupableHelperServiceImpl.class);
+    private ParameterService parameterService;
 
     @Override
-    public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
+    public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
 
-        List baseLookup = super.getSearchResults(fieldValues);
+        List<BusinessObject> baseLookup = (List<BusinessObject>) super.getSearchResults(fieldValues);
 
         // all step beans
         // all BO beans
         // all trans doc beans
 
-        if ( components.isEmpty() ) {
-            // get all components from the DD and make a list.
-            // hold statically since it won't change after DD load is complete
-            DataDictionary dd = getDataDictionaryService().getDataDictionary();
-            for ( String boClassName : dd.getBusinessObjectClassNames() ) {
-                String simpleName = StringUtils.substringAfterLast(boClassName, ".");
-            	if ( StringUtils.isBlank( simpleName ) ) continue;
-                components.add( new ParameterDetailType( "N/A", simpleName, simpleName ) );
-            }
-            Map<String,DocumentEntry> ddDocuments = dd.getDocumentEntries();
-            for ( String transDocName : ddDocuments.keySet() ) {
-            	if ( StringUtils.isBlank( transDocName ) ) continue;
-                DocumentEntry doc = ddDocuments.get(transDocName);
-                if ( doc instanceof TransactionalDocumentEntry ) {
-                    try {
-                        DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(doc.getDocumentTypeName());
-                        components.add( new ParameterDetailType( "N/A", doc.getDocumentTypeName(), docType.getDocTypeLabel() ) );
-                    }
-                    catch (WorkflowException e) {
-                        throw new RuntimeException("Caught Exception getting Workflow Document Type", e);
-                    }
-                }
-            }
+        List<ParameterDetailType> components;
+        try {
+        	components = KNSServiceLocator.getParameterServerService().getNonDatabaseComponents();
+        }
+        catch (DataDictionaryException ex) {
+            throw new RuntimeException("Problem parsing data dictionary during full load required for lookup to function: " + ex.getMessage(), ex);
         }
 
-        if ( baseLookup instanceof CollectionIncomplete ) {
-            long originalCount = ((CollectionIncomplete)baseLookup).getActualSizeIfTruncated();
-            baseLookup = new ArrayList( baseLookup );
-            baseLookup.addAll( components );
-            baseLookup = new CollectionIncomplete( baseLookup, originalCount + components.size() );
+        String activeCheck = fieldValues.get("active");
+        if (activeCheck == null) {
+            activeCheck = "";
         }
-        // sort list if default sort column given
-        List defaultSortColumns = getDefaultSortColumns();
-        if (defaultSortColumns.size() > 0) {
-            Collections.sort(baseLookup, new BeanPropertyComparator(getDefaultSortColumns(), true));
+        int maxResultsCount = LookupUtils.getSearchResultsLimit(ParameterDetailType.class);
+        // only bother with the component lookup if returning active components
+        if (baseLookup instanceof CollectionIncomplete && !activeCheck.equals("N")) {
+            long originalCount = Math.max(baseLookup.size(), ((CollectionIncomplete) baseLookup).getActualSizeIfTruncated());
+            long totalCount = originalCount;
+            Pattern detailTypeRegex = null;
+            Pattern namespaceRegex = null;
+            Pattern nameRegex = null;
+
+            if (StringUtils.isNotBlank(fieldValues.get("parameterDetailTypeCode"))) {
+                String patternStr = fieldValues.get("parameterDetailTypeCode").replace("*", ".*").toUpperCase();
+                try {
+                    detailTypeRegex = Pattern.compile(patternStr);
+                }
+                catch (PatternSyntaxException ex) {
+                    LOG.error("Unable to parse parameterDetailTypeCode pattern, ignoring.", ex);
+                }
+            }
+            if (StringUtils.isNotBlank(fieldValues.get("parameterNamespaceCode"))) {
+                String patternStr = fieldValues.get("parameterNamespaceCode").replace("*", ".*").toUpperCase();
+                try {
+                    namespaceRegex = Pattern.compile(patternStr);
+                }
+                catch (PatternSyntaxException ex) {
+                    LOG.error("Unable to parse parameterNamespaceCode pattern, ignoring.", ex);
+                }
+            }
+            if (StringUtils.isNotBlank(fieldValues.get("parameterDetailTypeName"))) {
+                String patternStr = fieldValues.get("parameterDetailTypeName").replace("*", ".*").toUpperCase();
+                try {
+                    nameRegex = Pattern.compile(patternStr);
+                }
+                catch (PatternSyntaxException ex) {
+                    LOG.error("Unable to parse parameterDetailTypeName pattern, ignoring.", ex);
+                }
+            }
+            for (ParameterDetailType pdt : components) {
+                boolean includeType = true;
+                if (detailTypeRegex != null) {
+                    includeType = detailTypeRegex.matcher(pdt.getParameterDetailTypeCode().toUpperCase()).matches();
+                }
+                if (includeType && namespaceRegex != null) {
+                    includeType = namespaceRegex.matcher(pdt.getParameterNamespaceCode().toUpperCase()).matches();
+                }
+                if (includeType && nameRegex != null) {
+                    includeType = nameRegex.matcher(pdt.getParameterDetailTypeName().toUpperCase()).matches();
+                }
+                if (includeType) {
+                    if (totalCount < maxResultsCount) {
+                        baseLookup.add(pdt);
+                    }
+                    totalCount++;
+                }
+            }
+            if (totalCount > maxResultsCount) {
+                ((CollectionIncomplete) baseLookup).setActualSizeIfTruncated(totalCount);
+            }
+            else {
+                ((CollectionIncomplete) baseLookup).setActualSizeIfTruncated(0L);
+            }
         }
 
         return baseLookup;
     }
 
     /**
-     * Prevent the edit and copy links on virtual detail types.
-     *
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getActionUrls(org.kuali.rice.kns.bo.BusinessObject)
+     * Suppress the edit/copy links on synthetic detail types.
+     * 
+     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
      */
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
-    	if ( !((ParameterDetailType)businessObject).isVirtualDetailType()  ) {
-    		return super.getCustomActionUrls(businessObject, pkNames);
-    	} else {
-    		return super.getEmptyActionUrls();
-    	}
+        if ( ((ParameterDetailType)businessObject).getObjectId() == null ) {
+            return super.getEmptyActionUrls();
+        }
+        // TODO Auto-generated method stub
+        return super.getCustomActionUrls(businessObject, pkNames);
     }
+
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
+    }
+
 }

@@ -15,6 +15,7 @@
       <ref bean="ParameterDetailType-lookupDefinition" />
     </property>
     <property name="titleAttribute" value="parameterDetailTypeName" />
+    <property name="objectLabel" value="Parameter Component" />
     <property name="attributes" >
       <list>
         <ref bean="ParameterDetailType-parameterNamespaceCode" />
@@ -22,11 +23,8 @@
         <ref bean="ParameterDetailType-parameterDetailTypeName" />
         <ref bean="ParameterDetailType-parameterNamespace.codeAndDescription" />
         <ref bean="ParameterDetailType-active" />
-        <ref bean="ParameterDetailType-objectId" />
-        <ref bean="ParameterDetailType-versionNumber" />
       </list>
     </property>
-    <property name="objectLabel" value="Parameter Component"/>
   </bean>
 
 <!-- Attribute Definitions -->
@@ -35,17 +33,19 @@
   <bean id="ParameterDetailType-parameterNamespaceCode" parent="ParameterDetailType-parameterNamespaceCode-parentBean" />
 
   <bean id="ParameterDetailType-parameterNamespaceCode-parentBean" abstract="true" parent="Namespace-code">
+    <property name="name" value="parameterNamespaceCode" />
     <property name="control" >
       <bean parent="SelectControlDefinition"
             p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.NamespaceValuesFinder"
             p:includeKeyInLabel="false" />
     </property>
-    <property name="name" value="parameterNamespaceCode" />
   </bean>
   <bean id="ParameterDetailType-parameterDetailTypeCode" parent="ParameterDetailType-parameterDetailTypeCode-parentBean" />
 
   <bean id="ParameterDetailType-parameterDetailTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="parameterDetailTypeCode" />
     <property name="forceUppercase" value="false" />
+    <property name="label" value="Parameter Component" />
     <property name="shortLabel" value="Component" />
     <property name="maxLength" value="100" />
     <property name="validationPattern" >
@@ -57,13 +57,15 @@
       <bean parent="TextControlDefinition"
             p:size="40" />
     </property>
-    <property name="name" value="parameterDetailTypeCode" />
-    <property name="label" value="Parameter Component" />
+    <property name="summary" value="Code identifying the parameter Component." />
+    <property name="description" value="Code identifying the parameter Component." />
   </bean>
   <bean id="ParameterDetailType-parameterDetailTypeName" parent="ParameterDetailType-parameterDetailTypeName-parentBean" />
 
   <bean id="ParameterDetailType-parameterDetailTypeName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="parameterDetailTypeName" />
     <property name="forceUppercase" value="false" />
+    <property name="label" value="Parameter Component Name" />
     <property name="shortLabel" value="Component Name" />
     <property name="maxLength" value="255" />
     <property name="validationPattern" >
@@ -75,8 +77,8 @@
       <bean parent="TextControlDefinition"
             p:size="50" />
     </property>
-    <property name="name" value="parameterDetailTypeName" />
-    <property name="label" value="Component Name" />
+    <property name="summary" value="The name of the parameter Component." />
+    <property name="description" value="The name of the parameter Component." />
   </bean>
   <bean id="ParameterDetailType-parameterNamespace.codeAndDescription" parent="ParameterDetailType-parameterNamespace.codeAndDescription-parentBean" />
 
@@ -88,14 +90,6 @@
   <bean id="ParameterDetailType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
   </bean>
-  <bean id="ParameterDetailType-objectId" parent="ParameterDetailType-objectId-parentBean" />
-
-  <bean id="ParameterDetailType-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
-  </bean>
-  <bean id="ParameterDetailType-versionNumber" parent="ParameterDetailType-versionNumber-parentBean" />
-
-  <bean id="ParameterDetailType-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
-  </bean>
 
 <!-- Business Object Inquiry Definition -->
 
@@ -103,9 +97,11 @@
   <bean id="ParameterDetailType-inquiryDefinition" parent="ParameterDetailType-inquiryDefinition-parentBean" />
 
   <bean id="ParameterDetailType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="title" value="Parameter Component Inquiry" />
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
+          <property name="title" value="Parameter Component Information" />
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
             <list>
@@ -120,11 +116,9 @@
                     p:attributeName="active" />
             </list>
           </property>
-          <property name="title" value="Parameter Component Information" />
         </bean>
       </list>
     </property>
-    <property name="title" value="Parameter Component Inquiry" />
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -133,6 +127,8 @@
   <bean id="ParameterDetailType-lookupDefinition" parent="ParameterDetailType-lookupDefinition-parentBean" />
 
   <bean id="ParameterDetailType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="title" value="Parameter Component Lookup" />
+    <property name="lookupableID" value="parameterDetailTypeLookupable" />
     <property name="instructions" value="Look up a Parameter Component." />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
@@ -148,13 +144,11 @@
         <bean parent="FieldDefinition"
               p:attributeName="parameterNamespaceCode" />
         <bean parent="FieldDefinition"
-              p:attributeName="parameterDetailTypeCode"
+              p:attributeName="parameterDetailTypeName"
               p:noLookup="true" />
         <bean parent="FieldDefinition"
-              p:attributeName="parameterDetailTypeName" />
-        <bean parent="FieldDefinition"
-              p:attributeName="active"
-              p:defaultValue="Y" />
+              p:defaultValue="Y"
+              p:attributeName="active" />
       </list>
     </property>
     <property name="resultFields" >
@@ -163,15 +157,11 @@
               p:attributeName="parameterDetailTypeName"
               p:noInquiry="true" />
         <bean parent="FieldDefinition"
-              p:attributeName="parameterDetailTypeCode"
-              p:noInquiry="true" />
-        <bean parent="FieldDefinition"
               p:attributeName="parameterNamespace.codeAndDescription"
               p:noInquiry="true" />
         <bean parent="FieldDefinition"
               p:attributeName="active" />
       </list>
     </property>
-    <property name="title" value="Parameter Component Lookup" />
   </bean>
 </beans>

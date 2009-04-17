@@ -20,7 +20,9 @@ import java.util.List;
 import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 
 /**
- * This is a description of what this class does 
+ * Provides internal notification services for the GroupServiceImpl.  It
+ * specifically allows GroupServiceImpl to notify interested parties that
+ * a group's membership has changed.  
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

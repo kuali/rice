@@ -7,15 +7,23 @@
  */
 package org.kuali.rice.kns.rules;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.kns.datadictionary.DataDictionaryException;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -38,10 +46,13 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 		result &= checkAllowsMaintenanceEdit( document.getDocumentHeader().getWorkflowDocument()
 				.getRouteHeader().getInitiatorPrincipalId(), (Parameter)getNewBo() );
 
+		result &= checkComponent((Parameter) getNewBo());
+		
 		return result;
 	}
 
 	protected boolean checkAllowsMaintenanceEdit(String initiatorPrincipalId, Parameter newBO) {
+
 		 boolean allowsEdit = false;
 	        Parameter parm = (Parameter)newBO;
 	        
@@ -60,5 +71,36 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        return allowsEdit;
 	}
 
+    public boolean checkComponent(Parameter param) {
+        String component = param.getParameterDetailTypeCode();
+        String namespace = param.getParameterNamespaceCode();
+        boolean result = false;
+
+        try {
+            List<ParameterDetailType> dataDictionaryAndSpringComponents = KNSServiceLocator.getParameterServerService().getNonDatabaseComponents();
+            for (ParameterDetailType pdt : dataDictionaryAndSpringComponents) {
+                if (pdt.getParameterNamespaceCode().equals(namespace) && pdt.getParameterDetailTypeCode().equals(component)) {
+                    result = true;
+                    break;
+                }
+            }
+
+            if (!result) {
+                Map<String, String> primaryKeys = new HashMap<String, String>(2);
+                primaryKeys.put("parameterNamespaceCode", namespace);
+                primaryKeys.put("parameterDetailTypeCode", component);
+                result = ObjectUtils.isNotNull(getBoService().findByPrimaryKey(ParameterDetailType.class, primaryKeys));
+            }
+
+            if (!result) {
+                putFieldError("parameterDetailTypeCode", "error.document.parameter.detailType.invalid", component);
+            }
+
+            return result;
+        }
+        catch (DataDictionaryException ex) {
+            throw new RuntimeException("Problem parsing data dictionary during full load required for rule validation: " + ex.getMessage(), ex);
+        }
+    }
 }
 

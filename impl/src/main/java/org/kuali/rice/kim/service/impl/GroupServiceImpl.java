@@ -622,6 +622,8 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      */
     public void removeAllGroupMembers(String groupId) {
     	// TODO jonathan - THIS METHOD NEEDS JAVADOCS
+    	
+    	// TODO tbradfor - Call updateForUserRemovedFromGroup for each
         Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put("groupId", groupId);
         getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);

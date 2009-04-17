@@ -18,6 +18,8 @@ package org.kuali.rice.ksb.messaging.service;
 
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 /**
@@ -33,6 +35,9 @@ public interface ServiceRegistry {
 	public void removeEntry(ServiceInfo entry);
 	public List<ServiceInfo> fetchAll();
 	public List<ServiceInfo> fetchAllActive();
+	public List<ServiceInfo> fetchActiveByName(String serviceName);
+	public List<ServiceInfo> fetchActiveByQName(QName qname);
+	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace);
 	public void save(List<ServiceInfo> serviceEntries);
 	public void remove(List<ServiceInfo> serviceEntries);
 	public void markServicesDead(List<ServiceInfo> serviceEntries);

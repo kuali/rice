@@ -17,8 +17,9 @@ package org.kuali.rice.ksb.messaging.dao;
 
 import java.util.List;
 
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import javax.xml.namespace.QName;
 
+import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 public interface ServiceInfoDAO {
 
@@ -26,6 +27,9 @@ public interface ServiceInfoDAO {
 	public void removeEntry(ServiceInfo entry);
 	public List<ServiceInfo> fetchAll();
 	public List<ServiceInfo> fetchAllActive();
+	public List<ServiceInfo> fetchActiveByName(String serviceName);
+	public List<ServiceInfo> fetchActiveByQName(QName qname);
+	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace);
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public ServiceInfo findServiceInfo(Long serviceInfoId);

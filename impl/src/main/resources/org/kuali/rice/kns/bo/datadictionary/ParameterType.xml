@@ -15,17 +15,15 @@
       <ref bean="ParameterType-lookupDefinition" />
     </property>
     <property name="titleAttribute" value="name" />
+    <property name="objectLabel" value="Parameter Type" />
     <property name="attributes" >
       <list>
         <ref bean="ParameterType-code" />
         <ref bean="ParameterType-name" />
         <ref bean="ParameterType-codeAndDescription" />
         <ref bean="ParameterType-active" />
-        <ref bean="ParameterType-objectId" />
-        <ref bean="ParameterType-versionNumber" />
       </list>
     </property>
-    <property name="objectLabel" value="Parameter Type"/>
   </bean>
 
 <!-- Attribute Definitions -->
@@ -34,7 +32,9 @@
   <bean id="ParameterType-code" parent="ParameterType-code-parentBean" />
 
   <bean id="ParameterType-code-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="code" />
     <property name="forceUppercase" value="true" />
+    <property name="label" value="Parameter Type Code" />
     <property name="shortLabel" value="Type Cd" />
     <property name="maxLength" value="5" />
     <property name="validationPattern" >
@@ -47,14 +47,14 @@
             p:size="6" />
     </property>
     <property name="summary" value="Code identifying the parameter type." />
-    <property name="name" value="code" />
-    <property name="label" value="Parameter Type Code" />
     <property name="description" value="Code identifying the parameter type." />
   </bean>
   <bean id="ParameterType-name" parent="ParameterType-name-parentBean" />
 
   <bean id="ParameterType-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="name" />
     <property name="forceUppercase" value="false" />
+    <property name="label" value="Parameter Type Name" />
     <property name="shortLabel" value="Type Nm" />
     <property name="maxLength" value="40" />
     <property name="validationPattern" >
@@ -67,14 +67,14 @@
             p:size="40" />
     </property>
     <property name="summary" value="The name of the parameter type." />
-    <property name="name" value="name" />
-    <property name="label" value="Parameter Type Name" />
     <property name="description" value="The name of the parameter type." />
   </bean>
   <bean id="ParameterType-codeAndDescription" parent="ParameterType-codeAndDescription-parentBean" />
 
   <bean id="ParameterType-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="codeAndDescription" />
     <property name="forceUppercase" value="false" />
+    <property name="label" value="Parameter Type" />
     <property name="shortLabel" value="Parm Type" />
     <property name="maxLength" value="100" />
     <property name="validationPattern" >
@@ -87,22 +87,12 @@
             p:size="40" />
     </property>
     <property name="summary" value="The name of the parameter type." />
-    <property name="name" value="codeAndDescription" />
-    <property name="label" value="Parameter Type" />
     <property name="description" value="The name of the parameter type." />
   </bean>
   <bean id="ParameterType-active" parent="ParameterType-active-parentBean" />
 
   <bean id="ParameterType-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active" />
-  </bean>
-  <bean id="ParameterType-objectId" parent="ParameterType-objectId-parentBean" />
-
-  <bean id="ParameterType-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
-  </bean>
-  <bean id="ParameterType-versionNumber" parent="ParameterType-versionNumber-parentBean" />
-
-  <bean id="ParameterType-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
   </bean>
 
 <!-- Business Object Inquiry Definition -->
@@ -111,9 +101,11 @@
   <bean id="ParameterType-inquiryDefinition" parent="ParameterType-inquiryDefinition-parentBean" />
 
   <bean id="ParameterType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="title" value="Parameter Type Inquiry" />
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
+          <property name="title" value="Parameter Type Information" />
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
             <list>
@@ -125,11 +117,9 @@
                     p:attributeName="active" />
             </list>
           </property>
-          <property name="title" value="Parameter Type Information" />
         </bean>
       </list>
     </property>
-    <property name="title" value="Parameter Type Inquiry" />
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -138,6 +128,7 @@
   <bean id="ParameterType-lookupDefinition" parent="ParameterType-lookupDefinition-parentBean" />
 
   <bean id="ParameterType-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="title" value="Parameter Type Lookup" />
     <property name="instructions" value="Look up a Parameter Type." />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
@@ -156,8 +147,8 @@
         <bean parent="FieldDefinition"
               p:attributeName="name" />
         <bean parent="FieldDefinition"
-              p:attributeName="active"
-              p:defaultValue="Y" />
+              p:defaultValue="Y"
+              p:attributeName="active" />
       </list>
     </property>
     <property name="resultFields" >
@@ -171,6 +162,5 @@
               p:attributeName="active" />
       </list>
     </property>
-    <property name="title" value="Parameter Type Lookup" />
   </bean>
 </beans>

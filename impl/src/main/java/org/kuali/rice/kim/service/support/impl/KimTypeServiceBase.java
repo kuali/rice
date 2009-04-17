@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -41,6 +42,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.NamespaceService;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -338,6 +340,11 @@ public class KimTypeServiceBase implements KimTypeService {
 	        Map<String,String> pk = new HashMap<String, String>( 1 );
 	        pk.put("kimTypeId", kimTypeId);
 	        KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
+	        
+			String nsCode = kimType.getNamespaceCode();
+			NamespaceService nsService = KNSServiceLocator.getNamespaceService();
+			String namespace = nsService.getNamespace(nsCode).getNamespaceName();
+	        
 			definitions = new AttributeDefinitionMap();
 			for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
 				AttributeDefinition definition = null;
@@ -346,6 +353,13 @@ public class KimTypeServiceBase implements KimTypeService {
 				} else {
 					definition = getDataDictionaryAttributeDefinition(typeAttribute);
 				}
+				
+				// Perform a parameterized substitution on the applicationUrl
+				KimAttributeImpl kai = typeAttribute.getKimAttribute();
+				String url = kai.getApplicationUrl();
+				url = Utilities.substituteConfigParameters(namespace, url);
+				kai.setApplicationUrl(url);
+				
 				// TODO : use id for defnid ?
 		//		definition.setId(typeAttribute.getKimAttributeId());
 				// FIXME: I don't like this - if two attributes have the same sort code, they will overwrite each other

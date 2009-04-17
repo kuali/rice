@@ -97,19 +97,8 @@
 
 <bean id="EDocLiteAssociation-activeInd" parent="EDocLiteAssociation-activeInd-parentBean" />
 
-  <bean id="EDocLiteAssociation-activeInd-parentBean" abstract="true" parent="AttributeDefinition"><!-- GenericAttributes-activeIndicator -->
-    <property name="shortLabel" value="activeInd" />
-    <property name="maxLength" value="50" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-     <property name="control" >
-      <bean parent="CheckboxControlDefinition" />
-    </property>      
-    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" /> 
-    <property name="summary" value="activeInd" />
+  <bean id="EDocLiteAssociation-activeInd-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="activeInd" />
-    <property name="label" value="Active Indicator" />
   </bean>
    
  

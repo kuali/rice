@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.kns.bo.Parameter;
 
 /**
  * This class provides methods to verify the existence of Parameters, get the value(s), and get ParameterEvaluators. For the most
@@ -48,11 +48,22 @@ public interface ParameterService {
     public boolean getIndicatorParameter(Class<? extends Object> componentClass, String parameterName);
 
     /**
+     * This method returns the actual BusinessObject instance of a parameter.
+     * 
+     * @param namespaceCode
+     * @param detailTypeCode
+     * @param parameterName
+     * @return The Parameter instance
+     */
+    public Parameter retrieveParameter(String namespaceCode, 
+    		String detailTypeCode, String parameterName);
+    
+    /**
      * This method returns the unprocessed text value of a parameter.
      * 
      * @param componentClass
      * @param parameterName
-     * @return unprocessed string value os a parameter
+     * @return unprocessed string value as a parameter
      */
     public String getParameterValue(Class<? extends Object> componentClass, String parameterName);
 
@@ -124,13 +135,6 @@ public interface ParameterService {
      * @return ParameterEvaluator
      */
     public ParameterEvaluator getParameterEvaluator(Class<? extends Object> componentClass, String allowParameterName, String denyParameterName, String constrainingValue, String constrainedValue);
-
-    /**
-     * This method can be used to supplement the list of ParameterDetailTypes defined in the database from other sources.
-     * 
-     * @return List<ParameterDetailedType> containing the detailed types configured in non-database sources
-     */
-    public List<ParameterDetailType> getNonDatabaseDetailTypes();
 
     /**
      * This method can be used to change the value of a Parameter for unit testing purposes.

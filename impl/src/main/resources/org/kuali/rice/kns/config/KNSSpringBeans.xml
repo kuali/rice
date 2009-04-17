@@ -143,7 +143,7 @@
 			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
 			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
-			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />
+			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />			   
 			   <entry key="org.kuali.rice.kns.bo.CampusType" value="org.kuali.rice.kns.bo.CampusTypeImpl" />
             </map>
         </property>
@@ -620,13 +620,15 @@
 			<ref bean="kualiModuleService" />
 		</property>
 	</bean>
-<!--
-	<bean id="parameterService" class="org.kuali.rice.kns.service.impl.ParameterServiceImpl">
+    <bean id="namespaceService" class="org.kuali.rice.kns.service.impl.NamespaceServiceImpl">
+    </bean>	
+    
+	<bean id="parameterService" class="org.kuali.rice.kns.service.impl.ParameterServiceProxyImpl"/>
+	<bean id="parameterServerService" class="org.kuali.rice.kns.service.impl.ParameterServiceImpl">
 		<property name="dataDictionaryService" ref="dataDictionaryService" />
 		<property name="kualiModuleService" ref="kualiModuleService" />
 		<property name="businessObjectService" ref="businessObjectService" />
 	</bean>
--->
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
@@ -1160,11 +1162,16 @@
 	  </property>
 	</bean>
 
-	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl" />
+	<bean id="riceApplicationConfigurationMediationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationMediationServiceImpl"/>
+
+	<!-- RiceApplicationConfigurationService needs to be published using the serviceNamespace as it's namespace and not KNS -->
+	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl">
+        <property name="parameterService" ref="parameterService"/>	
+	</bean>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
-	    <bean parent="knsService"
+	    <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition"
 	      p:service-ref="riceApplicationConfigurationService"
 	      p:localServiceName="riceApplicationConfigurationService" />
 	  </property>

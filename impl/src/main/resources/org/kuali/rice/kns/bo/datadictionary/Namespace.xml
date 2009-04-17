@@ -15,6 +15,7 @@
       <ref bean="Namespace-lookupDefinition" />
     </property>
     <property name="titleAttribute" value="name" />
+    <property name="objectLabel" value="Namespace" />
     <property name="attributes" >
       <list>
         <ref bean="Namespace-code" />
@@ -22,11 +23,8 @@
         <ref bean="Namespace-codeAndDescription" />
         <ref bean="Namespace-applicationNamespaceCode" />
         <ref bean="Namespace-active" />
-        <ref bean="Namespace-objectId" />
-        <ref bean="Namespace-versionNumber" />
       </list>
     </property>
-    <property name="objectLabel" value="org.kuali.rice.kns.bo.Namespace"/>
   </bean>
 
 <!-- Attribute Definitions -->
@@ -35,8 +33,10 @@
   <bean id="Namespace-code" parent="Namespace-code-parentBean" />
 
   <bean id="Namespace-code-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="code" />
     <property name="forceUppercase" value="true" />
-    <property name="shortLabel" value="Nmspc Cd" />
+    <property name="label" value="Namespace Code" />
+    <property name="shortLabel" value="Namespace Cd" />
     <property name="maxLength" value="20" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -46,16 +46,16 @@
       <bean parent="TextControlDefinition"
             p:size="10" />
     </property>
-    <property name="summary" value="Code identifying the namespace." />
-    <property name="name" value="code" />
-    <property name="label" value="Namespace Code" />
-    <property name="description" value="Code identifying the namespace." />
+    <property name="summary" value="Code identifying the namespace" />
+    <property name="description" value="Code identifying the namespace" />
   </bean>
   <bean id="Namespace-name" parent="Namespace-name-parentBean" />
 
   <bean id="Namespace-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="name" />
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Nmspc Nm" />
+    <property name="label" value="Namespace Name" />
+    <property name="shortLabel" value="Namespace Nm" />
     <property name="maxLength" value="40" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -66,16 +66,16 @@
       <bean parent="TextControlDefinition"
             p:size="40" />
     </property>
-    <property name="summary" value="The name of the namespace." />
-    <property name="name" value="name" />
-    <property name="label" value="Namespace Name" />
+    <property name="summary" value="The name of the namespace" />
     <property name="description" value="The name of the namespace." />
   </bean>
   <bean id="Namespace-codeAndDescription" parent="Namespace-codeAndDescription-parentBean" />
 
   <bean id="Namespace-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="codeAndDescription" />
     <property name="forceUppercase" value="false" />
-    <property name="shortLabel" value="Parm Nmspc" />
+    <property name="label" value="Namespace" />
+    <property name="shortLabel" value="Namespace" />
     <property name="maxLength" value="100" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern"
@@ -87,9 +87,12 @@
             p:size="40" />
     </property>
     <property name="summary" value="The name of the namespace." />
-    <property name="name" value="codeAndDescription" />
-    <property name="label" value="Namespace" />
     <property name="description" value="The name of the namespace." />
+  </bean>
+  <bean id="Namespace-active" parent="Namespace-active-parentBean" />
+
+  <bean id="Namespace-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active" />
   </bean>
   <bean id="Namespace-applicationNamespaceCode" parent="Namespace-applicationNamespaceCode-parentBean" />
 
@@ -110,19 +113,7 @@
     <property name="label" value="Application Namespace Code" />
     <property name="description" value="The code of the application namespace." />
   </bean>
-  <bean id="Namespace-active" parent="Namespace-active-parentBean" />
-
-  <bean id="Namespace-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
-    <property name="name" value="active" />
-  </bean>
-  <bean id="Namespace-objectId" parent="Namespace-objectId-parentBean" />
-
-  <bean id="Namespace-objectId-parentBean" abstract="true" parent="AttributeReferenceDummy-objectId">
-  </bean>
-  <bean id="Namespace-versionNumber" parent="Namespace-versionNumber-parentBean" />
-
-  <bean id="Namespace-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
-  </bean>
+  
 
 <!-- Business Object Inquiry Definition -->
 
@@ -130,9 +121,11 @@
   <bean id="Namespace-inquiryDefinition" parent="Namespace-inquiryDefinition-parentBean" />
 
   <bean id="Namespace-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="title" value="Namespace Inquiry" />
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition">
+          <property name="title" value="Namespace Information" />
           <property name="numberOfColumns" value="1" />
           <property name="inquiryFields" >
             <list>
@@ -147,11 +140,9 @@
                     p:attributeName="active" />
             </list>
           </property>
-          <property name="title" value="Namespace Information" />
         </bean>
       </list>
     </property>
-    <property name="title" value="Namespace Inquiry" />
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -160,6 +151,7 @@
   <bean id="Namespace-lookupDefinition" parent="Namespace-lookupDefinition-parentBean" />
 
   <bean id="Namespace-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="title" value="Namespace Lookup" />
     <property name="instructions" value="Look up a Namespace." />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
@@ -180,8 +172,8 @@
         <bean parent="FieldDefinition"
               p:attributeName="applicationNamespaceCode" />
         <bean parent="FieldDefinition"
-              p:attributeName="active"
-              p:defaultValue="Y" />
+              p:defaultValue="Y"
+              p:attributeName="active" />
       </list>
     </property>
     <property name="resultFields" >
@@ -197,6 +189,5 @@
               p:attributeName="active" />
       </list>
     </property>
-    <property name="title" value="Namespace Lookup" />
   </bean>
 </beans>

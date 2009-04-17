@@ -20,7 +20,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.xml.namespace.QName;
 
+import org.apache.ojb.broker.query.Criteria;
+import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -52,6 +55,28 @@ public class ServiceInfoDAOJpaImpl extends PersistenceBrokerDaoSupport implement
     	return (List<ServiceInfo>) query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
+    public List<ServiceInfo> fetchActiveByName(String serviceName) {
+    	Query query = entityManager.createNamedQuery("ServiceInfo.FetchActiveByName");
+    	query.setParameter("serviceName", "{%}"+serviceName);
+    	return (List<ServiceInfo>) query.getResultList();    	
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<ServiceInfo> fetchActiveByQName(QName qname) {
+    	Query query = entityManager.createNamedQuery("ServiceInfo.FetchActiveByName");
+    	query.setParameter("serviceName", qname.toString());
+    	query.setParameter("serviceNamespace", qname.getNamespaceURI());
+    	return (List<ServiceInfo>) query.getResultList();    	
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
+    	Query query = entityManager.createNamedQuery("ServiceInfo.FetchActiveByName");
+    	query.setParameter("serviceNamespace", "{"+serviceNamespace+"}%");
+    	return (List<ServiceInfo>) query.getResultList();    	
+    }
+    
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
     	Query query = entityManager.createNamedQuery("ServiceInfo.FindLocallyPublishedServices");

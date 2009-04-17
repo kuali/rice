@@ -267,7 +267,7 @@
             <documentType>RiceDocument</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
             <description>workflowdocumenttemplate description</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <!--
                 <ruleExtensions>
 

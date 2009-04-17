@@ -1121,7 +1121,7 @@
             <documentType>EDENSERVICE-DOCS</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
             <description>workflowdocumenttemplate description</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <!--
                 <ruleExtensions>
 
@@ -1139,7 +1139,7 @@
             <documentType>EDENSERVICE-DOCS.WKGRPREQ</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
             <description>Workgroup Approval Rule</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <responsibilities>
                 <responsibility>
                     <groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
@@ -1153,7 +1153,7 @@
           <documentType>SendNotificationRequest</documentType>
           <ruleTemplate>ReviewersRouting</ruleTemplate>
           <description>ReviewersRouting rule</description>
-          <ignorePrevious>true</ignorePrevious>
+          <forceAction>true</forceAction>
           <ruleExtensions>
             <ruleExtension>
                 <attribute>ChannelReviewerRoleAttribute</attribute>

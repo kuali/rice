@@ -236,8 +236,8 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         checkNull(actionRequest.getResponsibilityId(), "responsibility ID");
         checkNull(actionRequest.getRouteLevel(), "route level");
         checkNull(actionRequest.getDocVersion(), "doc version");
-        if (actionRequest.getIgnorePrevAction() == null) {
-            actionRequest.setIgnorePrevAction(Boolean.FALSE);
+        if (actionRequest.getForceAction() == null) {
+            actionRequest.setForceAction(Boolean.FALSE);
         }
         if (actionRequest.getStatus() == null) {
             actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);

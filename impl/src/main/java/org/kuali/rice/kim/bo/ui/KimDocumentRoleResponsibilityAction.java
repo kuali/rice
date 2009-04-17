@@ -34,7 +34,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
 	protected Integer priorityNumber;
-	protected boolean ignorePrevious;
+	protected boolean forceAction;
 	protected KimResponsibilityImpl kimResponsibility;
 	protected RoleResponsibilityImpl roleResponsibility;
 	
@@ -140,16 +140,16 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	}
 
 	/**
-	 * @return the ignorePrevious
+	 * @return the forceAction
 	 */
-	public boolean isIgnorePrevious() {
-		return this.ignorePrevious;
+	public boolean isForceAction() {
+		return this.forceAction;
 	}
 	/**
-	 * @param ignorePrevious the ignorePrevious to set
+	 * @param forceAction the forceAction to set
 	 */
-	public void setIgnorePrevious(boolean ignorePrevious) {
-		this.ignorePrevious = ignorePrevious;
+	public void setForceAction(boolean forceAction) {
+		this.forceAction = forceAction;
 	}
 
 }

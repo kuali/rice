@@ -22,7 +22,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>NotADuplicateTestRule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>TestAttribute</attribute>
@@ -55,7 +55,7 @@
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>NotADuplicateTestRule</description>
 			<expression type="imnew">this is different</expression>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>TestAttribute</attribute>
@@ -87,7 +87,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate2</ruleTemplate>
 			<description>NotADuplicateTestRule2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>TestAttribute</attribute>
@@ -119,7 +119,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>NotADuplicateTestRule3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>TestAttribute</attribute>
@@ -151,7 +151,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>NotADuplicateTestRule4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>TestAttribute2</attribute>

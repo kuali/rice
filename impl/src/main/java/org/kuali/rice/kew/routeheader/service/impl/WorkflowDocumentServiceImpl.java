@@ -126,19 +126,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String targetPrincipalId,
-			String responsibilityDesc, Boolean ignorePrevious, String requestLabel) throws WorkflowException {
+			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		KimPrincipal principal = loadPrincipal(principalId);
 		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getPrincipalRecipient(targetPrincipalId);
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious, requestLabel);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);
 	}
 
 	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String groupId,
-			String responsibilityDesc, Boolean ignorePrevious, String requestLabel) throws WorkflowException {
+			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		KimPrincipal principal = loadPrincipal(principalId);
 		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getGroupRecipient(groupId);
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious, requestLabel);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);
 	}

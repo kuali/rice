@@ -53,7 +53,7 @@ public class ActionRequestDTO implements Serializable {
     private Integer routeLevel;
     private Integer docVersion;
     private String roleName;
-    private Boolean ignorePrevAction;
+    private Boolean forceAction;
     private String principalId;
     private String delegationType;
     private Long parentActionRequestId;
@@ -194,8 +194,8 @@ public class ActionRequestDTO implements Serializable {
         this.approvePolicy = approvePolicy;
     }
 
-    public Boolean getIgnorePrevAction() {
-        return ignorePrevAction;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
     public boolean isNotificationRequest() {
@@ -206,12 +206,12 @@ public class ActionRequestDTO implements Serializable {
         return APPROVE_REQ.equals(actionRequested) || COMPLETE_REQ.equals(actionRequested);
     }
 
-    public Boolean isIgnorePrevAction() {
-        return ignorePrevAction;
+    public Boolean isForceAction() {
+        return forceAction;
     }
 
-    public void setIgnorePrevAction(Boolean ignorePrevAction) {
-        this.ignorePrevAction = ignorePrevAction;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     public boolean isAcknowledgeRequest() {

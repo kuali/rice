@@ -314,7 +314,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (futureRequestStateMngr.isReceiveFutureRequests()) {
             return false;
         }
-        if (!actionRequestToActivate.getIgnorePrevAction() || futureRequestStateMngr.isDoNotReceiveFutureRequests()) {
+        if (!actionRequestToActivate.getForceAction() || futureRequestStateMngr.isDoNotReceiveFutureRequests()) {
             ActionTakenValue previousActionTaken = null;
             if (!activationContext.isSimulation()) {
                 previousActionTaken = getActionTakenService().getPreviousAction(actionRequestToActivate);
@@ -340,7 +340,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             }
         }
         if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Ignoring previous for action request " + actionRequestToActivate.getActionRequestId());
+        	LOG.debug("Forcing action for action request " + actionRequestToActivate.getActionRequestId());
         }
         return false;
     }

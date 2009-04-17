@@ -58,7 +58,7 @@
 			<documentType>FutureRequestsDoc</documentType>
 			<ruleTemplate>FutureRequestsTemplate</ruleTemplate>
 			<description>FutureRequests Doc Rule 1 Node 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>
@@ -83,7 +83,7 @@
 			<documentType>FutureRequestsDoc</documentType>
 			<ruleTemplate>FutureRequestsTemplate2</ruleTemplate>
 			<description>FutureRequests Doc Rule 1 Node 2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>

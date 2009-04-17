@@ -477,7 +477,7 @@
 			<documentType>RiceDocument</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>workflowdocumenttemplate description</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>quickstart</user>
@@ -490,7 +490,7 @@
 			<documentType>RiceDocument.WKGRPREQ</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Workgroup Approval Rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<workgroup>KR-WKFLW:WorkflowAdmin</workgroup>

@@ -65,9 +65,9 @@ public class RuleXmlParser implements XmlConstants {
      */
     private static final int DEFAULT_RULE_PRIORITY = 1;
     /**
-     * Value of Ignore Previous flag if omitted; default to false, we will NOT ignore previous approvals
+     * Value of Force Action flag if omitted; default to false, we will NOT force action for approvals
      */
-    private static final boolean DEFAULT_IGNORE_PREVIOUS = false;
+    private static final boolean DEFAULT_FORCE_ACTION = false;
     /**
      * Default approve policy, if omitted; defaults to FIRST_APPROVE, the request will be satisfied by the first approval
      */
@@ -273,10 +273,10 @@ public class RuleXmlParser implements XmlConstants {
         	ruleExpressionDef.setExpression(expression);
         }
         
-        String ignorePreviousValue = element.getChildText(IGNORE_PREVIOUS, element.getNamespace());
-        Boolean ignorePrevious = Boolean.valueOf(DEFAULT_IGNORE_PREVIOUS);
-        if (!StringUtils.isBlank(ignorePreviousValue)) {
-            ignorePrevious = Boolean.valueOf(ignorePreviousValue);
+        String forceActionValue = element.getChildText(FORCE_ACTION, element.getNamespace());
+        Boolean forceAction = Boolean.valueOf(DEFAULT_FORCE_ACTION);
+        if (!StringUtils.isBlank(forceActionValue)) {
+            forceAction = Boolean.valueOf(forceActionValue);
         }
 
         rule.setDocTypeName(documentType.getName());
@@ -288,7 +288,7 @@ public class RuleXmlParser implements XmlConstants {
             rule.setRuleExpressionDef(ruleExpressionDef);
         }
         rule.setDescription(description);
-        rule.setIgnorePrevious(ignorePrevious);
+        rule.setForceAction(forceAction);
 
         Element responsibilitiesElement = element.getChild(RESPONSIBILITIES, element.getNamespace());
         rule.setResponsibilities(parseResponsibilities(responsibilitiesElement, rule));
@@ -334,7 +334,7 @@ public class RuleXmlParser implements XmlConstants {
     }
 
     private void setDefaultRuleValues(RuleBaseValues rule) throws InvalidXmlException {
-        rule.setIgnorePrevious(Boolean.FALSE);
+        rule.setForceAction(Boolean.FALSE);
         rule.setActivationDate(new Timestamp(System.currentTimeMillis()));
         rule.setActiveInd(Boolean.TRUE);
         rule.setCurrentInd(Boolean.TRUE);

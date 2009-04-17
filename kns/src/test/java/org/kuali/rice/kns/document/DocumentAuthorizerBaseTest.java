@@ -691,7 +691,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //		public void appSpecificRouteDocumentToGroup(String actionRequested,
 //				String routeTypeName, String annotation,
 //				GroupIdDTO groupId, String responsibilityDesc,
-//				boolean ignorePreviousActions) throws WorkflowException {
+//				boolean forceAction) throws WorkflowException {
 //			// TODO sp20369 - THIS METHOD NEEDS JAVADOCS
 //
 //		}

@@ -321,7 +321,7 @@
           <documentType>SendNotificationRequest</documentType>
           <ruleTemplate>ReviewersRouting</ruleTemplate>
           <description>ReviewersRouting rule</description>
-          <ignorePrevious>true</ignorePrevious>
+          <forceAction>true</forceAction>
           <ruleExtensions>
             <ruleExtension>
                 <attribute>ChannelReviewerRoleAttribute</attribute>

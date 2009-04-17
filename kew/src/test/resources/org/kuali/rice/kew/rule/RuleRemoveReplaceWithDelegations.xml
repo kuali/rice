@@ -6,7 +6,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>RuleRouting2</ruleTemplate>
 			<description>Rule Routing</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>RuleRoutingAttribute</attribute>
@@ -39,7 +39,7 @@
 				<documentType>TestDocumentType</documentType>
 				<ruleTemplate>SimpleTemplate</ruleTemplate>
 				<description>RuleWithDelegations1PrimaryDelegation</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>jhopf</user>
@@ -57,7 +57,7 @@
 				<documentType>TestDocumentType</documentType>
 				<ruleTemplate>SimpleTemplate</ruleTemplate>
 				<description>RuleWithDelegations1SecondaryDelegation</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>ewestfal</user>

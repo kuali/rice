@@ -75,7 +75,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
        assertTrue(document.isApprovalRequested());
        document.approve("");
 
-       // now there should just be a pending request to ryan, let's requeue again, because of ignore previous = false we should still
+       // now there should just be a pending request to ryan, let's requeue again, because of force action = false we should still
        // have only one pending request to ryan
 //       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getRouteHeaderId(), DocumentRequeuerImpl.class.getName());
        documentRequeuer.requeueDocument(document.getRouteHeaderId());

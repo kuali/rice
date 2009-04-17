@@ -196,7 +196,7 @@ test that the remoting of component functionality is working properly -->
 			<documentType>RemoteTestDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>
@@ -209,7 +209,7 @@ test that the remoting of component functionality is working properly -->
 			<documentType>AlwaysRouteAttributeTestDocument</documentType>
 			<ruleTemplate>AlwaysRouteRuleTemplate</ruleTemplate>
 			<description>AlwaysRouteRuleTemplate</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>

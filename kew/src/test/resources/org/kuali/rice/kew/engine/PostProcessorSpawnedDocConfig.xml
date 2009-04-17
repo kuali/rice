@@ -60,7 +60,7 @@
 			<documentType>SpawnNewDocumentType</documentType>
 			<ruleTemplate>AlwaysMatchTemplate</ruleTemplate>
 			<description>Sequential Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>

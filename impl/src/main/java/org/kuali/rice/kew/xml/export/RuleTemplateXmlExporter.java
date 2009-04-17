@@ -96,7 +96,7 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
             if (defaultRuleValues.getToDate() != null) {
             	renderer.renderDateElement(defaultsElement, TO_DATE, defaultRuleValues.getToDate());
             }
-            renderer.renderBooleanElement(defaultsElement, IGNORE_PREVIOUS, defaultRuleValues.getIgnorePrevious(), false);
+            renderer.renderBooleanElement(defaultsElement, FORCE_ACTION, defaultRuleValues.getForceAction(), false);
             renderer.renderBooleanElement(defaultsElement, ACTIVE, defaultRuleValues.getActiveInd(), true);
             if (defaultDelegationValues == null) {
                 RuleTemplateOption defaultActionOption = ruleTemplate.getDefaultActionRequestValue();

@@ -95,7 +95,7 @@
 			<documentType>UnitTestDocument</documentType>
 			<ruleTemplate>Template1</ruleTemplate>
 			<description>Template1 Rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -108,7 +108,7 @@
 			<documentType>UnitTestDocument</documentType>
 			<ruleTemplate>Template2</ruleTemplate>
 			<description>Template2 Rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>

@@ -5,7 +5,7 @@
             <documentType>DocumentTypeMaintainTest</documentType>
             <ruleTemplate>RuleTemplate_1</ruleTemplate>
             <description>RuleTemplate_1 and DocumentTypeMaintainTest</description>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility>
                     <user>temay</user>

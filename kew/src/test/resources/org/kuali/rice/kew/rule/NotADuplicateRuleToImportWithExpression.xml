@@ -26,7 +26,7 @@
             expression
             123
             </expression>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>TestAttribute</attribute>
@@ -62,7 +62,7 @@
       expression
       123
       </expression>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>TestAttribute</attribute>
@@ -98,7 +98,7 @@
       expression
       123
       </expression>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>TestAttribute</attribute>
@@ -134,7 +134,7 @@
       expression
       123
       </expression>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>TestAttribute2</attribute>
@@ -170,7 +170,7 @@
       expression
       123
       </expression>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>TestAttribute2</attribute>

@@ -57,7 +57,7 @@
 			<documentType>InactiveWorkgroupDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<workgroup>KR-WKFLW:InactiveWorkgroup</workgroup>

@@ -184,10 +184,10 @@ logic is executed together to determine documents match the rule -->
   	    		</documentation>
   	    	</annotation>
   	    </element>
-        <element name="ignorePrevious" type="boolean">
+        <element name="forceAction" type="boolean">
         <annotation>
   	    		<documentation>
-  	    		Default values in the field of the rule element corresponds to ignorePrevious.
+  	    		Default values in the field of the rule element corresponds to forceAction.
   	    		</documentation>
   	    	</annotation>
   	    </element>

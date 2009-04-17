@@ -48,7 +48,7 @@ public class AdHocAction extends ActionTakenEvent {
 	private String actionRequested;
 	private String nodeName;
 	private String responsibilityDesc;
-	private Boolean ignorePrevious;
+	private Boolean forceAction;
 	private Recipient recipient;
 	private String annotation;
 	private String requestLabel;
@@ -57,12 +57,12 @@ public class AdHocAction extends ActionTakenEvent {
         super(NO_ACTION_TAKEN_CODE, routeHeader, principal);
     }
 
-	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean ignorePrevActions, String requestLabel) {
+	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean forceAction, String requestLabel) {
 		super(NO_ACTION_TAKEN_CODE, routeHeader, principal, annotation);
 		this.actionRequested = actionRequested;
 		this.nodeName = nodeName;
 		this.responsibilityDesc = responsibilityDesc;
-		this.ignorePrevious = ignorePrevActions;
+		this.forceAction = forceAction;
 		this.recipient = recipient;
 		this.annotation = annotation;
 		this.requestLabel = requestLabel;
@@ -121,7 +121,7 @@ public class AdHocAction extends ActionTakenEvent {
                 ActionRequestValue adhocRequest = new ActionRequestValue();
                 if (!forValidationOnly) {
                     ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
-                    adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, ignorePrevious, annotation);
+                    adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, forceAction, annotation);
                     adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
                     adhocRequest.setRequestLabel(requestLabel);
                 } else {

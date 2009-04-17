@@ -130,7 +130,7 @@
             <documentType>PingDocument</documentType>
             <ruleTemplate>PingDocumentTemplate</ruleTemplate>
             <description>PingDocument send to initiator rule</description>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility>
                     <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
@@ -143,7 +143,7 @@
             <documentType>PingDocument2</documentType>
             <ruleTemplate>PingDocumentTemplate</ruleTemplate>
             <description>PingDocument2 send to initiator rule</description>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility>
                     <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
@@ -156,7 +156,7 @@
             <documentType>PingDocumentCustomStyle</documentType>
             <ruleTemplate>PingDocumentTemplate</ruleTemplate>
             <description>PingDocumentCustomStyle send to initiator rule</description>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility>
                     <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
@@ -167,7 +167,7 @@
             <documentType>PingDocumentWithEmailAttrib</documentType>
             <ruleTemplate>PingDocumentTemplate</ruleTemplate>
             <description>PingDocumentWithEmailAttrib send to initiator rule</description>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility>
                     <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>

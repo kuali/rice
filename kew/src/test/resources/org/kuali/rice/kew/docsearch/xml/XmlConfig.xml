@@ -742,7 +742,7 @@
 			<documentType>SearchDocType</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -755,7 +755,7 @@
 			<documentType>SearchDocTypeCaseSensitivity</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -768,7 +768,7 @@
 			<documentType>SearchDocTypeStandardSearchDataType</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -781,7 +781,7 @@
 			<documentType>SearchDocTypeRangeSearchDataType</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -794,7 +794,7 @@
 			<documentType>SearchDocTypeXStream</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search XStream attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>

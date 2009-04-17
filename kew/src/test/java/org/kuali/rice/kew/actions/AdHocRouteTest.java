@@ -121,7 +121,7 @@ public class AdHocRouteTest extends KEWTestCase {
         assertTrue("rkirkend should have an approval request on the document", doc.isApprovalRequested());
         TestUtilities.assertAtNode(doc, ADHOC_NODE);
 
-        // now try it with ignore previous=false
+        // now try it with force action=false
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADHOC_DOC);
         docId = doc.getRouteHeaderId();
         doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", getPrincipalIdForName("rkirkend"), "", false);
@@ -314,7 +314,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	assertEquals("annotation incorrect", "annotation1", request.getAnnotation());
     	assertEquals("action requested code incorrect", request.getActionRequested(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
     	assertEquals("responsibility desc incorrect", request.getResponsibilityDesc(), "respDesc");
-    	assertEquals("wrong ignore previous", request.getIgnorePrevAction(), Boolean.FALSE);
+    	assertEquals("wrong force action", request.getForceAction(), Boolean.FALSE);
 
     }
 
@@ -391,7 +391,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), ADHOC_DOC);
     	docId = doc.getRouteHeaderId();
 
-		// do an appspecific route to jitrue and NonSIT (w/ ignore previous =
+		// do an appspecific route to jitrue and NonSIT (w/ force action =
 		// false), should end up at the current node
 
     	doc.adHocRouteDocumentToPrincipal("A", "", getPrincipalIdForName("jitrue"), "", false);

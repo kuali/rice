@@ -504,7 +504,7 @@ public class DTOConverter {
         actionRequestVO.setDateCreated(Utilities.convertTimestamp(actionRequest.getCreateDate()));
         actionRequestVO.setDocVersion(actionRequest.getDocVersion());
         actionRequestVO.setPrincipalId(actionRequest.getPrincipalId());
-        actionRequestVO.setIgnorePrevAction(actionRequest.getIgnorePrevAction());
+        actionRequestVO.setForceAction(actionRequest.getForceAction());
         actionRequestVO.setPriority(actionRequest.getPriority());
         actionRequestVO.setRecipientTypeCd(actionRequest.getRecipientTypeCd());
         actionRequestVO.setResponsibilityDesc(actionRequest.getResponsibilityDesc());
@@ -677,7 +677,7 @@ public class DTOConverter {
         actionRequest.setCurrentIndicator(actionRequestDTO.getCurrentIndicator());
         actionRequest.setDelegationType(actionRequestDTO.getDelegationType());
         actionRequest.setDocVersion(actionRequestDTO.getDocVersion());
-        actionRequest.setIgnorePrevAction(actionRequestDTO.getIgnorePrevAction());
+        actionRequest.setForceAction(actionRequestDTO.getForceAction());
         actionRequest.setPriority(actionRequestDTO.getPriority());
         actionRequest.setQualifiedRoleName(actionRequestDTO.getQualifiedRoleName());
         actionRequest.setQualifiedRoleNameLabel(actionRequestDTO.getQualifiedRoleNameLabel());
@@ -1182,7 +1182,7 @@ public class DTOConverter {
         rule.setDocTypeName(ruleValues.getDocTypeName());
         rule.setFromDate(ruleValues.getFromDateString());
         rule.setToDate(ruleValues.getToDateString());
-        rule.setIgnorePrevious(ruleValues.getIgnorePrevious());
+        rule.setForceAction(ruleValues.getForceAction());
         rule.setRuleTemplateId(ruleValues.getRuleTemplateId());
         rule.setRuleTemplateName(ruleValues.getRuleTemplateName());
 

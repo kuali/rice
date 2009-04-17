@@ -28,7 +28,7 @@
         <ref bean="RuleBaseValues-description"/>
         <ref bean="RuleBaseValues-fromDate"/>
         <ref bean="RuleBaseValues-toDate"/>
-        <ref bean="RuleBaseValues-ignorePrevious"/>
+        <ref bean="RuleBaseValues-forceAction"/>
         <ref bean="RuleBaseValues-active"/>
         <ref bean="RuleBaseValues-groupReviewerName"/>
         <ref bean="RuleBaseValues-groupReviewerNamespace"/>
@@ -393,13 +393,13 @@
     <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
   </bean>
 
-  <bean id="RuleBaseValues-ignorePrevious" parent="RuleBaseValues-ignorePrevious-parentBean"/>
+  <bean id="RuleBaseValues-forceAction" parent="RuleBaseValues-forceAction-parentBean"/>
 
-  <bean id="RuleBaseValues-ignorePrevious-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="ignorePrevious" />
+  <bean id="RuleBaseValues-forceAction-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="forceAction" />
     <property name="forceUppercase" value="false" />
-    <property name="label" value="Ignore Previous" />
-    <property name="shortLabel" value="Ignore Previous" />
+    <property name="label" value="Force Action" />
+    <property name="shortLabel" value="Force Action" />
     <property name="maxLength" value="1" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
@@ -430,7 +430,7 @@
               <bean parent="FieldDefinition" p:attributeName="description" />
               <bean parent="FieldDefinition" p:attributeName="fromDate" />
               <bean parent="FieldDefinition" p:attributeName="toDate" />
-              <bean parent="FieldDefinition" p:attributeName="ignorePrevious" />
+              <bean parent="FieldDefinition" p:attributeName="forceAction" />
               <bean parent="FieldDefinition" p:attributeName="activeInd" />
             </list>
           </property>

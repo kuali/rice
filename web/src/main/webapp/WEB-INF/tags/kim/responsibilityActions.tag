@@ -17,7 +17,7 @@
 			<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionTypeCode}"  align="center"/>
          	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.priorityNumber}"  align="center" />
          	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}"  align="center" />
-         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.ignorePrevious}"  align="center" />
+         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.forceAction}"  align="center" />
        	</tr>
 		<c:forEach var="roleRspAction" items="${roleMember.roleRspActions}" varStatus="actionStatus">
            	<tr>	
@@ -44,7 +44,7 @@
         		</td>
 	       		<td>
 	        		<div align="center">
-		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].ignorePrevious"  attributeEntry="${docRoleRspActionAttributes.ignorePrevious}" readOnly="${readOnly}" />
+		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].forceAction"  attributeEntry="${docRoleRspActionAttributes.forceAction}" readOnly="${readOnly}" />
 	        		</div>
 	       		</td>
 		    </tr>

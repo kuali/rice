@@ -89,7 +89,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
                 expressionElement.setAttribute("type", rule.getRuleExpressionDef().getType());
             }
         }
-        renderer.renderBooleanElement(ruleElement, IGNORE_PREVIOUS, rule.getIgnorePrevious(), false);
+        renderer.renderBooleanElement(ruleElement, FORCE_ACTION, rule.getForceAction(), false);
         exportRuleExtensions(ruleElement, rule.getRuleExtensions());
         exportResponsibilities(ruleElement, rule.getResponsibilities());
 

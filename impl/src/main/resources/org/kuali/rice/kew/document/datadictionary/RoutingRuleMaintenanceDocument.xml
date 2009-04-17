@@ -42,7 +42,7 @@
         <bean parent="MaintainableFieldDefinition" p:name="description" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="fromDate" p:required="false"/>
         <bean parent="MaintainableFieldDefinition" p:name="toDate" p:required="false"/>
-        <bean parent="MaintainableFieldDefinition" p:name="ignorePrevious" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="forceAction" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="activeInd" p:required="true"/>
       </list>
     </property>

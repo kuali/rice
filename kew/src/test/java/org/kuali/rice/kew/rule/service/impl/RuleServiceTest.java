@@ -634,7 +634,7 @@ public class RuleServiceTest extends KEWTestCase {
         rbv.setCurrentInd(Boolean.TRUE);
         rbv.setDescription("A test rule");
         rbv.setDocTypeName("TestDocumentType");
-        rbv.setIgnorePrevious(Boolean.FALSE);
+        rbv.setForceAction(Boolean.FALSE);
 
         RuleExtension ext = new RuleExtension();
         RuleExtensionValue val = new RuleExtensionValue();

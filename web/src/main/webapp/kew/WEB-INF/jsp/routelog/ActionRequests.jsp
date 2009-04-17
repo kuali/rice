@@ -24,8 +24,8 @@
                         &nbsp;</td>
     </tr>
     <tr>
-        <th><bean-el:message key="routeLog.ActionRequests.actionRequest.label.ignorePrevious"/></th>
-        <td class="datacell1"><c:out value="${actionRequest.ignorePrevAction}" />&nbsp;</td>
+        <th><bean-el:message key="routeLog.ActionRequests.actionRequest.label.forceAction"/></th>
+        <td class="datacell1"><c:out value="${actionRequest.forceAction}" />&nbsp;</td>
     </tr>
     </c:if>
     <%-- 

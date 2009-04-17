@@ -81,7 +81,7 @@
       <documentType>servicesTestRequest</documentType>
             <ruleTemplate>testApproveTemplate</ruleTemplate>
       <description>Test Approve</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <user>user1</user>
@@ -94,7 +94,7 @@
       <documentType>servicesTestRequest</documentType>
             <ruleTemplate>testAcknowledgeTemplate</ruleTemplate>
       <description>Test Acknowledge</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <user>user1</user>
@@ -107,7 +107,7 @@
       <documentType>servicesTestRequest</documentType>
             <ruleTemplate>testFYITemplate</ruleTemplate>
       <description>Test FYI</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <user>user2</user>

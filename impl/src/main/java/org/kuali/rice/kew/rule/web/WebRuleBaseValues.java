@@ -389,8 +389,8 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		if (getActiveInd() == null) {
 			setActiveInd(Boolean.TRUE);
 		}
-		if (getIgnorePrevious() == null) {
-			setIgnorePrevious(Boolean.FALSE);
+		if (getForceAction() == null) {
+			setForceAction(Boolean.FALSE);
 		}
 		loadWebValues();
 		if (getResponsibilities().isEmpty()) {
@@ -502,8 +502,8 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			errors.add(keyPrefix + "description", new ActionMessage("routetemplate.ruleservice.description.required"));
 		}
 
-		if (getIgnorePrevious() == null) {
-			errors.add(keyPrefix + "ignorePrevious", new ActionMessage("routetemplate.ruleservice.ignoreprevious.required"));
+		if (getForceAction() == null) {
+			errors.add(keyPrefix + "forceAction", new ActionMessage("routetemplate.ruleservice.forceAction.required"));
 		}
 
 		if (getResponsibilities().isEmpty()) {

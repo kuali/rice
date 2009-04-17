@@ -40,7 +40,7 @@
 			<documentType>RiceDocument.child1child1child</documentType>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRoutingchild1child1child</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>

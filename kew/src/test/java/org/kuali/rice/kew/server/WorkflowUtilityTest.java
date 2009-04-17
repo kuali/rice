@@ -324,15 +324,15 @@ public class WorkflowUtilityTest extends KEWTestCase {
         runDocumentWillHaveApproveOrCompleteRequestAtNode(SeqSetup.DOCUMENT_TYPE_NAME,new ReportCriteriaGeneratorUsingXML());
     }
 
-    @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious_RouteHeaderId() throws Exception {
-        runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious("SimulationTestDocumenType_IgnorePrevious",new ReportCriteriaGeneratorUsingRouteHeaderId());
+    @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_ForceAction_RouteHeaderId() throws Exception {
+        runDocumentWillHaveApproveOrCompleteRequestAtNode_ForceAction("SimulationTestDocumenType_ForceAction",new ReportCriteriaGeneratorUsingRouteHeaderId());
     }
 
-    @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious_XmlContent() throws Exception {
-        runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious("SimulationTestDocumenType_IgnorePrevious",new ReportCriteriaGeneratorUsingXML());
+    @Test public void testDocumentWillHaveApproveOrCompleteRequestAtNode_ForceAction_XmlContent() throws Exception {
+        runDocumentWillHaveApproveOrCompleteRequestAtNode_ForceAction("SimulationTestDocumenType_ForceAction",new ReportCriteriaGeneratorUsingXML());
     }
 
-    private void runDocumentWillHaveApproveOrCompleteRequestAtNode_IgnorePrevious(String documentType, ReportCriteriaGenerator generator) throws Exception {
+    private void runDocumentWillHaveApproveOrCompleteRequestAtNode_ForceAction(String documentType, ReportCriteriaGenerator generator) throws Exception {
       /*
         name="WorkflowDocument"
           -  rkirkend - Approve - false
@@ -531,7 +531,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     /**
-     * This method tests how the isLastApproverAtNode method deals with ignore previous requests, there is an app constant
+     * This method tests how the isLastApproverAtNode method deals with force action requests, there is an app constant
      * with the value specified in KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST which dictates whether or not to simulate
      * activation of initialized requests before running the method.
      *
@@ -548,7 +548,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.routeDocument("");
 
-        // at the first node (WorkflowDocument) we should have a request to rkirkend, bmcgough and to ewestfal with ignorePrevious=true,
+        // at the first node (WorkflowDocument) we should have a request to rkirkend, bmcgough and to ewestfal with forceAction=true,
         assertEquals("We should be at the WorkflowDocument node.", SeqSetup.WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
         assertFalse("ewestfal should have not have approve because it's initiated", document.isApprovalRequested());
         document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
@@ -558,7 +558,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should be 3 pending requests.", 3, actionRequests.size());
         // the requests to bmcgough should be activated, the request to rkirkend should be initialized,
-        // and the request to ewestfal should be initialized and ignorePrevious=true
+        // and the request to ewestfal should be initialized and forceAction=true
         boolean foundBmcgoughRequest = false;
         boolean foundRkirkendRequest = false;
         boolean foundEwestfalRequest = false;
@@ -573,7 +573,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
                 foundRkirkendRequest = true;
             } else if ("ewestfal".equals(netId)) {
                 assertTrue("Request to ewestfal should be initialized.", actionRequest.isInitialized());
-                assertTrue("Request to ewestfal should be ignorePrevious.", actionRequest.getIgnorePrevAction().booleanValue());
+                assertTrue("Request to ewestfal should be forceAction.", actionRequest.getForceAction().booleanValue());
                 foundEwestfalRequest = true;
             }
         }
@@ -615,15 +615,15 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // should be at the workflow document 2 node
         assertEquals("Should be at the WorkflowDocument2 Node.", SeqSetup.WORKFLOW_DOCUMENT_2_NODE, document.getNodeNames()[0]);
-        // at this node there should be two requests, one to ewestfal with ignorePrevious=false and one to pmckown,
-        // since we haven't set the application constant, the non-ignore previous request won't be activated first so pmckown
+        // at this node there should be two requests, one to ewestfal with forceAction=false and one to pmckown,
+        // since we haven't set the application constant, the non-force action request won't be activated first so pmckown
         // will not be the final approver
         assertFalse("Pmckown should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should be 2 action requests.", 2, actionRequests.size());
 
-        // Now set up the app constant that checks ignore previous properly and try a new document
+        // Now set up the app constant that checks force action properly and try a new document
         String parameterValue = "Y";
         lastApproverActivateParameter.setParameterValue(parameterValue);
         KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
@@ -645,7 +645,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         document.approve("");
 
-        // now there is just a request to rkirkend and ewestfal, since ewestfal is ignore previous true, neither should be final approver
+        // now there is just a request to rkirkend and ewestfal, since ewestfal is force action true, neither should be final approver
         assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
@@ -664,7 +664,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
         assertEquals("We should have 2 requests here.", 2, requests.size());
         
-        // now, there are requests to pmckown and ewestfal here, the request to ewestfal is ingorePrevious=false and since ewestfal
+        // now, there are requests to pmckown and ewestfal here, the request to ewestfal is forceAction=false and since ewestfal
         // routed the document, this request should be auto-approved.  However, it's priority is 2 so it is activated after the
         // request to pmckown which is the situation we are testing
         assertTrue("Pmckown should be the last approver at this node.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
@@ -877,7 +877,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         RuleDTO ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
         assertEquals("Rule Template Named returned is not " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2,RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2,ruleVO.getRuleTemplateName());
-        assertEquals("Rule did not have ignore previous set to false",Boolean.FALSE,ruleVO.getIgnorePrevious());
+        assertEquals("Rule did not have force action set to false",Boolean.FALSE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities returned is incorrect",2,ruleVO.getRuleResponsibilities().length);
         RuleResponsibilityDTO responsibilityVO = null;
         for (int i = 0; i < ruleVO.getRuleResponsibilities().length; i++) {
@@ -911,7 +911,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             if (RuleTestGeneralSetup.RULE_TEST_TEMPLATE_1.equals(ruleVO.getRuleTemplateName())) {
                 assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
                 assertEquals("Rule Template Named returned is not " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_1,RuleTestGeneralSetup.RULE_TEST_TEMPLATE_1,ruleVO.getRuleTemplateName());
-                assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
+                assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
                 assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
                 responsibilityVO = ruleVO.getRuleResponsibilities()[0];
                 assertEquals("Rule user is incorrect","temay",getPrincipalNameForId(responsibilityVO.getPrincipalId()));
@@ -920,7 +920,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
             } else if (RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2.equals(ruleVO.getRuleTemplateName())) {
                 assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
                 assertEquals("Rule Template Named returned is not " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2,RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2,ruleVO.getRuleTemplateName());
-                assertEquals("Rule did not have ignore previous set to false",Boolean.FALSE,ruleVO.getIgnorePrevious());
+                assertEquals("Rule did not have force action set to false",Boolean.FALSE,ruleVO.getForceAction());
                 assertEquals("Number of Rule Responsibilities returned is incorrect",2,ruleVO.getRuleResponsibilities().length);
                 responsibilityVO = null;
                 for (int l = 0; l < ruleVO.getRuleResponsibilities().length; l++) {
@@ -955,7 +955,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
         assertEquals("Rule Template Named returned is not " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_3,RuleTestGeneralSetup.RULE_TEST_TEMPLATE_3,ruleVO.getRuleTemplateName());
-        assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
+        assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
         KimGroup ruleTestGroup = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
@@ -975,7 +975,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
         assertEquals("Rule Template Named returned is not " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_3,RuleTestGeneralSetup.RULE_TEST_TEMPLATE_3,ruleVO.getRuleTemplateName());
-        assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
+        assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
         assertEquals("Rule workgroup id is incorrect",RuleTestGeneralSetup.RULE_TEST_GROUP_ID, ruleTestGroup.getGroupId());
@@ -1038,7 +1038,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         RuleDTO ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
         assertEquals("Rule Template Named returned is not " + RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE,RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE,ruleVO.getRuleTemplateName());
-        assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
+        assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         RuleResponsibilityDTO responsibilityVO = ruleVO.getRuleResponsibilities()[0];
         KimGroup ruleTestGroup2 = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
@@ -1094,7 +1094,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
         assertEquals("Rule Template Named returned is not " + RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE,RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE,ruleVO.getRuleTemplateName());
-        assertEquals("Rule did not have ignore previous set to true",Boolean.TRUE,ruleVO.getIgnorePrevious());
+        assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
         ruleTestGroup2 = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());

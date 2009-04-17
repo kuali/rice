@@ -63,7 +63,7 @@
       <documentType>BadWorkgroupRoleAttributeDocument</documentType>
       <ruleTemplate>BadWorkgroupRoleTemplate</ruleTemplate>
       <description>BadWorkgroupRoleAttribute Rule</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
         <role>org.kuali.rice.kew.rule.TestBadWorkgroupRoleAttribute!workgroup</role>

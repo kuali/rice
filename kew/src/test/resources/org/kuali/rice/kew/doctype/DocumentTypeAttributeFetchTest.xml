@@ -255,7 +255,7 @@
 			<documentType>AttributeTestDocument</documentType>
 			<ruleTemplate>AlwaysRouteRuleTemplate</ruleTemplate>
 			<description>AlwaysRouteRuleTemplate</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -268,7 +268,7 @@
 			<documentType>AttributeTestDocumentNoME</documentType>
 			<ruleTemplate>AlwaysRouteRuleTemplateNoME</ruleTemplate>
 			<description>AlwaysRouteRuleTemplateNoME</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>

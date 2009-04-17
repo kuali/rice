@@ -137,8 +137,8 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Integer jrfVerNbr;
     @Column(name="PRNCPL_ID")
 	private String principalId;
-    @Column(name="IGN_PREV_ACTN_IND")
-	private Boolean ignorePrevAction;
+    @Column(name="FRC_ACTN")
+	private Boolean forceAction;
     @Column(name="PARNT_ID", insertable=false, updatable=false)
 	private Long parentActionRequestId;
     @Column(name="QUAL_ROLE_NM")
@@ -411,18 +411,18 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
     
     /**
-     * @return Returns the ignorePrevAction.
+     * @return Returns the forceAction.
      */
-    public Boolean getIgnorePrevAction() {
-        return ignorePrevAction;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
     /**
-     * @param ignorePrevAction
-     *            The ignorePrevAction to set.
+     * @param forceAction
+     *            The forceAction to set.
      */
-    public void setIgnorePrevAction(Boolean ignorePrevAction) {
-        this.ignorePrevAction = ignorePrevAction;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     /**
@@ -924,7 +924,7 @@ public class ActionRequestValue implements WorkflowPersistable {
             .append("annotation", annotation)
             .append("jrfVerNbr", jrfVerNbr)
             .append("principalId", principalId)
-            .append("ignorePrevAction", ignorePrevAction)
+            .append("forceAction", forceAction)
             .append("parentActionRequestId", parentActionRequestId)
             .append("qualifiedRoleName", qualifiedRoleName)
             .append("roleName", roleName)

@@ -416,7 +416,7 @@ public class KEWConstants extends JSTLConstants {
     	APPROVE_POLICIES.put(APPROVE_POLICY_ALL_APPROVE, APPROVE_POLICY_ALL_APPROVE_LABEL);
     }
 
-    public static final boolean ACTION_REQUEST_IGNORE_PREV_ACTION = true;
+    public static final boolean ACTION_REQUEST_FORCE_ACTION = true;
     public static final boolean ACTION_REQUEST_PREV_ACTION_AWARE = false;
     /** Action Request is for a workgroup. */
     public static final String ACTION_REQUEST_GROUP_RECIPIENT_CD = "W";

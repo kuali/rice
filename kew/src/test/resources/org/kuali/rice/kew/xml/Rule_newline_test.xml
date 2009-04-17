@@ -77,7 +77,7 @@
 			<ruleTemplate>
 				KualiOrgReviewTemplate</ruleTemplate>
 			<description>org rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>

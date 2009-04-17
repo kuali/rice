@@ -74,7 +74,7 @@
 			<documentType> KualiMaintenanceDocument </documentType>
 			<ruleTemplate> KualiOrgReviewTemplate1 </ruleTemplate>
 			<description>org rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute> KualiOrgReviewAttribute </attribute>

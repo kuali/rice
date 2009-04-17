@@ -115,7 +115,7 @@ public class FutureRequestsTest extends KEWTestCase {
     }
 
     /**
-     * Tests future requests work with routing and ignore previous rules
+     * Tests future requests work with routing and force action rules
      *
      * @throws Exception
      */
@@ -126,11 +126,11 @@ public class FutureRequestsTest extends KEWTestCase {
         String user1PrincipalId = getPrincipalIdForName("user1");
         String user2PrincipalId = getPrincipalIdForName("user2");
 
-        // Node 1 - user1 approval (ignorePref true)
-        //          user2 approval (ignorePref false)
-        // Node 2 - NonSIT approval (ignorePrev false)
-        //          user1 approval (ignorePref true)
-        // Node 3 - user2 approval (ignorePrev false)
+        // Node 1 - user1 approval (forceAction true)
+        //          user2 approval (forceAction false)
+        // Node 2 - NonSIT approval (forceAction false)
+        //          user1 approval (forceAction true)
+        // Node 3 - user2 approval (forceAction false)
         WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "FutureRequestsDoc");
         document.setDoNotReceiveFutureRequests();
         document.routeDocument("");
@@ -143,7 +143,7 @@ public class FutureRequestsTest extends KEWTestCase {
         document.setReceiveFutureRequests();
         document.approve("");
 
-        // should have another request from second rule that is not ignore previous because
+        // should have another request from second rule that is not force action because
         // of policy
         document = new WorkflowDocument(user2PrincipalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());

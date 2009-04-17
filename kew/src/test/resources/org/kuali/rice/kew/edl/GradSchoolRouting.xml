@@ -181,7 +181,7 @@
       <documentType>NewCourseRequest</documentType>
       <ruleTemplate>UniversityGraduateSchoolOfficeRouting</ruleTemplate>
       <description>GradSchoolRouting doc routing rule</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <!--
       <ruleExtensions>
         <ruleExtension>

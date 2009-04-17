@@ -34,7 +34,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected String roleMemberId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
-	protected boolean ignorePrevious;
+	protected boolean forceAction;
 	protected Integer priorityNumber;
 	
 	protected RoleResponsibilityImpl roleResponsibility;
@@ -96,15 +96,15 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 		this.roleResponsibility = roleResponsibility;
 	}
 	/**
-	 * @return the ignorePrevious
+	 * @return the forceAction
 	 */
-	public boolean isIgnorePrevious() {
-		return this.ignorePrevious;
+	public boolean isForceAction() {
+		return this.forceAction;
 	}
 	/**
-	 * @param ignorePrevious the ignorePrevious to set
+	 * @param forceAction the forceAction to set
 	 */
-	public void setIgnorePrevious(boolean ignorePrevious) {
-		this.ignorePrevious = ignorePrevious;
+	public void setForceAction(boolean forceAction) {
+		this.forceAction = forceAction;
 	}
 }

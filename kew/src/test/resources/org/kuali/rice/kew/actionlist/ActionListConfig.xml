@@ -84,7 +84,7 @@
 			<documentType>ActionListDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -113,7 +113,7 @@
 			<documentType>ActionListDocumentType_PrimaryDelegate</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -142,7 +142,7 @@
 			<documentType>ActionListDocumentType_PrimaryDelegate</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -156,7 +156,7 @@
 			<documentType>ActionListDocumentType_PrimaryDelegate2</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -179,7 +179,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>rkirkend</principalName>
@@ -197,7 +197,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>ewestfal</principalName>
@@ -215,7 +215,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 2</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>bmcgough</user>
@@ -233,7 +233,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>jitrue</user>
@@ -252,7 +252,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>rkirkend</principalName>
@@ -270,7 +270,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>ewestfal</principalName>
@@ -288,7 +288,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 2</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>bmcgough</user>
@@ -306,7 +306,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>jitrue</user>
@@ -325,7 +325,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>delyea</user>
@@ -344,7 +344,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>temay</user>

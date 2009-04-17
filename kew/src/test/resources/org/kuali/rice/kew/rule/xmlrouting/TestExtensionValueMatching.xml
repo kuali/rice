@@ -78,7 +78,7 @@
             <documentType>TestDocument</documentType>
             <ruleTemplate>Attr1Template</ruleTemplate>
             <description>Attr1Template Rule matching '1'</description>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <ruleExtensions>
                 <ruleExtension>
                     <attribute>Attr1</attribute>
@@ -101,7 +101,7 @@
             <documentType>TestDocument</documentType>
             <ruleTemplate>Attr1Template</ruleTemplate>
             <description>Attr1Template Rule matching '1'</description>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <ruleExtensions>
                 <ruleExtension>
                     <attribute>Attr1</attribute>

@@ -56,7 +56,7 @@
 			<documentType>UniversityIdRoleAttributeTest</documentType>
 			<ruleTemplate>UniversityIdRoleTemplate</ruleTemplate>
 			<description>university id routing test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.rule.UniversityIdRoleAttribute!universityId</role>

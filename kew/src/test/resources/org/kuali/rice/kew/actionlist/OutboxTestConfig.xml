@@ -56,7 +56,7 @@
 			<documentType>OutboxTestDocumentType</documentType>
 			<ruleTemplate>OutboxTemplate1</ruleTemplate>
 			<description>Rule for OutboxTemplate1 and OutboxTestDocumentType</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<workgroup>KR-WKFLW:OutboxApprovers</workgroup>

@@ -623,7 +623,7 @@
 			<documentType>SearchDocType</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -636,7 +636,7 @@
 			<documentType>SearchDocType2</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -649,7 +649,7 @@
 			<documentType>SearchDocType_DefaultCustomProcessor</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -662,7 +662,7 @@
 			<documentType>SearchDocType_DefaultCustomProcessor_2</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -675,7 +675,7 @@
 			<documentType>SearchDocType_DefaultCustomProcessor_3</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -688,7 +688,7 @@
 			<documentType>SearchDocType_AllCustomProcessor</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -701,7 +701,7 @@
 			<documentType>SearchDocType_SearchAttCustomProcessor</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -714,7 +714,7 @@
 			<documentType>SearchDocType_StandardCustomProcessor</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -727,7 +727,7 @@
 			<documentType>SearchDocType_NormalCustomProcessor</documentType>
 			<ruleTemplate>searchTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>

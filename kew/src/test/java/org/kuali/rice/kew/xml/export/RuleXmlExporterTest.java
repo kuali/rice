@@ -134,7 +134,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldRule.getFromDateString(),newRule.getFromDateString() );
         assertEquals(oldRule.getToDateString(),newRule.getToDateString() );
         
-        assertEquals(oldRule.getIgnorePrevious(), newRule.getIgnorePrevious());
+        assertEquals(oldRule.getForceAction(), newRule.getForceAction());
         assertEquals(oldRule.getPreviousVersionId(), newRule.getPreviousVersionId());
         assertEquals(oldRule.getRouteHeaderId(), newRule.getRouteHeaderId());
         

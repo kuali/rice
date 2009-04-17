@@ -87,7 +87,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
 	// param 2 - annotation is whatever text we pass in to describe the transaction - this will be system generated
 	// param 3 - recipient is the person who will receive this request
 	// param 4 - this is the responsibilityParty (a.k.a the system that produced this request), so we'll put the producer name in there
-	// param 5 - this is the "ignore previous" requests - if set to true, this will be delivered to the recipients list regardless of
+	// param 5 - this is the "force action" requests - if set to true, this will be delivered to the recipients list regardless of
 	//           whether the recipient has already taken action on this request; in our case, this doesn't really apply at this point in time,
 	//           so we'll set to true just to be safe
 	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(recipientUserId);

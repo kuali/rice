@@ -565,7 +565,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         try {
 	        SimulationEngine simulationEngine = new SimulationEngine();
 	        SimulationCriteria criteria = DTOConverter.convertReportCriteriaDTO(reportCriteriaDTO);
-	        // set activate requests to true by default so ignore previous works correctly
+	        // set activate requests to true by default so force action works correctly
 	        criteria.setActivateRequests(Boolean.TRUE);
 	        SimulationResults results = simulationEngine.runSimulation(criteria);
             List actionRequestsToProcess = results.getSimulatedActionRequests();
@@ -639,7 +639,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         loadDocument(routeHeaderId);
         // If this app constant is set to true, then we will attempt to simulate activation of non-active requests before
-        // attempting to deactivate them, this is in order to address the ignore previous issue reported by EPIC in issue
+        // attempting to deactivate them, this is in order to address the force action issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
         boolean activateFirst = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND, false);
 

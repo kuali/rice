@@ -96,25 +96,25 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return DTOConverter.convertRouteHeader(routeHeader, principalId);
     }
 
-    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientPrincipalId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException {
+    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientPrincipalId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(actionRequested, "actionRequested");
         //incomingParamCheck(routeMethodName, "routeMethodName");
         incomingParamCheck(recipientPrincipalId, "recipientPrincipalId");
-        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientPrincipalId=" + recipientPrincipalId + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation + ", requestLabel="+requestLabel+"]");
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(principalId, routeHeader, actionRequested, nodeName, annotation, recipientPrincipalId, responsibilityDesc, new Boolean(ignorePrevActions), requestLabel);
+        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientPrincipalId=" + recipientPrincipalId + ", forceAction=" + forceAction + ", annotation="+annotation + ", requestLabel="+requestLabel+"]");
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(principalId, routeHeader, actionRequested, nodeName, annotation, recipientPrincipalId, responsibilityDesc, new Boolean(forceAction), requestLabel);
         return DTOConverter.convertRouteHeader(routeHeader, principalId);
     }
 
-    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientGroupId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException {
+    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientGroupId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(actionRequested, "actionRequested");
         //incomingParamCheck(routeMethodName, "routeMethodName");
         incomingParamCheck(recipientGroupId, "recipientGroupId");
-        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientGroupId=" + recipientGroupId + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation+"]");
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToGroup(principalId, routeHeader, actionRequested, nodeName, annotation, recipientGroupId, responsibilityDesc, new Boolean(ignorePrevActions), requestLabel);
+        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientGroupId=" + recipientGroupId + ", forceAction=" + forceAction + ", annotation="+annotation+"]");
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToGroup(principalId, routeHeader, actionRequested, nodeName, annotation, recipientGroupId, responsibilityDesc, new Boolean(forceAction), requestLabel);
         return DTOConverter.convertRouteHeader(routeHeader, principalId);
     }
 

@@ -32,8 +32,8 @@ public interface WorkflowDocumentActions {
 
     public RouteHeaderDTO acknowledgeDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO approveDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
-    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException;
-    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException;
     public RouteHeaderDTO cancelDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO clearFYIDocument(String principalId, RouteHeaderDTO routeHeader) throws WorkflowException;
     public RouteHeaderDTO completeDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;

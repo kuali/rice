@@ -76,7 +76,7 @@
 				<description>Testy Me A Template</description>
 				<fromDate>01/11/2006</fromDate>
 				<toDate>01/01/2100</toDate>
-				<ignorePrevious>true</ignorePrevious>
+				<forceAction>true</forceAction>
 				<active>false</active>
 				<defaultActionRequested>A</defaultActionRequested>
 				<supportsComplete>false</supportsComplete>
@@ -97,7 +97,7 @@
 			<ruleDefaults>
 				<delegationType>P</delegationType>
 				<description>Testy Me A Delegate Template</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<active>true</active>
 			</ruleDefaults>
 		</ruleTemplate>

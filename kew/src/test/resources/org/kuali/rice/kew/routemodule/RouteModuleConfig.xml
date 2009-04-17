@@ -137,7 +137,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -150,7 +150,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -163,7 +163,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -176,7 +176,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Ack1Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -189,7 +189,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Ack2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -202,7 +202,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -231,7 +231,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -260,7 +260,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -289,7 +289,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -318,7 +318,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -347,7 +347,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -376,7 +376,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>

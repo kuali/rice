@@ -89,7 +89,7 @@
 			<documentType>TestDocumentType</documentType>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>DuplicateTestRule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>TestAttribute</attribute>

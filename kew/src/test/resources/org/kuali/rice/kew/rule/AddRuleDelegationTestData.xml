@@ -149,7 +149,7 @@
             <documentType>AddDelegationTest_DocType</documentType>
             <ruleTemplate>AddDelegationTest_RuleTemplate</ruleTemplate>
             <description>RouteLevel1_Rule</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <responsibilities>
                 <responsibility>
                     <user>user1</user>

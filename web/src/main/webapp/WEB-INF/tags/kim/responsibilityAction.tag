@@ -17,7 +17,7 @@
 			<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionTypeCode}"  align="center"/>
          	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.priorityNumber}"  align="center" />
          	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}"  align="center" />
-         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.ignorePrevious}"  align="center" />
+         	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.forceAction}"  align="center" />
        	</tr>
        	<c:set var="roleRspAction" value="${KualiForm.document.responsibilities[responsibilityIdx].roleRspAction }" />
       	<tr>	
@@ -44,7 +44,7 @@
        		</td>
        		<td>
         		<div align="center">
-	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspActions[0].ignorePrevious"  attributeEntry="${docRoleRspActionAttributes.ignorePrevious}" readOnly="${readOnly}" />
+	            	<kul:htmlControlAttribute property="document.responsibilities[${responsibilityIdx}].roleRspActions[0].forceAction"  attributeEntry="${docRoleRspActionAttributes.forceAction}" readOnly="${readOnly}" />
         		</div>
        		</td>
 	    </tr>

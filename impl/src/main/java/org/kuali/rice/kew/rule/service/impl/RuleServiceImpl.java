@@ -806,8 +806,8 @@ public class RuleServiceImpl implements RuleService {
         if (ruleBaseValues.getDescription() == null || ruleBaseValues.getDescription().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("Description is required", "routetemplate.ruleservice.description.required"));
         }
-        if (ruleBaseValues.getIgnorePrevious() == null) {
-            errors.add(new WorkflowServiceErrorImpl("Ignore Previous is required", "routetemplate.ruleservice.ignoreprevious.required"));
+        if (ruleBaseValues.getForceAction() == null) {
+            errors.add(new WorkflowServiceErrorImpl("Force Action is required", "routetemplate.ruleservice.forceAction.required"));
         }
         if (ruleBaseValues.getResponsibilities().isEmpty()) {
             errors.add(new WorkflowServiceErrorImpl("A responsibility is required", "routetemplate.ruleservice.responsibility.required"));
@@ -859,9 +859,9 @@ public class RuleServiceImpl implements RuleService {
             errors.add(new WorkflowServiceErrorImpl("Description is required", "routetemplate.ruleservice.description.required"));
             LOG.error("Description is missing");
         }
-        if (ruleBaseValues.getIgnorePrevious() == null) {
-            errors.add(new WorkflowServiceErrorImpl("Ignore Previous is required", "routetemplate.ruleservice.ignoreprevious.required"));
-            LOG.error("Ignore Previous is missing");
+        if (ruleBaseValues.getForceAction() == null) {
+            errors.add(new WorkflowServiceErrorImpl("Force Action is required", "routetemplate.ruleservice.forceAction.required"));
+            LOG.error("Force Action is missing");
         }
 
         for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {

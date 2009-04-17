@@ -5,7 +5,7 @@
 			<documentType>KualiMaintenanceDocument</documentType>
 			<ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
 			<description>org rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>KualiOrgReviewAttribute</attribute>
@@ -34,7 +34,7 @@
 			<documentType>KualiFinancialDocument</documentType>
 			<ruleTemplate>KualiOrgReviewTemplate</ruleTemplate>
 			<description>base org rule for kuali docs</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>KualiOrgReviewAttribute</attribute>
@@ -64,7 +64,7 @@
 			<documentType>KualiFinancialDocument</documentType>
 			<ruleTemplate>KualiAccountTemplate</ruleTemplate>
 			<description>main account rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>FISCAL-OFFICER</role>
@@ -78,7 +78,7 @@
 			<documentType>KualiAccountMaintenanceDocument</documentType>
 			<ruleTemplate>KualiChartTemplate</ruleTemplate>
 			<description>test rule on account doc</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>CHART-MANAGER</role>
@@ -99,7 +99,7 @@
 			<documentType>TestDocumentType</documentType>
 			<description>A named rule</description>
 			<expression type="someType">some expression</expression>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>
@@ -120,7 +120,7 @@
 				<documentType>KualiFinancialDocument</documentType>
 				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
 				<description>primary delegation</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<role>FISCAL-OFFICER-PRIMARY-DELEGATE</role>
@@ -139,7 +139,7 @@
 				<documentType>KualiFinancialDocument</documentType>
 				<ruleTemplate>KualiAccountTemplate</ruleTemplate>
 				<description>secondary delegate</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<role>FISCAL-OFFICER-SECONDARY-DELEGATE</role>

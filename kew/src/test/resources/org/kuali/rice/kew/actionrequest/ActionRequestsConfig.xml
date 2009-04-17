@@ -157,9 +157,9 @@
 
 		<!-- DocumentType for the ActionRequestServiceTest -->
 		<documentType>
-			<name>testIgnorePreviousWithDelegation</name>
-			<description>DocType for testIgnorePreviousWithDelegation</description>
-			<label>DocType for testIgnorePreviousWithDelegation</label>
+			<name>testForceActionWithDelegation</name>
+			<description>DocType for testForceActionWithDelegation</description>
+			<label>DocType for testForceActionWithDelegation</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>about:blank</docHandler>
 			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
@@ -409,7 +409,7 @@
 			<documentType>DRDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -422,7 +422,7 @@
 			<documentType>DRDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -435,7 +435,7 @@
 			<documentType>DRDocType</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -448,10 +448,10 @@
 		<!-- Rules for ActionRequestServiceTest -->
 		<rule>
 		 	<name>ActionRequestsConfig-Rule1</name>
-			<documentType>testIgnorePreviousWithDelegation</documentType>
+			<documentType>testForceActionWithDelegation</documentType>
 			<ruleTemplate>Node1Template</ruleTemplate>
-			<description>testIgnorePreviousWithDelegation node 1 rule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<description>testForceActionWithDelegation node 1 rule</description>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -467,7 +467,7 @@
 			<documentType>testRoleToRoleDelegation</documentType>
 			<ruleTemplate>RoleToRoleTemplate</ruleTemplate>
 			<description>testRoleToRoleDelegation node 1 role</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.actionrequest.RoleToRoleDelegationRole!MAIN</role>
@@ -485,7 +485,7 @@
 			<documentType>testMixedbagRoleToRoleDelegation</documentType>
 			<ruleTemplate>RoleToRoleTemplate</ruleTemplate>
 			<description>testRoleToRoleDelegation node 1 role</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.actionrequest.RoleToRoleDelegationRole!MAIN</role>
@@ -500,7 +500,7 @@
             <documentType>UnresolvableRoleRecipsDocType</documentType>
             <ruleTemplate>Node1Template</ruleTemplate>
             <description>Rule with role attribute that doesn't produce a valid recipient</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <responsibilities>
                 <responsibility>
                     <role>org.kuali.rice.kew.rule.MockRole!group:IAmAGroupThatDoesNotExist</role>
@@ -520,10 +520,10 @@
       	  </parentResponsibility>
     	  <delegationType>P</delegationType>
 		  <rule>
-			<documentType>testIgnorePreviousWithDelegation</documentType>
+			<documentType>testForceActionWithDelegation</documentType>
 			<ruleTemplate>Node1Template</ruleTemplate>
 			<description>Node1 Primary Delegation</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 			  <responsibility>
 			    <principalName>rkirkend</principalName>
@@ -542,7 +542,7 @@
 			<documentType>testRoleToRoleDelegation</documentType>
 			<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
 			<description>Role To Role Primary Delegation</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 			  <responsibility>
 			    <role>org.kuali.rice.kew.actionrequest.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
@@ -561,7 +561,7 @@
 			<documentType>testRoleToRoleDelegation</documentType>
 			<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
 			<description>Role To Role SECONDARY Delegation</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 			  <responsibility>
 				<role>org.kuali.rice.kew.actionrequest.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>
@@ -580,7 +580,7 @@
 			<documentType>testMixedbagRoleToRoleDelegation</documentType>
 			<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
 			<description>Role To Role Primary Delegation</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 			  <responsibility>
 				<role>org.kuali.rice.kew.actionrequest.RoleToRoleDelegationRole!PRIMARY_DELEGATE</role>
@@ -599,7 +599,7 @@
 			<documentType>testMixedbagRoleToRoleDelegation</documentType>
 			<ruleTemplate>RoleToRoleDelegationTemplate</ruleTemplate>
 			<description>Role To Role SECONDARY Delegation</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 			  <responsibility>
 				<role>org.kuali.rice.kew.actionrequest.RoleToRoleDelegationRole!SECONDARY_DELEGATE</role>

@@ -7,7 +7,7 @@
             <documentType>TestDocumentType</documentType>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
             <description>Duplicate of a named rule</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <ruleExtensions>
                 <ruleExtension>
                     <attribute>TestRuleAttribute</attribute>

@@ -190,7 +190,7 @@
 			<documentType>ExceptionRoutingParallelDoc</documentType>
 			<ruleTemplate>RouteNode1</ruleTemplate>
 			<description>RouteNode1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -203,7 +203,7 @@
 			<documentType>ExceptionRoutingParallelDoc</documentType>
 			<ruleTemplate>RouteNode3</ruleTemplate>
 			<description>RouteNode3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -216,7 +216,7 @@
 			<documentType>ExceptionRoutingParallelDoc</documentType>
 			<ruleTemplate>Explode</ruleTemplate>
 			<description>Explode</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -229,7 +229,7 @@
 			<documentType>ExceptionRoutingParallelDoc</documentType>
 			<ruleTemplate>RouteNode4</ruleTemplate>
 			<description>RouteNode4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -244,7 +244,7 @@
 			<documentType>AdhocTransitionTestDocument</documentType>
 			<ruleTemplate>RouteNode4</ruleTemplate>
 			<description>RouteNode4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>

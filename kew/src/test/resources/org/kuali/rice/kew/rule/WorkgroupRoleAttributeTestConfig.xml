@@ -57,7 +57,7 @@
       <documentType>WorkgroupRoleAttributeDocument</documentType>
             <ruleTemplate>WorkgroupRoleTemplate</ruleTemplate>
       <description>WorkgroupRoleAttribute Rule</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
         <role>org.kuali.rice.kew.rule.TestWorkgroupRoleAttribute!workgroup</role>

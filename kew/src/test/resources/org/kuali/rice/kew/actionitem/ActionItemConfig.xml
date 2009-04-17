@@ -217,7 +217,7 @@
 			<documentType>ActionItemDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<groupName namespace="KR-WKFLW">AIWG-Test</groupName>
@@ -230,7 +230,7 @@
 			<documentType>ActionItemDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<groupName namespace="KR-WKFLW">AIWG-Admin</groupName>
@@ -245,7 +245,7 @@
 			<documentType>BAOrphanedRequestDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>rkirkend</principalName>
@@ -258,7 +258,7 @@
 			<documentType>BAOrphanedRequestDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>user1</principalName>
@@ -271,7 +271,7 @@
 			<documentType>BAOrphanedRequestDocumentType</documentType>
 			<ruleTemplate>RuleTemplate3</ruleTemplate>
 			<description>RuleTemplate3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<groupName namespace="KR-WKFLW">AIWG-Test</groupName>

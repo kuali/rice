@@ -6,7 +6,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>user1</principalName>
@@ -18,7 +18,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalId>user1</principalId>
@@ -30,7 +30,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
@@ -42,7 +42,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<groupId>1</groupId>
@@ -54,7 +54,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.rule.TestRuleAttribute!TEST</role>
@@ -66,7 +66,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<roleName attributeClassName="org.kuali.rice.kew.rule.TestRuleAttribute">TEST</roleName>

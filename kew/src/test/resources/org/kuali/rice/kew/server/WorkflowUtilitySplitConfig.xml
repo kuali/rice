@@ -63,7 +63,7 @@
 		    <name>BeforeSplitRule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>BeforeSplitRule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>ewestfal</principalName>
@@ -75,7 +75,7 @@
 		    <name>SplitLeft1Rule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>SplitLeft1Rule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>rkirkend</principalName>
@@ -87,7 +87,7 @@
 		    <name>SplitLeft2Rule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>SplitLeft2Rule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>bmcgough</principalName>
@@ -99,7 +99,7 @@
 		    <name>SplitRight1Rule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>SplitRight1Rule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>jhopf</principalName>
@@ -111,7 +111,7 @@
 		    <name>AfterSplitRule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>AfterSplitRule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>natjohns</principalName>

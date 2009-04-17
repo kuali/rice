@@ -6,7 +6,7 @@
             <documentType>RouteNodeConfigParams</documentType>
             <description>TestRule1</description>
             <expression type="dummytype">this is some expresssion</expression>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <responsibilities>
                 <responsibility>
                     <user>user1</user>

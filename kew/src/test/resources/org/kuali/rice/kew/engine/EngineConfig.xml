@@ -572,7 +572,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Sequential Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -585,7 +585,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -598,7 +598,7 @@
 			<documentType>SeqDocType</documentType>
             <ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -611,7 +611,7 @@
 			<documentType>ParallelDocType</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -624,7 +624,7 @@
 			<documentType>ParallelDocType</documentType>
             <ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Parallel Node Ack Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -637,7 +637,7 @@
 			<documentType>ParallelDocType</documentType>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>Parallel Node Test Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -650,7 +650,7 @@
 			<documentType>ParallelDocType</documentType>
             <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>Parallel Node Test Rule 3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -663,7 +663,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule Final</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>xqi</user>
@@ -676,7 +676,7 @@
 			<documentType>ParallelEmptyDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Parallel Empty Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -689,7 +689,7 @@
 			<documentType>ParallelEmptyDocType</documentType>
             <ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>Parallel Empty Node Test Rule Final</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>xqi</user>
@@ -702,7 +702,7 @@
 			<documentType>ParallelEmptyDocType2</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Parallel Empty Node Test 2 Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -715,7 +715,7 @@
 			<documentType>ParallelEmptyDocType2</documentType>
 			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>Parallel Empty Node Test 2 Rule Final</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>xqi</user>
@@ -728,7 +728,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>First</ruleTemplate>
 			<description>First</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -741,7 +741,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>SubRequests</ruleTemplate>
 			<description>SubRequests</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.engine.DynamicSubRoleAttribute!DynamicSub</role>
@@ -755,7 +755,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>Last</ruleTemplate>
 			<description>Last</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -769,7 +769,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting BL-CHEM</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -798,7 +798,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting BL-ARSC</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -827,7 +827,7 @@
 			<documentType>DynDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting BL-BL</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -856,7 +856,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting IN-MED</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -885,7 +885,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting IN-IN</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -914,7 +914,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting IU-UNIV</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -943,7 +943,7 @@
 			<documentType>DynDocType</documentType>
             <ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting KO-KO</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -973,7 +973,7 @@
 			<documentType>DynChartOrgNestedDocType</documentType>
 			<ruleTemplate>DispatchTemplate</ruleTemplate>
 			<description>Dispatch Role Rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.engine.ChartOrgDispatchAttribute!DISPATCH</role>
@@ -990,7 +990,7 @@
 			<documentType>SubProcessDocType</documentType>
             <ruleTemplate>Acknowledge</ruleTemplate>
 			<description>Acknowledge Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -1003,7 +1003,7 @@
 			<documentType>SubProcessDocType</documentType>
             <ruleTemplate>Approve</ruleTemplate>
 			<description>Approve Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -1016,7 +1016,7 @@
 			<documentType>SubProcessDocType</documentType>
             <ruleTemplate>Final</ruleTemplate>
 			<description>Final Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>

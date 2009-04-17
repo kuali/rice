@@ -37,7 +37,7 @@
                 print "KRABizRuleWithMaps1 is executing..."
                 return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
             </expression>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility><workgroup>KR-WKFLW:TestWorkgroup</workgroup></responsibility>
                 <responsibility><role>org.kuali.rice.kew.rule.MockRole!shenl,jhopf</role></responsibility>
@@ -53,7 +53,7 @@
                 print "KRABizRuleWithMaps2 is executing..."
                 return new RuleExpressionResult(rule, true, rule.getDefinition().getResponsibilities())
             </expression>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility><workgroup>KR-WKFLW:NonSIT</workgroup></responsibility>
             </responsibilities>

@@ -246,20 +246,20 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.refreshContent();
     }
 
-    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, routeTypeName, annotation, principalId, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
+    	workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, routeTypeName, annotation, principalId, responsibilityDesc, forceAction);
     }
 
-    public void adHocRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-        workflowDocument.adHocRouteDocumentToGroup(actionRequested, routeTypeName, annotation, groupId, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
+        workflowDocument.adHocRouteDocumentToGroup(actionRequested, routeTypeName, annotation, groupId, responsibilityDesc, forceAction);
     }
 
-    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions, String actionRequestLabel) throws WorkflowException {
-    	workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, routeTypeName, annotation, principalId, responsibilityDesc, ignorePreviousActions, actionRequestLabel);
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction, String actionRequestLabel) throws WorkflowException {
+    	workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, routeTypeName, annotation, principalId, responsibilityDesc, forceAction, actionRequestLabel);
     }
 
-    public void adHocRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions, String actionRequestLabel) throws WorkflowException {
-    	workflowDocument.adHocRouteDocumentToGroup(actionRequested, routeTypeName, annotation, groupId, responsibilityDesc, ignorePreviousActions, actionRequestLabel);
+    public void adHocRouteDocumentToGroup(String actionRequested, String routeTypeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction, String actionRequestLabel) throws WorkflowException {
+    	workflowDocument.adHocRouteDocumentToGroup(actionRequested, routeTypeName, annotation, groupId, responsibilityDesc, forceAction, actionRequestLabel);
     }
     
     public void setTitle(String title) throws WorkflowException {

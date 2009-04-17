@@ -303,7 +303,7 @@ public class FlexRM {
 			RoleRecipient recipient = new RoleRecipient(roleName, qualifiedRoleName, resolvedRole);
 			if (parentRequest == null) {
 				ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(), resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule
-						.getIgnorePrevious(), rule.getDescription(), rule.getRuleBaseValuesId());
+						.getForceAction(), rule.getDescription(), rule.getRuleBaseValuesId());
 // Old, pre 1.0 delegate code, commenting out for now
 //
 //				if (resp.isDelegating()) {
@@ -331,7 +331,7 @@ public class FlexRM {
 				}
 				
 			} else {
-				arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.getIgnorePrevious(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
+				arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.getForceAction(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
 			}
 		}
 			}
@@ -390,7 +390,7 @@ public class FlexRM {
 					recipient,
 					rule.getDescription(),
 					resp.getResponsibilityId(),
-					rule.getIgnorePrevious(),
+					rule.getForceAction(),
 					resp.getApprovePolicy(),
 					rule.getRuleBaseValuesId());
 
@@ -414,7 +414,7 @@ public class FlexRM {
 			}
 			
 		} else {
-			arFactory.addDelegationRequest(parentRequest, recipient, resp.getResponsibilityId(), rule.getIgnorePrevious(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
+			arFactory.addDelegationRequest(parentRequest, recipient, resp.getResponsibilityId(), rule.getForceAction(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
 		}
 	}
 

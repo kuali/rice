@@ -334,12 +334,12 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#adHocRouteDocumentToPrincipal(java.lang.String,
      *      java.lang.String, int, java.lang.String, org.kuali.rice.kew.dto.UserIdDTO, java.lang.String, boolean)
      */
-    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String routeTypeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
 
     }
 
-    public void adHocRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
+    public void adHocRouteDocumentToWorkgroup(String actionRequested, String routeTypeName, int priority, String annotation, String groupId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
 
     }

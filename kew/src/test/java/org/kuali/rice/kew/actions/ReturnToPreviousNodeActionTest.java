@@ -127,7 +127,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
                
     }
     /**
-     * our routing all ignore previous:
+     * our routing all force action:
      * 
      *          M
      *          S

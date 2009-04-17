@@ -204,7 +204,7 @@
 			<documentType>SecurityDocument</documentType>
             <ruleTemplate>MatchAllTemplate</ruleTemplate>
 			<description>Search attribute rule test</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>

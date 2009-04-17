@@ -189,7 +189,7 @@
 			<documentType>RiceDocument.RuleDocument</documentType>
 			<ruleTemplate>RuleRouting</ruleTemplate>
 			<description>Rule Routing</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>RuleRoutingAttribute</attribute>
@@ -214,7 +214,7 @@
 			<documentType>RiceDocument.child1</documentType>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>rkirkend</principalName>
@@ -227,7 +227,7 @@
 			<documentType>RiceDocument.child1child</documentType>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>user1</principalName>
@@ -240,7 +240,7 @@
 			<documentType>RiceDocument.child2</documentType>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>user2</principalName>
@@ -253,7 +253,7 @@
 			<documentType>RiceDocument.child3</documentType>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>user3</principalName>
@@ -267,7 +267,7 @@
 			<documentType>NotRelated</documentType>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>ewestfal</principalName>

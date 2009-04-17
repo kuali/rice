@@ -102,7 +102,7 @@ public interface XmlConstants {
     public static final String EXPRESSION = "expression";
     public static final String FROM_DATE = "fromDate";
     public static final String TO_DATE = "toDate";
-    public static final String IGNORE_PREVIOUS = "ignorePrevious";
+    public static final String FORCE_ACTION = "forceAction";
     public static final String RESPONSIBILITIES = "responsibilities";
     public static final String RESPONSIBILITY = "responsibility";
     public static final String RESPONSIBILITY_ID = "responsibilityId";

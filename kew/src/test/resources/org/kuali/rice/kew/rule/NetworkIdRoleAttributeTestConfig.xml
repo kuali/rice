@@ -53,7 +53,7 @@
 			<documentType>NetworkIdRoleAttributeTest</documentType>
             <ruleTemplate>NetworkIdRoleTemplate</ruleTemplate>
 			<description>network id routing test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.rule.NetworkIdRoleAttribute!networkId</role>

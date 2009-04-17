@@ -101,8 +101,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	private Boolean currentInd;
     @Column(name="RULE_VER_NBR")
 	private Integer versionNbr;
-    @Column(name="IGNR_PRVS")
-	private Boolean ignorePrevious;
+    @Column(name="FRC_ACTN")
+	private Boolean forceAction;
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleResponsibility.class, mappedBy="ruleBaseValues")
@@ -438,8 +438,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         if (routeHeaderId != null) {
             ruleBaseValuesClone.setRouteHeaderId(new Long(routeHeaderId.longValue()));
         }
-        if (ignorePrevious != null) {
-            ruleBaseValuesClone.setIgnorePrevious(new Boolean(ignorePrevious.booleanValue()));
+        if (forceAction != null) {
+            ruleBaseValuesClone.setForceAction(new Boolean(forceAction.booleanValue()));
         }
         if (activeInd != null) {
             ruleBaseValuesClone.setActiveInd(new Boolean(activeInd.booleanValue()));
@@ -515,12 +515,12 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         return null;
     }
 
-    public Boolean getIgnorePrevious() {
-        return ignorePrevious;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
-    public void setIgnorePrevious(Boolean ignorePrevious) {
-        this.ignorePrevious = ignorePrevious;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     public boolean isActive(Date date) {
@@ -691,7 +691,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         mapper.put("docTypeName", docTypeName);
         mapper.put("routeHeaderId", routeHeaderId);
         mapper.put("delegateRule", delegateRule);
-        mapper.put("ignorePrevious", ignorePrevious);
+        mapper.put("forceAction", forceAction);
         mapper.put("activeInd", activeInd);
         mapper.put("currentInd", currentInd);
         mapper.put("versionNbr", versionNbr);

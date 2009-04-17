@@ -41,7 +41,7 @@ public class CancelActionTest extends KEWTestCase {
         document.approve("");
         
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
-        document.approve("");//ewestfal had ignore previous rule
+        document.approve("");//ewestfal had force action rule
         
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document.approve("");

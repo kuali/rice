@@ -46,7 +46,7 @@ public class DisapproveActionTest extends KEWTestCase {
 
         document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
-        document.approve("");//ewestfal had ignore previous rule
+        document.approve("");//ewestfal had force action rule
 
         document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
@@ -149,7 +149,7 @@ public class DisapproveActionTest extends KEWTestCase {
      */
     @Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorDisapprove() throws WorkflowException {
-        // test initiator disapproval, via normal request with ignoreprevious=true
+        // test initiator disapproval, via normal request with forceAction=true
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
 

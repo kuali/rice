@@ -50,7 +50,7 @@ public class MyRules implements Serializable {
                 ruleRow.setCurrentInd(rule.getCurrentInd());
                 ruleRow.setVersionNumber(rule.getVersionNumber());
                 ruleRow.setDescription(rule.getDescription());
-                ruleRow.setIgnorePrevious(rule.getIgnorePrevious());
+                ruleRow.setForceAction(rule.getForceAction());
                 ruleRow.setDocTypeName(rule.getDocTypeName());
                 ruleRow.setFromDate(rule.getFromDate());
                 ruleRow.setToDate(rule.getToDate());

@@ -57,7 +57,7 @@
       <documentType>EDocLiteDocType</documentType>
       <ruleTemplate>EDocLiteDocumentTemplate</ruleTemplate>
       <description>EDocLite Document Template description</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <!--
       <ruleExtensions>
 

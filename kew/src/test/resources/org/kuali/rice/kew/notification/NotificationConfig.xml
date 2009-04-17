@@ -102,7 +102,7 @@
 			<documentType>NotificationTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -143,7 +143,7 @@
 				<documentType>NotificationTest</documentType>
 				<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				<description>Notification Test Primary Delegation</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>rkirkend</user>
@@ -161,7 +161,7 @@
 				<documentType>NotificationTest</documentType>
 				<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				<description>Notification Test Secondary Delegation</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>ewestfal</user>
@@ -179,7 +179,7 @@
 				<documentType>NotificationTest</documentType>
 				<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				<description>Notification Test Secondary Delegation</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>jitrue</user>

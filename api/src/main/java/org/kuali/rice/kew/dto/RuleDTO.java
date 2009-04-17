@@ -29,7 +29,7 @@ public class RuleDTO implements java.io.Serializable {
     private String docTypeName;
     private String fromDate;
     private String toDate;
-    private Boolean ignorePrevious;
+    private Boolean forceAction;
     private RuleResponsibilityDTO[] ruleResponsibilities;
     private RuleExtensionDTO[] ruleExtensions;
     private String ruleTemplateName;
@@ -68,12 +68,12 @@ public class RuleDTO implements java.io.Serializable {
         this.fromDate = fromDate;
     }
 
-    public Boolean getIgnorePrevious() {
-        return ignorePrevious;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
-    public void setIgnorePrevious(Boolean ignorePrevious) {
-        this.ignorePrevious = ignorePrevious;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     public RuleExtensionDTO[] getRuleExtensions() {

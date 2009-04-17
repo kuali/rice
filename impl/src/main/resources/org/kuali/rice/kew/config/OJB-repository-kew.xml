@@ -241,7 +241,7 @@
     <field-descriptor column="ACTN_RQST_ANNOTN_TXT" name="annotation" jdbc-type="VARCHAR"/>
     <field-descriptor column="VER_NBR" name="jrfVerNbr" jdbc-type="INTEGER"/>
     <field-descriptor column="PRNCPL_ID" name="principalId" jdbc-type="VARCHAR" />
-    <field-descriptor column="IGN_PREV_ACTN_IND" name="ignorePrevAction" jdbc-type="BIT" />
+    <field-descriptor column="FRC_ACTN" name="forceAction" jdbc-type="BIT" />
     <field-descriptor column="CUR_IND" name="currentIndicator" jdbc-type="BIT" />
     <field-descriptor column="APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />
    	<field-descriptor column="DLGN_TYP" name="delegationType" jdbc-type="CHAR" />
@@ -505,7 +505,7 @@
     <field-descriptor column="RULE_EXPR_ID" name="ruleExpressionId" jdbc-type="BIGINT" access="anonymous" />
     <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" />
     <field-descriptor column="RULE_BASE_VAL_DESC" name="description" jdbc-type="VARCHAR" />
-    <field-descriptor column="IGNR_PRVS" name="ignorePrevious" jdbc-type="BIT" />
+    <field-descriptor column="FRC_ACTN" name="forceAction" jdbc-type="BIT" />
     <field-descriptor column="DOC_TYP_NM" name="docTypeName" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_ID" name="routeHeaderId" jdbc-type="BIGINT" />
     <field-descriptor column="FRM_DT" name="fromDate" jdbc-type="TIMESTAMP" />

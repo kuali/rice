@@ -6,7 +6,7 @@
             <name>ANamedRule</name>
             <documentType>TestDocumentType</documentType>
             <description>A named rule with previously defined template removed</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <responsibilities>
                 <responsibility>
                     <user>user2</user>

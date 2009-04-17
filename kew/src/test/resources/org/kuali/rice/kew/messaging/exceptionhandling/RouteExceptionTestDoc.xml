@@ -105,7 +105,7 @@
 			<documentType>TestFinalApproverDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -118,7 +118,7 @@
 			<documentType>TestFinalApproverDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -131,7 +131,7 @@
 			<documentType>DocumentTypeDocument_New</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -144,7 +144,7 @@
 			<documentType>DocumentTypeDocument_New</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>

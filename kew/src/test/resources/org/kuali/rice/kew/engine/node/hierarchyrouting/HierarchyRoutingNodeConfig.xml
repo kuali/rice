@@ -81,7 +81,7 @@
 
                 return new RuleExpressionResult(rule, true, responsibility)
             </expression>
-            <ignorePrevious>true</ignorePrevious>
+            <forceAction>true</forceAction>
             <responsibilities>
                 <responsibility><user>user2</user></responsibility>
             </responsibilities>

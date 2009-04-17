@@ -5,7 +5,7 @@
 			<documentType>RiceDocument</documentType>
             <ruleTemplate>DocumentTypeRouting</ruleTemplate>
 			<description>DocumentTypeRouting for RiceDocument</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>

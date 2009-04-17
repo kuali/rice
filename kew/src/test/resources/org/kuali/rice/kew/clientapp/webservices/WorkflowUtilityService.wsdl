@@ -137,7 +137,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="emplyId" nillable="true" type="soapenc:string"/>
      <element name="exceptionRequest" type="xsd:boolean"/>
      <element name="generatedRequest" type="xsd:boolean"/>
-     <element name="ignorePrevAction" nillable="true" type="soapenc:boolean"/>
+     <element name="forceAction" nillable="true" type="soapenc:boolean"/>
      <element name="initialized" type="xsd:boolean"/>
      <element name="nodeInstanceId" nillable="true" type="soapenc:long"/>
      <element name="nodeName" nillable="true" type="soapenc:string"/>

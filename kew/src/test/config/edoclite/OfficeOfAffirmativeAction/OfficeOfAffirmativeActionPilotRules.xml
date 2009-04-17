@@ -5,7 +5,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolRouting</ruleTemplate>
       <description>School/RC of Bl-BUS for OAA eDoc Lite</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>
@@ -30,7 +30,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolRouting</ruleTemplate>
       <description>School/RC of Bl-EDUC for OAA eDoc Lite</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>
@@ -55,7 +55,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>ViceChancellorforAcademicAffairsandDeanOfFaculties</ruleTemplate>
       <description>Vice Provost for Academic Affairs and Dean of Faculties Workgroup</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <groupName namespace="KR-WKFLW">ViceProvostForAcademicAffairs</groupName>
@@ -68,7 +68,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>InitiatorRoleAcknowledgement</ruleTemplate>
       <description>OAA Initiator Acknowledgment</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
@@ -82,7 +82,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>AffirmativeActionOfficer</ruleTemplate>
       <description>Office of Affirmative Action (First and Second Level)</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <responsibilities>
         <responsibility>
           <groupName namespace="KR-WKFLW">OfficeOfAffirmativeAction</groupName>
@@ -100,7 +100,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolAcknowledgementRouting</ruleTemplate>
       <description>send acknowledgment to school BL-EDUC</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>
@@ -125,7 +125,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolAcknowledgementRouting</ruleTemplate>
       <description>send acknowledgment to school BL-COAS</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>
@@ -150,7 +150,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolAcknowledgementRouting</ruleTemplate>
       <description>send acknowledgment to school BL-BUS</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>
@@ -175,7 +175,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolRouting</ruleTemplate>
       <description>School/RC of BL-COAS for OAA eDoc Lite</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>
@@ -200,7 +200,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolAcknowledgementRouting</ruleTemplate>
       <description>send acknowledgment to school BL-PSY</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>
@@ -225,7 +225,7 @@
       <documentType>OfficeOfAffirmativeAction</documentType>
       <ruleTemplate>OfficeOfAffirmativeAction-SchoolRouting</ruleTemplate>
       <description>School/RC of BL-PSY for OAA eDoc Lite</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>EDLSchoolAttribute</attribute>

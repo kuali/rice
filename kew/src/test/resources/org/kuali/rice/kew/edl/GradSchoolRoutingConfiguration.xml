@@ -235,7 +235,7 @@
 			<documentType>NewCourseRequest</documentType>
 			<ruleTemplate>UniversityGraduateSchoolOffice-SchoolRouting</ruleTemplate>
 			<description>GradSchoolRouting doc routing rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
     			<ruleExtension>
 	    		    <attribute>SchoolAttribute</attribute>
@@ -261,7 +261,7 @@
 			<documentType>NewCourseRequest</documentType>
 			<ruleTemplate>UniversityGraduateSchoolOffice-DepartmentRouting</ruleTemplate>
 			<description>GradSchoolRouting doc routing rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>DepartmentAttribute</attribute>

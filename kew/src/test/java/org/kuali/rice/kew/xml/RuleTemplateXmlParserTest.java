@@ -226,7 +226,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertEquals("Testy Me A Template", ruleDefaults.getDescription());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
-        assertTrue(ruleDefaults.getIgnorePrevious());
+        assertTrue(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
     }
 
@@ -251,7 +251,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
@@ -281,7 +281,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
@@ -300,7 +300,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on (updated) RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         // activation date defaults to current time
         assertNull(ruleDefaults.getFromDate());
@@ -332,7 +332,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
@@ -362,7 +362,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a description", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         // activation date defaults to current time
         assertNull(ruleDefaults.getFromDate());

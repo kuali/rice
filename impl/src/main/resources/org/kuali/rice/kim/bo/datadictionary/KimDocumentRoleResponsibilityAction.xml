@@ -40,7 +40,7 @@
 				<ref bean="DocRoleResponsibilityAction-actionTypeCode" />
 				<ref bean="DocRoleResponsibilityAction-actionPolicyCode" />
 				<ref bean="DocRoleResponsibilityAction-priorityNumber" />
-				<ref bean="DocRoleResponsibilityAction-ignorePrevious" />
+				<ref bean="DocRoleResponsibilityAction-forceAction" />
 			</list>
 		</property>
 	</bean>
@@ -136,9 +136,9 @@
 		<property name="description" value="Priority Number" />
 	</bean>
 
-	<bean id="DocRoleResponsibilityAction-ignorePrevious" parent="DocRoleResponsibilityAction-ignorePrevious-parentBean" />
-	<bean id="DocRoleResponsibilityAction-ignorePrevious-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
-    	<property name="name" value="ignorePrevious" />
+	<bean id="DocRoleResponsibilityAction-forceAction" parent="DocRoleResponsibilityAction-forceAction-parentBean" />
+	<bean id="DocRoleResponsibilityAction-forceAction-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    	<property name="name" value="forceAction" />
 	    <property name="label" value="Force Action" />
 	    <property name="shortLabel" value="Force Action" />
     	<property name="required" value="false" />
@@ -189,7 +189,7 @@
 							<bean parent="FieldDefinition"
 								p:attributeName="actionPolicyCode" />
 							<bean parent="FieldDefinition"
-								p:attributeName="ignorePrevious" />
+								p:attributeName="forceAction" />
 						</list>
 					</property>
 				</bean>
@@ -216,7 +216,7 @@
 				<bean parent="FieldDefinition"
 					p:attributeName="actionPolicyCode" />
 				<bean parent="FieldDefinition"
-					p:attributeName="ignorePrevious" />
+					p:attributeName="forceAction" />
 			</list>
 		</property>
 		<property name="resultFields" >
@@ -233,7 +233,7 @@
 				<bean parent="FieldDefinition"
 					p:attributeName="actionPolicyCode" />
 				<bean parent="FieldDefinition"
-					p:attributeName="ignorePrevious" />
+					p:attributeName="forceAction" />
 			</list>
 		</property>
 	</bean>

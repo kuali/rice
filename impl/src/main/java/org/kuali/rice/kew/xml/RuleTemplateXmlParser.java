@@ -170,7 +170,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
      <element name="description" type="c:LongStringType"/>
      <element name="fromDate" type="c:ShortStringType" minOccurs="0"/>
      <element name="toDate" type="c:ShortStringType" minOccurs="0"/>
-     <element name="ignorePrevious" type="boolean"/>
+     <element name="forceAction" type="boolean"/>
      <element name="active" type="boolean"/>
      <element name="defaultActionRequested" type="c:ShortStringType"/>
      <element name="supportsComplete" type="boolean" default="true"/>
@@ -277,7 +277,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             String fromDate = defaultsElement.getChildText(FROM_DATE, RULE_TEMPLATE_NAMESPACE);
             String toDate = defaultsElement.getChildText(TO_DATE, RULE_TEMPLATE_NAMESPACE);
             // toBooleanObject ensures that if the value is null (not set) that the Boolean object will likewise be null (will not default to a value)
-            Boolean ignorePrevious = BooleanUtils.toBooleanObject(defaultsElement.getChildText(IGNORE_PREVIOUS, RULE_TEMPLATE_NAMESPACE));
+            Boolean forceAction = BooleanUtils.toBooleanObject(defaultsElement.getChildText(FORCE_ACTION, RULE_TEMPLATE_NAMESPACE));
             Boolean active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
 
             if (isDelegation && !KEWConstants.DELEGATION_PRIMARY.equals(delegationType) && !KEWConstants.DELEGATION_SECONDARY.equals(delegationType)) {
@@ -297,7 +297,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             ruleDefaults.setDescription(description);
     
             // these are non-nullable fields, so default them if they were not set in the defaults section
-            ruleDefaults.setIgnorePrevious(Boolean.valueOf(BooleanUtils.isTrue(ignorePrevious)));
+            ruleDefaults.setForceAction(Boolean.valueOf(BooleanUtils.isTrue(forceAction)));
             ruleDefaults.setActiveInd(Boolean.valueOf(BooleanUtils.isTrue(active)));
         
             if (ruleDefaults.getActivationDate() == null) {

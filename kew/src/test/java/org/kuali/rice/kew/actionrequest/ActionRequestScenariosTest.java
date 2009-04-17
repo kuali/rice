@@ -142,31 +142,31 @@ public class ActionRequestScenariosTest extends KEWTestCase {
     }
 
     /**
-	 * Test that ignore previous works properly in the face of delegations.
+	 * Test that force action works properly in the face of delegations.
 	 * Tests the resolution of KULWF-642.
 	 *
 	 * @throws Exception
 	 */
-	@Test public void testIgnorePreviousWithDelegation() throws Exception {
+	@Test public void testForceActionWithDelegation() throws Exception {
 		// at first, we'll route the document so that the bug is not exposed and verify the action request graph
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testIgnorePreviousWithDelegation");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testForceActionWithDelegation");
 		document.routeDocument("");
 		TestUtilities.assertAtNode(document, "Node1");
 		List rootRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
 		assertEquals("Should be 1 root request.", 1, rootRequests.size());
 		ActionRequestValue ewestfalRequest = (ActionRequestValue)rootRequests.get(0);
-		assertTrue("Request to ewestfal should be ignore previous of true", ewestfalRequest.getIgnorePrevAction().booleanValue());
+		assertTrue("Request to ewestfal should be force action of true", ewestfalRequest.getForceAction().booleanValue());
 		assertEquals("Should have 1 child request.", 1, ewestfalRequest.getChildrenRequests().size());
 		ActionRequestValue rkirkendRequest = (ActionRequestValue)ewestfalRequest.getChildrenRequests().get(0);
-		assertFalse("Request to rkirkend should be ignore previous of false", rkirkendRequest.getIgnorePrevAction().booleanValue());
+		assertFalse("Request to rkirkend should be force action of false", rkirkendRequest.getForceAction().booleanValue());
 
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), "testIgnorePreviousWithDelegation");
+		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), "testForceActionWithDelegation");
 
 		// After we route the document it should be at the first node in the document where "ewestfal"
-		// is the primary approver with ignore previous = true and "rkirkend" is the primary
-		// delegate with ignore previous = false.  In the KULWF-642 bug, the document would have
+		// is the primary approver with force action = true and "rkirkend" is the primary
+		// delegate with force action = false.  In the KULWF-642 bug, the document would have
 		// progressed past the first node in an auto-approve scenario even though ewestfal's rule
-		// is ignore previous = true;
+		// is force action = true;
 		document.routeDocument("");
 
 		// we should be at the first node in the document

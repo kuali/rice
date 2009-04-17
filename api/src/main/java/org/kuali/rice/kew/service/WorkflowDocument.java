@@ -661,26 +661,26 @@ public class WorkflowDocument implements java.io.Serializable {
      * Sends an ad hoc request to the specified user at the current active node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToPrincipal(String actionRequested, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	adHocRouteDocumentToPrincipal(actionRequested, null, annotation, principalId, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String annotation, String principalId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
+    	adHocRouteDocumentToPrincipal(actionRequested, null, annotation, principalId, responsibilityDesc, forceAction);
     }
 
     /**
      * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	adHocRouteDocumentToPrincipal(actionRequested, nodeName, annotation, principalId, responsibilityDesc, ignorePreviousActions, null);
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
+    	adHocRouteDocumentToPrincipal(actionRequested, nodeName, annotation, principalId, responsibilityDesc, forceAction, null);
     }
 
     /**
      * Sends an ad hoc request to the specified user at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean ignorePreviousActions, String requestLabel) throws WorkflowException {
+    public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(principalId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, ignorePreviousActions, requestLabel);
+            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(principalId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, forceAction, requestLabel);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -691,26 +691,26 @@ public class WorkflowDocument implements java.io.Serializable {
      * Sends an ad hoc request to the specified workgroup at the current active node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToGroup(String actionRequested, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	adHocRouteDocumentToGroup(actionRequested, null, annotation, groupId, responsibilityDesc, ignorePreviousActions);
+    public void adHocRouteDocumentToGroup(String actionRequested, String annotation, String groupId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
+    	adHocRouteDocumentToGroup(actionRequested, null, annotation, groupId, responsibilityDesc, forceAction);
     }
 
     /**
      * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions) throws WorkflowException {
-    	adHocRouteDocumentToGroup(actionRequested, nodeName, annotation, groupId, responsibilityDesc, ignorePreviousActions, null);
+    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction) throws WorkflowException {
+    	adHocRouteDocumentToGroup(actionRequested, nodeName, annotation, groupId, responsibilityDesc, forceAction, null);
     }
 
     /**
      * Sends an ad hoc request to the specified workgroup at the specified node on the document.  If the document is
      * in a terminal state, the request will be attached to the terminal node.
      */
-    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePreviousActions, String requestLabel) throws WorkflowException {
+    public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
         try {
         	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(principalId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, ignorePreviousActions, requestLabel);
+            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(principalId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, forceAction, requestLabel);
             documentContentDirty = true;
         } catch (Exception e) {
             throw handleException(e);
@@ -1480,7 +1480,7 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      *
      * Tells workflow that the current the document is constructed as will receive all future requests routed to them
-     * disregarding any ignore previous flags set on the action request.  Uses the setVariable method behind the seens so
+     * disregarding any force action flags set on the action request.  Uses the setVariable method behind the seens so
      * an action needs taken on the document to set this state on the document.
      *
      * @throws WorkflowException
@@ -1492,7 +1492,7 @@ public class WorkflowDocument implements java.io.Serializable {
 
     /**
      * Tell workflow that the current document is constructed as will not receive any future requests routed to them
-     * disregarding any ignore previous flags set on action requests.  Uses the setVariable method behind the scenes so
+     * disregarding any force action flags set on action requests.  Uses the setVariable method behind the scenes so
      * an action needs taken on the document to set this state on the document.
      *
      * @throws WorkflowException

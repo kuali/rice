@@ -5,7 +5,7 @@
 			<documentType>TestDocumentType</documentType>
 			<ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -19,7 +19,7 @@
 			<documentType>TestDocumentType</documentType>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user3</user>
@@ -33,7 +33,7 @@
 			<documentType>TestDocumentType</documentType>
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
 			<description>TestRule3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>dewey</user>
@@ -47,7 +47,7 @@
             <name>ANamedRuleToImport</name>
             <documentType>TestDocumentType</documentType>
             <description>ANamedRuleToImport</description>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <responsibilities>
                 <responsibility>
                     <user>dewey</user>

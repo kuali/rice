@@ -100,7 +100,7 @@
        <documentType>IdentityManagementPersonDocument</documentType>
       <ruleTemplate>FinalApproval</ruleTemplate>
        <description>Final approval</description>
-       <ignorePrevious>true</ignorePrevious>
+       <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <principalName>admin</principalName>
@@ -115,7 +115,7 @@
       <documentType>IdentityManagementPersonDocument</documentType>
       <ruleTemplate>NameSpaceApproval</ruleTemplate>
       <description>Name space approval Rule for KFS</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <ruleExtensions>
         <ruleExtension>
           <attribute>NameSpaceApprovalAttribute</attribute>

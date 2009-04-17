@@ -93,23 +93,23 @@ public class ActionRequestFactory {
 	 * @param actionRequested
 	 * @param recipient
 	 * @param description
-	 * @param ignorePrevious
+	 * @param forceAction
 	 *
 	 * @return ActionRequestValue
 	 */
-	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean ignorePrevious, String annotation) {
-		return createActionRequest(actionRequested, new Integer(0), recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, ignorePrevious, annotation);
+	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean forceAction, String annotation) {
+		return createActionRequest(actionRequested, new Integer(0), recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
 	}
 
-	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String annotation) {
-    	return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, null, null, annotation);
+	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String annotation) {
+    	return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, forceAction, null, null, annotation);
     }
 
-	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation) {
-		return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, annotation, null);
+	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String approvePolicy, Long ruleId, String annotation) {
+		return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, forceAction, approvePolicy, ruleId, annotation, null);
 	}
 
-	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation, String requestLabel) {
+	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String approvePolicy, Long ruleId, String annotation, String requestLabel) {
 		ActionRequestValue actionRequest = new ActionRequestValue();
         actionRequest.setActionRequested(actionRequested);
         actionRequest.setDocVersion(document.getDocVersion());
@@ -121,7 +121,7 @@ public class ActionRequestFactory {
     	actionRequest.setResponsibilityId(responsibilityId);
     	actionRequest.setResponsibilityDesc(description);
     	actionRequest.setApprovePolicy(approvePolicy);
-    	actionRequest.setIgnorePrevAction(ignorePrevious);
+    	actionRequest.setForceAction(forceAction);
     	actionRequest.setRuleBaseValuesId(ruleId);
     	actionRequest.setAnnotation(annotation);
     	actionRequest.setRequestLabel(requestLabel);
@@ -222,8 +222,8 @@ public class ActionRequestFactory {
     	}
         actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
         actionRequest.setCurrentIndicator(Boolean.TRUE);
-        if (actionRequest.getIgnorePrevAction() == null) {
-        	actionRequest.setIgnorePrevAction(Boolean.FALSE);
+        if (actionRequest.getForceAction() == null) {
+        	actionRequest.setForceAction(Boolean.FALSE);
         }
         if (routeNode != null) {
         	actionRequest.setNodeInstance(routeNode);
@@ -282,13 +282,13 @@ public class ActionRequestFactory {
      * @param approvePolicy
      * @param priority
      * @param responsibilityId
-     * @param ignorePrevious
+     * @param forceAction
      * @param description
      * @return the created root role request
      */
-    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean ignorePrevious, String description, Long ruleId) {
+    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean forceAction, String description, Long ruleId) {
 
-    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
+    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	if (role != null && role.getResolvedQualifiedRole() != null && role.getResolvedQualifiedRole().getRecipients() != null) {
     	    int legitimateTargets = 0;
     	for (Iterator iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext();) {
@@ -306,7 +306,7 @@ public class ActionRequestFactory {
 			}
 			if (role.getTarget() != null) {
                 legitimateTargets++;
-                ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, null, ruleId, null);
+                ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, null, ruleId, null);
                 request.setParentActionRequest(requestGraph);
                 requestGraph.getChildrenRequests().add(request);
 			}
@@ -332,7 +332,7 @@ public class ActionRequestFactory {
     	// it's assumed the that all in the list have the same action type code, priority number, etc.
     	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
     	Integer priority = responsibilities.get(0).getPriorityNumber();
-    	boolean ignorePrevious = responsibilities.get(0).isIgnorePrevious();
+    	boolean forceAction = responsibilities.get(0).isForceAction();
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
 
     	// Creation of a parent graph entry for ????
@@ -347,7 +347,7 @@ public class ActionRequestFactory {
 	    	        roleRecipient, 
 	    	        "", // description 
 	    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
-	    	        ignorePrevious, 
+	    	        forceAction, 
 	    	        approvePolicy, 
 	    	        null, // ruleId
 	    	        null );// annotation
@@ -384,7 +384,7 @@ public class ActionRequestFactory {
 			        roleRecipient, 
 			        responsibility.getParallelRoutingGroupingCode(), // description
 			        new Long(responsibility.getResponsibilityId()), 
-			        responsibility.isIgnorePrevious(), 
+			        responsibility.isForceAction(), 
 			        approvePolicy, 
 			        null, // ruleId
 			        annotationStr);
@@ -421,7 +421,7 @@ public class ActionRequestFactory {
     			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getMemberTypeCode() + "'");
     		}
     		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
-    		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getIgnorePrevAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
+    		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getForceAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
     	}
     }
 
@@ -453,7 +453,7 @@ public class ActionRequestFactory {
     	return annotation.toString();
     }
 
-    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
+    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean forceAction, String delegationType, String description, Long ruleId) {
     	Recipient parentRecipient = parentRequest.getRecipient();
     	if (parentRecipient instanceof RoleRecipient) {
     		throw new WorkflowRuntimeException("Cannot delegate on Role Request.  It must be a request to a person or workgroup, although that request may be in a role");
@@ -461,7 +461,7 @@ public class ActionRequestFactory {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}
-    	ActionRequestValue delegationRoleRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
+    	ActionRequestValue delegationRoleRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	delegationRoleRequest.setDelegationType(delegationType);
     	int count = 0;
     	for (Iterator iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext(); count++) {
@@ -477,7 +477,7 @@ public class ActionRequestFactory {
 			} else {
 				throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
 			}
-			ActionRequestValue request = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, ignorePrevious, null, ruleId, null);
+			ActionRequestValue request = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, forceAction, null, ruleId, null);
 			request.setDelegationType(delegationType);
 			//end repeat
 			request.setParentActionRequest(delegationRoleRequest);
@@ -493,11 +493,11 @@ public class ActionRequestFactory {
     	return delegationRoleRequest;
     }
 
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String annotation, Long ruleId) {
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean forceAction, String delegationType, String annotation, Long ruleId) {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}
-    	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, ignorePrevious, null, ruleId, annotation);
+    	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, forceAction, null, ruleId, annotation);
     	delegationRequest.setDelegationType(delegationType);
     	
         parentRequest.getChildrenRequests().add(delegationRequest); 
@@ -507,8 +507,8 @@ public class ActionRequestFactory {
     }
 
     //could probably base behavior off of recipient type
-    public ActionRequestValue addRootActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId) {
-    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
+    public ActionRequestValue addRootActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String approvePolicy, Long ruleId) {
+    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, recipient, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	requestGraphs.add(requestGraph);
     	return requestGraph;
     }

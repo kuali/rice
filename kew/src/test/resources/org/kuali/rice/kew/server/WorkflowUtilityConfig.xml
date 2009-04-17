@@ -2,9 +2,9 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
-			<name>SimulationTestDocumenType_IgnorePrevious</name>
-			<description>SimulationTestDocumenType_IgnorePrevious</description>
-			<label>SimulationTestDocumenType_IgnorePrevious</label>
+			<name>SimulationTestDocumenType_ForceAction</name>
+			<description>SimulationTestDocumenType_ForceAction</description>
+			<label>SimulationTestDocumenType_ForceAction</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
@@ -305,10 +305,10 @@
 	</ruleAttributes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
-			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<documentType>SimulationTestDocumenType_ForceAction</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocumentTemplate Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<description>SimulationTestDocumenType_ForceAction and WorkflowDocumentTemplate Rule 2</description>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -318,10 +318,10 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<documentType>SimulationTestDocumenType_ForceAction</documentType>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
-			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<description>SimulationTestDocumenType_ForceAction and WorkflowDocument2Template Rule 1</description>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -331,10 +331,10 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<documentType>SimulationTestDocumenType_ForceAction</documentType>
             <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
-			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument3Template Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<description>SimulationTestDocumenType_ForceAction and WorkflowDocument3Template Rule 1</description>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -344,10 +344,10 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<documentType>SimulationTestDocumenType_ForceAction</documentType>
             <ruleTemplate>WorkflowDocument4Template</ruleTemplate>
-			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument4Template Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<description>SimulationTestDocumenType_ForceAction and WorkflowDocument4Template Rule 1</description>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jitrue</user>
@@ -357,10 +357,10 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>SimulationTestDocumenType_IgnorePrevious</documentType>
+			<documentType>SimulationTestDocumenType_ForceAction</documentType>
             <ruleTemplate>WorkflowDocument4Template</ruleTemplate>
-			<description>SimulationTestDocumenType_IgnorePrevious and WorkflowDocument4Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<description>SimulationTestDocumenType_ForceAction and WorkflowDocument4Template Rule 1</description>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -373,7 +373,7 @@
 			<documentType>DocumentWithSpecialRouteNodes</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -386,7 +386,7 @@
 			<documentType>DocumentWithSpecialRouteNodes</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -399,7 +399,7 @@
 			<documentType>DocumentWithSpecialRouteNodes</documentType>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -412,7 +412,7 @@
 			<documentType>SeqDocType</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -425,7 +425,7 @@
 			<documentType>SeqDocType</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -438,7 +438,7 @@
 			<documentType>SeqDocType</documentType>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -451,7 +451,7 @@
 			<documentType>SeqDocType</documentType>
             <ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Ack1Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -464,7 +464,7 @@
 			<documentType>SeqDocType</documentType>
             <ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Ack2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -477,7 +477,7 @@
 			<documentType>SeqLastApproverDocType</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Last Approver Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -491,7 +491,7 @@
 			<documentType>SeqLastApproverDocType</documentType>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Last Approver Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -504,7 +504,7 @@
 			<documentType>RuleTestDocType</documentType>
             <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule for Rule Test</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -517,7 +517,7 @@
 			<documentType>RuleTestDocType</documentType>
             <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule for Rule Test</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -535,7 +535,7 @@
 	      <documentType>RuleTestDocType</documentType>
             <ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 	      <description>WorkflowDocument3Template Rule for Rule Test (Workgroup)</description>
-	      <ignorePrevious>true</ignorePrevious>
+	      <forceAction>true</forceAction>
 	      <responsibilities>
 	        <responsibility>
 	          <workgroup>KR-WKFLW:NonSIT</workgroup>

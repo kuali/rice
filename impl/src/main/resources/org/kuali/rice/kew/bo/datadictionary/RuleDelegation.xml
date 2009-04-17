@@ -43,7 +43,7 @@
         <ref bean="RuleDelegation-personReviewerType"/>
         <ref bean="RuleDelegation-fromDate"/>
         <ref bean="RuleDelegation-toDate"/>
-        <ref bean="RuleDelegation-ignorePrevious"/>
+        <ref bean="RuleDelegation-forceAction"/>
         <ref bean="RuleDelegation-active"/>
       </list>
     </property>
@@ -381,10 +381,10 @@
     <property name="name" value="delegationRuleBaseValues.activeInd" />
   </bean>
 
-  <bean id="RuleDelegation-ignorePrevious" parent="RuleDelegation-ignorePrevious-parentBean"/>
+  <bean id="RuleDelegation-forceAction" parent="RuleDelegation-forceAction-parentBean"/>
 
-  <bean id="RuleDelegation-ignorePrevious-parentBean" abstract="true" parent="RuleBaseValues-ignorePrevious">
-    <property name="name" value="delegationRuleBaseValues.ignorePrevious" />
+  <bean id="RuleDelegation-forceAction-parentBean" abstract="true" parent="RuleBaseValues-forceAction">
+    <property name="name" value="delegationRuleBaseValues.forceAction" />
   </bean>
 
   <!-- Business Object Inquiry Definition
@@ -431,7 +431,7 @@
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.description" p:noInquiry="true" />
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.fromDate" p:noInquiry="true" />
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.toDate" p:noInquiry="true" />
-              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.ignorePrevious" p:noInquiry="true" />
+              <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.forceAction" p:noInquiry="true" />
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.activeInd" p:noInquiry="true" />
               <bean parent="FieldDefinition" p:attributeName="delegationType" />
             </list>

@@ -177,7 +177,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		rule.setRuleTemplateId(delegationTemplate.getDelegationTemplateId());
 		rule.setRuleTemplate(delegationTemplate);
 		rule.setDescription("Description of this delegate rule");
-		rule.setIgnorePrevious(true);
+		rule.setForceAction(true);
 		RuleResponsibility delegationResponsibility = new RuleResponsibility();
 		rule.getResponsibilities().add(delegationResponsibility);
 		delegationResponsibility.setRuleBaseValues(rule);

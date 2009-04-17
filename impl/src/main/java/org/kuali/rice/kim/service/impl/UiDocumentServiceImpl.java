@@ -1470,7 +1470,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					roleRspAction.setActionPolicyCode(documentRoleResponsibilityActions.get(0).getActionPolicyCode());
 					roleRspAction.setActionTypeCode(documentRoleResponsibilityActions.get(0).getActionTypeCode());
 					roleRspAction.setPriorityNumber(documentRoleResponsibilityActions.get(0).getPriorityNumber());
-					roleRspAction.setIgnorePrevious(documentRoleResponsibilityActions.get(0).isIgnorePrevious());
+					roleRspAction.setForceAction(documentRoleResponsibilityActions.get(0).isForceAction());
 					roleRspAction.setRoleMemberId(documentRoleResponsibilityActions.get(0).getRoleMemberId());
 					roleRspAction.setRoleResponsibilityId(documentRoleResponsibilityActions.get(0).getRoleResponsibilityId());
 					updateVersionNumbers(roleRspAction, getRoleResponsibilityActionImpls(roleResponsibility.getRoleResponsibilityId()));
@@ -1509,7 +1509,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				entRoleRspAction.setActionTypeCode(roleRspAction.getActionTypeCode());
 				entRoleRspAction.setPriorityNumber(roleRspAction.getPriorityNumber());
 				entRoleRspAction.setRoleMemberId(roleRspAction.getRoleMemberId());
-				entRoleRspAction.setIgnorePrevious(roleRspAction.isIgnorePrevious());
+				entRoleRspAction.setForceAction(roleRspAction.isForceAction());
 				entRoleRspAction.setRoleResponsibilityId(roleRspAction.getRoleResponsibilityId());
 				List<RoleResponsibilityActionImpl> actions = getRoleRspActions(roleMember.getRoleId(), roleMember.getRoleMemberId());
 				for(RoleResponsibilityActionImpl orgRspAction : actions) {
@@ -1571,7 +1571,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			newRoleRspAction.setActionTypeCode(roleRspAction.getActionTypeCode());
 			newRoleRspAction.setPriorityNumber(roleRspAction.getPriorityNumber());
 			newRoleRspAction.setRoleMemberId(roleRspAction.getRoleMemberId());
-			newRoleRspAction.setIgnorePrevious(roleRspAction.isIgnorePrevious());
+			newRoleRspAction.setForceAction(roleRspAction.isForceAction());
 			newRoleRspAction.setRoleResponsibilityId(roleRspAction.getRoleResponsibilityId());
 			for(RoleResponsibilityActionImpl origRspAction: origActions) {
 				if(activatingInactive && origRspAction.getRoleResponsibilityId().equals(newRoleRspAction.getRoleResponsibilityId()) &&

@@ -170,8 +170,8 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
             }
         }
 
-		if (ruleBaseValues.getIgnorePrevious() == null) {
-			this.putFieldError("ignorePrevious", "routetemplate.ruleservice.ignoreprevious.required");
+		if (ruleBaseValues.getForceAction() == null) {
+			this.putFieldError("forceAction", "routetemplate.ruleservice.forceAction.required");
 			isValid &= false;
         }
 

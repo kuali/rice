@@ -8,7 +8,7 @@
             <ruleTemplate>TestRuleTemplate</ruleTemplate>
             <description>Duplicate of a named rule</description>
             <expression type="someType">some expression</expression>
-            <ignorePrevious>false</ignorePrevious>
+            <forceAction>false</forceAction>
             <ruleExtensions>
                 <ruleExtension>
                     <attribute>TestRuleAttribute</attribute>

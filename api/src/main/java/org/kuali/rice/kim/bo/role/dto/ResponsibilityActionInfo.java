@@ -45,7 +45,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	protected String actionPolicyCode;
 	protected String roleResponsibilityActionId;
 	protected String parallelRoutingGroupingCode = "";
-	protected boolean ignorePrevious;
+	protected boolean forceAction;
 	protected Integer priorityNumber;
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
@@ -172,17 +172,17 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	}
 
 	/**
-	 * @return the ignorePrevious
+	 * @return the forceAction
 	 */
-	public boolean isIgnorePrevious() {
-		return this.ignorePrevious;
+	public boolean isForceAction() {
+		return this.forceAction;
 	}
 
 	/**
-	 * @param ignorePrevious the ignorePrevious to set
+	 * @param forceAction the forceAction to set
 	 */
-	public void setIgnorePrevious(boolean ignorePrevious) {
-		this.ignorePrevious = ignorePrevious;
+	public void setForceAction(boolean forceAction) {
+		this.forceAction = forceAction;
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	        + "roleId = " + this.roleId + TAB
 	        + "actionTypeCode = " + this.actionTypeCode + TAB
 	        + "actionPolicyCode = " + this.actionPolicyCode + TAB
-	        + "ignorePrevious = " + this.ignorePrevious + TAB
+	        + "forceAction = " + this.forceAction + TAB
 	        + "priorityNumber = " + this.priorityNumber + TAB
 	        + "qualifier = " + this.qualifier + TAB
 	        + "delegates = " + this.delegates + TAB

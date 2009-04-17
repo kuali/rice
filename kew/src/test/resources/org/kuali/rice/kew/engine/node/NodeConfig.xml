@@ -153,7 +153,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Sequential Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -166,7 +166,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -179,7 +179,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -192,7 +192,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -205,7 +205,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Parallel Node Ack Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -218,7 +218,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>Parallel Node Test Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -231,7 +231,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>Parallel Node Test Rule 3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -244,7 +244,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 			<description>Parallel Node Test Rule 4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jitrue</user>
@@ -257,7 +257,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument5Template</ruleTemplate>
 			<description>Parallel Node Test Rule 5</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>shenl</user>
@@ -270,7 +270,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule Final</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>xqi</user>

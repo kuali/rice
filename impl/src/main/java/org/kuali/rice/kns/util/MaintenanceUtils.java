@@ -365,7 +365,9 @@ public class MaintenanceUtils {
      */
     private static boolean lockCanBeIgnored(org.kuali.rice.kns.document.Document lockedDocument) {
         // TODO: implement real authorization for Maintenance Document Save/Route - KULNRVSYS-948
-
+    	if ( lockedDocument == null ) {
+    		return true;
+		}
         DocumentHeader documentHeader = lockedDocument.getDocumentHeader();
 
         // get the user-id. if no user-id, then we can do this test, so exit

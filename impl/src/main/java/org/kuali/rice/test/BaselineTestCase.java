@@ -160,7 +160,7 @@ public class BaselineTestCase extends BaseModuleTestCase {
         // clear the db
         if (dirty) {
             log.warn("Previous test case did not clean up the database; clearing database...");
-            lifecycles.add(0, new ClearDatabaseLifecycle());
+            lifecycles.add(0, new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()));
         }
         return lifecycles;
     }

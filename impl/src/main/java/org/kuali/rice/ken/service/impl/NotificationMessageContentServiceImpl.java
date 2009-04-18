@@ -413,8 +413,8 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 that group in the list so it can be searched against for this
                 particular per-user notification
 
-           Group1 --> TestUser1 --> "Group1 TestUser1"
-                  --> TestUser2 --> "Group1 TestUser2"
+           Group1 --> testuser1 --> "Group1 testuser1"
+                  --> testuser2 --> "Group1 testuser2"
 
         */
 

@@ -56,12 +56,12 @@ public class MessagingServiceTest extends KCBTestCase {
     public void setUp() throws Exception {
         super.setUp();
     
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "mock", new String[] { "Test Channel #1" });
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "sms", new String[] { "Test Channel #1" });
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "broken", new String[] { "Test Channel #1" }); // this one throws exceptions
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "bogus", new String[] { "Test Channel #1" }); // this one doesn't exist
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "mock", new String[] { "Test Channel #1" });
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "sms", new String[] { "Test Channel #1" });
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "broken", new String[] { "Test Channel #1" }); // this one throws exceptions
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "bogus", new String[] { "Test Channel #1" }); // this one doesn't exist
         
-        assertEquals(4, services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size());
+        assertEquals(4, services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("testuser5", "Test Channel #1").size());
     }
 
     protected long deliver() throws Exception {
@@ -70,7 +70,7 @@ public class MessagingServiceTest extends KCBTestCase {
         message.setChannel("Test Channel #1");
         message.setContentType("test content type 1");
         message.setDeliveryType("test delivery type 1");
-        message.setRecipient("TestUser5");
+        message.setRecipient("testuser5");
         message.setTitle("test title 1");
         message.setOriginId("origin id");
 
@@ -82,7 +82,7 @@ public class MessagingServiceTest extends KCBTestCase {
 
         Collection<MessageDelivery> deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
         assertNotNull(deliveries);
-        int delivCount = services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size();
+        int delivCount = services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("testuser5", "Test Channel #1").size();
         assertEquals(delivCount, deliveries.size());
         assertTrue(deliveries.size() > 0);
         int failed = 0;

@@ -122,23 +122,23 @@ public class TestConstants {
     /**
      * Some user names
      */
-    public static final String TEST_USER_ONE = "TestUser1";
+    public static final String TEST_USER_ONE = "testuser1";
     public static final String TEST_USER_ONE_DISPLAYNAME = "Test User 1";
 
-    public static final String TEST_USER_TWO = "TestUser2";
-    public static final String TEST_USER_THREE = "TestUser3";
-    public static final String TEST_USER_FOUR = "TestUser4";
-    public static final String TEST_USER_FIVE = "TestUser5";
-    public static final String TEST_USER_SIX = "TestUser6";
+    public static final String TEST_USER_TWO = "testuser2";
+    public static final String TEST_USER_THREE = "testuser3";
+    public static final String TEST_USER_FOUR = "testuser4";
+    public static final String TEST_USER_FIVE = "testuser5";
+    public static final String TEST_USER_SIX = "testuser6";
 
-    public static final String ADMIN_USER_1 = "TestAdmin1";
+    public static final String ADMIN_USER_1 = "testadmin1";
     public static final String NON_ADMIN_USER_1 = TEST_USER_ONE;
     public static final String INVALID_USER_1 = "InvalidUser";
 
     /**
      * A user who is the target of a notification
      */
-    public static final String NOTIFICATION_RECIPIENT_ID = "TestUser5";
+    public static final String NOTIFICATION_RECIPIENT_ID = "testuser5";
     /**
      * The content type of a notification for which the NOTIFICATION_RECIPIENT_ID user is a target
      * (can by any content type as long as the user is the target of at least one notification with that content type)
@@ -163,8 +163,8 @@ public class TestConstants {
     /**
      * A valid KIM principal name
      */
-    //nb: the corresponding id should be TEST_USER_5 (ie "TestUser5")
-    public static final String VALID_KIM_PRINCIPAL_NAME = "TestUser5";
+    //nb: the corresponding id should be TEST_USER_5 (ie "testuser5")
+    public static final String VALID_KIM_PRINCIPAL_NAME = "testuser5";
 
     /**
      * Number of members in this group

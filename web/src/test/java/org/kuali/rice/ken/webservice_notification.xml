@@ -20,7 +20,7 @@
     <!-- who is the notification going to? -->
     <recipients>
         <group>RiceTeam</group>
-        <user>TestUser2</user>
+        <user>testuser2</user>
     </recipients>
     
     <!--  fyi or acknowledge -->

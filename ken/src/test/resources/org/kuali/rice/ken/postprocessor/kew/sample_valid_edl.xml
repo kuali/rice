@@ -18,7 +18,7 @@
 			<value></value>
 		</field>
 		<field name="userRecipients">
-			<value>TestUser1;TestUser2</value>
+			<value>testuser1;testuser2</value>
 		</field>
 		<field name="workgroupRecipients">
 			<value>RiceTeam</value>

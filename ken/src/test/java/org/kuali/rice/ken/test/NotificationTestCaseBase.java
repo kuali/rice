@@ -18,9 +18,12 @@ package org.kuali.rice.ken.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -49,41 +52,33 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
 
     public NotificationTestCaseBase() {
         super(KEN_MODULE_NAME);
-    }
-
-    /*
+    }   
+    
+    
+    
     @Override
-    protected List<Lifecycle> getSuiteLifecycles() {
-        List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-        lifecycles.add(new BaseLifecycle() {
-            @Override
-            public void start() throws Exception {
-                // can't find a generic way to get the module's resource loader and context (would have to rely on standardized conventions)
-                // in the super class ModuleTestCase, so just special case it here for KEN for now
-                ConfigurableApplicationContext moduleContext = KENResourceLoaderFactory.getSpringResourceLoader().getContext();
-                // This method sets up the Spring services so that they can be accessed by the tests.
-                services = new SpringNotificationServiceLocator(moduleContext);
-                // grab the module's transaction manager
-                transactionManager = (PlatformTransactionManager) moduleContext.getBean(TX_MGR_BEAN_NAME, PlatformTransactionManager.class);
-                super.start();
-            }
+	protected List<Lifecycle> getSuiteLifecycles() {
+		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
+		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultSuiteTestData.xml"));
+		return suiteLifecycles;
+	}
+    
+    @Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KENTestHarnessApplicationResourceLoader"), "classpath:KENTestHarnessSpringBeans.xml");
+    	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+    	return springResourceLoader;
+	}
 
-        });
-        return lifecycles;
-    }*/
-
-    /**
-     * Avoid clearing the Quartz tables because it's deadlockey
-     * @see org.kuali.rice.test.RiceTestCase#getTablesNotToClear()
-     */
-    /*@Override
-    protected List<String> getTablesNotToClear() {
-        List<String> l =  super.getTablesNotToClear();
-        l.add("KR_.*");
-        return l;
-    }*/
-
-    protected List<Lifecycle> getNotificationPerTestLifecycles() {
+	@Override
+    protected List<Lifecycle> getPerTestLifecycles() {
+    	List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+    	lifecycles.add(new ClearCacheLifecycle());
+    	lifecycles.addAll(getNotificationPerTestLifecycles());
+    	return lifecycles;
+    }
+    
+	protected List<Lifecycle> getNotificationPerTestLifecycles() {
         List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
         lifecycles.add(new BaseLifecycle() {
             @Override
@@ -121,30 +116,25 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
         });
 
         // load the default SQL
-        lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultTestData.sql", ";"));
+        lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultPerTestData.sql", ";"));
         
-        // load the KEW bootstrap
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/xml/KEWBootstrap.xml"));
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/bootstrap/widgets.xml"));
-
-        // load the KEN bootstrap
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("file:" + getBaseDir() + "/../impl/src/main/config/xml/KENBootstrap.xml"));
-
-        // load the KEN test data
-        // some test data has to be loaded via SQL because we do not have XML loaders for it yet
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultTestData.xml"));
+        lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultPerTestData.xml"));
         
 
         return lifecycles;
 
     }
-    @Override
-    protected List<Lifecycle> getPerTestLifecycles() {
-        List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-        lifecycles.add(new ClearCacheLifecycle());
-        lifecycles.addAll(getNotificationPerTestLifecycles());
-        return lifecycles;
-    }
+    
+    /**
+	 * Returns the List of tables that should be cleared on every test run.
+	 */
+	protected List<String> getPerTestTablesToClear() {
+		List<String> tablesToClear = new ArrayList<String>();
+		tablesToClear.add("KREW_.*");
+		tablesToClear.add("KRSB_.*");
+		tablesToClear.add("KREN_.*");
+		return tablesToClear;
+	}
 
     /**
      * Flushes the KEW cache(s)
@@ -154,6 +144,7 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
         public void stop() throws Exception {
             KEWServiceLocator.getCacheAdministrator().flushAll();
             KIMServiceLocator.getIdentityManagementService().flushAllCaches();
+            KIMServiceLocator.getRoleManagementService().flushRoleCaches();
             super.stop();
         }
 
@@ -169,22 +160,6 @@ public abstract class NotificationTestCaseBase extends BaselineTestCase {
         scheduler.standby();
         //scheduler.shutdown();
     }
-
-    /**
-     * Returns the List of tables that should be cleared on every test run.
-     */
-    /*
-    @Override
-    protected List<String> getTablesToClear() {
-        List<String> tablesToClear = new ArrayList<String>();
-        tablesToClear.add("KREW_.*");
-        tablesToClear.add("KREN_.*");
-        tablesToClear.add("KRSB_.*");
-        tablesToClear.add("KRIM_.*");
-        tablesToClear.add("KRNS_.*");
-        return tablesToClear;
-    }
-    */
 
     /**
      * This method enables the Quartz scheduler

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class BaseModuleTestCase extends RiceTestCase {
+public class BaseModuleTestCase extends RiceInternalSuiteDataTestCase {
     protected final Logger LOG = Logger.getLogger(getClass());
 
     protected final String moduleName;
@@ -42,21 +42,4 @@ public class BaseModuleTestCase extends RiceTestCase {
         return moduleName;
     }
 
-// BELOW REMOVED DUE TO RiceTestCase.getTestHarnessSpringBeansLocation() implementation being a duplicate
-//    /**
-//     * Overrides to allow (enforce) per-module (MODULE)TestHarnessSpringBeans.xml 
-//     * @see org.kuali.rice.test.RiceTestCase#getTestHarnessSpringBeansLocation()
-//     */
-//    @Override
-//    protected String[] getTestHarnessSpringBeansLocation() {
-//        String[] locations = super.getTestHarnessSpringBeansLocation();
-//
-//        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
-//        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
-//        if (resource.exists()) {
-//            locations = (String[]) ArrayUtils.add(locations, "classpath:" + moduleTestHarnessSpringBeansPath);
-//        }
-//        
-//        return locations;
-//    }
 }

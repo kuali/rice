@@ -20,7 +20,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.config.ConfigurationException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -35,6 +36,9 @@ public class SpringResourceLoader extends BaseResourceLoader {
 
 	private static final Logger LOG = Logger.getLogger(SpringResourceLoader.class);
 
+	private SpringResourceLoader parentSpringResourceLoader;
+	
+	private ApplicationContext parentContext;
 	private ConfigurableApplicationContext context;
 
 	private final String[] fileLocs;
@@ -63,7 +67,13 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	public void start() throws Exception {
 		if(!isStarted()){
 			LOG.info("Creating Spring context " + StringUtils.join(this.fileLocs, ","));
-			this.context = new ClassPathXmlApplicationContext(this.fileLocs);
+			if (parentSpringResourceLoader != null && parentContext != null) {
+				throw new ConfigurationException("Both a parentSpringResourceLoader and parentContext were defined.  Only one can be defined!");
+			}
+			if (parentSpringResourceLoader != null) {
+				parentContext = parentSpringResourceLoader.getContext();
+			}
+			this.context = new ClassPathXmlApplicationContext(this.fileLocs, parentContext);
 			super.start();
 		}
 	}
@@ -78,5 +88,16 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	public ConfigurableApplicationContext getContext() {
 		return this.context;
 	}
+	
+	public void setParentContext(ApplicationContext parentContext) {
+		this.parentContext = parentContext;
+	}
+
+	public void setParentSpringResourceLoader(
+			SpringResourceLoader parentSpringResourceLoader) {
+		this.parentSpringResourceLoader = parentSpringResourceLoader;
+	}
+	
+	
 
 }

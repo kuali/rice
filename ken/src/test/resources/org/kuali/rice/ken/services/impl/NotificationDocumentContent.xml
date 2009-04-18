@@ -38,7 +38,7 @@
   <recipients>
     <recipient>
       <recipientType>USER</recipientType>
-      <recipientId>TestUser3</recipientId>
+      <recipientId>testuser3</recipientId>
     </recipient>
     <recipient>
       <recipientType>GROUP</recipientType>

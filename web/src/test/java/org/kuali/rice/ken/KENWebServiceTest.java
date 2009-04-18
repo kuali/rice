@@ -118,7 +118,7 @@ public class KENWebServiceTest extends ServerTestBase {
 
         Thread.sleep(40000);
 
-        Collection<Notification> ns = GlobalNotificationServiceLocator.getInstance().getNotificationService().getNotificationsForRecipientByType("Simple", "TestUser2");
+        Collection<Notification> ns = GlobalNotificationServiceLocator.getInstance().getNotificationService().getNotificationsForRecipientByType("Simple", "testuser2");
         assertEquals(1, ns.size());
 
         /*

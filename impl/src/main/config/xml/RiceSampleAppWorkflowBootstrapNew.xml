@@ -91,80 +91,80 @@
         <!-- users elements from ..\/ken/src/main/config/xml/KENSampleData.xml -->
 
         <user>
-            <workflowId>TestAdmin1</workflowId>
-            <emplId>TestAdmin1</emplId>
-            <authenticationId>TestAdmin1</authenticationId>
-            <uuId>TestAdmin1</uuId>
+            <workflowId>testadmin1</workflowId>
+            <emplId>testadmin1</emplId>
+            <authenticationId>testadmin1</authenticationId>
+            <uuId>testadmin1</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test Admin 1</displayName>
             <givenName>Test</givenName>
             <lastName>Admin 1</lastName>
         </user>
         <user>
-            <workflowId>TestAdmin2</workflowId>
-            <emplId>TestAdmin2</emplId>
-            <authenticationId>TestAdmin2</authenticationId>
-            <uuId>TestAdmin2</uuId>
+            <workflowId>testadmin2</workflowId>
+            <emplId>testadmin2</emplId>
+            <authenticationId>testadmin2</authenticationId>
+            <uuId>testadmin2</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test Admin 2</displayName>
             <givenName>Test</givenName>
             <lastName>Admin 2</lastName>
         </user>
         <user>
-            <workflowId>TestUser1</workflowId>
-            <emplId>TestUser1</emplId>
-            <authenticationId>TestUser1</authenticationId>
-            <uuId>TestUser1</uuId>
+            <workflowId>testuser1</workflowId>
+            <emplId>testuser1</emplId>
+            <authenticationId>testuser1</authenticationId>
+            <uuId>testuser1</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test User 1</displayName>
             <givenName>Test</givenName>
             <lastName>User 1</lastName>
         </user>
         <user>
-            <workflowId>TestUser2</workflowId>
-            <emplId>TestUser2</emplId>
-            <authenticationId>TestUser2</authenticationId>
-            <uuId>TestUser2</uuId>
+            <workflowId>testuser2</workflowId>
+            <emplId>testuser2</emplId>
+            <authenticationId>testuser2</authenticationId>
+            <uuId>testuser2</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test User 2</displayName>
             <givenName>Test</givenName>
             <lastName>User 2</lastName>
         </user>
         <user>
-            <workflowId>TestUser3</workflowId>
-            <emplId>TestUser3</emplId>
-            <authenticationId>TestUser3</authenticationId>
-            <uuId>TestUser3</uuId>
+            <workflowId>testuser3</workflowId>
+            <emplId>testuser3</emplId>
+            <authenticationId>testuser3</authenticationId>
+            <uuId>testuser3</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test User 3</displayName>
             <givenName>Test</givenName>
             <lastName>User 3</lastName>
         </user>
         <user>
-            <workflowId>TestUser4</workflowId>
-            <emplId>TestUser4</emplId>
-            <authenticationId>TestUser4</authenticationId>
-            <uuId>TestUser4</uuId>
+            <workflowId>testuser4</workflowId>
+            <emplId>testuser4</emplId>
+            <authenticationId>testuser4</authenticationId>
+            <uuId>testuser4</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test User 4</displayName>
             <givenName>Test</givenName>
             <lastName>User 4</lastName>
         </user>
         <user>
-            <workflowId>TestUser5</workflowId>
-            <emplId>TestUser5</emplId>
-            <authenticationId>TestUser5</authenticationId>
-            <uuId>TestUser5</uuId>
+            <workflowId>testuser5</workflowId>
+            <emplId>testuser5</emplId>
+            <authenticationId>testuser5</authenticationId>
+            <uuId>testuser5</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test User 5</displayName>
             <givenName>Test</givenName>
             <lastName>User 5</lastName>
         </user>
         <user>
-            <workflowId>TestUser6</workflowId>
-            <emplId>TestUser6</emplId>
-            <authenticationId>TestUser6</authenticationId>
-            <uuId>TestUser6</uuId>
+            <workflowId>testuser6</workflowId>
+            <emplId>testuser6</emplId>
+            <authenticationId>testuser6</authenticationId>
+            <uuId>testuser6</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Test User 6</displayName>
             <givenName>Test</givenName>
@@ -422,22 +422,22 @@
 
         <!-- users elements from ..\/ken/src/main/config/xml/KENBootstrap.xml -->
 
-        <!-- The NotSys user is needed for the message sending forms that come with the system -->
+        <!-- The notsys user is needed for the message sending forms that come with the system -->
         <user>
-            <workflowId>NotSys</workflowId>
-            <emplId>NotSys</emplId>
-            <authenticationId>NotSys</authenticationId>
-            <uuId>NotSys</uuId>
+            <workflowId>notsys</workflowId>
+            <emplId>notsys</emplId>
+            <authenticationId>notsys</authenticationId>
+            <uuId>notsys</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Notification System</displayName>
             <givenName>Notification</givenName>
             <lastName>System</lastName>
         </user>
         <user>
-            <workflowId>NotSysAdm</workflowId>
-            <emplId>NotSysAdm</emplId>
-            <authenticationId>NotSysAdm</authenticationId>
-            <uuId>NotSysAdm</uuId>
+            <workflowId>notsysadm</workflowId>
+            <emplId>notsysadm</emplId>
+            <authenticationId>notsysadm</authenticationId>
+            <uuId>notsysadm</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Notification System Admin</displayName>
             <givenName>Notification</givenName>
@@ -551,8 +551,8 @@
             <activeInd>true</activeInd>
             <workgroupType>W</workgroupType>
             <members>
-                <workflowId>TestAdmin1</workflowId>
-                <workflowId>NotSysAdm</workflowId>
+                <workflowId>testadmin1</workflowId>
+                <workflowId>notsysadm</workflowId>
             </members>
         </workgroup>
 
@@ -562,8 +562,8 @@
             <activeInd>true</activeInd>
             <workgroupType>W</workgroupType>
             <members>
-                <workflowId>TestUser1</workflowId>
-                <workflowId>TestUser2</workflowId>
+                <workflowId>testuser1</workflowId>
+                <workflowId>testuser2</workflowId>
             </members>
         </workgroup>
         <workgroup allowOverwrite="true">
@@ -572,8 +572,8 @@
             <activeInd>true</activeInd>
             <workgroupType>W</workgroupType>
             <members>
-                <workflowId>TestUser2</workflowId>
-                <workflowId>TestUser3</workflowId>
+                <workflowId>testuser2</workflowId>
+                <workflowId>testuser3</workflowId>
             </members>
         </workgroup>
         <workgroup allowOverwrite="true">
@@ -582,11 +582,11 @@
             <activeInd>true</activeInd>
             <workgroupType>W</workgroupType>
             <members>
-                <workflowId>TestUser1</workflowId>
-                <workflowId>TestUser2</workflowId>
-                <workflowId>TestUser6</workflowId>
-                <workflowId>TestUser4</workflowId>
-                <workflowId>TestUser5</workflowId>
+                <workflowId>testuser1</workflowId>
+                <workflowId>testuser2</workflowId>
+                <workflowId>testuser6</workflowId>
+                <workflowId>testuser4</workflowId>
+                <workflowId>testuser5</workflowId>
                 <workflowId>quickstart</workflowId>
             </members>
         </workgroup>
@@ -599,8 +599,8 @@
             <workgroupType>W</workgroupType>
             <members>
                 <workflowId>admin</workflowId>
-                <workflowId>NotSys</workflowId>
-                <workflowId>TestAdmin2</workflowId>
+                <workflowId>notsys</workflowId>
+                <workflowId>testadmin2</workflowId>
             </members>
         </workgroup>
         -->
@@ -700,7 +700,7 @@
             <activeInd>true</activeInd>
             <workgroupType>W</workgroupType>
             <members>
-                <workflowId>NotSysAdm</workflowId>
+                <workflowId>notsysadm</workflowId>
             </members>
         </workgroup>
         <workgroup allowOverwrite="true">
@@ -710,7 +710,7 @@
             <workgroupType>W</workgroupType>
             <members>
                 <workflowId>admin</workflowId>
-                <workflowId>NotSys</workflowId>
+                <workflowId>notsys</workflowId>
             </members>
         </workgroup>
  -->

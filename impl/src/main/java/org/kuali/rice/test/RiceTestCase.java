@@ -297,7 +297,22 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         	}
         });
         
+        Lifecycle loadApplicationLifecycle = getLoadApplicationLifecycle();
+        if (loadApplicationLifecycle != null) {
+        	lifecycles.add(loadApplicationLifecycle);
+        }
         return lifecycles;
+    }
+    
+    /**
+     * This should return a Lifecycle that can be used to load the application
+     * being tested.  For example, this could start a Jetty Server which loads
+     * the application, or load a Spring context to establish a set of services,
+     * or any other application startup activities that the test depends upon.
+     */
+    protected Lifecycle getLoadApplicationLifecycle() {
+    	// by default return null, do nothing
+    	return null;
     }
 
     /**
@@ -358,18 +373,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @return the location of the test harness spring beans context file.
      */
     protected String[] getTestHarnessSpringBeansLocation() {
-        String[] locations;
-        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
-        LOG.debug("Looking for module override test harness spring beans: " + moduleTestHarnessSpringBeansPath);
-        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
-        if (resource.exists()) {
-            LOG.debug("Found: " + resource);
-            locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS, "classpath:" + moduleTestHarnessSpringBeansPath };  
-        } else {
-            LOG.debug("Not found: " + resource);
-            locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
-        }
-        return locations;
+        return new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
     }
 
     protected Config getTestHarnessConfig() throws Exception {

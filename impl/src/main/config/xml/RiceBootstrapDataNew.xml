@@ -153,23 +153,23 @@
             <lastName>Two</lastName>
         </user>
 	-->
-        <!-- The NotSys user is needed for the message sending forms that come with the system -->
+        <!-- The notsys user is needed for the message sending forms that come with the system -->
    <!--
         <user>
-            <workflowId>NotSys</workflowId>
-            <emplId>NotSys</emplId>
-            <authenticationId>NotSys</authenticationId>
-            <uuId>NotSys</uuId>
+            <workflowId>notsys</workflowId>
+            <emplId>notsys</emplId>
+            <authenticationId>notsys</authenticationId>
+            <uuId>notsys</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Notification System</displayName>
             <givenName>Notification</givenName>
             <lastName>System</lastName>
         </user>
         <user>
-            <workflowId>NotSysAdm</workflowId>
-            <emplId>NotSysAdm</emplId>
-            <authenticationId>NotSysAdm</authenticationId>
-            <uuId>NotSysAdm</uuId>
+            <workflowId>notsysadm</workflowId>
+            <emplId>notsysadm</emplId>
+            <authenticationId>notsysadm</authenticationId>
+            <uuId>notsysadm</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Notification System Admin</displayName>
             <givenName>Notification</givenName>
@@ -233,7 +233,7 @@
             <activeInd>true</activeInd>
             <workgroupType>W</workgroupType>
             <members>
-                <workflowId>NotSysAdm</workflowId>
+                <workflowId>notsysadm</workflowId>
             </members>
         </workgroup>
      <!--
@@ -244,7 +244,7 @@
             <workgroupType>W</workgroupType>
             <members>
                 <workflowId>admin</workflowId>
-                <workflowId>NotSys</workflowId>
+                <workflowId>notsys</workflowId>
             </members>
         </workgroup>
     -->

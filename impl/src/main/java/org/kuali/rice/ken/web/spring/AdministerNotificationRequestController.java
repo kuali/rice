@@ -200,7 +200,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
                 command.setMessage("This notification request has been disapproved.");
             } else if (notification.getAutoRemoveDateTime() != null && notification.getAutoRemoveDateTime().before(new Date(System.currentTimeMillis()))) {
                 /*if (!document.stateIsCanceled()) {
-                workflowDocumentService.terminateWorkflowDocument(new WorkflowDocument(new NetworkIdVO("NotSys"), new Long(command.getDocId())));
+                workflowDocumentService.terminateWorkflowDocument(new WorkflowDocument(new NetworkIdVO("notsys"), new Long(command.getDocId())));
                 }*/
                 // the autoremove date time has already passed...this notification request is null and void at this time
                 boolean disapproved = document.stateIsDisapproved();

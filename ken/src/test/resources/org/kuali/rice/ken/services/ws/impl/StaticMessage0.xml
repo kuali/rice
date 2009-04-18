@@ -14,7 +14,7 @@
     </senders>
     <!-- who is the notification going to? -->
     <recipients>
-        <user>TestUser1</user>
+        <user>testuser1</user>
         <group>TestGroup2</group>
     </recipients>
     <!--  fyi or ack -->
@@ -43,7 +43,7 @@
                 <dt>senders</dt>
                 <dd>NotificationTestUsageGenerator</dd>
                 <dt>recipients</dt>
-                <dd>TestUser1, TestGroup2</dd>
+                <dd>testuser1, TestGroup2</dd>
                 <dt>deliveryType</dt>
                 <dd>ACK</dd>
                 <dt>priority</dt>

@@ -2,22 +2,22 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 
     <users xmlns="ns:workflow/User" xsi:schemaLocation="ns:workflow/User resource:User">
-        <!-- The NotSys user is needed for the message sending forms that come with the system -->
+        <!-- The notsys user is needed for the message sending forms that come with the system -->
         <user>
-            <workflowId>NotSys</workflowId>
-            <emplId>NotSys</emplId>
-            <authenticationId>NotSys</authenticationId>
-            <uuId>NotSys</uuId>
+            <workflowId>notsys</workflowId>
+            <emplId>notsys</emplId>
+            <authenticationId>notsys</authenticationId>
+            <uuId>notsys</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Notification System</displayName>
             <givenName>Notification</givenName>
             <lastName>System</lastName>
         </user>
         <user>
-            <workflowId>NotSysAdm</workflowId>
-            <emplId>NotSysAdm</emplId>
-            <authenticationId>NotSysAdm</authenticationId>
-            <uuId>NotSysAdm</uuId>
+            <workflowId>notsysadm</workflowId>
+            <emplId>notsysadm</emplId>
+            <authenticationId>notsysadm</authenticationId>
+            <uuId>notsysadm</uuId>
             <emailAddress>kuali-ken-testing@googlegroups.com</emailAddress>
             <displayName>Notification System Admin</displayName>
             <givenName>Notification</givenName>
@@ -32,7 +32,7 @@
             <description>Notification system admin group for automation.</description>
             <active>true</active>
             <members>
-                <principalName>NotSysAdm</principalName>
+                <principalName>notsysadm</principalName>
             </members>
         </group>
         <group>
@@ -42,7 +42,7 @@
             <active>true</active>
             <members>
                 <principalName>admin</principalName>
-                <principalName>NotSys</principalName>
+                <principalName>notsys</principalName>
             </members>
         </group>
     </groups>

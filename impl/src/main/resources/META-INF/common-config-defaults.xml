@@ -112,7 +112,7 @@
     <param name="data.xml.pollIntervalSecs" override="false">30</param>
     <param name="initialDelaySecs" override="false">10</param>
 
-    <param name="ken.system.user" override="false">NotSys</param>
+    <param name="ken.system.user" override="false">notsys</param>
     <param name="rice.kew.enableKENNotification" override="false">true</param>
 
     <!-- Configuration for Exception Incident handling and reporting -->

@@ -25,6 +25,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -52,6 +53,7 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
   @UnitTestData(filename="file:impl/src/main/config/sql/KENBootstrap.sql", delimiter="/"),
   @UnitTestData(filename="file:ken/src/test/resources/org/kuali/rice/ken/test/DefaultTestData.sql", delimiter=";")
 })
+@Ignore("KULRICE-3003")
 public class KENWebServiceTest extends ServerTestBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KENWebServiceTest.class);
 

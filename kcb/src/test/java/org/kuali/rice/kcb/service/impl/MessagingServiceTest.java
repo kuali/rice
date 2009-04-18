@@ -209,7 +209,7 @@ public class MessagingServiceTest extends KCBTestCase {
         KSBServiceLocator.getScheduler().addGlobalJobListener(new JobListenerSupport() {
             @Override
             public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-                log.debug("Job was executed: " + context);
+                log.info("Job was executed: " + context);
                 if (MessageProcessingJob.NAME.equals(context.getJobDetail().getName())) {
                     signal.countDown();
                 }
@@ -222,7 +222,7 @@ public class MessagingServiceTest extends KCBTestCase {
 
     protected void waitForNextJobCompletion() throws InterruptedException {
         log.info("Waiting for job to complete...");
-        signal.await(45, TimeUnit.SECONDS); // time limit so as not to hang tests if something goes wrong
+        signal.await(100, TimeUnit.SECONDS); // time limit so as not to hang tests if something goes wrong
         signal = new CountDownLatch(1);
         log.info("Job completed...");
     }

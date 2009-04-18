@@ -161,7 +161,15 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 		});
 		return lifeCycles;
 	}
-	
+		
+	@Override
+	protected void loadSuiteTestData() throws Exception {
+		super.loadSuiteTestData();
+		new SQLDataLoader(
+				"classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql", ";")
+				.runSql();
+	}
+
 	protected JettyServer getJettyServer() {
 		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
 			"/../web/src/main/webapp/en");

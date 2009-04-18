@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kcb.test;
 
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.KCBServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
@@ -36,4 +40,12 @@ public abstract class KCBTestCase extends BaselineTestCase {
         super.setUp();
         services = GlobalKCBServiceLocator.getInstance();
     }
+    
+    @Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KCBTestHarnessApplicationResourceLoader"), "classpath:KCBTestHarnessSpringBeans.xml");
+    	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+    	return springResourceLoader;
+	}
+
 }

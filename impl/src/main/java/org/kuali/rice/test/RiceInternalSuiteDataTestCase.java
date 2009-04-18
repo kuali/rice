@@ -45,11 +45,6 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 						.runSql();
 			}
 		}
-
-		new SQLDataLoader(
-				"classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql", ";")
-				.runSql();
-
 	}
 	
 }

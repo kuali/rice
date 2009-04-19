@@ -1040,6 +1040,16 @@
 	  </property>
 	</bean>
 
+    <bean id="namespacePermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespacePermissionTypeServiceImpl" />
+	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	  <property name="serviceDefinition">
+	    <bean parent="knsService"
+	      p:service-ref="namespacePermissionTypeService"
+	      p:localServiceName="namespacePermissionTypeService" />
+	  </property>
+	</bean>
+
     <bean id="namespaceOrComponentPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="componentName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
@@ -1112,13 +1122,13 @@
 	  </property>
 	</bean>
 
-    <bean id="editModePermissionTypeService" class="org.kuali.rice.kns.service.impl.EditModePermissionTypeServiceImpl"/>
+    <bean id="documentTypeAndEditModePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndEditModePermissionTypeServiceImpl"/>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
 	    <bean parent="knsService"
-	      p:service-ref="editModePermissionTypeService"
-	      p:localServiceName="editModePermissionTypeService" />
+	      p:service-ref="documentTypeAndEditModePermissionTypeService"
+	      p:localServiceName="documentTypeAndEditModePermissionTypeService" />
 	  </property>
 	</bean>
 

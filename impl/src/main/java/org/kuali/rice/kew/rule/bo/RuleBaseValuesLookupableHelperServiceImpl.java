@@ -37,8 +37,8 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -232,7 +232,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if (!Utilities.isEmpty(groupIdParam) || !Utilities.isEmpty(groupNameParam)) {
-            KimGroup group = null;
+            Group group = null;
             if (groupIdParam != null && !"".equals(groupIdParam)) {
                 group = getIdentityManagementService().getGroup(groupIdParam.trim());
             } else {
@@ -395,7 +395,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 String attributeLabel =  getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
                 GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);

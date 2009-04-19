@@ -25,7 +25,7 @@
                 <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" readOnly="${readOnly}"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimGroupType.name:newGroup.kimGroupType.name" anchor="${tabKey}" />
+	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.GroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimGroupType.name:newGroup.kimGroupType.name" anchor="${tabKey}" />
 						<html:hidden property="newGroup.groupName" />
 						<html:hidden property="newGroup.groupType" />
 						<html:hidden property="newGroup.kimGroupType.name" />

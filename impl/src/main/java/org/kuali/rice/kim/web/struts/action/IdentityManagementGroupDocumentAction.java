@@ -27,9 +27,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -90,7 +90,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
         if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
 				&& StringUtils.isNotBlank(groupId)) {
-	        KimGroup group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+	        Group group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
 			KIMServiceLocator.getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
 			groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
         	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
@@ -161,7 +161,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	groupMemberTypeClass = KimPrincipalImpl.class;
         	groupMemberIdName = "principalId";
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	groupMemberTypeClass = KimGroupImpl.class;
+        	groupMemberTypeClass = GroupImpl.class;
         	groupMemberIdName = "groupId";
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	groupMemberTypeClass = RoleImpl.class;
@@ -184,7 +184,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	groupMemberName = ((KimPrincipalImpl)object).getPrincipalName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	groupMemberName = ((KimGroupImpl)object).getGroupName();
+        	groupMemberName = ((GroupImpl)object).getGroupName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	groupMemberName = ((RoleImpl)object).getRoleName();
         }

@@ -88,7 +88,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">

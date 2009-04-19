@@ -75,7 +75,6 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>

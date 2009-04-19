@@ -19,15 +19,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -59,11 +65,21 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
-    	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-	    AnchorHtmlData htmlData = getUrlData(bo, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames);
-	    htmlData.setHref("../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument&principalId="+((Person)bo).getPrincipalId());
-	    htmlDataList.add(htmlData);
-        return htmlDataList;
+		String href = "";
+
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
+        parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((PersonImpl)bo).getPrincipalId());
+        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters);
+
+        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
+        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+
+        List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
+    	anchorHtmlDataList.add(anchorHtmlData);	
+    	return anchorHtmlDataList;
 	}
 
 	@Override

@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -40,7 +39,7 @@ public class PermissionImpl extends KimPermissionImpl {
 	protected Person assignedToPrincipal;
 	protected String assignedToGroupNamespaceForLookup;
 	protected String assignedToGroupNameForLookup;
-	protected KimGroupImpl assignedToGroup;
+	protected GroupImpl assignedToGroup;
 	protected String attributeName;
 	protected String attributeValue;
 	protected String detailCriteria;
@@ -164,14 +163,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToGroup
 	 */
-	public KimGroupImpl getAssignedToGroup() {
+	public GroupImpl getAssignedToGroup() {
 		return this.assignedToGroup;
 	}
 
 	/**
 	 * @param assignedToGroup the assignedToGroup to set
 	 */
-	public void setAssignedToGroup(KimGroupImpl assignedToGroup) {
+	public void setAssignedToGroup(GroupImpl assignedToGroup) {
 		this.assignedToGroup = assignedToGroup;
 	}
 

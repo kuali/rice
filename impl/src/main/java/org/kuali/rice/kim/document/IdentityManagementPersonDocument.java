@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -271,4 +274,22 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		}
 	}
 
+	@Override
+	public void prepareForSave(){
+		if (StringUtils.isBlank(getPrivacy().getDocumentNumber())) {
+			getPrivacy().setDocumentNumber(
+					getDocumentNumber());
+		}
+		for (PersonDocumentRole role : getRoles()) {
+			for (KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
+				rolePrncpl.setDocumentNumber(getDocumentNumber());
+				for (KimDocumentRoleQualifier qualifier : rolePrncpl
+						.getQualifiers()) {
+					qualifier.setDocumentNumber(getDocumentNumber());
+					qualifier.setKimTypId(role.getKimTypeId());
+				}
+			}
+		}
+	}
+	
 }

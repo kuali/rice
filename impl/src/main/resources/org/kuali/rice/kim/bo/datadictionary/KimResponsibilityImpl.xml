@@ -146,7 +146,7 @@
         </bean>
       </list>
     </property>
-    <property name="inquirableClass" value="org.kuali.rice.kim.lookup.ResponsibilityInquirableImpl" />
+    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.ResponsibilityInquirableImpl" />
   </bean>
 
 </beans>

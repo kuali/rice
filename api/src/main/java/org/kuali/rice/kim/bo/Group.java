@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo;
 
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
 /**
@@ -25,9 +26,12 @@ import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
  */
 public interface Group extends ExternalizableBusinessObject {
 
-	public String getGroupId();
-	public String getGroupName();
-	public String getNamespaceCode();
-	//public KimTypeImpl getKimGroupType();
+	String getGroupId();
+	String getGroupName();
+	String getGroupDescription();
+	String getKimTypeId();
+	String getNamespaceCode();
+	AttributeSet getAttributes();
+	boolean isActive();
 
 }

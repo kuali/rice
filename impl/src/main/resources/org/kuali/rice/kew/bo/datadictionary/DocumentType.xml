@@ -339,7 +339,7 @@
   <bean id="DocumentType-blanketApproveWorkgroupId" parent="DocumentType-blanketApproveWorkgroupId-parentBean" />
 
   <bean id="DocumentType-blanketApproveWorkgroupId-parentBean" abstract="true" parent="ExternalizableAttributeDefinitionProxy"
-    p:sourceExternalizableBusinessObjectInterface="org.kuali.rice.kim.bo.group.KimGroup"
+    p:sourceExternalizableBusinessObjectInterface="org.kuali.rice.kim.bo.Group"
     p:sourceAttributeName="groupId">
     <property name="name" value="blanketApproveWorkgroupId" />
     <property name="label" value="Blanket Approve Group" />
@@ -348,7 +348,7 @@
 
   <bean id="DocumentType-blanketApproveWorkgroup.groupName" parent="DocumentType-blanketApproveWorkgroup.groupName-parentBean" />
 
-  <bean id="DocumentType-blanketApproveWorkgroup.groupName-parentBean" abstract="true" parent="KimGroupImpl-groupName">
+  <bean id="DocumentType-blanketApproveWorkgroup.groupName-parentBean" abstract="true" parent="GroupImpl-groupName">
     <property name="name" value="blanketApproveWorkgroup.groupName" />
     <property name="label" value="Blanket Approve Group Name" />
     <property name="shortLabel" value="BA Group Name" />
@@ -361,7 +361,7 @@
   <bean id="DocumentType-reportingWorkgroupId" parent="DocumentType-reportingWorkgroupId-parentBean" />
 
   <bean id="DocumentType-reportingWorkgroupId-parentBean" abstract="true" parent="ExternalizableAttributeDefinitionProxy"
-    p:sourceExternalizableBusinessObjectInterface="org.kuali.rice.kim.bo.group.KimGroup"
+    p:sourceExternalizableBusinessObjectInterface="org.kuali.rice.kim.bo.Group"
     p:sourceAttributeName="groupId">
     <property name="name" value="reportingWorkgroupId" />
     <property name="label" value="Reporting Group" />
@@ -370,7 +370,7 @@
 
   <bean id="DocumentType-reportingWorkgroup.groupName" parent="DocumentType-reportingWorkgroup.groupName-parentBean" />
 
-  <bean id="DocumentType-reportingWorkgroup.groupName-parentBean" abstract="true" parent="KimGroupImpl-groupName">
+  <bean id="DocumentType-reportingWorkgroup.groupName-parentBean" abstract="true" parent="GroupImpl-groupName">
     <property name="name" value="reportingWorkgroup.groupName" />
     <property name="label" value="Reporting Group Name" />
     <property name="shortLabel" value="Report Group Name" />

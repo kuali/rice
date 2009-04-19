@@ -31,7 +31,7 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
@@ -93,7 +93,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
      * @param a a workgroup
      * @param b another workgroup
      */
-    private void assertWorkgroupsEqual(KimGroup a, KimGroup b) {
+    private void assertWorkgroupsEqual(Group a, Group b) {
         if (a == null) {
             assertNull(b);
         } else {

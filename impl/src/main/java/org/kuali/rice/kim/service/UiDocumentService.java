@@ -18,8 +18,8 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -84,7 +84,7 @@ public interface UiDocumentService {
 	 * 
 	 * @param identityManagementRoleDocument
 	 */
-	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, KimGroup kimGroup);
+	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, Group kimGroup);
 	
 	/**
 	 * 

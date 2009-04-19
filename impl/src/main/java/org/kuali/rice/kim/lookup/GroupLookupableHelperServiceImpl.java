@@ -31,7 +31,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
@@ -90,10 +91,33 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
 
     @Override
-    public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
-    	List<KimGroupImpl> groups = groupDao.getGroups(fieldValues);
+    public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
+    	GroupImpl groupImpl = (GroupImpl) bo;
+        List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
+    	anchorHtmlDataList.add(getEditGroupUrl(groupImpl));	
+    	return anchorHtmlDataList;
+    }
+    
+    protected HtmlData getEditGroupUrl(GroupImpl groupImpl) {
+    	String href = "";
 
-        for (KimGroupImpl group : groups) {
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
+        parameters.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupImpl.getGroupId());
+        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters);
+        
+        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
+        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+        return anchorHtmlData;
+    }
+
+    @Override
+    public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
+    	List<GroupImpl> groups = groupDao.getGroups(fieldValues);
+
+        for (GroupImpl group : groups) {
         	if (!group.getGroupAttributes().isEmpty()) {
                 sort(group.getGroupAttributes(), new KimAttributeDataComparator());
         	}
@@ -131,7 +155,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 					typeField.setFieldLabel("Type");
 					typeField.setPropertyName(KIM_TYPE_ID_PROPERTY_NAME);
 					typeField.setFieldValidValues(getGroupTypeOptions());
-					typeField.setFieldType(Field.DROPDOWN_REFRESH);
+					typeField.setFieldType(Field.DROPDOWN);
 					fields.add(typeField);
 					returnRows.add(new Row(fields));
 
@@ -234,7 +258,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
                 boolean skipPropTypeCheck = false;
                 if (col.getPropertyName().matches("\\w+\\.\\d+$")) {
                     String id = col.getPropertyName().substring(col.getPropertyName().lastIndexOf('.') + 1); //.split("\\d+$"))[1];
-                    prop = ((KimGroupImpl)element).getGroupAttributeById(id);
+                    prop = ((GroupImpl)element).getGroupAttributeById(id);
                 }
                 if (prop == null) {
                     prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
@@ -483,33 +507,5 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
         super.performClear(lookupForm);
         this.attrRows = new ArrayList<Row>();
     }
-    
-	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
-	 */
-	@Override
-	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
-		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
-	    inquiryHtmlData.setHref(getCustomGroupInquiryHref(inquiryHtmlData.getHref()));
-		return inquiryHtmlData;
-	}
-
-	static String getCustomGroupInquiryHref(String href){
-        Properties parameters = new Properties();
-        String hrefPart = "";
-		if (StringUtils.isNotBlank(href) && href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=")!=-1) {
-			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=");
-		    int idx2 = href.indexOf("&", idx1+1);
-		    if (idx2 < 0) {
-		    	idx2 = href.length();
-		    }
-	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
-	        hrefPart = href.substring(idx1, idx2);
-	    }
-		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+
-				KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters)+hrefPart;
-	}
 
 }

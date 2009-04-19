@@ -36,8 +36,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -88,7 +88,7 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
     	return null;
     }
 
-    public KimGroup getGroup() {
+    public Group getGroup() {
         if (isUsingGroup()) {
         	return KIMServiceLocator.getIdentityManagementService().getGroup(ruleResponsibilityName);
         }

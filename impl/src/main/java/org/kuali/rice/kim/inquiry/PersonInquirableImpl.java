@@ -18,35 +18,36 @@ package org.kuali.rice.kim.inquiry;
 import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in.
- *
+ * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupInquirable extends KualiInquirableImpl {
+public class PersonInquirableImpl extends KualiInquirableImpl {
 
+	PersonService<Person> personService; 
+	
 	/**
 	 * This overridden method ...
-	 *
+	 * 
 	 * @see org.kuali.rice.kns.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
-	    BusinessObject bo = super.getBusinessObject(fieldValues);
-	    ((KimGroupImpl)bo).setMemberPersonsAndGroups();
-	    return bo;
+		return getPersonService().getPerson( fieldValues.get( "principalId" ).toString() );
 	}
 
+	public PersonService<Person> getPersonService() {
+		if ( personService == null ) {
+			personService = KIMServiceLocator.getPersonService();
+		}
+		return personService;
+	}
 }

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
  *
  */
 public class GroupRuleResponsibility extends RuleResponsibility {
-    protected KimGroupImpl kimGroupImpl;
+    protected GroupImpl kimGroupImpl;
 	private String namespaceCode;
 	private String name;
 
@@ -44,7 +44,7 @@ public class GroupRuleResponsibility extends RuleResponsibility {
 		this.name = name;
 	}
 
-	public KimGroupImpl getKimGroupImpl() {
+	public GroupImpl getKimGroupImpl() {
 	    return this.kimGroupImpl;
 	}
 }

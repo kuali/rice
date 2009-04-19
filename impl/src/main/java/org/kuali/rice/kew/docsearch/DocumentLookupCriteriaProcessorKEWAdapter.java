@@ -158,7 +158,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 							field.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.impl.PersonImpl");
 							field.setFieldConversions("principalName:"+propertyName);
 						} else if (StringUtils.equals("WorkGroupLookupableImplService", lookupableImplServiceName)) {
-							field.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.group.impl.KimGroupImpl");
+							field.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.impl.GroupImpl");
 							fieldType = Field.LOOKUP_READONLY;
 							field.setFieldConversions("groupName:"+propertyName+","+"groupId:"+StandardDocumentSearchCriteriaProcessor.CRITERIA_KEY_WORKGROUP_VIEWER_ID);
 						}

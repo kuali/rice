@@ -227,7 +227,7 @@
 
   <bean id="PersonImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"
         p:title="Person Impl Inquiry"
-        p:inquirableClass="org.kuali.rice.kim.inquiry.PersonInquirable" >
+        p:inquirableClass="org.kuali.rice.kim.inquiry.PersonInquirableImpl" >
     <property name="inquirySections" >
       <list>
         <bean parent="InquirySectionDefinition"

@@ -27,10 +27,9 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -43,9 +42,9 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupDao {
 	
-    public List<KimGroupImpl> getGroups(Map<String,String> fieldValues) {
+    public List<GroupImpl> getGroups(Map<String,String> fieldValues) {
         Criteria crit = new Criteria();
-        BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.group.impl.KimGroupImpl");
+        BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.GroupImpl");
         List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
         String kimTypeId = null;
         for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
@@ -86,7 +85,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         		}
         	}
         }
-        Query q = QueryFactory.newQuery(KimGroupImpl.class, crit);
+        Query q = QueryFactory.newQuery(GroupImpl.class, crit);
         
         return (List)getPersistenceBrokerTemplate().getCollectionByQuery(q);
     }

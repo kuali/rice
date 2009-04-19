@@ -48,9 +48,8 @@ import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 
 
 public class DocumentSearchServiceImpl implements DocumentSearchService {
@@ -371,7 +370,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (Utilities.isEmpty(workgroupName)) {
             return true;
         }
-        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
+        Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
         return group != null;
     }
 

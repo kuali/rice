@@ -28,7 +28,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -189,7 +189,7 @@ public class WorkflowRoutingForm extends ActionForm {
 
     public void setAppSpecificWorkgroupId(String workgroupId){
         if(workgroupId != null){
-            KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
+            Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
             if(workgroup != null){
                 getAppSpecificRouteRecipient().setId(workgroup.getGroupId());
             }

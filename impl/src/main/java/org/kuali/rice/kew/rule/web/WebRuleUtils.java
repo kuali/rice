@@ -46,8 +46,8 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
@@ -359,7 +359,7 @@ public class WebRuleUtils {
 			if (ruleResponsibility.getResponsibilityId() == null) {
 				ruleResponsibility.setResponsibilityId(KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId());
 			}
-			KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
+			Group group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
 			ruleResponsibility.setRuleResponsibilityName(group.getGroupId());
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
 			ruleResponsibility.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
@@ -500,7 +500,7 @@ public class WebRuleUtils {
 			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)) {
 				GroupRuleResponsibility groupResponsibility = new GroupRuleResponsibility();
 				copyResponsibility(responsibility, groupResponsibility);
-				KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
+				Group group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
 				groupResponsibility.setNamespaceCode(group.getNamespaceCode());
 				groupResponsibility.setName(group.getGroupName());
 				rule.getGroupResponsibilities().add(groupResponsibility);

@@ -42,8 +42,8 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -310,7 +310,7 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 		String workgroupNamespaceParam = (String) fieldValues.get(WORKGROUP_PROPERTY_NAMESPACE);
 
 		if (workgroupNameParam != null && !workgroupNameParam.trim().equals("") || workgroupIdParam != null && !"".equals(workgroupIdParam) && !"null".equals(workgroupIdParam)) {
-			KimGroup workgroup = null;
+			Group workgroup = null;
 			if (workgroupIdParam != null && !"".equals(workgroupIdParam)) {
 				workgroup = getIdentityManagementService().getGroup(workgroupIdParam.trim());
 			} else if (workgroupNamespaceParam != null){
@@ -396,7 +396,7 @@ public class RuleBaseValuesLookupableImpl implements /*WorkflowLookupable,*/ Exp
 		}
 
 		if (workgroupNameParam != null && !workgroupNameParam.trim().equals("") || workgroupIdParam != null && !"".equals(workgroupIdParam) && !"null".equals(workgroupIdParam)) {
-			KimGroup workgroup = null;
+			Group workgroup = null;
 			if (workgroupIdParam != null && !"".equals(workgroupIdParam)) {
 				workgroup = getIdentityManagementService().getGroup(workgroupIdParam.trim());
 			} else {

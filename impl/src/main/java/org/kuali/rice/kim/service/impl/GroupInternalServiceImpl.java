@@ -26,7 +26,7 @@ import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -51,7 +51,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	return KIMServiceLocator.getGroupService();
     }
 
-    public void saveWorkgroup(KimGroupImpl group) {
+    public void saveWorkgroup(GroupImpl group) {
     	GroupService ims = getGroupService();
     	List<String> oldIds = ims.getMemberPrincipalIds(group.getGroupId());
         getBusinessObjectService().save( group );

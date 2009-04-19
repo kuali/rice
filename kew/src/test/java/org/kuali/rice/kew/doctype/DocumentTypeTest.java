@@ -45,7 +45,7 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -253,7 +253,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	DocumentType childEdit = new DocumentType();
     	childEdit.setName(child.getName());
     	childEdit.setActive(Boolean.TRUE);
-    	KimGroup workflowAdmin = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
+    	Group workflowAdmin = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
     	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
     	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
     	childEdit.setDescription("desc");
@@ -560,9 +560,9 @@ public class DocumentTypeTest extends KEWTestCase {
     	    String fileToLoad = "DocTypeWithMostParams" + (i+1) + ".xml"; 
     		loadXmlFile(fileToLoad);
     		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("TestWithMostParams1");
-    		KimGroup baWorkgroup = docType.getBlanketApproveWorkgroup();
-    		KimGroup rpWorkgroup = docType.getReportingWorkgroup();
-    		KimGroup deWorkgroup = getValidDefaultExceptionWorkgroup(docType);
+    		Group baWorkgroup = docType.getBlanketApproveWorkgroup();
+    		Group rpWorkgroup = docType.getReportingWorkgroup();
+    		Group deWorkgroup = getValidDefaultExceptionWorkgroup(docType);
         	String[] actualValues = {docType.getName(), docType.getParentDocType().getName(), docType.getDescription(),
         			docType.getLabel(), docType.getPostProcessorName(), constructGroupNameWithNamespace(docType.getSuperUserWorkgroupNoInheritence()),
         			constructGroupNameWithNamespace(baWorkgroup), docType.getBlanketApprovePolicy(),
@@ -578,7 +578,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	}
     }
 
-    private KimGroup getValidDefaultExceptionWorkgroup(DocumentType documentType) {
+    private Group getValidDefaultExceptionWorkgroup(DocumentType documentType) {
         List flattenedNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, false);
         assertTrue("Document Type '" + documentType.getName() + "' should have a default exception workgroup.", hasDefaultExceptionWorkgroup(flattenedNodes));
         return ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
@@ -601,7 +601,7 @@ public class DocumentTypeTest extends KEWTestCase {
         return hasDefaultExceptionWorkgroup;
     }
 
-    private String constructGroupNameWithNamespace(KimGroup group) {
+    private String constructGroupNameWithNamespace(Group group) {
         if (ObjectUtils.isNull(group)) {
             return null;
         }

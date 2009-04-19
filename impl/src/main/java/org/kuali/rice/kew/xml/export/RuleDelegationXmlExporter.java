@@ -27,8 +27,8 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -73,7 +73,7 @@ public class RuleDelegationXmlExporter implements XmlExporter, XmlConstants {
         	KimPrincipal principal = ruleResponsibility.getPrincipal();
         	renderer.renderTextElement(parentResponsibilityElement, PRINCIPAL_NAME, principal.getPrincipalName());
         } else if (ruleResponsibility.isUsingGroup()) {
-        	KimGroup group = ruleResponsibility.getGroup();
+        	Group group = ruleResponsibility.getGroup();
         	Element groupElement = renderer.renderElement(parentResponsibilityElement, GROUP_NAME);
         	groupElement.setText(group.getGroupName());
         	groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());

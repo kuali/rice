@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.exception.ErrorList;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -90,7 +90,7 @@ public class BaseSendNotificationController extends MultiActionController {
         // FIXME: this will probably need to split the given group name
         // on some delimiter to separate the namespace and group name
         // or switch to using the group ID number
-        KimGroup i = getIdentityManagementService().getGroupByName("", group);
+        Group i = getIdentityManagementService().getGroupByName("", group);
         if (i == null) {
             errors.addError( group + " is not a valid group name");
             return false;

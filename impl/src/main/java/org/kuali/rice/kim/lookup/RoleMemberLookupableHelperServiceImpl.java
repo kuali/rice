@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -170,7 +170,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         }
         String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
         String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
-        List<KimGroupImpl> groupImpls = null;
+        List<GroupImpl> groupImpls = null;
         if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
         		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
         		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
@@ -178,7 +178,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
         	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
         	groupImpls = 
-        		(List<KimGroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimGroupImpl.class, searchCriteria);
+        		(List<GroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(GroupImpl.class, searchCriteria);
         	if(groupImpls==null || groupImpls.size()==0)
         		return null;
         }
@@ -206,7 +206,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         		memberQueryString = new StringBuffer();
         	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
         		memberQueryString.append(KimConstants.KimUIConstants.OR_OPERATOR);
-        	for(KimGroupImpl group: groupImpls){
+        	for(GroupImpl group: groupImpls){
         		memberQueryString.append(group.getGroupId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
             if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))

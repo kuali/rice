@@ -32,8 +32,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -495,7 +495,7 @@ public class AdHocRouteTest extends KEWTestCase {
 	public void testAdHocWithRequestLabel_ToGroup() throws Exception {
 		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
 		String label = "MY GROUP LABEL";
-		KimGroup workflowAdmin = KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
+		Group workflowAdmin = KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
 		doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, null, "", workflowAdmin.getGroupId(), "", true, label);
 		
 		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(doc.getRouteHeaderId());

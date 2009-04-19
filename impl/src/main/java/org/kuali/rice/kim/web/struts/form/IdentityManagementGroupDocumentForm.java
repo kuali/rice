@@ -18,7 +18,7 @@ package org.kuali.rice.kim.web.struts.form;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -96,7 +96,7 @@ public class IdentityManagementGroupDocumentForm extends KualiTransactionalDocum
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
 			return RoleImpl.class.getName();
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
-			return KimGroupImpl.class.getName();
+			return GroupImpl.class.getName();
 		return "";
 	}
 

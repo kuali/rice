@@ -322,7 +322,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (document == null) {
             throw new IllegalArgumentException("invalid (null) document");
         }
-        else if (document.getDocumentNumber() == null) {
+        if (document.getDocumentNumber() == null) {
             throw new IllegalStateException("invalid (null) documentHeaderId");
         }
     }

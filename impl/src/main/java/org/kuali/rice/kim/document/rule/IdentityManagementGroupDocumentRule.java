@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -105,7 +105,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("groupName", groupDoc.getGroupName());
     	criteria.put("namespaceCode", groupDoc.getGroupNamespace());
-    	List<KimGroupImpl> groupImpls = (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
+    	List<GroupImpl> groupImpls = (List<GroupImpl>)getBusinessObjectService().findMatching(GroupImpl.class, criteria);
     	boolean rulePassed = true;
     	if(groupImpls!=null && groupImpls.size()>0){
     		if(groupImpls.size()==1 && groupImpls.get(0).getGroupId().equals(groupDoc.getGroupId()))

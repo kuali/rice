@@ -40,8 +40,8 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -982,7 +982,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 if (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") != null && !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientName").trim())) {
                     namespace = request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode").trim();
                 }
-                KimGroup group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
+                Group group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
                 if (group != null) {
                     kualiForm.getNewAdHocRouteWorkgroup().setId(group.getGroupId());
                     kualiForm.getNewAdHocRouteWorkgroup().setRecipientName(group.getGroupName());
@@ -1000,7 +1000,7 @@ public class KualiDocumentActionBase extends KualiAction {
                     if (request.getParameter(namespaceParam) != null && !"".equals(request.getParameter(namespaceParam).trim())) {
                         namespace = request.getParameter(namespaceParam).trim();
                     }
-                    KimGroup group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
+                    Group group = getIdentityManagementService().getGroupByName(namespace, request.getParameter(parameterName));
                     if (group != null) {
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setId(group.getGroupId());
                         kualiForm.getAdHocRouteWorkgroup(lineNumber).setRecipientName(group.getGroupName());

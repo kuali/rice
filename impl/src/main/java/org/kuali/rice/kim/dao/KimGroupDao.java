@@ -18,7 +18,7 @@ package org.kuali.rice.kim.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -36,6 +36,6 @@ public interface KimGroupDao {
 	 * @param kimTypeId
 	 * @return
 	 */
-    List<KimGroupImpl> getGroups(Map<String,String> fieldValues);
+    List<GroupImpl> getGroups(Map<String,String> fieldValues);
 
 }

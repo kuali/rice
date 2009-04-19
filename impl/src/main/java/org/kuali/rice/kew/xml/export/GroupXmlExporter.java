@@ -21,7 +21,7 @@ import org.jdom.Element;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -46,7 +46,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
             Element rootElement = renderer.renderElement(null, GROUPS);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, GROUP_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
             for (Iterator iterator = dataSet.getGroups().iterator(); iterator.hasNext();) {
-                KimGroup group = (KimGroup) iterator.next();
+                Group group = (Group) iterator.next();
                 exportGroup(rootElement, group);
             }
             return rootElement;
@@ -62,7 +62,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
      * @param group
      * @param object
      */
-    private void exportGroup(Element parent, KimGroup group) {
+    private void exportGroup(Element parent, Group group) {
         Element groupElement = renderer.renderElement(parent, GROUP);
         if (group.getGroupName() != null) {
             renderer.renderTextElement(groupElement, NAME, group.getGroupName());
@@ -100,7 +100,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
             for (String memberGroupId : memberGroupIds) {
-                KimGroup memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
+                Group memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
                 Element groupNameElement = renderer.renderElement(membersElement, GROUP_NAME);
                 renderer.renderTextElement(groupNameElement, NAME, memberGroup.getGroupName());
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());

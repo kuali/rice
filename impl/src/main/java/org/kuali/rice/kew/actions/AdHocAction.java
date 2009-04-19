@@ -30,8 +30,8 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -98,7 +98,7 @@ public class AdHocAction extends ActionTakenEvent {
     				return "The principal '" + principalRecipient.getPrincipal().getPrincipalName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
     		} else if (recipient instanceof KimGroupRecipient) {
-    			KimGroup group = ((KimGroupRecipient)recipient).getGroup();
+    			Group group = ((KimGroupRecipient)recipient).getGroup();
     			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getGroupId(), getRouteHeader().getDocumentType(), actionRequested)) {
     				return "The group '" + group.getGroupName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}

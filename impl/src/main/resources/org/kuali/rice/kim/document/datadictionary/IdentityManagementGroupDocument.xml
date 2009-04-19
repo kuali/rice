@@ -45,14 +45,11 @@
   </bean>
 
   <bean id="IdentityManagementGroupDocument-groupNamespace" parent="IdentityManagementGroupDocument-groupNamespace-parentBean"/>
-  <bean id="IdentityManagementGroupDocument-groupNamespace-parentBean" parent="KimGroupImpl-namespaceCode" abstract="true" p:name="groupNamespace" p:label="Group Namespace" p:shortLabel="Group Namespace" p:required="true">
+  <bean id="IdentityManagementGroupDocument-groupNamespace-parentBean" parent="GroupImpl-namespaceCode" abstract="true" p:name="groupNamespace" p:required="true">
   </bean>
 
   <bean id="IdentityManagementGroupDocument-groupName" parent="IdentityManagementGroupDocument-groupName-parentBean"/>
-  <bean id="IdentityManagementGroupDocument-groupName-parentBean" parent="AttributeDefinition" abstract="true" p:name="groupName" p:forceUppercase="true" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="100" p:required="true">
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40"/>
-    </property>
+  <bean id="IdentityManagementGroupDocument-groupName-parentBean" parent="GroupImpl-groupName" abstract="true" p:name="groupName" p:required="true">
   </bean>
 
   <bean id="IdentityManagementGroupDocument-active" parent="IdentityManagementGroupDocument-active-parentBean"/>

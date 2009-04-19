@@ -46,7 +46,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 
 /**
@@ -91,23 +91,23 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
             renderer.renderTextElement(docTypeElement, SERVICE_NAMESPACE, documentType.getActualServiceNamespace());
         }
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
-        KimGroup superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
+        Group superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup != null) {
             renderer.renderTextElement(docTypeElement, SUPER_USER_WORKGROUP_NAME, superUserWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + superUserWorkgroup.getGroupName().trim());
         }
-        KimGroup blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
+        Group blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
         if (blanketWorkgroup != null){
         	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_WORKGROUP_NAME, blanketWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + blanketWorkgroup.getGroupName().trim());
         }
         if (documentType.getBlanketApprovePolicy() != null){
         	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_POLICY, documentType.getBlanketApprovePolicy());
         }
-        KimGroup reportingWorkgroup = documentType.getReportingWorkgroup();
+        Group reportingWorkgroup = documentType.getReportingWorkgroup();
         if (reportingWorkgroup != null) {
             renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + reportingWorkgroup.getGroupName().trim());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
-        	KimGroup exceptionWorkgroup = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
+        	Group exceptionWorkgroup = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
         	if (exceptionWorkgroup != null) {
         		renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, exceptionWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + exceptionWorkgroup.getGroupName().trim());
         	}

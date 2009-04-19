@@ -41,7 +41,7 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -252,7 +252,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 		public Long getDocumentTypeId() {
 			return this.baseNode.getDocumentTypeId();
 		}
-		public KimGroup getExceptionWorkgroup() {
+		public Group getExceptionWorkgroup() {
 			return this.baseNode.getExceptionWorkgroup();
 		}
 		public String getExceptionWorkgroupId() {

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 
 /**
  * Provides internal notification services for the GroupServiceImpl.  It
@@ -29,12 +29,12 @@ import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
  */
 public interface GroupInternalService {
 	/**
-	 * Save the KimGroupImpl, being careful to reset the action document
+	 * Save the GroupImpl, being careful to reset the action document
 	 * assignments based on any membership changes.
 	 * 
 	 * @param group
 	 */
-    public void saveWorkgroup(KimGroupImpl group);
+    public void saveWorkgroup(GroupImpl group);
 	
     /**
      * Updates KEW for workgroup members according to membership differences between the

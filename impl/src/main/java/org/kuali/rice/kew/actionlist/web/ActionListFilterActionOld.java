@@ -41,7 +41,7 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -116,7 +116,7 @@ public class ActionListFilterActionOld extends WorkflowAction {
         if (userWorkgroups != null && userWorkgroups.size() > 0) {
             Collections.sort(userWorkgroups);
 
-            KimGroup group;
+            Group group;
             for (String groupId : userWorkgroups)
             {
                 group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);

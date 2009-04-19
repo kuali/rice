@@ -53,7 +53,7 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.web.ui.Field;
@@ -726,8 +726,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         this.personReviewer = personReviewer;
     }
 
-    public KimGroupImpl getKimGroupImpl() {
-        return new KimGroupImpl();
+    public GroupImpl getKimGroupImpl() {
+        return new GroupImpl();
     }
 
     public PersonImpl getPersonImpl() {

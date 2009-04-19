@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -67,7 +67,7 @@ public class FutureRequestDocumentStateManager {
     	}
     }
 
-    public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, KimGroup kimGroup)
+    public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, Group kimGroup)
     {
         IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         List<String> principalIds =

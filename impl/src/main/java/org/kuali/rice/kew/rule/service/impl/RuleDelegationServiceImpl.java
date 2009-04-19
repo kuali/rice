@@ -36,7 +36,7 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleDelegationXmlExporter;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -120,7 +120,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
                 // user was passed but workgroups should not be parsed... do nothing
             }
         } else if (groupId != null) {
-            KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
+            Group group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
             if (group == null) {
                 throw new IllegalArgumentException("Group does not exist in for given group id: " + groupId);
             } else  {

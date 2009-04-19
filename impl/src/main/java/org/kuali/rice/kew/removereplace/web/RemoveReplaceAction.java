@@ -43,10 +43,9 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.WorkflowAction;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -207,10 +206,10 @@ public class RemoveReplaceAction extends KewKualiAction {
         form.getShowHide().getChild(1).setShow(!form.getWorkgroups().isEmpty());
     }
 
-    protected List<? extends KimGroup> loadWorkgroups(RemoveReplaceDocument document) {
-	List<KimGroup> workgroups = new ArrayList<KimGroup>();
+    protected List<? extends Group> loadWorkgroups(RemoveReplaceDocument document) {
+	List<Group> workgroups = new ArrayList<Group>();
 	for (WorkgroupTarget workgroupTarget : document.getWorkgroupTargets()) {
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
 	    if (group == null) {
 	    	throw new WorkflowRuntimeException("Failed to locate group with id " + workgroupTarget.getWorkgroupId());
 	    }
@@ -321,7 +320,7 @@ public class RemoveReplaceAction extends KewKualiAction {
 //	if (!StringUtils.isBlank(form.getWorkgroupType())) {
 //	    template.setWorkgroupType(form.getWorkgroupType());
 //	}
-	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getPrincipalId());
+	List<? extends Group> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getPrincipalId());
 	form.getWorkgroups().clear();
 	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, groups));
 	return mapping.findForward("basic");
@@ -330,10 +329,10 @@ public class RemoveReplaceAction extends KewKualiAction {
     /**
      * Constructs a list of RemoveReplaceWorkgroup objects from the given list of Workgroups.
      */
-    protected List<RemoveReplaceWorkgroup> loadRemoveReplaceWorkgroups(RemoveReplaceForm form, List<? extends KimGroup> groups) {
+    protected List<RemoveReplaceWorkgroup> loadRemoveReplaceWorkgroups(RemoveReplaceForm form, List<? extends Group> groups) {
 	List<RemoveReplaceWorkgroup> removeReplaceWorkgroups = new ArrayList<RemoveReplaceWorkgroup>();
 	Set<String> selectedWorkgroupIds = getSelectedWorkgroupIds(form);
-	for (KimGroup group : groups) {
+	for (Group group : groups) {
 	    RemoveReplaceWorkgroup removeReplaceWorkgroup = new RemoveReplaceWorkgroup();
 	    removeReplaceWorkgroup.setId(group.getGroupId());
 	    removeReplaceWorkgroup.setName(group.getGroupName());

@@ -62,7 +62,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
@@ -94,7 +94,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
     public List docTypeRouteNodes;
     private Map nodesMap;
     private XPath xpath;
-    private KimGroup defaultExceptionWorkgroup;
+    private Group defaultExceptionWorkgroup;
     private static final String NEXT_NODE_EXP = "./@nextNode";
     private static final String PARENT_NEXT_NODE_EXP = "../@nextNode";
     
@@ -580,7 +580,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             exceptionWg = Utilities.substituteConfigParameters(exceptionWg);
             exceptionWgName = Utilities.parseGroupName(exceptionWg);
             exceptionWgNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
-            KimGroup exceptionGroup = getIdentityManagementService().getGroupByName(exceptionWgNamespace, exceptionWgName);
+            Group exceptionGroup = getIdentityManagementService().getGroupByName(exceptionWgNamespace, exceptionWgName);
             if(exceptionGroup == null) {
                 throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
             }
@@ -730,7 +730,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
         return documentType;
     }
 
-    private KimGroup retrieveValidKimGroup(String xpathExpression, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException {
+    private Group retrieveValidKimGroup(String xpathExpression, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException {
         String unparsedGroupName;
         try {
             unparsedGroupName = (String) xpath.evaluate(xpathExpression, documentTypeNode, XPathConstants.STRING);
@@ -741,14 +741,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
         return retrieveValidKimGroupUsingGroupName(unparsedGroupName, documentTypeNode);
     }
 
-    private KimGroup retrieveValidKimGroupUsingGroupName(String unparsedGroupName, Node documentTypeNode) throws GroupNotFoundException {
+    private Group retrieveValidKimGroupUsingGroupName(String unparsedGroupName, Node documentTypeNode) throws GroupNotFoundException {
         String groupNamespace;
         String groupName;
         // allow core config parameter replacement in documenttype workgroups
         unparsedGroupName = Utilities.substituteConfigParameters(unparsedGroupName);
         groupName = Utilities.parseGroupName(unparsedGroupName);
         groupNamespace = Utilities.parseGroupNamespaceCode(unparsedGroupName);
-        KimGroup workgroup = getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+        Group workgroup = getIdentityManagementService().getGroupByName(groupNamespace, groupName);
         if (workgroup == null) {
             throw new GroupNotFoundException("Valid Workgroup could not be found... Namespace: " + groupNamespace + "  Name: " + groupName);
         }
@@ -1014,7 +1014,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             routeNode.setActivationType(DEFAULT_ACTIVATION_TYPE);
         }
 
-        KimGroup exceptionWorkgroup = defaultExceptionWorkgroup;
+        Group exceptionWorkgroup = defaultExceptionWorkgroup;
 
         String exceptionWg = (String) xpath.evaluate("./exceptionWorkgroupName", node, XPathConstants.STRING);
         String exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);

@@ -56,7 +56,7 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");

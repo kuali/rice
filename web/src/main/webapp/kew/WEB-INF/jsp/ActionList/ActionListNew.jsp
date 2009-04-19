@@ -318,7 +318,7 @@
                                     </kul:inquiry>
 								</c:when>
 								<c:when test="${result.delegatorGroup != null}">
-                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${result.delegatorGroup.groupId}" render="true">
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.GroupImpl" keyValues="groupId=${result.delegatorGroup.groupId}" render="true">
                                         <c:out value="${result.delegatorGroup.groupName}" />
                                     </kul:inquiry>
 								</c:when>
@@ -352,7 +352,7 @@
 							class="infocell">
 							<c:choose>
 								<c:when test="${result.groupId != null && result.groupId != 0}">
-                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" keyValues="groupId=${result.group.groupId}" render="true">
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.GroupImpl" keyValues="groupId=${result.group.groupId}" render="true">
                                         <c:out value="${result.group.groupName}" />
                                     </kul:inquiry>
 								</c:when>

@@ -65,8 +65,6 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
         String methodToCall = findMethodToCall(form, request);
-        if(StringUtils.isEmpty(methodToCall))
-        	return mapping.findForward("close");
 		ActionForward forward;
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);

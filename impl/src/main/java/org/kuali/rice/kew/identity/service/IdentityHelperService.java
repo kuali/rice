@@ -19,9 +19,9 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 /**
  * A simple helper service in KEW for interacting with the KIM identity
@@ -75,14 +75,14 @@ public interface IdentityHelperService {
 	public KimPrincipal getPrincipal(UserId userId);
 
 	/**
-	 * Returns the KimGroup for the given groupId.  Throws an exception
+	 * Returns the Group for the given groupId.  Throws an exception
 	 * if the groupId cannot be resolved to a group.
 	 */
-	public KimGroup getGroup(String groupId);
+	public Group getGroup(String groupId);
 
-	public KimGroup getGroup(GroupId groupId);
+	public Group getGroup(GroupId groupId);
 
-	public KimGroup getGroupByName(String namespaceCode, String name);
+	public Group getGroupByName(String namespaceCode, String name);
 
 	public Recipient getPrincipalRecipient(String principalId);
 

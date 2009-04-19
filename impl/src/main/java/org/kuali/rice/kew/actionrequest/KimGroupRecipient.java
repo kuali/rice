@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 /**
- * Represents an ActionRequest recipient who is a KimGroup
+ * Represents an ActionRequest recipient who is a Group
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -26,20 +26,20 @@ import org.kuali.rice.kim.bo.group.KimGroup;
 public class KimGroupRecipient implements Recipient {
 
 	private static final long serialVersionUID = 1L;
-	private KimGroup group;
+	private Group group;
 
 	public KimGroupRecipient(String groupId) {
 		this(ActionRequestFactory.getIdentityManagementService().getGroup(groupId));
 	}
 
-	public KimGroupRecipient(KimGroup group) {
+	public KimGroupRecipient(Group group) {
 		if (group == null) {
-			throw new IllegalArgumentException("Attempted to create a KimGroupRecipient with a null KimGroup!");
+			throw new IllegalArgumentException("Attempted to create a KimGroupRecipient with a null Group!");
 		}
 		this.group = group;
 	}
 
-	public KimGroup getGroup() {
+	public Group getGroup() {
 		return this.group;
 	}
 

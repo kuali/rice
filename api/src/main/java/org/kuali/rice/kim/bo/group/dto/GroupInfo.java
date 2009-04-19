@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.group.dto;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupInfo implements KimGroup, Serializable {
+public class GroupInfo implements Group, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -95,5 +95,13 @@ public class GroupInfo implements KimGroup, Serializable {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+    public void refresh(){
+    	
+    }
+    
+    public void prepareForWorkflow(){
+    	
+    }
 
 }

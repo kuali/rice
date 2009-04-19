@@ -30,7 +30,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 /**
  * This is a description of what this class does - sgibson don't forget to fill this in.
@@ -81,7 +81,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return ((Long)query.getSingleResult()) > 0;
     }
 
-    public List findActivatedByGroup(KimGroup group) {
+    public List findActivatedByGroup(Group group) {
         
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindActivatedByGroup");
         query.setParameter("groupId", group.getGroupId());

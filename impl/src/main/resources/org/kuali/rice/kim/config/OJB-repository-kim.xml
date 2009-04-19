@@ -408,7 +408,7 @@
   <!-- ******************************************************************* -->
 
 
-  <class-descriptor class="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" table="KRIM_GRP_T">
+  <class-descriptor class="org.kuali.rice.kim.bo.impl.GroupImpl" table="KRIM_GRP_T">
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_GRP_ID_S" />
     <field-descriptor name="groupName" column="GRP_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="groupDescription" column="GRP_DESC" jdbc-type="VARCHAR" />

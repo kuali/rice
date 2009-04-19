@@ -28,7 +28,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -240,7 +240,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentGroup newGroup = personDocumentForm.getNewGroup();
         if (getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
-	        KimGroupImpl groupImpl = (KimGroupImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, newGroup.getGroupId());
+	        GroupImpl groupImpl = (GroupImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, newGroup.getGroupId());
 	        newGroup.setGroupName(groupImpl.getGroupName());
 	        newGroup.setNamespaceCode(groupImpl.getNamespaceCode());
 	        newGroup.setKimGroupType(groupImpl.getKimTypeImpl());

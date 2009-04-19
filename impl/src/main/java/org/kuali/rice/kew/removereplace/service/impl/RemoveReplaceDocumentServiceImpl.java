@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -35,8 +34,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -129,7 +128,7 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	    }
 
 	    // add workgroups
-	    List<? extends KimGroup> workgroups = loadWorkgroups(document);
+	    List<? extends Group> workgroups = loadWorkgroups(document);
 	    if (!workgroups.isEmpty()) {
 		ExportDataSet workgroupDataSet = new ExportDataSet();
 		workgroupDataSet.getGroups().addAll(workgroups);
@@ -146,10 +145,10 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	}
     }
 
-    protected List<? extends KimGroup> loadWorkgroups(RemoveReplaceDocument document) {
-	List<KimGroup> workgroups = new ArrayList<KimGroup>();
+    protected List<? extends Group> loadWorkgroups(RemoveReplaceDocument document) {
+	List<Group> workgroups = new ArrayList<Group>();
 	for (WorkgroupTarget workgroupTarget : document.getWorkgroupTargets()) {
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
 	    if (group == null) {
 	    	throw new WorkflowRuntimeException("Failed to locate workgroup to change with id " + workgroupTarget.getWorkgroupId());
 	    }

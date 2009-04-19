@@ -42,10 +42,10 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -154,13 +154,13 @@ public class ActionRequestFactory {
 		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
 		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
-        KimGroup notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+        Group notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
 
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
             List requests, KimPrincipal principal, Recipient delegator, String notificationRequestCode,
-            String actionTakenCode, KimGroup notifyExclusionWorkgroup)
+            String actionTakenCode, Group notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
@@ -184,7 +184,7 @@ public class ActionRequestFactory {
         return notificationRequests;
     }
 
-    private boolean isRecipientInGroup(KimGroup group, Recipient recipient)
+    private boolean isRecipientInGroup(Group group, Recipient recipient)
     {
         boolean isMember = false;
 

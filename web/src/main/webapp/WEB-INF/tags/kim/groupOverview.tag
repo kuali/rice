@@ -1,6 +1,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="groupAttributes" value="${DataDictionary.KimGroupImpl.attributes}" />
+<c:set var="groupAttributes" value="${DataDictionary.GroupImpl.attributes}" />
 <c:set var="groupTypeAttributes" value="${DataDictionary.KimTypeImpl.attributes}" />
 <c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 

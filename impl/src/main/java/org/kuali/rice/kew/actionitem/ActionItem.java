@@ -20,13 +20,10 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -48,9 +45,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -272,13 +269,13 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
 
     
-    private KimGroup getGroup(String groupId) {
+    private Group getGroup(String groupId) {
     	if( groupId ==null )	return null;
     	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
 
     @Transient
-    public KimGroup getGroup(){
+    public Group getGroup(){
     	return getGroup(groupId.toString());
     }
 

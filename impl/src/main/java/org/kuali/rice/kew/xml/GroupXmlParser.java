@@ -23,7 +23,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -31,8 +30,8 @@ import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
@@ -288,7 +287,7 @@ public class GroupXmlParser implements XmlConstants {
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {
-                KimGroup group = identityManagementService.getGroup(groupId);
+                Group group = identityManagementService.getGroup(groupId);
                 if (group != null) {
                     identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
                 } else {
@@ -299,7 +298,7 @@ public class GroupXmlParser implements XmlConstants {
         List<String> groupNames = memberGroupNames.get(key);
         if (groupNames != null) {
             for (String groupName : groupNames) {
-                KimGroup group = identityManagementService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+                Group group = identityManagementService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
                 if (group != null) {
                 	identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
                 } else {

@@ -30,9 +30,9 @@ import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -68,11 +68,11 @@ public class UserSession implements Serializable {
 
     private KimPrincipal actualPrincipal;
     private Person actualPerson;
-    private Map<String, KimGroup> actualPrincipalGroups = new HashMap<String, KimGroup>();
+    private Map<String, Group> actualPrincipalGroups = new HashMap<String, Group>();
 
     private KimPrincipal backdoorPrincipal;
     private Person backdoorPerson;
-    private Map<String, KimGroup> backdoorPrincipalGroups = new HashMap<String, KimGroup>();
+    private Map<String, Group> backdoorPrincipalGroups = new HashMap<String, Group>();
 
     private KimPrincipal helpDeskActionListPrincipal;
     private Person helpDeskActionListPerson;
@@ -98,8 +98,8 @@ public class UserSession implements Serializable {
 			throw new RuntimeException( "Unable to create person object from the given principal ID: " + actualPrincipal.getPrincipalId() );
 		}
 		establishPreferencesForPrincipal(actualPrincipal);
-		List<? extends KimGroup> groups = getIdentityService().getGroupsForPrincipal(actualPrincipal.getPrincipalId());
-		for (KimGroup group : groups) {
+		List<? extends Group> groups = getIdentityService().getGroupsForPrincipal(actualPrincipal.getPrincipalId());
+		for (Group group : groups) {
 			actualPrincipalGroups.put(group.getGroupId(), group);
 		}
         this.nextObjectKey = 0;
@@ -228,8 +228,8 @@ public class UserSession implements Serializable {
         		return false;
         	}
         	this.backdoorPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
-        	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(backdoorPrincipal.getPrincipalId());
-    		for (KimGroup group : groups) {
+        	List<? extends Group> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(backdoorPrincipal.getPrincipalId());
+    		for (Group group : groups) {
     			backdoorPrincipalGroups.put(group.getGroupId(), group);
     		}
         	establishPreferencesForPrincipal(backdoorPrincipal);
@@ -340,7 +340,7 @@ public class UserSession implements Serializable {
     	return false;
     }
 
-    public Map<String, KimGroup> getGroups() {
+    public Map<String, Group> getGroups() {
     	if (getBackdoorPrincipal() != null) {
     		return backdoorPrincipalGroups;
     	}
@@ -348,7 +348,7 @@ public class UserSession implements Serializable {
 	}
 
 	public boolean isMemberOfGroupWithName(String namespace, String groupName) {
-		for (KimGroup group : getGroups().values()) {
+		for (Group group : getGroups().values()) {
 			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getGroupName())) {
 				return true;
 			}

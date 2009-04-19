@@ -35,10 +35,9 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -125,7 +124,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
-				KimGroup group = KIMServiceLocator.getIdentityManagementService().
+				Group group = KIMServiceLocator.getIdentityManagementService().
 	                  getGroup(getRuleResponsibilityName());
 				setReviewer(group.getGroupName());
 				setReviewerId(group.getGroupId());
@@ -178,7 +177,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void setWorkgroupId(String workgroupId) {
-	    KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
+	    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
 		//Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
 		if (workgroup != null) {
 			setReviewer(workgroup.getGroupName());
@@ -317,7 +316,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			boolean invalidWorkgroup = Utilities.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
-			    KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
+			    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
 				if (workgroup == null) {
 					invalidWorkgroup = true;
 				} else {

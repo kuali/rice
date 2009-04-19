@@ -32,11 +32,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
@@ -68,7 +68,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         document.routeDocument("");
 
         GroupInfo oldGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
-        KimGroupImpl oldWorkgroup = this.getGroupImpl(oldGroup.getGroupId());
+        GroupImpl oldWorkgroup = this.getGroupImpl(oldGroup.getGroupId());
 
 
         assertEquals("Workgroup should have 6 members.", 6, oldWorkgroup.getMemberPrincipalIds().size());
@@ -94,7 +94,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
 
         // verify that the new workgroup is sane...
-        KimGroupImpl loadedNewWorkgroup = this.getGroupImpl(oldWorkgroup.getGroupId());
+        GroupImpl loadedNewWorkgroup = this.getGroupImpl(oldWorkgroup.getGroupId());
 
         boolean foundUser1 = false;
         boolean foundUser2 = false;
@@ -170,7 +170,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
 
          // test the save group
-         KimGroupImpl workgroup1Impl = this.getGroupImpl(workgroup1.getGroupId());
+         GroupImpl workgroup1Impl = this.getGroupImpl(workgroup1.getGroupId());
          KimPrincipal dewey = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("dewey");
 
          GroupMemberImpl groupMember = new GroupMemberImpl();
@@ -223,8 +223,8 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
 
-        KimGroup testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
-        KimGroup adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
+        Group testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
+        Group adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
 
         ActionRequestDTO[] ars = document.getActionRequests();
         boolean routedWorkflowAdmin = false;
@@ -363,12 +363,12 @@ public class ActionItemServiceTest extends KEWTestCase {
     }
 */
 
-    protected KimGroupImpl getGroupImpl(String groupId) {
+    protected GroupImpl getGroupImpl(String groupId) {
 		if ( groupId == null ) {
 			return null;
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("groupId", groupId);
-		return (KimGroupImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimGroupImpl.class, criteria);
+		return (GroupImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
 	}
 }

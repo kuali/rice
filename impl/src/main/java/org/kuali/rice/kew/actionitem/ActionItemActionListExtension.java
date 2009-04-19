@@ -24,8 +24,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
@@ -49,9 +49,9 @@ public class ActionItemActionListExtension extends ActionItem {
     @Transient
     private boolean isInitialized = false;
     @Transient
-    private KimGroup delegatorGroup = null;
+    private Group delegatorGroup = null;
     @Transient
-    private KimGroup group = null;
+    private Group group = null;
 
     @Transient
     public Person getDelegatorPerson() {
@@ -106,14 +106,14 @@ public class ActionItemActionListExtension extends ActionItem {
 	 * @return the group
 	 */
 	@Transient
-	public KimGroup getGroup() {
+	public Group getGroup() {
 		return this.group;
 	}
 
 	/**
 	 * @param group the group to set
 	 */
-	public void setGroup(KimGroup group) {
+	public void setGroup(Group group) {
 		this.group = group;
 	}
 
@@ -121,14 +121,14 @@ public class ActionItemActionListExtension extends ActionItem {
 	 * @return the delegatorGroup
 	 */
 	@Transient
-	public KimGroup getDelegatorGroup() {
+	public Group getDelegatorGroup() {
 		return this.delegatorGroup;
 	}
 
 	/**
 	 * @param delegatorGroup the delegatorGroup to set
 	 */
-	public void setDelegatorGroup(KimGroup delegatorGroup) {
+	public void setDelegatorGroup(Group delegatorGroup) {
 		this.delegatorGroup = delegatorGroup;
 	}
 

@@ -16,14 +16,13 @@
  */
 package org.kuali.rice.kew.edl.components;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -69,7 +68,7 @@ public class WorkgroupWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfig
 		}
 		String wrkgrpName = param.getParamValue();
 		// TODO add support for namespace here!
-		KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(resolveId(wrkgrpName));
+		Group group = KEWServiceLocator.getIdentityHelperService().getGroup(resolveId(wrkgrpName));
 		if (group == null) {
 		    return ("Group " + wrkgrpName + " not found.");
 		}

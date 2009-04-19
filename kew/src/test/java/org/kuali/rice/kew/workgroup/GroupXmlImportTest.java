@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -43,7 +43,7 @@ public class GroupXmlImportTest extends KEWTestCase {
 
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         //verify that the group was ingested
-        KimGroup group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
+        Group group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
 
         assertNotNull(group);
         List<String> members = identityManagementService.getGroupMemberPrincipalIds(group.getGroupId());

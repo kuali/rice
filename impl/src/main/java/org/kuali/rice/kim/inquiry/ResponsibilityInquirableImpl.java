@@ -13,7 +13,7 @@
  * See the License for the specific language governing responsibilitys and
  * limitations under the License.
  */
-package org.kuali.rice.kim.lookup;
+package org.kuali.rice.kim.inquiry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.role.impl.KimResponsibilityRequiredAttributeImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;

@@ -30,7 +30,7 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
@@ -454,7 +454,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         }
         memberSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "memberId");
         Criteria crit = new Criteria();
-        crit.addExists(QueryFactory.newReportQuery(KimGroupImpl.class, memberSubCrit));
+        crit.addExists(QueryFactory.newReportQuery(GroupImpl.class, memberSubCrit));
         crit.addEqualTo("memberTypeCode", "G");
 		return QueryFactory.newReportQuery(RoleMemberImpl.class, crit);
 

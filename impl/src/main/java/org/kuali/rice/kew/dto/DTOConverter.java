@@ -94,9 +94,9 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
@@ -469,7 +469,7 @@ public class DTOConverter {
         } else {
             docTypeVO.setDocTypeActiveInherited(false);
         }     
-        KimGroup blanketGroup = docType.getBlanketApproveWorkgroup();
+        Group blanketGroup = docType.getBlanketApproveWorkgroup();
         if (blanketGroup != null) {
             docTypeVO.setBlanketApproveGroupId(blanketGroup.getGroupId());
         }
@@ -585,7 +585,7 @@ public class DTOConverter {
         }
         String groupId = responsiblePartyVO.getGroupId();
         if (groupId != null) {
-        	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+        	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
         	if (group == null) {
         		throw new RiceRuntimeException("Failed to locate group with ID: " + groupId);
         	}

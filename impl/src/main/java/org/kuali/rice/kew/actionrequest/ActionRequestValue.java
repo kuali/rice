@@ -60,9 +60,9 @@ import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -200,7 +200,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
    
-    public KimGroup getGroup() {
+    public Group getGroup() {
         if (getGroupId() == null) {
             LOG.error("Attempting to get a group with a blank group id");
             return null;
@@ -581,7 +581,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	if (isReviewerUser()) {
     			isRecipientInGraph = getPrincipalId().equals(principalId);
     	} else if (isGroupRequest()) {
-    		KimGroup group = getGroup();
+    		Group group = getGroup();
 			if (group == null){
 				LOG.error("Was unable to retrieve workgroup " + getGroupId());
 			}
@@ -613,7 +613,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     		}
 
     	} else if (isGroupRequest()) {
-    		KimGroup group = getGroup();
+    		Group group = getGroup();
 			if (group == null){
 				LOG.error("Was unable to retrieve workgroup " + getGroupId());
 			}

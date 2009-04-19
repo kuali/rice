@@ -43,8 +43,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.xml.sax.SAXException;
 
@@ -441,7 +441,7 @@ public class RuleXmlParser implements XmlConstants {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(groupId)) {
             groupId = Utilities.substituteConfigParameters(groupId);
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
             if (group == null) {
                 throw new InvalidXmlException("Could not locate group with the given id: " + groupId);
             }
@@ -458,7 +458,7 @@ public class RuleXmlParser implements XmlConstants {
         	}
             groupName = Utilities.substituteConfigParameters(groupName);
             groupNamespace = Utilities.substituteConfigParameters(groupNamespace);
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 throw new InvalidXmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
             }
@@ -487,7 +487,7 @@ public class RuleXmlParser implements XmlConstants {
             String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
             String workgroupName = Utilities.parseGroupName(workgroup);
 
-            KimGroup workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
+            Group workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
             if (workgroupObject == null) {
                 throw new InvalidXmlException("Could not locate workgroup: " + workgroup);
             }

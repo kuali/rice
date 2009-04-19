@@ -29,8 +29,8 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -73,7 +73,7 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate the user for the given principal id '" + principalId + "'");
 		}
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		if (group == null) {
 			throw new RiceRuntimeException("Could not locate the group with the given id '" + groupId + "'");
 		}

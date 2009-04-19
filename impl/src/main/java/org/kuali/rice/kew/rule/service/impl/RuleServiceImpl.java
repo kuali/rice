@@ -79,8 +79,8 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.Guid;
@@ -959,7 +959,7 @@ public class RuleServiceImpl implements RuleService {
         		// user was passed but workgroups should not be parsed... do nothing
         	}
         } else if (groupId != null) {
-        	KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
+        	Group group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
         	if (group == null) {
         		throw new IllegalArgumentException("Group does not exist in for given group id: " + groupId);
         	} else  {
@@ -1256,7 +1256,7 @@ public class RuleServiceImpl implements RuleService {
 
     public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) throws WorkflowException {
         KimPrincipal principal = null;
-        KimGroup workgroupToRemove = null;
+        Group workgroupToRemove = null;
         if (entityToBeRemoved instanceof UserId) {
             principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeRemoved));
         } else if (entityToBeRemoved instanceof GroupId) {
@@ -1331,7 +1331,7 @@ public class RuleServiceImpl implements RuleService {
 
     public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) throws WorkflowException {
         KimPrincipal principalToBeReplaced = null;
-        KimGroup workgroupToReplace = null;
+        Group workgroupToReplace = null;
         if (entityToBeReplaced instanceof UserId) {
         	principalToBeReplaced = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeReplaced));
         } else if (entityToBeReplaced instanceof GroupId) {
@@ -1340,7 +1340,7 @@ public class RuleServiceImpl implements RuleService {
             throw new WorkflowRuntimeException("Invalid ID for entity to be replaced was passed, type was: " + entityToBeReplaced);
         }
         KimPrincipal newPrincipal = null;
-        KimGroup newWorkgroup = null;
+        Group newWorkgroup = null;
         if (newEntity instanceof UserId) {
             newPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId) newEntity);
         } else if (newEntity instanceof GroupId) {

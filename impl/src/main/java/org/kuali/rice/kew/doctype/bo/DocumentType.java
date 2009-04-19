@@ -74,7 +74,7 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -160,7 +160,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
      * Used at parse-time only; not stored in db.
      */
     @Transient
-    private KimGroup defaultExceptionWorkgroup;
+    private Group defaultExceptionWorkgroup;
 
     @OneToMany(fetch=FetchType.EAGER, mappedBy="documentType")
     @Fetch(value=FetchMode.SUBSELECT)
@@ -783,22 +783,22 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
 
-    public KimGroup getSuperUserWorkgroup() {
-        KimGroup superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
+    public Group getSuperUserWorkgroup() {
+        Group superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup == null && getParentDocType() != null) {
             return getParentDocType().getSuperUserWorkgroup();
         }
         return superUserWorkgroup;
     }
 
-    public KimGroup getSuperUserWorkgroupNoInheritence() {
+    public Group getSuperUserWorkgroupNoInheritence() {
         if (workgroupId == null) {
             return null;
         }
         return getIdentityManagementService().getGroup(this.workgroupId);
     }
 
-    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) {
+    public void setSuperUserWorkgroupNoInheritence(Group suWorkgroup) {
         this.workgroupId = null;
         if (ObjectUtils.isNotNull(suWorkgroup)) {
             this.workgroupId = suWorkgroup.getGroupId();
@@ -819,11 +819,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return getDocumentTypeService().findById(previousVersionId);
     }
 
-    public KimGroup getBlanketApproveWorkgroup() {
+    public Group getBlanketApproveWorkgroup() {
         return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
     }
 
-    public void setBlanketApproveWorkgroup(KimGroup blanketApproveWorkgroup) {
+    public void setBlanketApproveWorkgroup(Group blanketApproveWorkgroup) {
         this.blanketApproveWorkgroupId = null;
         if (ObjectUtils.isNotNull(blanketApproveWorkgroup)) {
             this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getGroupId();
@@ -838,7 +838,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 		this.blanketApprovePolicy = blanketApprovePolicy;
 	}
 
-    public KimGroup getBlanketApproveWorkgroupWithInheritance() {
+    public Group getBlanketApproveWorkgroupWithInheritance() {
     	if (getParentDocType() != null && this.blanketApproveWorkgroupId == null) {
     		return getParentDocType().getBlanketApproveWorkgroupWithInheritance();
     	}
@@ -889,22 +889,22 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.reportingWorkgroupId = reportingWorkgroupId;
     }
 
-    public KimGroup getReportingWorkgroup() {
+    public Group getReportingWorkgroup() {
         return getIdentityManagementService().getGroup(this.reportingWorkgroupId);
     }
 
-    public void setReportingWorkgroup(KimGroup reportingWorkgroup) {
+    public void setReportingWorkgroup(Group reportingWorkgroup) {
         this.reportingWorkgroupId = null;
         if (ObjectUtils.isNotNull(reportingWorkgroup)) {
             this.reportingWorkgroupId = reportingWorkgroup.getGroupId();
         }
     }
 
-    public KimGroup getDefaultExceptionWorkgroup() {
+    public Group getDefaultExceptionWorkgroup() {
         return defaultExceptionWorkgroup;
     }
 
-    public void setDefaultExceptionWorkgroup(KimGroup defaultExceptionWorkgroup) {
+    public void setDefaultExceptionWorkgroup(Group defaultExceptionWorkgroup) {
         this.defaultExceptionWorkgroup = defaultExceptionWorkgroup;
     }
 
@@ -1260,7 +1260,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     public boolean isSuperUser(String principalId) {
-    	KimGroup workgroup = getSuperUserWorkgroup();
+    	Group workgroup = getSuperUserWorkgroup();
 		if (workgroup == null) {
 			return false;
 		}

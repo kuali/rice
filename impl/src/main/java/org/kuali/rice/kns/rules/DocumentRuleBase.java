@@ -13,8 +13,8 @@
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -398,7 +398,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         if (workgroup.getRecipientName() != null && workgroup.getRecipientNamespaceCode() != null) {
             // validate that they are a workgroup from the workgroup service by looking them up
             try {
-                KimGroup group = getIdentityManagementService().getGroupByName(workgroup.getRecipientNamespaceCode(), workgroup.getRecipientName());
+                Group group = getIdentityManagementService().getGroupByName(workgroup.getRecipientNamespaceCode(), workgroup.getRecipientName());
                 if (group == null || !group.isActive()) {
                     GlobalVariables.getErrorMap().putError(KNSPropertyConstants.ID, RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
                 }

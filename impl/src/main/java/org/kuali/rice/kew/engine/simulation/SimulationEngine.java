@@ -62,8 +62,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -510,7 +510,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
 			if (delegator instanceof KimPrincipalRecipient) {
 				val.setDelegatorPrincipalId(((KimPrincipalRecipient) delegator).getPrincipalId());
 			} else if (delegator instanceof KimGroupRecipient) {
-				KimGroup group = ((KimGroupRecipient) delegator).getGroup();
+				Group group = ((KimGroupRecipient) delegator).getGroup();
 				val.setDelegatorGroupId(group.getGroupId());
 			} else{
 				throw new IllegalArgumentException("Invalid Recipient type received: " + delegator.getClass().getName());

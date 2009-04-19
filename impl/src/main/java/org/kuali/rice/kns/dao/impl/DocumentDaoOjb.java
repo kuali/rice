@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -131,7 +131,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
 
         //populate group namespace and names on adHocRoutWorkgroups
         for (AdHocRouteWorkgroup adHocRouteWorkgroup : adHocRouteWorkgroups) {
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
             adHocRouteWorkgroup.setRecipientName(group.getGroupName());
             adHocRouteWorkgroup.setRecipientNamespaceCode(group.getNamespaceCode());
         }

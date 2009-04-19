@@ -30,7 +30,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 
 /**
@@ -131,7 +131,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
                 if (ruleResponsibility.isUsingWorkflowUser()) {
 				    renderer.renderTextElement(respElement, PRINCIPAL_NAME, ruleResponsibility.getPrincipal().getPrincipalName());
 				} else if (ruleResponsibility.isUsingGroup()) {
-					KimGroup group = ruleResponsibility.getGroup();
+					Group group = ruleResponsibility.getGroup();
 				    Element groupElement = renderer.renderTextElement(respElement, GROUP_NAME, group.getGroupName());
 				    groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());
 				} else if (ruleResponsibility.isUsingRole()) {

@@ -50,8 +50,8 @@ import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -121,7 +121,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     	return getPrincipalForId(delegatorPrincipalId);
     }
 
-    public KimGroup getDelegatorGroup()
+    public Group getDelegatorGroup()
     {
 	    return KIMServiceLocator.getIdentityManagementService()
 	            .getGroup(String.valueOf(delegatorGroupId));

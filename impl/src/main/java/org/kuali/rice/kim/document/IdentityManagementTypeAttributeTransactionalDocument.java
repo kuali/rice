@@ -97,7 +97,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = getKimTypeService(getKimType());
 	        if(kimTypeService!=null)
-				setDefinitions(kimTypeService.getAttributeDefinitions(getKimType().getKimTypeId()));
+	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getKimTypeId());
 		}
 		return this.definitions;
 	}

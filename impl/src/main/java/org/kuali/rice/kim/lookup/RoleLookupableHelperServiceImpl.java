@@ -350,7 +350,7 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 		return inquiryHtmlData;
 	}
 
-	static String getCustomRoleInquiryHref(String href){
+	public static String getCustomRoleInquiryHref(String href){
 		return getCustomRoleInquiryHref("", href);
 	}
 	

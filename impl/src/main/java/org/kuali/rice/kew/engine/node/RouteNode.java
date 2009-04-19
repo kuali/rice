@@ -51,7 +51,7 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
@@ -191,7 +191,7 @@ public class RouteNode implements Serializable {
         this.activationType = at.getCode();
     }
 
-    public KimGroup getExceptionWorkgroup() {
+    public Group getExceptionWorkgroup() {
     	if (!StringUtils.isBlank(exceptionWorkgroupId)) {
     		return KIMServiceLocator.getIdentityManagementService().getGroup(exceptionWorkgroupId);
     	}
@@ -267,7 +267,7 @@ public class RouteNode implements Serializable {
     }
 
     public String getExceptionWorkgroupName() {
-    	KimGroup exceptionGroup = getExceptionWorkgroup();
+    	Group exceptionGroup = getExceptionWorkgroup();
         if (exceptionWorkgroupName == null || exceptionWorkgroupName.equals("")) {
             if (exceptionGroup != null) {
                 return exceptionGroup.getGroupName();

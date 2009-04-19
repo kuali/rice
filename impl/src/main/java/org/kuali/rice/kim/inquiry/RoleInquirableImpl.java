@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.lookup;
+package org.kuali.rice.kim.inquiry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;

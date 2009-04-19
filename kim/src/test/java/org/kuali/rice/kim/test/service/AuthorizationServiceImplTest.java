@@ -22,10 +22,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -130,7 +130,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		
 		// setup permissions
 		
-		KimPermissionTemplate defaultTemplate = getDefaultPermissionTemplate();
+		KimPermissionTemplateImpl defaultTemplate = getDefaultPermissionTemplate();
 		
 		KimPermissionImpl permission1 = new KimPermissionImpl();
 		permission1.setActive(true);
@@ -139,6 +139,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		permission1.setNamespaceCode(permission1NamespaceCode);
 		permission1.setPermissionId(permission1Id);
 		permission1.setTemplateId(defaultTemplate.getPermissionTemplateId());
+		permission1.setTemplate(defaultTemplate);
 		KNSServiceLocator.getBusinessObjectService().save(permission1);
 		
 		KimPermissionImpl permission2 = new KimPermissionImpl();
@@ -148,6 +149,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		permission2.setNamespaceCode(permission2NamespaceCode);
 		permission2.setPermissionId(permission2Id);
 		permission2.setTemplateId(defaultTemplate.getPermissionTemplateId());
+		permission2.setTemplate(defaultTemplate);
 		KNSServiceLocator.getBusinessObjectService().save(permission2);
 		
 		KimPermissionImpl permission3 = new KimPermissionImpl();
@@ -157,6 +159,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		permission3.setNamespaceCode(permission3NamespaceCode);
 		permission3.setPermissionId(permission3Id);
 		permission3.setTemplateId(defaultTemplate.getPermissionTemplateId());
+		permission3.setTemplate(defaultTemplate);
 		KNSServiceLocator.getBusinessObjectService().save(permission3);
 
 		// assign permissions to roles

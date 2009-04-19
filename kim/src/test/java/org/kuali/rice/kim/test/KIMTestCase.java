@@ -17,18 +17,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.core.web.jetty.JettyServer;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.TestUtilities;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 
 /**
@@ -37,22 +39,27 @@ import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class KIMTestCase extends RiceTestCase {
+@BaselineMode(Mode.ROLLBACK)
+public abstract class KIMTestCase extends BaselineTestCase {
 
-	/**
-     * This overridden method is responsible for loading up the kimtestharness from Spring.
-     *
-     * @see org.kuali.rice.test.RiceTestCase#getSuiteLifecycles()
-     */
+	private static final String KIM_MODULE_NAME = "kim";
+	
+	public KIMTestCase() {
+		super(KIM_MODULE_NAME);
+	}
+	
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
-		JettyServer server = new JettyServer(9955, "/kim-test", "/../kim/src/test/webapp");
-		server.setFailOnContextFailure(true);
-		server.setTestMode(true);
-        lifeCycles.add(server);
-        lifeCycles.add(new InitializeGRL());
-		return lifeCycles;
+		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
+		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/kim/test/DefaultSuiteTestData.xml"));
+		return suiteLifecycles;
+	}
+	
+	@Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KIMTestHarnessApplicationResourceLoader"), "classpath:KIMTestHarnessSpringBeans.xml");
+    	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+    	return springResourceLoader;
 	}
 	
 	/**
@@ -61,47 +68,26 @@ public abstract class KIMTestCase extends RiceTestCase {
 	 */
 	@Override
 	protected List<Lifecycle> getPerTestLifecycles() {
-		List<Lifecycle> lifecycles = new ArrayList<Lifecycle>();
-		lifecycles.add(new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()));
+		List<Lifecycle> lifecycles = super.getPerTestLifecycles();
 		lifecycles.add(new ClearCacheLifecycle());
-        lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/kim/test/DefaultTestData.sql", ";"));
-		lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/kim/test/DefaultTestData.xml"));
-		lifecycles.add(getPerTestDataLoaderLifecycle());
 		return lifecycles;
 	}
-
-	private class InitializeGRL extends BaseLifecycle {
-        @Override
-        public void start() throws Exception {
-            TestUtilities.addWebappsToContext();
-            super.start();
-        }
-
-    }
 	
-	/**
-	 * Flushes the KEW cache(s)
-	 */
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
 			KIMServiceLocator.getIdentityManagementService().flushAllCaches();
+			KIMServiceLocator.getRoleManagementService().flushRoleCaches();
 			super.stop();
 		}
 
 	}
-		
-	/**
-     * Returns the List of tables that should be cleared on every test run.
-     */
-	protected List<String> getPerTestTablesToClear() {
-		List<String> tablesToClear = new ArrayList<String>();
-		tablesToClear.add("KR.*");
-		return tablesToClear;
-	}
 	
 	protected List<String> getPerTestTablesNotToClear() {
-		return new ArrayList<String>();
+		List<String> tablesNotToClear = new ArrayList<String>();
+		tablesNotToClear.add("KRIM_.*");
+		tablesNotToClear.add("KRNS_.*");
+		return tablesNotToClear;
 	}
 
 
@@ -110,7 +96,7 @@ public abstract class KIMTestCase extends RiceTestCase {
      */
 	@Override
 	protected String getModuleName() {
-		return "kim";
+		return KIM_MODULE_NAME;
 	}
 	
 	protected KimTypeImpl getDefaultKimType() {

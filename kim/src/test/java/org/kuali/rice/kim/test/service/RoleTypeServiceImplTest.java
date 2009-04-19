@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -28,9 +27,8 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 
@@ -40,57 +38,14 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleTypeServiceImplTest extends RiceTestCase {
+public class RoleTypeServiceImplTest extends KIMTestCase {
 
 	private KimRoleTypeServiceBase roleTypeService;
 
-	private String contextName = "/knstest";
-
-	private String relativeWebappRoot = "/../web/src/main/webapp";
-
-	private String testConfigFilename = "classpath:META-INF/kim-test-config.xml";
-
-	@Override
-	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-		lifecycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = testConfigFilename;
-				//new SQLDataLoaderLifecycle(sqlFilename, sqlDelimiter).start();
-				new JettyServerLifecycle(HtmlUnitUtil.getPort(), contextName, relativeWebappRoot).start();
-				//new KEWXmlDataLoaderLifecycle(xmlFilename).start();
-				System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-
-		});
-		return lifecycles;
-	}
-
-	@Override
-	protected String getModuleName() {
-		return "kim";
-	}
-
-	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		roleTypeService = (KimRoleTypeServiceBase)GlobalResourceLoader.getService(new QName("KIM", "kimRoleTypeService"));
 	}
-
-	@After
-	public void tearDown() throws Exception {}
 
 	@Test
 	public void testTranslateQualificationAttributeSet() {

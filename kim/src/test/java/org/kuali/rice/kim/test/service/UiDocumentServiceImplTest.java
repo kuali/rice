@@ -22,23 +22,18 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.config.spring.ConfigFactoryBean;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
@@ -57,10 +52,8 @@ import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.service.impl.UiDocumentServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.util.KualiDecimal;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.test.web.HtmlUnitUtil;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -68,57 +61,14 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class UiDocumentServiceImplTest extends RiceTestCase {
+public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	private UiDocumentServiceImpl uiDocumentService;
 
-	private String contextName = "/knstest";
-
-	private String relativeWebappRoot = "/../web/src/main/webapp";
-
-	private String testConfigFilename = "classpath:META-INF/kim-test-config.xml";
-
-	@Override
-	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-		lifecycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = testConfigFilename;
-				//new SQLDataLoaderLifecycle(sqlFilename, sqlDelimiter).start();
-				new JettyServerLifecycle(HtmlUnitUtil.getPort(), contextName, relativeWebappRoot).start();
-				//new KEWXmlDataLoaderLifecycle(xmlFilename).start();
-				System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-
-		});
-		return lifecycles;
-	}
-
-	@Override
-	protected String getModuleName() {
-		return "kim";
-	}
-
-	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		uiDocumentService = (UiDocumentServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimUiDocumentService"));
 	}
-
-	@After
-	public void tearDown() throws Exception {}
 
 	@Test
 	public void testSaveToEntity() {

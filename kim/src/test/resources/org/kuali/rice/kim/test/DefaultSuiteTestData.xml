@@ -8,6 +8,7 @@
 			<principalName>principal1</principalName>
 			<givenName>Principal</givenName>
 			<lastName>One</lastName>
+			<emailAddress>p1@kuali.org</emailAddress>
 		</user>
 		<user>
 			<principalId>p2</principalId>
@@ -22,14 +23,46 @@
 			<principalName>principal3</principalName>
 			<givenName>Principal</givenName>
 			<lastName>Three</lastName>
-		</user>		
-		<user>
-			<principalId>kr</principalId>
-			<principalName>kr</principalName>
-			<type>SYSTEM</type>
 		</user>
+		<user>
+			<principalId>p4</principalId>
+			<emplId>p4emplId</emplId>
+			<principalName>principal4</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Four</lastName>
+		</user>				
 	</users>
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
+		    <id>g4</id>
+			<name>GroupFour</name>
+			<namespace>KUALI</namespace>
+			<description>Group Four</description>
+			<active>false</active>
+			<members>
+				<principalName>principal4</principalName>
+			</members>
+		</group>
+		<group>
+		    <id>g3</id>
+			<name>GroupThree</name>
+			<namespace>KUALI</namespace>
+			<description>Group Three</description>
+			<members>
+				<principalName>principal3</principalName>
+				<groupId>g4</groupId>
+			</members>
+		</group>
+		<group>
+		    <id>g2</id>
+			<name>GroupTwo</name>
+			<namespace>KUALI</namespace>
+			<description>Group One</description>
+			<members>
+				<principalName>principal1</principalName>
+				<groupId>g3</groupId>
+			</members>
+		</group>
 		<group>
 		    <id>g1</id>
 			<name>GroupOne</name>
@@ -38,6 +71,7 @@
 			<members>
 				<principalName>principal2</principalName>
 				<principalName>kr</principalName>
+				<groupId>g2</groupId>
 			</members>
 		</group>
 	</groups>

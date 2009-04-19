@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,26 +23,24 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.junit.After;
-import org.junit.Before;
+import org.apache.ojb.broker.metadata.DescriptorRepository;
+import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
-import org.kuali.rice.core.config.spring.ConfigFactoryBean;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
+import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.test.bo.BOContainingPerson;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.test.web.HtmlUnitUtil;
+import org.springframework.core.io.DefaultResourceLoader;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -49,64 +48,30 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PersonServiceImplTest extends RiceTestCase {
+public class PersonServiceImplTest extends KIMTestCase {
 
 	private PersonServiceImpl personService;
 
-	private String contextName = "/knstest";
-
-	private String relativeWebappRoot = "/../web/src/main/webapp";
-
-	private String testConfigFilename = "classpath:META-INF/kim-test-config.xml";
-
-	@Override
-	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-		lifecycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = testConfigFilename;
-				//new SQLDataLoaderLifecycle(sqlFilename, sqlDelimiter).start();
-				new JettyServerLifecycle(HtmlUnitUtil.getPort(), contextName, relativeWebappRoot).start();
-				//new KEWXmlDataLoaderLifecycle(xmlFilename).start();
-				System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-
-		});
-		return lifecycles;
-	}
-
-	@Override
-	protected String getModuleName() {
-		return "kim";
-	}
-
-	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		personService = (PersonServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimPersonService"));
+		personService = (PersonServiceImpl)GlobalResourceLoader.getService(new QName("personService"));
+		
+		KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal("p1");
+		
+		KimEntityExternalIdentifierImpl externalIdentifier = new KimEntityExternalIdentifierImpl();
+		externalIdentifier.setEntityExternalIdentifierId("");
+		externalIdentifier.setEntityId(principal.getEntityId());
+		externalIdentifier.setExternalId("000-00-0000");
+		externalIdentifier.setExternalIdentifierTypeCode("SSN");
+		KNSServiceLocator.getBusinessObjectService().save(externalIdentifier);
 	}
-
-	@After
-	public void tearDown() throws Exception {}
 
 	/**
 	 * Test method for {@link org.kuali.rice.kim.service.impl.PersonServiceImpl#getPersonByExternalIdentifier(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testGetPersonByExternalIdentifier() {
-		List<PersonImpl> people = personService.getPersonByExternalIdentifier( "EMPLOYEE", "EXTID1" );
+		List<PersonImpl> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
 		assertNotNull( "result object must not be null", people );
 		assertEquals( "exactly one record should be returned", 1, people.size() );
 		assertEquals( "the returned principal is not correct", "p1", people.get(0).getPrincipalId() );
@@ -143,23 +108,25 @@ public class PersonServiceImplTest extends RiceTestCase {
 		Person p = personService.getPerson( "KULUSER" );
 		assertNotNull( "person object must not be null", p );
 		assertEquals( "class must match implementation class defined on service", personService.getPersonImplementationClass(), p.getClass() );
-		assertEquals( "person name does not match", "System User", p.getFirstName() );
+		assertEquals( "person name does not match", "KULUSER", p.getFirstName() );
 		assertEquals( "principal name does not match", "kuluser", p.getPrincipalName() );
 		assertEquals( "KULUSER should have no address record", "", p.getAddressLine1() );
 		assertEquals( "KULUSER should have no campus code", "", p.getCampusCode() );
 		assertEquals( "KULUSER should have no email address", "", p.getEmailAddress() );
 		assertNotNull( "entity ID should be set", p.getEntityId() );
 		assertNotNull( "principal ID should be set", p.getPrincipalId() );
-		assertEquals( "employee ID does not match", "KULUSER", p.getExternalId( "EMPLOYEE" ) );
-		p.getName();
-		assertTrue( "KULUSER must have a staff type affiliation", p.hasAffiliationOfType( "STAFF" ));
+		
+		// check an employee id
+		Person p1Person = personService.getPerson( "p1" );
+		assertNotNull( "person object must not be null", p );
+		assertEquals("employee ID does not match", "p1emplId", p1Person.getEmployeeId());
 	}
 
 	@Test
 	public void testGetPersonByPrincipalName() {
 		Person p = personService.getPersonByPrincipalName( "kuluser" );
 		assertNotNull( "person object must not be null", p );
-		assertEquals( "person name does not match", "System User", p.getFirstName() );
+		assertEquals( "person name does not match", "KULUSER", p.getFirstName() );
 		assertEquals( "principal id does not match", "KULUSER", p.getPrincipalId() );
 	}
 
@@ -169,14 +136,13 @@ public class PersonServiceImplTest extends RiceTestCase {
 		HashMap<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "firstName", "System User" );
 		Map<String,String> entityCriteria = personService.convertPersonPropertiesToEntityProperties( criteria );
-		assertEquals( "number of criteria is not correct", 7, entityCriteria.size() );
+		assertEquals( "number of criteria is not correct", 6, entityCriteria.size() );
 		assertNotNull( "criteria must filter for active entities", entityCriteria.get( "active" ) );
-		assertNotNull( "criteria must filter for entities with active principals", entityCriteria.get( "principals.active" ) );
 		assertNotNull( "criteria must filter for active entity types", entityCriteria.get( "entityTypes.active" ) );
 		assertNotNull( "criteria must filter on entity type code", entityCriteria.get( "entityTypes.entityTypeCode" ) );
-		assertNotNull( "criteria must filter for first name", entityCriteria.get( "entityTypes.names.firstName" ) );
-		assertNotNull( "criteria must filter for active names", entityCriteria.get( "entityTypes.names.active" ) );
-		assertNotNull( "criteria must filter for the default name", entityCriteria.get( "entityTypes.names.dflt" ) );
+		assertNotNull( "criteria must filter for first name", entityCriteria.get( "names.firstName" ) );
+		assertNotNull( "criteria must filter for active names", entityCriteria.get( "names.active" ) );
+		assertNotNull( "criteria must filter for the default name", entityCriteria.get( "names.dflt" ) );
 	}
 
 	/**
@@ -185,17 +151,18 @@ public class PersonServiceImplTest extends RiceTestCase {
 	@Test
 	public void testFindPeople() {
 		HashMap<String,String> criteria = new HashMap<String,String>();
-		criteria.put( "firstName", "System User" );
+		criteria.put( "firstName", "KULUSER" );
 		List<PersonImpl> people = personService.findPeople( criteria );
 		assertNotNull( "result must not be null", people );
 		assertEquals( "wrong number of people returned", 1, people.size() );
 		Person p = people.get( 0 );
-		assertEquals( "name must match criteria", "System User", p.getFirstName() );
+		assertEquals( "name must match criteria", "KULUSER", p.getFirstName() );
 		assertEquals( "principal name must be kuluser", "kuluser", p.getPrincipalName() );
 	}
 
 	@Test
 	public void testResolvePrincipalNamesToPrincipalIds() throws Exception {
+		
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 
@@ -246,6 +213,13 @@ public class PersonServiceImplTest extends RiceTestCase {
 
 	@Test
 	public void testLookupWithPersonJoin() throws Exception {
+		
+		// merge the OJB file in containing the OJB metadata
+        InputStream is = new DefaultResourceLoader().getResource("classpath:org/kuali/rice/kim/test/OJB-repository-kimunittests.xml").getInputStream();
+        MetadataManager mm = MetadataManager.getInstance();
+        DescriptorRepository dr = mm.readDescriptorRepository(is);
+        mm.mergeDescriptorRepository(dr);
+		
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
 		KNSServiceLocator.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService();
@@ -262,7 +236,7 @@ public class PersonServiceImplTest extends RiceTestCase {
 		Lookupable l = KNSServiceLocator.getKualiLookupable();
 		l.setBusinessObjectClass( BOContainingPerson.class );
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put( "person.principalName", "user1" );
+		criteria.put( "person.principalName", "principal1" );
 		List<BOContainingPerson> results = (List)l.getSearchResultsUnbounded( (Map)criteria );
 		System.out.println( results );
 		assertNotNull( "results may not be null", results );

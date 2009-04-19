@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<descriptor-repository version="1.0">
+
+  <class-descriptor class="org.kuali.rice.kim.test.bo.BOContainingPerson" table="KR_KIM_TEST_BO">
+    <field-descriptor name="boPrimaryKey" column="PK" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+  </class-descriptor>
+  
+</descriptor-repository>

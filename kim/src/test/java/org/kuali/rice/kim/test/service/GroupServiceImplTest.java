@@ -19,17 +19,11 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.config.spring.ConfigFactoryBean;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.impl.GroupServiceImpl;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.test.web.HtmlUnitUtil;
+import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -37,67 +31,24 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupServiceImplTest extends RiceTestCase {
+public class GroupServiceImplTest extends KIMTestCase {
 
 	private GroupServiceImpl groupService;
 
-	private String contextName = "/knstest";
-
-	private String relativeWebappRoot = "/../web/src/main/webapp";
-
-	private String testConfigFilename = "classpath:META-INF/kim-test-config.xml";
-
-	@Override
-	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-		lifecycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = testConfigFilename;
-				//new SQLDataLoaderLifecycle(sqlFilename, sqlDelimiter).start();
-				new JettyServerLifecycle(HtmlUnitUtil.getPort(), contextName, relativeWebappRoot).start();
-				//new KEWXmlDataLoaderLifecycle(xmlFilename).start();
-				System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-
-		});
-		return lifecycles;
-	}
-
-	@Override
-	protected String getModuleName() {
-		return "kim";
-	}
-
-	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
 	}
 
-	@After
-	public void tearDown() throws Exception {}
-
 	@Test
 	public void testGetDirectMemberGroupIds() {
 		List<String> groupIds = groupService.getDirectMemberGroupIds("g1");
-		System.out.println( groupIds );
+
 		assertTrue( "g1 must contain group g2", groupIds.contains( "g2" ) );
 		assertFalse( "g1 must not contain group g3", groupIds.contains( "g3" ) );
 
 		groupIds = groupService.getDirectMemberGroupIds("g2");
-		System.out.println( groupIds );
+		
 		assertTrue( "g2 must contain group g3", groupIds.contains( "g3" ) );
 		assertFalse( "g2 must not contain group g4 (inactive)", groupIds.contains( "g4" ) );
 		
@@ -106,13 +57,13 @@ public class GroupServiceImplTest extends RiceTestCase {
 	@Test
 	public void testGetMemberGroupIds() {
 		List<String> groupIds = groupService.getMemberGroupIds("g1");
-		System.out.println( groupIds );
+
 		assertTrue( "g1 must contain group g2", groupIds.contains( "g2" ) );
 		assertTrue( "g1 must contain group g3", groupIds.contains( "g3" ) );
 		assertFalse( "g1 must not contain group g4 (inactive)", groupIds.contains( "g4" ) );
 
 		groupIds = groupService.getMemberGroupIds("g2");
-		System.out.println( groupIds );
+
 		assertTrue( "g2 must contain group g3", groupIds.contains( "g3" ) );
 		assertFalse( "g2 must not contain group g1", groupIds.contains( "g1" ) );
 	}
@@ -125,6 +76,14 @@ public class GroupServiceImplTest extends RiceTestCase {
 		assertTrue( "p3 must be in g2", groupService.isMemberOfGroup("p3", "g2") );
 		assertFalse( "p3 should not be a direct member of g2", groupService.isDirectMemberOfGroup("p3", "g2") );
 		assertFalse( "p4 should not be reported as a member of g2 (g4 is inactive)", groupService.isMemberOfGroup("p4", "g2") );
+		
+		// re-activate group 4
+		GroupInfo g4Info = groupService.getGroupInfo("g4");
+		g4Info.setActive(true);
+		groupService.updateGroup("g4", g4Info);
+
+		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
+		
 	}
 	
 }

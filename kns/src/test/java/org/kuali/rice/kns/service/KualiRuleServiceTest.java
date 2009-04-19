@@ -17,8 +17,7 @@ package org.kuali.rice.kns.service;
 
 import org.junit.Test;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
-import org.kuali.rice.kns.service.KualiRuleService;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the KualiRuleService.
@@ -27,7 +26,7 @@ import org.kuali.test.KNSTestBase;
  * document which binds them together, to be really useful. Instead, we'll test each of the applyRules( rule, event ) methods which
  * are called by applyRules( event ), since they do the actual work involved in applying a rule.
  */
-public class KualiRuleServiceTest extends KNSTestBase {
+public class KualiRuleServiceTest extends KNSTestCase {
     private static boolean entriesAdded = false;
     private static KualiRuleService kualiRuleService;
 

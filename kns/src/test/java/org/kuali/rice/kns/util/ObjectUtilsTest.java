@@ -17,15 +17,14 @@ package org.kuali.rice.kns.util;
 
 import org.junit.Test;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * ObjectUtilsTest
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ObjectUtilsTest extends TestBase {
+public class ObjectUtilsTest extends KNSTestCase {
     @Test
     public void testObjectUtils_equalsByKey() throws Exception {
         Parameter parameterInDB = new Parameter();

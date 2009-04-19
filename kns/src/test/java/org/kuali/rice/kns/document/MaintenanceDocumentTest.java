@@ -17,12 +17,11 @@ package org.kuali.rice.kns.document;
 
 import org.junit.Test;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 /**
@@ -31,7 +30,7 @@ import org.kuali.test.KNSWithTestSpringContext;
  * 
  */
 @KNSWithTestSpringContext
-public class MaintenanceDocumentTest extends KNSTestBase {
+public class MaintenanceDocumentTest extends KNSTestCase {
 
     MaintenanceDocument document;
     

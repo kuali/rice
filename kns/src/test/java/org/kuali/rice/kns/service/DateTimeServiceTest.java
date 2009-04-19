@@ -22,12 +22,12 @@ import java.util.Date;
 
 import org.junit.Test;
 import org.kuali.rice.kns.test.KualiTestAssertionUtils;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the DateTime service.
  */
-public class DateTimeServiceTest extends KNSTestBase {
+public class DateTimeServiceTest extends KNSTestCase {
 
     @Test public void testGetCurrentDate() {
         Date beforeServiceDate = new Date();
@@ -143,7 +143,7 @@ public class DateTimeServiceTest extends KNSTestBase {
     }
 
     @Test public void testConvertToSqlDate_validDateeString() throws ParseException {
-        java.sql.Date serviceDate = KNSServiceLocator.getDateTimeService().convertToSqlDate("1966-05-01");
+        java.sql.Date serviceDate = KNSServiceLocator.getDateTimeService().convertToSqlDate("05-01-1966");
 
         Calendar serviceCalendar = Calendar.getInstance();
         serviceCalendar.setTime(serviceDate);

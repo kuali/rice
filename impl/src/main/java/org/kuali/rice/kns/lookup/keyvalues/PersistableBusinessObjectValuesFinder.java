@@ -57,8 +57,9 @@ public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
     	try {
     	    KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
             Collection objects = boService.findAll(businessObjectClass);
-            if(includeBlankRow)
+            if(includeBlankRow) {
             	labels.add(new KeyLabelPair("", ""));
+            }
             for (Object object : objects) {
             	Object key = PropertyUtils.getProperty(object, keyAttributeName);
             	String label = (String)PropertyUtils.getProperty(object, labelAttributeName);

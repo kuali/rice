@@ -16,10 +16,9 @@
 package org.kuali.rice.kns.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
-import org.kuali.rice.kns.datadictionary.validation.fieldlevel.FixedPointValidationPattern;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 
-public class FixedPointValidationPatternTest extends KNSTestBase {
+public class FixedPointValidationPatternTest extends KNSTestCase {
     // Unlike its superclass, FixedPointValidationPattern does not use Spring.
     FixedPointValidationPattern pattern;
 

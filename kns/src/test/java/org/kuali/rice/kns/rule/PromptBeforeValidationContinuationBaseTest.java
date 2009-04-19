@@ -21,11 +21,11 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.rules.PromptBeforeValidationBase;
 import org.kuali.rice.kns.rules.PromptBeforeValidationBase.ContextSession;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 @KNSWithTestSpringContext
-public class PromptBeforeValidationContinuationBaseTest extends KNSTestBase {
+public class PromptBeforeValidationContinuationBaseTest extends KNSTestCase {
 
     private class TestPreRules extends PromptBeforeValidationBase {
     	@Override

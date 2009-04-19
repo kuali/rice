@@ -25,9 +25,6 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -41,9 +38,9 @@ import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 
-public class ExtensionAttributeTest extends KNSTestBase {
+public class ExtensionAttributeTest extends KNSTestCase {
 
 	DataDictionary dd = null;
 
@@ -54,6 +51,8 @@ public class ExtensionAttributeTest extends KNSTestBase {
 		dd = new DataDictionary();
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");

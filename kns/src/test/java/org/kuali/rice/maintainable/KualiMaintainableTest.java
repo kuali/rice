@@ -19,12 +19,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * Test methods for default Kuali maintainable implementation.
  */
-public class KualiMaintainableTest extends TestBase {
+public class KualiMaintainableTest extends KNSTestCase {
     Maintainable maintainable = null;
 
     /**

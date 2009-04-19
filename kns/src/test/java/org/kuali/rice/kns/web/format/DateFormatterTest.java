@@ -20,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
-import org.kuali.rice.kns.web.format.DateFormatter;
-import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.test.KNSTestCase;
 
 public class DateFormatterTest extends KNSTestCase {
@@ -36,25 +34,22 @@ public class DateFormatterTest extends KNSTestCase {
         return new java.sql.Date(simpleDateFormat.parse(input).getTime());
     }
 
-
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy");
+    
     @Test public void test1969() throws Exception {
         assertEquals(kualiParseDate("09/28/1969"), javaParseDate("09/28/1969"));
     }
 
     @Test public void testShortYear() throws Exception {
-        assertEquals(kualiParseDate("9/28/0069"), javaParseDate("9/28/69"));
+        assertEquals(kualiParseDate("9/28/0069"), javaParseDate("9/28/0069"));
     }
 
     @Test public void testAmbiguousYear() throws Exception {
-        try {
-            kualiParseDate("9/28/69");
-        }
-        catch (FormatException e) {
-            return;
-        }
-        assertTrue("Ambiguously formatted date should throw formatException per KULCOA-850", false);
+    	/**
+    	 * Note that in Rice 0.9.3, this date format would have thrown a FormatException,
+    	 * however in Rice 1.0 changes were made so that 2 digit years could be interpreted properly.
+    	 */
+    	assertEquals(kualiParseDate("9/28/69"), javaParseDate("9/28/69"));
     }
 
 

@@ -23,7 +23,7 @@ import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.test.document.bo.AccountType;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the PersistableBusinessObjectValuesFinder.
@@ -31,7 +31,7 @@ import org.kuali.test.TestBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class PersistableBusinessObjectValuesFinderTest extends TestBase {
+public class PersistableBusinessObjectValuesFinderTest extends KNSTestCase {
 
     private List<KeyLabelPair> testKeyValues = new ArrayList<KeyLabelPair>();
     private List<KeyLabelPair> testKeyValuesKeyInLabel = new ArrayList<KeyLabelPair>();

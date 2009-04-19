@@ -18,10 +18,8 @@ package org.kuali.rice.kns.datadictionary;
 
 import org.junit.Test;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 /**
@@ -30,7 +28,7 @@ import org.kuali.test.KNSWithTestSpringContext;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @KNSWithTestSpringContext
-public class DataDictionaryLazyLoadingTest extends KNSTestBase {
+public class DataDictionaryLazyLoadingTest extends KNSTestCase {
 
 	@Test
 	public void testBusinessObjectDataDictionaryEntriesAreSame() {

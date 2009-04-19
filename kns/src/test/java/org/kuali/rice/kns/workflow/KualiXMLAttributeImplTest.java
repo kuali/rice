@@ -45,12 +45,11 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.workflow.WorkflowUtils;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlAttribute;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlAttributeHelper;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlSearchableAttributeImpl;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -64,7 +63,7 @@ import org.xml.sax.InputSource;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Ignore
-public class KualiXMLAttributeImplTest extends TestBase {
+public class KualiXMLAttributeImplTest extends KNSTestCase {
     private static Log LOG = LogFactory.getLog(KualiXMLAttributeImplTest.class);
 
     private static final String RULE_ATTRIBUTE_CONFIG_NODE_NAME = XmlConstants.ROUTING_CONFIG;

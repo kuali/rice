@@ -14,9 +14,14 @@ package org.kuali.test;
 
 import java.util.List;
 
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ErrorMap;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
+import org.kuali.rice.test.TransactionalLifecycle;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
@@ -27,44 +32,62 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class KNSTestCase extends RiceTestCase {
+public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 
+	private static final String SQL_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.sql";
+	private static final String XML_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.xml";
+	
 	private String contextName = "/knstest";
 	private String relativeWebappRoot = "/../kns/src/test/webapp";
-    private String sqlFilename = "classpath:KNSDefaultTestData.sql";
-    private String sqlDelimiter = ";";
-	private String xmlFilename = "classpath:KNSDefaultTestData.xml";
+    
+	
+	private TransactionalLifecycle transactionalLifecycle;
+	
+	@Override
+	protected void loadSuiteTestData() throws Exception {
+		super.loadSuiteTestData();
+		new SQLDataLoaderLifecycle(SQL_FILE, ";").start();
+	}
 
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-		lifecycles.add(new Lifecycle() {
-		    JettyServerLifecycle jettyLifecycle = null;
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				//ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
-                new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
-                jettyLifecycle = new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot());
-                jettyLifecycle.start();
-				new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-			    if (jettyLifecycle != null && jettyLifecycle.isStarted()) {
-			        jettyLifecycle.stop();
-			    }
-				this.started = false;
-			}
-
-		});
-		return lifecycles;
+		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
+		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle(XML_FILE));
+		return suiteLifecycles;
 	}
+
+	@Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+		return new BaseLifecycle() {
+			public void start() throws Exception {
+				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
+				super.start();
+			}
+		};	
+	}
+
+	public void setUp() throws Exception {
+		super.setUp();
+		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
+		GlobalVariables.setErrorMap(new ErrorMap());
+		if (needsSpring) {
+			transactionalLifecycle = new TransactionalLifecycle();
+			transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
+			transactionalLifecycle.start();
+		}
+	}
+	
+	public void tearDown() throws Exception {
+		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
+		if (needsSpring) {
+		    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
+		        transactionalLifecycle.stop();
+		    }
+		}
+		GlobalVariables.setErrorMap(new ErrorMap());
+		super.tearDown();
+	}
+
 
 	@Override
 	protected String getModuleName() {
@@ -91,27 +114,4 @@ public abstract class KNSTestCase extends RiceTestCase {
 		this.relativeWebappRoot = relativeWebappRoot;
 	}
 
-	protected String getXmlFilename() {
-		return xmlFilename;
-	}
-
-	protected void setXmlFilename(String xmlFilename) {
-		this.xmlFilename = xmlFilename;
-	}
-
-    protected String getSqlDelimiter() {
-        return sqlDelimiter;
-    }
-
-    protected void setSqlDelimiter(String sqlDelimiter) {
-        this.sqlDelimiter = sqlDelimiter;
-    }
-
-    protected String getSqlFilename() {
-        return sqlFilename;
-    }
-
-    protected void setSqlFilename(String sqlFilename) {
-        this.sqlFilename = sqlFilename;
-    }
 }

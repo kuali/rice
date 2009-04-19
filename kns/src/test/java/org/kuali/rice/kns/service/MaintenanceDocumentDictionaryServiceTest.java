@@ -16,10 +16,9 @@
 package org.kuali.rice.kns.service;
 
 import org.junit.Test;
-import org.kuali.rice.kns.test.document.bo.AccountManager;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 
-public class MaintenanceDocumentDictionaryServiceTest extends KNSTestBase {
+public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentDictionaryServiceTest.class);
 

@@ -16,13 +16,12 @@
 package org.kuali.rice.kns.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
-import org.kuali.rice.kns.datadictionary.validation.fieldlevel.FloatingPointValidationPattern;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 
 @KNSWithTestSpringContext
-public class FloatingPointValidationPatternTest extends KNSTestBase {
+public class FloatingPointValidationPatternTest extends KNSTestCase {
     FloatingPointValidationPattern pattern;
 
     @Override

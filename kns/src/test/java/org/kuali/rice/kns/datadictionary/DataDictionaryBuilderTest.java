@@ -20,9 +20,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.kns.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.DataDictionaryException;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 /**
@@ -31,7 +29,7 @@ import org.kuali.test.KNSWithTestSpringContext;
  * 
  */
 @KNSWithTestSpringContext
-public class DataDictionaryBuilderTest extends KNSTestBase {
+public class DataDictionaryBuilderTest extends KNSTestCase {
     protected final Logger LOG = Logger.getLogger(getClass());
 
     static final String PACKAGE_CORE_BO = "org/kuali/rice/kns/bo/datadictionary/";

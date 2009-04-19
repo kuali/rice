@@ -20,14 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests KULRICE-984: Lookups - Relative Limit Gap
@@ -57,7 +56,7 @@ import org.kuali.test.TestBase;
                 }
        )
 )
-public class LookupServiceTest extends TestBase {
+public class LookupServiceTest extends KNSTestCase {
 
     public LookupServiceTest() {}
 

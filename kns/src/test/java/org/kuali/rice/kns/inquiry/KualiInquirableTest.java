@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 /**
@@ -28,7 +28,7 @@ import org.kuali.test.KNSWithTestSpringContext;
  * 
  */
 @KNSWithTestSpringContext
-public class KualiInquirableTest extends KNSTestBase {
+public class KualiInquirableTest extends KNSTestCase {
 
     private AccountManager am;
 

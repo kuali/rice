@@ -17,10 +17,9 @@ package org.kuali.rice.kns.datadictionary.validation.charlevel;
 
 import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.validation.ValidationTestUtils;
-import org.kuali.rice.kns.datadictionary.validation.charlevel.NumericValidationPattern;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 
-public class NumericValidationPatternTest extends KNSTestBase {
+public class NumericValidationPatternTest extends KNSTestCase {
     private NumericValidationPattern pattern;
 
     @Override

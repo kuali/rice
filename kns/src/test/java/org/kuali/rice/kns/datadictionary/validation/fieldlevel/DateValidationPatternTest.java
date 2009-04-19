@@ -16,13 +16,12 @@
 package org.kuali.rice.kns.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
-import org.kuali.rice.kns.datadictionary.validation.fieldlevel.DateValidationPattern;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 
 @KNSWithTestSpringContext
-public class DateValidationPatternTest extends KNSTestBase {
+public class DateValidationPatternTest extends KNSTestCase {
     DateValidationPattern pattern;
 
     @Override

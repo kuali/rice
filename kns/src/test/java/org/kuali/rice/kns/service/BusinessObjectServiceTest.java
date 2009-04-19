@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
+import org.kuali.test.KNSWithTestSpringContext;
 
 /**
  * This class tests KULRICE-1666: missing Spring mapping for ojbCollectionHelper
@@ -31,7 +31,8 @@ import org.kuali.test.TestBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class BusinessObjectServiceTest extends TestBase {
+@KNSWithTestSpringContext
+public class BusinessObjectServiceTest extends KNSTestCase {
 
     public BusinessObjectServiceTest() {}
 

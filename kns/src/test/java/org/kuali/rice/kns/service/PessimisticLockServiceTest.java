@@ -33,7 +33,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 
 
 /**
@@ -41,7 +41,7 @@ import org.kuali.test.TestBase;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class PessimisticLockServiceTest extends TestBase {
+public class PessimisticLockServiceTest extends KNSTestCase {
 
     @Override
     public void setUp() throws Exception {
@@ -58,14 +58,15 @@ public class PessimisticLockServiceTest extends TestBase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'employee')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('08/01/2007','mm/dd/yyyy'), 'fred')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, '4f6bc9e2-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'employee')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1112, '5add9cba-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1235', {d '2007-10-01'}, 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1113, '69e42b8e-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-08-01'}, 'fred')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1114, '76504650-7df8-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred')")
                     }
             )
     @Test
     public void testDeleteLocks() throws Exception {
+    	
         List<PessimisticLock> locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks in DB", 4, locks.size());
 
@@ -178,10 +179,10 @@ public class PessimisticLockServiceTest extends TestBase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1237', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, 'fbcb0362-7dfb-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1112, '055bef4a-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-10-01'}, 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1113, '0e0144ec-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-10-01'}, 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1114, '1891526c-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred')")
                     }
             )
     @Test
@@ -205,14 +206,14 @@ public class PessimisticLockServiceTest extends TestBase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1112, SYS_GUID(), 0, NULL, '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1113, SYS_GUID(), 0, NULL, '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1114, SYS_GUID(), 0, NULL, '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1115, SYS_GUID(), 0, 'Temporary Lock', '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1116, SYS_GUID(), 0, 'Temporary Lock', '1235', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1117, SYS_GUID(), 0, 'Temporary Lock', '1236', to_date('10/01/2007','mm/dd/yyyy'), 'frank')"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1118, SYS_GUID(), 0, 'Temporary Lock', '1237', to_date('08/01/2007','mm/dd/yyyy'), 'fred')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, '24c40cd2-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1112, '32602e8e-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1235', {d '2007-10-01'}, 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1113, '3acfc1ce-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1236', {d '2007-10-01'}, 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1114, '463cc642-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1237', {d '2007-08-01'}, 'fred')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1115, '4e66c4b2-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1234', {d '2007-07-01'}, 'fran')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1116, '55d99b02-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1235', {d '2007-10-01'}, 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1117, '5e47fb26-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1236', {d '2007-10-01'}, 'frank')"),
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1118, '65c366d8-7dfc-102c-97b6-ed716fdaf540', 0, 'Temporary Lock', '1237', {d '2007-08-01'}, 'fred')")
                     }
             )
     @Test
@@ -254,7 +255,7 @@ public class PessimisticLockServiceTest extends TestBase {
     @UnitTestData(
             sqlStatements = {
                     @UnitTestSql("DELETE FROM KRNS_PESSIMISTIC_LOCK_T"),
-                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (\"PESSIMISTIC_LOCK_ID\",\"OBJ_ID\",\"VER_NBR\",\"LOCK_DESC_TXT\",\"DOC_HDR_ID\",\"GNRT_DT\",\"PRNCPL_ID\") VALUES (1111, SYS_GUID(), 0, NULL, '1234', to_date('07/01/2007','mm/dd/yyyy'), 'fran')")
+                    @UnitTestSql("INSERT INTO KRNS_PESSIMISTIC_LOCK_T (PESSIMISTIC_LOCK_ID,OBJ_ID,VER_NBR,LOCK_DESC_TXT,DOC_HDR_ID,GNRT_DT,PRNCPL_ID) VALUES (1111, '73f340de-7dfc-102c-97b6-ed716fdaf540', 0, NULL, '1234', {d '2007-07-01'}, 'fran')")
                     }
             )
     @Test

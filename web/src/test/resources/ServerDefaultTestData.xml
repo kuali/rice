@@ -76,10 +76,10 @@
 			<lastName>user4</lastName>
 		</user>
 		<user>
-			<workflowId>newAccountUser</workflowId>
-			<emplId>newAcctUsr</emplId>
-			<authenticationId>newAcctUsr</authenticationId>
-			<uuId>newAcctUsr</uuId>
+			<workflowId>newaccountuser</workflowId>
+			<emplId>newacctusr</emplId>
+			<authenticationId>newacctusr</authenticationId>
+			<uuId>newacctusr</uuId>
 			<emailAddress>newAccountUser@indiana.edu</emailAddress>
 			<displayName>New Account User</displayName>
 			<givenName>newAccountUser</givenName>

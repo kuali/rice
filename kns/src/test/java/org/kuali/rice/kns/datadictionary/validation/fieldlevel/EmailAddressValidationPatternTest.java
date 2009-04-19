@@ -16,13 +16,12 @@
 package org.kuali.rice.kns.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
-import org.kuali.rice.kns.datadictionary.validation.fieldlevel.EmailAddressValidationPattern;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 
 @KNSWithTestSpringContext
-public class EmailAddressValidationPatternTest extends KNSTestBase {
+public class EmailAddressValidationPatternTest extends KNSTestCase {
     private EmailAddressValidationPattern pattern;
 
     @Override
@@ -58,8 +57,11 @@ public class EmailAddressValidationPatternTest extends KNSTestBase {
         assertFalse(pattern.matches("@a.b.c.org"));
     }
 
-    @Test public final void testMatches_invalid3() {
-        assertFalse(pattern.matches("1@a.b.c.org"));
+    @Test public final void testMatches_valid5() {
+    	/**
+    	 * This pattern was previously invalid in Rice 0.9.3 but was changed in 1.0 so it is valid now
+    	 */
+        assertTrue(pattern.matches("1@a.b.c.org"));
     }
 
     @Test public final void testMatches_invalid4() {

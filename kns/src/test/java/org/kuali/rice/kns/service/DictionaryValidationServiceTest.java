@@ -20,7 +20,7 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.test.document.AccountRequestDocument;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the DictionaryValidationService (currently only recursive validation is tested).
@@ -28,7 +28,7 @@ import org.kuali.test.TestBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DictionaryValidationServiceTest extends TestBase {
+public class DictionaryValidationServiceTest extends KNSTestCase {
 
     public DictionaryValidationServiceTest() {
     }

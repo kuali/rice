@@ -16,13 +16,12 @@
 package org.kuali.rice.kns.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
-import org.kuali.rice.kns.datadictionary.validation.fieldlevel.ZipcodeValidationPattern;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
 
 @KNSWithTestSpringContext
-public class ZipcodeValidationPatternTest extends KNSTestBase {
+public class ZipcodeValidationPatternTest extends KNSTestCase {
     private ZipcodeValidationPattern pattern;
 
     @Override

@@ -45,6 +45,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -183,12 +184,25 @@ public class KualiDocumentActionBase extends KualiAction {
             		LOG.debug("Form " + formBase + " represents a PessimisticLock BO object");
             	}
             } else {
-        // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
-        // information which is contained in the form but which may be unavailable until this point
+            // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
+            // information which is contained in the form but which may be unavailable until this point
             //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             //formBase.populateAuthorizationFields(documentAuthorizer);
              populateAuthorizationFields(formBase);
              populateAdHocActionRequestCodes(formBase);
+            
+            //set the formBase into userSession if the document is a session document 
+            UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY); 
+            
+            if (WebUtils.isDocumentSession(document, formBase)) { 
+            	String formKey = formBase.getFormKey(); 
+            	if (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null) { 
+            		// generate doc form key here if it does not exist 
+            		formKey = GlobalVariables.getUserSession().addObject(form); 
+            		formBase.setFormKey(formKey); 
+                }
+            }
+
 
             // below used by KualiHttpSessionListener to handle lock expiration
                 request.getSession().setAttribute(KNSConstants.DOCUMENT_HTTP_SESSION_KEY, document.getDocumentNumber());

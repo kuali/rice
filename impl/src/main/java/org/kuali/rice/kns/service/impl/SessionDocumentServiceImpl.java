@@ -155,14 +155,14 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
      */
     
     public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession ){
- 
+    	//formKey was set in KualiDocumentActionBase execute method
 		 String formKey = form.getFormKey();
-		 if (StringUtils.isBlank(formKey)
-				|| userSession.retrieveObject(formKey) == null) {
-			 LOG.debug("set Document Form into session");
-			 formKey = GlobalVariables.getUserSession().addObject(form);
-			 form.setFormKey(formKey);
-		 }
+		 //if (StringUtils.isBlank(formKey)
+		 //		|| userSession.retrieveObject(formKey) == null) {
+		//	 LOG.debug("set Document Form into session");
+		//	 formKey = GlobalVariables.getUserSession().addObject(form);
+		//	 form.setFormKey(formKey);
+		// }
 		 String key = userSession.getKualiSessionId() + "-" + formKey;
 		 CachedObject cachedObject = new CachedObject(); 
 		 cachedObject.setUserSession(userSession);

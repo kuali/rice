@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.server.test;
+package org.kuali.rice.web.test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,7 +77,7 @@ public abstract class WebTestBase extends ServerTestBase {
     /**
      * Web test setup overloading. Sets up Portal page access.
      *
-     * @see org.kuali.rice.server.test.WebTestBase#setUp()
+     * @see org.kuali.rice.web.test.WebTestBase#setUp()
      */
     @Before
     public void setUp() throws Exception {
@@ -93,7 +93,7 @@ public abstract class WebTestBase extends ServerTestBase {
     /**
      * Web test tear down overloading.
      *
-     * @see org.kuali.rice.server.test.WebTestBase#tearDown()
+     * @see org.kuali.rice.web.test.WebTestBase#tearDown()
      */
     @After
     public void tearDown() throws Exception {

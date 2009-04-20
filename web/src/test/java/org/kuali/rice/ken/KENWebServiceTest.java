@@ -36,11 +36,11 @@ import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.server.test.ServerTestBase;
 import org.kuali.rice.test.TransactionalLifecycle;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.web.HtmlUnitUtil;
+import org.kuali.rice.web.test.ServerTestBase;
 
 
 /**

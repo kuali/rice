@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.server.document;
+package org.kuali.rice.web.document;
 
 import org.junit.Test;
-import org.kuali.rice.server.test.ServerTestBase;
 import org.kuali.rice.test.web.HtmlUnitUtil;
+import org.kuali.rice.web.test.ServerTestBase;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;

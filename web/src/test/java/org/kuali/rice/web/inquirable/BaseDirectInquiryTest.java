@@ -1,10 +1,10 @@
-package org.kuali.rice.server.inquirable;
+package org.kuali.rice.web.inquirable;
 
 import java.net.URL;
 
 import org.junit.Test;
-import org.kuali.rice.server.test.ServerTestBase;
 import org.kuali.rice.test.web.HtmlUnitUtil;
+import org.kuali.rice.web.test.ServerTestBase;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.server.service.impl;
+package org.kuali.rice.web.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.server.test.ServerTestBase;
+import org.kuali.rice.web.test.ServerTestBase;
 
 /**
  * This is a class that tests the {@link DemonstrationGradeEncryptionServiceImpl} class

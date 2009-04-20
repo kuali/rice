@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.server.lookup;
+package org.kuali.rice.web.lookup;
 
 import org.junit.Test;
-import org.kuali.rice.server.test.WebTestBase;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
+import org.kuali.rice.web.test.WebTestBase;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 

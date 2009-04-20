@@ -23,7 +23,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.server.test.ServerTestBase;
+import org.kuali.rice.web.test.ServerTestBase;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;

@@ -64,7 +64,7 @@ public class WebLookupTest extends WebTestBase {
         assertEquals(lookupPage.getTitleText(), "Kuali :: Lookup");
 
         HtmlPage lookupResultsPage = clickOn(lookupPage, "methodToCall.search");
-        assertTrue(lookupResultsPage.asText().contains("items found. Please refine your search criteria to narrow down your search. 90 items found"));
+        assertTrue(lookupResultsPage.asText().contains("items found. Please refine your search criteria to narrow down your search. 90 items retrieved"));
     }
 
     /**

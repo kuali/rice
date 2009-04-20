@@ -19,10 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.config.spring.ConfigFactoryBean;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.test.RiceTestCase;
+import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
@@ -34,47 +35,73 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class ServerTestBase extends RiceTestCase {
+public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 	
 	protected static final String HTML_PAGE_TITLE_TEXT = "Kuali Rice";
 	protected static final String MODULE_NAME = "web";
 	
     private String contextName = "/knstest";
     private String relativeWebappRoot = "/../web/src/main/webapp";
-    private String sqlFilename = "classpath:ServerDefaultTestData.sql";
+    private String sqlFilename = "classpath:org/kuali/rice/web/test/DefaultSuiteTestData.sql";
     private String sqlDelimiter = ";";
-    private String xmlFilename = "classpath:ServerDefaultTestData.xml";
-    private String testConfigFilename = "classpath:META-INF/sample-app-test-config.xml";
+    private String xmlFilename = "classpath:org/kuali/rice/web/test/DefaultSuiteTestData.xml";
+    private String testConfigFilename = "classpath:META-INF/web-test-config.xml";
+
+//    @Override
+//    protected List<Lifecycle> getSuiteLifecycles() {
+//        List<Lifecycle> lifecycles = super.getSuiteLifecycles();
+//        lifecycles.add(new Lifecycle() {
+//            boolean started = false;
+//
+//            public boolean isStarted() {
+//                return this.started;
+//            }
+//
+//            public void start() throws Exception {
+//                System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
+//                ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
+//                new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
+//                new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
+//                new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
+//                System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
+//                this.started = true;
+//            }
+//
+//            public void stop() throws Exception {
+//                this.started = false;
+//            }
+//
+//        });
+//        return lifecycles;
+//    }
+    
+    
 
     @Override
-    protected List<Lifecycle> getSuiteLifecycles() {
-        List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-        lifecycles.add(new Lifecycle() {
-            boolean started = false;
+	protected void loadSuiteTestData() throws Exception {
+		super.loadSuiteTestData();
+		new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
+	}
 
-            public boolean isStarted() {
-                return this.started;
-            }
 
-            public void start() throws Exception {
-                System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
+
+	@Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+		return new BaseLifecycle() {
+			public void start() throws Exception {
+				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
                 ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
-                new SQLDataLoaderLifecycle(getSqlFilename(), getSqlDelimiter()).start();
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
                 System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
-                this.started = true;
-            }
+				super.start();
+			}
+		};
+	}
 
-            public void stop() throws Exception {
-                this.started = false;
-            }
 
-        });
-        return lifecycles;
-    }
 
-    @Override
+	@Override
     protected List<String> getConfigLocations() {
         List<String> configLocations = new ArrayList<String>();
         configLocations.add(getRiceMasterDefaultConfigFile());

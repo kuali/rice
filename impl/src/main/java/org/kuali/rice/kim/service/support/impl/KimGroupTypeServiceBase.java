@@ -25,4 +25,10 @@ import org.kuali.rice.kim.service.support.KimGroupTypeService;
  */
 public class KimGroupTypeServiceBase extends KimTypeServiceBase implements KimGroupTypeService {
 
+	public static final String GROUP_DOCUMENT_TYPE_NAME = "IdentityManagementGroupDocument";
+	
+	public String getWorkflowDocumentTypeName() {
+		return GROUP_DOCUMENT_TYPE_NAME;
+	}
+
 }

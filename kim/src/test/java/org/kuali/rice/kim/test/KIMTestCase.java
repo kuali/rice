@@ -29,6 +29,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
@@ -53,6 +54,12 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
 		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/kim/test/DefaultSuiteTestData.xml"));
 		return suiteLifecycles;
+	}
+	
+	@Override
+	protected void loadSuiteTestData() throws Exception {
+		super.loadSuiteTestData();
+		new SQLDataLoader("classpath:org/kuali/rice/kim/test/DefaultSuiteTestData.sql", "/").runSql();
 	}
 	
 	@Override

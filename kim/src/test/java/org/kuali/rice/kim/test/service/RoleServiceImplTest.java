@@ -67,10 +67,10 @@ public class RoleServiceImplTest extends KIMTestCase {
 	
 	@Test
 	public void testPrincipalHasRoleContainsGroupAssigned() {
-		// "p2" is in "g2" and "g2" assigned to "r1"
+		// "p2" is in "g1" and "g1" assigned to "r2"
 		List <String>roleIds = new ArrayList<String>();
-		roleIds.add("r1");
-		assertTrue( "p2 has assigned to g2 and g2 assigned to r1", roleService.principalHasRole("p3", roleIds, null ));		
+		roleIds.add("r2");
+		assertTrue( "p2 is assigned to g1 and g1 assigned to r2", roleService.principalHasRole("p2", roleIds, null ));		
 	}
 
 }

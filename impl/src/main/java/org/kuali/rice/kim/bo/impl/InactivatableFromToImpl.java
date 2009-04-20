@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -32,9 +32,9 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
+	protected Date activeFromDate;
 	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
+	protected Date activeToDate;
 	
 	/**
 	 * Returns active if the current time is between the from and to dates.  Null dates are 
@@ -45,19 +45,19 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
-	public void setActiveFromDate(Timestamp from) {
+	public void setActiveFromDate(Date from) {
 		this.activeFromDate = from;
 	}
 
-	public void setActiveToDate(Timestamp to) {
+	public void setActiveToDate(Date to) {
 		this.activeToDate = to;
 	}
 
-	public Timestamp getActiveFromDate() {
+	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	public Timestamp getActiveToDate() {
+	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 

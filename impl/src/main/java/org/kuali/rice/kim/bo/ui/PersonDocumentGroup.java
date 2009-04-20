@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,9 +50,9 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	protected KimTypeImpl kimGroupType = new KimTypeImpl();
 	protected String kimTypeId;
 	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
+	protected Date activeFromDate;
 	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
+	protected Date activeToDate;
 
 	public String getGroupId() {
 		return this.groupId;
@@ -118,19 +118,19 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 		this.namespaceCode = namespaceCode;
 	}
 
-	public Timestamp getActiveFromDate() {
+	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	public void setActiveFromDate(Timestamp activeFromDate) {
+	public void setActiveFromDate(Date activeFromDate) {
 		this.activeFromDate = activeFromDate;
 	}
 
-	public Timestamp getActiveToDate() {
+	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 
-	public void setActiveToDate(Timestamp activeToDate) {
+	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;
 	}
 

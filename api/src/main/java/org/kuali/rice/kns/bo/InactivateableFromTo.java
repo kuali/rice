@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public interface InactivateableFromTo {
     
     boolean isActive();
 
-    void setActiveFromDate(Timestamp from);
+    void setActiveFromDate(Date from);
 
-	void setActiveToDate(Timestamp to);    
+	void setActiveToDate(Date to);    
 	
 }

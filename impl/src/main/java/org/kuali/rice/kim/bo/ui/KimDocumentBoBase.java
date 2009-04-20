@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -46,9 +44,9 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 
 	
 	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
+	protected Date activeFromDate;
 	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
+	protected Date activeToDate;
 
 	/**
 	 * This overridden method ...
@@ -87,21 +85,32 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 		this.edit = edit;
 	}
 
-	public Timestamp getActiveFromDate() {
+	/**
+	 * @return the activeFromDate
+	 */
+	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	public void setActiveFromDate(Timestamp activeFromDate) {
+	/**
+	 * @param activeFromDate the activeFromDate to set
+	 */
+	public void setActiveFromDate(Date activeFromDate) {
 		this.activeFromDate = activeFromDate;
 	}
 
-	public Timestamp getActiveToDate() {
+	/**
+	 * @return the activeToDate
+	 */
+	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 
-	public void setActiveToDate(Timestamp activeToDate) {
+	/**
+	 * @param activeToDate the activeToDate to set
+	 */
+	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;
 	}
-
 
 }

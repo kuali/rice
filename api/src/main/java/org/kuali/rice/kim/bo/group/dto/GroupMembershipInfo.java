@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.group.dto;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 
 /**
@@ -30,10 +30,10 @@ public class GroupMembershipInfo {
 	protected String memberId;
 	protected String memberTypeCode;
 	protected Long versionNumber;
-	protected Timestamp activeFromDate;
-	protected Timestamp activeToDate;
+	protected Date activeFromDate;
+	protected Date activeToDate;
 
-	public GroupMembershipInfo(String groupId, String groupMemberId, String memberId, String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate) {
+	public GroupMembershipInfo(String groupId, String groupMemberId, String memberId, String memberTypeCode, Date activeFromDate, Date activeToDate) {
 		super();
 		this.groupId = groupId;
 		this.memberId = memberId;
@@ -94,22 +94,22 @@ public class GroupMembershipInfo {
 	}
 
 
-	public Timestamp getActiveFromDate() {
+	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
 
-	public void setActiveFromDate(Timestamp activeFromDate) {
+	public void setActiveFromDate(Date activeFromDate) {
 		this.activeFromDate = activeFromDate;
 	}
 
 
-	public Timestamp getActiveToDate() {
+	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 
 
-	public void setActiveToDate(Timestamp activeToDate) {
+	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;
 	}
 

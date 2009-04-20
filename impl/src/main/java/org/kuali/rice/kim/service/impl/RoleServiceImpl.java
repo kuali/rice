@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1180,7 +1181,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
     	java.sql.Timestamp yesterday = new java.sql.Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
     	for ( RoleMemberImpl rm : roleMembers ) {
-    		rm.setActiveToDate( yesterday );
+    		rm.setActiveToDate( new Date(yesterday.getTime()) );
     		roleIds.add(rm.getRoleId()); // add to the set of IDs
     	}
     	getBusinessObjectService().save(roleMembers);

@@ -36,6 +36,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
  */
 public class ActionRequestDerivedRoleTypeServiceImpl extends
 		KimDerivedRoleTypeServiceBase {
+	private static final String NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Non-Ad Hoc Approve Request Recipient";
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
@@ -68,11 +69,11 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(Long
 									.parseLong(qualification
 											.get(KimAttributes.DOCUMENT_NUMBER)), null, principalId);
-				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequestDTO ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )
 								&& ar.getStatus().equals( KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
-							return true;
+							return APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || (NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) && !ar.isAdHocRequest());
 						}
 					}
 					return false;

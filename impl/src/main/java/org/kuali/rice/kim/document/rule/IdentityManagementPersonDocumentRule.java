@@ -34,6 +34,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -75,6 +76,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	private Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
 	private Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
 	
+	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
@@ -124,7 +126,6 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)document;
         boolean valid = true;
         GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
-        valid &= validateRoleQualifierRequired( personDoc.getRoles() );
         valid &= validateAffiliationAndName( personDoc );
         valid &= checkAffiliationEithOneEMpInfo (personDoc.getAffiliations());
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
@@ -255,57 +256,6 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     	return true;
     }
-
-    private static Map<String,KimAttributeImpl> attributeDefinitionMap = new HashMap<String,KimAttributeImpl>();
-    
-    private KimAttributeImpl getAttributeDefinition( String id ) {
-    	KimAttributeImpl attributeImpl = attributeDefinitionMap.get( id );
-    	
-    	if ( attributeImpl == null ) {
-			Map<String,String> criteria = new HashMap<String,String>();
-			criteria.put( "kimAttributeId", id );
-			attributeImpl = (KimAttributeImpl)getBusinessObjectService().findByPrimaryKey( KimAttributeImpl.class, criteria );
-			attributeDefinitionMap.put( id, attributeImpl );
-    	}
-    	return attributeImpl;
-    }
-    
-	private AttributeSet convertQualifiersToMap( List<KimDocumentRoleQualifier> qualifiers ) {
-		AttributeSet m = new AttributeSet();
-		for ( KimDocumentRoleQualifier data : qualifiers ) {
-			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
-			if ( attrib != null ) {
-				m.put( attrib.getAttributeName(), data.getAttrVal() );
-			} else {
-				LOG.error("Unable to get attribute name for ID:" + data.getKimAttrDefnId() );
-			}
-		}
-		return m;
-	}
-    
-	private AttributeSet convertQualifiersToAttrIdxMap( List<KimDocumentRoleQualifier> qualifiers ) {
-		AttributeSet m = new AttributeSet();
-		int i = 0;
-		for ( KimDocumentRoleQualifier data : qualifiers ) {
-			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
-			if ( attrib != null ) {
-				m.put( attrib.getAttributeName(), Integer.toString(i) );
-			} else {
-				LOG.error("Unable to get attribute name for ID:" + data.getKimAttrDefnId() );
-			}
-			i++;
-		}
-		return m;
-	}
-
-	private AttributeSet convertErrors(String errorPath, AttributeSet attrIdxMap, AttributeSet localErrors) {
-		AttributeSet errors = new AttributeSet();
-		for ( String key : localErrors.keySet() ) {
-			errors.put(errorPath+".qualifiers["+attrIdxMap.get(key)+"].attrVal", localErrors.get(key));
-		}
-		return errors;
-
-	}
 	
     private boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
 
@@ -317,8 +267,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	        if ( kimTypeService != null ) {
 		        int j = 0;
 	        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
-	        		AttributeSet localErrors = kimTypeService.validateAttributes( convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
-			        validationErrors.putAll( convertErrors("roles["+i+"].rolePrncpls["+j+"]",convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
+	        		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
+			        validationErrors.putAll( attributeValidationHelper.convertErrors("roles["+i+"].rolePrncpls["+j+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
 			        j++;
 		        }
 	        }
@@ -337,36 +287,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		}
     		return false;
     	}
-    }
-
-    private boolean validateRoleQualifierRequired( List<PersonDocumentRole> roles ) {
-
-    	boolean valid = true;
-		int i = 0;
-		for (PersonDocumentRole role : roles) {
-			if (!role.getDefinitions().isEmpty()
-					&& CollectionUtils.isEmpty(role.getRolePrncpls())) {
-				boolean roleQualifierRequired = false;
-				for (String key : role.getDefinitions().keySet()) {
-					AttributeDefinition definition = role.getDefinitions().get(
-							key);
-					if (definition.isRequired()) {
-						roleQualifierRequired = true;
-						break;
-					}
-				}
-				if (roleQualifierRequired) {
-					valid = false;
-					GlobalVariables.getErrorMap().putError("roles[" + i + "]",
-							RiceKeyConstants.ERROR_ROLE_QUALIFIER_REQUIRED,
-							new String[] {role.getNamespaceCode(), role.getRoleName()});
-				}
-			}
-		}
-		i++;
-		return valid;
-	}
-    
+    }    
 
     private boolean validActiveDatesForRole (List<PersonDocumentRole> roles ) {
     	boolean valid = true;

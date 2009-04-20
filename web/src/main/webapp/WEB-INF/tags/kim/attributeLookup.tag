@@ -14,13 +14,13 @@
  limitations under the License.
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<%@ attribute name="role" required="true" type="org.kuali.rice.kim.bo.ui.PersonDocumentRole" %>
+<%@ attribute name="attributeDefinitions" required="true" type="org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap" %>
 <%@ attribute name="pathPrefix" required="true" %>
 <%@ attribute name="attr" required="true" type="org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition" %>
      		         <%--  handling multiple lookup --%>
      		          <c:set var="fieldConversion" value=""/>
      		          <c:set var="params" value=""/>
-       		  <c:forEach var="attrDefn" items="${role.definitions}" varStatus="defidx">
+       		  <c:forEach var="attrDefn" items="${attributeDefinitions}" varStatus="defidx">
        		    <c:set var="searchStr" value="${attrDefn.value.name}" />
         		   <c:forEach items="${attr.lookupReturnPropertyConversions}" var="lookupReturn" varStatus="lookupIdx">
         		    <c:if test="${lookupReturn.key == searchStr}">
@@ -42,10 +42,6 @@
        		   </c:forEach>
      		          <c:set var="fieldConversion" value="${fn:substringAfter(fieldConversion, ',')}"/>
      		          <c:set var="params" value="${fn:substringAfter(params, ',')}"/>
-
-		<%-- 	<kul:lookup boClassName="${attr.lookupBoClass.name}" 
-			fieldConversions="${fieldName}:document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal"
-			lookupParameters="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status2.index}].attrVal:${fieldName}" /> --%>
 			<kul:lookup boClassName="${attr.lookupBoClass.name}" 
 			fieldConversions="${fieldConversion}"
 			lookupParameters="${params}" />

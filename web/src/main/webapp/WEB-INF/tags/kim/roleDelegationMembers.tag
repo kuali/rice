@@ -71,6 +71,7 @@ function changeDelegationTypeCode(){
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
+        			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
         			<c:choose>
         				<c:when test="${numberOfQualifiers>statusQualifier.index}">
 				            <td align="left" valign="middle">
@@ -117,7 +118,7 @@ function changeDelegationTypeCode(){
         			<c:choose>
         				<c:when test="${numberOfQualifiers>statusQualifier.index}">
 				            <td align="left" valign="middle">
-				               	<div align="left"> <kul:htmlControlAttribute property="document.delegation.members[${statusMember.index}].qualifier[${qualifier.kimAttributeId}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+				               	<div align="left"> aa<kul:htmlControlAttribute property="document.delegation.members[${statusMember.index}].qualifier[${qualifier.kimAttributeId}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
 								</div>
 							</td>
 						</c:when>

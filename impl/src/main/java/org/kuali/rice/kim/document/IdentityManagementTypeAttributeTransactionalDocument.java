@@ -93,6 +93,11 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
         return commaDelimitedAttributesLabels.toString();
 	}
 	
+	/**
+	 * Returns an {@link AttributeDefinitionMap}
+	 * 
+	 * @return
+	 */
 	public AttributeDefinitionMap getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = getKimTypeService(getKimType());
@@ -102,6 +107,17 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		return this.definitions;
 	}
 
+	public AttributeDefinitionMap getDefinitionsKeyedByAttributeName() {
+		AttributeDefinitionMap definitionsKeyedBySortCode = getDefinitions();
+		AttributeDefinitionMap returnValue = new AttributeDefinitionMap();
+		if (definitionsKeyedBySortCode != null) {
+			for (AttributeDefinition definition : definitionsKeyedBySortCode.values()) {
+				returnValue.put(definition.getName(), definition);
+			}
+		}
+		return returnValue;
+	}
+	
 	public void setDefinitions(AttributeDefinitionMap definitions) {
 		this.definitions = definitions;
 	}

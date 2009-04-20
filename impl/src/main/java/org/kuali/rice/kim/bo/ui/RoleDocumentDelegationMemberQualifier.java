@@ -19,11 +19,8 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 
 
 /**
@@ -34,32 +31,9 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
  */
 @Entity
 @Table(name="KRIM_PND_DLGN_MBR_ATTR_DATA_T")
-public class RoleDocumentDelegationMemberQualifier extends KimDocumentBoBase {
-	@Id
-	@Column(name="ATTR_DATA_ID")
-	private String attrDataId;
+public class RoleDocumentDelegationMemberQualifier extends KimDocumentAttributeDataBusinessObjectBase {
 	@Column(name="DLGN_MBR_ID")
 	private String delegationMemberId;
-	@Column(name="KIM_TYP_ID")
-	private String kimTypId;
-	@Column(name="KIM_ATTR_DEFN_ID")
-	private String kimAttrDefnId;
-	@Column(name="ATTR_VAL")
-	private String attrVal;
-	private KimAttributeImpl kimAttribute;
-
-	// a temporary for display that matches definition key
-	@Transient
-	private String qualifierKey;
-
-	public String getAttrDataId() {
-		return attrDataId;
-	}
-
-	public void setAttrDataId(String attrDataId) {
-		this.attrDataId = attrDataId;
-	}
-
 	public String getDelegationMemberId() {
 		return delegationMemberId;
 	}
@@ -67,31 +41,6 @@ public class RoleDocumentDelegationMemberQualifier extends KimDocumentBoBase {
 	public void setDelegationMemberId(String delegationMemberId) {
 		this.delegationMemberId = delegationMemberId;
 	}
-
-	public String getKimTypId() {
-		return kimTypId;
-	}
-
-	public void setKimTypId(String kimTypId) {
-		this.kimTypId = kimTypId;
-	}
-
-	public String getKimAttrDefnId() {
-		return kimAttrDefnId;
-	}
-
-	public void setKimAttrDefnId(String kimAttrDefnId) {
-		this.kimAttrDefnId = kimAttrDefnId;
-	}
-
-	public String getAttrVal() {
-		return attrVal;
-	}
-
-	public void setAttrVal(String attrVal) {
-		this.attrVal = attrVal;
-	}
-
 
 	@Override
 	protected LinkedHashMap toStringMapper() {
@@ -102,28 +51,6 @@ public class RoleDocumentDelegationMemberQualifier extends KimDocumentBoBase {
 		hashMap.put("kimAttrDefnId", getKimAttrDefnId());
 		hashMap.put("attrVal", getAttrVal());
 		return hashMap;
-	}
-
-	public String getQualifierKey() {
-		return this.qualifierKey;
-	}
-
-	public void setQualifierKey(String qualifierKey) {
-		this.qualifierKey = qualifierKey;
-	}
-
-	/**
-	 * @return the kimAttribute
-	 */
-	public KimAttributeImpl getKimAttribute() {
-		return this.kimAttribute;
-	}
-
-	/**
-	 * @param kimAttribute the kimAttribute to set
-	 */
-	public void setKimAttribute(KimAttributeImpl kimAttribute) {
-		this.kimAttribute = kimAttribute;
 	}
 
 }

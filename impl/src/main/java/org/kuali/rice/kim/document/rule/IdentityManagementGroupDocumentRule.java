@@ -27,6 +27,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
@@ -52,6 +53,8 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRuleBase implements AddGroupMemberRule {
 
 	private AddGroupMemberRule addGroupMemberRule;
+	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	
 	private BusinessObjectService businessObjectService;
 	private Class<? extends GroupDocumentMemberRule> addGroupMemberRuleClass = GroupDocumentMemberRule.class;
 
@@ -132,42 +135,20 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     private boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimTypeImpl kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
-		int attributeCounter = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-		KimAttributeImpl attribute;
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
-        for(GroupDocumentQualifier groupQualifier: groupQualifiers) {
-        	attributeSetToValidate = new AttributeSet();
-        	attribute = groupQualifier.getKimAttribute();
-        	if(attribute==null){
-        		Map<String, String> criteria = new HashMap<String, String>();
-        		criteria.put("kimAttributeId", groupQualifier.getKimAttrDefnId());
-        		attribute = (KimAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-        	}
-        	attributeSetToValidate.put(attribute.getAttributeName(), groupQualifier.getAttrVal());
-	        errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
-	        updateGlobalVariablesErrorKeys(
-	        		"document.qualifiers["+attributeCounter+"]", 
-	        		attributeSetToValidate, errorsTemp);
-	        validationErrors.putAll(errorsTemp);
-        	attributeCounter++;
-        }
-    	return validationErrors.isEmpty();
-    }
-
-    private void updateGlobalVariablesErrorKeys(String errorPath, AttributeSet attributes, AttributeSet validationErrors){
-    	List<ErrorMessage> attributeErrors;
-    	String errorKey;
-    	for(String attributeName: attributes.keySet()){
-    		errorKey = GlobalVariables.getErrorMap().getKeyPath(attributeName, true);
-    		attributeErrors = (List<ErrorMessage>)GlobalVariables.getErrorMap().get(errorKey);
-    		if(attributeErrors!=null){
-    			for(ErrorMessage errorMessage: attributeErrors){
-    				GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(errorPath+".attrVal", errorMessage.getErrorKey(), errorMessage.getMessageParameters());
-    			}
-				GlobalVariables.getErrorMap().remove(errorKey);
-    		}
+        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
+		errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
+		validationErrors.putAll( attributeValidationHelper.convertErrors("",attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers),errorsTemp) );
+		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		
+    	if (validationErrors.isEmpty()) {
+    		return true;
+    	} else {
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		return false;
     	}
     }
     

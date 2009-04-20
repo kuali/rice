@@ -35,6 +35,8 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -46,6 +48,8 @@ import org.kuali.rice.kns.service.NamespaceService;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
@@ -141,11 +145,15 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( attributes == null ) {
 			return validationErrors;
 		}
+		Map<String, KimAttributeImpl> attributeImpls = new HashMap<String, KimAttributeImpl>();
 		for ( String attributeName : attributes.keySet() ) {
 			Map<String,String> criteria = new HashMap<String,String>();
-            criteria.put("attributeName", attributeName);
-            // TODO: load entire attribute table and store in memory
-            KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+			criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, attributeName);
+			attributeImpls.put(attributeName, (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria));
+		}
+		
+		for ( String attributeName : attributes.keySet() ) {
+            KimAttributeImpl attributeImpl = attributeImpls.get(attributeName);
 			List<String> attributeErrors = null;
 			try {
 				if ( attributeImpl.getComponentName() == null) {
@@ -173,19 +181,116 @@ public class KimTypeServiceBase implements KimTypeService {
 				}
 			}
 		}
+		
+		Map<String, List<String>> referenceCheckErrors = validateReferencesExistAndActive(attributes, validationErrors);
+		for ( String attributeName : referenceCheckErrors.keySet() ) {
+			List<String> attributeErrors = referenceCheckErrors.get(attributeName);
+			for ( String err : attributeErrors ) {
+				validationErrors.put(attributeName, err);
+			}
+		}
+		
 		return validationErrors;
 	}
 
+	
+	protected Map<String, List<String>> validateReferencesExistAndActive(AttributeSet attributes, Map<String, String> previousValidationErrors) {
+		Map<String, KimAttributeImpl> attributeImpls = new HashMap<String, KimAttributeImpl>();
+		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();
+		Map<String, List<String>> errors = new HashMap<String, List<String>>();
+		
+		for ( String attributeName : attributes.keySet() ) {
+			Map<String,String> criteria = new HashMap<String,String>();
+            criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, attributeName);
+            KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+			attributeImpls.put(attributeName, attributeImpl);
+			
+			if (StringUtils.isNotBlank(attributeImpl.getComponentName())) {
+				if (!componentClassInstances.containsKey(attributeImpl.getComponentName())) {
+					try {
+						Class<?> componentClass = Class.forName( attributeImpl.getComponentName() );
+						if (!BusinessObject.class.isAssignableFrom(componentClass)) {
+							LOG.warn("Class " + componentClass.getName() + " does not implement BusinessObject.  Unable to perform reference existence and active validation");
+							continue;
+						}
+						BusinessObject componentInstance = (BusinessObject) componentClass.newInstance();
+						componentClassInstances.put(attributeImpl.getComponentName(), componentInstance);
+					}
+					catch (Exception e) {
+						LOG.error("Unable to instantiate class for attribute: " + attributeName, e);
+					}
+				}
+			}
+		}
+		
+		// now that we have instances for each component class, try to populate them with any attribute we can, assuming there were no other validation errors associated with it
+		for ( String attributeName : attributes.keySet() ) {
+			if (!previousValidationErrors.containsKey(attributeName)) {
+				for (Object componentInstance : componentClassInstances.values()) {
+					try {
+						ObjectUtils.setObjectProperty(componentInstance, attributeName, attributes.get(attributeName));
+					} 
+					catch (NoSuchMethodException e) {
+						// this is expected since not all attributes will be in all components
+					}
+					catch (Exception e) {
+						LOG.error("Unable to set object property class: " + componentInstance.getClass().getName() + " property: " + attributeName, e);
+					}
+				}
+			}
+		}
+		
+		for (String componentClass : componentClassInstances.keySet()) {
+			BusinessObject componentInstance = componentClassInstances.get(componentClass);
+			
+			List<RelationshipDefinition> relationships = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClass).getRelationships();
+			if (relationships == null) {
+				continue;
+			}
+			
+			for (RelationshipDefinition relationshipDefinition : relationships) {
+				List<PrimitiveAttributeDefinition> primitiveAttributes = relationshipDefinition.getPrimitiveAttributes();
+				
+				// this code assumes that the last defined primitiveAttribute is the attributeToHighlightOnFail
+				String attributeToHighlightOnFail = primitiveAttributes.get(primitiveAttributes.size() - 1).getSourceName();
+				
+				// TODO: will this work for user ID attributes?
+				
+				if (!attributes.containsKey(attributeToHighlightOnFail)) {
+					// if the attribute to highlight wasn't passed in, don't bother validating
+					continue;
+				}
+				
+				String attributeDisplayLabel;
+				if (attributeImpls.containsKey(attributeToHighlightOnFail) && StringUtils.isNotBlank(attributeImpls.get(attributeToHighlightOnFail).getComponentName())) {
+					attributeDisplayLabel = getDataDictionaryService().getAttributeLabel(attributeImpls.get(attributeToHighlightOnFail).getComponentName(), attributeToHighlightOnFail);
+				}
+				else {
+					attributeDisplayLabel = attributeImpls.get(attributeToHighlightOnFail).getAttributeLabel();
+				}
+				
+				getDictionaryValidationService().validateReferenceExistsAndIsActive(componentInstance, relationshipDefinition.getObjectAttributeName(),
+						attributeToHighlightOnFail, attributeDisplayLabel);
+				
+				errors.put(attributeToHighlightOnFail, extractErrorsFromGlobalVariablesErrorMap(attributeToHighlightOnFail));
+			}
+		}
+		return errors;
+	}
+	
 	protected List<String> validateDataDictionaryAttribute(String entryName, Object object, PropertyDescriptor propertyDescriptor, boolean validateRequired) {
 		getDictionaryValidationService().validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, "", validateRequired);
+		return extractErrorsFromGlobalVariablesErrorMap(propertyDescriptor.getName());
+	}
 
-		Object results = GlobalVariables.getErrorMap().get(propertyDescriptor.getName());
-		List errors = new ArrayList();
+	protected List<String> extractErrorsFromGlobalVariablesErrorMap(String attributeName) {
+		Object results = GlobalVariables.getErrorMap().getErrorMessagesForProperty(attributeName);
+		List<String> errors = new ArrayList<String>();
         if (results instanceof String) {
         	errors.add((String)results);
         } else if ( results != null) {
         	if (results instanceof List) {
-	        	List errorList = (List)results;
+	        	List<?> errorList = (List<?>)results;
 	        	for (Object msg : errorList) {
 	        		ErrorMessage errorMessage = (ErrorMessage)msg;
 	        		String retVal = errorMessage.getErrorKey()+":";
@@ -201,10 +306,10 @@ public class KimTypeServiceBase implements KimTypeService {
 				}
 	        }
         }
-        GlobalVariables.getErrorMap().remove(propertyDescriptor.getName());
-		return errors;
+        GlobalVariables.getErrorMap().removeAllErrorMessagesForProperty(attributeName);
+        return errors;
 	}
-
+	
 	protected List<String> validateNonDataDictionaryAttribute(String attributeName, String attributeValue, boolean validateRequired) {
 		return new ArrayList<String>();
 	}
@@ -362,7 +467,7 @@ public class KimTypeServiceBase implements KimTypeService {
 				// FIXME: I don't like this - if two attributes have the same sort code, they will overwrite each other
 				definitions.put(typeAttribute.getSortCode(), definition);
 			}
-			attributeDefinitionCache.put( kimTypeId, definitions );
+			// attributeDefinitionCache.put( kimTypeId, definitions );
 		}
 		return definitions;
 	}

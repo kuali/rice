@@ -18,7 +18,7 @@
 <c:set var="inquiry" value="false" scope="request" /> 
 
 <kul:documentPage
-	showDocumentInfo="false"
+	showDocumentInfo="true"
 	htmlFormAction="identityManagementGroupDocument"
 	documentTypeName="IdentityManagementGroupDocument"
 	renderMultipart="false"

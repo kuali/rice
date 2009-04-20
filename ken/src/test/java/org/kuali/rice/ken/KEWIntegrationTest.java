@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -32,7 +32,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.ROLLBACK)
-public class KEWIntegrationTest extends NotificationTestCaseBase {
+public class KEWIntegrationTest extends KENTestCase {
 
 	@Test
     public void testKEWServicesAreAccessible() throws Exception {

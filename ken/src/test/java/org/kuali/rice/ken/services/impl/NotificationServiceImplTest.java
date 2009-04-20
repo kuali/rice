@@ -30,7 +30,7 @@ import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -44,7 +44,7 @@ import org.quartz.SchedulerException;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 // this whole test case is suspect
-public class NotificationServiceImplTest extends NotificationTestCaseBase {
+public class NotificationServiceImplTest extends KENTestCase {
 
     public NotificationServiceImplTest() {
     }

@@ -16,7 +16,7 @@
 package org.kuali.rice.ken.dao;
 
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -26,7 +26,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.ROLLBACK)
-public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCaseBase {
+public abstract class BusinessObjectDaoTestCaseBase extends KENTestCase {
     protected GenericDao businessObjectDao;
 
     /**

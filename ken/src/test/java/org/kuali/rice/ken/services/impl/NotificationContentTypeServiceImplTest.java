@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationContentType;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -30,7 +30,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.CLEAR_DB)
-public class NotificationContentTypeServiceImplTest extends NotificationTestCaseBase {
+public class NotificationContentTypeServiceImplTest extends KENTestCase {
     @Test public void testVersioning() {
         NotificationContentTypeService impl = services.getNotificationContentTypeService();
         int originalCurrentSize = impl.getAllCurrentContentTypes().size();

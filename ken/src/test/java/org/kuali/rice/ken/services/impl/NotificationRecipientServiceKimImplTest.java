@@ -18,7 +18,7 @@ package org.kuali.rice.ken.services.impl;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
@@ -31,7 +31,7 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class NotificationRecipientServiceKimImplTest extends NotificationTestCaseBase
+public class NotificationRecipientServiceKimImplTest extends KENTestCase
 {
     NotificationRecipientServiceKimImpl nrski = new NotificationRecipientServiceKimImpl();
     /**

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ken.services.ws.impl;
 
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.Context;
 import org.springframework.context.ApplicationContext;
@@ -27,7 +27,7 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
  * Base class for testing the web service that KEN exposes.
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public abstract class NotificationWebServiceTestCaseBase extends NotificationTestCaseBase {
+public abstract class NotificationWebServiceTestCaseBase extends KENTestCase {
     protected Server server;
 
     protected boolean shouldStartWebService() {

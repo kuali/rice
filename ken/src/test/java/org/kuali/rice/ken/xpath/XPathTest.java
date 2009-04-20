@@ -26,7 +26,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.DocumentNamespaceContext;
 import org.kuali.rice.ken.util.SimpleErrorHandler;
 import org.kuali.rice.ken.util.Util;
@@ -56,7 +56,7 @@ import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.ROLLBACK)
-public class XPathTest extends NotificationTestCaseBase {
+public class XPathTest extends KENTestCase {
     private static final String TEST_XML = "sample_message_event_type.xml";
 
     protected InputSource getTestXMLInputSource() {

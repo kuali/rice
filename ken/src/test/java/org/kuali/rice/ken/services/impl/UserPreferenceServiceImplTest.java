@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.UserChannelSubscription;
 import org.kuali.rice.ken.service.UserPreferenceService;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -33,7 +33,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.ROLLBACK)
-public class UserPreferenceServiceImplTest extends NotificationTestCaseBase {
+public class UserPreferenceServiceImplTest extends KENTestCase {
     public static final String VALID_USER_ID = TestConstants.TEST_USER_ONE;
     public static final String VALID_CHANNEL_ID = TestConstants.VALID_CHANNEL_ONE_ID.toString();
     public static final Long VALID_CHANNEL_ID_LONG = TestConstants.VALID_CHANNEL_ONE_ID;

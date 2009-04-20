@@ -31,7 +31,7 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -60,7 +60,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 				}
 		)
 )
-public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {
+public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestCase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data
     private static final int EXPECTED_SUCCESSES = 6;

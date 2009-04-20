@@ -43,14 +43,14 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.CLEAR_DB)
-public abstract class NotificationTestCaseBase extends BaselineTestCase {
+public abstract class KENTestCase extends BaselineTestCase {
     private static final String KEN_MODULE_NAME = "ken";
     private static final String TX_MGR_BEAN_NAME = "transactionManager";
 
     protected SpringNotificationServiceLocator services;
     protected PlatformTransactionManager transactionManager;
 
-    public NotificationTestCaseBase() {
+    public KENTestCase() {
         super(KEN_MODULE_NAME);
     }   
     

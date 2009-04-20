@@ -20,7 +20,7 @@ import java.util.HashMap;
 import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -31,7 +31,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.ROLLBACK)
-public class NotificationAuthorizationServiceImplTest extends NotificationTestCaseBase {
+public class NotificationAuthorizationServiceImplTest extends KENTestCase {
 
     public NotificationAuthorizationServiceImplTest() {
     }

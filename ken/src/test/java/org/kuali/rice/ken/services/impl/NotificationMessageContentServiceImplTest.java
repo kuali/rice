@@ -26,7 +26,7 @@ import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.bo.NotificationSender;
 import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
@@ -38,7 +38,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @BaselineMode(Mode.ROLLBACK)
-public class NotificationMessageContentServiceImplTest extends NotificationTestCaseBase {
+public class NotificationMessageContentServiceImplTest extends KENTestCase {
     private static final String SAMPLE_EVENT_MESSAGE = "sample_message_event_type.xml";
     private static final String SAMPLE_SIMPLE_MESSAGE = "sample_message_simple_type.xml";
     private static final String SAMPLE_MALFORMED_EVENT_MESSAGE = "sample_malformed_message_event_type.xml";

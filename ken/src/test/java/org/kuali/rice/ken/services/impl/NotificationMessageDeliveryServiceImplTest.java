@@ -21,14 +21,14 @@ import org.junit.Test;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 
 /**
  * This class tests the message delivery service implementation
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class NotificationMessageDeliveryServiceImplTest extends NotificationTestCaseBase {
+public class NotificationMessageDeliveryServiceImplTest extends KENTestCase {
 
     @Test
     public void testGetNotificationMessageDelivery_validId() {

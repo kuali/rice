@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.rice.ken.service.ProcessingResult;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
 
 /**
@@ -32,7 +32,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
-public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends NotificationTestCaseBase {
+public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTestCase {
     // NOTE: this value is highly dependent on test data 
     private static final int EXPECTED_SUCCESSES = 6;
     

@@ -9,7 +9,6 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.affiliationTypeCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.campusCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.dflt}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.active}" noColon="true" /></div></th>
            <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           </c:if>	
@@ -33,11 +32,6 @@
                 <div align="center">
                 	<kul:htmlControlAttribute property="newAffln.dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnly}" /> 
 				</div>
-                </td>
-                <td class="infoline">
-                <div align="center">
-                	<kul:htmlControlAttribute property="newAffln.active" attributeEntry="${docAffiliationAttributes.active}" readOnly="${readOnly}" />
-                </div>
                 </td>
                 <td class="infoline">
 					<div align=center>

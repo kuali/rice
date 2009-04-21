@@ -27,6 +27,7 @@ import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.junit.Test;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
@@ -40,12 +41,25 @@ import org.kuali.rice.ksb.test.KSBTestCase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class SOAPServiceTest extends KSBTestCase {
-
-	private static final String ENDPOINT_URL = "http://localhost:9913/TestClient1/remoting/secure/soap-echoServiceSecure";
-	private static final String WSDL_URL1 = "http://localhost:9913/TestClient1/remoting/soap-echoService?wsdl";
 	
 	public boolean startClient1() {
 		return true;
+	}
+	
+	private String getEndpointUrl() {
+		return "http://localhost:" + 
+			getClient1Port() +
+			"/TestClient1/remoting/secure/soap-echoServiceSecure";
+	}
+	
+	private String getWsdlUrl() {
+		return "http://localhost:" +
+			getClient1Port() +
+			"/TestClient1/remoting/soap-echoService?wsdl";
+	}
+	
+	private String getClient1Port() {
+		return ConfigContext.getCurrentContextConfig().getProperty("ksb.client1.port");
 	}
 
 	
@@ -79,7 +93,7 @@ public class SOAPServiceTest extends KSBTestCase {
 		clientFactory.getServiceFactory().setDataBinding(new AegisDatabinding());	
 		clientFactory.setServiceClass(EchoService.class);
 		clientFactory.setServiceName(new QName("urn:TestCl1", "soap-echoServiceSecure"));
-		clientFactory.setAddress(new URI(ENDPOINT_URL, false).toString());
+		clientFactory.setAddress(new URI(getEndpointUrl(), false).toString());
 		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
 		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
 		EchoService echoService = (EchoService)clientFactory.create();
@@ -105,7 +119,7 @@ public class SOAPServiceTest extends KSBTestCase {
 		
 		DynamicClientFactory dcf = DynamicClientFactory.newInstance(KSBServiceLocator.getCXFBus());
 		
-		Client client = dcf.createClient(new URI(WSDL_URL1, false).toString());
+		Client client = dcf.createClient(new URI(getWsdlUrl(), false).toString());
 		client.getInInterceptors().add(new LoggingInInterceptor());
 		client.getOutInterceptors().add(new LoggingOutInterceptor());
 		Object[] results = client.invoke("trueEcho", new Object[] { "testing" });

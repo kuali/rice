@@ -233,6 +233,7 @@
 		</documentType>
 		<documentType>
 			<name>TravelRequest</name>
+			<parent>RiceDocument</parent>
 			<description>Create a New Travel Request</description>
 			<label>Travel Request</label>
 			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.web.lookup;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -45,6 +46,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Ignore("KULRICE-3011")
 public class WebLookupTest extends WebTestBase {
 
     public WebLookupTest() {

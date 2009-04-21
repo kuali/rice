@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.web.document;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.web.test.WebTestBase;
 
@@ -27,6 +28,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Ignore("KULRICE-3011")
 public class WebActionTest extends WebTestBase {
 
 

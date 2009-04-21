@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.web.maintainable;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
@@ -23,6 +24,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
+@Ignore("KULRICE-3011")
 public class BaseMaintainableTest extends ServerTestBase {
     
 

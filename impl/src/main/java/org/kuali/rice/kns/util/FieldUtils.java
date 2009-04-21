@@ -1118,6 +1118,12 @@ public class FieldUtils {
         {
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
 
+            if(field.isDatePicker()) {
+            	
+            	Field newDate = createRangeDateField(field);
+            	fields.add(newDate);
+            }
+            
             BusinessObject newBusinessObjectInstance;
             if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
             	ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
@@ -1168,6 +1174,20 @@ public class FieldUtils {
         }
         return fields;
     }
+
+
+	/**
+	 * creates an extra field for date from/to ranges
+	 * @param field
+	 * @return a new date field
+	 */
+	public static Field createRangeDateField(Field field) {
+		Field newDate = (Field)ObjectUtils.deepCopy(field);
+		newDate.setFieldLabel(newDate.getFieldLabel()+" "+KNSConstants.LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+		field.setFieldLabel(field.getFieldLabel()+" "+KNSConstants.LOOKUP_DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
+		newDate.setPropertyName(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX+newDate.getPropertyName());
+		return newDate;
+	}
 
     private static Field meshContainerFields(Field oldMaintField, Field newMaintField, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
         List resultingRows = new ArrayList();

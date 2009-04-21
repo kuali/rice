@@ -274,6 +274,11 @@ public class KNSConstants extends JSTLConstants {
     public static final String PARAMETER_DOC_ID = "docId";
     public static final String PARAMETER_COMMAND = "command";
 //    public static final String LOOKUP_METHOD = "performLookup";
+    public static final String LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL = "From";
+    public static final String LOOKUP_DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL = "To";
+    public static final String LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX = "rangeLowerBoundKeyPrefix_";
+    public static final String LOOKUP_RANGE_UPPER_BOUND_PROPERTY_PREFIX = "rangeUpperBoundKeyPrefix_";
+
     public static final String METHOD_DISPLAY_DOC_SEARCH_VIEW = "displayDocSearchView";
     public static final String MAINTENANCE_ACTION = "maintenance.do";
     public static final String MAINTENANCE_ADD_PREFIX = "add.";
@@ -451,6 +456,7 @@ public class KNSConstants extends JSTLConstants {
 //    // add AND operator to thest if it is uncommented below
 //    public static final String[] LOGICAL_OPERATORS = {OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR};
     public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", "..", OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
+    public static final String[] RANGE_CHARACTERS = {">=","<=",">","<",".."};
     public static final String AUDIT_ERRORS = "AuditErrors";
 
     // Header Tab navigation constant values
@@ -532,4 +538,5 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
 
+   
 }

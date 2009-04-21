@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValue;
@@ -44,16 +45,16 @@ public class SavedSearchValuesFinder extends KeyValuesBase {
 		savedSearchValues.add(new KeyLabelPair("*ignore*", "-Named Searches"));
 		List<KeyValue> namedSearches = KEWServiceLocator.getDocumentSearchService().getNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
 		for (KeyValue keyValue : namedSearches) {
-			KeyLabelPair keyLabel = new KeyLabelPair(keyValue.getKey(),keyValue.getValue());
-			//TODO: truncate the label?
+			String label = StringUtils.abbreviate(keyValue.getValue(), 75);
+			KeyLabelPair keyLabel = new KeyLabelPair(keyValue.getKey(),label);
 			savedSearchValues.add(keyLabel);
 		}
 		savedSearchValues.add(new KeyLabelPair("*ignore*", "-----"));
 		savedSearchValues.add(new KeyLabelPair("*ignore*", "-Recent Searches"));
 		List<KeyValue> mostRecentSearches = KEWServiceLocator.getDocumentSearchService().getMostRecentSearches(GlobalVariables.getUserSession().getPrincipalId());
 		for (KeyValue keyValue : mostRecentSearches) {
-			KeyLabelPair keyLabel = new KeyLabelPair(keyValue.getKey(),keyValue.getValue());
-			//TODO: truncate the label?
+			String label = StringUtils.abbreviate(keyValue.getValue(), 75);
+			KeyLabelPair keyLabel = new KeyLabelPair(keyValue.getKey(),label);
 			savedSearchValues.add(keyLabel);
 		}
 		return savedSearchValues;

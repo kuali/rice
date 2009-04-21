@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
@@ -971,10 +972,15 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return
      */
     public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
-        setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
+    	Map lookupFormFields = lookupForm.getFieldsForLookup();
+    	
+    	setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
         Collection displayList;
 
+		
+		preprocessDateFields(lookupFormFields);
+        
         // call search method to get results
         if (bounded) {
             displayList = getSearchResults(lookupForm.getFieldsForLookup());
@@ -1093,6 +1099,40 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         return displayList;
     }
+
+	/**
+	 * changes from/to dates into the range operators the lookupable dao expects ("..",">" etc)
+	 * this method modifies the passed in map and returns a list containing only the modified fields
+	 * 
+	 * @param lookupFormFields
+	 */
+	protected Map<String,String> preprocessDateFields(Map lookupFormFields) {
+		Map<String,String> fieldsToUpdate = new HashMap<String,String>();
+		Set<String> fieldsForLookup = lookupFormFields.keySet();
+        for (String propName : fieldsForLookup) {
+			if(propName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+				String fromDateValue = (String)lookupFormFields.get(propName);
+				String dateFieldName = StringUtils.remove(propName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+				String dateValue = (String)lookupFormFields.get(dateFieldName);
+				String newPropValue = dateValue;//maybe clean above with ObjectUtils.clean(propertyValue)
+				if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(dateValue)) {
+					newPropValue = fromDateValue + ".." + dateValue;
+				} else if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(dateValue)) {
+					newPropValue = ">="+fromDateValue;
+				} else if(StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {
+					newPropValue = "<="+dateValue;
+				} //could optionally continue on else here
+				
+				fieldsToUpdate.put(dateFieldName, newPropValue);
+			}
+		}
+        //update lookup values from found date values to update
+        Set<String> keysToUpdate = fieldsToUpdate.keySet();
+        for (String updateKey : keysToUpdate) {
+			lookupFormFields.put(updateKey, fieldsToUpdate.get(updateKey));
+		}
+        return fieldsToUpdate;
+	}
 
     protected String maskValueIfNecessary(Class businessObjectClass, String propertyName, String propertyValue, BusinessObjectRestrictions businessObjectRestrictions) {
         String maskedPropertyValue = propertyValue;

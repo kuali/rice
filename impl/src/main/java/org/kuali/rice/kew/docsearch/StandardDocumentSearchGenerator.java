@@ -49,6 +49,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -303,6 +304,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	if (criteriaComponent.isRangeSearch()) {
                 // for a range search just add the criteria
 	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), criteriaComponent.isComponentLowerBoundValue(), attributeValueSearched));
+        	} else if(criteriaComponent.isAllowInlineRange()) {
+        		whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched, criteriaComponent.isAllowInlineRange()));
         	} else {
                 if (!Utilities.isEmpty(attributeValuesSearched)) {
                     // for a multivalue date search we need multiple ranges entered
@@ -387,6 +390,29 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 whereSqlTemp.append(") ");
             } else {
                 String sqlOperand = getSqlOperand(criteriaComponent.isRangeSearch(), criteriaComponent.isSearchInclusive(), (criteriaComponent.isRangeSearch() && criteriaComponent.isComponentLowerBoundValue()), usingWildcards);
+              if(criteriaComponent.isAllowInlineRange()) {
+              	for (String range : KNSConstants.RANGE_CHARACTERS) {
+						int index = StringUtils.indexOf(attributeValueSearched, range);
+              		if(index != -1) {
+							sqlOperand=range;
+							if(!StringUtils.equals(sqlOperand, "..")) {
+								attributeValueSearched = StringUtils.remove(attributeValueSearched, range);
+								
+							} else {
+								String[] rangeValues = StringUtils.split(attributeValueSearched, "..");
+								if(rangeValues!=null && rangeValues.length>1) {
+									//append first one here and then set the second one and break
+									whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, ">=", rangeValues[0], prefixToUse, suffixToUse));
+									attributeValueSearched = rangeValues[1];
+									sqlOperand = "<=";
+								} else {
+									throw new RuntimeException("What to do here...Range search \"..\" without one element");
+								}
+							}
+							break;
+						}
+					}	
+              }
                 whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, sqlOperand, attributeValueSearched, prefixToUse, suffixToUse));
             }
         }
@@ -417,14 +443,54 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch) {
+    	return constructWhereClauseDateElement(clauseStarter, queryTableColumnName, inclusive, valueIsLowerBound, dateValueToSearch,false);
+    }
+    
+    public StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch, boolean isAllowInlineRange) {
+    	StringBuffer whereSQLBuffer = new StringBuffer();
     	StringBuffer sqlOperand = new StringBuffer(getSqlOperand(true, inclusive, valueIsLowerBound, false));
+		String lowerTimeBound = "00:00:00";
+		String upperTimeBound = "23:59:59";
+
     	String timeValueToSearch = null;
     	if (valueIsLowerBound) {
-    		timeValueToSearch = "00:00:00";
+			timeValueToSearch = lowerTimeBound;
     	} else {
-    		timeValueToSearch = "23:59:59";
+			timeValueToSearch = upperTimeBound;
     	}
-    	return new StringBuffer().append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim()), timeValueToSearch.trim()), "", ""));
+
+        if(isAllowInlineRange) {
+        	for (String range : KNSConstants.RANGE_CHARACTERS) {
+				int index = StringUtils.indexOf(dateValueToSearch, range);
+        		if(index != -1) {
+					sqlOperand=new StringBuffer(range);
+					if(!StringUtils.equals(sqlOperand.toString(), "..")) {
+						dateValueToSearch = StringUtils.remove(dateValueToSearch,range);
+						if(StringUtils.equals(range, ">")) {
+							timeValueToSearch = upperTimeBound;
+						} else {
+							timeValueToSearch = lowerTimeBound;
+						}
+					}  else {
+						String[] rangeValues = StringUtils.split(dateValueToSearch, "..");
+						if(rangeValues!=null && rangeValues.length>1) {
+							//Enhancement Idea - Could possibly use recursion here (would have to set the lower bound and inclusive variables
+							//append first one here and then set the second one and break
+							timeValueToSearch = lowerTimeBound;
+							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim()), timeValueToSearch.trim()), "", ""));
+							
+							dateValueToSearch = rangeValues[1];
+							sqlOperand = new StringBuffer("<=");
+							timeValueToSearch = upperTimeBound;
+						} else {
+							throw new RuntimeException("What to do here...Range search \"..\" without one element");
+						}
+					}
+					break;
+				}
+			}	
+        }
+		return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim()), timeValueToSearch.trim()), "", ""));
     }
 
     public StringBuffer constructWhereClauseElement(String clauseStarter,String queryTableColumnName,String operand,String valueToSearch,String valuePrefix,String valueSuffix) {

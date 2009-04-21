@@ -60,7 +60,7 @@
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonParams" />
 	</c:forEach>
 		<c:if test="${KualiForm.supplementalActionsEnabled==true}" >
-		<div class="lookupcreatenew" title="Supplemental Search Actions" style="padding: 3px 30px 3px 3px;">
+		<div class="lookupcreatenew" title="Supplemental Search Actions" style="padding: 3px 30px 3px 300px;">
 			${KualiForm.lookupable.supplementalMenuBar} &nbsp;
 			<c:set var="extraField" value="${KualiForm.lookupable.extraField}"/>
 			<c:if test="${not empty extraField}">

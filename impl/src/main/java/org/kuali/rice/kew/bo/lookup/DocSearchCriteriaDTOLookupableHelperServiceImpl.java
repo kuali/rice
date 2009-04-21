@@ -32,11 +32,14 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
+import org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SavedSearchResult;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -47,9 +50,9 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -76,8 +79,7 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * This is a description of what this class does - chris don't forget to fill this in.
- *
+ * Lookupable helper class for new doc search
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
@@ -90,44 +92,20 @@ KualiLookupableHelperServiceImpl {
 	boolean savedSearch = false;
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.kns.service.DateTimeService)
 	 */
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;
 	}
 
-
 	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
-	 */
-	@Override
-	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject,
-			List pkNames) {
-		// TODO chris - THIS METHOD NEEDS JAVADOCS
-		return super.getCustomActionUrls(businessObject, pkNames);
-	}
-
-
-
-
-
-
-
-	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#performLookup(org.kuali.rice.kns.web.struts.form.LookupForm, java.util.Collection, boolean)
 	 */
 	@Override
 	public Collection performLookup(LookupForm lookupForm,
 			Collection resultTable, boolean bounded) {
 
-		//TODO: KNS updates to make this not require code from the parent
-
+		//TODO: ideally implement KNS updates to make this not require code from the parent
 
 
     	Map<String,String[]> parameters = this.getParameters();
@@ -147,11 +125,28 @@ KualiLookupableHelperServiceImpl {
     		}
     		savedSearch=false;
     	} else {
-    		criteria = DocumentLookupCriteriaBuilder.populateCriteria(parameters);
+    		Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
+    		Map<String,String> changedDateFields = preprocessDateFields(lookupForm.getFieldsForLookup());
+    		fixedParameters.putAll(this.getParameters());
+    		for (Map.Entry<String,String> prop : changedDateFields.entrySet()) {
+				fixedParameters.remove(prop.getKey());
+    			fixedParameters.put(prop.getKey(), new String[]{prop.getValue()});
+			}
+    		criteria = DocumentLookupCriteriaBuilder.populateCriteria(fixedParameters);
+    		
     	}
 
     	Collection displayList=null;
-    	DocumentSearchResultComponents components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
+    	
+    	DocumentSearchResultComponents components = null;
+    	try {
+    		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);	
+    	} catch (WorkflowServiceErrorException wsee) {
+    		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
+    			GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+    		};
+    	}
+    	
     	//FIXME: for now if not set set the create date back from the criteria, however eventually we should convert all
     	for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
@@ -197,16 +192,21 @@ KualiLookupableHelperServiceImpl {
 //        	if(element instanceof PersistableBusinessObject){
 //                lookupForm.setLookupObjectId(((PersistableBusinessObject)element).getObjectId());
 //            }
-//        	BusinessObject element = null;
-//        	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
-
-//            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+        DocumentRouteHeaderEBO element = new DocSearchCriteriaDTO();
+        //TODO: additional BORestrictions through generator or component to lock down per document?
+    	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
+            		
 //          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 //ADDED (4 lines)
         for (Iterator iter = result.iterator(); iter.hasNext();) {
+
+        	
+
+            
+
         	DocumentSearchResult docSearchResult = (DocumentSearchResult)iter.next();
 //TODO: where to get these from?
-        	HtmlData returnUrl = new AnchorHtmlData();
+//        	HtmlData returnUrl = new AnchorHtmlData();
         	String actionUrls = "";
 
 //ADDED (3)
@@ -228,8 +228,9 @@ KualiLookupableHelperServiceImpl {
             		  }
             	  }
             	  if(keyValue==null) {
+            		  //means we didn't find an indexed value for this, this seems bad but happens a lot we should research why 
             		  keyValue = new KeyValueSort();
-            		  System.out.println("column: "+col.getPropertyName()+"has an empty KeyValue, this should never happen");
+//            		  System.out.println("column: "+col.getPropertyName()+"has an empty KeyValue, this should never happen");
             	  }
 
             	  //Set values from keyvalue on column
@@ -251,6 +252,10 @@ KualiLookupableHelperServiceImpl {
             		  col.setColumnTitle(labelMessageKey);
             	  }
 
+				if(StringUtils.equals(propertyName, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID)) {
+					((DocSearchCriteriaDTO)element).setRouteHeaderId(col.getPropertyValue());
+				}
+				
             	Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
@@ -275,7 +280,9 @@ KualiLookupableHelperServiceImpl {
                     }
                 }
 
-                // formatters
+                
+                //TODO: check exisiting formatter here, ideally we should be getting this formatter from col.getFormatter in most cases
+                // formatters 
                 if (prop != null) {
                     // for Booleans, always use BooleanFormatter
                     if (prop instanceof Boolean) {
@@ -309,6 +316,7 @@ KualiLookupableHelperServiceImpl {
                 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
 
+                //TODO: can we call into a method in the result processor to get this (or set something on the criteria)
 //                propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
 
                 col.setPropertyValue(propValue);
@@ -325,13 +333,13 @@ KualiLookupableHelperServiceImpl {
                 	    }
                 	    anchor.setTarget(target.trim());
                 		if(!DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equals(criteria.getSuperUserSearch())) {
-                			anchor.setHref("../kew/" + StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
+                			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
                 		} else {
-                			anchor.setHref("../kew/" + StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue());
+                			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue());
                 		}
                         col.setMaxLength(100); //for now force this
                 	} else if(StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getkey())) {
-                		anchor.setHref("../kew/" + StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\"><img "));
+                		anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\"><img "));
                 		String target = StringUtils.substringBetween(keyValue.getValue(), "target=\"", "\"");
                         if (target == null) {
                             target = "_self";
@@ -341,7 +349,7 @@ KualiLookupableHelperServiceImpl {
                         keyValue.setvalue(keyValue.getUserDisplayValue());
                         col.setEscapeXMLValue(false);
                 	} else if (StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, keyValue.getkey())) {
-                		anchor.setHref("../kr/"+StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "\" target=\"_blank\""));
+                		anchor.setHref("../kr/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\" target=\"_blank\""));
                 		col.setMaxLength(100); //for now force this
                 	}
 
@@ -350,8 +358,10 @@ KualiLookupableHelperServiceImpl {
                 }
                 Column newCol = (Column)ObjectUtils.deepCopy(col);
                 newColumns.add(newCol);
+                
             }
-
+            
+            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
             ResultRow row = new ResultRow(newColumns, returnUrl.constructCompleteHtmlTag(), actionUrls);
             row.setRowId(returnUrl.getName());
             // because of concerns of the BO being cached in session on the ResultRow,
@@ -382,8 +392,6 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	@Override
@@ -407,8 +415,6 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#setRows()
 	 */
 	@Override
@@ -419,8 +425,6 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#setRows()
 	 */
 	protected void setRows(Map fieldValues, String docTypeName) {
@@ -490,8 +494,6 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * This overridden method allows for overriding what the clear logic does.
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#performClear()
 	 */
 	@Override
@@ -544,7 +546,7 @@ KualiLookupableHelperServiceImpl {
 	}
 	/**
 	 *
-	 * This method is taken from DocSearch to retrieve a document type
+	 * retrieve a document type
 	 *
 	 * @param docTypeName
 	 * @return
@@ -559,8 +561,6 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getSupplementalMenuBar()
 	 */
 	@Override
@@ -634,8 +634,6 @@ KualiLookupableHelperServiceImpl {
 //    }
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayHeaderNonMaintActions()
 	 */
 	@Override
@@ -645,8 +643,6 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayLookupCriteria()
 	 */
 	@Override
@@ -656,8 +652,6 @@ KualiLookupableHelperServiceImpl {
 
 
 	/**
-	 * This overridden method ...
-	 *
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#checkForAdditionalFields(java.util.Map)
 	 */
 	@Override
@@ -675,6 +669,9 @@ KualiLookupableHelperServiceImpl {
 		return true;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
+	 */
 	@Override
     public void validateSearchParameters(Map fieldValues) {
         super.validateSearchParameters(fieldValues);
@@ -698,7 +695,7 @@ KualiLookupableHelperServiceImpl {
 				GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
 			};
 		}
-        if(!GlobalVariables.getErrorMap().isEmpty()) {
+        if(!GlobalVariables.getErrorMap().hasNoErrors()) {
         	throw new ValidationException("errors in search criteria");
         }
 
@@ -743,7 +740,7 @@ KualiLookupableHelperServiceImpl {
 				}
 			}
 		}
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
+        if (!GlobalVariables.getErrorMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
         }
 
@@ -814,19 +811,6 @@ KualiLookupableHelperServiceImpl {
 
         return true;
 	}
-
-
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getTitle()
-	 */
-	@Override
-	public String getTitle() {
-		//TODO: figure out if this should be different then the default (i.e. put document type name in title if selected)
-		return super.getTitle();
-	}
-
 
 	/**
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getExtraField()

@@ -95,6 +95,7 @@ public class Field implements java.io.Serializable {
     private String mainFieldLabel;  // the fieldLabel holds things like "From" and "Ending" and this field holds things like "Total Amount"
     private Boolean rangeFieldInclusive;
     private boolean memberOfRange = false;
+    private boolean allowInlineRange = false;
     //FIXME: can this go away?  only seems to be used on column
     private Map<String, String> displayParameters;
 
@@ -1509,6 +1510,12 @@ public class Field implements java.io.Serializable {
         this.fieldDataType = fieldDataType;
     }
     
+    /**
+     * 
+     * Use fieldType=Field.HIDDEN instead
+     * @deprecated
+     * @return
+     */
     public boolean isHidden() {
         return this.hidden;
     }
@@ -1517,6 +1524,12 @@ public class Field implements java.io.Serializable {
         return this.isColumnVisible;
     }
 
+    /**
+     * 
+     * Use fieldType=Field.HIDDEN instead
+     * @deprecated
+     * @param hidden
+     */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
@@ -1553,6 +1566,20 @@ public class Field implements java.io.Serializable {
 	 */
 	public void setSkipBlankValidValue(boolean skipBlankValidValue) {
 		this.skipBlankValidValue = skipBlankValidValue;
+	}
+
+	/**
+	 * @return the allowInlineRange
+	 */
+	public boolean isAllowInlineRange() {
+		return this.allowInlineRange;
+	}
+
+	/**
+	 * @param allowInlineRange the allowInlineRange to set
+	 */
+	public void setAllowInlineRange(boolean allowInlineRange) {
+		this.allowInlineRange = allowInlineRange;
 	}
     
     //#END DOC SEARCH RELATED

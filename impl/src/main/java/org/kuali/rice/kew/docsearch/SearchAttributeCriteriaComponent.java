@@ -47,6 +47,7 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     
     // range properties
     private boolean rangeSearch = false;
+    private boolean allowInlineRange = false;
     // this is the field that is saved to the database
     private String savedKey;
 
@@ -308,5 +309,19 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     public void setLookupableFieldType(String lookupableFieldType) {
         this.lookupableFieldType = lookupableFieldType;
     }
+
+	/**
+	 * @return the allowInlineRange
+	 */
+	public boolean isAllowInlineRange() {
+		return this.allowInlineRange;
+	}
+
+	/**
+	 * @param allowInlineRange the allowInlineRange to set
+	 */
+	public void setAllowInlineRange(boolean allowInlineRange) {
+		this.allowInlineRange = allowInlineRange;
+	}
 
 }

@@ -27,7 +27,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
@@ -239,17 +241,17 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	}
 
 	/**
-	 * This method ...
+	 * This method gets the search att rows and fixes them where necessary
 	 * 
 	 */
 	protected List<Row> searchAttRows(DocumentType documentType) {
 		List<Row> customSearchAttRows = new ArrayList<Row>();
 		List<SearchableAttribute> searchAtts = documentType.getSearchableAttributes();
 		for (SearchableAttribute searchableAttribute : searchAtts) {
-			//TODO: this needs more translation like above also setup a DocumentSearchContext
 			DocumentSearchContext documentSearchContext = DocSearchUtils.getDocumentSearchContext("", documentType.getName(), "");
 			customSearchAttRows.addAll(searchableAttribute.getSearchingRows(documentSearchContext));
 		}
+		List<Row> fixedCustomSearchAttRows = new ArrayList<Row>();
 		for (Row row : customSearchAttRows) {
 			List<Field> fields = row.getFields();
 			for (Field field : fields) {
@@ -257,9 +259,16 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 				if(field.getMaxLength()==0) {
 					field.setMaxLength(100);
 				}
+				if(field.isDatePicker()) {
+					Field newDate = FieldUtils.createRangeDateField(field);
+					List<Field> newFields = new ArrayList<Field>();
+					newFields.add(newDate);
+					fixedCustomSearchAttRows.addAll(FieldUtils.wrapFields(newFields));
+				}
 			}
+			fixedCustomSearchAttRows.add(row);
 		}
-		return customSearchAttRows;
+		return fixedCustomSearchAttRows;
 	}
 	
 	/**

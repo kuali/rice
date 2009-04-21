@@ -2,6 +2,7 @@ package org.kuali.rice.web.inquirable;
 
 import java.net.URL;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
@@ -15,6 +16,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
+@Ignore("KULRICE-3011")
 public class BaseDirectInquiryTest extends ServerTestBase {
 
     @Test

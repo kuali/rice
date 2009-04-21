@@ -18,6 +18,7 @@ package org.kuali.rice.web.lookup;
 import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.web.test.WebTestBase;
@@ -35,6 +36,7 @@ import edu.sampleu.travel.document.keyvalue.TravelRequestType;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Ignore("KULRICE-3011")
 public class ValuesFinderTest extends WebTestBase {
 
     private HashMap<String, String> accountTypes = new HashMap<String, String>();

@@ -40,7 +40,6 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -59,7 +58,7 @@ import org.kuali.rice.kns.web.ui.Row;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
+public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceImpl {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleLookupableHelperServiceImpl.class);
 
@@ -76,7 +75,9 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
     	RoleImpl roleImpl = (RoleImpl) bo;
         List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
-    	anchorHtmlDataList.add(getEditRoleUrl(roleImpl));	
+    	if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME)){
+    		anchorHtmlDataList.add(getEditRoleUrl(roleImpl));
+    	}
     	return anchorHtmlDataList;
     }
     

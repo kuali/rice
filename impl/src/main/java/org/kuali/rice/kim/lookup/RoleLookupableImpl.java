@@ -34,14 +34,14 @@ public class RoleLookupableImpl extends KualiLookupableImpl {
 	@Override
 	public String getCreateNewUrl() {
 		String url = "";
-		//if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
+		if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME)){
 	        Properties parameters = new Properties();
 	        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimTypeImpl.class.getName());
 	        parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, KNSConstants.PORTAL_ACTION);
 	        parameters.put(KNSConstants.DOC_FORM_KEY, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY);
 	        url = getCreateNewUrl(UrlFactory.parameterizeUrl(KNSConstants.LOOKUP_ACTION, parameters));
 	        //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
-		//}
+		}
 		return url;
 	}
 

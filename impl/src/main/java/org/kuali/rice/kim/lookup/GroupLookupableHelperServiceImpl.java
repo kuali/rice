@@ -32,7 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
@@ -49,7 +48,6 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -77,7 +75,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl {
+public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServiceImpl {
 
 	// need this so kimtypeId value can be retained in 'rows'
 	// 1st pass populate the grprows
@@ -94,7 +92,9 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
     	GroupImpl groupImpl = (GroupImpl) bo;
         List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
-    	anchorHtmlDataList.add(getEditGroupUrl(groupImpl));	
+        if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME)){
+        	anchorHtmlDataList.add(getEditGroupUrl(groupImpl));	
+        }
     	return anchorHtmlDataList;
     }
     

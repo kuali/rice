@@ -56,7 +56,7 @@ public class PermissionImpl extends KimPermissionImpl {
 	}
 
 	public String getRoleDetailsToDisplay(RoleImpl roleImpl){
-		return roleImpl.getNamespaceCode()+" "+roleImpl.getRoleName()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
+		return roleImpl.getNamespaceCode().trim()+" "+roleImpl.getRoleName().trim()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
 	/**

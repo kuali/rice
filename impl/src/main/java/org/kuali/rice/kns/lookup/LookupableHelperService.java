@@ -203,6 +203,13 @@ public interface LookupableHelperService extends Serializable{
     public boolean allowsMaintenanceNewOrCopyAction();
 
     /**
+     * Determines if underlying lookup bo has associated document that allows new or copy maintenance actions.
+     *
+     * @return true if bo has doc that allows new or copy actions
+     */
+    public boolean allowsNewOrCopyAction(String documentTypeName);
+
+    /**
      * Returns a list of Row objects to be used to generate the search query screen
      *
      * Generally, setBusinessObjectClass needs to be called with a non-null value for proper operation

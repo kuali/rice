@@ -24,6 +24,7 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -35,10 +36,8 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 
 	private static final Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
 	
-	public static final String ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
-	
 	public String getWorkflowDocumentTypeName() {
-		return ROLE_DOCUMENT_TYPE_NAME;
+		return KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
 	}
 
 	/**

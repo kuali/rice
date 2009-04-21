@@ -1264,4 +1264,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	public Field getExtraField() {
 		return null;
 	}
+	
+	public boolean allowsNewOrCopyAction(String documentTypeName){
+		throw new UnsupportedOperationException("Function not supported.");
+	}
+
 }

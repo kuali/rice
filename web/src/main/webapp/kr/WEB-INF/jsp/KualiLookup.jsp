@@ -231,12 +231,8 @@
                                             <c:set var="anchorTarget" value="${columnAnchor.target}" />
                                           </c:otherwise>
                                         </c:choose>
-										<logic:iterate id="columnAnchor" name="column" property="columnAnchors" indexId="ctr">
-										<a href="<c:out value="${columnAnchor.href}"/>" target='<c:out value="${columnAnchor.target}"/>' title="${columnAnchor.title}"><c:out
-											value="${fn:substring(columnAnchor.displayText, 0, column.maxLength)}" escapeXml="${column.escapeXMLValue}"
-											/><c:if test="${column.maxLength gt 0 && fn:length(columnAnchor.displayText) gt column.maxLength}">...</c:if></a>
-											<c:if test="${ctr lt numberOfColumnAnchors-1}">,</c:if>
-										</logic:iterate>
+                                        <!-- Please don't change formatting of this logic:iterate block -->
+										<logic:iterate id="columnAnchor" name="column" property="columnAnchors" indexId="ctr"><a href="<c:out value="${columnAnchor.href}"/>" target='<c:out value="${columnAnchor.target}"/>' title="${columnAnchor.title}"><c:out value="${fn:substring(columnAnchor.displayText, 0, column.maxLength)}" escapeXml="${column.escapeXMLValue}"/><c:if test="${column.maxLength gt 0 && fn:length(columnAnchor.displayText) gt column.maxLength}">...</c:if></a><c:if test="${ctr lt numberOfColumnAnchors-1}">,&nbsp;</c:if></logic:iterate>
 									</c:when>
 									<c:otherwise>
                                         <c:choose>

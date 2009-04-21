@@ -37,7 +37,7 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
 	@Override
 	public String getCreateNewUrl() {
 		String url = "";
-		if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
+		if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME)){
 	        Properties parameters = new Properties();
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
 	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);

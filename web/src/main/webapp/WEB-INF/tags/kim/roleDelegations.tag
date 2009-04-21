@@ -18,7 +18,7 @@ function changeDelegationMemberTypeCode(){
 	javaScript:document.forms[0].submit();
 }
 </script>
-<kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.delegationMember*">
+<kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.delegationMember*,delegationMember.*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Delegations</span>

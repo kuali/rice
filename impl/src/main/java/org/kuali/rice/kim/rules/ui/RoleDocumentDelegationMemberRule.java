@@ -16,11 +16,15 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddDelegationMemberRule;
+import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -35,6 +39,8 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 
 	public static final String ERROR_PATH = "document.delegationMember.memberId";
 
+	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	
 	public boolean processAddDelegationMember(AddDelegationMemberEvent addDelegationMemberEvent){
 		RoleDocumentDelegationMember newMember = addDelegationMemberEvent.getDelegationMember();
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addDelegationMemberEvent.getDocument();
@@ -51,6 +57,17 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
     	    	}
     	    }
         }
+        
+		AttributeSet validationErrors = new AttributeSet();
+        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( document.getKimType() );
+        if ( kimTypeService != null ) {
+        		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+		        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
+        }
+    	if (!validationErrors.isEmpty()) {
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		rulePassed = false;
+    	}
 		return rulePassed;
 	} 
 

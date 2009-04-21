@@ -46,6 +46,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
+import org.kuali.rice.kim.rule.event.ui.AddPersonDocumentRoleQualifierEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -326,17 +327,22 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     public ActionForward addRoleQualifier(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         IdentityManagementPersonDocument personDOc = personDocumentForm.getPersonDocument();
-        PersonDocumentRole role = personDOc.getRoles().get(getSelectedLine(request));
+        int selectedRoleIdx = getSelectedLine(request);
+        PersonDocumentRole role = personDOc.getRoles().get(selectedRoleIdx);
         KimDocumentRoleMember newRolePrncpl = role.getNewRolePrncpl();
     	setupRoleRspActions(role, newRolePrncpl);
-        role.getRolePrncpls().add(newRolePrncpl);
-        role.setNewRolePrncpl(new KimDocumentRoleMember());
-        for (String key : role.getDefinitions().keySet()) {
-        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
-        	//qualifier.setQualifierKey(key);
-        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
-        	role.getNewRolePrncpl().getQualifiers().add(qualifier);
-        }
+    	
+    	if (getKualiRuleService().applyRules(new AddPersonDocumentRoleQualifierEvent("",
+    			personDOc, newRolePrncpl, role, selectedRoleIdx))) {
+	        role.getRolePrncpls().add(newRolePrncpl);
+	        role.setNewRolePrncpl(new KimDocumentRoleMember());
+	        for (String key : role.getDefinitions().keySet()) {
+	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
+	        	//qualifier.setQualifierKey(key);
+	        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
+	        	role.getNewRolePrncpl().getQualifiers().add(qualifier);
+	        }
+    	}
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

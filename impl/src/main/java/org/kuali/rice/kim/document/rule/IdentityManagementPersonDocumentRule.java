@@ -40,6 +40,7 @@ import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAu
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
+import org.kuali.rice.kim.rule.ui.AddPersonDocumentRoleQualifierRule;
 import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
@@ -64,7 +65,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule,AddRoleRule {
+public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule,AddRoleRule,AddPersonDocumentRoleQualifierRule {
 
 	private static final Logger LOG = Logger.getLogger( IdentityManagementPersonDocumentRule.class );
 	
@@ -278,13 +279,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	if (validationErrors.isEmpty()) {
     		return true;
     	} else {
-    		// FIXME: This does not use the correct error path yet - may need to be moved up so that the error path is known
-    		// Also, the above code would overwrite messages on the same attributes (namespaceCode) but on different rows
-    		for ( String key : validationErrors.keySet() ) {
-        		String[] errorMsg = StringUtils.split(validationErrors.get( key ), ":");
-        		
-    			GlobalVariables.getErrorMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
-    		}
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
     		return false;
     	}
     }    
@@ -470,4 +465,24 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return businessObjectService;
 	}
 
+
+
+	public boolean processAddPersonDocumentRoleQualifier(PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
+		boolean dateValidationSuccess = validateActiveDate("document.roles[" + selectedRoleIdx + "].newRolePrncpl.activeFromDate", kimDocumentRoleMember.getActiveFromDate(), kimDocumentRoleMember.getActiveToDate());
+		
+		AttributeSet validationErrors = new AttributeSet();
+        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
+        if ( kimTypeService != null ) {
+        		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( kimDocumentRoleMember.getQualifiers() ) );
+		        validationErrors.putAll( attributeValidationHelper.convertErrors("roles[" + selectedRoleIdx + "].newRolePrncpl",attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()),localErrors) );
+        }
+        GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+    	if (validationErrors.isEmpty()) {
+    		return dateValidationSuccess;
+    	} else {
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		return false;
+    	}
+	}
 }

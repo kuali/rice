@@ -19,7 +19,7 @@ function changeMemberTypeCode(){
 	javaScript:document.forms[0].submit();
 }
 </script>
-<kul:tab tabTitle="Assignees" defaultOpen="true" tabErrorKey="document.member*">
+<kul:tab tabTitle="Assignees" defaultOpen="true" tabErrorKey="document.member*,member.*">
 	<div class="tab-container" align="center">
     <h3>
     	<span class="subhead-left">Assignees</span>

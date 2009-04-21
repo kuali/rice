@@ -374,7 +374,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     public boolean processAddMember(AddMemberEvent addMemberEvent) {
-        return new KimDocumentMemberRule().processAddMember(addMemberEvent);    
+        boolean success = new KimDocumentMemberRule().processAddMember(addMemberEvent);
+        success &= validateActiveDate("member.activeFromDate", addMemberEvent.getMember().getActiveFromDate(), addMemberEvent.getMember().getActiveToDate());
+        return success;
     }
 
     public boolean processAddDelegation(AddDelegationEvent addDelegationEvent) {
@@ -382,7 +384,10 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     public boolean processAddDelegationMember(AddDelegationMemberEvent addDelegationMemberEvent) {
-        return new RoleDocumentDelegationMemberRule().processAddDelegationMember(addDelegationMemberEvent);    
+        boolean success = new RoleDocumentDelegationMemberRule().processAddDelegationMember(addDelegationMemberEvent);
+        RoleDocumentDelegationMember roleDocumentDelegationMember = addDelegationMemberEvent.getDelegationMember();
+        success &= validateActiveDate("delegationMember.activeFromDate", roleDocumentDelegationMember.getActiveFromDate(), roleDocumentDelegationMember.getActiveToDate());
+        return success;
     }
 
 	public ResponsibilityService getResponsibilityService() {

@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.kew.lookupable;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
 
 import org.kuali.rice.kew.edl.UserAction;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 
 /**
@@ -35,15 +41,25 @@ public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperS
     private static final long serialVersionUID = 3157354920258155881L;
 
 	/**
-     *
-     * @returns links to action for the current edoclite
-     * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
+     * @returns links to "Create Document" action for the current edoclite
      */
+	@Override
+	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
+		List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
+    	anchorHtmlDataList.add(getCreateDocumentUrl((EDocLiteAssociation) businessObject));	
+    	return anchorHtmlDataList;
+	}
+	
+    protected HtmlData getCreateDocumentUrl(EDocLiteAssociation edlAssociation) {
+    	String href = "";
 
-    public String getActionUrls(BusinessObject businessObject) {//    	System.out.println("Inside EDocLiteLookupableHelperServiceImpl++++++++");
-        EDocLiteAssociation edocLite = (EDocLiteAssociation) businessObject;
-        String actionsUrl = "<a href=\"../kew/EDocLite?userAction=" + UserAction.ACTION_CREATE + "&edlName=" + edocLite.getEdlName() + "\">Create Document</a>";
-        return actionsUrl;
+        Properties parameters = new Properties();
+        parameters.put("userAction", UserAction.ACTION_CREATE);
+        parameters.put("edlName", edlAssociation.getEdlName());
+        href = UrlFactory.parameterizeUrl("../kew/EDocLite", parameters);
+        
+        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, null, "Create Document");
+        return anchorHtmlData;
     }
 
 	/**
@@ -57,6 +73,5 @@ public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperS
 		lookupForm.setShowMaintenanceLinks(true);
 		return super.performLookup(lookupForm, resultTable, bounded);
 	}
-
 
 }

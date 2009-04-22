@@ -26,7 +26,7 @@ request.setAttribute("test", incident);
 %>
 
 <c:set var="parameters"
-       value="<%=request.getAttribute("org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction")%>" />
+       value="<%=request.getAttribute(\"org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction\")%>" />
 
 <c:if test="${not empty parameters}">
 	<c:set var="documentId"       value="${parameters.documentId}" />

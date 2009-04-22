@@ -526,6 +526,21 @@
         </bean>
 		</property>
 	</bean>
+	<bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+          <property name="service">
+            <ref bean="enWorkflowDocumentActionsService" />
+          </property>
+          <property name="localServiceName" value="WorkflowDocumentActionsServiceSOAP" />
+          <property name="priority" value="3" />
+          <property name="retryAttempts" value="0" />
+          <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+        </bean>
+		</property>
+		<property name="propertyName" value="WorkflowDocumentActionsServiceSOAP.expose"/>
+	</bean>
 
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -540,6 +555,22 @@
           <property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
         </bean>
           </property>
+    </bean>
+    <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+          <property name="service">
+            <ref bean="enWorkflowUtilityService" />
+          </property>
+          <property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
+          <property name="priority" value="3" />
+          <property name="retryAttempts" value="0" />
+          <!-- Should we change the security for SOAP? -->
+          <property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
+        </bean>
+          </property>
+          <property name="propertyName" value="WorkflowUtilityServiceSOAP.expose"/>
     </bean>
 
     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">

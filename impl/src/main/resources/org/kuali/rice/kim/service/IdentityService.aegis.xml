@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://xfire.codehaus.org/schemas/1.0/mapping.xsd">
   <mapping>
     <method name="getDefaultNamesForEntityIds">
-      <return-type index="0" keyType="java.lang.String" componentType="org.kuali.rice.kim.bo.entity.EntityName" />
+      <return-type index="0" keyType="java.lang.String" componentType="org.kuali.rice.kim.bo.entity.KimEntityName" />
     </method>
   </mapping>
 </mappings>

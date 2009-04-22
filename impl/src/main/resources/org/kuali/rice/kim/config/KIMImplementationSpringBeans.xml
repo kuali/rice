@@ -96,6 +96,15 @@
         p:localServiceName="kimAuthenticationService" />
     </property>
   </bean>
+  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimAuthenticationService"
+        p:localServiceName="kimAuthenticationServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimAuthenticationServiceSOAP.expose"/>
+  </bean>
 
   <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
 
@@ -106,6 +115,15 @@
         p:service-ref="kimIdentityService"
         p:localServiceName="kimIdentityService" />
     </property>
+  </bean>
+  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimIdentityService"
+        p:localServiceName="kimIdentityServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimIdentityServiceSOAP.expose"/>
   </bean>
 
   <bean id="kimIdentityCacheService" class="org.kuali.rice.kim.service.impl.IdentityCacheServiceImpl" />
@@ -125,6 +143,15 @@
         p:localServiceName="kimRoleService" />
     </property>
   </bean>
+  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimRoleService"
+        p:localServiceName="kimRoleServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimRoleServiceSOAP.expose"/>
+  </bean>
 
   <alias alias="kimRoleUpdateService" name="kimRoleService" />
 
@@ -135,6 +162,15 @@
         p:service-ref="kimRoleUpdateService"
         p:localServiceName="kimRoleUpdateService" />
     </property>
+  </bean>
+  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimRoleUpdateService"
+        p:localServiceName="kimRoleUpdateServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimRoleUpdateServiceSOAP.expose"/>
   </bean>
 
   <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
@@ -147,6 +183,15 @@
         p:localServiceName="kimGroupService" />
     </property>
   </bean>
+  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimGroupService"
+        p:localServiceName="kimGroupServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimGroupServiceSOAP.expose"/>
+  </bean>
 
   <alias alias="kimGroupUpdateService" name="kimGroupService" />
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -156,6 +201,15 @@
         p:service-ref="kimGroupUpdateService"
         p:localServiceName="kimGroupUpdateService" />
     </property>
+  </bean>
+  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimGroupUpdateService"
+        p:localServiceName="kimGroupUpdateServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimGroupUpdateServiceSOAP.expose"/>
   </bean>
 
   <bean id="kimPermissionService" class="org.kuali.rice.kim.service.impl.PermissionServiceImpl"
@@ -169,6 +223,15 @@
         p:service-ref="kimPermissionService"
         p:localServiceName="kimPermissionService" />
     </property>
+  </bean>
+  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimPermissionService"
+        p:localServiceName="kimPermissionServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimPermissionServiceSOAP.expose"/>
   </bean>
 
   <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="kimPlatformAwareDao"/>
@@ -184,6 +247,16 @@
         p:service-ref="kimResponsibilityService"
         p:localServiceName="kimResponsibilityService" />
     </property>
+  </bean>
+
+    <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimResponsibilityService"
+        p:localServiceName="kimResponsibilityServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimResponsibilityServiceSOAP.expose"/>
   </bean>
 
   <!-- Kim Type Internal Service -->

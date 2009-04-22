@@ -41,7 +41,7 @@
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
 			      		   --%>
 			       		   <c:if test="${!empty attr.lookupBoClass and not readOnly}">
-			       		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
+			       		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
 			          	   </c:if>
 			          	   
 			  			</div>
@@ -93,7 +93,7 @@
 				                <div align="center"> 
 				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 						      		   <c:if test="${!empty attr.lookupBoClass  and not readOnly}">
-						      		       <kim:roleQualifierLookup role="${role}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
+						      		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
 						         	   </c:if>
 								</div>
 							</td>

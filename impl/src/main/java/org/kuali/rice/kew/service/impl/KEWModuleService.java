@@ -152,5 +152,37 @@ public class KEWModuleService extends ModuleServiceBase {
 
 		};
 	}
+	/**
+	 * This overridden method rewrites the URL.
+	 *
+	 * @see org.kuali.rice.kns.service.impl.ModuleServiceBase#getExternalizableBusinessObjectInquiryUrl(java.lang.Class, java.util.Map)
+	 */
+	@Override
+	public String getExternalizableBusinessObjectInquiryUrl(
+			Class inquiryBusinessObjectClass, Map<String, String[]> parameters) {
+		if ( DocumentTypeEBO.class.isAssignableFrom( inquiryBusinessObjectClass ) ) {
+			int nonBlank = 0;
+			boolean nameFound = false;
+			//"name" is the only non-blank property passed in
+			for(String key: parameters.keySet()){
+				if("name".equals(key) && parameters.get(key) != null){
+					nameFound=true;
+				}else if(!"name".equals(key) && parameters.get(key) != null){
+					nonBlank ++;
+				}
+			}
+
+			if(nonBlank == 0 && nameFound == true){
+				parameters.clear(); // clear out other parameters, including the name pass in
+				DocumentTypeEBO dte = (DocumentTypeEBO)getDocumentTypeService().findByName(parameters.get( "name" )[0] );
+				String[] strArr = {dte.getDocumentTypeId().toString()};
+				parameters.put("documentTypeId", strArr);
+			}
+
+		}
+
+		return super.getExternalizableBusinessObjectInquiryUrl(
+				inquiryBusinessObjectClass, parameters);
+	}
 }
 

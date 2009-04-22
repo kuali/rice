@@ -14,7 +14,7 @@
  limitations under the License.
 --%>
 <div class="exportlinks">Export options: 
-<a href="multipleValueLookup.do?methodToCall=export&d-16544-e=1&businessObjectClassName=${KualiForm.businessObjectClassName}&lookupResultsSequenceNumber=${KualiForm.lookupResultsSequenceNumber}" target="blank"><span class="export csv">CSV </span></a>| 
-<a href="multipleValueLookup.do?methodToCall=export&d-16544-e=2&businessObjectClassName=${KualiForm.businessObjectClassName}&lookupResultsSequenceNumber=${KualiForm.lookupResultsSequenceNumber}" target="blank"><span class="export excel">spreadsheet </span></a>| 
-<a href="multipleValueLookup.do?methodToCall=export&d-16544-e=3&businessObjectClassName=${KualiForm.businessObjectClassName}&lookupResultsSequenceNumber=${KualiForm.lookupResultsSequenceNumber}" target="blank"><span class="export xml">XML </span> </a>
+<a href="multipleValueLookup.do?methodToCall=export&d-16544-e=1&businessObjectClassName=${KualiForm.businessObjectClassName}&lookupResultsSequenceNumber=${KualiForm.lookupResultsSequenceNumber}" target="_blank"><span class="export csv">CSV </span></a>| 
+<a href="multipleValueLookup.do?methodToCall=export&d-16544-e=2&businessObjectClassName=${KualiForm.businessObjectClassName}&lookupResultsSequenceNumber=${KualiForm.lookupResultsSequenceNumber}" target="_blank"><span class="export excel">spreadsheet </span></a>| 
+<a href="multipleValueLookup.do?methodToCall=export&d-16544-e=3&businessObjectClassName=${KualiForm.businessObjectClassName}&lookupResultsSequenceNumber=${KualiForm.lookupResultsSequenceNumber}" target="_blank"><span class="export xml">XML </span> </a>
 </div>

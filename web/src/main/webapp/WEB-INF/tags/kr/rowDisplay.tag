@@ -733,7 +733,7 @@
 
                         <c:choose>
                           <c:when test="${isInquiry && not (empty field.inquiryURL.href || empty field.propertyValue)}">
-                             <a title="<c:out value="${field.inquiryURL.title}"/>" href="<c:out value="${field.inquiryURL.href}"/>" target="blank">
+                             <a title="<c:out value="${field.inquiryURL.title}"/>" href="<c:out value="${field.inquiryURL.href}"/>" target="_blank">
 					           <c:out value="${fieldValue}"/>
                              </a>
                            </c:when>

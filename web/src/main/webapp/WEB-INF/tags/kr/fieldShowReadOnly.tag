@@ -25,7 +25,7 @@
     so that if JavaScript changes the .div contents there is no misleading link. --%>
 <span id="${field.propertyName}.div">
 <c:if test="${not (empty field.inquiryURL.href || empty field.propertyValue)}">
-	<a title="<c:out value="${field.inquiryURL.title}"/>" href="<c:out value="${field.inquiryURL.href}"/>" target="blank">
+	<a title="<c:out value="${field.inquiryURL.title}"/>" href="<c:out value="${field.inquiryURL.href}"/>" target="_blank">
 </c:if>
 
 <kul:readonlyfield addHighlighting="${addHighlighting}" field="${field}" isLookup="${isLookup}" />

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.routing.web;
 import org.kuali.rice.kew.web.KewRoutingKualiForm;
 
 /**
- * A Struts ActionForm for the {@link WorkflowDocHandlerAction}.
+ * A Struts ActionForm for the {@link ClientAppDocHandlerRedirectAction}.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */

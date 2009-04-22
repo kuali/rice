@@ -145,7 +145,7 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
 		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
-				"/../web/src/main/webapp/en");
+				"/../web/src/main/webapp/kew");
 		server.setFailOnContextFailure(true);
 		server.setTestMode(true);
 		lifeCycles.add(server);
@@ -158,7 +158,7 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 		});
 		return lifeCycles;
 	}
-		
+
 	@Override
 	protected void loadSuiteTestData() throws Exception {
 		super.loadSuiteTestData();
@@ -169,16 +169,16 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 
 	protected JettyServer getJettyServer() {
 		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
-			"/../web/src/main/webapp/en");
+			"/../web/src/main/webapp/kew");
 		server.setFailOnContextFailure(true);
 		server.setTestMode(true);
 		return server;
 	}
-	
+
 	protected int getJettyServerPort() {
 		return 9952;
 	}
-	
+
 	/**
 	 * Adds any ResourceLoaders that have been registered for WebAppClassLoaders
 	 * to the GlobalResourceLoader

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,16 +19,15 @@ package org.kuali.rice.kew.actionlist;
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.web.ActionListActionOld;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.web.session.UserSession;
 
 
 /**
- * An attribute which allows for the Action List to be customized to provide 
+ * An attribute which allows for the Action List to be customized to provide
  * Mass Actions and an internal frame for displaying a summary view of the
  * document on each row in the Action List.
- * 
+ *
  * @see ActionListActionOld
  * @see DefaultCustomActionListAttribute
  *
@@ -42,11 +41,11 @@ public interface CustomActionListAttribute extends Serializable {
 	 * action invocation will not be available from the action list.
 	 */
 	public ActionSet getLegalActions(UserSession userSession, ActionItem actionItem) throws Exception;
-	
+
 	/**
 	 * Returns the display parameters for the inline framed doc handler on the Action List.
 	 * If this method returns null, then a default value will be used.
 	 */
 	public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception;
-    
+
 }

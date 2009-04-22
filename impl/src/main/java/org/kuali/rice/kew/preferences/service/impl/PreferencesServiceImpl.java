@@ -28,8 +28,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**

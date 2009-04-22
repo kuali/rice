@@ -597,13 +597,15 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 
 
 	/**
-	 * Base implementation that returns {@link Collections#emptySet()}.  sub-implementations should not add values to Set instance returned
+	 * Base implementation that returns just "start".  sub-implementations should not add values to Set instance returned
 	 * by this method, and should create its own instance.
 	 * 
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#getMethodToCallsToBypassSessionRetrievalForGETRequests()
 	 */
 	public Set<String> getMethodToCallsToBypassSessionRetrievalForGETRequests() {
-		return Collections.emptySet();
+		Set<String> defaultMethodToCalls = new HashSet<String>();
+		defaultMethodToCalls.add(KNSConstants.START_METHOD);
+		return defaultMethodToCalls;
 	}
 	
 	

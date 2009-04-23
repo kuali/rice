@@ -12,6 +12,9 @@
  */
 package org.kuali.rice.kns.rules;
 
+import java.util.StringTokenizer;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -21,6 +24,7 @@ import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
+import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -33,6 +37,7 @@ import org.kuali.rice.kns.rule.RouteDocumentRule;
 import org.kuali.rice.kns.rule.SaveDocumentRule;
 import org.kuali.rice.kns.rule.SendAdHocRequestsRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -57,7 +62,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static KualiConfigurationService kualiConfigurationService;
     private static DocumentHelperService documentHelperService;
     private static IdentityManagementService identityManagementService;
-
+    private static DataDictionaryService dataDictionaryService;
+    
     /**
      * Just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
      */
@@ -118,6 +124,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
         // check the document header for fields like the description
         getDictionaryValidationService().validateBusinessObject(document.getDocumentHeader());
+        validateSensitiveDataValue(KNSPropertyConstants.EXPLANATION, document.getDocumentHeader().getExplanation(),
+        		getDataDictionaryService().getAttributeLabel(DocumentHeader.class, KNSPropertyConstants.EXPLANATION));
 
         // drop the error path keys off now
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_HEADER_PROPERTY_NAME);
@@ -263,6 +271,9 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         // check the document header for fields like the description
         getDictionaryValidationService().validateBusinessObject(note);
 
+        validateSensitiveDataValue(KNSConstants.NOTE_TEXT_PROPERTY_NAME, note.getNoteText(), 
+        		getDataDictionaryService().getAttributeLabel(Note.class, KNSConstants.NOTE_TEXT_PROPERTY_NAME));
+        
         // drop the error path keys off now
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
 
@@ -449,4 +460,31 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         this.maxDictionaryValidationDepth = maxDictionaryValidationDepth;
     }
 
+    protected boolean validateSensitiveDataValue(String fieldName, String fieldValue, String fieldLabel) {
+    	if (fieldValue == null) {
+    		return true;
+    	}
+    	String sensitiveDataPatterns = "[0-9]{9};[0-9]{3}-[0-9]{2}-[0-9]{4}";
+    	if (StringUtils.isBlank(sensitiveDataPatterns)) {
+    		return true;
+    	}
+    	StringTokenizer tok = new StringTokenizer(sensitiveDataPatterns, ";", false);
+    	boolean patternFound = false;
+    	while (!patternFound && tok.hasMoreTokens()) {
+    		String pattern = tok.nextToken();
+    		if (Pattern.compile(pattern).matcher(fieldValue).find()) {
+    			patternFound = true;
+    			GlobalVariables.getErrorMap().putError(fieldName,
+    					RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA, fieldLabel);
+    		}
+    	}
+    	return !patternFound;
+    }
+    
+    protected DataDictionaryService getDataDictionaryService() {
+    	if (dataDictionaryService == null) {
+    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    	}
+    	return dataDictionaryService;
+    }
 }

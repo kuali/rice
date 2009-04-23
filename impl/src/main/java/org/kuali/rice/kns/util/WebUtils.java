@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -608,5 +609,23 @@ public class WebUtils {
     	}
     	
     	return outputString;
+    }
+    
+    public static boolean containsSensitiveDataPatternMatch(String fieldValue) {
+    	if (fieldValue == null) {
+    		return false;
+    	}
+    	String sensitiveDataPatterns = "[0-9]{9};[0-9]{3}-[0-9]{2}-[0-9]{4}";
+    	if (StringUtils.isBlank(sensitiveDataPatterns)) {
+    		return false;
+    	}
+    	StringTokenizer tok = new StringTokenizer(sensitiveDataPatterns, ";", false);
+    	while (tok.hasMoreTokens()) {
+    		String pattern = tok.nextToken();
+    		if (Pattern.compile(pattern).matcher(fieldValue).find()) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }

@@ -78,7 +78,8 @@ public class RiceKeyConstants {
 
     // Document-specific errors
     public static final String ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED = "error.document.annotation.maxLength.exceeded";
-    public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";    public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
+    public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";
+    public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
     public static final String ERROR_UPLOADFILE_NULL = "error.uploadFile.null";
     public static final String ERROR_UPLOADFILE_EMPTY = "error.uploadFile.empty";
     public static final String ERROR_UNIMPLEMENTED = "error.unimplemented";
@@ -163,6 +164,6 @@ public class RiceKeyConstants {
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
     
-    
+    public static final String ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA = "error.document.fieldContainsPossibleSensitiveData";
 }
 

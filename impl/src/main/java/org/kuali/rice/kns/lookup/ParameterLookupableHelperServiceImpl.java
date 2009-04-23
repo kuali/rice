@@ -57,7 +57,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
         permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
         permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
-        KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
+        allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.MAINAIN_SYSTEM_PARAMETER,

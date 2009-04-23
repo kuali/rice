@@ -27,7 +27,6 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
@@ -56,7 +55,7 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 	}
 
 	public void indexDocument(Long documentId, boolean useMostRecentDocType) {
-		LOG.debug("indexing document " + documentId + " for document search");
+		LOG.info("Indexing document " + documentId + " for document search...");
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		try {
@@ -71,6 +70,7 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 			LOG.error(errorMsg, e);
 			throw new WorkflowRuntimeException(errorMsg,e);
 		}
+		LOG.info("...finished indexing document " + documentId + " for document search.");
 	}
 
 	private List<SearchableAttributeValue> buildSearchableAttributeValues(DocumentType docType, DocumentRouteHeaderValue document, String docContent, boolean useMostRecentDocType) {

@@ -298,7 +298,8 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		if ( LOG.isDebugEnabled() ) {
 			logPrincipalHasRoleCheck(principalId, roleIds, qualification);
 		}
-		StringBuffer cacheKey = new StringBuffer( principalId );
+		StringBuffer cacheKey = new StringBuffer();
+		cacheKey.append( principalId );
 		cacheKey.append( '/' );
 		addIdsToKey( cacheKey, roleIds );
 		cacheKey.append( '/' );

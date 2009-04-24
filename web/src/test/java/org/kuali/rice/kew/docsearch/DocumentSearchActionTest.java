@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.KEWHtmlUnitTestCase;
 import org.kuali.rice.kew.util.Utilities;
@@ -38,7 +37,7 @@ import edu.emory.mathcs.backport.java.util.Arrays;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@Ignore
+
 public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
     
     private static final String DOCUMENT_SEARCH_FORM_NAME = "DocumentSearchForm";
@@ -55,7 +54,7 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         Map<String,String> expectedValues = new HashMap<String,String>();
         expectedValues.put("criteria.docTypeFullName", DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
 
-        HtmlPage basicSearchPage = performLogin(ADMIN_USER_NETWORK_ID, "DocumentSearch.do?criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
+        HtmlPage basicSearchPage = performLogin(ADMIN_USER_NETWORK_ID, "/kew/DocumentSearch.do?criteria.docTypeFullName=" + DOCUMENT_TYPE_NAME_HIDE_SPECIFIC);
         checkStandardCriteriaFields(basicSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","fromDateCreated"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,basicSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), true);
         HtmlPage basicSearchResultPage = (HtmlPage) basicSearchPage.getFormByName(DOCUMENT_SEARCH_FORM_NAME).getInputByName("methodToCall.doDocSearch").click();

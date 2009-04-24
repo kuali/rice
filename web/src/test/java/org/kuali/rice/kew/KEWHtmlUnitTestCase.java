@@ -23,6 +23,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
 
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -39,7 +40,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
  */
 public class KEWHtmlUnitTestCase extends ServerTestBase {
 
-    public static final String URL_PREFIX = "http://localhost:9952/en-test/";
     public static final String ADMIN_USER_NETWORK_ID = "admin";
 
     private WebClient webClient;
@@ -113,7 +113,7 @@ public class KEWHtmlUnitTestCase extends ServerTestBase {
 	}
 
     protected HtmlPage performLogin(String loginUserNetworkId, String urlActionSuffix) throws Exception {
-        URL url = new URL (URL_PREFIX + urlActionSuffix);
+        URL url = new URL (HtmlUnitUtil.BASE_URL + urlActionSuffix);
         HtmlPage loginPage = (HtmlPage)getWebClient().getPage(url);
 
         // On the first access, we should end up on the backdoor and login as quickstart
@@ -124,7 +124,7 @@ public class KEWHtmlUnitTestCase extends ServerTestBase {
     }
 
     protected HtmlPage getPage(String urlActionSuffix) throws Exception {
-        URL url = new URL (URL_PREFIX + urlActionSuffix);
+        URL url = new URL (HtmlUnitUtil.BASE_URL + urlActionSuffix);
         return (HtmlPage)getWebClient().getPage(url);
     }
 

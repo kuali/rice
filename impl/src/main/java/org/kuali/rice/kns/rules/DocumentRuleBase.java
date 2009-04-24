@@ -47,6 +47,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 
@@ -464,19 +465,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     	if (fieldValue == null) {
     		return true;
     	}
-    	String sensitiveDataPatterns = "[0-9]{9};[0-9]{3}-[0-9]{2}-[0-9]{4}";
-    	if (StringUtils.isBlank(sensitiveDataPatterns)) {
-    		return true;
-    	}
-    	StringTokenizer tok = new StringTokenizer(sensitiveDataPatterns, ";", false);
-    	boolean patternFound = false;
-    	while (!patternFound && tok.hasMoreTokens()) {
-    		String pattern = tok.nextToken();
-    		if (Pattern.compile(pattern).matcher(fieldValue).find()) {
-    			patternFound = true;
-    			GlobalVariables.getErrorMap().putError(fieldName,
+    	boolean patternFound = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
+    	if (patternFound) {
+    		GlobalVariables.getErrorMap().putError(fieldName,
     					RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA, fieldLabel);
-    		}
     	}
     	return !patternFound;
     }

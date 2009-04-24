@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -57,6 +58,8 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.ParameterConstants;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -612,16 +615,13 @@ public class WebUtils {
     }
     
     public static boolean containsSensitiveDataPatternMatch(String fieldValue) {
-    	if (fieldValue == null) {
+    	if (StringUtils.isBlank(fieldValue)) {
     		return false;
     	}
-    	String sensitiveDataPatterns = "[0-9]{9};[0-9]{3}-[0-9]{2}-[0-9]{4}";
-    	if (StringUtils.isBlank(sensitiveDataPatterns)) {
-    		return false;
-    	}
-    	StringTokenizer tok = new StringTokenizer(sensitiveDataPatterns, ";", false);
-    	while (tok.hasMoreTokens()) {
-    		String pattern = tok.nextToken();
+    	KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+    	List<String> sensitiveDataPatterns = kualiConfigurationService.getParameterValues(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT, 
+    			KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
+    	for (String pattern : sensitiveDataPatterns){
     		if (Pattern.compile(pattern).matcher(fieldValue).find()) {
     			return true;
     		}

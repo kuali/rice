@@ -515,6 +515,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE";
         public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
         public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
+        public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
     }
 
     public static class Maintenance {

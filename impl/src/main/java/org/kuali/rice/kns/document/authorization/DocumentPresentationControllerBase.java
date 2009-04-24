@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -174,7 +175,8 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
     
     protected boolean canSendAdhocRequests(Document document) {
-    	return true;
+    	KualiWorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
+    	return !(kualiWorkflowDocument.stateIsInitiated() || kualiWorkflowDocument.stateIsSaved());
     }
 
     /**

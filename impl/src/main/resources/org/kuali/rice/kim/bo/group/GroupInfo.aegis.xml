@@ -1,6 +1,0 @@
-<mappings  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://xfire.codehaus.org/schemas/1.0/mapping.xsd">
-  <mapping>
-    <property name="attributes" keyType="java.lang.String" componentType="java.lang.String" />
-  </mapping>
-</mappings>

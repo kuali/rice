@@ -131,4 +131,9 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 		this.emailType = emailType;
 	}
 
+	@Override
+	public boolean isActive(){
+		return this.active;
+	}
+
 }

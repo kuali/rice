@@ -25,14 +25,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -49,6 +48,7 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	protected String roleId;
 	protected String kimTypeId;
 	protected String roleName;
+	protected RoleImpl roleImpl;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 	protected KimTypeImpl kimRoleType;
@@ -175,6 +175,25 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	public void setAssignedResponsibilities(
 			List<RoleResponsibilityImpl> assignedResponsibilities) {
 		this.assignedResponsibilities = assignedResponsibilities;
+	}
+
+	@Override
+	public boolean isActive(){
+		return this.active;
+	}
+
+	/**
+	 * @return the roleImpl
+	 */
+	public RoleImpl getRoleImpl() {
+		return this.roleImpl;
+	}
+
+	/**
+	 * @param roleImpl the roleImpl to set
+	 */
+	public void setRoleImpl(RoleImpl roleImpl) {
+		this.roleImpl = roleImpl;
 	}
 
 }

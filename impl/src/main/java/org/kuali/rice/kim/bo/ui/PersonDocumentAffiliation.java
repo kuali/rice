@@ -131,4 +131,9 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 		this.affiliationType = affiliationType;
 	}
 
+	@Override
+	public boolean isActive(){
+		return this.active;
+	}
+
 }

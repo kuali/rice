@@ -188,4 +188,8 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 		this.entityNameId = entityNameId;
 	}
 
+	@Override
+	public boolean isActive(){
+		return this.active;
+	}
 }

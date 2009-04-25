@@ -239,4 +239,9 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 		return m;
 	}
 
+	@Override
+	public boolean isActive(){
+		return this.active;
+	}
+
 }

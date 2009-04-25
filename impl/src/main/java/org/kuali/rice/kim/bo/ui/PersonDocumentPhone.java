@@ -184,4 +184,9 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 		return sb.toString();
 	}
 
+	@Override
+	public boolean isActive(){
+		return this.active;
+	}
+
 }

@@ -228,4 +228,9 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 		this.employmentRecordId = employmentRecordId;
 	}
 
+	@Override
+	public boolean isActive(){
+		return this.active;
+	}
+
 }

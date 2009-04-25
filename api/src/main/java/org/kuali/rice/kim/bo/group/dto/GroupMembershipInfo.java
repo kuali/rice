@@ -113,5 +113,9 @@ public class GroupMembershipInfo {
 		this.activeToDate = activeToDate;
 	}
 
+	public boolean isActive() {
+		long now = System.currentTimeMillis();		
+		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
+	}
 
 }

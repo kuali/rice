@@ -48,7 +48,6 @@ public class KEWModuleService extends ModuleServiceBase {
 	public List<String> listPrimaryKeyFieldNames(Class businessObjectInterfaceClass) {
 		if ( DocumentTypeEBO.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
 			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( "name" );
 			pkFields.add( "documentTypeId" );
 			return pkFields;
 		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectInterfaceClass )){

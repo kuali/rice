@@ -268,7 +268,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     private void processResponsibilityId(ActionRequestValue actionRequest) {
-    	//if (actionRequest.getResolveResponsibility()) {
+    	if (actionRequest.getResolveResponsibility()) {
 	        Long responsibilityId = actionRequest.getResponsibilityId();
 	        try {
 	            RouteModule routeModule = KEWServiceLocator.getRouteModuleService().findRouteModule(actionRequest);
@@ -295,7 +295,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 	            LOG.error("Exception thrown when trying to resolve responsibility id " + responsibilityId, e);
 	            throw new RuntimeException(e);
 	        }
-    	//}
+    	}
     }
 
     private boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,

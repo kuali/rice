@@ -28,16 +28,6 @@
             </list>
           </property>
         </bean>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="extension.accountType" />
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="extension.accountTypeCode"
-                    p:targetName="accountTypeCode" />
-            </list>
-          </property>
-        </bean>
       </list>
     </property>
     <property name="attributes" >

@@ -37,6 +37,7 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.exception.InfrastructureException;
+import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -568,6 +569,20 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
 
     public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String attributeToHighlightOnFail, String displayFieldName) {
+    	
+    	// if we're dealing with a nested attribute, we need to resolve down to the BO where the primitive attribute is located
+    	// this is primarily to deal with the case of a defaultExistenceCheck that uses an "extension", i.e referenceName
+    	// would be extension.attributeName
+    	if (ObjectUtils.isNestedAttribute(referenceName)) {
+    		String nestedAttributePrefix = ObjectUtils.getNestedAttributePrefix(referenceName);
+    		String nestedAttributePrimitive = ObjectUtils.getNestedAttributePrimitive(referenceName);
+    		Object nestedObject = ObjectUtils.getPropertyValue(bo, nestedAttributePrefix);
+    		if (!(nestedObject instanceof BusinessObject)) {
+    			throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + nestedAttributePrefix + ") is of class: " + "'" + nestedObject.getClass().getName() + "' and is not a " + "descendent of BusinessObject.");
+    		}
+    		return validateReferenceExistsAndIsActive((BusinessObject)nestedObject, nestedAttributePrimitive, attributeToHighlightOnFail, displayFieldName);
+    	}
+    	
         boolean success = true;
         boolean exists;
         boolean active;

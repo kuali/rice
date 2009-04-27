@@ -100,7 +100,7 @@ public class RouteLogAction extends KewKualiAction {
             try {
                 populateRouteLogFutureRequests(rlForm, routeHeader);
             } catch (Exception e) {
-                String errorMsg = "Found Error while getting Future Action Requests:  " + e.getMessage();
+                String errorMsg = "Unable to determine Future Action Requests";
                 LOG.info(errorMsg,e);
                 rlForm.setShowFutureError(errorMsg);
             }

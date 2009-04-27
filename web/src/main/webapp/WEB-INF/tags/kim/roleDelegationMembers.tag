@@ -7,12 +7,12 @@
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 
-<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
-<script language="javaScript">
+<script type="text/javascript">
 function changeDelegationTypeCode(){
-	document.getElementsByTagName("command").value="changeDelegationTypeCode";
-	javaScript:document.forms[0].submit();
+	document.getElementById("command").value="changeDelegationTypeCode";
+	document.forms[0].submit();
 }
 </script>
 <kul:tab tabTitle="Delegations" defaultOpen="true">
@@ -21,9 +21,9 @@ function changeDelegationTypeCode(){
     	<span class="subhead-left">Delegations</span>
     </h3>
     
-    <table cellpadding=0 cellspacing=0 summary="">
+    <table cellpadding="0" cellspacing="0" summary="">
         	<tr>
-        		<th><div align="left">&nbsp</div></th> 
+        		<th><div align="left">&nbsp;</div></th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.memberTypeCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.delegationName}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.activeFromDate}" noColon="true" /></div></th>
@@ -34,12 +34,10 @@ function changeDelegationTypeCode(){
         	</tr>     
           <c:if test="${not inquiry}">	
              <tr>
-				<th class="infoline">
-					<c:out value="Add:" />
-				</th>
+				<th class="infoline">Add:</th>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<input type="hidden" name="command"/>
+                	<input type="hidden" name="command" id="command" />
                 	<kul:htmlControlAttribute property="delegation.member.memberTypeCode" 
                 	attributeEntry="${delegationAttributes.memberTypeCode}" 
                 	onchange="changeDelegationTypeCode()" />
@@ -82,7 +80,7 @@ function changeDelegationTypeCode(){
 					</c:choose>
 		        </c:forEach>
                 <td class="infoline">
-					<div align=center>
+					<div align="center">
 						<html:image property="methodToCall.addDelegationMember.anchor${tabKey}"
 						src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
 					</div>
@@ -118,7 +116,7 @@ function changeDelegationTypeCode(){
         			<c:choose>
         				<c:when test="${numberOfQualifiers>statusQualifier.index}">
 				            <td align="left" valign="middle">
-				               	<div align="left"> aa<kul:htmlControlAttribute property="document.delegation.members[${statusMember.index}].qualifier[${qualifier.kimAttributeId}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
+				               	<div align="left"><kul:htmlControlAttribute property="document.delegation.members[${statusMember.index}].qualifier[${qualifier.kimAttributeId}].attrVal"  attributeEntry="${attrEntry}" readOnly="${inquiry}"  />
 								</div>
 							</td>
 						</c:when>
@@ -132,7 +130,7 @@ function changeDelegationTypeCode(){
 		        </c:forEach>
 			<c:if test="${not inquiry}">	
 				<td>
-					<div align=center>&nbsp;
+					<div align="center">&nbsp;
 						<c:choose>
 							<c:when test="${role.edit}">
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>

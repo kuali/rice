@@ -17,7 +17,7 @@
 
 <c:set var="travelAttributes" value="${DataDictionary.TravelRequest.attributes}" />
 <c:set var="accountAttributes" value="${DataDictionary.TravelAccount.attributes}" />
-<c:set var="readOnly" value="${empty KualiForm.editingMode['fullEntry']}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:documentPage
 	showDocumentInfo="true"

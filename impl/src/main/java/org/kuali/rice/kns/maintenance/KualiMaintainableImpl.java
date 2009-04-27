@@ -712,46 +712,37 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @see org.kuali.rice.kns.maintenance.Maintainable#setGenerateBlankRequiredValues()
      */
     public void setGenerateBlankRequiredValues(String docTypeName) {
-    	
-    	 List<Section> sections = new ArrayList<Section>();
-    	 Map defaultValues = new HashMap();
-         
-         List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
-
          try {
-             // iterate through section definitions
-             for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {
-                 
-                 MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
-                 Collection maintItems = maintSectionDef.getMaintainableItems();
-                 for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
-                     MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
-
+             List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+        	 Map<String,String> defaultValues = new HashMap<String,String>();
+             
+        	 for ( MaintainableSectionDefinition maintSectionDef : sectionDefinitions ) {
+        		 for ( MaintainableItemDefinition item : maintSectionDef.getMaintainableItems() ) {
                      if (item instanceof MaintainableFieldDefinition) {
                          MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
-                         if (maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
-                        	
-                        	 if (ObjectUtils.getPropertyValue(this.getBusinessObject(), item.getName()) == null) {
-                        		 Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
+                         if (maintainableFieldDefinition.isRequired() 
+                        		 && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
+                        	 Object currPropVal = ObjectUtils.getPropertyValue(this.getBusinessObject(), item.getName()); 
+                        	 if ( currPropVal == null
+                        			|| (currPropVal instanceof String && StringUtils.isBlank( (String)currPropVal ) ) 
+                        	 		) {
+                        		 Class<? extends ValueFinder> defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
                         		 if (defaultValueFinderClass != null) {
-                        			 String defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
+                        			 String defaultValue = defaultValueFinderClass.newInstance().getValue();
                                	  	 if (defaultValue != null) {
                                	  		 defaultValues.put(item.getName(), defaultValue);
                                	  	 }    
                                  }
-                                 
                         	 }
                          }
                      }
                  }   
              }
-             Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
+             FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
          } catch(Exception e){
         	 LOG.error("Unable to set blank required value " + e.getMessage(), e);
         	 throw new RuntimeException("Unable to set blank required value" + e.getMessage(), e);
          }
-
-       
     }
 
 

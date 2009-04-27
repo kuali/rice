@@ -15,13 +15,17 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ParameterServerService;
 
 /**
@@ -39,6 +43,7 @@ import org.kuali.rice.kns.service.ParameterServerService;
  */
 public class ParameterServiceImpl extends ParameterServiceBase implements ParameterServerService {
 	protected BusinessObjectService businessObjectService;
+	protected LookupService lookupService;
 	
 	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode,
 			String parameterName) {
@@ -46,20 +51,50 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 	    crit.put("parameterNamespaceCode", namespaceCode);
 	    crit.put("parameterDetailTypeCode", detailTypeCode);
 	    crit.put("parameterName", parameterName);
-	    return (Parameter)businessObjectService.findByPrimaryKey(Parameter.class, crit);
+	    return (Parameter)getBusinessObjectService().findByPrimaryKey(Parameter.class, crit);
 	}
     
+   /**
+    * This method can be used to retrieve a list of parameters that
+    * match the given fieldValues criteria. You could also specify the "like"
+    * criteria in the Map.
+    * 
+    * @param   fieldValues The Map containing the key value pairs to be used 
+    *                      to build the criteria.
+    * @return  List of Parameters that match the criteria.
+    */
+	@SuppressWarnings("unchecked")
+	public List<Parameter> retrieveParametersGivenLookupCriteria(Map<String, String> fieldValues) {
+		Collection<Parameter> results = getLookupService().findCollectionBySearch(Parameter.class, fieldValues);
+		return new ArrayList<Parameter>( results );
+    }    
+	
 	public List<ParameterDetailType> getNonDatabaseComponents() {
 		return KNSServiceLocator.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setParameterForTesting(Class componentClass, String parameterName, String parameterText) {
 	    Parameter parameter = (Parameter) getParameter(componentClass, parameterName);
 	    parameter.setParameterValue(parameterText);
-	    KNSServiceLocator.getBusinessObjectService().save(parameter);
+	    getBusinessObjectService().save(parameter);
 	} 
 	
 	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
 	    this.businessObjectService = businessObjectService;
+	}
+
+	protected LookupService getLookupService() {
+		if ( lookupService == null ) {
+			lookupService = KNSServiceLocator.getLookupService();
+		}
+		return lookupService;
+	}
+
+	protected BusinessObjectService getBusinessObjectService() {
+		if ( businessObjectService == null ) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return this.businessObjectService;
 	}	
 }

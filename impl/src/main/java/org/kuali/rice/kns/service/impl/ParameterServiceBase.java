@@ -60,6 +60,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	/**
 	 * @see org.kuali.kfs.sys.service.ParameterService#parameterExists(java.lang.Class componentClass, java.lang.String parameterName)
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean parameterExists(Class componentClass, String parameterName) {
 	    return retrieveParameter(getNamespace(componentClass), getDetailType(componentClass), parameterName) != null;
 	}
@@ -72,6 +73,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param parameterName
 	 * @return boolean value of Yes/No indicator parameter
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean getIndicatorParameter(Class componentClass, String parameterName) {
 	    return "Y".equals(getParameter(componentClass, parameterName).getParameterValue());
 	}
@@ -79,6 +81,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	/**
 	 * @see org.kuali.kfs.sys.service.ParameterService#getParameterValue(java.lang.Class componentClass, java.lang.String parameterName)
 	 */
+	@SuppressWarnings("unchecked")
 	public String getParameterValue(Class componentClass, String parameterName) {
 	    return getParameter(componentClass, parameterName).getParameterValue();
 	}
@@ -94,6 +97,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param constrainingValue
 	 * @return derived value String or null
 	 */
+	@SuppressWarnings("unchecked")
 	public String getParameterValue(Class componentClass, String parameterName, String constrainingValue) {
 	    List<String> parameterValues = getParameterValues(componentClass, parameterName, constrainingValue);
 	    if (parameterValues.size() == 1) {
@@ -109,6 +113,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param parameterName
 	 * @return parsed List of String parameter values
 	 */
+	@SuppressWarnings("unchecked")
 	public List<String> getParameterValues(Class componentClass, String parameterName) {
 	    return Collections.unmodifiableList( getParameterValues(getParameter(componentClass, parameterName)) );
 	}
@@ -122,6 +127,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param constrainingValue
 	 * @return derived values List<String> or an empty list if no values are found
 	 */
+	@SuppressWarnings("unchecked")
 	public List<String> getParameterValues(Class componentClass, String parameterName, String constrainingValue) {
 	    return Collections.unmodifiableList( getParameterValues(getParameter(componentClass, parameterName), constrainingValue) );
 	}
@@ -135,6 +141,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @return ParameterEvaluator instance initialized with the Parameter corresponding to the specified componentClass and
 	 *         parameterName and the values of the Parameter
 	 */
+	@SuppressWarnings("unchecked")
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String parameterName) {
 	    return getParameterEvaluator(getParameter(componentClass, parameterName));
 	}
@@ -150,6 +157,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 *         parameterName, the values of the Parameter, the knowledge of whether the values are allowed or denied, and the
 	 *         constrainedValue
 	 */
+	@SuppressWarnings("unchecked")
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String parameterName, String constrainedValue) {
 	    return getParameterEvaluator(getParameter(componentClass, parameterName), constrainedValue);
 	}
@@ -165,6 +173,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 *         parameterName, the values of the Parameter that correspond to the specified constrainingValue, the knowledge of
 	 *         whether the values are allowed or denied, and the constrainedValue
 	 */
+	@SuppressWarnings("unchecked")
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String parameterName, String constrainingValue,
 			String constrainedValue) {
 			    return getParameterEvaluator(getParameter(componentClass, parameterName), constrainingValue, constrainedValue);
@@ -186,6 +195,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 *         the constrainingValue restriction, the values of the Parameter that correspond to the specified constrainingValue,
 	 *         the knowledge of whether the values are allowed or denied, and the constrainedValue
 	 */
+	@SuppressWarnings("unchecked")
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String allowParameterName, String denyParameterName,
 			String constrainingValue, String constrainedValue) {
 			    Parameter allowParameter = getParameter(componentClass, allowParameterName);
@@ -200,6 +210,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 			}
 
 
+	@SuppressWarnings("unchecked")
 	public String getNamespace(Class documentOrStepClass) {
 	    if (documentOrStepClass == null) {
 	        throw new IllegalArgumentException("The getNamespace method of ParameterServiceImpl requires non-null documentOrStepClass");
@@ -223,6 +234,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    throw new IllegalArgumentException("Unable to determine the namespace for documentOrStepClass " + documentOrStepClass.getName() );
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getDetailType(Class documentOrStepClass) {
 	    if (documentOrStepClass == null) {
 	        throw new IllegalArgumentException("The getDetailType method of ParameterServiceImpl requires non-null documentOrStepClass");
@@ -246,6 +258,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    throw new IllegalArgumentException("The getDetailType method of ParameterServiceImpl requires a TransactionalDocument or BusinessObject class.  Was:" + documentOrStepClass.getName());
 	}
 
+	@SuppressWarnings("unchecked")
 	private Class getStepClass() {
 		try {
 			ClassLoader cl = ClassLoaderUtils.getDefaultClassLoader();
@@ -257,6 +270,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected String getDetailTypeName(Class documentOrStepClass) {
 	    if (documentOrStepClass == null) {
 	        throw new IllegalArgumentException("The getDetailTypeName method of ParameterServiceImpl requires non-null documentOrStepClass");
@@ -306,6 +320,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 			    return parameterEvaluator;
 			}
 
+	@SuppressWarnings("unchecked")
 	protected ParameterDetailType getParameterDetailType(Class documentOrStepClass) {
 	    String detailTypeString = getDetailType(documentOrStepClass);
 	    String detailTypeName = getDetailTypeName(documentOrStepClass);
@@ -321,12 +336,12 @@ public abstract class ParameterServiceBase implements ParameterService {
 	            return Arrays.asList(StringUtils.substringAfter(pair, "=").split(","));
 	        }
 	    }
-	    return Collections.EMPTY_LIST;
+	    return Collections.emptyList();
 	}
 
 	private List<String> getParameterValues(Parameter parameter) {
 	    if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
-	        return Collections.EMPTY_LIST;
+	        return Collections.emptyList();
 	    }
 	    return Arrays.asList(parameter.getParameterValue().split(";"));
 	}
@@ -340,7 +355,8 @@ public abstract class ParameterServiceBase implements ParameterService {
         parameterCache.set(null);
     }
  
-    protected Parameter getParameter(Class componentClass, String parameterName) {
+    @SuppressWarnings("unchecked")
+	protected Parameter getParameter(Class componentClass, String parameterName) {
         String key = componentClass.toString() + ":" + parameterName;
         Parameter parameter = null;
         if (parameterCache.get() == null) {
@@ -374,7 +390,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	private boolean constraintIsAllow(Parameter parameter) {
 	    return KNSConstants.APC_ALLOWED_OPERATOR.equals(parameter.getParameterConstraintCode());
 	}
-
+	
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 	    this.dataDictionaryService = dataDictionaryService;
 	}

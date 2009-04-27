@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -41,6 +42,7 @@ public class ParameterServiceProxyImpl implements ParameterService {
 		return getParameterService().retrieveParameter(namespaceCode, detailTypeCode, parameterName);
 	}
     
+	@SuppressWarnings("unchecked")
 	public void setParameterForTesting(Class componentClass, String parameterName, String parameterText) {
 		getParameterService().setParameterForTesting(componentClass, parameterName, parameterText);
 	}
@@ -131,5 +133,10 @@ public class ParameterServiceProxyImpl implements ParameterService {
 		}
 		return parameterService;
 	}
+
+	public List<Parameter> retrieveParametersGivenLookupCriteria(
+			Map<String, String> fieldValues) {
+		return getParameterService().retrieveParametersGivenLookupCriteria(fieldValues);
+	}	
 	
 }

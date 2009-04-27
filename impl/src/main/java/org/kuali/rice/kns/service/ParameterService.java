@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kns.bo.Parameter;
 
@@ -164,4 +165,16 @@ public interface ParameterService {
      * @param documentOrStepClass
      */
     public String getDetailType(Class<? extends Object> documentOrStepClass);
+    
+    /**
+     * This method can be used to retrieve a list of parameters that
+     * match the given fieldValues criteria. You could also specify the "like"
+     * criteria in the Map.
+     * 
+     * @param   fieldValues The Map containing the key value pairs to be used 
+     *                      to build the criteria.
+     * @return  List of Parameters that match the criteria.
+     */
+ 	public List<Parameter> retrieveParametersGivenLookupCriteria(Map<String, String> fieldValues);
+
 }

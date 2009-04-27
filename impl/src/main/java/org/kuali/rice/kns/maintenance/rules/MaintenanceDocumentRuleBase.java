@@ -1497,7 +1497,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             LOG.debug( "processAddCollectionLineBusinessRules - BO: " + bo );
             LOG.debug( "Before Validate: " + map );
         }
-        getBoDictionaryService().performForceUppercase(bo);
+        //getBoDictionaryService().performForceUppercase(bo);
         getMaintDocDictionaryService().validateMaintainableCollectionsAddLineRequiredFields( document, document.getNewMaintainableObject().getBusinessObject(), collectionName );
         String errorPath = KNSConstants.MAINTENANCE_ADD_PREFIX + collectionName;
         map.addToErrorPath( errorPath );

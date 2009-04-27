@@ -17,6 +17,7 @@ package org.kuali.rice.kns.maintenance;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +43,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
+import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -53,6 +55,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -60,6 +63,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Section;
@@ -189,10 +193,12 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         newFieldValues = getPersonService().resolvePrincipalNamesToPrincipalIds(getBusinessObject(), fieldValues);
    
         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), newFieldValues);
+        performForceUpperCase(newFieldValues);
         //getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
         return cachedValues;
     }
-
+    
+ 
 
     /**
      * Special hidden parameters are set on the maintenance jsp starting with a prefix that tells us which fields have been
@@ -893,6 +899,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 LOG.debug( "values for collection: " + collectionValues );
             }
             cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + collName + "." ) );
+            performFieldForceUpperCase(getNewCollectionLine( collName ), collectionValues);
+            
             GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
             GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
             cachedValues.putAll( populateNewSubCollectionLines( coll, subCollectionValues ) );
@@ -946,6 +954,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 }
                 GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
                 cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( parent+"."+collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName + "." ) );
+                performFieldForceUpperCase(getNewCollectionLine( parent+"."+collName ), collectionValues);
                 GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
             }
             
@@ -954,6 +963,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         
         return cachedValues;
     }
+    
 
     public Collection<String> getAffectedReferencesFromLookup(BusinessObject baseBO, String attributeName, String collectionPrefix) {
         PersistenceStructureService pss = getPersistenceStructureService();
@@ -1262,6 +1272,137 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 			}
 		}
 	}
+	
+	private void performForceUpperCase(Map fieldValues) {
+	    	List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+	        for (MaintainableSectionDefinition sectionDefinition : sections) {
+	        	for (MaintainableItemDefinition itemDefinition :  sectionDefinition.getMaintainableItems()) {
+	        		if (itemDefinition instanceof MaintainableFieldDefinition) {
+	        			performFieldForceUpperCase("", businessObject, (MaintainableFieldDefinition) itemDefinition, fieldValues);
+	                }
+	                else if (itemDefinition instanceof MaintainableCollectionDefinition) {
+	                	performCollectionForceUpperCase("", businessObject,(MaintainableCollectionDefinition) itemDefinition, fieldValues);
+	   
+	                }
+	            }
+	        }
+	  }
+	    
+	  private void performFieldForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableFieldDefinition fieldDefinition, Map fieldValues) {
+	    	ErrorMap errorMap = GlobalVariables.getErrorMap();
+	    	String fieldName = fieldDefinition.getName();
+	    	String mapKey = fieldNamePrefix + fieldName; 
+	    	if(fieldValues != null && fieldValues.get(mapKey) != null){
+	    	  if (PropertyUtils.isWriteable(bo, fieldName) && ObjectUtils.getNestedValue(bo, fieldName) != null ) {
+	    		
+	            try {
+	        		Class type = ObjectUtils.easyGetPropertyType(bo, fieldName);
+	            	//convert to upperCase based on data dictionary
+	            	Class businessObjectClass = bo.getClass();
+	                boolean upperCase = false;
+	                try {
+	                	upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, fieldName);
+	                }
+	                catch (UnknownBusinessClassAttributeException t) {
+	                	boolean catchme = true;
+	                    // throw t;
+	                }
+	                        	
+	                Object fieldValue = ObjectUtils.getNestedValue(bo, fieldName);
+	                        	
+	                if(upperCase && fieldValue instanceof String){
+	                	fieldValue = ((String) fieldValue).toUpperCase(); 
+	                }
+	                ObjectUtils.setObjectProperty(bo, fieldName, type, fieldValue);
+	           }catch (FormatException e){
+	        	   errorMap.putError(fieldName, e.getErrorKey(), e.getErrorArgs());
+	           }catch (IllegalAccessException e) {
+	               LOG.error("unable to populate business object" + e.getMessage());
+	               throw new RuntimeException(e.getMessage(), e);
+	           }
+	           catch (InvocationTargetException e) {
+	               LOG.error("unable to populate business object" + e.getMessage());
+	               throw new RuntimeException(e.getMessage(), e);
+	           }
+	           catch (NoSuchMethodException e) {
+	               LOG.error("unable to populate business object" + e.getMessage());
+	               throw new RuntimeException(e.getMessage(), e);
+	           }
+	    	}
+	      }
+	  }
+
+	  private void performCollectionForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableCollectionDefinition collectionDefinition, Map fieldValues) {
+	    	String collectionName = fieldNamePrefix + collectionDefinition.getName();
+	    	Collection<BusinessObject> collection = (Collection<BusinessObject>)ObjectUtils.getPropertyValue(bo, collectionDefinition.getName());
+	    	if (collection != null) {
+	    		int i = 0;
+	    		// even though it's technically a Collection, we're going to index it like a list
+	    		for (BusinessObject collectionItem : collection) {
+	    			String collectionItemNamePrefix = collectionName + "[" + i + "].";
+	    			//String collectionItemNamePrefix = "";
+	    		    for (MaintainableFieldDefinition fieldDefinition : collectionDefinition.getMaintainableFields()) {
+	    		    	performFieldForceUpperCase(collectionItemNamePrefix, collectionItem, fieldDefinition, fieldValues);
+	    		    }
+	    		    for (MaintainableCollectionDefinition subCollectionDefinition : collectionDefinition.getMaintainableCollections()) {                
+	    		    	performCollectionForceUpperCase(collectionItemNamePrefix, collectionItem, subCollectionDefinition, fieldValues);
+	    		    }
+	    		    i++;
+	    		}
+	        }
+	  }
+	  
+	  private void performFieldForceUpperCase(BusinessObject bo, Map fieldValues) {
+	      ErrorMap errorMap = GlobalVariables.getErrorMap();
+
+	      try {
+	    	  for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
+	    		  String propertyName = (String) iter.next();
+
+	              if (PropertyUtils.isWriteable(bo, propertyName) && fieldValues.get(propertyName) != null ) {
+	                    // if the field propertyName is a valid property on the bo class
+	                    Class type = ObjectUtils.easyGetPropertyType(bo, propertyName);
+	                    try {
+	                    	//Keep the convert to upperCase logic here. It will be used in populateNewCollectionLines, populateNewSubCollectionLines
+	                    	//convert to upperCase based on data dictionary
+	                    	Class businessObjectClass = bo.getClass();
+	                    	boolean upperCase = false;
+	                         try {
+	                        	 upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, propertyName);
+	                         }
+	                         catch (UnknownBusinessClassAttributeException t) {
+	                             boolean catchme = true;
+	                             // throw t;
+	                         }
+	                    	
+	                    	Object fieldValue = fieldValues.get(propertyName);
+	                    	
+	                    	if(upperCase && fieldValue instanceof String){
+	                    		fieldValue = ((String) fieldValue).toUpperCase(); 
+	                    	}
+	                        ObjectUtils.setObjectProperty(bo, propertyName, type, fieldValue);
+	                    }
+	                    catch (FormatException e) {
+	                        errorMap.putError(propertyName, e.getErrorKey(), e.getErrorArgs());
+	                    }
+	                }
+	            }
+	        }
+	        catch (IllegalAccessException e) {
+	            LOG.error("unable to populate business object" + e.getMessage());
+	            throw new RuntimeException(e.getMessage(), e);
+	        }
+	        catch (InvocationTargetException e) {
+	            LOG.error("unable to populate business object" + e.getMessage());
+	            throw new RuntimeException(e.getMessage(), e);
+	        }
+	        catch (NoSuchMethodException e) {
+	            LOG.error("unable to populate business object" + e.getMessage());
+	            throw new RuntimeException(e.getMessage(), e);
+	        }
+
+	  }
+
 
 	/**
 	 * By default a maintainable is not external 

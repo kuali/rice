@@ -159,14 +159,6 @@ public class ModuleServiceBase implements ModuleService {
 		if(!ExternalizableBusinessObject.class.isAssignableFrom(inquiryBusinessObjectClass)) {
 	        return KNSConstants.EMPTY_STRING;
 		}
-		Properties urlParameters = new Properties();
-		for (String paramName : parameters.keySet()) {
-			String[] parameterValues = parameters.get(paramName);
-			if (parameterValues.length > 0) {
-				urlParameters.put(paramName, parameterValues[0]);
-			}
-		}
-		
 		String businessObjectClassAttribute;
 		if(inquiryBusinessObjectClass.isInterface()){
 			Class implementationClass = getExternalizableBusinessObjectImplementation(inquiryBusinessObjectClass);
@@ -179,18 +171,33 @@ public class ModuleServiceBase implements ModuleService {
 			LOG.warn("Inquiry was invoked with a non-interface class object " + inquiryBusinessObjectClass.getName());
 			businessObjectClassAttribute = inquiryBusinessObjectClass.getName();			
 		}
+        return UrlFactory.parameterizeUrl(
+        		getInquiryUrl(inquiryBusinessObjectClass), 
+        		getUrlParameters(businessObjectClassAttribute, parameters));
+	}
+
+	protected Properties getUrlParameters(String businessObjectClassAttribute, Map<String, String[]> parameters){
+		Properties urlParameters = new Properties();
+		for (String paramName : parameters.keySet()) {
+			String[] parameterValues = parameters.get(paramName);
+			if (parameterValues.length > 0) {
+				urlParameters.put(paramName, parameterValues[0]);
+			}
+		}
 		urlParameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObjectClassAttribute);
 		urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
+		return urlParameters;
+	}
+	
+	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
 		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.KUALI_RICE_URL_KEY);
 		String inquiryUrl = riceBaseUrl;
 		if (!inquiryUrl.endsWith("/")) {
 			inquiryUrl = inquiryUrl + "/";
 		}
-		inquiryUrl = inquiryUrl + KNSConstants.INQUIRY_ACTION;
-
-        return UrlFactory.parameterizeUrl(inquiryUrl, urlParameters);
+		return inquiryUrl + KNSConstants.INQUIRY_ACTION;
 	}
-
+	
 	/**
 	 * This overridden method ...
 	 * 

@@ -18,7 +18,9 @@ package org.kuali.rice.kim.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
@@ -26,9 +28,11 @@ import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -155,4 +159,36 @@ public class KimModuleService extends ModuleServiceBase {
 		}
 		return groupService;
 	}
+
+	protected Properties getUrlParameters(String businessObjectClassAttribute, Map<String, String[]> parameters){
+		Properties urlParameters = new Properties();
+		for (String paramName : parameters.keySet()) {
+			String[] parameterValues = parameters.get(paramName);
+			if (parameterValues.length > 0) {
+				urlParameters.put(paramName, parameterValues[0]);
+			}
+		}
+		urlParameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObjectClassAttribute);
+        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+        urlParameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+		return urlParameters;
+	}
+
+	@Override
+	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
+		String inquiryUrl = KimCommonUtils.getKimBasePath();
+		if (!inquiryUrl.endsWith("/")) {
+			inquiryUrl = inquiryUrl + "/";
+		}
+		String inquiryAction = "";
+		if(Role.class.isAssignableFrom(inquiryBusinessObjectClass))
+			inquiryAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+		else if(Group.class.isAssignableFrom(inquiryBusinessObjectClass))
+			inquiryAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
+		else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass))
+			inquiryAction = KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION;
+		inquiryUrl = inquiryUrl + inquiryAction;
+		return inquiryUrl;
+	}
+
 }

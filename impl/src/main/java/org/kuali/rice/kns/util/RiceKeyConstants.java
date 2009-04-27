@@ -158,6 +158,7 @@ public class RiceKeyConstants {
     public static final String ERROR_ROLE_QUALIFIER_REQUIRED = "error.role.qualifier.required";
     public static final String MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL = "message.sendAdHocRequests.successful";
     public static final String ERROR_ONE_ITEM_REQUIRED = "error.one.item.required";
+    public static final String ERROR_ONE_ACTIVE_ITEM_REQUIRED = "error.one.active.item.required";
     public static final String ERROR_MEMBERID_MEMBERTYPE_MISMATCH = "error.memberid.membertype.mismatch";
     public static final String ERROR_PRIORITY_NUMBER_RANGE = "error.prioritynumber.range";
     

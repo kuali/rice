@@ -39,7 +39,6 @@ public class RoleMemberInquirableImpl extends KualiInquirableImpl {
 	protected final String TEMPLATE_NAMESPACE_CODE = "template.namespaceCode";
 	protected final String DETAIL_OBJECTS = "detailObjects";
 	protected final String ASSIGNED_TO_ROLES = "assignedToRolesToDisplay";
-	protected final String REQUIRED_ROLE_QUALIFIER_ATTRIBUTES = "requiredRoleQualifierAttributes";
 	protected final String ATTRIBUTE_DATA_ID = "attributeDataId";
 
     protected String getKimAttributeLabelFromDD(String attributeName){

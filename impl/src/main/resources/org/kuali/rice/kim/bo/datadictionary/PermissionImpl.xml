@@ -30,7 +30,6 @@
         <ref bean="PermissionImpl-assignedToGroupNameForLookup" />
         <ref bean="PermissionImpl-templateId" />
         <ref bean="PermissionImpl-attributeValue" />
-        <ref bean="PermissionImpl-requiredRoleQualifierAttributes" />
         <ref bean="PermissionImpl-detailObjectsValues" />
         <ref bean="PermissionImpl-detailObjectsToDisplay" />
         <ref bean="PermissionImpl-assignedToRolesToDisplay" />
@@ -273,18 +272,6 @@
     </property>
   </bean>
 
-  <bean id="PermissionImpl-requiredRoleQualifierAttributes" parent="PermissionImpl-requiredRoleQualifierAttributes-parentBean" />
-  <bean id="PermissionImpl-requiredRoleQualifierAttributes-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="requiredRoleQualifierAttributesToDisplay"
-        p:label="Required Role Qualifier Attributes"
-        p:shortLabel="Required Attributes"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="40" />
-    </property>
-  </bean>          
-
   <bean id="PermissionImpl-detailObjectsValues" parent="PermissionImpl-detailObjectsValues-parentBean" />
   <bean id="PermissionImpl-detailObjectsValues-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="detailObjectsValues"
@@ -369,30 +356,6 @@
 		                          p:attributeName="kimAttribute.attributeName" />
 		                    <bean parent="FieldDefinition"
 		                          p:attributeName="attributeValue" />
-		                  </list>
-	                </property>
-		        </bean>
-			</list>
-		  </property>
-		</bean>
-        <bean parent="InquirySectionDefinition">
-          <property name="title" value="Required Role Qualifier Attributes" />
-          <property name="inquiryFields" >
-            <list>
-				<bean parent="InquiryCollectionDefinition">
-	                <property name="attributeName" value="requiredRoleQualifierAttributes" />
-	                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl" />
-	                <property name="numberOfColumns" value="1" />
-	                <property name="inquiryFields" >
-						<list>
-		                    <bean parent="FieldDefinition"
-		                          p:attributeName="kimAttribute.attributeName" />
-		                </list>
-		            </property>
-		            <property name="summaryFields" >
-		                  <list>
-		                    <bean parent="FieldDefinition"
-		                          p:attributeName="kimAttribute.attributeName" />
 		                  </list>
 	                </property>
 		        </bean>

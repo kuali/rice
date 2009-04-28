@@ -27,7 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -62,11 +61,6 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
 	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
-
-	@OneToMany(targetEntity=KimResponsibilityRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
-	protected List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes = new TypedArrayList(KimResponsibilityRequiredAttributeImpl.class);
-	
 	
 	protected String templateId;
 	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
@@ -198,15 +192,6 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		this.responsibilityId = responsibilityId;
 	}
 
-	public List<KimResponsibilityRequiredAttributeImpl> getRequiredRoleQualifierAttributes() {
-		return this.requiredRoleQualifierAttributes;
-	}
-
-	public void setRequiredRoleQualifierAttributes(
-			List<KimResponsibilityRequiredAttributeImpl> requiredRoleQualifierAttributes) {
-		this.requiredRoleQualifierAttributes = requiredRoleQualifierAttributes;
-	}
-
 	/**
 	 * @return the roleResponsibilities
 	 */
@@ -251,17 +236,6 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 				responsibilityAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
-	public String getRequiredRoleQualifierAttributesToDisplay() {
-		StringBuffer requiredRoleQualifierAttributesToDisplay = new StringBuffer();
-		for(KimResponsibilityRequiredAttributeImpl responsibilityRequiredAttribute: requiredRoleQualifierAttributes){
-			requiredRoleQualifierAttributesToDisplay.append(getRequiredRoleQualifierAttributeToDisplay(responsibilityRequiredAttribute));
-		}
-        if(requiredRoleQualifierAttributesToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	requiredRoleQualifierAttributesToDisplay.delete(requiredRoleQualifierAttributesToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), requiredRoleQualifierAttributesToDisplay.length());
-
-		return requiredRoleQualifierAttributesToDisplay.toString();
-	}
-
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	protected String getKimAttributeLabelFromDD(String attributeName){
     	return getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
@@ -273,12 +247,6 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
 		return dataDictionaryService;
-	}
-	
-	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
-	public String getRequiredRoleQualifierAttributeToDisplay(KimResponsibilityRequiredAttributeImpl responsibilityRequiredAttribute){
-		String value = getKimAttributeLabelFromDD(responsibilityRequiredAttribute.getKimAttribute().getAttributeName());
-		return StringUtils.isEmpty(value)?value:value+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 
 }

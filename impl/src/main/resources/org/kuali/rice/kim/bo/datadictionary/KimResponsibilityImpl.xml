@@ -19,7 +19,6 @@
         <ref bean="KimResponsibilityImpl-namespaceCode" />
         <ref bean="KimResponsibilityImpl-name" />
         <ref bean="KimResponsibilityImpl-detailObjects" />
-        <ref bean="KimResponsibilityImpl-requiredRoleQualifierAttributes" />
         <ref bean="KimResponsibilityImpl-templateId" />
         <ref bean="KimResponsibilityImpl-detailObjectsValues" />
       </list>
@@ -103,18 +102,6 @@
         p:name="detailObjects"
         p:label="Responsibility Detail Values"
         p:shortLabel="Detail Values"
-        p:maxLength="40"
-        p:required="false" >
-    <property name="control" >
-      <bean parent="TextControlDefinition" p:size="40" />
-    </property>
-  </bean>
-
-  <bean id="KimResponsibilityImpl-requiredRoleQualifierAttributes" parent="KimResponsibilityImpl-requiredRoleQualifierAttributes-parentBean" />
-  <bean id="KimResponsibilityImpl-requiredRoleQualifierAttributes-parentBean" parent="AttributeDefinition" abstract="true"
-        p:name="requiredRoleQualifierAttributes"
-        p:label="Required Role Qualifier Attributes"
-        p:shortLabel="Required Attributes"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >

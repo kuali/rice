@@ -27,7 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -63,10 +62,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
 	protected List<PermissionAttributeDataImpl> detailObjects = new TypedArrayList(PermissionAttributeDataImpl.class);
 
-	@OneToMany(targetEntity=KimPermissionRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
-	protected List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes = new TypedArrayList(KimPermissionRequiredAttributeImpl.class);
-	
 	protected String templateId;
 	protected KimPermissionTemplateImpl template;
 
@@ -194,15 +189,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.detailObjects = detailObjects;
 	}
 
-	public List<KimPermissionRequiredAttributeImpl> getRequiredRoleQualifierAttributes() {
-		return this.requiredRoleQualifierAttributes;
-	}
-
-	public void setRequiredRoleQualifierAttributes(
-			List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes) {
-		this.requiredRoleQualifierAttributes = requiredRoleQualifierAttributes;
-	}
-
 	/**
 	 * @return the rolePermissions
 	 */
@@ -244,17 +230,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 				permissionAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
-	public String getRequiredRoleQualifierAttributesToDisplay() {
-		StringBuffer requiredRoleQualifierAttributesToDisplay = new StringBuffer();
-		for(KimPermissionRequiredAttributeImpl permissionRequiredAttribute: requiredRoleQualifierAttributes){
-			requiredRoleQualifierAttributesToDisplay.append(getRequiredRoleQualifierAttributeToDisplay(permissionRequiredAttribute));
-		}
-        if(requiredRoleQualifierAttributesToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	requiredRoleQualifierAttributesToDisplay.delete(requiredRoleQualifierAttributesToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), requiredRoleQualifierAttributesToDisplay.length());
-
-		return requiredRoleQualifierAttributesToDisplay.toString();
-	}
-
 	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
 	protected String getKimAttributeLabelFromDD(String attributeName){
     	return getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
@@ -266,12 +241,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
 		return dataDictionaryService;
-	}
-
-	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
-	public String getRequiredRoleQualifierAttributeToDisplay(KimPermissionRequiredAttributeImpl permissionRequiredAttribute){
-		String value = getKimAttributeLabelFromDD(permissionRequiredAttribute.getKimAttribute().getAttributeName());
-		return StringUtils.isEmpty(value)?value:value+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 
 }

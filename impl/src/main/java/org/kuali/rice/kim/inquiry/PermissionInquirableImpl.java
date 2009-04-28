@@ -25,7 +25,6 @@ import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionRequiredAttributeImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
@@ -75,26 +74,11 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 			return getInquiryUrlForPrimaryKeys(Namespace.class, parameterNamespace, primaryKeys, null);
         } else if(DETAIL_OBJECTS.equals(attributeName)){
         	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
-        } else if(REQUIRED_ROLE_QUALIFIER_ATTRIBUTES.equals(attributeName)){
-        	//return getRequiredRoleQualifierAttributesInquiryUrl(businessObject, REQUIRED_ROLE_QUALIFIER_ATTRIBUTES);
         } else if(ASSIGNED_TO_ROLES.equals(attributeName)){
         	return getAssignedRoleInquiryUrl(businessObject);
         }
 		
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
-    }
-
-    protected HtmlData getRequiredRoleQualifierAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
-    	List<KimPermissionRequiredAttributeImpl> requiredAttributeData = 
-    		(List<KimPermissionRequiredAttributeImpl>)ObjectUtils.getPropertyValue(businessObject, attributeName);
-    	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
-		List<String> primaryKeys = new ArrayList<String>();
-		primaryKeys.add(KimConstants.PrimaryKeyConstants.KIM_PERMISSION_REQUIRED_ATTR_ID);
-    	for(KimPermissionRequiredAttributeImpl requiredAttributeDataImpl: requiredAttributeData){
-    		htmlData.add(getInquiryUrlForPrimaryKeys(KimPermissionRequiredAttributeImpl.class, requiredAttributeDataImpl, primaryKeys, 
-    		getKimAttributeLabelFromDD(requiredAttributeDataImpl.getKimAttribute().getAttributeName())));
-    	}
-    	return new MultipleAnchorHtmlData(htmlData);
     }
 
     protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){

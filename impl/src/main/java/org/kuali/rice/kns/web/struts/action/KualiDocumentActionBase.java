@@ -1342,7 +1342,7 @@ public class KualiDocumentActionBase extends KualiAction {
         	attachmentTypeCode = attachment.getAttachmentTypeCode();
         }
         String authorUniversalIdentifier = note.getAuthorUniversalIdentifier();
-        if(!entry.getAllowsNoteDelete() || WebUtils.canDeleteNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier) ){
+        if(!WebUtils.canDeleteNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier) ){
         	throw buildAuthorizationException("annotate", document);
         }
 

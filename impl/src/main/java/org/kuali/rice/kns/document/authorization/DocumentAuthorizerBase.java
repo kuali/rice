@@ -192,7 +192,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			additionalPermissionDetails.put(KimAttributes.ATTACHMENT_TYPE_CODE,
 					attachmentTypeCode);
 		}
-		additionalPermissionDetails.put(KimAttributes.CREATED_BY_SELF_ONLY,
+		additionalPermissionDetails.put(KimAttributes.CREATED_BY_SELF,
 				createdBySelfOnly);
 		return isAuthorizedByTemplate(document, KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.DELETE_NOTE_ATTACHMENT,

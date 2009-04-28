@@ -33,20 +33,31 @@ public class DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService
 	public List<KimPermissionInfo> performPermissionMatches(
 			AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = super
-				.performPermissionMatches(requestedDetails, permissionsList);
-		List<KimPermissionInfo> returnPermissions = new ArrayList<KimPermissionInfo>();
-		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
+				
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		if (requestedDetails == null) {
+			return matchingPermissions; // empty list
+		}
+		
+		// loop over the permissions, checking the non-document-related ones
+		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
 			if (Boolean.parseBoolean(requestedDetails
 					.get(KimAttributes.CREATED_BY_SELF))) {
-				returnPermissions.add(kimPermissionInfo);
-			} else {
+				if(Boolean.parseBoolean(kimPermissionInfo.getDetails().get(
+						KimAttributes.CREATED_BY_SELF_ONLY))){
+					matchingPermissions.add(kimPermissionInfo);
+				}
+				
+			}else{
 				if (!Boolean.parseBoolean(kimPermissionInfo.getDetails().get(
 						KimAttributes.CREATED_BY_SELF_ONLY))) {
-					returnPermissions.add(kimPermissionInfo);
+					matchingPermissions.add(kimPermissionInfo);
 				}
 			}
+
 		}
-		return returnPermissions;
+		
+		matchingPermissions = super.performPermissionMatches(requestedDetails, matchingPermissions);
+		return matchingPermissions;
 	}
 }

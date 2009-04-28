@@ -18,6 +18,7 @@ package org.kuali.rice.kew.routeheader;
 
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -50,7 +51,15 @@ public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHe
      * Gets the initiator name, masked appropriately if restricted.
      */
     public String getInitiatorName() {
-    	return UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), getActionListInitiatorPrincipal());
+    	String initiatorName = UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), getActionListInitiatorPrincipal());
+    	if (StringUtils.isBlank(initiatorName)) {
+    		initiatorName = UserUtils.getDisplayableName(UserSession.getAuthenticatedUser(), getActionListInitiatorPrincipal());
+    	}
+    	if (StringUtils.isBlank(initiatorName) && 
+    			!UserUtils.isEntityNameRestricted(getActionListInitiatorPrincipal().getEntityId())) {
+    		initiatorName = getActionListInitiatorPrincipal().getPrincipalName();
+    	}
+    	return initiatorName;
     }
 
 }

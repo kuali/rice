@@ -534,8 +534,8 @@ public class WebUtils {
     		return canDeleteNoteAttachment;
     	}else{
     		canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "true", GlobalVariables.getUserSession().getPerson());
-    		if(canDeleteNoteAttachment && authorUniversalIdentifier.equals(GlobalVariables.getUserSession().getPerson().getPrincipalId())){
-    			return true;
+    		if(canDeleteNoteAttachment && !authorUniversalIdentifier.equals(GlobalVariables.getUserSession().getPerson().getPrincipalId())){
+    			canDeleteNoteAttachment = false;
     		}
     	}
     	return canDeleteNoteAttachment;

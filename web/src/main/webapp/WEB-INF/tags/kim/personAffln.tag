@@ -9,7 +9,6 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.affiliationTypeCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.campusCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.dflt}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.active}" noColon="true" /></div></th>
            <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           </c:if>	
@@ -34,11 +33,6 @@
                 	<kul:htmlControlAttribute property="newAffln.dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnly}" /> 
 				</div>
                 </td>
-                <td class="infoline">
-               	<div align="center"> 
-               		<kul:htmlControlAttribute property="newAffln.active"  attributeEntry="${docAffiliationAttributes.active}" readOnly="${readOnly}" />
-				</div>
-				</td>
                 <td class="infoline">
 					<div align=center>
 						<html:image property="methodToCall.addAffln.anchor${tabKey}"
@@ -70,10 +64,6 @@
 		                	<kul:htmlControlAttribute property="document.affiliations[${status.index}].dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnly}" /> 
 						</div>
                     </td>
-	                <td align="left" valign="middle">
-	                	<div align="center"> <kul:htmlControlAttribute property="document.affiliations[${status.index}].active"  attributeEntry="${docAffiliationAttributes.active}" readOnly="${readOnly}" />
-					</div>
-					</td>
            <c:if test="${not inquiry}">	
 
 					<td>

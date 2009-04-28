@@ -14,7 +14,6 @@
       <list>
         <bean parent="ReferenceDefinition" p:attributeName="parameterNamespace" p:attributeToHighlightOnFail="parameterNamespaceCode"/>
         <bean parent="ReferenceDefinition" p:attributeName="parameterType" p:attributeToHighlightOnFail="parameterTypeCode"/>
-        <bean parent="ReferenceDefinition" p:attributeName="parameterDetailType" p:attributeToHighlightOnFail="parameterDetailTypeCode"/>
       </list>
     </property>
     <property name="lockingKeys">
@@ -53,7 +52,6 @@
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterDescription"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterTypeCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterConstraintCode"/>
-        <bean parent="MaintainableFieldDefinition" p:name="versionNumber"/>
       </list>
     </property>
     <property name="id" value="Edit Parameter"/>

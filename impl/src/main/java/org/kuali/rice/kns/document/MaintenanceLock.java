@@ -24,6 +24,7 @@ import javax.persistence.Entity;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -32,15 +33,26 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * Most maintenance documents have only one lock, but globals have many 
  */
 @Entity
+@Sequence(name="KRNS_MAINT_LOCK_S", property="lockId")
 @Table(name="KRNS_MAINT_LOCK_T")
 public class MaintenanceLock extends PersistableBusinessObjectBase {
     @Id
+    @Column(name="MAINT_LOCK_ID")
+    private String lockId;
 	@Column(name="MAINT_LOCK_REP_TXT")
 	private String lockingRepresentation;
     @Column(name="DOC_HDR_ID")
 	private String documentNumber;
 
-    public String getLockingRepresentation() {
+    public String getLockId() {
+		return this.lockId;
+	}
+
+	public void setLockId(String lockId) {
+		this.lockId = lockId;
+	}
+
+	public String getLockingRepresentation() {
         return lockingRepresentation;
     }
 

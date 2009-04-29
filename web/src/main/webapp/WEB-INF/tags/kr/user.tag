@@ -65,19 +65,26 @@
 </c:choose>
 <c:choose>
   <c:when test="${readOnly}">
-    <div>${userName}</div>
+    -
   </c:when>
   <c:otherwise>
     ${helpLink}
-    <c:choose>
-        <c:when test="${!empty userNameFieldName}">
-            <div id="${userNameFieldName}.div">${userName}&nbsp;</div>
-        </c:when>
-        <c:otherwise><%-- guess at the name if the name field is not being rendered --%>
-            <div id="${fn:replace( userIdFieldName, ".principalName", ".name" )}.div">${userName}&nbsp;</div>
-        </c:otherwise>
-    </c:choose>
+    <br />
   </c:otherwise>
+</c:choose>
+<c:choose>
+    <c:when test="${!empty userNameFieldName}">
+        <span id="${userNameFieldName}.div">${userName}</span>
+    </c:when>
+    <c:otherwise><%-- guess at the name if the name field is not being rendered --%>
+        <span id="${fn:replace( userIdFieldName, ".principalName", ".name" )}.div">${userName}</span>
+        <%-- When the user name field is not set, most likely, the name is not passed through
+             (It is also not available to be passed in, since only the Field objects are present
+             for use by rowDisplay.tag.  So, we fire off the needed JS to update the name. --%>
+        <c:if test="${empty userName && !(empty userId)}">
+            <script type="text/javascript">loadUserInfo( "${userIdFieldName}", "", "" );</script>
+        </c:if>
+    </c:otherwise>
 </c:choose>
   
 <c:if test="${renderOtherFields}">

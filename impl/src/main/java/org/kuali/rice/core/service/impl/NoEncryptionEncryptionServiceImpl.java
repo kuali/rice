@@ -57,4 +57,24 @@ public class NoEncryptionEncryptionServiceImpl implements EncryptionService, Dem
         }
         return valueToHide.toString();
     }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.core.service.EncryptionService#decryptBytes(byte[])
+     */
+    public byte[] decryptBytes(byte[] ciphertext)
+    		throws GeneralSecurityException {
+    	return ciphertext;
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.core.service.EncryptionService#encryptBytes(byte[])
+     */
+    public byte[] encryptBytes(byte[] valueToHide)
+    		throws GeneralSecurityException {
+    	return valueToHide;
+    }
 }

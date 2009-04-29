@@ -39,6 +39,15 @@ public interface EncryptionService {
     public String encrypt(Object valueToHide) throws GeneralSecurityException;
 
     /**
+     * Encrypts a value
+     *
+     * @param valueToHide - original value
+     * @return encrypted value
+     * @throws GeneralSecurityException
+     */
+    public byte[] encryptBytes(byte[] valueToHide) throws GeneralSecurityException;
+    
+    /**
      * Decrypts a value
      *
      * @param ciphertext - encrypted value
@@ -46,6 +55,15 @@ public interface EncryptionService {
      * @throws GeneralSecurityException
      */
     public String decrypt(String ciphertext) throws GeneralSecurityException;
+
+    /**
+     * Decrypts a value
+     *
+     * @param ciphertext - encrypted value
+     * @return decrypted value
+     * @throws GeneralSecurityException
+     */
+    public byte[] decryptBytes(byte[] ciphertext) throws GeneralSecurityException;
 
     /**
      * Returns true if encryption is enabled within KEW, false otherwise.

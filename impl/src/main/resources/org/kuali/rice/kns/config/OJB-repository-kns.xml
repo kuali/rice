@@ -281,6 +281,7 @@
 	    <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
 	    <field-descriptor name="serializedDocumentForm" column="SERIALZD_DOC_FRM" jdbc-type="BLOB" />
 	    <field-descriptor name="lastUpdatedDate" column="LAST_UPDT_DT" jdbc-type="TIMESTAMP" index="true" />
+        <field-descriptor name="encrypted" column="CONTENT_ENCRYPTED_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kns.bo.CountryImpl" table="KR_COUNTRY_T">

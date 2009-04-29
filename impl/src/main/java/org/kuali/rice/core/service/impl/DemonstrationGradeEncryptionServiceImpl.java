@@ -104,6 +104,41 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
         }
     }
 
+    public byte[] encryptBytes(byte[] valueToHide) throws GeneralSecurityException {
+        if (valueToHide == null) {
+            return new byte[0];
+        }
+
+        // Initialize the cipher for encryption
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, desKey);
+
+        // Our cleartext
+        byte[] cleartext = valueToHide;
+
+        // Encrypt the cleartext
+        byte[] ciphertext = cipher.doFinal(cleartext);
+
+        return ciphertext;
+    }
+
+    public byte[] decryptBytes(byte[] ciphertext) throws GeneralSecurityException {
+        if (ciphertext == null) {
+            return new byte[0];
+        }
+
+        // Initialize the same cipher for decryption
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, desKey);
+
+        // un-Base64 encode the encrypted data
+        byte[] encryptedData = ciphertext;
+
+        // Decrypt the ciphertext
+        byte[] cleartext1 = cipher.doFinal(encryptedData);
+        return cleartext1;
+    }
+    
     /**
      * 
      * This method generates keys. This method is implementation specific and should not be present in any general purpose interface

@@ -18,7 +18,8 @@ package org.kuali.rice.kns.bo;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerException;
 
 
 /*
@@ -28,11 +29,12 @@ public class SessionDocument extends PersistableBusinessObjectBase{
     
 	private static final long serialVersionUID = 2866566562262830639L;
 	
-	private String documentNumber;
-	private String sessionId;
-	private Timestamp lastUpdatedDate;
-	private byte[] serializedDocumentForm;
+	protected String documentNumber;
+	protected String sessionId;
+	protected Timestamp lastUpdatedDate;
+	protected byte[] serializedDocumentForm;
 	//private KualiDocumentFormBase serializedDocumentForm;
+	protected boolean encrypted = false;;
 	
 	
 	/**
@@ -95,11 +97,48 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 
 
 	
-	 protected LinkedHashMap toStringMapper() {
-	        LinkedHashMap m = new LinkedHashMap();
-	        m.put("documentNumber", this.documentNumber);
-	        m.put("sessionId", this.sessionId);
-	        return m;
-	    }
+	@SuppressWarnings("unchecked")
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap m = new LinkedHashMap();
+		m.put("documentNumber", this.documentNumber);
+		m.put("sessionId", this.sessionId);
+		return m;
+	}
 
+	public boolean isEncrypted() {
+		return this.encrypted;
+	}
+
+	public void setEncrypted(boolean encrypted) {
+		this.encrypted = encrypted;
+	}
+
+	public void beforeInsert() {
+		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
+		super.beforeInsert();
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
+	 */
+	@Override
+	public void beforeInsert(PersistenceBroker persistenceBroker)
+			throws PersistenceBrokerException {
+		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
+		super.beforeInsert(persistenceBroker);
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#afterLookup(org.apache.ojb.broker.PersistenceBroker)
+	 */
+	@Override
+	public void afterLookup(PersistenceBroker persistenceBroker)
+			throws PersistenceBrokerException {
+		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
+		super.afterLookup(persistenceBroker);
+	}
 }

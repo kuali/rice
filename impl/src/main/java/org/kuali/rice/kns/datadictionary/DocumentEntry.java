@@ -59,6 +59,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected boolean displayTopicFieldInNotes = false;
     protected boolean usePessimisticLocking = false;
     protected boolean useWorkflowPessimisticLocking = false;
+    protected boolean encryptDocumentDataInPersistentSessionStorage = false;
 
     protected List<String> webScriptFiles = new ArrayList<String>( 3 );
 
@@ -457,5 +458,14 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	public void setDerivedValuesSetterClass(
 			Class<? extends DerivedValuesSetter> derivedValuesSetter) {
 		this.derivedValuesSetterClass = derivedValuesSetter;
+	}
+
+	public boolean isEncryptDocumentDataInPersistentSessionStorage() {
+		return this.encryptDocumentDataInPersistentSessionStorage;
+	}
+
+	public void setEncryptDocumentDataInPersistentSessionStorage(
+			boolean encryptDocumentDataInPersistentSessionStorage) {
+		this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
 	}
 }

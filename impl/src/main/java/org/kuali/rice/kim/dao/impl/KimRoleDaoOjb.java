@@ -255,7 +255,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         for (Entry<String, String> entry : lookupNames.entrySet()) {
         	if (StringUtils.isNotBlank(entry.getValue())) {
         			if (!entry.getKey().equals(KIMPropertyConstants.Principal.PRINCIPAL_NAME)) {
-        				crit.addLike(entry.getKey(), entry.getValue());
+        				addLikeToCriteria(crit, entry.getKey(), entry.getValue());
         			} else {
         					List roleIds = getRoleIdsForPrincipalName(entry.getValue());
                 			if (!roleIds.isEmpty()) {
@@ -297,7 +297,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     private List<String> getRoleIdsForPrincipalName(String value) {
         Criteria subCrit = new Criteria();
 		String principalName = value.replace('*', '%');
-		subCrit.addLike(KIMPropertyConstants.Principal.PRINCIPAL_NAME,principalName );
+		addLikeToCriteria(subCrit, KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
         subCrit.addEqualToField(KIMPropertyConstants.Principal.PRINCIPAL_ID, Criteria.PARENT_QUERY_PREFIX + "memberId");
 		ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
         Criteria memberSubCrit = new Criteria();
@@ -313,7 +313,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		}
 		Criteria groupMSubCrit = new Criteria();
 	        groupMSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "memberId");
-	       groupMSubCrit.addEqualTo("memberTypeCode", "P");
+	        groupMSubCrit.addEqualTo("memberTypeCode", "P");
 	        groupMSubCrit.addExists(subQuery);
 		ReportQueryByCriteria groupMbrSubQuery = QueryFactory.newReportQuery(GroupMemberImpl.class, groupMSubCrit);
         Criteria grpRoleCrit = new Criteria();
@@ -376,9 +376,9 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     private void setupAttrCriteria(Criteria crit, Map<String,String> attrCrit, String kimTypeId) {
         for (Entry<String, String> entry : attrCrit.entrySet()) {
 			Criteria subCrit = new Criteria();
-			subCrit.addLike("attributes.attributeValue",entry.getValue());
-			subCrit.addEqualTo("attributes.kimAttributeId",entry.getKey().substring(entry.getKey().indexOf(".")+1, entry.getKey().length()));
-			subCrit.addEqualTo("attributes.kimTypeId", kimTypeId);
+			addLikeToCriteria(subCrit, "attributes.attributeValue",entry.getValue());
+			addEqualToCriteria(subCrit, "attributes.kimAttributeId",entry.getKey().substring(entry.getKey().indexOf(".")+1, entry.getKey().length()));
+			addEqualToCriteria(subCrit, "attributes.kimTypeId", kimTypeId);
 			subCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
 			crit.addExists(QueryFactory.newReportQuery(RoleMemberImpl.class, subCrit));
         }
@@ -391,18 +391,18 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         for (Entry<String, String> entry : permCrit.entrySet()) {
         	if (entry.getKey().equals("permTmplName") || entry.getKey().equals("permTmplNamespaceCode")) {
         		if (entry.getKey().equals("permTmplName")) {
-        			memberSubCrit.addLike("kimPermission.template.name",entry.getValue());
+        			addLikeToCriteria(memberSubCrit, "kimPermission.template.name",entry.getValue());
         			
         		} else {
-        			memberSubCrit.addLike("kimPermission.template.namespaceCode",entry.getValue());        			
+        			addLikeToCriteria(memberSubCrit, "kimPermission.template.namespaceCode",entry.getValue());        			
         		}
         	}
         	
         	if (entry.getKey().equals("permName") || entry.getKey().equals("permNamespaceCode")) {
         		if (entry.getKey().equals("permName")) {
-        			memberSubCrit.addLike("kimPermission.name", entry.getValue());
+        			addLikeToCriteria(memberSubCrit, "kimPermission.name", entry.getValue());
         		} else {
-        			memberSubCrit.addLike("kimPermission.namespaceCode",entry.getValue());
+        			addLikeToCriteria(memberSubCrit, "kimPermission.namespaceCode",entry.getValue());
         			
         		}
         	}
@@ -419,18 +419,18 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         for (Entry<String, String> entry : respCrit.entrySet()) {
         	if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
         		if (entry.getKey().equals("respTmplName")) {
-        			memberSubCrit.addLike("kimResponsibility.template.name", entry.getValue());
+        			addLikeToCriteria(memberSubCrit, "kimResponsibility.template.name", entry.getValue());
         			
         		} else {
-        			memberSubCrit.addLike("kimResponsibility.template.namespaceCode",entry.getValue());        			
+        			addLikeToCriteria(memberSubCrit, "kimResponsibility.template.namespaceCode",entry.getValue());        			
         		}
         	}
         	
         	if (entry.getKey().equals("respName") || entry.getKey().equals("respNamespaceCode")) {
         		if (entry.getKey().equals("respName")) {
-        			memberSubCrit.addLike("kimResponsibility.name", entry.getValue());
+        			addLikeToCriteria(memberSubCrit, "kimResponsibility.name", entry.getValue());
         		} else {
-        			memberSubCrit.addLike("kimResponsibility.namespaceCode",entry.getValue());
+        			addLikeToCriteria(memberSubCrit, "kimResponsibility.namespaceCode",entry.getValue());
         			
         		}
         	}
@@ -447,16 +447,34 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         Criteria memberSubCrit = new Criteria();
         for (Entry<String, String> entry : groupCrit.entrySet()) {
         		if (entry.getKey().equals(KimAttributes.GROUP_NAME)) {
-        			memberSubCrit.addLike(KimAttributes.GROUP_NAME, entry.getValue());
+        			addLikeToCriteria(memberSubCrit, KimAttributes.GROUP_NAME, entry.getValue());
         		} else {
-        			memberSubCrit.addLike(KimAttributes.NAMESPACE_CODE,entry.getValue());        			
+        			addLikeToCriteria(memberSubCrit, KimAttributes.NAMESPACE_CODE,entry.getValue());        			
         		}
         }
         memberSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "memberId");
         Criteria crit = new Criteria();
         crit.addExists(QueryFactory.newReportQuery(GroupImpl.class, memberSubCrit));
-        crit.addEqualTo("memberTypeCode", "G");
+        addEqualToCriteria(crit, "memberTypeCode", "G");
 		return QueryFactory.newReportQuery(RoleMemberImpl.class, crit);
 
     }
+
+    private void addLikeToCriteria(Criteria criteria, String propertyName, String propertyValue){
+    	String[] keyValues = getCaseInsensitiveValues(propertyName, propertyValue);
+    	criteria.addLike(keyValues[0], keyValues[1]);
+    }
+
+    private void addEqualToCriteria(Criteria criteria, String propertyName, String propertyValue){
+    	String[] keyValues = getCaseInsensitiveValues(propertyName, propertyValue);
+    	criteria.addEqualTo(keyValues[0], keyValues[1]);
+    }
+
+    private String[] getCaseInsensitiveValues(String propertyName, String propertyValue){
+    	String[] keyValues = new String[2];
+    	keyValues[0] = propertyName==null?"":getDbPlatform().getUpperCaseFunction() + "(" + propertyName + ")";
+    	keyValues[1] = propertyValue==null?"":propertyValue.toUpperCase();
+    	return keyValues;
+    }
+    
 }

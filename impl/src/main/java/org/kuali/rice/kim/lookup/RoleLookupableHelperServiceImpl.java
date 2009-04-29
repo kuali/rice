@@ -281,22 +281,15 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 				}
 			}
 			setRoleRows(returnRows);
-			setAttrRows(setupAttributeRows());
-		} else {			 
-			attributeRows = setupAttributeRows();
-			if (attributeRows.isEmpty()) {
-				setAttrRows(attributeRows);				
-			} else if (CollectionUtils.isEmpty(getAttrRows())) {
-				setAttrRows(attributeRows);				
-			}
+			//setAttrRows(setupAttributeRows());
 		}
 		if (getAttrRows().isEmpty()) {
-			setAttrDefinitions(new AttributeDefinitionMap());
+			//setAttrDefinitions(new AttributeDefinitionMap());
 			return getRoleRows();
 		} else {
 			List<Row> fullRows = new ArrayList<Row>();
 			fullRows.addAll(getRoleRows());
-			fullRows.addAll(getAttrRows());
+			//fullRows.addAll(getAttrRows());
 			return fullRows;
 		}
 		

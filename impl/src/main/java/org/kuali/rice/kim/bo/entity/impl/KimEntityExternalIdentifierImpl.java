@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
+import java.security.GeneralSecurityException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,8 +28,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerException;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.Guid;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -121,5 +133,107 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	public void setExternalIdentifierType(ExternalIdentifierType externalIdentifierType) {
 		this.externalIdentifierType = externalIdentifierType;
 	}
+	
+	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+		super.beforeInsert(persistenceBroker);
+		Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
+			if(this.externalId != null){
+				try{
+					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
+				}catch (GeneralSecurityException e) {
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+		        }
 
+			}
+		}
+		
+	}
+	
+	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+		super.beforeUpdate(persistenceBroker);
+		Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
+			if(this.externalId != null){
+				try{
+					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
+				}catch (GeneralSecurityException e) {
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+		        }
+
+			}
+		}
+	}
+	
+	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        super.afterLookup(persistenceBroker);
+        Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
+			if(this.externalId != null){
+				try{
+					externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
+				}catch (GeneralSecurityException e) {
+		            throw new RuntimeException("Unable to decrypt value : " + e.getMessage());
+		        }
+
+			}
+		}
+	}
+	
+	public void beforeInsert() {
+		super.beforeInsert();
+		Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
+			if(this.externalId != null){
+				try{
+					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
+				}catch (GeneralSecurityException e) {
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+		        }
+
+			}
+		}
+    }
+
+	public void beforeUpdate() {
+		super.beforeUpdate();
+		Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
+			if(this.externalId != null){
+				try{
+					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
+				}catch (GeneralSecurityException e) {
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+		        }
+
+			}
+		}
+	}
+	
+	@javax.persistence.PostLoad 
+	public void afterLookup(){
+		Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
+				if(this.externalId != null){
+					try{
+						externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
+					}catch (GeneralSecurityException e) {
+			            throw new RuntimeException("Unable to decrypt value : " + e.getMessage());
+			        }
+
+				}
+			}
+	}
 }

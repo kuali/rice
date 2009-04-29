@@ -245,9 +245,8 @@ public class UserSession implements Serializable {
     }
 
     public void establishHelpDeskWithPrincipalName(String principalName) {
-    	String principalId = this.getPrincipalId();
-    	this.helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-    	this.helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPerson(principalId);
+    	this.helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(principalName);
+    	this.helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
     }
 
     public void clearHelpDesk() {

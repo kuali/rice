@@ -41,6 +41,7 @@ import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
@@ -88,6 +89,7 @@ public class ActionListAction extends KualiAction {
     private static final String CUSTOMACTIONLIST_PROP = "customActionList";
     private static final String DOCTITLE_PROP = "docTitle";
     private static final String ACTIONITEM_PROP = "actionitem";
+    private static final String HELPDESK_ACTIONLIST_USERNAME = "helpDeskActionListUserName";
 
     // error keys
     private static final String ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY = "actionitem.routeheaderid.invalid";
@@ -95,7 +97,8 @@ public class ActionListAction extends KualiAction {
     private static final String ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY = "actionitem.actionrequestcd.invalid";
     private static final String ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY = "actionlist.badCustomActionListItems";
 	private static final String ACTIONLIST_BAD_ACTION_ITEMS_ERRKEY = "actionlist.badActionItems";
-
+	private static final String HELPDESK_LOGIN_EMPTY_ERRKEY = "helpdesk.login.empty";
+	private static final String HELPDESK_LOGIN_INVALID_ERRKEY = "helpdesk.login.invalid";
 
 
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -612,11 +615,23 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;
+        String name = actionListForm.getHelpDeskActionListUserName();
         if (!"true".equals(request.getAttribute("helpDeskActionList"))) {
         	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalId(), "helpDeskActionListLogin", getClass().getSimpleName());
         }
-        getUserSession(request).establishHelpDeskWithPrincipalName(actionListForm.getHelpDeskActionListUserName());
-        actionListForm.setDelegator(null);
+        try
+        {
+	        getUserSession(request).establishHelpDeskWithPrincipalName(name);
+        }
+        catch (RiceRuntimeException rre)
+        {
+        	GlobalVariables.getErrorMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
+        }
+        catch (NullPointerException npe)
+        {
+        	GlobalVariables.getErrorMap().putError("null", HELPDESK_LOGIN_EMPTY_ERRKEY, name);
+        }
+    	actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, form, request, response);
     }

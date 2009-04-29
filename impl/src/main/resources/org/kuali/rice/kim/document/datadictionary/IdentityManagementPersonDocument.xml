@@ -3,15 +3,12 @@
   <bean id="IdentityManagementPersonDocument" parent="IdentityManagementPersonDocument-parentBean"/>
 
   <bean id="IdentityManagementPersonDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    
-    
-    
-    
     <property name="documentTypeName" value="IdentityManagementPersonDocument"/>
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementPersonDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementPersonDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer"/>
     <property name="documentPresentationControllerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase"/> 
+    <property name="encryptDocumentDataInPersistentSessionStorage" value="true" />
     <!-- <property name="documentTypeCode" value="IMPN" /> -->
     <property name="allowsCopy" value="true"/>
     <property name="attributes">

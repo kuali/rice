@@ -43,20 +43,18 @@
 <c:choose>
   <c:when test="${readOnly}">
     <input type="hidden" id='<c:out value="${userIdFieldName}"/>' name='<c:out value="${userIdFieldName}"/>' value='<c:out value="${userId}"/>' />
-	<kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${universalId}" render="true"><c:out value="${userId}" /></kul:inquiry>&nbsp;
+    <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${universalId}" render="true"><c:out value="${userId}" /></kul:inquiry>&nbsp;
   </c:when>
   <c:otherwise>
     ${kfunc:registerEditableProperty(KualiForm, userIdFieldName)}
-    ${kfunc:registerEditableProperty(KualiForm, universalIdFieldName)}
-    ${kfunc:registerEditableProperty(KualiForm, userNameFieldName)}
     <input type="text" id='<c:out value="${userIdFieldName}"/>' name='<c:out value="${userIdFieldName}"/>' value='<c:out value="${userId}"/>'
     title='${DataDictionary.PersonImpl.attributes.principalName.label}'
     size='${DataDictionary.PersonImpl.attributes.principalName.control.size}' 
     maxlength='${DataDictionary.PersonImpl.attributes.principalName.maxLength}' style="${textStyle}"
     onBlur="loadUserInfo( '${userIdFieldName}', '${universalIdFieldName}', '${userNameFieldName}' );${onblur}" />
     <c:if test="${hasErrors}">
-  	 <kul:fieldShowErrorIcon />
-	</c:if>
+     <kul:fieldShowErrorIcon />
+    </c:if>
     <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" 
           fieldConversions="${fieldConversions}" 
           lookupParameters="${lookupParameters}" 
@@ -71,15 +69,24 @@
   </c:when>
   <c:otherwise>
     ${helpLink}
-    <div id="${userNameFieldName}.div">${userName}&nbsp;</div>
+    <c:choose>
+        <c:when test="${!empty userNameFieldName}">
+            <div id="${userNameFieldName}.div">${userName}&nbsp;</div>
+        </c:when>
+        <c:otherwise><%-- guess at the name if the name field is not being rendered --%>
+            <div id="${fn:replace( userIdFieldName, ".principalName", ".name" )}.div">${userName}&nbsp;</div>
+        </c:otherwise>
+    </c:choose>
   </c:otherwise>
 </c:choose>
   
 <c:if test="${renderOtherFields}">
   <c:if test="${!empty universalIdFieldName}">
+    ${kfunc:registerEditableProperty(KualiForm, universalIdFieldName)}
     <input type="hidden" name="${universalIdFieldName}" id="${universalIdFieldName}" value="${universalId}" />
   </c:if>
   <c:if test="${!empty userNameFieldName}">
+    ${kfunc:registerEditableProperty(KualiForm, userNameFieldName)}
     <input type="hidden" name="${userNameFieldName}" id="${userNameFieldName}" value="${userName}" />
   </c:if>
 </c:if>

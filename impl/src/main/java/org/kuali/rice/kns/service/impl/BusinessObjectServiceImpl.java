@@ -222,15 +222,18 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
          */
         if (ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
             try {
-                return (BusinessObject) PropertyUtils.getProperty(bo, referenceName);
+            	BusinessObject referenceBoExternalizable = (BusinessObject) PropertyUtils.getProperty(bo, referenceName);
+            	if(referenceBoExternalizable!=null)
+            		return referenceBoExternalizable;
             } catch (Exception ex) {
-                throw new RuntimeException("Unable to get property " + referenceName + " from a BO of class: " + bo.getClass().getName(),ex);
+                //throw new RuntimeException("Unable to get property " + referenceName + " from a BO of class: " + bo.getClass().getName(),ex);
+            	//Proceed further - get the BO relationship using responsible module service and proceed further
             }
         }
 
         // make sure the class of the attribute descends from BusinessObject,
         // otherwise throw an exception
-        if (!PersistableBusinessObject.class.isAssignableFrom(referenceClass)) {
+        if (!ExternalizableBusinessObject.class.isAssignableFrom(referenceClass) && !PersistableBusinessObject.class.isAssignableFrom(referenceClass)) {
             throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + referenceName + ") is of class: " + "'" + referenceClass.getName() + "' and is not a " + "descendent of PersistableBusinessObject.  Only descendents of PersistableBusinessObject " + "can be used.");
         }
 

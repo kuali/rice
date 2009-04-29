@@ -18,8 +18,8 @@
 		<property name="targetMethod" value="getProperties" />
 	</bean>
 	
-	<import resource="classpath:org/kuali/rice/config/RiceJTASpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/config/RiceDataSourceSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
 	
 	<import resource="classpath:SampleAppModuleBeans.xml"/>

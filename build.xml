@@ -18,7 +18,7 @@
 		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
 		<property name="dist.server.lib.dir" value="${dist.server.dir}/WEB-INF/lib"/>
 		<property name="webapp.src.dir" value="web/src/main/webapp"/>
-		<property name="server.config.src.dir" value="web/src/main/config"/>
+		<property name="server.config.src.dir" value="web/src/main/config/standalone-config"/>
 		<property name="dist.binary.dir" value="${dist.build.dir}/dist-binary/rice-${maven.project.version}-bin"/>
 		<property name="dist.binary.lib.dir" value="${dist.binary.dir}/lib"/>
 		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>

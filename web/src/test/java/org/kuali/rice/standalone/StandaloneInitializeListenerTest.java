@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.core.util.JSTLConstants;
+import org.kuali.rice.core.web.listener.StandaloneInitializeListener;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
 import org.springframework.mock.web.MockServletContext;

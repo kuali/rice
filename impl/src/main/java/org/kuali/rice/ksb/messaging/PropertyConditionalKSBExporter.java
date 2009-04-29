@@ -20,24 +20,26 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 
 /**
- * A KSBExporter which only exports the service if the specified property is set to true.
+ * A KSBExporter class which can disallow the service from being exported by
+ * setting a configuration parameter. The default behavior if the parameter is
+ * not set is to export the service as the {@link KSBExporter} normally would.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PropertyConditionalKSBExporter extends KSBExporter {
-	
+
     private String propertyName;
 
-	public void afterPropertiesSet() throws Exception {
-	    Boolean useRemoteIdentityServices = false;
-	    String useRemoteIdentityServicesValue = ConfigContext.getCurrentContextConfig().getProperty(getPropertyName());
+    public void afterPropertiesSet() throws Exception {
+        Boolean useRemoteIdentityServices = false;
+        String useRemoteIdentityServicesValue = ConfigContext.getCurrentContextConfig().getProperty(getPropertyName());
         if (!StringUtils.isBlank(useRemoteIdentityServicesValue)) {
             useRemoteIdentityServices = new Boolean(useRemoteIdentityServicesValue);
         }
         if (!useRemoteIdentityServices) {
             super.afterPropertiesSet();
         }
-	}
+    }
 
     public String getPropertyName() {
         return this.propertyName;
@@ -46,5 +48,5 @@ public class PropertyConditionalKSBExporter extends KSBExporter {
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
-	
+
 }

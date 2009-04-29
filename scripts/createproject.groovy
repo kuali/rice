@@ -106,9 +106,9 @@ if (SAMPLEAPP) {
 
 // copy standard Rice Spring configuration files to project and rename
  
-ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceJTASpringBeans.xml",
+ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceJTASpringBeans.xml")
-ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceDataSourceSpringBeans.xml",
+ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml")
 ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml")

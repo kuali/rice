@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.standalone;
+package org.kuali.rice.core.web.listener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
     public static final String RICE_BASE = "rice.base";
     public static final String CATALINA_BASE = "catalina.base";
     public static final String RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER = "rice.standalone.execute.messageFetcher";
-    private static final String DEFAULT_LOG4J_CONFIG = "org/kuali/rice/standalone/logging/default-log4j.properties";
+    private static final String DEFAULT_LOG4J_CONFIG = "org/kuali/rice/core/logging/default-log4j.properties";
 
     private ConfigurableApplicationContext context = null;
 
@@ -206,7 +206,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
         return StringUtils.isBlank(executeMessageFetcher) ? true : new Boolean(executeMessageFetcher);
     }
 
-    protected ConfigurableApplicationContext getContext() {
+    public ConfigurableApplicationContext getContext() {
         return context;
     }
 

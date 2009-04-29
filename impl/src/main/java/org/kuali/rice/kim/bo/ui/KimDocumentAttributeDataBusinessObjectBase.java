@@ -39,7 +39,7 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBas
 	@Column(name = "KIM_ATTR_DEFN_ID")
 	private String kimAttrDefnId;
 	@Column(name = "ATTR_VAL")
-	private String attrVal;
+	private String attrVal = "";
 	private KimAttributeImpl kimAttribute;
 	@Transient
 	private String qualifierKey;

@@ -1,4 +1,4 @@
-def dir = '/java/projects/rice-0.9.4'
+def dir = '/java/projects/rice-1.0.0'
 def Schema  = new File (dir,'scripts/upgrades/0.9.3 to 0.9.4/support/schema-refactor.xml')
 tablelist = [:]
 columnlist = [:]

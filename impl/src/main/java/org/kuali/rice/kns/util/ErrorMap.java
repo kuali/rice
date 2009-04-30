@@ -33,7 +33,7 @@ import org.apache.commons.lang.StringUtils;
  * Holds errors due to validation. Keys of map represent property paths, and value is a TypedArrayList that contains resource string
  * keys (to retrieve the error message).
  * 
- * Note, prior to rice 0.9.4, this class implemented {@link java.util.Map}.  The implements has been removed as of rice 0.9.4
+ * Note, prior to rice 1.0.0, this class implemented {@link java.util.Map}.  The implements has been removed as of rice 0.9.4
  */
 public class ErrorMap implements Serializable {
     private static final long serialVersionUID = -2328635367656516150L;

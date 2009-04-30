@@ -32,7 +32,7 @@ PROJECT_PATH = PROJECT_DIR + '/' + PROJECT_NAME
 
 TEMPLATE_BINDING = [
 	"\${PROJECT_NAME}":"$PROJECT_NAME",
-	"\${RICE_VERSION}":"0.9.4-SNAPSHOT",
+	"\${RICE_VERSION}":"1.0.0-SNAPSHOT",
 	"\${USER_HOME}":System.getProperty('user.home'),
 	"\${bootstrap.spring.file}":"SpringBeans.xml"
 ] 

@@ -1,4 +1,4 @@
-def conversionRootDir = "/java/projects/rice-0.9.4"
+def conversionRootDir = "/java/projects/rice-1.0.0"
 def mappingDir = "."
 xmlExtension = "schema-refactor.xml"
 

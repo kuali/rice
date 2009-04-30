@@ -21,6 +21,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -31,16 +33,19 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * This class is the base action form for all transactional documents.
  */
 public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
+	private static final Logger LOG = Logger.getLogger(KualiTransactionalDocumentFormBase.class);
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 6463383454050206811L;
+	@SuppressWarnings("unchecked")
 	protected Map forcedReadOnlyFields;
 
     /**
      * This constructor sets up empty instances for the dependent objects...
      */
-    public KualiTransactionalDocumentFormBase() {
+    @SuppressWarnings("unchecked")
+	public KualiTransactionalDocumentFormBase() {
         super();
 
         // create a blank DocumentActionFlags instance, since form-recreation needs it
@@ -86,7 +91,8 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
      * 
      * @return Returns the forcedReadOnlyFields.
      */
-    public Map getForcedReadOnlyFields() {
+    @SuppressWarnings("unchecked")
+	public Map getForcedReadOnlyFields() {
         return forcedReadOnlyFields;
     }
 
@@ -95,7 +101,8 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
      * 
      * @param forcedReadOnlyFields The forcedReadOnlyFields to set.
      */
-    public void setForcedReadOnlyFields(Map forcedReadOnlyFields) {
+    @SuppressWarnings("unchecked")
+	public void setForcedReadOnlyFields(Map forcedReadOnlyFields) {
         this.forcedReadOnlyFields = forcedReadOnlyFields;
     }
     
@@ -111,10 +118,15 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
             if(checkboxesToReset != null && checkboxesToReset.length > 0) {
                 for (int i = 0; i < checkboxesToReset.length; i++) {
                     String propertyName = (String) checkboxesToReset[i];
-                    try {
-                        PropertyUtils.setNestedProperty(this, propertyName, false);
-                    } catch (Exception e1) {
-                        throw new RuntimeException(e1.getMessage(), e1);
+                    if ( StringUtils.isNotBlank(propertyName) ) {
+	                    try {
+	                        PropertyUtils.setNestedProperty(this, propertyName, false);
+	                    } catch (Exception ex) {
+	                    	LOG.warn("Invalid property name present in the 'checkboxToReset' fields." );
+	                    	LOG.warn("Class: " + this.getClass().getName() + " Property: '" + propertyName + "'", ex );
+	                    }
+                    } else {
+                    	LOG.warn( "Blank property name present in the 'checkboxToReset' fields." );
                     }
                 }
             }

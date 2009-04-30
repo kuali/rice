@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -38,7 +35,9 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  */
 public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocumentFormBase {
 
-    private PersonDocumentAffiliation newAffln;
+    private static final long serialVersionUID = -4787045391777666988L;
+    
+	private PersonDocumentAffiliation newAffln;
     private PersonDocumentEmploymentInfo newEmpInfo;
     private PersonDocumentCitizenship newCitizenship;
     private PersonDocumentName newName;
@@ -59,27 +58,6 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
         this.setNewPhone(new PersonDocumentPhone());
         this.setNewEmail(new PersonDocumentEmail());
     }
-
-    /*
-     * Reset method - reset attributes of form retrieved from session otherwise
-     * we will always call docHandler action
-     * @param mapping
-     * @param request
-     */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-    	super.reset(mapping, request);
-    	this.setMethodToCall(null);
-        this.setRefreshCaller(null);
-        this.setAnchor(null);
-        this.setCurrentTabIndex(0);
-    }
-
-    @Override
-	public void populate(HttpServletRequest request) {
-		// TODO shyu - THIS METHOD NEEDS JAVADOCS
-		super.populate(request);
-	}
-
 
 	public IdentityManagementPersonDocument getPersonDocument() {
         return (IdentityManagementPersonDocument) this.getDocument();

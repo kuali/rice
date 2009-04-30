@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -34,6 +31,7 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  *
  */
 public class IdentityManagementGroupDocumentForm extends KualiTransactionalDocumentFormBase {
+	private static final long serialVersionUID = -107836689162363400L;
 	{
 		requiredNonEditableProperties.add("methodToCall");
 	}
@@ -48,20 +46,6 @@ public class IdentityManagementGroupDocumentForm extends KualiTransactionalDocum
 	public IdentityManagementGroupDocumentForm() {
         super();
         this.setDocument(new IdentityManagementGroupDocument());
-    }
-
-    /*
-     * Reset method - reset attributes of form retrieved from session otherwise
-     * we will always call docHandler action
-     * @param mapping
-     * @param request
-     */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-    	super.reset(mapping, request);
-    	this.setMethodToCall(null);
-        this.setRefreshCaller(null);
-        this.setAnchor(null);
-        this.setCurrentTabIndex(0);
     }
 
 	public IdentityManagementGroupDocument getGroupDocument() {

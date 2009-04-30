@@ -78,20 +78,6 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
         this.setDocument(new IdentityManagementRoleDocument());
     }
 
-    /*
-     * Reset method - reset attributes of form retrieved from session otherwise
-     * we will always call docHandler action
-     * @param mapping
-     * @param request
-     */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-    	super.reset(mapping, request);
-    	this.setMethodToCall(null);
-        this.setRefreshCaller(null);
-        this.setAnchor(null);
-        this.setCurrentTabIndex(0);
-    }
-
     @Override
 	public void populate(HttpServletRequest request) {
 		super.populate(request);

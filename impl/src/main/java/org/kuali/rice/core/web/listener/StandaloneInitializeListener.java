@@ -31,8 +31,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.JSTLConstants;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -63,14 +63,15 @@ public class StandaloneInitializeListener implements ServletContextListener {
      * ServletContextListener interface implementation that schedules the start of the lifecycle
      */
     public void contextInitialized(ServletContextEvent sce) {
-    	try {
         long startInit = System.currentTimeMillis();
         try {
             Properties p = new Properties();
             p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
             PropertyConfigurator.configure(p);
         } catch (Exception e) {
-            throw new WorkflowRuntimeException(e);
+        	// if there is an issue initializing logging system, let's be sure to print the stack trace so we can debug!
+        	e.printStackTrace();
+            throw new RiceRuntimeException(e);
         }
 
         LOG.info("Initializing Kuali Rice Standalone...");
@@ -137,10 +138,6 @@ public class StandaloneInitializeListener implements ServletContextListener {
         }
         long endInit = System.currentTimeMillis();
         LOG.info("...Kuali Rice Standalone successfully initialized, startup took " + (endInit - startInit) + " ms.");
-    	} catch (RuntimeException e) {
-    		e.printStackTrace();
-    		throw e;
-    	}
     }
 
     /**

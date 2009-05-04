@@ -63,6 +63,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
      * ServletContextListener interface implementation that schedules the start of the lifecycle
      */
     public void contextInitialized(ServletContextEvent sce) {
+    	try {
         long startInit = System.currentTimeMillis();
         try {
             Properties p = new Properties();
@@ -136,6 +137,10 @@ public class StandaloneInitializeListener implements ServletContextListener {
         }
         long endInit = System.currentTimeMillis();
         LOG.info("...Kuali Rice Standalone successfully initialized, startup took " + (endInit - startInit) + " ms.");
+    	} catch (RuntimeException e) {
+    		e.printStackTrace();
+    		throw e;
+    	}
     }
 
     /**

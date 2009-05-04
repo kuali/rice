@@ -34,7 +34,7 @@ public class IndicatorPersonSearchTypeValuesFinder extends KeyValuesBase {
         List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>();
         activeLabels.add(new KeyLabelPair("user", "User"));
         activeLabels.add(new KeyLabelPair("group", "Group Member"));
-        activeLabels.add(new KeyLabelPair("", "Either"));
+        activeLabels.add(new KeyLabelPair("", "Both"));
         return activeLabels;
     }
 }

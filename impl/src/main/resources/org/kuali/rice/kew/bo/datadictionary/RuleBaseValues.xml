@@ -268,7 +268,7 @@
         p:includeKeyInLabel="true"/>
     </property>
     <property name="name" value="personReviewerType" />
-    <property name="label" value="Person Reviewer on Rule is" />
+    <property name="label" value="Person Reviewer Type" />
   </bean>
 
   <bean id="RuleBaseValues-delegateRule" parent="RuleBaseValues-delegateRule-parentBean" />

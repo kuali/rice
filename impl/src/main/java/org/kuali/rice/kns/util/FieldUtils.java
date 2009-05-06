@@ -258,7 +258,9 @@ public class FieldUtils {
                                 ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(control.getBusinessObjectClass());
                                 ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(control.getKeyAttribute());
                                 ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(control.getLabelAttribute());
-                                ((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(control.getIncludeBlankRow());
+                                if (control.getIncludeBlankRow() != null) {
+                                	((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(control.getIncludeBlankRow());
+                                }
                                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(control.getIncludeKeyInLabel());
                             }
                             field.setFieldValidValues(finder.getKeyValues());

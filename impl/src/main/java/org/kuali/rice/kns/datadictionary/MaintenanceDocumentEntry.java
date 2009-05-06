@@ -26,7 +26,6 @@ import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.maintenance.Maintainable;
 

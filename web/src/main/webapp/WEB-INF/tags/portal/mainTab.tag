@@ -17,7 +17,7 @@
 
 <td class="content" valign="top">
 
-<mainChannel:riceModules />
+
 <mainChannel:sampleTravelApplication />
 
 </td>

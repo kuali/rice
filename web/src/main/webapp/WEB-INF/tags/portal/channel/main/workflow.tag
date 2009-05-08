@@ -28,12 +28,12 @@
 <div class="body">
 	
     <ul class="chan">
-        <li><portal:portalLink displayTitle="true" title="User Preferences" url="arCashControlDocument.do?methodToCall=docHandler&command=initiate&docTypeName=CTRL" /></li>
-        <li><portal:portalLink displayTitle="true" title="Quicklinks" url="arCustomerCreditMemoDocument.do?methodToCall=docHandler&command=initiate&docTypeName=CRM" /></li>
-        <li><portal:portalLink displayTitle="true" title="Routing Rules" url="arCustomerInvoiceDocument.do?methodToCall=docHandler&command=initiate&docTypeName=INV" /></li>
-        <li><portal:portalLink displayTitle="true" title="Routing Rules Deligation" url="arCustomerInvoiceWriteoffDocument.do?methodToCall=docHandler&command=initiate&docTypeName=INVW" /></li>
-		<li><portal:portalLink displayTitle="true" title="Routing and Identity Management Document Type Hierarchy" url="arCustomerInvoiceWriteoffLookup.do?methodToCall=start&businessObjectClassName=org.kuali.kfs.module.ar.businessobject.CustomerInvoiceWriteoffLookupResult&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>        
-        <li><portal:portalLink displayTitle="true" title="Document Type" url="arPaymentApplicationDocument.do?methodToCall=docHandler&command=initiate&docTypeName=APP" /></li>
+        <li><portal:portalLink displayTitle="true" title="User Preferences" url="kew/Preferences.do" /></li>
+        <li><portal:portalLink displayTitle="true" title="Quicklinks" url="kew/QuickLinks.do" /></li>
+        <li><portal:portalLink displayTitle="true" title="Routing Rules" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=truearCustomerInvoiceDocument.do?methodToCall=docHandler&command=initiate&docTypeName=INV" /></li>
+        <li><portal:portalLink displayTitle="true" title="Routing Rules Deligation" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=true" /></li>
+		<li><portal:portalLink displayTitle="true" title="Routing and Identity Management Document Type Hierarchy" url="kew/QuickLinks.do" /></li>        
+        <li><portal:portalLink displayTitle="true" title="Document Type" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation=Administration.do&hideReturnLink=true" /></li>
     </ul>
 
     

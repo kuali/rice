@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.dto.MessageDTO;
@@ -59,7 +60,9 @@ public class KCBNotificationService extends DefaultNotificationService {
         mvo.setDeliveryType(actionItem.getActionRequestCd());
         mvo.setProducer("kew@localhost");
         mvo.setTitle(actionItem.getDocLabel() + " - " + actionItem.getDocName() + " - " + actionItem.getDocTitle());
-        mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getRouteHeaderId());
+        if (StringUtils.isNotBlank(actionItem.getDocHandlerURL())) {
+        	mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getRouteHeaderId());
+        }
         mvo.setOriginId(String.valueOf(actionItem.getActionItemId()));
         try {
             // just assume it's a user at this point...

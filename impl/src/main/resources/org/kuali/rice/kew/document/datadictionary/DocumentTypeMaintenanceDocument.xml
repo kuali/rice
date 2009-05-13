@@ -23,7 +23,6 @@
     </property>
     <property name="documentTypeName" value="DocumentTypeDocument" />
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
-    <property name="businessRulesClass" value="org.kuali.rice.kew.doctype.bo.DocumentTypeBusinessRules"/>
   </bean>
 
 <!-- Maintenance Section Definitions -->

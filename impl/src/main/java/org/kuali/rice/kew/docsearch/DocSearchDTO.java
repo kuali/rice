@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.RowStyleable;
@@ -187,7 +188,7 @@ public class DocSearchDTO implements Serializable, RowStyleable {
     }
 
     public String getDocHandlerUrl() {
-        if ("".equals(getDocTypeHandlerUrl())) {
+        if (StringUtils.isBlank(getDocTypeHandlerUrl())) {
             return "";
         } else {
             if (isUsingSuperUserSearch()) {

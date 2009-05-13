@@ -38,6 +38,7 @@ import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
@@ -65,6 +66,8 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	public static final String SECURE_UTILITY_ENDPOINT = "secure.workflowutility.javaservice.endpoint";
     	public static final String IDENTITY_ENDPOINT = "identity.javaservice.endpoint"; 
     	public static final String SECURE_IDENTITY_ENDPOINT = "secure.identity.javaservice.endpoint"; 
+    	public static final String GROUP_ENDPOINT = "group.javaservice.endpoint"; 
+    	public static final String SECURE_GROUP_ENDPOINT = "secure.group.javaservice.endpoint"; 
     	
     	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
@@ -116,6 +119,10 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	
 	public IdentityService getIdentityService() {
 	    return (IdentityService)getServiceProxy(IdentityService.class, IDENTITY_ENDPOINT, SECURE_IDENTITY_ENDPOINT);
+	}
+
+	public GroupService getGroupService() {
+	    return (GroupService)getServiceProxy(GroupService.class, GROUP_ENDPOINT, SECURE_GROUP_ENDPOINT);
 	}
 
 	protected Object getServiceProxy(Class serviceInterface, String endpointParam, String secureEndpointParam) {

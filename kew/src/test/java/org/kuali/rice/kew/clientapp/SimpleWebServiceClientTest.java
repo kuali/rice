@@ -31,6 +31,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -80,7 +81,7 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 	 * Verifies that we can aquire KIMPrincipalInfo without the need to
 	 * wire up a KSBConfigurer.
 	 */
-	@Test public void testThinIdentityService() throws Exception {
+	@Test public void testThinKimServices() throws Exception {
 		this.setUpWebservices();
 
 		//verify the ThinClientResourceLoader is in the GRL.
@@ -92,6 +93,10 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 
 		KimPrincipalInfo principal = thinRL.getIdentityService().getPrincipalByPrincipalName("ewestfal");
 		assertTrue(principal.getPrincipalName().equals("ewestfal"));
+		
+		List<GroupInfo> groups = thinRL.getGroupService().getGroupsForPrincipal(principal.getPrincipalId());
+		assertNotNull(groups);
+		assertTrue(groups.size() > 0);
 	}
 
 	protected void setUpWebservices() throws Exception {
@@ -99,14 +104,17 @@ public class SimpleWebServiceClientTest extends KEWTestCase {
 			String workflowUtilityServiceUrl = getServiceEndpointUrl("KEW", "WorkflowUtilityService");
 			String workflowDocumentActionsServiceUrl = getServiceEndpointUrl("KEW", "WorkflowDocumentActionsService");
 			String identityServiceUrl = getServiceEndpointUrl("KIM", "kimIdentityService");
+			String groupServiceUrl = getServiceEndpointUrl("KIM", "kimGroupService");
 			
 			ConfigContext.getCurrentContextConfig().overrideProperty(Config.CLIENT_PROTOCOL, KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
             ConfigContext.getCurrentContextConfig().overrideProperty("workflowutility.javaservice.endpoint", workflowUtilityServiceUrl);
             ConfigContext.getCurrentContextConfig().overrideProperty("workflowdocument.javaservice.endpoint", workflowDocumentActionsServiceUrl);
             ConfigContext.getCurrentContextConfig().overrideProperty("identity.javaservice.endpoint", identityServiceUrl);
+            ConfigContext.getCurrentContextConfig().overrideProperty("group.javaservice.endpoint", groupServiceUrl);
 			ConfigContext.getCurrentContextConfig().overrideProperty("secure.workflowdocument.javaservice.endpoint", "true");
 			ConfigContext.getCurrentContextConfig().overrideProperty("secure.workflowutility.javaservice.endpoint", "true");
 			ConfigContext.getCurrentContextConfig().overrideProperty("secure.identity.javaservice.endpoint", "true");
+			ConfigContext.getCurrentContextConfig().overrideProperty("secure.group.javaservice.endpoint", "true");
 			KEWConfigurer kewConfigurer  = new KEWConfigurer();
 			// need to set the run mode to "remote" in order to create the ThinClientResourceLoader 
 			// during KEWConfigurer startup

@@ -18,6 +18,7 @@
   <param name="secure.workflowdocument.javaservice.endpoint">true</param>
   <param name="secure.workflowutility.javaservice.endpoint">true</param>
   <param name="secure.identity.javaservice.endpoint">true</param>
+  <param name="secure.group.javaservice.endpoint">true</param>
 
   <param name="rice.resourceloader.servicesToCache">
       userTransaction,

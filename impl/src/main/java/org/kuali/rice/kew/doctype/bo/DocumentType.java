@@ -152,8 +152,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Transient
     private String actionsUrl;
     @Transient
-    private boolean descendHierarchy;
-    @Transient
     private Boolean applyRetroactively = Boolean.FALSE;
 
     /* The default exception workgroup to apply to nodes that lack an exception workgroup definition.
@@ -1417,20 +1415,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 	 */
 	public void setBlanketApproveWorkgroupId(String blanketApproveWorkgroupId) {
 		this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
-	}
-
-	/**
-	 * @return the descendHierarchy
-	 */
-	public boolean isDescendHierarchy() {
-		return this.descendHierarchy;
-	}
-
-	/**
-	 * @param descendHierarchy the descendHierarchy to set
-	 */
-	public void setDescendHierarchy(boolean descendHierarchy) {
-		this.descendHierarchy = descendHierarchy;
 	}
 
     /**

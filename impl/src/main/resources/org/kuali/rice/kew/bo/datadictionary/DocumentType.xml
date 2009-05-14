@@ -46,9 +46,6 @@
         <ref bean="DocumentType-displayableUnresolvedDocHandlerUrl" />
         <ref bean="DocumentType-displayablePostProcessorName" />
         <ref bean="DocumentType-displayableNotificationFromAddress" />
-
-        <!-- BELOW USED FOR LOOKUP ONLY -->
-        <ref bean="DocumentType-descendHierarchy" />
 <!--
         <ref bean="DocumentType-postProcessorName" />
         <ref bean="DocumentType-summary" />
@@ -417,27 +414,6 @@
     <property name="description" value="Indicator to see if the label should be applied to older documents in the system" />
   </bean>
 
-  <!-- FIELDS USED ONLY BY LOOKUP -->  
-
-  <bean id="DocumentType-descendHierarchy" parent="DocumentType-descendHierarchy-parentBean"/>
-
-  <bean id="DocumentType-descendHierarchy-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="descendHierarchy" />
-    <property name="forceUppercase" value="false" />
-    <property name="label" value="Descend Hierarchy" />
-    <property name="shortLabel" value="descendHierarchy" />
-    <property name="maxLength" value="1" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="RadioControlDefinition"
-        p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.IndicatorYNOnlyValuesFinder"
-        p:includeKeyInLabel="true"/>
-    </property>
-    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter" />
-  </bean>
-
   <!-- Business Object Inquiry Definition -->
 
   <bean id="DocumentType-inquiryDefinition" parent="DocumentType-inquiryDefinition-parentBean" />
@@ -499,9 +475,6 @@
         <bean parent="FieldDefinition"
         	p:attributeName="parentDocType.name"
             p:noDirectInquiry="true"/>
-        <bean parent="FieldDefinition"
-        	p:attributeName="descendHierarchy"
-              p:defaultValue="No"/> 
         <bean parent="FieldDefinition"
               p:attributeName="name"/>
         <bean parent="FieldDefinition"

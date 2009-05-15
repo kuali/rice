@@ -1326,7 +1326,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // check authorization for adding notes
         //DocumentActionFlags flags = getDocumentActionFlags(document);
-        //if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_ANNOTATE) || !entry.getAllowsNoteDelete()) {
+        //if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)) {
         //    buildAuthorizationException("annotate", document);
         //    return mapping.findForward(RiceConstants.MAPPING_BASIC);
         //}

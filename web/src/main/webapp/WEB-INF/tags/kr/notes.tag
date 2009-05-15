@@ -19,13 +19,9 @@
 <%-- <%@ attribute name="propPrefix" required="false" %> --%>
 <%@ attribute name="noteType" required="false" type="java.lang.Enum" %>
 <%@ attribute name="displayTopicFieldInNotes" required="false" %>
-<%@ attribute name="allowsNoteDelete" required="false" %>
-<%@ attribute name="allowsNoteAttachments" required="false" %>
 <%@ attribute name="attachmentTypesValuesFinderClass" required="false" %>
 <%@ attribute name="transparentBackground" required="false" %>
 <%@ attribute name="defaultOpen" required="false" %>
-<%@ attribute name="allowsNoteFYI" required="false"
- description="Indicator for determing whether to render the ad hoc fyi recipient box and send fyi button" %>
 
 <c:set var="noteColSpan" value="6" />
 
@@ -38,6 +34,7 @@
 <c:set var="documentTypeName" value="${KualiForm.document.class.name}" />
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 <c:set var="allowsNoteAttachments" value="${documentEntry.allowsNoteAttachments}" />
+<c:set var="allowsNoteFYI" value="${documentEntry.allowsNoteFYI}" />
 <c:set var="tabTitle" value="Notes and Attachments" />
 <c:if test="${allowsNoteAttachments eq false}">
   <c:set var="tabTitle" value="Notes" />

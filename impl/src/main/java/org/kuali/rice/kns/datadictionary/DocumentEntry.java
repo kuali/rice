@@ -53,8 +53,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
     protected String documentTypeName;
 
-    protected boolean allowsNoteDelete = false;
     protected boolean allowsNoteAttachments = true;
+    protected boolean allowsNoteFYI = false;
     protected Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
     protected boolean displayTopicFieldInNotes = false;
     protected boolean usePessimisticLocking = false;
@@ -199,24 +199,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-            The allowsNoteDelete element contains a true or false value.
-            If true, then a maintenance screen user is allowed to delete
-            a document note.
-     */
-    public void setAllowsNoteDelete(boolean allowsNoteDelete) {
-        this.allowsNoteDelete = allowsNoteDelete;
-    }
-
-    /**
-     * Accessor method for contained allowsNoteDelete
-     * 
-     * @return allowsNoteDelete
-     */
-    public boolean getAllowsNoteDelete() {
-        return allowsNoteDelete;
-    }
-
-    /**
      * Accessor method for contained displayTopicFieldInNotes
      * 
      * @return displayTopicFieldInNotes boolean
@@ -331,7 +313,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-            The allowsNoteAttachements element contains a true or false value.
+            The allowsNoteAttachments element contains a true or false value.
             If true, then a document screen includes notes with attachments. Otherwise,
             only notes is displayed.
      */
@@ -339,6 +321,20 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         this.allowsNoteAttachments = allowsNoteAttachments;
     }
 
+    /**
+     * @return the allowsNoteFYI
+     */
+    public boolean getAllowsNoteFYI() {
+    	return allowsNoteFYI;
+    }
+    
+    /**
+     * This is an indicator for determining whether to render the AdHoc FYI recipient box and Send FYI button.
+     */
+    public void setAllowsNoteFYI(boolean allowsNoteFYI) {
+    	this.allowsNoteFYI = allowsNoteFYI;
+    }
+    
     public WorkflowProperties getWorkflowProperties() {
         return this.workflowProperties;
     }

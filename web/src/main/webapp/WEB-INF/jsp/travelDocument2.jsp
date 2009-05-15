@@ -87,7 +87,7 @@
 		</table>
 		</div>
 	</kul:tab>
-	<kul:notes allowsNoteFYI="true"/>
+	<kul:notes />
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />

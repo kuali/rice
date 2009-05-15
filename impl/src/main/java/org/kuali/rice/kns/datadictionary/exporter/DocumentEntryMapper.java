@@ -67,10 +67,10 @@ public abstract class DocumentEntryMapper {
         entryMap.set("documentAuthorizerClass", documentHelperService.getDocumentAuthorizer(entry.getDocumentTypeName()).getClass().getName());
         entryMap.set("documentPresentationControllerClass", documentHelperService.getDocumentPresentationController(entry.getDocumentTypeName()).getClass().getName());
 
-        entryMap.set("allowsNoteDelete", Boolean.toString(entry.getAllowsNoteDelete()));
-
         entryMap.set("allowsNoteAttachments", Boolean.toString(entry.getAllowsNoteAttachments()));
 
+        entryMap.set("allowsNoteFYI", Boolean.toString(entry.getAllowsNoteFYI()));
+        
         if (entry.getAttachmentTypesValuesFinderClass() != null) {
             entryMap.set("attachmentTypesValuesFinderClass", entry.getAttachmentTypesValuesFinderClass().getName());
         }

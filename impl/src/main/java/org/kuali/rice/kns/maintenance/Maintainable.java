@@ -237,7 +237,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     /**
      * method to integrate with workflow, where we will actually handle the transitions of status for documents
      */
-    public void handleRouteStatusChange(DocumentHeader documentHeader);
+    public void doRouteStatusChange(DocumentHeader documentHeader);
 
     public List<String> getDuplicateIdentifierFieldsFromDataDictionary(String docTypeName, String collectionName);
     

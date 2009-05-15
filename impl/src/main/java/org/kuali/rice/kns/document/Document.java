@@ -90,15 +90,9 @@ public interface Document extends PersistableBusinessObject{
     public String getXmlForRouteReport();
     
     /**
-     * method to integrate with workflow, where we will actually handle the transitions of status for documents
-     * 
-     */
-    public void handleRouteStatusChange();
-
-    /**
      * method to integrate with workflow, where we will actually handle the transitions of levels for documents
      */
-    public void handleRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent);
+    public void doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent);
     
     /**
      * method to integrate with workflow where we will be able to perform logic for an action taken being performed on a document

@@ -1134,7 +1134,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         }
     }
 
-	public void handleRouteStatusChange(DocumentHeader documentHeader) {
+	public void doRouteStatusChange(DocumentHeader documentHeader) {
 	}
 
 	public static PersistenceStructureService getPersistenceStructureService() {

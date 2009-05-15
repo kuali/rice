@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
@@ -88,11 +89,11 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
+	 * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
 	 */
 	@Override
-	public void handleRouteStatusChange() {
-		super.handleRouteStatusChange();
+	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+		super.doRouteStatusChange(statusChangeEvent);
 		if (getDocumentHeader().getWorkflowDocument().stateIsFinal()) {
 			KIMServiceLocator.getUiDocumentService().saveGroup(this);
 		}

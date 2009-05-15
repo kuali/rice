@@ -18,6 +18,7 @@ package org.kuali.rice.kim.document;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -293,12 +294,12 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	}
     }
     
-	/**
-	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
-	 */
-	@Override
-	public void handleRouteStatusChange() {
-		super.handleRouteStatusChange();
+    /**
+     * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     */
+    @Override
+	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+		super.doRouteStatusChange(statusChangeEvent);
 		if (getDocumentHeader().getWorkflowDocument().stateIsFinal()) {
 			KIMServiceLocator.getUiDocumentService().saveRole(this);
 		}

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -264,11 +265,11 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
+	 * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
 	 */
 	@Override
-	public void handleRouteStatusChange() {
-		super.handleRouteStatusChange();
+	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+		super.doRouteStatusChange(statusChangeEvent);
 		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
 			KIMServiceLocator.getUiDocumentService().saveEntityPerson(this);
 		}

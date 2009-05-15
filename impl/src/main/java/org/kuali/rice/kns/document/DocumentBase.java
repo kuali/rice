@@ -284,21 +284,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * This is the default implementation which checks for a different workflow statuses, and updates the Kuali status accordingly.
-     *
-     * @see org.kuali.rice.kns.document.Document#handleRouteStatusChange()
-     */
-    public void handleRouteStatusChange() {
-        // do nothing
-    }
-
-    /**
      * The the default implementation for RouteLevelChange does nothing, but is meant to provide a hook for documents to implement
      * for other needs.
      *
-     * @see org.kuali.rice.kns.document.Document#handleRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kns.document.Document#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
-    public void handleRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) {
+    public void doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) {
         // do nothing
     }
     
@@ -625,7 +616,11 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         return new ArrayList();
     }
 
+    /**
+     * @see org.kuali.rice.kns.document.Document#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     */
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+        // do nothing
     }
 
     /**

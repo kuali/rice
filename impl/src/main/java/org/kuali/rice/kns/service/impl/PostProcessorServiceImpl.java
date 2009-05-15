@@ -76,10 +76,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 // be a problem anytime where the user can continue to edit the document after a
                 // workflow state change, without reloading the form.
                 if (!document.getDocumentHeader().getWorkflowDocument().stateIsSaved()) {
-                    document.handleRouteStatusChange();
+                    document.doRouteStatusChange(statusChangeEvent);
                     documentService.updateDocument(document);
                 }
-                document.doRouteStatusChange(statusChangeEvent);
             }
             if ( LOG.isInfoEnabled() ) {
             	LOG.info(new StringBuffer("finished handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getRouteHeaderId()));
@@ -108,7 +107,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 throw new RuntimeException("unable to load document " + levelChangeEvent.getRouteHeaderId());
             }
             document.populateDocumentForRouting();
-            document.handleRouteLevelChange(levelChangeEvent);
+            document.doRouteLevelChange(levelChangeEvent);
             document.getDocumentHeader().getWorkflowDocument().saveRoutingData();
             if ( LOG.isDebugEnabled() ) {
             	LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getRouteHeaderId()));

@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
@@ -389,14 +390,14 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
+     * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
     @Override
-    public void handleRouteStatusChange() {
-        super.handleRouteStatusChange();
+    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+        super.doRouteStatusChange(statusChangeEvent);
 
         KualiWorkflowDocument workflowDocument = getDocumentHeader().getWorkflowDocument();
-        getNewMaintainableObject().handleRouteStatusChange(getDocumentHeader());
+        getNewMaintainableObject().doRouteStatusChange(getDocumentHeader());
         // commit the changes to the Maintainable BusinessObject when it goes to Processed (ie, fully approved),
         // and also unlock it
         if (workflowDocument.stateIsProcessed()) {

@@ -30,8 +30,8 @@
     <ul class="chan">
         <li><portal:portalLink displayTitle="true" title="User Preferences" url="kew/Preferences.do" /></li>
         <li><portal:portalLink displayTitle="true" title="Quicklinks" url="kew/QuickLinks.do" /></li>
-        <li><portal:portalLink displayTitle="true" title="Routing Rules" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=truearCustomerInvoiceDocument.do?methodToCall=docHandler&command=initiate&docTypeName=INV" /></li>
-        <li><portal:portalLink displayTitle="true" title="Routing Rules Deligation" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Routing Rules" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=true" /></li>
+        <li><portal:portalLink displayTitle="true" title="Routing Rules Delegation" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=true" /></li>
 		<li><portal:portalLink displayTitle="true" title="Routing and Identity Management Document Type Hierarchy" url="kew/QuickLinks.do" /></li>        
         <li><portal:portalLink displayTitle="true" title="Document Type" url="kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation=Administration.do&hideReturnLink=true" /></li>
     </ul>

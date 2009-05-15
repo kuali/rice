@@ -724,7 +724,7 @@
     <distributionManagement>
         <repository>
             <id>ssh-repository</id>
-            <url>scpexe://wsa123.uits.indiana.edu/usr/local/apache/htdocs/maven</url>
+            <url>scpexe://wsa123.uits.indiana.edu/opt/m2/repository</url>
         </repository>
         <site>
             <id>rice-site</id>

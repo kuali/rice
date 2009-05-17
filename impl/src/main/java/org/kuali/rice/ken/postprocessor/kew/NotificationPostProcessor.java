@@ -32,6 +32,7 @@ import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -169,4 +170,15 @@ public class NotificationPostProcessor implements PostProcessorRemote {
     public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
         return true;
     }
+
+    /**
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#getDocumentIdsToLock(org.kuali.rice.kew.dto.DocumentLockingEventDTO)
+     */
+	public Long[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
+		return null;
+	}
+    
+    
+    
+    
 }

@@ -112,4 +112,12 @@ public interface Platform {
      */
     String getIsNullFunction(String exprToTest, String exprToReplaceIfTestExprNull);
 
+    /**
+     * Escapes any special DB-specific characters from an input String, to help prevent SQL injection attacks.
+     * TODO: This method should be replaced by the "prepared statement" functionality in the future.
+     * 
+     * @param sqlString The String to escape.
+     * @return The String from sqlString, but with all of its DB-specific special characters escaped.
+     */
+    String escapeString(String sqlString);
 }

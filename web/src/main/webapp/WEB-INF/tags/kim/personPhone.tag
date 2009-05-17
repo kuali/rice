@@ -1,12 +1,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docPhoneAttributes" value="${DataDictionary.PersonDocumentPhone.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:subtab lookedUpCollectionName="phone" width="${tableWidth}" subTabTitle="Phone Numbers" noShowHideButton="true">      
-  	<table cellpadding=0 cellspacing=0 summary="">
+  	<table cellpadding="0" cellspacing="0" summary="">
        	<tr>
-       		<th><div align="left">&nbsp</div></th> 
+       		<th>&nbsp;</th> 
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docPhoneAttributes.phoneTypeCode}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docPhoneAttributes.phoneNumber}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docPhoneAttributes.extensionNumber}" noColon="true" /></div></th>

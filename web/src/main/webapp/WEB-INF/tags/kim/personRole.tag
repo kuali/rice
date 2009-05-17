@@ -2,10 +2,10 @@
 
 <c:set var="docRoleAttributes" value="${DataDictionary.PersonDocumentRole.attributes}" />
 <c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-<kul:subtab lookedUpCollectionName="role" width="${tableWidth}" subTabTitle="Roles" noShowHideButton="true">      
-    <table cellpadding=0 cellspacing=0 summary="">
-        <c:if test="${not inquiry and not readOnly}">	          	
+
+<kul:subtab lookedUpCollectionName="role" width="${tableWidth}" subTabTitle="Roles" noShowHideButton="false">      
+    <table cellpadding="0" cellspacing="0" summary="">
+        <c:if test="${!readOnly}">	          	
           	<tr>
           		<th>&nbsp;</th> 
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
@@ -14,15 +14,13 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
-           	<c:if test="${not inquiry}">	
+           	<c:if test="${!readOnly}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>	
           	</tr>     
           	
             <tr>
-				<th class="infoline">
-					<c:out value="Add:" />
-				</th>
+				<th class="infoline">Add:</th>
 
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
@@ -72,7 +70,7 @@
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
-	           	<c:if test="${not inquiry}">	
+	           	<c:if test="${!readOnly}">	
 	              	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 	          	</c:if>	
           	</tr>             	
@@ -114,7 +112,7 @@
 						</div>
 					</c:if>
 				</td>
-           		<c:if test="${not inquiry}">						
+           		<c:if test="${!readOnly}">						
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>

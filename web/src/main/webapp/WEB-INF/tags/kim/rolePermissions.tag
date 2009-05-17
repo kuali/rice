@@ -1,26 +1,17 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-
-<c:if test="${readOnly}">
-	<c:set var="inquiry" value="${readOnly}"/>
-</c:if>
 
 <kul:tab tabTitle="Permissions" defaultOpen="true" tabErrorKey="document.perm*">
-	<div class="tab-container" align="center">
-    <h3>
-    	<span class="subhead-left">Permissions</span>
-    </h3>
-    
-    <table cellpadding=0 cellspacing=0 summary="">
-          <c:if test="${not inquiry}">	
+	<div class="tab-container" align="center">    
+    <table cellpadding="0" cellspacing="0" summary="">
+          <c:if test="${!readOnly}">	
           	
              <tr>
 				<td align="center">
 	                <div align="center">
 	                	<br/>
-						<strong><c:out value="Add Permission ID:" /></strong>
+						<b>Add Permission ID:</b>
 						<kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.permissionId}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.PermissionImpl" fieldConversions=
 	                	"template.name:permission.kimPermission.template.name,permissionId:permission.permissionId,name:permission.kimPermission.name,namespaceCode:permission.kimPermission.namespaceCode" anchor="${tabKey}" />
@@ -44,19 +35,19 @@
 	</table>
 	<table>
         	<tr>
-        		<th><div align="left">&nbsp</div></th> 
+        		<th>&nbsp;</th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.namespaceCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.permissionId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsToDisplay}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.active}" noColon="true" /></div></th>
-				<c:if test="${not inquiry}">	
+				<c:if test="${!readOnly}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
         	</tr>     
       	<c:forEach var="permission" items="${KualiForm.document.permissions}" varStatus="status">
             <tr>
-				<th rowspan="1" class="infoline">
+				<th class="infoline">
 					<c:out value="${status.index+1}" />
 				</th>
 	            <td align="left" valign="middle">
@@ -64,11 +55,11 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.permissionId"  attributeEntry="${permissionAttributes.permissionId}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permissionId"  attributeEntry="${permissionAttributes.permissionId}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.name"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].kimPermission.nameToDisplay"  attributeEntry="${permissionAttributes.name}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -89,9 +80,9 @@
 						</td>
         	       	</c:otherwise>
        	     	</c:choose>  
-			<c:if test="${not inquiry}">	
+			<c:if test="${!readOnly}">	
 				<td>
-					<div align=center>&nbsp;
+					<div align="center">&nbsp;
 						<c:choose>
 							<c:when test="${permission.edit}">
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>

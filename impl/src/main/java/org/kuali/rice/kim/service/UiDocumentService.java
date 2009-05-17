@@ -18,8 +18,8 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -67,7 +67,7 @@ public interface UiDocumentService {
 	 * 
 	 * @param identityManagementRoleDocument
 	 */
-	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, Role kimRole);
+	public void loadRoleDoc(IdentityManagementRoleDocument identityManagementRoleDocument, KimRoleInfo kimRole);
 	
 	/**
 	 * 
@@ -84,7 +84,7 @@ public interface UiDocumentService {
 	 * 
 	 * @param identityManagementRoleDocument
 	 */
-	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, Group kimGroup);
+	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, GroupInfo kimGroup);
 	
 	/**
 	 * 
@@ -96,15 +96,15 @@ public interface UiDocumentService {
 
 	public BusinessObject getMember(String memberTypeCode, String memberId);
 	
-	public String getMemberName(String memberTypeCode, String memberId);
-	
-	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
-
+//	public String getMemberName(String memberTypeCode, String memberId);
+//	
+//	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
+//
 	public String getMemberName(String memberTypeCode, BusinessObject member);
 	
 	public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member);
 
-	public List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActionImpls(String roleMemberId, String roleResponsibilityId);
+	public List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActionImpls(String roleMemberId);
 	
 	public List<KimDelegationImpl> getRoleDelegations(String roleId);
 	

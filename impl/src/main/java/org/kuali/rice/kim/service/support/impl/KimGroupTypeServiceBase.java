@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -26,8 +25,4 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class KimGroupTypeServiceBase extends KimTypeServiceBase implements KimGroupTypeService {
 	
-	public String getWorkflowDocumentTypeName() {
-		return KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
-	}
-
 }

@@ -16,10 +16,13 @@
  */
 package mocks;
 
+import java.util.List;
+
 import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
 import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
@@ -31,6 +34,7 @@ public class MockPostProcessor implements PostProcessor {
     private boolean processDocReportResult = true;
     private boolean actionTakenResult = true;
     private boolean processMethodsDocReportResult = true;
+    private List<Long> documentIdsToLockResult = null;
     
     public MockPostProcessor() {
         this(true);
@@ -45,9 +49,14 @@ public class MockPostProcessor implements PostProcessor {
     }
         
     public MockPostProcessor(boolean processDocReportResult, boolean actionTakenResult, boolean processMethodsDocReportResult) {
+    	this(processDocReportResult, actionTakenResult, processMethodsDocReportResult, null);
+    }
+    
+    public MockPostProcessor(boolean processDocReportResult, boolean actionTakenResult, boolean processMethodsDocReportResult, List<Long> documentIdsToLockResult) {
         this.processDocReportResult = processDocReportResult;
         this.actionTakenResult = actionTakenResult;
         this.processMethodsDocReportResult = processMethodsDocReportResult;
+        this.documentIdsToLockResult = documentIdsToLockResult;
     }
         
     public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
@@ -72,7 +81,11 @@ public class MockPostProcessor implements PostProcessor {
         return new ProcessDocReport(processMethodsDocReportResult, "testing");
     }
 
-    public void setProcessDocReportResult(boolean processDocReportResult) {
+    public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
+		return documentIdsToLockResult;
+	}
+
+	public void setProcessDocReportResult(boolean processDocReportResult) {
         this.processDocReportResult = processDocReportResult;
     }
 
@@ -82,6 +95,10 @@ public class MockPostProcessor implements PostProcessor {
 
     public void setProcessMethodsDocReportResult(boolean processMethodsDocReportResult) {
         this.processMethodsDocReportResult = processMethodsDocReportResult;
+    }
+    
+    public void setDocumentIdsToLockResult(List<Long> documentIdsToLockResult) {
+    	this.documentIdsToLockResult = documentIdsToLockResult;
     }
 
 }

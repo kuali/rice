@@ -26,11 +26,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -41,14 +38,11 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
  * 
@@ -57,62 +51,106 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
  */
 public class IdentityManagementGroupDocumentAction extends IdentityManagementDocumentActionBase {
 
-	public static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode"; 
+
+	/**
+	 * This constructs a ...
+	 * 
+	 */
+	public IdentityManagementGroupDocumentAction() {
+		super();
+		addMethodToCallToUncheckedList( CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL );
+	}
 	
-    @Override
+	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String methodToCall = findMethodToCall(form, request);
-		ActionForward forward;
+		ActionForward forward = null;
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
+        if ( StringUtils.isBlank( groupDocumentForm.getGroupId() ) ) {
+            String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
+        	groupDocumentForm.setGroupId(groupId);
+        }
+		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
+		if (groupDocumentForm.getMemberRows() != null) {
+		    memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
+		}
+        forward = super.execute(mapping, groupDocumentForm, request, response);
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
-		KimTypeImpl kimType = null;
-        if(KNSConstants.DOC_HANDLER_METHOD.equals(methodToCall) && kimTypeId!=null){
+		// TODO: move this into the UI service - action should not be making ORM-layer calls
+		if ( StringUtils.isNotBlank(kimTypeId) ) {
 	        Map<String, String> criteria = new HashMap<String, String>();
 	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-	        kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
-	        if(kimType == null)
-	        	throw new IllegalArgumentException("Kim type could not be found for kim type id: "+kimTypeId);
-	        groupDocumentForm.setKimType(kimType);
-	        groupDocumentForm.getGroupDocument().setKimType(kimType);
-	        groupDocumentForm.setDocTypeName(groupDocumentForm.getGroupDocument().getWorkflowDocumentTypeName());
-	    }
-		if(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall)) 
-        	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-        else {
-        	forward = super.execute(mapping, form, request, response);
-			if(KNSConstants.DOC_HANDLER_METHOD.equals(methodToCall) && kimTypeId!=null){
-		        groupDocumentForm.getGroupDocument().setKimType(kimType);
-		        groupDocumentForm.getGroupDocument().setGroupTypeId(kimType.getKimTypeId());
-		        groupDocumentForm.getGroupDocument().setGroupTypeName(kimType.getName());
-		        groupDocumentForm.getGroupDocument().getGroupId();
-		        groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
-			}
-        }
-		String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
-        String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
-        if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) 
-				&& StringUtils.isNotBlank(groupId)) {
-	        Group group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
-			KIMServiceLocator.getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
-			groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
-        	if(!KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY.equals(methodToCall))
-        		groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
-        } 
-        if (StringUtils.isNotBlank(commandParam) && commandParam.equals(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL)){
-	        groupDocumentForm.getMember().setMemberName("");
+	        groupDocumentForm.getGroupDocument().setGroupTypeId(kimTypeId);
+	        groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+		} else if ( StringUtils.isNotBlank( groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
+	        Map<String, String> criteria = new HashMap<String, String>();
+	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
+	        groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
 		}
-		((KualiDocumentFormBase) form).setErrorMapFromPreviousRequest(GlobalVariables.getErrorMap());
+
+		groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
 		return forward;
     }
     
+
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+     */
+    @Override
+    protected void loadDocument(KualiDocumentFormBase form)
+    		throws WorkflowException {
+    	super.loadDocument(form);
+
+    	IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
+        groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
+
+		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
+		if (groupDocumentForm.getMemberRows() != null) {
+		    memberTableMetadata.jumpToFirstPage(groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
+		}
+    }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+     */
+    @Override
+    protected void createDocument(KualiDocumentFormBase form)
+    		throws WorkflowException {
+    	super.createDocument(form);
+    	IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
+    	if ( groupDocumentForm.getGroupId() == null ) {
+    		groupDocumentForm.getGroupDocument().initializeDocumentForNewGroup();
+    		groupDocumentForm.setGroupId( groupDocumentForm.getGroupDocument().getGroupId() );
+            Map<String, String> criteria = new HashMap<String, String>();
+            criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, groupDocumentForm.getGroupDocument().getGroupTypeId() );
+            groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+    	} else {
+    		loadGroupIntoDocument( groupDocumentForm.getGroupId(), groupDocumentForm );
+    	}
+		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
+		if (groupDocumentForm.getMemberRows() != null) {
+		    memberTableMetadata.jumpToFirstPage(groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
+		}
+    }
+
+
+    private void loadGroupIntoDocument( String groupId, IdentityManagementGroupDocumentForm groupDocumentForm){
+        GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+        getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
+    }    
+        
 	/***
 	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
 	 */
 	public String getActionName(){
 		return KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
 	}
-
+	
 	private boolean validAssignGroup(IdentityManagementGroupDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
@@ -137,42 +175,30 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	newMember.setDocumentNumber(groupDocumentForm.getDocument().getDocumentNumber());
         	groupDocumentForm.getGroupDocument().addMember(newMember);
 	        groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
-        }
+	        groupDocumentForm.getMemberTableMetadata().jumpToLastPage(groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
+       }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     private boolean checkKimDocumentGroupMember(GroupDocumentMember newMember){
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
-        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY, 
+        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
-    	PersistableBusinessObject object = getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(object==null){
-        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH, 
+    	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
+        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) && !validateRole((RoleImpl)member, "document.member.memberId", "Role")){
+        	return false;
+        }
+
+        if(member==null){
+        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
         			new String[] {newMember.getMemberId()});
         	return false;
 		}
-        newMember.setMemberName(getMemberName(newMember.getMemberTypeCode(), object));
+        newMember.setMemberName(getUiDocumentService().getMemberName(newMember.getMemberTypeCode(), member));
+        newMember.setMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(newMember.getMemberTypeCode(), member));
         return true;
-    }
-
-    private PersistableBusinessObject getMember(String memberTypeCode, String memberId){
-        Class groupMemberTypeClass = null;
-        String groupMemberIdName = "";
-    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-        	groupMemberTypeClass = KimPrincipalImpl.class;
-        	groupMemberIdName = "principalId";
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	groupMemberTypeClass = GroupImpl.class;
-        	groupMemberIdName = "groupId";
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	groupMemberTypeClass = RoleImpl.class;
-        	groupMemberIdName = "roleId";
-        }
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put(groupMemberIdName, memberId);
-        return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(groupMemberTypeClass, criteria);
     }
     
     public ActionForward deleteMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -182,16 +208,4 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
-    public String getMemberName(String memberTypeCode, BusinessObject object){
-    	String groupMemberName = "";
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-        	groupMemberName = ((KimPrincipalImpl)object).getPrincipalName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	groupMemberName = ((GroupImpl)object).getGroupName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	groupMemberName = ((RoleImpl)object).getRoleName();
-        }
-        return groupMemberName;
-    }
-
 }

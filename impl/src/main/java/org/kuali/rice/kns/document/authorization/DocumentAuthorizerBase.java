@@ -125,16 +125,20 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 			}
 		}
 		if (documentActions
-				.contains(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)
-				&& !documentActions
-						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
-			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
-			//documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
+				.contains(KNSConstants.KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS)
+				&& !canSendAnyTypeAdHocRequests(document, user)) {
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS);
 		}
 		
+		if(documentActions
+				.contains(KNSConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI)
+				&& !canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)){
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
+		}
+		
+		
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS)
-				&& !canSendAdHocRequests(document,
-						KNSConstants.BY_PASS_ACTION_REQUEST_CD_INDICATOR, user) ) {
+				&& !canSendAnyTypeAdHocRequests(document, user) ) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
 		}
 		
@@ -142,6 +146,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				&& !documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ANNOTATE);
+		}
+		if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW) 
+				&&!canEditDocumentOverview(document, user)){
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW);
 		}
 		return documentActions;
 	}
@@ -222,6 +230,22 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				KimConstants.PermissionTemplateNames.SEND_AD_HOC_REQUEST, user
 						.getPrincipalId(), additionalPermissionDetails, null);
 	}
+	
+	public final boolean canEditDocumentOverview(Document document, Person user){
+		return isAuthorizedByTemplate(document,
+				KNSConstants.KNS_NAMESPACE,
+				KimConstants.PermissionTemplateNames.EDIT_DOCUMENT,
+				user.getPrincipalId()) && this.isDocumentInitiator(document, user);
+	}
+	
+	private final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
+		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)){
+			return true;
+		}else if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)){
+			return true;
+		}
+		return canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, user);
+	}
 
 	private boolean canTakeRequestedAction(Document document,
 			String actionRequestCode, Person user) {
@@ -268,4 +292,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		attributes.put(KimAttributes.ROUTE_STATUS_CODE, wd.getRouteHeader()
 				.getDocRouteStatus());
 	}
+	
+	private boolean isDocumentInitiator(Document document, Person user) {
+        KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
+    }
+
 }

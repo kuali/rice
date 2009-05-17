@@ -35,11 +35,11 @@
 	<c:when test="${totalPages == 1}">
 		Viewing rows ${firstDisplayedRow + 1} to ${lastDisplayedRow + 1}
 	</c:when>
-	<c:otherwise>
+	<c:when test="${totalPages > 1}">
 		Currently viewing page ${pageNumber + 1} of ${totalPages} (rows ${firstDisplayedRow + 1} to ${lastDisplayedRow + 1}).
 		<br/><br/>
 		Goto page: 
-		<c:if test="${pageNumber != 0}">
+		<c:if test="${pageNumber > 0}">
 			<c:forEach var="pageBeforeCurrent" begin="0" end="${pageNumber - 1}">
 				<c:if test="${empty buttonExtraParams}">				
 					<c:set var="nextPageBeforeValue" value="${pageBeforeCurrent + 1}" />
@@ -68,6 +68,6 @@
 						<input type="submit" tabindex="${tabindex}" name="${pageButton}" value="<c:out value="${pageAfterCurrent + 1}"/>"/>
 			</c:if>
 		</c:forEach>
-	</c:otherwise>
+	</c:when>
 </c:choose>
 </p>

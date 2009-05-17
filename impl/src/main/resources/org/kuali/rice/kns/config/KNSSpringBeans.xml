@@ -1189,4 +1189,11 @@
 
 
 	<bean id="businessObjectAuthorizationService" class="org.kuali.rice.kns.service.impl.BusinessObjectAuthorizationServiceImpl"/>
+	 
+    <bean id="workflowAttributesPropertyResolutionService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowAttributePropertyResolutionServiceImpl">
+    	<property name="persistenceStructureService"><ref bean="persistenceStructureService" /></property>
+    </bean>
+    
+    <bean id="campusGroupTypeService" class="org.kuali.rice.kns.service.impl.CampusGroupTypeServiceImpl" />
+    
 </beans>

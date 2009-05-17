@@ -34,7 +34,9 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	protected Timestamp lastUpdatedDate;
 	protected byte[] serializedDocumentForm;
 	//private KualiDocumentFormBase serializedDocumentForm;
-	protected boolean encrypted = false;;
+	protected boolean encrypted = false;
+	protected String principalId;
+	protected String ipAddress;
 	
 	
 	/**
@@ -95,13 +97,43 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 		this.documentNumber = documentNumber;
 	}
 
-
 	
+	
+	/**
+	 * @return the principalId
+	 */
+	public String getPrincipalId() {
+		return this.principalId;
+	}
+
+	/**
+	 * @param principalId the principalId to set
+	 */
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
+
+	/**
+	 * @return the ipAddress
+	 */
+	public String getIpAddress() {
+		return this.ipAddress;
+	}
+
+	/**
+	 * @param ipAddress the ipAddress to set
+	 */
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
 	@SuppressWarnings("unchecked")
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put("documentNumber", this.documentNumber);
 		m.put("sessionId", this.sessionId);
+		m.put("principalId", this.principalId);
+		m.put("ipAddress", this.ipAddress);
 		return m;
 	}
 

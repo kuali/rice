@@ -302,9 +302,10 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadOverwriteModeDocumentType() throws Exception {
-        List documentTypes = testDoc("RoutePathAdjustment1", null);
-        assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
-        DocumentType docType1 = (DocumentType) documentTypes.get(0);
+        String docTypeName = "LoadRoutePathOnlyAdjustsDocument";
+        testDoc("RoutePathAdjustment1", null);
+        DocumentType docType1 = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
+        assertNotNull("Document type should exist", docType1);
         assertEquals("The blanket approve workgroup name is incorrect", "TestWorkgroup", docType1.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType1.getBlanketApproveWorkgroup().getNamespaceCode());
         assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType1.getSuperUserWorkgroup().getGroupName());
@@ -313,9 +314,9 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         assertEquals("Incorrect document route node count", 1, routeNodes.size());
         assertEquals("Expected Route Node Name is incorrect", "First", ((RouteNode)routeNodes.get(0)).getRouteNodeName());
 
-        documentTypes = testDoc("RoutePathAdjustment2", null);
-        assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
-        DocumentType docType2 = (DocumentType) documentTypes.get(0);
+        testDoc("RoutePathAdjustment2", null);
+        DocumentType docType2 = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
+        assertNotNull("Document type should exist", docType1);
         assertEquals("The blanket approve workgroup name is incorrect", "WorkflowAdmin", docType2.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType2.getBlanketApproveWorkgroup().getNamespaceCode());
         assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType2.getSuperUserWorkgroup().getGroupName());

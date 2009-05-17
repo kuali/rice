@@ -18,8 +18,6 @@ package org.kuali.rice.kim.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kew.util.KEWConstants;
-
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
  *
@@ -33,7 +31,7 @@ public class KimConstants {
 	public static final String KIM_TYPE_DEFAULT_NAME = "Default";
 	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KUALI";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
-	
+
 	//Kim services constants for API
 	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
 	public static final String KIM_PERSON_SERVICE = "personService";
@@ -94,8 +92,8 @@ public class KimConstants {
     	public static final String UPLOAD_BATCH_INPUT_FILES = "Upload Batch Input File(s)";
     	public static final String MODIFY_BATCH_JOB = "Modify Batch Job";
     	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
-    	public static final String MAINAIN_SYSTEM_PARAMETER = "Maintain System Parameter";
-    	public static final String SEND_AD_HOC_REQUEST ="Send Ad Hoc Request"; 
+    	public static final String MAINTAIN_SYSTEM_PARAMETER = "Maintain System Parameter";
+    	public static final String SEND_AD_HOC_REQUEST ="Send Ad Hoc Request";
 	}
 
 	public static class PermissionNames {
@@ -111,6 +109,8 @@ public class KimConstants {
 		public static final String PARAMETERIZED_URL_SEPARATOR = "%2F";
 		public static final String KIM_URL_KEY = "kim.url";
 		public static final String KIM_APPLICATION = "kim";
+		public static final String MEMBER_NAME = "memberName";
+		public static final String MEMBER_NAMESPACE_CODE = "memberNamespaceCode";
 		public static final String MEMBER_TYPE_PRINCIPAL_CODE = "P";
 		public static final String MEMBER_TYPE_GROUP_CODE = "G";
 		public static final String MEMBER_TYPE_ROLE_CODE = "R";
@@ -133,8 +133,11 @@ public class KimConstants {
 		public static final String KIM_GROUP_DOCUMENT_SHORT_KEY = "IMGD";
 		public static final String KIM_PERSON_DOCUMENT_SHORT_KEY = "IMPD";
 		public static final String KIM_ROLE_DOCUMENT_ACTION = "identityManagementRoleDocument.do";
+		public static final String KIM_ROLE_INQUIRY_ACTION = "identityManagementRoleInquiry.do";
 		public static final String KIM_PERSON_DOCUMENT_ACTION = "identityManagementPersonDocument.do";
+		public static final String KIM_PERSON_INQUIRY_ACTION = "identityManagementPersonInquiry.do";
 		public static final String KIM_GROUP_DOCUMENT_ACTION = "identityManagementGroupDocument.do";
+		public static final String KIM_GROUP_INQUIRY_ACTION = "identityManagementGroupInquiry.do";
 		public static final Map<String, String> KIM_DOCUMENTS_ACTIONS_MAP = getDocumentActionsMap();
 	    private static Map<String, String> getDocumentActionsMap() {
 	    	Map<String, String> kimDocumentActionsMap = new HashMap<String, String>();
@@ -157,7 +160,7 @@ public class KimConstants {
 	    public static final String DELEGATION_SECONDARY = "S";
 	    public static final String DELEGATION_PRIMARY_LABEL = "Primary";
 	    public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
-	    
+
 	    public static final Map<String, String> DELEGATION_TYPES = getDelegationTypesMap();
 	    private static Map<String, String> getDelegationTypesMap() {
 	    	Map<String, String> delegationTypesMap = new HashMap<String, String>();
@@ -167,7 +170,7 @@ public class KimConstants {
 	    }
 
 	}
-	
+
 	public static class PrimaryKeyConstants {
 		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";
@@ -188,7 +191,7 @@ public class KimConstants {
 		public static final String KIM_ATTRIBUTE_ID = "kimAttributeId";
 		public static final String EXTERNAL_IDENTIFIER_TYPE_CODE ="code";
 	}
-	
+
 	public static class UniqueKeyConstants {
 		public static final String NAMESPACE_CODE = "namespaceCode";
 		public static final String PRINCIPAL_NAME = "principalName";
@@ -213,24 +216,24 @@ public class KimConstants {
 	}
 
 	/**
-	 * 
-	 * KimGroupS can contain other KimGroupS and KimPrincipalS. 
-	 * Use these constants to flags their members with the appropriate member 
+	 *
+	 * KimGroupS can contain other KimGroupS and KimPrincipalS.
+	 * Use these constants to flags their members with the appropriate member
 	 * type code.
-	 * 
+	 *
 	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
 	 */
 	public static class KimGroupMemberTypes {
-		
+
 		/**
 		 * For group members that are themselves groups
 		 */
 		public static final String GROUP_MEMBER_TYPE = "G";
-		
+
 		/**
 		 * For group members that are principals
 		 */
 		public static final String PRINCIPAL_MEMBER_TYPE = "P";
 	}
-	
+
 }

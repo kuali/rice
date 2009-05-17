@@ -70,7 +70,7 @@ public class BAMTargetEntry implements Serializable {
 	private String exceptionToString;
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="EXCPN_MSG")
+	@Column(name="EXCPN_MSG", length=4000)
 	private String exceptionMessage;
 	@Column(name="SRVR_IND")
 	private Boolean serverInvocation;

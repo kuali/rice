@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -49,20 +53,35 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Delegation Member"});
             return false;
         }
-        for(RoleDocumentDelegation delegation: document.getDelegations()){
-    	    for (RoleDocumentDelegationMember member: delegation.getMembers()){
-    	    	if (member.getMemberId().equals(newMember.getMemberId())){
-    	            rulePassed = false;
-    	            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Delegation Member"});
-    	    	}
-    	    }
-        }
-        
+		List<AttributeSet> attributeSetListToValidate = new ArrayList<AttributeSet>();
+		AttributeSet attributeSetToValidate;
 		AttributeSet validationErrors = new AttributeSet();
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( document.getKimType() );
+
+		for(RoleDocumentDelegationMember roleMember: document.getDelegationMembers()) {
+			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
+			attributeSetListToValidate.add(attributeSetToValidate);
+    	}
+		boolean attributesUnique;
+
+	    int i = 0;
+	    for (RoleDocumentDelegationMember member: document.getDelegationMembers()){
+	    	attributesUnique = kimTypeService.validateUniqueAttributes(
+					document.getKimType().getKimTypeId(), 
+					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
+					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));
+	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
+	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
+	            rulePassed = false;
+	            GlobalVariables.getErrorMap().putError("delegationMember.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Delegation Member"});
+	            break;
+	    	}
+	    	i++;
+	    }
+        
         if ( kimTypeService != null ) {
-        		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-		        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
+    		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
     	if (!validationErrors.isEmpty()) {
     		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);

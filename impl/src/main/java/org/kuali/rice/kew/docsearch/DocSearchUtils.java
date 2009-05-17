@@ -70,6 +70,7 @@ public class DocSearchUtils {
     private static final String DATE_REGEX_WHOLENUM_LARGE = "^\\d{8}$"; // matches MMddyyyy
     private static final String DATE_REGEX_WHOLENUM_LARGE_SPLIT = "(\\d{2})(\\d{2})(\\d{4})";
 
+    private static final String TIME_REGEX = "([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])";
 	private static final Map REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION = new HashMap();
 	static {
 //		REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.put(DATE_REGEX_PASS, DATE_REGEX_PASS_SPLIT);
@@ -149,6 +150,11 @@ public class DocSearchUtils {
      * @return A string representing a date in the format MM/dd/yyyy or null if date is invalid
      */
     public static String getEntryFormattedDate(String date) {
+        Pattern p = Pattern.compile(TIME_REGEX);
+        Matcher util = p.matcher(date);
+        if (util.find() == true) {
+            date = StringUtils.substringBeforeLast(date, " ");
+        }
         DateComponent dc = formatDateToDateComponent(date, DOCUMENT_SEARCH_DATE_VALIDATION_REGEX_EXPRESSIONS);
         if (dc == null) {
             return null;
@@ -287,6 +293,11 @@ public class DocSearchUtils {
     }
 
     public static Timestamp convertStringDateToTimestamp(String dateWithoutTime) {
+        Pattern p = Pattern.compile(TIME_REGEX);
+        Matcher util = p.matcher(dateWithoutTime);
+        if (util.find() == true) {
+            dateWithoutTime = StringUtils.substringBeforeLast(dateWithoutTime, " ");
+        }
         DateComponent formattedDate = formatDateToDateComponent(dateWithoutTime, Arrays.asList(REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.keySet().toArray()));
         if (formattedDate == null) {
             return null;

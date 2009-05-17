@@ -6,9 +6,9 @@
 
 </head>
 <c:if test="${BackdoorForm.backdoorLinksBackdoorLogin}">
-<table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="headercell1">
   <tr>
-    <td><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
+    <td><img src="images/wf-logo.gif" alt="Workflow" width="150" height="21" hspace="5" vspace="5"></td>
   </tr>
 </table>
 </c:if>
@@ -39,13 +39,13 @@
 		<td><a href="ActionList.do" target="<c:out value="${BackdoorForm.targetName}" />">Action List</a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO" target="<c:out value="${BackdoorForm.targetName}" />">Document Search</a></td>
+		<td><a href="../kr/lookup.do?&methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/kew/Portal.do" target="<c:out value="${BackdoorForm.targetName}" />">Document Search</a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rules</a></td>
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/kew/Portal.do&hideReturnLink=true&showMaintenanceLinks=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rules</a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true&showMaintenanceLinks=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rule Delegations</a></td>
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/kew/Portal.do&hideReturnLink=true&showMaintenanceLinks=true" target="<c:out value="${BackdoorForm.targetName}" />">Routing Rule Delegations</a></td>
 	</tr>
 	<tr>
 		<td><a href="RoutingReport.do" target="<c:out value="${BackdoorForm.targetName}" />">Routing Report</a></td>
@@ -57,7 +57,7 @@
 		<td><a href="RuleQuickLinks.do" target="<c:out value="${BackdoorForm.targetName}" />">Rule QuickLinks</a></td>
 	</tr>
 	<tr>
-		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">eDoc Lites</a></td>
+		<td><a href="../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.edl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/kew/Portal.do&hideReturnLink=true" target="<c:out value="${BackdoorForm.targetName}" />">eDoc Lites</a></td>
 	</tr>
 </table>
 

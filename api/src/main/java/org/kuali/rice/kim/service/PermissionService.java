@@ -221,4 +221,9 @@ public interface PermissionService {
      * Get the role IDs for the given list of permissions.
      */
     List<String> getRoleIdsForPermissions( List<KimPermissionInfo> permissions );
+    
+    /**
+     * 
+     */
+    public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName);
 }

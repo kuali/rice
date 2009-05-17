@@ -31,7 +31,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  *
  */
 public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleRule {
-    private static final String ERROR_PATH = "newRole.roleId";
+    public static final String ERROR_PATH = "newRole.roleId";
 
 	public boolean processAddRole(AddRoleEvent addRoleEvent) {
 		PersonDocumentRole newRole = addRoleEvent.getRole();

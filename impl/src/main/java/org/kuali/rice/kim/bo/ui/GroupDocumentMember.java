@@ -47,6 +47,8 @@ public class GroupDocumentMember extends KimDocumentBoBase {
 	
 	protected String memberName;
 	
+	protected String memberNamespaceCode;
+	
 	//TODO: remove the default
 	@Column(name="MBR_TYP_CD")
 	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
@@ -121,5 +123,19 @@ public class GroupDocumentMember extends KimDocumentBoBase {
 	 */
 	public void setMemberName(String memberName) {
 		this.memberName = memberName;
+	}
+
+	/**
+	 * @return the memberNamespaceCode
+	 */
+	public String getMemberNamespaceCode() {
+		return this.memberNamespaceCode;
+	}
+
+	/**
+	 * @param memberNamespaceCode the memberNamespaceCode to set
+	 */
+	public void setMemberNamespaceCode(String memberNamespaceCode) {
+		this.memberNamespaceCode = memberNamespaceCode;
 	}
 }

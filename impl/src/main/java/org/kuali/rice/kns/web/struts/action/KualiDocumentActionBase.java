@@ -106,7 +106,11 @@ public class KualiDocumentActionBase extends KualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiDocumentActionBase.class);
 
     // COMMAND constants which cause docHandler to load an existing document instead of creating a new one
-    private static final String[] DOCUMENT_LOAD_COMMANDS = { KEWConstants.ACTIONLIST_COMMAND, KEWConstants.DOCSEARCH_COMMAND, KEWConstants.SUPERUSER_COMMAND, KEWConstants.HELPDESK_ACTIONLIST_COMMAND };
+    protected static final String[] DOCUMENT_LOAD_COMMANDS = { 
+    		KEWConstants.ACTIONLIST_COMMAND, 
+    		KEWConstants.DOCSEARCH_COMMAND, 
+    		KEWConstants.SUPERUSER_COMMAND, 
+    		KEWConstants.HELPDESK_ACTIONLIST_COMMAND };
 
     private DataDictionaryService dataDictionaryService;
     private DocumentHelperService documentHelperService;
@@ -167,7 +171,8 @@ public class KualiDocumentActionBase extends KualiAction {
         	}
         }
 
-        if (form instanceof KualiDocumentFormBase) {
+        if (form instanceof KualiDocumentFormBase
+        		&& ((KualiDocumentFormBase)form).isHasWorkflowDocument() ) {
             KualiDocumentFormBase formBase = (KualiDocumentFormBase) form;
             Document document = formBase.getDocument();
 
@@ -400,13 +405,8 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
-        // check authorization
-        //DocumentActionFlags flags = getDocumentActionFlags(document);
-        //if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
-        //    throw buildAuthorizationException("ad-hoc route", document);
-        //}
         
-        // check authorization for adding notes
+        // check authorization for adding ad hoc route person
         DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
         if(!documentAuthorizer.canSendAdHocRequests(document, kualiDocumentFormBase.getNewAdHocRoutePerson().getActionRequested(), GlobalVariables.getUserSession().getPerson())){
         	 throw buildAuthorizationException("ad-hoc route", document);
@@ -442,10 +442,6 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward deleteAdHocRoutePerson(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
-        //DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
-            throw buildAuthorizationException("delete ad-hoc route persons", kualiDocumentFormBase.getDocument());
-        }
 
         kualiDocumentFormBase.getAdHocRoutePersons().remove(this.getLineToDelete(request));
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -466,10 +462,10 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
-        // check authorization
-        //DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
-            throw buildAuthorizationException("add ad-hoc routing", document);
+        // check authorization for add ad hoc route workgroup
+        DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
+        if(!documentAuthorizer.canSendAdHocRequests(document, kualiDocumentFormBase.getNewAdHocRouteWorkgroup().getActionRequested(), GlobalVariables.getUserSession().getPerson())){
+        	 throw buildAuthorizationException("ad-hoc route", document);
         }
 
         // check business rules
@@ -503,11 +499,6 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward deleteAdHocRouteWorkgroup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
-
-        //DocumentActionFlags flags = getDocumentActionFlags(document);
-        if (!kualiDocumentFormBase.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE)) {
-            throw buildAuthorizationException("delete ad-hoc route workgroups", kualiDocumentFormBase.getDocument());
-        }
 
         kualiDocumentFormBase.getAdHocRouteWorkgroups().remove(this.getLineToDelete(request));
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -994,9 +985,10 @@ public class KualiDocumentActionBase extends KualiAction {
      * @param kualiForm
      * @throws WorkflowException
      */
-    protected void refreshAdHocRoutingWorkgroupLookups(HttpServletRequest request, KualiDocumentFormBase kualiForm) throws WorkflowException {
-        for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
-            String parameterName = (String) i.nextElement();
+    @SuppressWarnings("unchecked")
+	protected void refreshAdHocRoutingWorkgroupLookups(HttpServletRequest request, KualiDocumentFormBase kualiForm) throws WorkflowException {
+        for (Enumeration<String> i = request.getParameterNames(); i.hasMoreElements();) {
+            String parameterName = i.nextElement();
             if (parameterName.equals("newAdHocRouteWorkgroup.recipientName") && !"".equals(request.getParameter(parameterName))) {
                 //check for namespace
                 String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
@@ -1321,8 +1313,8 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = kualiDocumentFormBase.getDocument();
 
 
-        DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
-        DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
+//        DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
+//        DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
         // check authorization for adding notes
         //DocumentActionFlags flags = getDocumentActionFlags(document);
@@ -1548,7 +1540,8 @@ public class KualiDocumentActionBase extends KualiAction {
         return dest;
     }
 
-    protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
+    @SuppressWarnings("unchecked")
+	protected void populateAuthorizationFields(KualiDocumentFormBase formBase){
     	if (formBase.isFormDocumentInitialized()) {
         	Document document = formBase.getDocument();
         	Person user = GlobalVariables.getUserSession().getPerson();
@@ -1570,7 +1563,7 @@ public class KualiDocumentActionBase extends KualiAction {
     protected void populateAdHocActionRequestCodes(KualiDocumentFormBase formBase){
     	Document document = formBase.getDocument();
     	DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
-    	Map adHocActionRequestCodes = new HashMap();
+    	Map<String,String> adHocActionRequestCodes = new HashMap<String,String>();
 
         if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, GlobalVariables.getUserSession().getPerson())) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
@@ -1587,7 +1580,8 @@ public class KualiDocumentActionBase extends KualiAction {
     }
     
 
-    protected Map convertSetToMap(Set s){
+    @SuppressWarnings("unchecked")
+	protected Map convertSetToMap(Set s){
     	Map map = new HashMap();
     	Iterator i = s.iterator();
         while(i.hasNext()) {

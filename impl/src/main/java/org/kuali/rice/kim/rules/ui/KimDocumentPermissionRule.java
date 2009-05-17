@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
@@ -47,16 +47,16 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 			return false;
 		}
 
-		KimPermissionImpl kimPermissionImpl = newPermission.getKimPermission();
-		if(kimPermissionImpl==null){
+		KimPermissionInfo kimPermissionInfo = newPermission.getKimPermission();
+		if(kimPermissionInfo==null){
 			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
 			return false;
 		}
 	    boolean rulePassed = true;
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addPermissionEvent.getDocument();
 		Map<String,String> permissionDetails = new HashMap<String,String>();
-		permissionDetails.put(KimAttributes.NAMESPACE_CODE, kimPermissionImpl.getNamespaceCode());
-		permissionDetails.put(KimAttributes.PERMISSION_NAME, kimPermissionImpl.getTemplate().getName());
+		permissionDetails.put(KimAttributes.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
+		permissionDetails.put(KimAttributes.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
@@ -64,7 +64,7 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 				permissionDetails, null)) {
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
-            		new String[] {kimPermissionImpl.getNamespaceCode(), kimPermissionImpl.getTemplate().getName()});
+            		new String[] {kimPermissionInfo.getNamespaceCode(), kimPermissionInfo.getTemplate().getName()});
             return false;
 		}
 

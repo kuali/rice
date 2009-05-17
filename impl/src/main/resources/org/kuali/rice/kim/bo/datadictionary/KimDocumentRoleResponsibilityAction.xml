@@ -54,9 +54,6 @@
 		<property name="label" value="Role Responsibility Action Id" />
 		<property name="shortLabel" value="Role Responsibility Action Id" />
 		<property name="maxLength" value="40" />
-		<property name="validationPattern" >
-			<bean parent="AlphaNumericValidationPattern" />
-		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"
 				p:size="10" />
@@ -72,9 +69,6 @@
 		<property name="label" value="Role Responsibility Id" />
 		<property name="shortLabel" value="Role Responsibility Id" />
 		<property name="maxLength" value="40" />
-		<property name="validationPattern" >
-			<bean parent="AlphaNumericValidationPattern" />
-		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"
 				p:size="10" />

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -25,6 +24,7 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**

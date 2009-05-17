@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 @MappedSuperclass
 public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBase {
 
+	private static final long serialVersionUID = -1512640359333185819L;
 	@Id
 	@Column(name = "ATTR_DATA_ID")
 	private String attrDataId;

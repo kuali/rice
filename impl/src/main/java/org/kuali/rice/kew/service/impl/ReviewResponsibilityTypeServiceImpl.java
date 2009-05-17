@@ -15,17 +15,13 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -33,5 +29,35 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl {
 	{
 		exactMatchStringAttributeName = KimAttributes.ROUTE_NODE_NAME;
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl#performResponsibilityMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
+	 */
+	@Override
+	protected List<KimResponsibilityInfo> performResponsibilityMatches(
+			AttributeSet requestedDetails,
+			List<KimResponsibilityInfo> responsibilitiesList) {
+		// get the base responsibility matches based on the route level and document type
+		List<KimResponsibilityInfo> baseMatches = super.performResponsibilityMatches(requestedDetails,
+				responsibilitiesList);
+		// now, if any of the responsibilities have the "additionalMatchValue" detail property
+		// perform an exact match on the property with the requested details
+		// if the property does not match or does not exist in the requestedDetails, remove
+		// the responsibility from the list
+		Iterator<KimResponsibilityInfo> respIter = baseMatches.iterator();
+		while ( respIter.hasNext() ) {
+			AttributeSet respDetails = respIter.next().getDetails();
+			if ( respDetails.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
+				if ( !requestedDetails.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) 
+						|| !StringUtils.equals( respDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER)
+								, requestedDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER))) {
+					respIter.remove();
+				}
+			}
+		}		
+		return baseMatches;
 	}
 }

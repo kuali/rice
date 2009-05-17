@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import java.io.Serializable;
+
 import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 
 /**
@@ -23,8 +25,9 @@ import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimPermissionTemplateInfo implements KimPermissionTemplate {
+public class KimPermissionTemplateInfo implements KimPermissionTemplate, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	protected String permissionTemplateId;
 	protected String namespaceCode;
 	protected String name;

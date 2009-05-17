@@ -31,6 +31,8 @@ import org.kuali.rice.kns.util.UrlFactory;
  */
 public class GroupLookupableImpl extends KualiLookupableImpl {
 
+	private static final long serialVersionUID = -7862240710174441633L;
+
 	public String getCreateNewUrl() {
 		String url = "";
 		if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME)){

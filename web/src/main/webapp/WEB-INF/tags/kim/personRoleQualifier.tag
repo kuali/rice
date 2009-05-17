@@ -4,7 +4,6 @@
 <%@ attribute name="role" required="true" type="org.kuali.rice.kim.bo.ui.PersonDocumentRole" %>
 <c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:subtab lookedUpCollectionName="roleQualifier" width="${tableWidth}" subTabTitle="Role Qualifier" useCurrentTabIndexAsKey="true">      
 	<table cellpadding="0" cellspacing="0" summary="">
@@ -137,7 +136,7 @@
 			</c:forEach>
 			<tr>
 	   <!-- need to decide colspan -->
-	             <td colspan=15 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
+	             <td colspan="15" style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
 	        </tr>								
 		</c:if>	
 	</table>       

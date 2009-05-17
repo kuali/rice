@@ -269,5 +269,18 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @return
      */
     public void prepareBusinessObject(BusinessObject businessObject);
+    
+    /**
+     * Searches for any relevant locking documents.
+     * 
+     * @return
+     */
+    public String getLockingDocumentId();
+    
+    /**
+     * Return an array of document ids to lock prior to processing this document in the workflow engine. 
+     */
+    public List<Long> getWorkflowEngineDocumentIdsToLock();
+
 
 }

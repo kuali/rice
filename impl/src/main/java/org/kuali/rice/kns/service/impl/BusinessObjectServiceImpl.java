@@ -36,6 +36,8 @@ import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.exception.ReferenceAttributeDoesntExistException;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -286,7 +288,13 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
 
         // only do the retrieval if all Foreign Keys have values
         if (allFkeysHaveValues) {
-            referenceBo = findByPrimaryKey(referenceClass, pkMap);
+        	if (ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
+        		ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(referenceClass);
+				if(responsibleModuleService!=null) {
+					return (BusinessObject)responsibleModuleService.getExternalizableBusinessObject(referenceClass, pkMap);
+				}
+        	} else
+        		referenceBo = findByPrimaryKey(referenceClass, pkMap);
         }
 
         // return what we have, it'll be null if it was never retrieved

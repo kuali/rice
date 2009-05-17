@@ -35,11 +35,8 @@
     <td align="left" class="<c:out value="${headerClass}"/>" nowrap="nowrap">
         <c:choose>
             <c:when test="${actionRequest.userRequest}">
-                <a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
-                <c:param name="command" value="initiate"/>
-                <c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
-                <c:param name="principalId" value="${actionRequest.principalId}"/>                      
-                </c:url>" target="_blank"><c:out value="${actionRequest.displayName}" /></a>&nbsp;
+                <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${actionRequest.principalId}" render="true"><c:out value="${actionRequest.displayName}" /></kul:inquiry>
+                &nbsp;
                 <c:choose>
                   <c:when test="${actionRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
                     <bean-el:message key="routeLog.ActionRequests.actionRequest.label.secondaryDelegate"/>
@@ -69,7 +66,7 @@
                           <c:forEach var="primDelegateRequest" items="${roleRequest.primaryDelegateRequests}" varStatus="pDelegateArStatus">
                           <c:set var="primDelegateDisplayName" value="${primDelegateRequest.displayName}"/>
                           <c:if test="${primDelegateRequest.userRequest}">
-                              <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                              <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person"
                                   keyValues="principalId=${primDelegateRequest.principalId}"
                                   render="true">
                                   <c:out value="${primDelegateDisplayName}" />
@@ -92,11 +89,7 @@
                            <c:if test="${!arStatus.last}"><br /></c:if>
                        </c:when>
                        <c:otherwise>
-                           <a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
-                                <c:param name="command" value="initiate"/>
-                                <c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
-                                <c:param name="principalId" value="${roleRequest.principalId}"/>                      
-                           </c:url>" target="_blank"><c:out value="${roleRequest.displayName}" /></a>
+                            <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${roleRequest.principalId}" render="true"><c:out value="${roleRequest.displayName}" /></kul:inquiry>
                             &nbsp;
                             <c:choose>
                               <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">

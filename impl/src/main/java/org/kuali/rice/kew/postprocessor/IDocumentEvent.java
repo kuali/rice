@@ -31,6 +31,7 @@ public interface IDocumentEvent extends Serializable {
   public static final String ACTION_TAKEN = "action_taken";
   public static final String BEFORE_PROCESS = "before_process";
   public static final String AFTER_PROCESS = "after_process";
+  public static final String LOCK_DOCUMENTS = "lock_documents";
 
   /**
    * @return the code of this document event 

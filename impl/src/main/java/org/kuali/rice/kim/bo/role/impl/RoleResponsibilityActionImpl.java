@@ -72,6 +72,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap lhm = new LinkedHashMap();
 		lhm.put( "roleResponsibilityActionId", roleResponsibilityActionId );
+		lhm.put( "versionNumber", versionNumber);
 		lhm.put( "roleResponsibilityId", roleResponsibilityId );
 		lhm.put( "roleMemberId", roleMemberId );
 		lhm.put( "actionTypeCode", actionTypeCode );

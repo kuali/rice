@@ -28,6 +28,7 @@ import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
@@ -55,10 +56,10 @@ public class KimModuleService extends ModuleServiceBase {
 	@Override
 	public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass, Map<String, Object> fieldValues) {
 		if ( Person.class.isAssignableFrom( businessObjectClass ) ) {
-			if ( fieldValues.containsKey( "principalId" ) ) {
-				return (T) getPersonService().getPerson( (String)fieldValues.get( "principalId" ) );
-			} else if ( fieldValues.containsKey( "principalName" ) ) {
-				return (T) getPersonService().getPersonByPrincipalName( (String)fieldValues.get( "principalName" ) );
+			if ( fieldValues.containsKey( KIMPropertyConstants.Person.PRINCIPAL_ID ) ) {
+				return (T) getPersonService().getPerson( (String)fieldValues.get( KIMPropertyConstants.Person.PRINCIPAL_ID ) );
+			} else if ( fieldValues.containsKey( KIMPropertyConstants.Person.PRINCIPAL_NAME ) ) {
+				return (T) getPersonService().getPersonByPrincipalName( (String)fieldValues.get( KIMPropertyConstants.Person.PRINCIPAL_NAME ) );
 			}
 			// otherwise, fall through since critieria is not known
 		} else if(Role.class.isAssignableFrom(businessObjectClass)){
@@ -122,15 +123,15 @@ public class KimModuleService extends ModuleServiceBase {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
 		if ( Person.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
 			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( "principalId" );
+			pkFields.add( KimConstants.PrimaryKeyConstants.PRINCIPAL_ID );
 			return pkFields;
 		} else if ( Role.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
 			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( "roleId" );
+			pkFields.add( KimConstants.PrimaryKeyConstants.ROLE_ID );
 			return pkFields;
 		} else if ( Group.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
 			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( "groupId" );
+			pkFields.add( KimConstants.PrimaryKeyConstants.GROUP_ID );
 			return pkFields;
 		}
 
@@ -182,11 +183,11 @@ public class KimModuleService extends ModuleServiceBase {
 		}
 		String inquiryAction = "";
 		if(Role.class.isAssignableFrom(inquiryBusinessObjectClass))
-			inquiryAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+			inquiryAction = KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
 		else if(Group.class.isAssignableFrom(inquiryBusinessObjectClass))
-			inquiryAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
+			inquiryAction = KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
 		else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass))
-			inquiryAction = KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION;
+			inquiryAction = KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;
 		inquiryUrl = inquiryUrl + inquiryAction;
 		return inquiryUrl;
 	}

@@ -22,6 +22,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.WorkflowServiceError;
+import org.kuali.rice.kns.util.MessageMap;
 
 
 /**
@@ -65,5 +66,7 @@ public interface DocumentSearchGenerator {
      */
     public boolean isProcessResultSet();
     public void setProcessResultSet(boolean isProcessResultSet);
+
+    public MessageMap getMessageMap(DocSearchCriteriaDTO searchCriteria);
 
 }

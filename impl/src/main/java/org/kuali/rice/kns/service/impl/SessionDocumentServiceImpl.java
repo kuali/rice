@@ -22,6 +22,8 @@ import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.SessionDocument;
@@ -31,6 +33,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KualiLRUMap;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -84,7 +87,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	/**
      * @see org.kuali.rice.kns.service.SessionDocumentService#getDocumentForm(String documentNumber, String docFormKey, UserSession userSession)
      */
-    public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession){
+    public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, HttpServletRequest request){
     	KualiDocumentFormBase documentForm = null;
     	
         /*if(userSession.retrieveObject(docFormKey) != null){
@@ -97,6 +100,8 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     			HashMap<String, String> primaryKeys = new HashMap<String, String>(2);
     			primaryKeys.put("sessionId", userSession.getKualiSessionId());
     			primaryKeys.put("documentNumber", documentNumber);
+    			primaryKeys.put("principalId", GlobalVariables.getUserSession().getPerson().getPrincipalId());
+    			primaryKeys.put("ipAddress", request.getRemoteAddr());
    
     			SessionDocument sessionDoc = (SessionDocument)getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
     			if(sessionDoc != null){
@@ -135,7 +140,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	 *      documentNumber, String docFormKey, UserSession userSession )
 	 */
 	public void purgeDocumentForm(String documentNumber, String docFormKey,
-			UserSession userSession) {
+			UserSession userSession, HttpServletRequest request) {
 
 		LOG.debug("purge document form from session");
 		userSession.removeObject(docFormKey);
@@ -145,6 +150,8 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 			HashMap<String, String> primaryKeys = new HashMap<String, String>(2);
 			primaryKeys.put("sessionId", userSession.getKualiSessionId());
 			primaryKeys.put("documentNumber", documentNumber);
+			primaryKeys.put("principalId", GlobalVariables.getUserSession().getPerson().getPrincipalId());
+			primaryKeys.put("ipAddress", request.getRemoteAddr());
 			getBusinessObjectService().deleteMatching(SessionDocument.class,
 					primaryKeys);
 
@@ -158,7 +165,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
      * @see org.kuali.rice.kns.service.SessinoDocumentService#setDocumentForm()
      */
     
-    public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession ){
+    public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, HttpServletRequest request){
     	//formKey was set in KualiDocumentActionBase execute method
 		String formKey = form.getFormKey();
 		 //if (StringUtils.isBlank(formKey)
@@ -201,6 +208,9 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     	    sessionDocument.setSerializedDocumentForm(formAsBytes);
     	    sessionDocument.setLastUpdatedDate(currentTime);
     	    sessionDocument.setEncrypted(encryptContent);
+    	    sessionDocument.setPrincipalId(GlobalVariables.getUserSession().getPerson().getPrincipalId());
+    	    sessionDocument.setIpAddress(request.getRemoteAddr());
+    	   
     	    
     	    if(documentNumber != null) {
     	    	businessObjectService.save(sessionDocument);

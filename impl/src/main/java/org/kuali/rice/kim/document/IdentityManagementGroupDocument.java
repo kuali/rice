@@ -16,15 +16,21 @@
 package org.kuali.rice.kim.document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 
@@ -35,7 +41,10 @@ import org.kuali.rice.kns.util.TypedArrayList;
  *
  */
 public class IdentityManagementGroupDocument extends IdentityManagementTypeAttributeTransactionalDocument {
-
+	private static final Logger LOG = Logger.getLogger(IdentityManagementGroupDocument.class);
+	
+	private static final long serialVersionUID = 1L;
+	
 	// principal data
 	protected String groupId;
 	protected String groupTypeId;
@@ -51,7 +60,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 
 	public IdentityManagementGroupDocument() {
 	}
-
+	
 	/**
 	 * @return the active
 	 */
@@ -81,6 +90,18 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	}
 
 	/**
+	 * @return the kimType
+	 */
+	public KimTypeImpl getKimType() {
+		if ( kimType == null || !StringUtils.equals(kimType.getKimTypeId(), getGroupTypeId() ) ) {
+	        Map<String, String> criteria = new HashMap<String, String>();
+	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, getGroupTypeId());
+	        kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
+		}
+		return kimType;
+	}
+	
+	/**
 	 * @param members the members to set
 	 */
 	public GroupDocumentMember getBlankMember() {
@@ -94,7 +115,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	@Override
 	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
 		super.doRouteStatusChange(statusChangeEvent);
-		if (getDocumentHeader().getWorkflowDocument().stateIsFinal()) {
+		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
 			KIMServiceLocator.getUiDocumentService().saveGroup(this);
 		}
 	}
@@ -103,7 +124,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	public void prepareForSave(){
 		String groupId;
 		if(StringUtils.isBlank(getGroupId())){
-			groupId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S").toString();
+			groupId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ID_S").toString();
 			setGroupId(groupId);
 		} else{
 			groupId = getGroupId();
@@ -113,25 +134,38 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 			for(GroupDocumentMember member: getMembers()){
 				member.setGroupId(groupId);
 				if(StringUtils.isBlank(member.getGroupMemberId())){
-					groupMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S").toString();
+					groupMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_MBR_ID_S").toString();
 					member.setGroupMemberId(groupMemberId);
 				}
 			}
 		}
-		for(GroupDocumentQualifier qualifier: getQualifiers()){
-			qualifier.setKimTypId(getKimType().getKimTypeId());
-			qualifier.setGroupId(groupId);
-		}
+		int index = 0;
+		// this needs to be checked - are all qualifiers present?
+		for(String key : getDefinitions().keySet()) {
+			if ( getQualifiers().size() > index ) {
+				GroupDocumentQualifier qualifier = getQualifiers().get(index);
+				qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+				qualifier.setKimTypId(getKimType().getKimTypeId());
+				qualifier.setGroupId(groupId);
+			}
+			index++;
+        }
 	}
 
-	/**
-	 * @return the groupId
-	 */
-	public String getGroupId() {
+	public void initializeDocumentForNewGroup() {
 		if(StringUtils.isBlank(this.groupId)){
 			this.groupId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_GROUP_ID_S).toString();
 		}
-		return this.groupId;
+		if(StringUtils.isBlank(this.groupTypeId)) {
+			this.groupTypeId = "1";
+		}
+	}
+	
+	public String getGroupId(){
+//		if(StringUtils.isBlank(this.groupId)){
+//			initializeDocumentForNewGroup();
+//		}
+		return groupId;
 	}
 
 	/**
@@ -225,14 +259,6 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		this.qualifiers = qualifiers;
 	}
 
-	public String getWorkflowDocumentTypeName(){
-		String workflowDocumentTypeName = getKimTypeService(kimType).getWorkflowDocumentTypeName();
-		if(StringUtils.isBlank(workflowDocumentTypeName)){
-			workflowDocumentTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
-		}
-		return workflowDocumentTypeName;
-	}
-
 	public GroupDocumentQualifier getQualifier(String kimAttributeDefnId) {
 		for(GroupDocumentQualifier qualifier: qualifiers){
 			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId))
@@ -241,6 +267,19 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		return null;
 	}
 
+	public AttributeSet getQualifiersAsAttributeSet() {
+		AttributeSet attributes = new AttributeSet(qualifiers.size());
+		for(GroupDocumentQualifier qualifier: qualifiers){
+			if ( qualifier.getKimAttribute() != null ) {
+				attributes.put(qualifier.getKimAttribute().getAttributeName(), qualifier.getAttrVal());
+			} else {
+				LOG.warn( "Unknown attribute ID on group: " + qualifier.getKimAttrDefnId() + " / value=" + qualifier.getAttrVal());
+				attributes.put("Unknown Attribute ID: " + qualifier.getKimAttrDefnId(), qualifier.getAttrVal());
+			}
+		}
+		return attributes;
+	}
+	
 	public void setDefinitions(AttributeDefinitionMap definitions) {
 		super.setDefinitions(definitions);
 		if(getQualifiers()==null || getQualifiers().size()<1){

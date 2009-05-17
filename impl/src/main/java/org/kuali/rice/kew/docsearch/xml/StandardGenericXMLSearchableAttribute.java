@@ -45,6 +45,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Document;
@@ -330,6 +331,9 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 						if (DATA_TYPE_DATE.equalsIgnoreCase(myField.getFieldDataType())) {
 							myField.setDatePicker(Boolean.TRUE);
 						}
+						//if () {
+						//    myField.setFormatter((Formatter) formatterClass.newInstance());
+						//}
 
 						// figure out if this is a range search
 						myField.setMemberOfRange(isRangeSearchField(searchableAttributeValues, myField.getFieldDataType(), searchDefAttributes, childNode));
@@ -348,6 +352,24 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     						rangeUpperBoundField.setMemberOfRange(true);
     						setupBoundFields(childNode, rangeLowerBoundField, rangeUpperBoundField);
                         }
+
+						String formatterClass = (searchDefAttributes.getNamedItem("formatterClass") == null) ? null : searchDefAttributes.getNamedItem("formatterClass").getNodeValue();
+						if (!StringUtils.isEmpty(formatterClass)) {
+						    try {
+						        myField.setFormatter((Formatter)Class.forName(formatterClass).newInstance());
+						    } catch (InstantiationException e) {
+				                LOG.error("Unable to get new instance of formatter class: " + formatterClass);
+				                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass);
+				            }
+				            catch (IllegalAccessException e) {
+				                LOG.error("Unable to get new instance of formatter class: " + formatterClass);
+				                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass);
+				            } catch (ClassNotFoundException e) {
+				                LOG.error("Unable to find formatter class: " + formatterClass);
+                                throw new RuntimeException("Unable to find formatter class: " + formatterClass);
+                            }
+						}
+
 					} else if ("resultColumn".equals(childNode.getNodeName())) {
 						NamedNodeMap columnAttributes = childNode.getAttributes();
 						Node showNode = columnAttributes.getNamedItem("show");

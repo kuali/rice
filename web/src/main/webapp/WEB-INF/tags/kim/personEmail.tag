@@ -1,12 +1,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docEmailAttributes" value="${DataDictionary.PersonDocumentEmail.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:subtab lookedUpCollectionName="email" width="${tableWidth}" subTabTitle="Email Addresses" noShowHideButton="true">      
-  	<table cellpadding=0 cellspacing=0 summary="">
+  	<table cellpadding="0" cellspacing="0" summary="">
      	<tr>
-       		<th><div align="left">&nbsp</div></th> 
+       		<th>&nbsp;</th> 
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.emailAddress}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.emailTypeCode}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmailAttributes.dflt}" noColon="true" /></div></th>
@@ -17,9 +16,7 @@
       	</tr>     
         <c:if test="${not inquiry and not readOnly}">	          	
            	<tr>
-				<th class="infoline">
-					<c:out value="Add:" />
-				</th>
+				<th class="infoline">Add:</th>
                 <td class="infoline">   
                 <div align="center">             	
                   <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnly}" />

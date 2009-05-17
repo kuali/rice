@@ -110,6 +110,11 @@ public interface Document extends PersistableBusinessObject{
      * This method will be called before the Workflow engine has begun processing a document.
      */
     public void beforeWorkflowEngineProcess();
+    
+    /**
+     * This method will be called before the Workflow engine has begun processing a document.
+     */
+    public List<Long> getWorkflowEngineDocumentIdsToLock();
 
     /**
      * Getter method to get the document title as it will appear in and be searchable in workflow.

@@ -266,10 +266,11 @@
 
   <bean id="kimTypeDao" class="org.kuali.rice.kim.dao.impl.KimTypeDaoOjb" parent="kimPlatformAwareDao" />
 
+  <!-- deprecated - remove this service and related DTOs -->
   <bean id="kimTypeInternalService" class="org.kuali.rice.kim.service.support.impl.KimTypeInternalServiceImpl"
     p:kimTypeDao-ref="kimTypeDao" />
 
-
+  <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />
 
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />
 
@@ -444,6 +445,13 @@
 	<bean id="kimTypeLookupableHelperServiceImpl" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl" parent="lookupableHelperService">
+            </bean>
+        </property>
+    </bean>
+
+	<bean id="kimDocumentRoleMemberLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.KimDocumentRoleMemberLookupableHelperServiceImpl" parent="lookupableHelperService">
             </bean>
         </property>
     </bean>

@@ -20,20 +20,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
@@ -61,7 +56,6 @@ import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ErrorMap;
-import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -247,9 +241,10 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
 			errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
-			validationErrors.putAll( attributeValidationHelper.convertErrors("members["+memberCounter+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(roleMember.getQualifiers()),errorsTemp) );
+			validationErrors.putAll( attributeValidationHelper.convertErrorsForMappedFields("members["+memberCounter+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(roleMember.getQualifiers()),errorsTemp) );
 	        memberCounter++;
     	}
+
 		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		
     	if (validationErrors.isEmpty()) {
@@ -271,7 +266,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
 			errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
-			validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMembers["+memberCounter+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()),errorsTemp) );
+			validationErrors.putAll( attributeValidationHelper.convertErrorsForMappedFields("delegationMembers["+memberCounter+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()),errorsTemp) );
 	        memberCounter++;
     	}
 		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);

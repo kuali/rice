@@ -268,6 +268,15 @@ function setTextArea() {
   
 }
 
+function textLimit(taElement, maxlen) 
+{
+	var fieldValue = taElement.value;
+    if (fieldValue.length > maxlen) 
+    { 
+	    taElement.value = taElement.value.substr(0, maxlen); 
+    } 
+} 
+
 function postValueToParentWindow() {
   opener.document.getElementsByName(textAreaFieldName)[0].value = document.getElementsByName(textAreaFieldName)[0].value;
   self.close();

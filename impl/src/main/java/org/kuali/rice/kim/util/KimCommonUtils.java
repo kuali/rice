@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.util;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -40,6 +42,7 @@ public class KimCommonUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimCommonUtils.class);
 
     private static KualiModuleService kualiModuleService;
+    private static Map<String,KimTypeService> kimTypeServiceCache = new HashMap<String,KimTypeService>();
 
 	private static KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {
@@ -132,23 +135,39 @@ public class KimCommonUtils {
     	return kimTypeServiceName;
 	}
 
-	public static final KimTypeService getKimTypeService(KimTypeImpl kimTypeImpl){
-		if(kimTypeImpl==null) return null;
-		String serviceName = KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName());
-		try {
-			return (KimTypeService)KIMServiceLocator.getService(serviceName);
-		} catch ( Exception ex ) {
-			LOG.error( "Unable to find KIM type service with name: " + serviceName, ex );
+	public static KimTypeService getKimTypeService(KimTypeImpl kimTypeImpl){
+		if( kimTypeImpl == null ) {
+			LOG.warn( "null KimTypeImpl passed into getKimTypeService" );
 			return null;
 		}
+		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName() ) );
 	}
 
+	public static KimTypeService getKimTypeService( String serviceName ) {
+		KimTypeService service = null;
+		if ( StringUtils.isNotBlank(serviceName) ) {
+	    	service = kimTypeServiceCache.get( serviceName );
+	    	if ( service == null && !kimTypeServiceCache.containsKey( serviceName ) ) {
+    			try {
+    				service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+    			} catch ( Exception ex ) {
+    				LOG.error( "Unable to find KIM type service with name: " + serviceName, ex );
+    				service = null;
+    			}
+    		}
+			kimTypeServiceCache.put(serviceName, service);
+    	} else {
+    		LOG.warn( "Blank service name passed into getKimTypeService" );
+    	}
+    	return service;
+    }
+	
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
 		if(targetToCopyTo!=null && sourceToCopyFrom!=null)
 		try{
 			PropertyUtils.copyProperties(targetToCopyTo, sourceToCopyFrom);
 		} catch(Exception ex){
-			throw new RuntimeException("Failed to copy from source object: "+sourceToCopyFrom.getClass()+" to target object: "+targetToCopyTo);
+			throw new RuntimeException("Failed to copy from source object: "+sourceToCopyFrom.getClass()+" to target object: "+targetToCopyTo,ex);
 		}
 	}
 

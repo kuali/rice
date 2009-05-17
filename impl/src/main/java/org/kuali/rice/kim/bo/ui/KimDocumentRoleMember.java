@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -26,7 +23,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 

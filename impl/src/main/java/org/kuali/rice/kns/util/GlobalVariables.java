@@ -77,6 +77,16 @@ public class GlobalVariables {
     }
 
     /**
+     * Merges a message map into the global variables error map
+     * @param messageMap
+     */
+    public static void mergeErrorMap(MessageMap messageMap) {
+        getErrorMap().getErrorMessages().putAll(messageMap.getErrorMessages());
+        getErrorMap().getWarningMessages().putAll(messageMap.getWarningMessages());
+        getErrorMap().getInfoMessages().putAll(messageMap.getInfoMessages());
+    }
+
+    /**
      * Sets a new (clean) ErrorMap
      *
      * @param errorMap
@@ -136,12 +146,12 @@ public class GlobalVariables {
     public static Object getRequestCache( String cacheName ) {
     	return requestCaches.get().get(cacheName);
     }
-    
+
     public static void setRequestCache( String cacheName, Object cacheObject ) {
     	requestCaches.get().put(cacheName, cacheObject);
     }
-    
-    
+
+
     /**
      * Clears out GlobalVariable objects
      */

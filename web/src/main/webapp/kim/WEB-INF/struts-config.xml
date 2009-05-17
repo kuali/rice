@@ -49,17 +49,27 @@
 		<action path="/identityManagementPersonDocument" name="IdentityManagementPersonDocumentForm" input="/kim/WEB-INF/jsp/identityManagementPersonDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementPersonDocumentAction"
 			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/identityManagementPersonDocument.jsp" />
-			<forward name="inquiry" path="/WEB-INF/jsp/personInquiry.jsp" />
+			<forward name="inquiry" path="/WEB-INF/jsp/identityManagementPersonDocument.jsp" />
+		</action>
+		<action path="/identityManagementPersonInquiry" name="IdentityManagementPersonDocumentForm" input="/kim/WEB-INF/jsp/identityManagementPersonDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementPersonInquiry"
+			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
+			<forward name="basic" path="/WEB-INF/jsp/identityManagementPersonDocument.jsp" />
 		</action>
 		<action path="/identityManagementRoleDocument" name="IdentityManagementRoleDocumentForm" input="/kim/WEB-INF/jsp/identityManagementPersonDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementRoleDocumentAction"
 			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/identityManagementRoleDocument.jsp" />
-			<forward name="inquiry" path="/WEB-INF/jsp/roleInquiry.jsp" />
 		</action>
 		<action path="/identityManagementGroupDocument" name="IdentityManagementGroupDocumentForm" input="/kim/WEB-INF/jsp/identityManagementGroupDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementGroupDocumentAction"
 			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
 			<forward name="basic" path="/WEB-INF/jsp/identityManagementGroupDocument.jsp" />
-			<forward name="inquiry" path="/WEB-INF/jsp/groupInquiry.jsp" />
+		</action>
+		<action path="/identityManagementRoleInquiry" name="IdentityManagementRoleDocumentForm" input="/kim/WEB-INF/jsp/identityManagementPersonDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementRoleInquiry"
+			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
+			<forward name="basic" path="/WEB-INF/jsp/identityManagementRoleDocument.jsp" />
+		</action>
+		<action path="/identityManagementGroupInquiry" name="IdentityManagementGroupDocumentForm" input="/kim/WEB-INF/jsp/identityManagementGroupDocument.jsp" type="org.kuali.rice.kim.web.struts.action.IdentityManagementGroupInquiry"
+			scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
+			<forward name="basic" path="/WEB-INF/jsp/identityManagementGroupDocument.jsp" />
 		</action>
 
     </action-mappings>

@@ -173,6 +173,7 @@ public class RoleNode extends RequestsNode {
 	 * @throws ResourceUnavailableException
 	 * @throws WorkflowException
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document,
 			RouteNodeInstance nodeInstance) throws WorkflowException {
 		MDC.put( "docID", document.getRouteHeaderId() );
@@ -227,6 +228,8 @@ public class RoleNode extends RequestsNode {
 		String groupToActivate = null;
 		Integer priorityToActivate = null;
 		for ( ActionRequestValue request : requests ) {
+			// if a request has already been activated and we are not parallel routing
+			// or in the simulator, break out of the loop and exit
 			if ( requestActivated
 					&& !isParallel
 					&& (!context.isSimulation() || !context.getActivationContext()
@@ -240,6 +243,9 @@ public class RoleNode extends RequestsNode {
 				continue;
 			}
 			if ( request.isApproveOrCompleteRequest() ) {
+				boolean thisRequestActivated = false;
+				// capture the priority and grouping information for this request
+				// We only need this for Approval requests since FYI and ACK requests are non-blocking
 				if ( priorityToActivate == null ) {
 				 	priorityToActivate = request.getPriority();
 				}
@@ -254,17 +260,29 @@ public class RoleNode extends RequestsNode {
 							||  (priorityToActivate == null && request.getPriority() == null)
 							)
 						) {
+					// if the request is already active, note that we have an active request
+					// and move on to the next request
 					if ( request.isActive() ) {
-						requestActivated = requestActivated || request.isApproveOrCompleteRequest();
+						requestActivated = true;
 						continue;
 					}
 					logProcessingMessage( request );
 					if ( LOG.isDebugEnabled() ) {
 						LOG.debug( "Activating request: " + request );
 					}
-					requestActivated = activateRequest( context, request, nodeInstance,
-							generatedActionItems )
-							|| requestActivated;
+					// this returns true if any requests were activated as a result of this call
+					thisRequestActivated = activateRequest( context, request, nodeInstance,
+							generatedActionItems );
+					requestActivated |= thisRequestActivated;
+				}
+				// if this request was not activated and no request has been activated thus far
+				// then clear out the grouping and priority filters
+				// as this represents a case where the person with the earlier priority
+				// did not need to approve for this route level due to taking
+				// a prior action
+				if ( !thisRequestActivated && !requestActivated ) {
+					priorityToActivate = null;
+					groupToActivate = null;
 				}
 			} else {
 				logProcessingMessage( request );

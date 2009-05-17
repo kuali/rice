@@ -303,6 +303,7 @@
         <bean parent="FieldDefinition" p:attributeName="respName" />
         <bean parent="FieldDefinition" p:attributeName="respTmplNamespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="respTmplName" />
+        <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y" />
       </list>
     </property>
     <property name="resultFields" >

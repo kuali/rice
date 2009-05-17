@@ -543,7 +543,8 @@ public class WebUtils {
     
     public static void reuseErrorMapFromPreviousRequest(KualiDocumentFormBase kualiDocumentFormBase) {
     	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == null) {
-    		throw new RuntimeException("Error map from previous request is null!");
+    		LOG.error("Error map from previous request is null!");
+    		return;
     	}
     	ErrorMap errorMapFromGlobalVariables = GlobalVariables.getErrorMap();
     	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == errorMapFromGlobalVariables) {

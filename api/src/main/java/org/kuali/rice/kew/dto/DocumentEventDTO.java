@@ -31,6 +31,7 @@ public abstract class DocumentEventDTO implements Serializable {
     public static final String ACTION_TAKEN = "action_taken";
     public static final String BEFORE_PROCESS = "before_process";
     public static final String AFTER_PROCESS = "after_process";
+    public static final String LOCK_DOCUMENTS = "lock_documents";
 
     private String documentEventCode;
     private Long routeHeaderId;

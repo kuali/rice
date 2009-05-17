@@ -3,22 +3,35 @@
 	<!-- Please fill in a value for this parameter! -->
 	<param name="application.url">http://yourserver:yourport/webapp-context-root</param>
 
-	<param name="serviceServletUrl">${application.url}/remoting/</param>
 	<param name="notification.basewebappurl">${application.url}/ken</param>
 	<param name="workflow.url">${application.url}/en</param>
 
 	<param name="plugin.dir">/usr/local/rice/plugins</param>
 
 	<!-- set some datasource defaults -->
+	
+	<!-- MySQL example -->
+	<param name="datasource.ojb.platform">MySQL</param>
+	<param name="datasource.platform">org.kuali.rice.core.database.platform.MySQLPlatform</param>
+	<param name="datasource.url">jdbc:mysql://localhost:3306/rice</param>
+	<param name="datasource.username">rice</param>
+	<param name="datasource.password">*** password ***</param>
+	<param name="datasource.driver.name">com.mysql.jdbc.Driver</param>
+	<param name="datasource.pool.size">5</param>
+	<param name="datasource.pool.maxWait">10000</param>
+	<param name="datasource.pool.validationQuery">select 1</param>
+	
+	<!-- Oracle example 
 	<param name="datasource.ojb.platform">Oracle9i</param>
 	<param name="datasource.platform">org.kuali.rice.core.database.platform.OraclePlatform</param>
 	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
-	<param name="datasource.username">*** username ***</param>
+	<param name="datasource.username">rice</param>
 	<param name="datasource.password">*** password ***</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="datasource.pool.size">5</param>
 	<param name="datasource.pool.maxWait">10000</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
+	-->
 	
 	<param name="attachment.dir.location">/usr/local/rice/kew_attachments</param>
 

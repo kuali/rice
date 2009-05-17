@@ -38,6 +38,7 @@ import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
+import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -476,6 +477,11 @@ public class KNSServiceLocator<T extends Object> {
     public static RiceApplicationConfigurationMediationService getRiceApplicationConfigurationMediationService() {
     	return (RiceApplicationConfigurationMediationService) getService(RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE);
     }
-
+    
+    public static final String WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE = "workflowAttributesPropertyResolutionService";
+    
+    public static WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+    	return (WorkflowAttributePropertyResolutionService) getService(WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE);
+    }
     
 }

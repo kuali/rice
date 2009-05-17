@@ -29,11 +29,9 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -59,7 +57,9 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  * the base action form for all documents.
  */
 public abstract class KualiDocumentFormBase extends KualiForm implements Serializable {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiDocumentFormBase.class);
+    private static final long serialVersionUID = 916061016201941821L;
+
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiDocumentFormBase.class);
 
     private Document document;
     private String annotation = "";
@@ -127,7 +127,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * no args constructor that just initializes things for us
      */
-    public KualiDocumentFormBase() {
+    @SuppressWarnings("unchecked")
+	public KualiDocumentFormBase() {
         super();
         newNote = new Note();
         this.editingMode = new HashMap();
@@ -260,7 +261,6 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         docNumber.setId(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_NUMBER);
         HeaderField docStatus = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.workflowDocumentStatus", workflowDocument != null? workflowDocument.getStatusDisplayValue() : null);
         docStatus.setId(KNSConstants.DocumentFormHeaderFieldIds.DOCUMENT_WORKFLOW_STATUS);
-        String principalId = null;
         String initiatorNetworkId = null;
         Person user = null;
     	if (workflowDocument != null) {
@@ -268,7 +268,6 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     			LOG.warn("User Not Found while attempting to build inquiry link for document header fields");
     		} else {
     			user = getInitiator();
-    			principalId = getInitiator().getPrincipalId();
     			initiatorNetworkId = getInitiator().getPrincipalName();
     		}
     	}
@@ -337,20 +336,23 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * @return Map of editingModes for this document, as set during the most recent call to
      *         populate(javax.servlet.http.HttpServletRequest)
      */
-    public Map getEditingMode() {
+    @SuppressWarnings("unchecked")
+	public Map getEditingMode() {
         return editingMode;
     }
 
     /**
      * Set editingMode for this document
      */
-    public void setEditingMode(Map editingMode) {
+    @SuppressWarnings("unchecked")
+	public void setEditingMode(Map editingMode) {
         this.editingMode = editingMode;
     }
     
     /**
 	 * @return the documentActions
 	 */
+	@SuppressWarnings("unchecked")
 	public Map getDocumentActions() {
 		return this.documentActions;
 	}
@@ -358,6 +360,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	/**
 	 * @param documentActions the documentActions to set
 	 */
+	@SuppressWarnings("unchecked")
 	public void setDocumentActions(Map documentActions) {
 		this.documentActions = documentActions;
 	}
@@ -367,6 +370,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	/**
 	 * @param adHocActionRequestCodes the adHocActionRequestCodes to set
 	 */
+	@SuppressWarnings("unchecked")
 	public void setAdHocActionRequestCodes(Map adHocActionRequestCodes) {
 		this.adHocActionRequestCodes = adHocActionRequestCodes;
 	}
@@ -374,7 +378,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	/**
      * @return a map of the possible action request codes that takes into account the users context on the document
      */
-    public Map getAdHocActionRequestCodes() {
+    @SuppressWarnings("unchecked")
+	public Map getAdHocActionRequestCodes() {
         //Map adHocActionRequestCodes = new HashMap();
         //KNSServiceLocator.getDocumentHelperService()
         /*if (getWorkflowDocument() != null) {
@@ -525,6 +530,17 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      */
     public KualiWorkflowDocument getWorkflowDocument() {
         return getDocument().getDocumentHeader().getWorkflowDocument();
+    }
+    
+    /**
+	 *  Null-safe check to see if the workflow document object exists before attempting to retrieve it.
+     *  (Which, if called, will throw an exception.)
+	 */
+    public boolean isHasWorkflowDocument() {
+    	if ( getDocument() == null || getDocument().getDocumentHeader() == null ) {
+    		return false;
+    	}
+    	return getDocument().getDocumentHeader().hasWorkflowDocument();
     }
 
     /**
@@ -700,7 +716,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * Gets the boNotes attribute. 
      * @return Returns the boNotes.
      */
-    public List getBoNotes() {
+    @SuppressWarnings("unchecked")
+	public List getBoNotes() {
         return boNotes;
     }
 
@@ -708,7 +725,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
      * Sets the boNotes attribute value.
      * @param boNotes The boNotes to set.
      */
-    public void setBoNotes(List boNotes) {
+    @SuppressWarnings("unchecked")
+	public void setBoNotes(List boNotes) {
         this.boNotes = boNotes;
     }
 
@@ -747,6 +765,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
     }
 
+    
+    
 	/**
 	 * This overridden method ...
 	 * IMPORTANT: any overrides of this method must ensure that nothing in the HTTP request will be used to determine whether document is in session 
@@ -755,9 +775,12 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	 */
 	@Override
 	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request) {
-		if (requestParameterName.startsWith(KNSConstants.TAB_STATES)) {
-			return true;
+		for ( String prefix : KNSConstants.ALWAYS_VALID_PARAMETER_PREFIXES ) {
+			if (requestParameterName.startsWith(prefix)) {
+				return true;
+			}
 		}
+
 		if (StringUtils.equalsIgnoreCase(getMethodToCall(), KNSConstants.DOC_HANDLER_METHOD)) {
 			return true;
 		}

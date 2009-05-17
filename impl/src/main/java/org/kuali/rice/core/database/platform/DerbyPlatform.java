@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.core.database.platform;
 
+import java.util.regex.Pattern;
+
 import javax.persistence.EntityManager;
 
 import org.apache.ojb.broker.PersistenceBroker;
@@ -26,6 +28,8 @@ import org.apache.ojb.broker.PersistenceBroker;
  */
 public class DerbyPlatform extends ANSISqlPlatform {
 
+	private static final Pattern APOS_PAT = Pattern.compile("'");
+	
     public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
         return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=?";
     }
@@ -48,4 +52,12 @@ public class DerbyPlatform extends ANSISqlPlatform {
     	throw new UnsupportedOperationException("Implement me!");
     }
 
+    /**
+     * Performs Derby-specific escaping of String parameters.
+     * 
+     * @see org.kuali.rice.core.database.platform.Platform#escapeString(java.lang.String)
+     */
+    public String escapeString(String sqlString) {
+    	return (sqlString != null) ? APOS_PAT.matcher(sqlString).replaceAll("''") : null;
+    }
 }

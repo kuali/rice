@@ -31,10 +31,10 @@ import org.kuali.rice.kns.util.GlobalVariables;
  */
 public class KimLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
+	private static final long serialVersionUID = 1L;
+	
 	private DocumentHelperService documentHelperService;
 	
-    private static String KIM_TYPE_ID_PROPERTY_NAME = "kimTypeId";
-
     @Override
 	public boolean allowsNewOrCopyAction(String documentTypeName) {
 		// TODO : to let it rendering 'create new' and 'edit'/'copy' button

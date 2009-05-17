@@ -58,6 +58,11 @@ public class BackdoorAction extends KewKualiAction {
         return mapping.findForward("basic");
     }
 
+    @Override
+    public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	return portal(mapping, form, request, response);
+    }
+    
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("start");
         return portal(mapping, form, request, response);
@@ -94,11 +99,13 @@ public class BackdoorAction extends KewKualiAction {
         BackdoorForm backdoorForm = (BackdoorForm) form;
         if (!uSession.establishBackdoorWithPrincipalName(backdoorForm.getBackdoorId())) {
 			request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
-			return defaultDispatch(mapping, form, request, response);
+			//return defaultDispatch(mapping, form, request, response);
+			return mapping.findForward("portal");
         }
         uSession.getAuthentications().clear();
         setFormGroupPermission(backdoorForm, request);
-        return defaultDispatch(mapping, form, request, response);
+        //return defaultDispatch(mapping, form, request, response);
+        return mapping.findForward("portal");
 
     }
 

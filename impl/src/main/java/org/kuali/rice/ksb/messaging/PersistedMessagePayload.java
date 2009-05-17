@@ -46,7 +46,7 @@ public class PersistedMessagePayload implements Serializable {
 	private Long routeQueueId;
     @Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="MSG_PYLD")
+	@Column(name="MSG_PYLD", length=4000)
 	private String payload;
     @Transient
     private AsynchronousCall methodCall;

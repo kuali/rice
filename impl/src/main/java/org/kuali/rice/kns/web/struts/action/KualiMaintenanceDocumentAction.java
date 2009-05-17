@@ -44,7 +44,6 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -65,6 +64,7 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -279,6 +279,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         if (KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
             document.getNewMaintainableObject().setGenerateDefaultValues(maintenanceForm.getDocTypeName());
             document.getNewMaintainableObject().processAfterNew( document, request.getParameterMap() );
+            
+            // If a maintenance lock exists, warn the user.
+       		MaintenanceUtils.checkForLockingDocument(document.getNewMaintainableObject(), false);
         }
 
         // set maintenance action state

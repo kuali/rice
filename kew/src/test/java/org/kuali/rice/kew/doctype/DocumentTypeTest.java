@@ -276,7 +276,6 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertFalse("Previous Version should not be an object already fetched from cache", previousVersion.equals(child1Ver2));
     	assertEquals("Fetched wrong previous document type ", previousVersion.getDocumentTypeId(), child.getDocumentTypeId());
 
-
     	DocumentType parentV2 = child1Ver2.getParentDocType();
     	assertFalse("These should be different objects", parentV2.equals(parent));
 
@@ -540,7 +539,6 @@ public class DocumentTypeTest extends KEWTestCase {
      * 
      * @throws Exception
      */
-//    @Ignore("delyea: complete at a later date")
     @Test public void testUpdateOfDocTypeFields() throws Exception {
     	//Collection<DocumentTypePolicy> docPolicies = docType.getPolicies();
     	//List<DocumentTypeAttribute> docAttributes = docType.getDocumentTypeAttributes();

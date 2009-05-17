@@ -135,6 +135,7 @@
   <bean id="DocRoleMember-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition"
         p:title="Role Member Lookup" 
         p:instructions="Lookup a Role Member" >
+    <property name="lookupableID" value="kimDocumentRoleMemberLookupable" />
     <property name="defaultSort" >
       <bean parent="SortDefinition">
         <property name="attributeNames" >
@@ -149,6 +150,9 @@
       <list>
               <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
               <bean parent="FieldDefinition" p:attributeName="memberId" />
+              <bean parent="FieldDefinition" p:attributeName="memberTypeCode" />
+              <bean parent="FieldDefinition" p:attributeName="memberName" />
+              <bean parent="FieldDefinition" p:attributeName="memberNamespaceCode" />
               <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
               <bean parent="FieldDefinition" p:attributeName="activeToDate" />
       </list>
@@ -157,6 +161,9 @@
       <list>
               <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
               <bean parent="FieldDefinition" p:attributeName="memberId" />
+              <bean parent="FieldDefinition" p:attributeName="memberTypeCode" />
+              <bean parent="FieldDefinition" p:attributeName="memberName" />
+              <bean parent="FieldDefinition" p:attributeName="memberNamespaceCode" />
               <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
               <bean parent="FieldDefinition" p:attributeName="activeToDate" />
       </list>

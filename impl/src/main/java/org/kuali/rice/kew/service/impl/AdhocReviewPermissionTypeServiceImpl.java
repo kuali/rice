@@ -23,7 +23,6 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -41,23 +40,22 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 	public List<KimPermissionInfo> performPermissionMatches(
 			AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = super.performPermissionMatches(requestedDetails, permissionsList);
-		List<KimPermissionInfo> returnPermissions = new ArrayList<KimPermissionInfo>();
-		
-		
-		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
-			//If a note without an attachment, byPass attachment type code check. (Fix for KFSMI-2849)
-			if(KNSConstants.BY_PASS_ACTION_REQUEST_CD_INDICATOR.equals(requestedDetails.get(KimAttributes.ACTION_REQUEST_CD))){
-				returnPermissions.add(kimPermissionInfo);
-			}else{
-				if (StringUtils.equals(kimPermissionInfo.getDetails().get(
-						KimAttributes.ACTION_REQUEST_CD), requestedDetails
-						.get(KimAttributes.ACTION_REQUEST_CD))) {
-					returnPermissions.add(kimPermissionInfo);
-				}
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		if (requestedDetails == null) {
+			return matchingPermissions; // empty list
+		}
+		// loop over the permissions, checking the non-document-related ones
+		for (KimPermissionInfo kpi : permissionsList) {
+			if (!kpi.getDetails().containsKey(KimAttributes.ACTION_REQUEST_CD)
+			  || StringUtils.equals(kpi.getDetails().
+				 get(KimAttributes.ACTION_REQUEST_CD), requestedDetails
+					.get(KimAttributes.ACTION_REQUEST_CD))) {
+				matchingPermissions.add(kpi);
 			}
 		}
-		
-		return returnPermissions;
+		// now, filter the list to just those for the current document
+		matchingPermissions = super.performPermissionMatches(requestedDetails,
+				matchingPermissions);
+		return matchingPermissions;
 	}
 }

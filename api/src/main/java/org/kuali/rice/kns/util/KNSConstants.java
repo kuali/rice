@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.core.util.JSTLConstants;
 
 /**
@@ -55,6 +58,9 @@ public class KNSConstants extends JSTLConstants {
     public static final String KUALI_ACTION_CAN_DISAPPROVE = "canDisapprove";
     public static final String KUALI_ACTION_CAN_CREATE = "canCreate";
     public static final String KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS = "canSendAdHocRequests";
+    public static final String KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS = "canAddAdHocRequests";
+    public static final String KUALI_ACTION_CAN_SEND_NOTE_FYI = "canSendNoteFyi";
+    public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview"; 
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
 
     public static class DetailTypes {
@@ -208,7 +214,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
 
     
-    public static final String BY_PASS_ACTION_REQUEST_CD_INDICATOR = "byPassActionRequestCd"; 
     /**
      * Property name for enabling attachments to note, overriding the defaults defined by the document template - Value is
      * "enableNoteAttachments"
@@ -529,6 +534,8 @@ public class KNSConstants extends JSTLConstants {
     public static class TableRenderConstants {
         public static final String SWITCH_TO_PAGE_METHOD = "switchToPage";
         public static final String SORT_METHOD = "sort";
+        public static final String SELECT_ALL_METHOD = "selectAll";
+        public static final String UNSELECT_ALL_METHOD = "unselectAll";
 
         // below field used on displayMultipleValueLookupResults.tag
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
@@ -536,6 +543,15 @@ public class KNSConstants extends JSTLConstants {
     }
 
     public static final String TAB_STATES = "tabStates";
+    
+    public static final List<String> ALWAYS_VALID_PARAMETER_PREFIXES = new ArrayList<String>();
+    static {
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( TAB_STATES );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".hideAllTabs" );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".showAllTabs" );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SWITCH_TO_PAGE_METHOD );
+//    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SORT_METHOD );
+    }
 
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
 

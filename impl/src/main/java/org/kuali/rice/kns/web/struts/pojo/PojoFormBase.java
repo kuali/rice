@@ -190,6 +190,13 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	                }
 	                catch (Exception e1) {
 	                    LOG.error("Error occurred in populate " + e1.getMessage());
+	                	LOG.error("FormClass:       " + this.getClass().getName() );
+	                	LOG.error("keypath:         " + keypath );
+	                	LOG.error("Detected Type:   " + type.getName() );
+	                	LOG.error( "Value:          " + param );
+	                	if ( param != null ) {
+                			LOG.error( "Value Class:    " + param.getClass().getName() );
+	                	}
 	                    throw new RuntimeException(e1.getMessage(), e1);
 	                }
 	            }

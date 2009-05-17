@@ -72,6 +72,7 @@ import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
 import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -793,6 +794,17 @@ public class DTOConverter {
         return afterProcessEvent;
     }
 
+    public static DocumentLockingEventDTO convertDocumentLockingEvent(DocumentLockingEvent event) {
+        if (event == null) {
+            return null;
+        }
+        DocumentLockingEventDTO documentLockingEvent = new DocumentLockingEventDTO();
+        documentLockingEvent.setRouteHeaderId(event.getRouteHeaderId());
+        documentLockingEvent.setAppDocId(event.getAppDocId());
+        return documentLockingEvent;
+    }
+
+    
     public static AttributeDefinition convertWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definitionVO, org.kuali.rice.kew.doctype.bo.DocumentType documentType) {
         if (definitionVO == null) {
             return null;

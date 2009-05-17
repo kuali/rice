@@ -29,7 +29,9 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
+import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -176,8 +178,9 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().route(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
 
@@ -266,8 +269,9 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
 
@@ -782,8 +786,9 @@ public class DocumentServiceImpl implements DocumentService {
 		getWorkflowDocumentService().sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(),
         		annotation, adHocRecipients);
 		GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-		getBusinessObjectService().delete(document.getAdHocRoutePersons());
-		getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+		//getBusinessObjectService().delete(document.getAdHocRoutePersons());
+		//getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+		removeAdHocPersonsAndWorkgroups(document);
 	}
 
 	/**
@@ -982,5 +987,14 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public void setDocumentHelperService(DocumentHelperService documentHelperService) {
         this.documentHelperService = documentHelperService;
+    }
+    
+    private void removeAdHocPersonsAndWorkgroups(Document document){
+    	List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
+    	List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
+    	getBusinessObjectService().delete(document.getAdHocRoutePersons());
+    	getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+    	document.setAdHocRoutePersons(adHocRoutePersons);
+    	document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
     }
 }

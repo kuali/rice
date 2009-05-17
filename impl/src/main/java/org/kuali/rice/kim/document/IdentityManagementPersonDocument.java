@@ -22,7 +22,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
@@ -36,6 +37,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 
 /**
@@ -47,6 +49,7 @@ import org.kuali.rice.kns.document.TransactionalDocumentBase;
  */
 public class IdentityManagementPersonDocument extends TransactionalDocumentBase {
 
+	private static final long serialVersionUID = -534993712085516925L;
 	// principal data
 	protected String principalId;
 	protected String principalName;
@@ -244,6 +247,7 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		this.privacy = privacy;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List buildListOfDeletionAwareLists() {
 		List managedLists = super.buildListOfDeletionAwareLists();
@@ -281,6 +285,7 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 			getPrivacy().setDocumentNumber(
 					getDocumentNumber());
 		}
+		setEmployeeRecordIds();
 		for (PersonDocumentRole role : getRoles()) {
 			for (KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
 				rolePrncpl.setDocumentNumber(getDocumentNumber());
@@ -288,6 +293,27 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 						.getQualifiers()) {
 					qualifier.setDocumentNumber(getDocumentNumber());
 					qualifier.setKimTypId(role.getKimTypeId());
+				}
+			}
+		}
+	}
+	
+	private void setEmployeeRecordIds(){
+		KimEntityImpl origEntity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(getEntityId());
+		for(PersonDocumentAffiliation affiliation: getAffiliations()) {
+			int employeeRecordCounter = (origEntity==null || origEntity.getEmploymentInformation()==null)
+											?0:origEntity.getEmploymentInformation().size();
+			for(PersonDocumentEmploymentInfo empInfo: affiliation.getEmpInfos()){
+				if((origEntity!=null && origEntity.getEmploymentInformation()!=null)){
+					for(KimEntityEmploymentInformationImpl origEmpInfo: origEntity.getEmploymentInformation()){
+						if (origEmpInfo.getEntityEmploymentId().equals(empInfo.getEntityEmploymentId())) {
+							empInfo.setEmploymentRecordId(origEmpInfo.getEmploymentRecordId());
+						}
+					}
+				}
+				if(StringUtils.isEmpty(empInfo.getEmploymentRecordId())){
+					employeeRecordCounter++;
+					empInfo.setEmploymentRecordId(employeeRecordCounter+"");
 				}
 			}
 		}

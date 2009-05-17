@@ -16,14 +16,19 @@
  */
 package org.kuali.rice.kew.postprocessor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 
 public class PostProcessorTest extends KEWTestCase {
@@ -71,6 +76,64 @@ public class PostProcessorTest extends KEWTestCase {
 		assertTrue("Document should be final.", document.stateIsFinal());
 	}
 	
+	private static boolean shouldReturnDocumentIdsToLock = false;
+	private static Long documentAId = null;
+	private static Long documentBId = null;
+	private static UpdateDocumentThread updateDocumentThread = null;
+	
+	/**
+	 * Tests the locking of additional documents from the Post Processor.
+	 * 
+	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 */
+	@Test public void testGetDocumentIdsToLock() throws Exception {
+		
+		/**
+		 * Let's recreate the original optimistic lock scenario that caused this issue to crop up, essentially:
+		 * 
+		 * 1) Thread one locks and processes document A in the workflow engine
+		 * 2) Thread one loads document B
+		 * 3) Thread two locks and processes document B from document A's post processor, doing an update which increments the version number of document B
+		 * 4) Thread A attempts to update document B and gets an optimistic lock exception 
+		 */
+		
+		WorkflowDocument documentB = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+		documentB.saveDocument("");
+		documentBId = documentB.getRouteHeaderId();
+		updateDocumentThread = new UpdateDocumentThread(documentBId);
+		
+		// this is the document with the post processor
+		WorkflowDocument documentA = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "testGetDocumentIdsToLock");
+		documentA.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
+		
+		try {
+			documentA.routeDocument(""); // this should trigger our post processor and our optimistic lock exception
+			fail("An exception should have been thrown as the result of an optimistic lock!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		/**
+		 * Now let's try the same thing again, this time returning document B's id as a document to lock, the error should not happen this time
+		 */
+		
+		shouldReturnDocumentIdsToLock = true;
+		
+		documentB = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+		documentB.saveDocument("");
+		documentBId = documentB.getRouteHeaderId();
+		updateDocumentThread = new UpdateDocumentThread(documentBId);
+		
+		// this is the document with the post processor
+		documentA = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "testGetDocumentIdsToLock");
+		documentA.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
+		
+		documentA.routeDocument(""); // this should trigger our post processor and our optimistic lock exception
+		documentA = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentA.getRouteHeaderId());
+		assertTrue("rkirkend should have approve request", documentA.isApprovalRequested());
+		
+	}
+	
 	public static class DocumentModifyingPostProcessor extends DefaultPostProcessor {
 
 		public static boolean processedChange = false;
@@ -102,10 +165,62 @@ public class PostProcessorTest extends KEWTestCase {
 			return new ProcessDocReport(true);
 		}
 		
+	}
+	
+	public static class GetDocumentIdsToLockPostProcessor extends DefaultPostProcessor {
+
+		@Override
+		public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
+			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), lockingEvent.getRouteHeaderId());
+			if (shouldReturnDocumentIdsToLock) {
+				List<Long> docIds = new ArrayList<Long>();
+				docIds.add(documentBId);
+				return docIds;
+			}
+			return null;
+		}
+
+		@Override
+		public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
+			WorkflowDocument wfDocument = new WorkflowDocument(new NetworkIdDTO("ewestfal"), event.getRouteHeaderId());
+			if (wfDocument.stateIsEnroute()) {
+				// first, let's load document B in this thread
+				DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentBId);
+				// now let's execute the thread
+				new Thread(updateDocumentThread).start();
+				// let's wait for a few seconds to either let the thread process or let it aquire the lock
+				Thread.sleep(5000);
+				// now update document B
+				KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+			}
+			return super.afterProcess(event);
+		}
 		
 		
 		
-		
+	}
+	
+	/**
+	 * A Thread which simply locks and updates the document
+	 * 
+	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 */
+	private class UpdateDocumentThread implements Runnable {
+		private Long documentId;
+		public UpdateDocumentThread(Long documentId) {
+			this.documentId = documentId;
+		}
+		public void run() {
+			TransactionTemplate template = new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager());
+			template.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+					DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+					KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+					return null;
+				}
+			});
+		}
 	}
 	
 }

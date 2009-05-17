@@ -71,6 +71,13 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     public String getWorkflowDocumentTypeName() {
         return null;
     }
+    
+    /**
+     * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
+     */
+    public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+    	return new ArrayList<String>(0);
+    }
 
     public boolean supportsAttributes(List<String> attributeNames) {
         return true;
@@ -87,6 +94,8 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
         return roleMembers;
     }
+    
+    
 
 	/**
 	 * This base implementation does nothing but log that the method was called.
@@ -100,4 +109,13 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 		}
 		// base implementation - do nothing
 	}
+
+    public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+        return true;
+    }
+
+    public List<String> getUniqueAttributes(String kimTypeId){
+        return new ArrayList<String>();
+    }
+    
 }

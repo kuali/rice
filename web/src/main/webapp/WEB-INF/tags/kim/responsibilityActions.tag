@@ -3,16 +3,10 @@
 <c:set var="roleMember" value="${KualiForm.document.members[mbrIdx]}"/>
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
 
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-<c:set var="canAssignRole" value="${KualiForm.canAssignRole}" />
-<c:if test="${!canAssignRole}">
-	<c:set var="readOnly" value="${!canAssignRole}"/>
-</c:if>
-
 <kul:subtab lookedUpCollectionName="roleRspActions" noShowHideButton="true" width="${tableWidth}" subTabTitle="Responsibility Actions">      
-    <table cellpadding=0 cellspacing=0 summary="">
+    <table cellpadding="0" cellspacing="0" summary="">
       	<tr>
-            <th width="5%" rowspan=20 style=border-style:none>&nbsp;</th>
+            <th width="5%" rowspan="20" style="border-style:none">&nbsp;</th>
 			<kul:htmlAttributeHeaderCell literalLabel="Name"  align="center"/>
 			<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.actionTypeCode}"  align="center"/>
          	<kul:htmlAttributeHeaderCell attributeEntry="${docRoleRspActionAttributes.priorityNumber}"  align="center" />
@@ -50,7 +44,7 @@
 		    </tr>
 		</c:forEach>
 		<tr>
-            <td colspan=7 style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
+            <td colspan="7" style="padding:0px; border-style:none; height:22px; background-color:#F6F6F6">&nbsp;</td>
         </tr>		        	
 	</table>       
 </kul:subtab>

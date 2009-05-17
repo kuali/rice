@@ -16,6 +16,8 @@
 package org.kuali.rice.kew.doctype;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -23,6 +25,7 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -69,6 +72,23 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
                 return null;
             }
         });
+    }
+
+    /**
+     * This method tests to make sure that the {@link DocumentType#getApplyRetroactively()} method
+     * does not throw a {@link NullPointerException}
+     */
+    @Test public void testMaintainableSave_PreserveRouteNodes() throws Exception {
+        loadXmlFile("DocTypeMaintainableConfig.xml");
+        DocumentTypeService docTypeService = KEWServiceLocator.getDocumentTypeService();
+        DocumentType documentType = docTypeService.findByName(TemporaryDocumentType.NAME);
+        assertEquals("Wrong number of route nodes", 2, KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, false).size());
+        documentType.setApplyRetroactively(null);
+        saveDocumentTypeUsingMaintainable(documentType);
+        documentType = docTypeService.findByName(TemporaryDocumentType.NAME);
+        assertEquals("Document type should be current", Boolean.TRUE, documentType.getCurrentInd());
+        List flattenedNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, false);
+        assertEquals("Wrong number of route nodes", 2, flattenedNodes.size());
     }
 
     /**

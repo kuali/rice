@@ -15,24 +15,58 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="inquiry" value="false" scope="request" /> 
+<c:set var="inquiry" scope="request" value="${KualiForm.inquiry}" />
+<c:set var="readOnly" scope="request" value="${inquiry}" />
+<c:set var="readOnly" scope="request" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || inquiry}" />
+<c:set var="canAssignGroup" scope="request" value="${KualiForm.canAssignGroup && !readOnly}" />
+
+<c:set var="formAction" value="identityManagementGroupDocument" />
+<c:if test="${inquiry}">
+	<c:set var="formAction" value="identityManagementGroupInquiry" />
+</c:if>
 
 <kul:documentPage
-	showDocumentInfo="true"
-	htmlFormAction="identityManagementGroupDocument"
+	showDocumentInfo="${!inquiry}"
+	htmlFormAction="${formAction}"
 	documentTypeName="IdentityManagementGroupDocument"
-	renderMultipart="false"
+	renderMultipart="${inquiry}"
 	showTabButtons="true"
 	auditCount="0">
 
- 	<kul:hiddenDocumentFields />
-	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
+    <c:if test="${!inquiry}">
+        <kul:hiddenDocumentFields />
+        <kul:documentOverview editingMode="${KualiForm.editingMode}" />
+    </c:if>
+    <c:if test="${inquiry}">
+        <div id="workarea">
+    </c:if>
 	<kim:groupOverview />
 	<kim:groupAttributes />
 	<kim:groupAssignees />
 
-	<kul:adHocRecipients />	
-	<kul:routeLog />
+    <c:if test="${!inquiry}">
+        <kul:adHocRecipients /> 
+        <kul:routeLog />
+    </c:if>
 	<kul:panelFooter />
-	<kul:documentControls transactionalDocument="false" />
+    <c:if test="${inquiry}">
+        </div>
+    </c:if>
+    <c:choose>
+        <c:when test="${!inquiry}">
+            <kul:documentControls transactionalDocument="false" />
+            <input type="hidden" name="command" value="initiate" />
+            <input type="hidden" name="groupId" value="${KualiForm.document.groupId}" />
+            <script type="text/javascript">
+            function changeMemberTypeCode(){
+                document.getElementsByTagName("command").value="changeMemberTypeCode";
+                document.forms[0].submit();
+            }
+            </script>
+        </c:when>
+        <c:otherwise>
+            <kul:inquiryControls />
+            <input type="hidden" name="groupId" value="${KualiForm.document.groupId}" />
+        </c:otherwise>
+    </c:choose>
 </kul:documentPage>

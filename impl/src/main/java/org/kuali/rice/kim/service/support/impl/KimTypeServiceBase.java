@@ -44,12 +44,13 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.NamespaceService;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.comparator.StringValueComparator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
@@ -67,6 +68,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected DictionaryValidationService dictionaryValidationService;
 	protected DataDictionaryService dataDictionaryService;
 //	protected Class<? extends KimAttributes> kimAttributesClass;
+	protected List<String> workflowRoutingAttributes = new ArrayList<String>();
 
 	public BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
@@ -133,6 +135,20 @@ public class KimTypeServiceBase implements KimTypeService {
 		return false;
 	}
 
+	private Map<String, KimAttributeImpl> getAttributeImpls(AttributeSet attributes){
+		Map<String, KimAttributeImpl> attributeImpls = new HashMap<String, KimAttributeImpl>();
+		for ( String attributeName: attributes.keySet() ) {
+			attributeImpls.put(attributeName, getAttributeImpl(attributeName));
+		}
+		return attributeImpls;
+	}
+	
+	private KimAttributeImpl getAttributeImpl(String attributeName){
+		Map<String,String> criteria = new HashMap<String,String>();
+		criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, attributeName);
+		return (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+	}
+	
 	/**
 	 * This is the default implementation.  It calls into the service for each attribute to
 	 * validate it there.  No combination validation is done.  That should be done
@@ -145,12 +161,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( attributes == null ) {
 			return validationErrors;
 		}
-		Map<String, KimAttributeImpl> attributeImpls = new HashMap<String, KimAttributeImpl>();
-		for ( String attributeName : attributes.keySet() ) {
-			Map<String,String> criteria = new HashMap<String,String>();
-			criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, attributeName);
-			attributeImpls.put(attributeName, (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria));
-		}
+		Map<String, KimAttributeImpl> attributeImpls = getAttributeImpls(attributes);
 		
 		for ( String attributeName : attributes.keySet() ) {
             KimAttributeImpl attributeImpl = attributeImpls.get(attributeName);
@@ -345,7 +356,13 @@ public class KimTypeServiceBase implements KimTypeService {
 		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition();
 		String componentClassName = typeAttribute.getKimAttribute().getComponentName();
 		String attributeName = typeAttribute.getKimAttribute().getAttributeName();
-		AttributeDefinition baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
+		AttributeDefinition baseDefinition;
+		try {
+			baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
+		} catch ( Exception ex ) {
+			LOG.error( "Unable to get base DD definition for " + componentClassName + "." + attributeName, ex );
+			return definition;
+		}
 
 		// copy all the base attributes
 		definition.setName( baseDefinition.getName() );
@@ -442,32 +459,35 @@ public class KimTypeServiceBase implements KimTypeService {
 	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
 		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
 		if ( definitions == null ) {
+			definitions = new AttributeDefinitionMap();
 	        Map<String,String> pk = new HashMap<String, String>( 1 );
 	        pk.put("kimTypeId", kimTypeId);
 	        KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
-	        
-			String nsCode = kimType.getNamespaceCode();	        
-			definitions = new AttributeDefinitionMap();
-			for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
-				AttributeDefinition definition = null;
-				if (typeAttribute.getKimAttribute().getComponentName() == null) {
-					definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
-				} else {
-					definition = getDataDictionaryAttributeDefinition(typeAttribute);
+	        if ( kimType != null ) {
+				String nsCode = kimType.getNamespaceCode();	        
+				for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
+					AttributeDefinition definition = null;
+					if (typeAttribute.getKimAttribute().getComponentName() == null) {
+						definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
+					} else {
+						definition = getDataDictionaryAttributeDefinition(typeAttribute);
+					}
+					
+					// Perform a parameterized substitution on the applicationUrl
+					KimAttributeImpl kai = typeAttribute.getKimAttribute();
+					String url = kai.getApplicationUrl();
+					url = Utilities.substituteConfigParameters(nsCode, url);
+					kai.setApplicationUrl(url);
+					
+					// TODO : use id for defnid ?
+			//		definition.setId(typeAttribute.getKimAttributeId());
+					// FIXME: I don't like this - if two attributes have the same sort code, they will overwrite each other
+					definitions.put(typeAttribute.getSortCode(), definition);
 				}
-				
-				// Perform a parameterized substitution on the applicationUrl
-				KimAttributeImpl kai = typeAttribute.getKimAttribute();
-				String url = kai.getApplicationUrl();
-				url = Utilities.substituteConfigParameters(nsCode, url);
-				kai.setApplicationUrl(url);
-				
-				// TODO : use id for defnid ?
-		//		definition.setId(typeAttribute.getKimAttributeId());
-				// FIXME: I don't like this - if two attributes have the same sort code, they will overwrite each other
-				definitions.put(typeAttribute.getSortCode(), definition);
-			}
-			// attributeDefinitionCache.put( kimTypeId, definitions );
+				// attributeDefinitionCache.put( kimTypeId, definitions );
+	        } else {
+	        	LOG.warn( "Unable to resolve KIM Type: " + kimTypeId + " - returning an empty AttributeDefinitionMap." );
+	        }
 		}
 		return definitions;
 	}
@@ -495,6 +515,63 @@ public class KimTypeServiceBase implements KimTypeService {
         			errorMessage.length()-COMMA_SEPARATOR.length()) + " not found in "+receivedAttributesName+" .";
             throw new RuntimeException(errorMessage);
         }*/
+	}
+
+	/**
+	 * Returns an empty list, indicating that no attributes from this
+     * type should be passed to workflow.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
+	 */
+	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+		return workflowRoutingAttributes;
+	}
+	
+	public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+		boolean areAttributesUnique = true;
+		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
+		if(uniqueAttributes==null || uniqueAttributes.isEmpty()){
+			areAttributesUnique = true;
+		} else{
+			if(areAttributesEqual(uniqueAttributes, newAttributes, oldAttributes)){
+				areAttributesUnique = false;
+			}
+		}
+		return areAttributesUnique;
+	}
+	
+	private boolean areAttributesEqual(List<String> uniqueAttributeNames, AttributeSet aSet1, AttributeSet aSet2){
+		String attrVal1;
+		String attrVal2;
+		StringValueComparator comparator = new StringValueComparator();
+		for(String uniqueAttributeName: uniqueAttributeNames){
+			attrVal1 = getAttributeValue(aSet1, uniqueAttributeName);
+			attrVal2 = getAttributeValue(aSet2, uniqueAttributeName);
+			if(comparator.compare(attrVal1, attrVal2)!=0){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private String getAttributeValue(AttributeSet aSet, String attributeName){
+		if(StringUtils.isEmpty(attributeName)) return null;
+		for(String attributeNameKey: aSet.keySet()){
+			if(attributeName.equals(attributeNameKey))
+				return aSet.get(attributeNameKey);
+		}
+		return null;
+	}
+	
+	public List<String> getUniqueAttributes(String kimTypeId){
+        Map<String,String> pk = new HashMap<String, String>( 1 );
+        pk.put("kimTypeId", kimTypeId);
+        KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
+        List<String> uniqueAttributes = new ArrayList<String>();
+        for(KimTypeAttributeImpl attributeDefinition: kimType.getAttributeDefinitions()){
+        	uniqueAttributes.add(attributeDefinition.getKimAttribute().getAttributeName());
+        }
+        return uniqueAttributes;
 	}
 
 }

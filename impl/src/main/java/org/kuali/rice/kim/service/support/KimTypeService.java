@@ -30,9 +30,10 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  *
  */
 public interface KimTypeService {
-
-	/** 
-	 * Get the workflow document type which is needed to route objects with this type.
+	
+	/**
+	 * Get the workflow document type which
+	 * will be used for the role qualifiers when routing objects with this type.
 	 * 
 	 * If no special document type is needed, this method must return null.
 	 */
@@ -46,10 +47,16 @@ public interface KimTypeService {
 	 * This method can be used to perform compound validations across multiple
 	 * attributes attached to an object.
 	 */
-	AttributeSet validateAttributes( AttributeSet attributes );
+	AttributeSet validateAttributes(AttributeSet attributes);
+	
+	boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
 	
     List<KeyLabelPair> getAttributeValidValues(String attributeName);
     
     AttributeDefinitionMap getAttributeDefinitions(String kimTypeId);
     
+    List<String> getWorkflowRoutingAttributes( String routeLevel );
+    
+    List<String> getUniqueAttributes(String kimTypeId);
+
 }

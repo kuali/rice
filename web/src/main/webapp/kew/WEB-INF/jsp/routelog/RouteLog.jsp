@@ -40,12 +40,8 @@
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.initiator" /></kul:htmlAttributeHeaderCell>
                 <td  class="datacell" width="25%">
-                    <a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
-                        <c:param name="methodToCall" value="docHandler"/>
-                        <c:param name="command" value="initiate"/>
-                        <c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
-                        <c:param name="principalId" value="${routeHeader.initiatorWorkflowId}"/>                        
-                    </c:url>" target="_blank"><c:out value="${routeHeader.initiatorDisplayName}" /></a>&nbsp;</td>
+                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${routeHeader.initiatorWorkflowId}" render="true"><c:out value="${routeHeader.initiatorDisplayName}" /></kul:inquiry>
+                    &nbsp;</td>
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.lastModified" /></kul:htmlAttributeHeaderCell>
                 <td  class="datacell" width="25%"><fmt:formatDate
@@ -122,19 +118,12 @@
                                    <b><c:out value="${actionTaken.actionTakenLabel}" /></b>
                                 </td>
                                 <td align="left" class="datacell">
-                                    <a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
-                                        <c:param name="command" value="initiate"/>
-                                        <c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
-                                        <c:param name="principalId" value="${actionTaken.principalId}"/>                        
-                                    </c:url>" target="_blank"><c:out value="${actionTaken.principalDisplayName}" /></a>&nbsp;
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${actionTaken.principalId}" render="true"><c:out value="${actionTaken.principalDisplayName}" /></kul:inquiry>
+                                    &nbsp;
                                 </td>
                                 <td align="left" class="headercell4">
                                     <c:if test="${actionTaken.forDelegator}">
-                                        <a href="<c:url value="${ConfigProperties.kim.url}/identityManagementPersonDocument.do">
-                                            <c:param name="command" value="initiate"/>
-                                            <c:param name="docTypeName" value="IdentityManagementPersonDocument"/>
-                                            <c:param name="principalId" value="${actionTaken.delegatorPrincipalId}"/>                       
-                                        </c:url>" target="_blank"><c:out value="${actionTaken.delegatorDisplayName}" /></a>&nbsp;
+                                        <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${actionTaken.delegatorPrincipalId}" render="true"><c:out value="${actionTaken.delegatorDisplayName}" /></kul:inquiry>
                                      </c:if>&nbsp;
                                  </td>
                                  <td align="center" class="headercell4">

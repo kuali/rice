@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.dao.proxy;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.core.util.OrmUtils;
@@ -27,7 +26,8 @@ public class MaintenanceDocumentDaoProxy implements MaintenanceDocumentDao {
     private MaintenanceDocumentDao maintenanceDocumentDaoJpa;
     private MaintenanceDocumentDao maintenanceDocumentDaoOjb;
 	
-    private MaintenanceDocumentDao getDao(Class clazz) {
+    @SuppressWarnings("unchecked")
+	private MaintenanceDocumentDao getDao(Class clazz) {
     	return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? maintenanceDocumentDaoJpa : maintenanceDocumentDaoOjb; 
     }
     
@@ -35,9 +35,9 @@ public class MaintenanceDocumentDaoProxy implements MaintenanceDocumentDao {
 		return getDao(MaintenanceLock.class).getLockingDocumentNumber(lockingRepresentation, documentNumber);
 	}
 
-	public Collection getPendingDocumentsForClass(Class businessObjectClass) {
-		return getDao(MaintenanceLock.class).getPendingDocumentsForClass(businessObjectClass);
-	}
+//	public Collection getPendingDocumentsForClass(Class businessObjectClass) {
+//		return getDao(MaintenanceLock.class).getPendingDocumentsForClass(businessObjectClass);
+//	}
 
 	public void deleteLocks(String documentNumber) {
 		getDao(MaintenanceLock.class).deleteLocks(documentNumber);

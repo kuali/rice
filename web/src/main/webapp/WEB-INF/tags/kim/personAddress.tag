@@ -6,12 +6,11 @@
 
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <c:set var="docAddressAttributes" value="${DataDictionary.PersonDocumentAddress.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:subtab lookedUpCollectionName="address" width="${tableWidth}" subTabTitle="Addresses" noShowHideButton="true">      
-   	<table cellpadding=0 cellspacing=0 summary="">
+   	<table cellpadding="0" cellspacing="0" summary="">
        	<tr>
-       		<th><div align="left">&nbsp</div></th> 
+       		<th><div align="left">&nbsp;</div></th> 
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.addressTypeCode}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line1}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line2}" noColon="true" /></div></th>

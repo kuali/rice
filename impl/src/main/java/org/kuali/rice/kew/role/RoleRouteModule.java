@@ -35,6 +35,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -73,6 +74,11 @@ public class RoleRouteModule implements RouteModule {
 		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
 		if ( qualifiers != null ) {
 			for (AttributeSet qualifier : qualifiers) {
+				if ( qualifier.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
+					responsibilityDetails.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, qualifier.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER));
+				} else {
+					responsibilityDetails.remove( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
+				}
 				List<ResponsibilityActionInfo> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
 				// split the responsibility list defining characteristics (per the ResponsibilitySet.matches() method)
 				List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);

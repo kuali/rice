@@ -511,6 +511,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	removeCacheEntries(null, principalId);
     }
     
+    /**
+     * @see org.kuali.rice.kim.service.RoleService#roleInactivated(java.lang.String)
+     */
+    public void roleInactivated(String roleId) {
+    	getRoleService().roleInactivated(roleId);    
+    	removeCacheEntries(roleId, null);
+    }
+    
     public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){
     	return getRoleService().getFirstLevelRoleMembers(roleIds);
     }

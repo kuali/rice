@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -1175,11 +1177,56 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     /**
      * @see org.kuali.rice.kim.service.RoleService#principalInactivated(java.lang.String)
      */
+    public void roleInactivated(String roleId){
+    	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
+    	List<String> roleIds = new ArrayList<String>();
+    	roleIds.add(roleId);
+    	inactivateRoleMemberships(roleIds, yesterday);
+    	inactivateRoleDelegations(roleIds, yesterday);
+    	inactivateMembershipsForRoleAsMember(roleIds, yesterday);
+    }
+    
+    private void inactivateRoleMemberships(List<String> roleIds, Timestamp yesterday){
+    	List<RoleMemberImpl> roleMembers = roleDao.getRoleMembersForRoleIds(roleIds, null);
+    	for(RoleMemberImpl rm: roleMembers){
+    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    	}
+    	getBusinessObjectService().save(roleMembers);
+    }
+
+    private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday){
+    	List<RoleMemberImpl> roleMembers = roleDao.getRoleMembershipsForRoleIdsAsMembers(roleIds);
+    	for(RoleMemberImpl rm: roleMembers){
+    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    	}
+    	getBusinessObjectService().save(roleMembers);
+    }
+
+    private void inactivateRoleDelegations(List<String> roleIds, Timestamp yesterday){
+    	List<KimDelegationImpl> delegations = roleDao.getDelegationImplsForRoleIds(roleIds);
+    	for(KimDelegationImpl delegation: delegations){
+    		delegation.setActive(false);
+    		for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
+    			delegationMember.setActiveToDate(new Date(yesterday.getTime()));
+    		}
+    	}
+    	getBusinessObjectService().save(delegations);
+    }
+    
+    /**
+     * @see org.kuali.rice.kim.service.RoleService#principalInactivated(java.lang.String)
+     */
     public void principalInactivated(String principalId) {
+    	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
+    	inactivatePrincipalRoleMemberships(principalId, yesterday);
+    	inactivatePrincipalGroupMemberships(principalId, yesterday);
+    	inactivatePrincipalDelegations(principalId, yesterday);
+    }
+
+    private void inactivatePrincipalRoleMemberships(String principalId, Timestamp yesterday){
     	// go through all roles and post-date them
     	List<RoleMemberImpl> roleMembers = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(null, principalId);
     	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
-    	java.sql.Timestamp yesterday = new java.sql.Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
     	for ( RoleMemberImpl rm : roleMembers ) {
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     		roleIds.add(rm.getRoleId()); // add to the set of IDs
@@ -1197,6 +1244,22 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     			LOG.error( "Problem notifying role type service of principal inactivation: " + role.getKimRoleType().getKimTypeServiceName(), ex );
     		}
     	}
+    }
+    
+    private void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday){
+    	List<GroupMemberImpl> groupMembers = roleDao.getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
+    	for ( GroupMemberImpl rm : groupMembers ) {
+    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    	}
+    	getBusinessObjectService().save(groupMembers);
+    }
+
+    private void inactivatePrincipalDelegations(String principalId, Timestamp yesterday){
+    	List<KimDelegationMemberImpl> delegationMembers = roleDao.getDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
+    	for ( KimDelegationMemberImpl rm : delegationMembers ) {
+    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    	}
+    	getBusinessObjectService().save(delegationMembers);
     }
 
     public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){

@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.web.struts.action;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +26,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
@@ -48,6 +48,7 @@ import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDocumentRoleQualifierEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
+import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
@@ -57,7 +58,6 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
@@ -73,42 +73,72 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward;
+		ActionForward forward = null;
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        if (findMethodToCall(form, request) == null) {
-        	forward = mapping.findForward(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-        } else {
-        	if (isSaveRouteMethodCall(findMethodToCall(form, request))) {
-        		preSaveSubmitCheck(personDocumentForm.getPersonDocument());
+        // accept either the principal name or principal ID, looking up the latter if necessary
+        // this allows inquiry links to work even when only the principal name is present
+        String principalId = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID);
+        String principalName = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_NAME);
+        if ( StringUtils.isBlank(principalId) && StringUtils.isNotBlank(principalName) ) {
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	if ( principal != null ) {
+        		principalId = principal.getPrincipalId();
         	}
-        	forward =  super.execute(mapping, form, request, response);
         }
-		// move the following to service
-		// get set up person document
-        String commandParam = request.getParameter(KNSConstants.PARAMETER_COMMAND);
-		if (StringUtils.isNotBlank(commandParam) && commandParam.equals(KEWConstants.INITIATE_COMMAND) && StringUtils.isNotBlank(request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID))) {
-			getUiDocumentService().loadEntityToPersonDoc((IdentityManagementPersonDocument)personDocumentForm.getDocument(), request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID));
-		}
-		if (StringUtils.isNotBlank(commandParam) && (commandParam.equals(KEWConstants.DOCSEARCH_COMMAND) || commandParam.equals(KEWConstants.ACTIONLIST_COMMAND))) {
-			IdentityManagementPersonDocument personDoc = (IdentityManagementPersonDocument)personDocumentForm.getDocument();
-			for (PersonDocumentRole role : personDoc.getRoles()) {
-		        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
-				role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
-	        	// when post again, it will need this during populate
-	            role.setNewRolePrncpl(new KimDocumentRoleMember());
-	            for (String key : role.getDefinitions().keySet()) {
-	            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
-	            	//qualifier.setQualifierKey(key);
-		        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
-	            	role.getNewRolePrncpl().getQualifiers().add(qualifier);
-	            }
-		        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
-			}
-		}
-		((KualiDocumentFormBase) form).setErrorMapFromPreviousRequest(GlobalVariables.getErrorMap());
+        if ( principalId != null ) {
+        	personDocumentForm.setPrincipalId(principalId);
+        }
+        forward =  super.execute(mapping, form, request, response);
+
 		return forward;
     }
     
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+	 */
+	@Override
+	protected void loadDocument(KualiDocumentFormBase form)
+			throws WorkflowException {
+		super.loadDocument(form);
+        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
+		IdentityManagementPersonDocument personDoc = personDocumentForm.getPersonDocument();
+		populateRoleInformation(personDoc);
+	}
+
+	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
+		for (PersonDocumentRole role : personDoc.getRoles()) {
+	        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
+			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
+        	// when post again, it will need this during populate
+            role.setNewRolePrncpl(new KimDocumentRoleMember());
+            for (String key : role.getDefinitions().keySet()) {
+            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
+            	//qualifier.setQualifierKey(key);
+	        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
+            	role.getNewRolePrncpl().getQualifiers().add(qualifier);
+            }
+	        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
+		}
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase)
+	 */
+	@Override
+	protected void createDocument(KualiDocumentFormBase form)
+			throws WorkflowException {
+		super.createDocument(form);
+        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
+        if ( StringUtils.isNotBlank( personDocumentForm.getPrincipalId() ) ) {
+        	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
+        	populateRoleInformation( personDocumentForm.getPersonDocument() );
+        }
+	}
+	
 	/***
 	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
 	 */
@@ -263,6 +293,9 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         PersonDocumentRole newRole = personDocumentForm.getNewRole();
         if (getKualiRuleService().applyRules(new AddRoleEvent("",personDocumentForm.getPersonDocument(), newRole))) {
 	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newRole.getRoleId());
+	        if(!validateRole(roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+	        }
 	        newRole.setRoleName(roleImpl.getRoleName());
 	        newRole.setNamespaceCode(roleImpl.getNamespaceCode());
 	        newRole.setKimRoleType(roleImpl.getKimRoleType());
@@ -364,30 +397,6 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 			throws Exception {
 
 		return super.save(mapping, form, request, response);
-	}
-
-	private void preSaveSubmitCheck(IdentityManagementPersonDocument personDoc) {
-
-		if (StringUtils.isBlank(personDoc.getPrivacy().getDocumentNumber())) {
-			personDoc.getPrivacy().setDocumentNumber(
-					personDoc.getDocumentNumber());
-		}
-		for (PersonDocumentRole role : personDoc.getRoles()) {
-			for (KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
-				rolePrncpl.setDocumentNumber(personDoc.getDocumentNumber());
-				for (KimDocumentRoleQualifier qualifier : rolePrncpl
-						.getQualifiers()) {
-					qualifier.setDocumentNumber(personDoc.getDocumentNumber());
-					qualifier.setKimTypId(role.getKimTypeId());
-				}
-			}
-		}
-		
-	}
-	
-	private boolean isSaveRouteMethodCall(String methodToCall) {
-		String[] methods = new String[] {"save","route","approve","blanketApprove"};
-		return Arrays.asList(methods).contains(methodToCall);   
 	}
 	
 	private String getKimTypeServiceName (KimTypeImpl kimType) {

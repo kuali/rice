@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.bo.lookup;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -38,8 +39,6 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SavedSearchResult;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -62,6 +61,9 @@ import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.kns.util.KualiPercent;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -132,20 +134,20 @@ KualiLookupableHelperServiceImpl {
     			fixedParameters.put(prop.getKey(), new String[]{prop.getValue()});
 			}
     		criteria = DocumentLookupCriteriaBuilder.populateCriteria(fixedParameters);
-    		
+
     	}
 
     	Collection displayList=null;
-    	
+
     	DocumentSearchResultComponents components = null;
     	try {
-    		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);	
+    		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
     	} catch (WorkflowServiceErrorException wsee) {
     		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
     			GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
     		};
     	}
-    	
+
     	//FIXME: for now if not set set the create date back from the criteria, however eventually we should convert all
     	for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
@@ -194,14 +196,14 @@ KualiLookupableHelperServiceImpl {
         DocumentRouteHeaderEBO element = new DocSearchCriteriaDTO();
         //TODO: additional BORestrictions through generator or component to lock down per document?
     	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
-            		
+
 //          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 //ADDED (4 lines)
         for (Iterator iter = result.iterator(); iter.hasNext();) {
 
-        	
 
-            
+
+
 
         	DocumentSearchResult docSearchResult = (DocumentSearchResult)iter.next();
 //TODO: where to get these from?
@@ -227,7 +229,7 @@ KualiLookupableHelperServiceImpl {
             		  }
             	  }
             	  if(keyValue==null) {
-            		  //means we didn't find an indexed value for this, this seems bad but happens a lot we should research why 
+            		  //means we didn't find an indexed value for this, this seems bad but happens a lot we should research why
             		  keyValue = new KeyValueSort();
 //            		  System.out.println("column: "+col.getPropertyName()+"has an empty KeyValue, this should never happen");
             	  }
@@ -254,7 +256,7 @@ KualiLookupableHelperServiceImpl {
 				if(StringUtils.equals(propertyName, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID)) {
 					((DocSearchCriteriaDTO)element).setRouteHeaderId(col.getPropertyValue());
 				}
-				
+
             	Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
@@ -279,32 +281,38 @@ KualiLookupableHelperServiceImpl {
                     }
                 }
 
-                
+
                 //TODO: check exisiting formatter here, ideally we should be getting this formatter from col.getFormatter in most cases
-                // formatters 
+                // formatters
                 if (prop != null) {
-                    // for Booleans, always use BooleanFormatter
-                    if (prop instanceof Boolean) {
-                        formatter = new BooleanFormatter();
-                    }
+                    if (formatter == null) {
+                        // for Booleans, always use BooleanFormatter
+                        if (prop instanceof Boolean) {
+                            formatter = new BooleanFormatter();
+                        }
 
-                    // for Dates, always use DateFormatter
-                    if (prop instanceof Date) {
-                        formatter = new DateFormatter();
-                    }
+                        // for Dates, always use DateFormatter
+                        if (prop instanceof Date) {
+                            formatter = new DateFormatter();
+                        }
+                        //#ADDED 3
+                        if (prop instanceof Timestamp) {
+                            formatter = new TimestampAMPMFormatter();
+                        }
 
-                    //#ADDED 3
-                    if (prop instanceof Timestamp) {
-                    	formatter = new TimestampAMPMFormatter();
+                        // for collection, use the list formatter if a formatter hasn't been defined yet
+                        if (prop instanceof Collection && formatter == null) {
+                            formatter = new CollectionFormatter();
+                        }
                     }
-
-                    // for collection, use the list formatter if a formatter hasn't been defined yet
-                    if (prop instanceof Collection && formatter == null) {
-                	formatter = new CollectionFormatter();
-                    }
-
                     if (formatter != null) {
-                        propValue = (String) formatter.format(prop);
+                        //hack for Currency values as big decimal
+                        if (prop instanceof BigDecimal  && formatter.getImplementationClass().equals("org.kuali.rice.kns.web.format.CurrencyFormatter")) {
+                            prop = new KualiDecimal((BigDecimal)prop);
+                        } else if (prop instanceof BigDecimal  && formatter.getImplementationClass().equals("org.kuali.rice.kns.web.format.PercentageFormatter")) {
+                            prop = new KualiPercent((BigDecimal)prop);
+                        }
+                         propValue = (String) formatter.format(prop);
                     }
                     else {
                         propValue = prop.toString();
@@ -334,7 +342,18 @@ KualiLookupableHelperServiceImpl {
                 		if(!DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equals(criteria.getSuperUserSearch())) {
                 			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
                 		} else {
-                			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue());
+                			// KULRICE-3035: Append the doc search's returnLocation parameter to the superuser page URL.
+    						String returnLoc = "";
+    						if (this.getParameters().containsKey(KNSConstants.RETURN_LOCATION_PARAMETER)) {
+    							returnLoc = (new StringBuilder()).append("&").append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
+    									((String[])this.getParameters().get(KNSConstants.RETURN_LOCATION_PARAMETER))[0]).toString();
+    						}
+    						else if (StringUtils.isNotBlank(this.getBackLocation())) {
+    							returnLoc = (new StringBuilder()).append("&").append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
+    									this.getBackLocation()).toString();
+    						}
+
+                			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue() + returnLoc);
                 		}
                         col.setMaxLength(100); //for now force this
                 	} else if(StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getkey())) {
@@ -357,9 +376,9 @@ KualiLookupableHelperServiceImpl {
                 }
                 Column newCol = (Column)ObjectUtils.deepCopy(col);
                 newColumns.add(newCol);
-                
+
             }
-            
+
             HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
             ResultRow row = new ResultRow(newColumns, returnUrl.constructCompleteHtmlTag(), actionUrls);
             row.setRowId(returnUrl.getName());
@@ -418,8 +437,7 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	protected void setRows() {
-		super.setRows();
-		this.getRows().clear();
+	    this.setRows(new HashMap<String,String[]>(), null);
 	}
 
 
@@ -435,7 +453,9 @@ KualiLookupableHelperServiceImpl {
 
 
 		//###START LOOKUP ROW CODE Not sure if we need these but they may be valuable for eventually forcing all standard field customization in the xml
-		super.setRows();
+		if (super.getRows() == null) {
+		    super.setRows();
+		}
 		List<Row> lookupRows = new ArrayList<Row>();
 		//copy the current rows
 		for (Row row : super.getRows()) {
@@ -564,8 +584,19 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	public String getSupplementalMenuBar() {
+
+		String returnLoc = "";
+		if (this.getParameters().containsKey(KNSConstants.RETURN_LOCATION_PARAMETER)) {
+			returnLoc = (new StringBuilder()).append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
+					((String[])this.getParameters().get(KNSConstants.RETURN_LOCATION_PARAMETER))[0]).append("&").toString();
+		}
+		else if (StringUtils.isNotBlank(this.getBackLocation())) {
+			returnLoc = (new StringBuilder()).append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
+					this.getBackLocation()).append("&").toString();
+		}
+
 		String detailed="NO";
-		if(this.getParameters().containsKey(("isAdvancedSearch"))) {
+		if(this.getParameters().containsKey("isAdvancedSearch")) {
 			detailed = ((String[])this.getParameters().get("isAdvancedSearch"))[0];
 		}
 
@@ -577,27 +608,27 @@ KualiLookupableHelperServiceImpl {
 		StringBuilder suppMenuBar = new StringBuilder();
 		if(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(detailed)) {
 			suppMenuBar.append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=NO").append("&superUserSearch=").append(superSearch).append("\">").append(
+					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&isAdvancedSearch=NO").append("&superUserSearch=").append(superSearch).append("\">").append(
 							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-basicsearch.gif\" class=\"tinybutton\" alt=\"basic search\" title=\"basic search\" border=\"0\" />").append("</a>");
 		} else {
 			suppMenuBar.append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&isAdvancedSearch=YES").append("&superUserSearch=").append(superSearch).append("\">").append(
+					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&isAdvancedSearch=YES").append("&superUserSearch=").append(superSearch).append("\">").append(
 							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-detailedsearch.gif\" class=\"tinybutton\" alt=\"detailed search\" title=\"detailed search\" border=\"0\" />").append("</a>");
 		}
 
 
 		if(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superSearch)) {
 			suppMenuBar.append("&nbsp;").append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superUserSearch=NO").append("&isAdvancedSearch=").append(detailed).append("\">").append(
+					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&superUserSearch=NO").append("&isAdvancedSearch=").append(detailed).append("\">").append(
 							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-nonsupusearch.gif\" class=\"tinybutton\" alt=\"non-superuser search\" title=\"non-superuser search\" border=\"0\" />").append("</a>");
 		} else {
 			suppMenuBar.append("&nbsp;").append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superUserSearch=YES").append("&isAdvancedSearch=").append(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("\">").append(
+					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&superUserSearch=YES").append("&isAdvancedSearch=").append(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("\">").append(
 							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-superusersearch.gif\" class=\"tinybutton\" alt=\"superuser search\" title=\"superuser search\" border=\"0\" />").append("</a>");
 		}
 
 		suppMenuBar.append("&nbsp;").append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-				"?methodToCall=customLookupableMethodCall&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true&superUserSearch=").append(superSearch).append("&isAdvancedSearch=").append(detailed).append("&resetSavedSearch=true").append("\">").append(
+				"?methodToCall=customLookupableMethodCall&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&superUserSearch=").append(superSearch).append("&isAdvancedSearch=").append(detailed).append("&resetSavedSearch=true").append("\">").append(
 						"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" class=\"tinybutton\" alt=\"clear saved searches\" title=\"clear saved searches\" border=\"0\" />").append("</a>");
 
         Properties parameters = new Properties();
@@ -673,6 +704,14 @@ KualiLookupableHelperServiceImpl {
 		}
 		else if(fieldValues.get("docTypeFullName")!=null) {
 			docTypeName = (String)fieldValues.get("docTypeFullName");
+		}
+
+		if(!StringUtils.isEmpty(docTypeName)) {
+		    DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
+            MessageMap messages = getValidDocumentType(docTypeName).getDocumentSearchGenerator().getMessageMap(criteria);
+            if (messages.hasMessages()) {
+                GlobalVariables.mergeErrorMap(messages);
+            }
 		}
 		setRows(fieldValues,docTypeName);
 		return true;
@@ -838,4 +877,20 @@ KualiLookupableHelperServiceImpl {
 		return savedSearch;
 
 	}
+
+	/*
+    @Override
+    public List<Row> getRows() {
+        if(StringUtils.isEmpty(docTypeName)) {
+            super.performClear(lookupForm);
+        } else {
+            DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsToClear);
+            //TODO: Chris - (2 stage clear) set the isOnlyDocTypeFilled, to true if only doc type coming in (besides hidden) and false otherwise)
+            docCriteria = getValidDocumentType(docTypeName).getDocumentSearchGenerator().clearSearch(docCriteria);
+        }
+
+        return super.getRows();
+    }
+	*/
+
 }

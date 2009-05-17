@@ -57,14 +57,14 @@ public interface MaintenanceDocumentService {
      */
     public String getLockingDocumentId(Maintainable maintainable, String documentNumber);
 
-    /**
-     * Retrieves maintenance documents locked by the given bo class name, then materializes the pending changes to objects of the
-     * given class.
-     * 
-     * @param businessObjectClass
-     * @return
-     */
-    public List getPendingObjects(Class businessObjectClass);
+//    /**
+//     * Retrieves maintenance documents locked by the given bo class name, then materializes the pending changes to objects of the
+//     * given class.
+//     * 
+//     * @param businessObjectClass
+//     * @return
+//     */
+//    public List getPendingObjects(Class businessObjectClass);
 
     /**
      * This method is here to call the same-named method in the Dao, since the service has access to the Dao, but the caller doesn't.

@@ -1,12 +1,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docGroupAttributes" value="${DataDictionary.PersonDocumentGroup.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
-<kul:subtab lookedUpCollectionName="group" width="${tableWidth}" subTabTitle="Groups" noShowHideButton="true">      
-   <table cellpadding=0 cellspacing=0 summary="">
+<kul:subtab lookedUpCollectionName="group" width="${tableWidth}" subTabTitle="Groups" noShowHideButton="false">      
+   <table cellpadding="0" cellspacing="0" summary="">
      	<tr>
-    		<th><div align="left">&nbsp</div></th> 
+    		<th><div align="left">&nbsp;</div></th> 
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupId}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.namespaceCode}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupName}" noColon="true" /></div></th>

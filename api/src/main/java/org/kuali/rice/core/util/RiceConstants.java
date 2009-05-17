@@ -50,7 +50,6 @@ public class RiceConstants extends JSTLConstants {
 	public static final String SERVER_DATASOURCE_OBJ = "serverDatasource";
 	public static final String TRANSACTION_MANAGER_OBJ = "transactionManager";
 	public static final String USER_TRANSACTION_OBJ = "userTransaction";
-	public static final String DEFAULT_NOTE_CLASS = "default.note.class";
 	public static final String M_BEANS = "mBeans";
 	public static final String ALT_SPRING_FILE = "config.spring.file";
 	public static final String ALT_OJB_FILE	= "config.obj.file";

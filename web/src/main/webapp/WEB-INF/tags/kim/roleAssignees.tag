@@ -1,60 +1,49 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<script language="JavaScript" src="scripts/en-common.js"></script>
-
 <c:set var="roleMemberAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-<c:set var="canAssignRole" value="${KualiForm.canAssignRole}" />
-<c:set var="canModifyAssignees" value="${KualiForm.canModifyAssignees}" />
-<c:if test="${!canAssignRole || !canModifyAssignees}">
-	<c:set var="readOnly" value="${!(canAssignRole && canModifyAssignees)}"/>
-</c:if>
-
-<script language="javaScript">
-function changeMemberTypeCode(){
-	document.getElementsByTagName("command").value="changeMemberTypeCode";
-	javaScript:document.forms[0].submit();
-}
-</script>
+<c:if test="${!(empty KualiForm.document.members) || canModifyAssignees}">
 <kul:tab tabTitle="Assignees" defaultOpen="true" tabErrorKey="document.member*,member.*">
 	<div class="tab-container" align="center">
-    <h3>
-    	<span class="subhead-left">Assignees</span>
-    </h3>
+    <kul:tableRenderPagingBanner pageNumber="${KualiForm.memberTableMetadata.viewedPageNumber}"
+					            totalPages="${KualiForm.memberTableMetadata.totalNumberOfPages}"
+					            firstDisplayedRow="${KualiForm.memberTableMetadata.firstRowIndex}" 
+					            lastDisplayedRow="${KualiForm.memberTableMetadata.lastRowIndex}"
+					            resultsActualSize="${KualiForm.memberTableMetadata.resultsActualSize}" 
+					            resultsLimitedSize="${KualiForm.memberTableMetadata.resultsLimitedSize}"
+					            buttonExtraParams=".anchor${currentTabIndex}"/>
+    <input type="hidden" name="memberTableMetadata.${Constants.TableRenderConstants.PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM}" value="${KualiForm.memberTableMetadata.columnToSortIndex}"/>
+    <input type="hidden" name="memberTableMetadata.sortDescending" value="${KualiForm.memberTableMetadata.sortDescending}"/>
+    <input type="hidden" name="memberTableMetadata.viewedPageNumber" value="${KualiForm.memberTableMetadata.viewedPageNumber}"/>
     
-    <table cellpadding=0 cellspacing=0 summary="">
+    <table cellpadding="0" cellspacing="0" summary="">
         	<tr>
-        		<th><div align="left">&nbsp</div></th> 
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberTypeCode}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberId}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberNamespaceCode}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.memberName}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.activeFromDate}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${roleMemberAttributes.activeToDate}" noColon="true" /></div></th>
+        		<th>&nbsp;</th> 
+        		<kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" />
+                <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" />
+                <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" />
+                <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" />
+                <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" />
+                <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" />
 				<c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
         			<c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
-<!-- >	        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${KualiForm.document.attributeEntry[fieldName]}" noColon="true" /></div></th> -->
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
          		    <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
 		        </c:forEach>
-				<c:if test="${not inquiry}">	
+				<c:if test="${canModifyAssignees}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
         	</tr>     
-          <c:if test="${not inquiry}">	
+            <c:if test="${canModifyAssignees}"> 
              <tr>
-				<th class="infoline">
-					<c:out value="Add:" />
-				</th>
+				<th class="infoline">Add:</th>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<input type="hidden" name="command"/>
                 	<kul:htmlControlAttribute property="member.memberTypeCode" 
                 	attributeEntry="${roleMemberAttributes.memberTypeCode}" 
-                	onchange="changeMemberTypeCode()" disabled="${readOnly}" />
+                	onchange="changeMemberTypeCode()" disabled="${!canModifyAssignees}" />
 					<NOSCRIPT>
    						<html:submit value="select" alt="press this button to refresh the page after changing the delegation type." />
 					</NOSCRIPT>                
@@ -64,8 +53,8 @@ function changeMemberTypeCode(){
 				</td>
                 <td class="infoline">   
                 <div align="center">             	
-					<kul:htmlControlAttribute property="member.memberId" attributeEntry="${roleMemberAttributes.memberId}" readOnly="${readOnly}"/>
-					<c:if test="${!readOnly}">
+					<kul:htmlControlAttribute property="member.memberId" attributeEntry="${roleMemberAttributes.memberId}" readOnly="${!canModifyAssignees}"/>
+					<c:if test="${canModifyAssignees}">
 		               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
 	               	</c:if>
 				</div>
@@ -82,12 +71,12 @@ function changeMemberTypeCode(){
 				</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="member.activeFromDate" attributeEntry="${roleMemberAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
+                	<kul:htmlControlAttribute property="member.activeFromDate" attributeEntry="${roleMemberAttributes.activeFromDate}" datePicker="true" readOnly="${!canModifyAssignees}" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="member.activeToDate" attributeEntry="${roleMemberAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}" />
+                	<kul:htmlControlAttribute property="member.activeToDate" attributeEntry="${roleMemberAttributes.activeToDate}" datePicker="true" readOnly="${!canModifyAssignees}" />
                 </div>
                 </td>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
@@ -95,7 +84,7 @@ function changeMemberTypeCode(){
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
+		               	<div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
  	               	    <c:if test="${!empty attrDefinition.lookupBoClass and not readOnly}">
 			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${attrDefinition}" />
 			          	</c:if>
@@ -103,9 +92,9 @@ function changeMemberTypeCode(){
 					</td>
 		        </c:forEach>
                 <td class="infoline">
-					<div align=center>
+					<div align="center">
 						<c:choose>
-				        <c:when test="${!readOnly}">
+				        <c:when test="${canModifyAssignees}">
 							<html:image property="methodToCall.addMember.anchor${tabKey}"
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
 						</c:when>
@@ -117,11 +106,13 @@ function changeMemberTypeCode(){
 					</div>
                 </td>
     	   </tr>         
-		</c:if>
-
-      	<c:forEach var="member" items="${KualiForm.document.members}" varStatus="statusMember">
+    	 </c:if>
+	<c:if test="${KualiForm.memberTableMetadata.firstRowIndex >= 0}">
+      	<c:forEach var="member" items="${KualiForm.document.members}" varStatus="statusMember"
+      	         begin="${KualiForm.memberTableMetadata.firstRowIndex}" 
+      	         end="${KualiForm.memberTableMetadata.lastRowIndex}">
        	    <c:set var="rows" value="2"/>
-       		<c:if test="${fn:length(member.roleRspActions) < 1}">	
+       		<c:if test="${fn:length(member.roleRspActions) == 0}">	
         	       <c:set var="rows" value="1"/>       		
        		</c:if>        	
             <tr>
@@ -145,11 +136,11 @@ function changeMemberTypeCode(){
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeFromDate"  attributeEntry="${roleMemberAttributes.activeFromDate}" readOnly="${readOnly}" datePicker="true" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeFromDate"  attributeEntry="${roleMemberAttributes.activeFromDate}" readOnly="${!canModifyAssignees}" datePicker="true" />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeToDate"  attributeEntry="${roleMemberAttributes.activeToDate}" readOnly="${readOnly}" datePicker="true" />
+	               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeToDate"  attributeEntry="${roleMemberAttributes.activeToDate}" readOnly="${!canModifyAssignees}" datePicker="true" />
 					</div>
 				</td>
 				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+6}"/>
@@ -158,16 +149,16 @@ function changeMemberTypeCode(){
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
+		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
 		               	<c:if test="${!empty attrDefinition.lookupBoClass and not readOnly}">
 			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.members[${statusMember.index}]" attr="${attrDefinition}" />
 			          	</c:if>
 						</div>
 					</td>
 		        </c:forEach>
-			<c:if test="${not inquiry}">	
+			<c:if test="${canModifyAssignees}">	
 				<td>
-					<div align=center>&nbsp;
+					<div align="center">&nbsp;
 						<c:choose>
 							<c:when test="${member.edit or readOnly}">
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
@@ -177,11 +168,11 @@ function changeMemberTypeCode(){
 								src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
 		        	       	</c:otherwise>
 	        	     	</c:choose>  
-					</div>
+					&nbsp;</div>
 				</td>
 			</c:if>    
 			</tr>
-	        <c:if test="${fn:length(member.roleRspActions) > 0}">	
+	        <c:if test="${fn:length(member.roleRspActions) != 0}">	
     			    <tr>
 	              <td colspan="${numberOfColumns}" style="padding:0px;">
 	              	<kim:responsibilityActions mbrIdx="${statusMember.index}" />
@@ -189,6 +180,8 @@ function changeMemberTypeCode(){
 		        </tr>
 			</c:if>	 
 		</c:forEach>        
+	</c:if>	
 	</table>
 	</div>
 </kul:tab>
+</c:if>

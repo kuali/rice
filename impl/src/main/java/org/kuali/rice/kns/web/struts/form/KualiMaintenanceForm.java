@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
@@ -44,6 +45,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 /**
@@ -292,9 +294,13 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         Maintainable newMaintainable = ((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject();
         newMaintainable.setMaintenanceAction(getMaintenanceAction());
         List newMaintSections = newMaintainable.getSections((MaintenanceDocument) getDocument(), oldMaintainable);
+        KualiWorkflowDocument workflowDocument = this.getDocument().getDocumentHeader().getWorkflowDocument();
+        String documentStatus =  workflowDocument.getRouteHeader().getDocRouteStatus();
+        String documentInitiatorPrincipalId = workflowDocument.getInitiatorPrincipalId();
+        
 
         // mesh sections for proper jsp display
-        List meshedSections = FieldUtils.meshSections(oldMaintSections, newMaintSections, keyFieldNames, getMaintenanceAction(), isReadOnly(), authorizations);
+        List meshedSections = FieldUtils.meshSections(oldMaintSections, newMaintSections, keyFieldNames, getMaintenanceAction(), isReadOnly(), authorizations, documentStatus, documentInitiatorPrincipalId);
 
         return meshedSections;
     }    
@@ -460,35 +466,78 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 	@Override
 	public String retrieveFormValueForLookupInquiryParameters(String parameterName, String parameterValueLocation) {
 		MaintenanceDocument maintDoc = (MaintenanceDocument) getDocument();
-		if (parameterValueLocation.toUpperCase().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.toUpperCase())) {
-            String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
-            if (maintDoc.getOldMaintainableObject() != null && maintDoc.getOldMaintainableObject().getBusinessObject() != null) {
-            	Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getOldMaintainableObject().getBusinessObject(), propertyName);
-            	if (parameterValue == null) {
-            		return null;
-            	}
-            	if (parameterValue instanceof String) {
-            		return (String) parameterValue;
-            	}
-            	Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
-        		return (String) formatter.format(parameterValue);	
-            }
-        }
-        if (parameterValueLocation.toUpperCase().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.toUpperCase())) {
-            String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
-            if (maintDoc.getNewMaintainableObject() != null && maintDoc.getNewMaintainableObject().getBusinessObject() != null) {
-            	Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getNewMaintainableObject().getBusinessObject(), propertyName);
-            	if (parameterValue == null) {
-            		return null;
-            	}
-            	if (parameterValue instanceof String) {
-            		return (String) parameterValue;
-            	}
-            	Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
-        		return (String) formatter.format(parameterValue);	
-            }
-        }
+		if (parameterValueLocation.toLowerCase().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.toLowerCase())) {
+			String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
+			if (maintDoc.getOldMaintainableObject() != null && maintDoc.getOldMaintainableObject().getBusinessObject() != null) {
+				Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getOldMaintainableObject().getBusinessObject(), propertyName);
+				if (parameterValue == null) {
+					return null;
+				}
+				if (parameterValue instanceof String) {
+					return (String) parameterValue;
+				}
+				Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+				return (String) formatter.format(parameterValue); 
+			}
+		}
+		if (parameterValueLocation.toLowerCase().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.toLowerCase())) {
+			// remove MAINT_NEW_MAINT from the pVL
+			String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
+			String addPrefix = KNSConstants.ADD_PREFIX.toLowerCase() + ".";
+
+			if (propertyName.toLowerCase().startsWith(addPrefix)) { // 
+				propertyName = propertyName.substring(addPrefix.length()); // remove addPrefix from the propertyName
+				String collectionName = parseAddCollectionName(propertyName);
+				propertyName = propertyName.substring(collectionName.length()); // remove collectionName from pN
+				if (propertyName.startsWith(".")) { propertyName = propertyName.substring(1); } // strip beginning "."
+				PersistableBusinessObject newCollectionLine = 
+					maintDoc.getNewMaintainableObject().getNewCollectionLine(collectionName);
+				Object parameterValue = ObjectUtils.getPropertyValue(newCollectionLine, propertyName);
+				if (parameterValue == null) {
+					return null;
+				}
+				if (parameterValue instanceof String) {
+					return (String) parameterValue;
+				}
+				Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+				return (String) formatter.format(parameterValue);
+			} else if (maintDoc.getNewMaintainableObject() != null && maintDoc.getNewMaintainableObject().getBusinessObject() != null) {
+				Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getNewMaintainableObject().getBusinessObject(), propertyName);
+				if (parameterValue == null) {
+					return null;
+				}
+				if (parameterValue instanceof String) {
+					return (String) parameterValue;
+				}
+				Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+				return (String) formatter.format(parameterValue); 
+			}
+		}
 		return super.retrieveFormValueForLookupInquiryParameters(parameterName, parameterValueLocation);
+	}
+
+	/**
+	 * This method returns the collection name (including nested collections) from a propertyName string
+	 * 
+	 * @param propertyName a parameterValueLocation w/ KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + 
+	 * KNSConstants.ADD_PREFIX + "." stripped off the front
+	 * @return the collectionName
+	 */
+	private String parseAddCollectionName(String propertyName) {
+		StringBuilder collectionNameBuilder = new StringBuilder();
+
+		boolean firstPathElement = true;
+		for (String pathElement : propertyName.split("\\.")) if (!StringUtils.isBlank(pathElement)) {
+			if (firstPathElement) {
+				firstPathElement = false;
+			} else {
+				collectionNameBuilder.append(".");
+			}
+			collectionNameBuilder.append(pathElement);
+			if (!(pathElement.endsWith("]") && pathElement.contains("["))) break; 
+		}
+		String collectionName = collectionNameBuilder.toString();
+		return collectionName;
 	}
 
 

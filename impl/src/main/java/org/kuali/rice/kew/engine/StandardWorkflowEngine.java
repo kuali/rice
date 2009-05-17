@@ -39,6 +39,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
@@ -49,7 +50,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -89,19 +89,24 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		boolean success = true;
 		RouteContext context = RouteContext.createNewRouteContext();
 		try {
-			if ( LOG.isDebugEnabled() ) {
-				LOG.debug("Aquiring lock on document " + documentId);
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info("Aquiring lock on document " + documentId);
 			}
 			KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-			if ( LOG.isDebugEnabled() ) {
-				LOG.debug("Aquired lock on document " + documentId);
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info("Aquired lock on document " + documentId);
 			}
+			DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
+			context.setDocument(document);
+			lockAdditionalDocuments(document);
+			
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info("Processing document: " + documentId + " : " + nodeInstanceId);
 			}
-			DocumentRouteHeaderValue document = null;
+			
 			try {
-	            document = notifyPostProcessorBeforeProcess(documentId, nodeInstanceId);
+	            document = notifyPostProcessorBeforeProcess(document, nodeInstanceId);
+	            context.setDocument(document);
             } catch (Exception e) {
                 LOG.warn("Problems contacting PostProcessor before engine process", e);
                 throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
@@ -121,7 +126,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				nodeInstancesToProcess.add(instanceNode);
 			}
 
-			context.setDocument(document);
+			
 
 			context.setEngineState(new EngineState());
 			ProcessContext processContext = new ProcessContext(true, nodeInstancesToProcess);
@@ -145,10 +150,10 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				LOG.info((success ? "Successfully processed" : "Failed to process") + " document: " + documentId + " : " + nodeInstanceId);
 			}
 			try {
-	            notifyPostProcessorAfterProcess(documentId, nodeInstanceId, success);
+	            notifyPostProcessorAfterProcess(context.getDocument(), nodeInstanceId, success);
             } catch (Exception e) {
                 LOG.warn("Problems contacting PostProcessor after engine process", e);
-                throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
+                throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage(), context);
             }
 			RouteContext.clearCurrentRouteContext();
 			MDC.remove("docID");
@@ -228,7 +233,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		saveNode(context, nodeInstance);
 		return new ProcessContext(nodeInstance.isComplete(), nodeInstance.getNextNodeInstances());
 	}
-
+	
 	/**
 	 * Checks various assertions regarding the processing of the current node.
 	 * If this method returns true, then the node will not be processed.
@@ -572,9 +577,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
      * TODO get the routeContext in this method - it should be a better object
      * than the nodeInstance
      */
-	private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(Long documentId, Long nodeInstanceId) {
-        DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
-	    return notifyPostProcessorBeforeProcess(document, nodeInstanceId, new BeforeProcessEvent(documentId,document.getAppDocId(),nodeInstanceId));
+	private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(DocumentRouteHeaderValue document, Long nodeInstanceId) {
+	    return notifyPostProcessorBeforeProcess(document, nodeInstanceId, new BeforeProcessEvent(document.getRouteHeaderId(),document.getAppDocId(),nodeInstanceId));
 	}
 
     /**
@@ -603,14 +607,41 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         }
         return document;
     }
+    
+    protected void lockAdditionalDocuments(DocumentRouteHeaderValue document) throws Exception {
+		DocumentLockingEvent lockingEvent = new DocumentLockingEvent(document.getRouteHeaderId(), document.getAppDocId());
+		// TODO this shows up in a few places and could totally be extracted to a method
+		PostProcessor postProcessor = null;
+        // use the document's post processor unless specified by the runPostProcessorLogic not to
+        if (!isRunPostProcessorLogic()) {
+            postProcessor = new DefaultPostProcessor();
+        } else {
+            postProcessor = document.getDocumentType().getPostProcessor();
+        }
+        List<Long> documentIdsToLock = postProcessor.getDocumentIdsToLock(lockingEvent);
+        if (documentIdsToLock != null && !documentIdsToLock.isEmpty()) {
+        	for (Long documentId : documentIdsToLock) {
+        		if ( LOG.isInfoEnabled() ) {
+    				LOG.info("Aquiring additional lock on document " + documentId);
+    			}
+        		getRouteHeaderService().lockRouteHeader(documentId, true);
+        		if ( LOG.isInfoEnabled() ) {
+        			LOG.info("Aquired lock on document " + documentId);
+        		}
+        	}
+        }
+	}
 
     /**
      * TODO get the routeContext in this method - it should be a better object
      * than the nodeInstance
      */
-    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(Long documentId, Long nodeInstanceId, boolean successfullyProcessed) {
-        DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
-        return notifyPostProcessorAfterProcess(document, nodeInstanceId, new AfterProcessEvent(documentId,document.getAppDocId(),nodeInstanceId,successfullyProcessed));
+    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(DocumentRouteHeaderValue document, Long nodeInstanceId, boolean successfullyProcessed) {
+    	if (document == null) {
+    		// this could happen if we failed to acquire the lock on the document
+    		return null;
+    	}
+        return notifyPostProcessorAfterProcess(document, nodeInstanceId, new AfterProcessEvent(document.getRouteHeaderId(),document.getAppDocId(),nodeInstanceId,successfullyProcessed));
     }
 
     /**

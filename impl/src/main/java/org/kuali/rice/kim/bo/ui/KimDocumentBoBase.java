@@ -33,7 +33,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  */
 @MappedSuperclass
 public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements Inactivateable {
-    @Column(name="FDOC_NBR")
+    private static final long serialVersionUID = 9042706897191231670L;
+	@Column(name="FDOC_NBR")
     protected String documentNumber;
 	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
@@ -53,6 +54,7 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 	 * 
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();

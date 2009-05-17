@@ -28,24 +28,34 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KualiExceptionIncidentService;
+import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 
 public class MaintenanceUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);
 
+    private static MaintenanceDocumentService maintenanceDocumentService;
+    private static WorkflowDocumentService workflowDocumentService;
+    private static KualiConfigurationService kualiConfigurationService;
+    private static KualiExceptionIncidentService kualiExceptionIncidentService; 
+    
     /**
      * Returns the field templates defined in the maint dictionary xml files. Field templates are used in multiple value lookups.
      * When doing a MV lookup on a collection, the returned BOs are not necessarily of the same type as the elements of the
@@ -135,7 +145,7 @@ public class MaintenanceUtils {
      * 
      * @return Field with quickfinder set if one was found
      */
-    public static final Field setFieldQuickfinder(BusinessObject businessObject, String attributeName, MaintainableFieldDefinition maintainableFieldDefinition, Field field, List displayedFieldNames, SelectiveReferenceRefresher srr) {
+    public static final Field setFieldQuickfinder(BusinessObject businessObject, String attributeName, MaintainableFieldDefinition maintainableFieldDefinition, Field field, List<String> displayedFieldNames, SelectiveReferenceRefresher srr) {
         if (maintainableFieldDefinition.getOverrideLookupClass() != null && StringUtils.isNotBlank(maintainableFieldDefinition.getOverrideFieldConversions())) {
             field.setQuickFinderClassNameImpl(maintainableFieldDefinition.getOverrideLookupClass().getName());
             field.setFieldConversions(maintainableFieldDefinition.getOverrideFieldConversions());
@@ -151,7 +161,7 @@ public class MaintenanceUtils {
     }
 
     public static final Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
-            String attributeName, Field field, List displayedFieldNames, Maintainable maintainable, MaintainableFieldDefinition maintainableFieldDefinition) {
+            String attributeName, Field field, List<String> displayedFieldNames, Maintainable maintainable, MaintainableFieldDefinition maintainableFieldDefinition) {
         if (maintainableFieldDefinition.getOverrideLookupClass() != null && StringUtils.isNotBlank(maintainableFieldDefinition.getOverrideFieldConversions())) {
             if (maintainable != null) {
                 String collectionPrefix = "";
@@ -203,12 +213,12 @@ public class MaintenanceUtils {
         return buf.toString();
     }
     
-    public static final void setFieldDirectInquiry(BusinessObject businessObject, String attributeName, MaintainableFieldDefinition maintainableFieldDefinition, Field field, List displayedFieldNames) {
+    public static final void setFieldDirectInquiry(BusinessObject businessObject, String attributeName, MaintainableFieldDefinition maintainableFieldDefinition, Field field, List<String> displayedFieldNames) {
         LookupUtils.setFieldDirectInquiry(businessObject, attributeName, field);
     }
     
     public static final void setFieldDirectInquiry(BusinessObject businessObject, String collectionName, boolean addLine, int index,
-            String attributeName, Field field, List displayedFieldNames, Maintainable maintainable, MaintainableFieldDefinition maintainableFieldDefinition) {
+            String attributeName, Field field, List<String> displayedFieldNames, Maintainable maintainable, MaintainableFieldDefinition maintainableFieldDefinition) {
         LookupUtils.setFieldDirectInquiry(businessObject, attributeName, field);
     }
     /**
@@ -293,28 +303,30 @@ public class MaintenanceUtils {
     }
 
     /**
-     * This method will throw a {@link ValidationException} if there is a valid locking document in existance
+     * This method will throw a {@link ValidationException} if there is a valid locking document in existence and throwExceptionIfLocked is true.
      */
-    public static void checkForLockingDocument(MaintenanceDocument document) {
+    public static void checkForLockingDocument(MaintenanceDocument document, boolean throwExceptionIfLocked) {
         LOG.info("starting checkForLockingDocument (by MaintenanceDocument)");
 
         // get the docHeaderId of the blocking docs, if any are locked and blocking
-        String blockingDocId = KNSServiceLocator.getMaintenanceDocumentService().getLockingDocumentId(document);
-        checkDocumentBlockingDocumentId(blockingDocId);
+        //String blockingDocId = getMaintenanceDocumentService().getLockingDocumentId(document);
+        String blockingDocId = document.getNewMaintainableObject().getLockingDocumentId();
+        checkDocumentBlockingDocumentId(blockingDocId, throwExceptionIfLocked);
     }
 
     /**
-     * This method will throw a {@link ValidationException} if there is a valid locking document in existance
+     * This method will throw a {@link ValidationException} if there is a valid locking document in existence and throwExceptionIfLocked is true.
      */
-    public static void checkForLockingDocument(Maintainable maintainable) {
+    public static void checkForLockingDocument(Maintainable maintainable, boolean throwExceptionIfLocked) {
         LOG.info("starting checkForLockingDocument (by Maintainable)");
 
         // get the docHeaderId of the blocking docs, if any are locked and blocking
-        String blockingDocId = KNSServiceLocator.getMaintenanceDocumentService().getLockingDocumentId(maintainable, null);
-        checkDocumentBlockingDocumentId(blockingDocId);
+        //String blockingDocId = getMaintenanceDocumentService().getLockingDocumentId(maintainable, null);
+        String blockingDocId = maintainable.getLockingDocumentId();
+        checkDocumentBlockingDocumentId(blockingDocId, throwExceptionIfLocked);
     }
 
-    private static void checkDocumentBlockingDocumentId(String blockingDocId) {
+    private static void checkDocumentBlockingDocumentId(String blockingDocId, boolean throwExceptionIfLocked) {
         // if we got nothing, then no docs are blocking, and we're done
         if (StringUtils.isBlank(blockingDocId)) {
             return;
@@ -325,12 +337,24 @@ public class MaintenanceUtils {
         }
 
         // load the blocking locked document
-        org.kuali.rice.kns.document.Document lockedDocument;
+        KualiWorkflowDocument lockedDocument = null;
         try {
-            lockedDocument = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(blockingDocId);
+        	// need to perform this check to prevent an exception from being thrown by the
+        	// createWorkflowDocument call - the throw itself causes transaction rollback problems to
+        	// occur, even though the exception would be caught here
+        	if ( getWorkflowDocumentService().workflowDocumentExists(blockingDocId) ) {
+        		lockedDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(blockingDocId), GlobalVariables.getUserSession().getPerson() );
+        	}
+        } catch (Exception ex) {
+        	// clean up the lock and notify the admins
+        	LOG.error("Unable to retrieve locking document specified in the maintenance lock table: " + blockingDocId, ex);
+
+        	cleanOrphanLocks(blockingDocId, ex);
+        	return;
         }
-        catch (WorkflowException e) {
-            throw new ValidationException("Could not load the locking document.", e);
+        if ( lockedDocument == null ) {
+        	LOG.warn( "Locking document header for " + blockingDocId + "came back null." );
+        	cleanOrphanLocks(blockingDocId, null);
         }
 
         // if we can ignore the lock (see method notes), then exit cause we're done
@@ -342,17 +366,23 @@ public class MaintenanceUtils {
         Properties parameters = new Properties();
         parameters.put(KNSConstants.PARAMETER_DOC_ID, blockingDocId);
         parameters.put(KNSConstants.PARAMETER_COMMAND, KNSConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
-        String blockingUrl = UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
+        String blockingUrl = UrlFactory.parameterizeUrl(getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("blockingUrl = '" + blockingUrl + "'");
-            LOG.debug("Maintenance record: " + lockedDocument.getDocumentHeader().getDocumentNumber() + "is locked.");
+            LOG.debug("Maintenance record: " + lockedDocument.getAppDocId() + "is locked.");
         }
-
-        // post an error about the locked document
         String[] errorParameters = { blockingUrl, blockingDocId };
-        GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
-
-        throw new ValidationException("Maintenance Record is locked by another document.");
+        
+        // If specified, add an error to the ErrorMap and throw an exception; otherwise, just add a warning to the ErrorMap instead.
+        if (throwExceptionIfLocked) {
+        	// post an error about the locked document
+            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
+            throw new ValidationException("Maintenance Record is locked by another document.");
+        }
+        else {
+        	// Post a warning about the locked document.
+        	GlobalVariables.getErrorMap().putWarning(KNSConstants.GLOBAL_MESSAGES, RiceKeyConstants.WARNING_MAINTENANCE_LOCKED, errorParameters);
+        }
     }
 
     /**
@@ -363,12 +393,11 @@ public class MaintenanceUtils {
      * @return
      * @throws WorkflowException
      */
-    private static boolean lockCanBeIgnored(org.kuali.rice.kns.document.Document lockedDocument) {
+    private static boolean lockCanBeIgnored(KualiWorkflowDocument lockedDocument) {
         // TODO: implement real authorization for Maintenance Document Save/Route - KULNRVSYS-948
     	if ( lockedDocument == null ) {
     		return true;
 		}
-        DocumentHeader documentHeader = lockedDocument.getDocumentHeader();
 
         // get the user-id. if no user-id, then we can do this test, so exit
         String userId = GlobalVariables.getUserSession().getPrincipalId().trim();
@@ -377,12 +406,56 @@ public class MaintenanceUtils {
         }
 
         // if the current user is not the initiator of the blocking document
-        if (!userId.equalsIgnoreCase(documentHeader.getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId().trim())) {
+        if (!userId.equalsIgnoreCase(lockedDocument.getRouteHeader().getInitiatorPrincipalId().trim())) {
             return false;
         }
 
         // if the blocking document hasn't been routed, we can ignore it
-        return documentHeader.getWorkflowDocument().stateIsInitiated();
+        return lockedDocument.stateIsInitiated();
     }
 
+    private static void cleanOrphanLocks( String lockingDocumentNumber, Exception workflowException ) {
+    	// put a try/catch around the whole thing - the whole reason we are doing this is to prevent data errors
+    	// from stopping a document
+    	try {
+    		// delete the locks for this document since it does not seem to exist
+    		getMaintenanceDocumentService().deleteLocks(lockingDocumentNumber);
+    		// notify the incident list
+            Map<String, String> parameters = new HashMap<String, String>(1);
+            parameters.put(KNSConstants.PARAMETER_DOC_ID, lockingDocumentNumber);
+        	KualiExceptionIncident kei = getKualiExceptionIncidentService().getExceptionIncident(workflowException, parameters);
+    		getKualiExceptionIncidentService().report(kei);
+    	} catch ( Exception ex ) {
+    		LOG.error("Unable to delete and notify upon locking document retrieval failure.", ex);
+    	}
+    }
+
+	private static MaintenanceDocumentService getMaintenanceDocumentService() {
+		if ( maintenanceDocumentService == null ) {
+			maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+		}
+		return maintenanceDocumentService;
+	}
+
+	private static WorkflowDocumentService getWorkflowDocumentService() {
+		if ( workflowDocumentService == null ) {
+			workflowDocumentService = KNSServiceLocator.getWorkflowDocumentService();
+		}
+		return workflowDocumentService;
+	}
+
+	private static KualiConfigurationService getKualiConfigurationService() {
+		if ( kualiConfigurationService == null ) {
+			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+		}
+		return kualiConfigurationService;
+	}
+
+	private static KualiExceptionIncidentService getKualiExceptionIncidentService() {
+		if ( kualiExceptionIncidentService == null ) {
+			kualiExceptionIncidentService = KNSServiceLocator.getKualiExceptionIncidentService();
+		}
+		return kualiExceptionIncidentService;
+	}
+    
 }

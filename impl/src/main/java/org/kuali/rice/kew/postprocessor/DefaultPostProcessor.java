@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.postprocessor;
 
+import java.util.List;
+
 
 
 /**
@@ -51,5 +53,12 @@ public class DefaultPostProcessor implements PostProcessor {
     public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
         return new ProcessDocReport(true, "");
     }
+
+	public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent)
+			throws Exception {
+		return null;
+	}
+    
+    
 
 }

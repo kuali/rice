@@ -103,7 +103,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 
 			if (WebUtils.isDocumentSession(document, docForm)) {
-				getSessionDocumentService().setDocumentForm(docForm, userSession);
+				getSessionDocumentService().setDocumentForm(docForm, userSession, request);
 			}
 
 			Boolean exitingDocument = (Boolean) request.getAttribute(KNSConstants.EXITING_DOCUMENT);
@@ -111,7 +111,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (exitingDocument != null && exitingDocument.booleanValue()) {
 				// remove KualiDocumentFormBase object from session and
 				// table.
-				getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession);
+				getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession, request);
 			}
 		}
 
@@ -126,7 +126,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * requests, also populating the GlobalVariables class with our UserSession
 	 * for convenience to the non web layer based classes and implementations
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
 		UserSession userSession = null;
@@ -243,7 +242,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	protected boolean processValidate(HttpServletRequest request, HttpServletResponse response, ActionForm form, ActionMapping mapping) throws IOException, ServletException, InvalidCancelException {
 
 		// skip form validate if we had errors from populate
-		if (GlobalVariables.getErrorMap().isEmpty()) {
+		if (GlobalVariables.getErrorMap().hasNoErrors()) {
 			if (form == null) {
 				return (true);
 			}
@@ -265,7 +264,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 
 		publishMessages(request);
-		if (!GlobalVariables.getErrorMap().isEmpty()) {
+		if (!GlobalVariables.getErrorMap().hasNoErrors()) {
 			// Special handling for multipart request
 			if (form.getMultipartRequestHandler() != null) {
 				if (LOG.isDebugEnabled()) {
@@ -336,7 +335,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				LOG.debug("getDecomentForm KualiDocumentFormBase from session");
 				form = (ActionForm) userSession.retrieveObject(docFormKey);
 			} else {
-				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession);
+				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request);
 			}
 			request.setAttribute(mapping.getAttribute(), form);
 			if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
@@ -397,12 +396,15 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope) ||
 					(form instanceof KualiDocumentFormBase && WebUtils.isDocumentSession(((KualiDocumentFormBase) form).getDocument(), (KualiDocumentFormBase) form))) {
 
-				if (userSession.retrieveObject(docFormKey) != null) {
-					LOG.debug("getDecomentForm KualiDocumentFormBase from session");
-					form = (ActionForm) userSession.retrieveObject(docFormKey);
+				Object userSessionObject = userSession.retrieveObject(docFormKey);
+				if ( userSessionObject != null &&  userSessionObject instanceof ActionForm ) {
+					LOG.debug("getDocumentForm KualiDocumentFormBase from session");
+					form = (ActionForm) userSessionObject;
 				} else {
-
-					form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession);
+					ActionForm tempForm = (ActionForm)getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request);
+					if ( tempForm != null ) {
+						form = tempForm;
+					}
 				}
 
 				request.setAttribute(mapping.getAttribute(), form);
@@ -475,7 +477,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 			if (e instanceof ValidationException) {
 				// add a generic error message if there are none
-				if (GlobalVariables.getErrorMap().isEmpty()) {
+				if (GlobalVariables.getErrorMap().hasNoErrors()) {
 
 					GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
 				}
@@ -551,7 +553,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	private void publishMessages(HttpServletRequest request) {
 		ErrorMap errorMap = GlobalVariables.getErrorMap();
-		if (!errorMap.isEmpty()) {
+		if (!errorMap.hasNoErrors()) {
 			ErrorContainer errorContainer = new ErrorContainer(errorMap);
 
 			request.setAttribute("ErrorContainer", errorContainer);

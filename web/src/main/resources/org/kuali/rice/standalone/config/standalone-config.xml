@@ -8,67 +8,13 @@
 -->
 <config>
 
-    <param name="transaction.timeout">3600</param>
-	<param name="rice.logging.configure">true</param>
-
-    <!-- KSB -->
-
-    <param name="service.namespace">RICE</param>
-    <param name="http.port">8080</param>
-
-    <param name="bam.enabled">false</param>
-    <param name="threadPool.on">true</param>
-    <param name="dev.mode">false</param>
-
-    <!-- KSB/Exception Routing -->
-    <param name="RouteQueue.timeIncrement">5000</param>
-    <param name="RouteQueue.maxRetryAttempts">5</param>
-    <param name="Routing.ImmediateExceptionRouting">false</param>
-
-    <!-- KEW -->
-
-    <param name="plugin.registry.enabled">true</param>
-    <param name="kew.mode">local</param>
-    <param name="kim.mode">local</param>
-    <param name="ksb.mode">local</param>
-    <param name="xml.pipeline.lifecycle.enabled">true</param>
-    <param name="email.reminder.lifecycle.enabled">true</param>
-	<param name="default.note.class">DefaultNoteAttribute</param>
-
-	<!-- default edl config location -->
-	<param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
-
-	<!-- shared class loader in workflow war - don't change -->
-	<param name="en.plugin.dir">${rice.base}WEB-INF/plugins</param>
-
-    <param name="data.xml.root.location">${rice.base}xml/${environment}/</param>
-    <param name="data.xml.pending.location">${data.xml.root.location}pending</param>
-    <param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
-    <param name="data.xml.problem.location">${data.xml.root.location}problem</param>
-    <param name="initialDelaySecs">10</param>
-    <param name="data.xml.pollIntervalSecs">30</param>
-
-    <!-- KEN -->
-
-    <param name="notification.resolveMessageDeliveriesJob.startDelayMS">5000</param>
-    <param name="notification.resolveMessageDeliveriesJob.intervalMS">10000</param>
-
-    <param name="notification.processUndeliveredJob.startDelayMS">10000</param>
-    <param name="notification.processUndeliveredJob.intervalMS">10000</param>
-
-    <param name="notification.processAutoRemovalJob.startDelayMS">60000</param>
-    <param name="notification.processAutoRemovalJob.intervalMS">60000</param>
-
-    <param name="notification.quartz.autostartup">true</param>
-    <param name="notification.concurrent.jobs">true</param>
-
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    <param name="config.location">classpath:META-INF/standalone-config-defaults.xml</param>
 
     <!-- default config files -->
-    <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
     <param name="config.location">/usr/local/rice/rice-config.xml</param>
     <param name="config.location">${rice.base}../../../conf/rice-config.xml</param>
     <param name="config.location">${rice.base}../../conf/rice-config.xml</param>
     <param name="config.location">${additional.config.locations}</param>
+    <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
 
 </config>

@@ -21,6 +21,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 
@@ -39,8 +41,13 @@ public class OraclePlatform extends ANSISqlPlatform {
 	private static final long DEFAULT_TIMEOUT_SECONDS = 60 * 60; // default to 1 hour
 	public static final long WAIT_FOREVER = -1;
 	
+	private static final Pattern APOS_PAT = Pattern.compile("'");
+	
+    @SuppressWarnings("unchecked")
     public Long getNextValSQL(String sequenceName,  EntityManager entityManager) {
-        return new Long(((BigDecimal) entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getSingleResult()).longValue());
+        List resultList = entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getResultList();
+        return new Long(((BigDecimal)resultList.get(0)).longValue());
+//        return new Long(((BigDecimal) entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getSingleResult()).longValue());
     }
     
 	public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
@@ -119,5 +126,14 @@ public class OraclePlatform extends ANSISqlPlatform {
             sql += " wait " + seconds;
         }
         return sql;
+    }
+    
+    /**
+     * Performs Oracle-specific escaping of String parameters.
+     * 
+     * @see org.kuali.rice.core.database.platform.Platform#escapeString(java.lang.String)
+     */
+    public String escapeString(String sqlString) {
+    	return (sqlString != null) ? APOS_PAT.matcher(sqlString).replaceAll("''") : null;
     }
 }

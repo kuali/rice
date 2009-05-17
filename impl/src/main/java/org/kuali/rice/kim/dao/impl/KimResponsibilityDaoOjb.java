@@ -26,6 +26,7 @@ import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 
 /**
@@ -89,18 +90,30 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		c.addEqualTo( "roleResponsibility.responsibilityId", responsibilityId );
 		c.addEqualTo( "roleResponsibility.roleId", roleId );
 		Criteria idCriteria = new Criteria();
-		idCriteria.addEqualTo( "roleMemberId", roleMemberId );
+		idCriteria.addEqualTo( KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId );
 		// also handle when roleMemberId is "*" in table
 		Criteria starCrit = new Criteria();
-		starCrit.addEqualTo( "roleMemberId", "*" );
+		starCrit.addEqualTo( KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, "*" );
 		idCriteria.addOrCriteria( starCrit );
 		c.addAndCriteria( idCriteria );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityActionImpl.class, c );
 		Collection<RoleResponsibilityActionImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		RoleResponsibilityActionImpl result = null;
 		if ( coll.size() == 0 ) {
-			return null;
+			// ok, an exact match failed, attempt to pull where the role_rsp_id is "*"
+			// but, at this point, we would require an exact match on the role member ID
+			c = new Criteria();
+			c.addEqualTo( "roleResponsibilityId", "*" );
+			c.addEqualTo( KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId );
+			query = QueryFactory.newQuery( RoleResponsibilityActionImpl.class, c );
+			coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+			if ( coll.size() != 0 ) {
+				result = coll.iterator().next();
+			}
+		} else {
+			result = coll.iterator().next();
 		}
-		return coll.iterator().next();
+		return result;
 	}
 }

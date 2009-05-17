@@ -42,6 +42,31 @@
 				</requests>
 			</routeNodes>
 		</documentType>
+		<documentType>
+			<name>testGetDocumentIdsToLock</name>
+			<label>testGetDocumentIdsToLock</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.PostProcessorTest$GetDocumentIdsToLockPostProcessor</postProcessorName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
 	</documentTypes>
 
 </data>

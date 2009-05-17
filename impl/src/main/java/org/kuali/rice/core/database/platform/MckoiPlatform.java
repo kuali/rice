@@ -79,5 +79,12 @@ public class MckoiPlatform extends ANSISqlPlatform {
     public String getSelectForUpdateSuffix(long waitMillis) {
     	throw new UnsupportedOperationException("Implement me!");
     }
+    
+    /**
+     * @see org.kuali.rice.core.database.platform.Platform#escapeString(java.lang.String)
+     */
+    public String escapeString(String sqlString) {
+    	return sqlString;
+    }
 
 }

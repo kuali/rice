@@ -25,7 +25,6 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -33,19 +32,23 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocumentFormBase {
+public class IdentityManagementPersonDocumentForm extends IdentityManagementDocumentFormBase {
+
+	{
+		requiredNonEditableProperties.add("methodToCall");
+	}
 
     private static final long serialVersionUID = -4787045391777666988L;
-    
-	private PersonDocumentAffiliation newAffln;
-    private PersonDocumentEmploymentInfo newEmpInfo;
-    private PersonDocumentCitizenship newCitizenship;
-    private PersonDocumentName newName;
-    private PersonDocumentAddress newAddress;
-    private PersonDocumentPhone newPhone;
-    private PersonDocumentEmail newEmail;
-    private PersonDocumentGroup newGroup;
-    private PersonDocumentRole newRole;
+    protected String principalId;
+    protected PersonDocumentAffiliation newAffln;
+    protected PersonDocumentEmploymentInfo newEmpInfo;
+    protected PersonDocumentCitizenship newCitizenship;
+    protected PersonDocumentName newName;
+    protected PersonDocumentAddress newAddress;
+    protected PersonDocumentPhone newPhone;
+    protected PersonDocumentEmail newEmail;
+    protected PersonDocumentGroup newGroup;
+    protected PersonDocumentRole newRole;
     
     public IdentityManagementPersonDocumentForm() {
         super();
@@ -133,6 +136,14 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
 
 	public void setNewRole(PersonDocumentRole newRole) {
 		this.newRole = newRole;
+	}
+
+	public String getPrincipalId() {
+		return this.principalId;
+	}
+
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
 	}
 
 

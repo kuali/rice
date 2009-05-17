@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,7 +25,6 @@ import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.kns.dao.MaintenanceDocumentDao;
-import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -36,7 +33,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  */
 public class MaintenanceDocumentDaoJpa implements MaintenanceDocumentDao {
 
-	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentDaoJpa.class);
+//	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentDaoJpa.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -68,28 +65,28 @@ public class MaintenanceDocumentDaoJpa implements MaintenanceDocumentDao {
 		return lockingDocNumber;
 	}
 
-	/**
-	 * Returns all pending maintenance documents locked by the given business object class.
-	 */
-	public Collection getPendingDocumentsForClass(Class businessObjectClass) {
-		Criteria criteria = new Criteria(MaintenanceLock.class.getName());
-		criteria.like("lockingRepresentation", "%" + businessObjectClass.getName() + "%");
-
-		Collection maintenanceLocks = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
-		if (!maintenanceLocks.isEmpty()) {
-			criteria = new Criteria(MaintenanceDocumentBase.class.getName());
-			List<String> documentNumbers = new ArrayList<String>();
-
-			for (Object maintenanceLock : maintenanceLocks) {
-				documentNumbers.add(((MaintenanceLock) maintenanceLock).getDocumentNumber());
-			}
-			criteria.in("documentNumber", documentNumbers);
-
-			return new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
-		} else {
-			return maintenanceLocks;
-		}
-	}
+//	/**
+//	 * Returns all pending maintenance documents locked by the given business object class.
+//	 */
+//	public Collection getPendingDocumentsForClass(Class businessObjectClass) {
+//		Criteria criteria = new Criteria(MaintenanceLock.class.getName());
+//		criteria.like("lockingRepresentation", "%" + businessObjectClass.getName() + "%");
+//
+//		Collection maintenanceLocks = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+//		if (!maintenanceLocks.isEmpty()) {
+//			criteria = new Criteria(MaintenanceDocumentBase.class.getName());
+//			List<String> documentNumbers = new ArrayList<String>();
+//
+//			for (Object maintenanceLock : maintenanceLocks) {
+//				documentNumbers.add(((MaintenanceLock) maintenanceLock).getDocumentNumber());
+//			}
+//			criteria.in("documentNumber", documentNumbers);
+//
+//			return new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+//		} else {
+//			return maintenanceLocks;
+//		}
+//	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.MaintenanceDocumentDao#deleteLocks(java.lang.String)

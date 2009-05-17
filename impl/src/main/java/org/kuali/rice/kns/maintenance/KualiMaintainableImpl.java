@@ -53,6 +53,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ErrorMap;
@@ -64,8 +65,6 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
-import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
 
@@ -98,6 +97,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     private static org.kuali.rice.kim.service.PersonService personService;
     private static BusinessObjectMetaDataService businessObjectMetaDataService;
     private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    private static MaintenanceDocumentService maintenanceDocumentService;
     
     /**
      * Default empty constructor
@@ -1137,6 +1137,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	public void doRouteStatusChange(DocumentHeader documentHeader) {
 	}
 
+	public List<Long> getWorkflowEngineDocumentIdsToLock() {
+		return null;
+	}
+
 	public static PersistenceStructureService getPersistenceStructureService() {
 	    if ( persistenceStructureService == null ) {
 	        persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
@@ -1198,6 +1202,13 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
     	}
     	return businessObjectAuthorizationService;
+    }
+    
+    public static MaintenanceDocumentService getMaintenanceDocumentService() {
+    	if (maintenanceDocumentService == null) {
+    		maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+    	}
+    	return maintenanceDocumentService;
     }
     
 	/**
@@ -1411,4 +1422,11 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		//Do nothing by default
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#getLockingDocumentId()
+	 */
+	public String getLockingDocumentId() {
+		return getMaintenanceDocumentService().getLockingDocumentId(this, documentNumber);
+	}
+	
 }

@@ -27,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -208,10 +209,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){
 			detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR);
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
-
-		return detailObjectsToDisplay.toString();
+		return StringUtils.chomp(detailObjectsToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR );
 	}
 
 	public String getDetailObjectsToDisplay() {
@@ -219,10 +217,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){
 			detailObjectsToDisplay.append(getAttributeDetailToDisplay(permissionAttributeData));
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
-
-		return detailObjectsToDisplay.toString();
+		return StringUtils.chomp(detailObjectsToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR );
 	}
 
 	public String getAttributeDetailToDisplay(PermissionAttributeDataImpl permissionAttributeData){
@@ -235,8 +230,8 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
     	return getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
 
-	transient private DataDictionaryService dataDictionaryService;
-	public DataDictionaryService getDataDictionaryService() {
+	private transient static DataDictionaryService dataDictionaryService;
+	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}

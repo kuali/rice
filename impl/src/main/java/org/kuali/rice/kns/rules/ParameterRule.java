@@ -63,7 +63,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 	        				KNSConstants.KNS_NAMESPACE,
-	        				KimConstants.PermissionTemplateNames.MAINAIN_SYSTEM_PARAMETER,
+	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
 	        				permissionDetails, null);
 	        if(!allowsEdit){
 	        	putGlobalError(RiceKeyConstants.AUTHORIZATION_ERROR_PARAMETER);

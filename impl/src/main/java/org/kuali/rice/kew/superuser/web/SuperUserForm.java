@@ -65,6 +65,9 @@ public class SuperUserForm extends KewRoutingKualiForm {
 
     private DocumentRouteHeaderValue routeHeader;
 
+    // KULRICE-3035: Added the ability to store the doc search's "returnLocation" property so that the superuser form can create a proper "cancel" button.
+    private String returnLocation;
+    
     public String getMethodToCall() {
         return methodToCall;
     }
@@ -264,4 +267,10 @@ public class SuperUserForm extends KewRoutingKualiForm {
         return Arrays.asList(getActionRequestRunPostProcessorCheck());
     }
 
+    public String getReturnLocation() {
+    	return returnLocation;
+    }
+    public void setReturnLocation(String returnLocation) {
+    	this.returnLocation = returnLocation;
+    }
 }

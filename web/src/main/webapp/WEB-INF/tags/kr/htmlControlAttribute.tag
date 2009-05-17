@@ -49,16 +49,16 @@
 <!-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) -->
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
 <c:if test="${!empty attributeEntry.attributeSecurityMask && attributeEntry.attributeSecurityMask == true  }">
-	<c:set var="className" value ="${attributeEntry.fullClassName}" /> 
+	<c:set var="className" value ="${attributeEntry.fullClassName}" />
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
 	<c:set var="readOnly" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
 	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
 	<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
 </c:if>
 
- 
+
 <c:if test="${!displayMask && !empty attributeEntry.attributeSecurityPartialMask && attributeEntry.attributeSecurityPartialMask == true  }">
-	<c:set var="className" value ="${attributeEntry.fullClassName}" /> 
+	<c:set var="className" value ="${attributeEntry.fullClassName}" />
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
 	<c:set var="readOnly" value="${kfunc:canPartiallyUnmaskField(attributeEntry.fullClassName, attributeEntry.name) ? 'false' : 'true'}"/>
     <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName)? 'false' : 'true'}" />
@@ -122,7 +122,7 @@
 		</c:when>
          <c:otherwise>
          <logic:empty name="KualiForm" property="${property}">
-         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;
          </logic:empty>
          <c:if test="${!empty extraReadOnlyProperty}">
 			<c:choose>
@@ -165,20 +165,13 @@
     </c:when>
 
     <%-- textarea --%>
-    <c:when test="${attributeEntry.control.textarea == true}"> 
-            <html:textarea property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}" 
-                           rows="${attributeEntry.control.rows}" cols="${attributeEntry.control.cols}" 
-                           styleId="${property}" disabled="${disableField}" styleClass="${styleClass}" 
-                           onkeyup="textLimit(${attributeEntry.maxLength});" /> 
-            <script type="text/javascript"> 
-              function textLimit(maxlen) { 
-              var field=window.document.forms[0].elements['${property}']; 
-                if (field.value.length > maxlen) { 
-                  field.value = field.value.substr(0, maxlen); 
-                } 
-              }; 
-            </script>
-    </c:when> 
+    <c:when test="${attributeEntry.control.textarea == true}">
+            <html:textarea property="${property}" style="${textStyle}" title="${accessibleTitle}" tabindex="${tabindex}"
+                           rows="${attributeEntry.control.rows}" cols="${attributeEntry.control.cols}"
+                           styleId="${property}" disabled="${disableField}" styleClass="${styleClass}"
+                           onkeyup="textLimit(this, ${attributeEntry.maxLength});" />
+
+    </c:when>
 
     <%-- select --%>
     <c:when test="${attributeEntry.control.select == true}">
@@ -254,7 +247,7 @@
   <c:if test="${hasErrors}">
 	 		<kul:fieldShowErrorIcon />
   </c:if>
-  <!-- datePicker icon -->			
+  <!-- datePicker icon -->
   	<c:if test="${attributeEntry.control.text == true && datePicker==true}">
         <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;"
              title="Date selector" alt="Date selector"

@@ -16,10 +16,13 @@
  */
 package org.kuali.rice.kew.routemanager;
 
+import java.util.List;
+
 import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
 import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
@@ -35,6 +38,7 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
     public static boolean THROW_DO_ACTION_TAKEN_EXCEPTION;
     public static boolean THROW_BEFORE_PROCESS_EXCEPTION;
     public static boolean THROW_AFTER_PROCESS_EXCEPTION;
+    public static boolean THROW_DOCUMENT_LOCKING_EXCEPTION;
 	public static boolean TRANSITIONED_OUT_OF_EXCEPTION_ROUTING = false;
 	
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
@@ -86,5 +90,15 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
         }
         return new ProcessDocReport(true, "");
     }
+
+	public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent)
+			throws Exception {
+		if (THROW_DOCUMENT_LOCKING_EXCEPTION) {
+			throw new RuntimeException("I am the getDocumentIdsToLock exploder");
+		}
+		return null;
+	}
+    
+    
 
 }

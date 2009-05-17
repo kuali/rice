@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
-import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -30,7 +29,6 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -38,26 +36,31 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocumentFormBase {
+public class IdentityManagementRoleDocumentForm extends IdentityManagementDocumentFormBase {
+	private static final long serialVersionUID = 7099079353241080483L;
 	{
 		requiredNonEditableProperties.add("methodToCall");
+		requiredNonEditableProperties.add("roleCommand");
 	}
 	
-	private boolean canAssignRole = true;
-	private boolean canModifyAssignees = true;
-	private KimTypeImpl kimType;
-	private KimDocumentRoleMember member;
+	protected String delegationMemberRoleMemberId;
+	protected String roleCommand;
+	protected boolean canAssignRole = true;
+	protected boolean canModifyAssignees = true;
+	protected KimTypeImpl kimType;
+	protected KimDocumentRoleMember member;
 	{
 		member = new KimDocumentRoleMember();
 		member.getQualifiers().add(new KimDocumentRoleQualifier());
 	}
-	private KimDocumentRolePermission permission;
-	private KimDocumentRoleResponsibility responsibility;
-	private RoleDocumentDelegationMember delegationMember;
+	protected KimDocumentRolePermission permission;
+	protected KimDocumentRoleResponsibility responsibility;
+	protected RoleDocumentDelegationMember delegationMember;
 	{
 		delegationMember = new RoleDocumentDelegationMember();
 		delegationMember.getQualifiers().add(new RoleDocumentDelegationMemberQualifier());
 	}
+	protected String roleId;
     
     /**
 	 * @return the delegationMember
@@ -78,10 +81,6 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
         this.setDocument(new IdentityManagementRoleDocument());
     }
 
-    @Override
-	public void populate(HttpServletRequest request) {
-		super.populate(request);
-	}
 
 	public IdentityManagementRoleDocument getRoleDocument() {
         return (IdentityManagementRoleDocument) this.getDocument();
@@ -192,6 +191,9 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	 */
 	public void setKimType(KimTypeImpl kimType) {
 		this.kimType = kimType;
+		if ( kimType != null && getRoleDocument() != null ) {
+			getRoleDocument().setKimType(kimType);
+		}
 	}
 
 	/**
@@ -220,6 +222,61 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	 */
 	public void setCanModifyAssignees(boolean canModifyAssignees) {
 		this.canModifyAssignees = canModifyAssignees;
+	}
+	
+	public List<KimDocumentRoleMember> getMemberRows() {
+		return getRoleDocument().getMembers();
+	}
+
+	/**
+	 * @return the roleId
+	 */
+	public String getRoleId() {
+		return this.roleId;
+	}
+
+	/**
+	 * @param roleId the roleId to set
+	 */
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
+	}
+
+	/**
+	 * @return the roleCommand
+	 */
+	public String getRoleCommand() {
+		return this.roleCommand;
+	}
+
+	/**
+	 * @param roleCommand the roleCommand to set
+	 */
+	public void setRoleCommand(String roleCommand) {
+		this.roleCommand = roleCommand;
+	}
+
+	/**
+	 * @return the delegationMemberRoleMemberId
+	 */
+	public String getDelegationMemberRoleMemberId() {
+		return this.delegationMemberRoleMemberId;
+	}
+
+	/**
+	 * @param delegationMemberRoleMemberId the delegationMemberRoleMemberId to set
+	 */
+	public void setDelegationMemberRoleMemberId(String delegationMemberRoleMemberId) {
+		this.delegationMemberRoleMemberId = delegationMemberRoleMemberId;
+		getDelegationMember().setRoleMemberId(delegationMemberRoleMemberId);
+		KimDocumentRoleMember roleMember = getRoleDocument().getMember(delegationMemberRoleMemberId);
+		if(roleMember!=null){
+			RoleDocumentDelegationMemberQualifier delegationMemberQualifier;
+			for(KimDocumentRoleQualifier roleQualifier: roleMember.getQualifiers()){
+				delegationMemberQualifier = getDelegationMember().getQualifier(roleQualifier.getKimAttrDefnId());
+				delegationMemberQualifier.setAttrVal(roleQualifier.getAttrVal());
+			}
+		}
 	}
 
 }

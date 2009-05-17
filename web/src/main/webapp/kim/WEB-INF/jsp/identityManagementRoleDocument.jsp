@@ -15,26 +15,60 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="inquiry" value="false" scope="request" /> 
+<c:set var="inquiry" scope="request" value="${KualiForm.inquiry}" />
+<c:set var="readOnly" scope="request" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || inquiry}" />
+<c:set var="readOnly" scope="request" value="${!KualiForm.canAssignRole || readOnly}" />
+<c:set var="canModifyAssignees" scope="request" value="${KualiForm.canModifyAssignees && !readOnly}" />
+
+<c:set var="formAction" value="identityManagementRoleDocument" />
+<c:if test="${inquiry}">
+	<c:set var="formAction" value="identityManagementRoleInquiry" />
+</c:if>
 
 <kul:documentPage
-	showDocumentInfo="true"
-	htmlFormAction="identityManagementRoleDocument"
+	showDocumentInfo="${!inquiry}"
+	htmlFormAction="${formAction}"
 	documentTypeName="IdentityManagementRoleDocument"
-	renderMultipart="true"
+	renderMultipart="${!inquiry}"
 	showTabButtons="true"
 	auditCount="0">
 
- 	<kul:hiddenDocumentFields />
-	<kul:documentOverview editingMode="${KualiForm.editingMode}" />
-	<kim:roleOverview />
+    <c:if test="${!inquiry}">
+	 	<kul:hiddenDocumentFields />
+        <kul:documentOverview editingMode="${KualiForm.editingMode}" />
+	</c:if>
+    <c:if test="${inquiry}">
+        <div id="workarea">
+    </c:if>
+    <kim:roleOverview />
 	<kim:rolePermissions />
 	<kim:roleResponsibilities />
 	<kim:roleAssignees />
 	<kim:roleDelegations />
 
-	<kul:adHocRecipients />	
-	<kul:routeLog />
+	<c:if test="${!inquiry}">
+		<kul:adHocRecipients />	
+		<kul:routeLog />
+	</c:if>
 	<kul:panelFooter />
-	<kul:documentControls transactionalDocument="false" />
+    <c:if test="${inquiry}">
+        </div>
+    </c:if>
+	<c:choose>
+	    <c:when test="${!inquiry}">
+	        <kul:documentControls transactionalDocument="false" />
+            <input type="hidden" name="command" value="initiate" />
+            <input type="hidden" name="roleId" value="${KualiForm.document.roleId}" />
+            <script type="text/javascript">
+            function changeMemberTypeCode(){
+                document.getElementsByTagName("command").value="changeMemberTypeCode";
+                document.forms[0].submit();
+            }
+            </script>
+	    </c:when>
+	    <c:otherwise>
+	        <kul:inquiryControls />
+            <input type="hidden" name="roleId" value="${KualiForm.document.roleId}" />
+	    </c:otherwise>
+    </c:choose>
 </kul:documentPage>

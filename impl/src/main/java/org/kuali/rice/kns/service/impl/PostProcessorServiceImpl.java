@@ -16,13 +16,18 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -212,6 +217,40 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             logAndRethrow("before process", e);
         }
         return true;
+    }
+    
+    /**
+     * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
+     * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
+     * 
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     */
+    public Long[] getDocumentIdsToLock(DocumentLockingEventDTO event) throws Exception {
+        try {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug(new StringBuffer("started get document ids to lock method for document ").append(event.getRouteHeaderId()));
+        	}
+            establishGlobalVariables();
+            Document document = documentService.getByDocumentHeaderId(event.getRouteHeaderId().toString());
+            if (ObjectUtils.isNull(document)) {
+                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
+                LOG.warn("getDocumentIdsToLock() Unable to load document with id " + event.getRouteHeaderId() + "... ignoring post processing");
+            } else {
+                List<Long> documentIdsToLock = document.getWorkflowEngineDocumentIdsToLock();
+                if ( LOG.isDebugEnabled() ) {
+                	LOG.debug(new StringBuffer("finished get document ids to lock method for document ").append(event.getRouteHeaderId()));
+                }
+                if (documentIdsToLock == null) {
+                	return null;
+                }
+                return documentIdsToLock.toArray(new Long[0]);
+                
+            }
+        }
+        catch (Exception e) {
+            logAndRethrow("before process", e);
+        }
+        return null;
     }
 
     private void logAndRethrow(String changeType, Exception e) throws RuntimeException {

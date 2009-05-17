@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Takes two lists of ServiceInfo objects.  One from the service def table and one from a piece 
@@ -119,13 +120,15 @@ public class RoutingTableDiffCalculator {
 	public Map<String, ServiceInfo> getRemotedService(List<ServiceInfo> serviceInfos) {
 		Map<String, ServiceInfo> serviceMap = new HashMap<String, ServiceInfo>();
 		for (ServiceInfo info : serviceInfos) {
-			String endpointURL = info.getEndpointUrl();
-			if (serviceMap.containsKey(endpointURL)) {
-				LOG.warn("Multiple services with same endpoint url declared and saved in routing table.  " +
-						"Service will be ingored.  Endpoint " + endpointURL);
-			} else {			
-				serviceMap.put(endpointURL, info);
-			}
+		    if (ObjectUtils.isNotNull(info)) {
+    			String endpointURL = info.getEndpointUrl();
+    			if (serviceMap.containsKey(endpointURL)) {
+    				LOG.warn("Multiple services with same endpoint url declared and saved in routing table.  " +
+    						"Service will be ingored.  Endpoint " + endpointURL);
+    			} else {
+    				serviceMap.put(endpointURL, info);
+    			}
+		    }
 		}
 		return serviceMap;
 	}

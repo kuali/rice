@@ -7,32 +7,20 @@
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-
-<script type="text/javascript">
-function changeDelegationTypeCode(){
-	document.getElementById("command").value="changeDelegationTypeCode";
-	document.forms[0].submit();
-}
-</script>
 <kul:tab tabTitle="Delegations" defaultOpen="true">
 	<div class="tab-container" align="center">
-    <h3>
-    	<span class="subhead-left">Delegations</span>
-    </h3>
-    
     <table cellpadding="0" cellspacing="0" summary="">
         	<tr>
-        		<th><div align="left">&nbsp;</div></th> 
+        		<th>&nbsp;</th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.memberTypeCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.delegationName}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.activeFromDate}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationAttributes.activeToDate}" noColon="true" /></div></th>
-				<c:if test="${not inquiry}">	
+				<c:if test="${!readOnly}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
         	</tr>     
-          <c:if test="${not inquiry}">	
+          <c:if test="${!readOnly}">	
              <tr>
 				<th class="infoline">Add:</th>
                 <td align="left" valign="middle" class="infoline">
@@ -90,7 +78,7 @@ function changeDelegationTypeCode(){
 
       	<c:forEach var="member" items="${KualiForm.document.delegation.members}" varStatus="statusMember">
             <tr>
-				<th rowspan="1" class="infoline" valign="top">
+				<th class="infoline" valign="top">
 					<c:out value="${statusMember.index+1}" />
 				</th>
 	            <td align="left" valign="middle">
@@ -121,27 +109,28 @@ function changeDelegationTypeCode(){
 							</td>
 						</c:when>
         				<c:otherwise>
-				            <td align="left" valign="middle">
-				               	<div align="left">
-								</div>
-							</td>
+				            <td>&nbsp;</td>
 						</c:otherwise>
 					</c:choose>
 		        </c:forEach>
-			<c:if test="${not inquiry}">	
-				<td>
-					<div align="center">&nbsp;
-						<c:choose>
-							<c:when test="${role.edit}">
+			<c:if test="${!readOnly}">	
+				<c:choose>
+					<c:when test="${role.edit || readOnly}">
+		                <td>
+		                    <div align="center">&nbsp;
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
-							</c:when>
-	        	       		<c:otherwise>
-	        	        		<html:image property='methodToCall.deleteDelegationMember.line${status.index}.anchor${currentTabIndex}'
-								src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
-		        	       	</c:otherwise>
-	        	     	</c:choose>  
-					</div>
-				</td>
+		                    </div>
+		                </td>
+					</c:when>
+    	       		<c:otherwise>
+                        <td>
+                            <div align="center">&nbsp;
+                                <html:image property='methodToCall.deleteDelegationMember.line${status.index}.anchor${currentTabIndex}'
+                                src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
+                            </div>
+                        </td>
+        	       	</c:otherwise>
+    	     	</c:choose>  
 			</c:if>    
 			</tr>
 		</c:forEach>        

@@ -50,14 +50,12 @@
 		<property name="shortLabel" value="Type Identifier" />
 		<property name="maxLength" value="40" />
 		<property name="validationPattern" >
-			<bean parent="AlphaNumericValidationPattern" />
+			<bean parent="NumericValidationPattern" />
 		</property>
 		<property name="control" >
 			<bean parent="TextControlDefinition"
-				p:size="40" />
+				p:size="5" />
 		</property>
-		<property name="summary" value="Kim Typ Id" />
-		<property name="description" value="Kim Typ Id" />
 	</bean>
 
 	<bean id="KimTypeImpl-name" parent="KimTypeImpl-name-parentBean" />

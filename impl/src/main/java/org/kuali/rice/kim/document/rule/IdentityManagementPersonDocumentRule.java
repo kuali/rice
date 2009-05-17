@@ -33,6 +33,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
+import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
@@ -92,6 +93,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
         //KNSServiceLocator.getDictionaryValidationService().validateDocument(document);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
+        valid &= validTaxId(personDoc);
         valid &= checkMultipleDefault (personDoc.getAffiliations(), "affiliations");
         valid &= checkMultipleDefault (personDoc.getNames(), "names");
         valid &= checkMultipleDefault (personDoc.getAddrs(), "addrs");
@@ -203,6 +205,26 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
+    private boolean validTaxId(IdentityManagementPersonDocument personDoc){
+    	boolean valid = true;
+    	if(isPersonAnEmployee(personDoc.getAffiliations()) && StringUtils.isEmpty(personDoc.getTaxId())){
+     		GlobalVariables.getErrorMap().putError("document.taxId", RiceKeyConstants.ERROR_REQUIRED_CONDITIONALLY, new String[] {"Tax Identification Number", "an employee"});
+     		valid = false;
+    	}
+    	return valid;
+    }
+    
+    private boolean isPersonAnEmployee(List<PersonDocumentAffiliation> affiliations){
+    	boolean isEmployee = false;
+    	for (PersonDocumentAffiliation affiliation : affiliations){
+    		if (affiliation.getAffiliationType() != null && affiliation.getAffiliationType().isEmploymentAffiliationType()){
+    			isEmployee = true;
+    			break;
+    		}
+    	}
+    	return isEmployee;
+    }
+    
     private boolean checkUniqueAffiliationTypePerCampus (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
@@ -245,7 +267,20 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	if (personDoc.getNames().isEmpty()) {
      		GlobalVariables.getErrorMap().putError("names[0]",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "name");
      		valid = false;
-    	}	
+    	} else{
+        	boolean activeExists = false;
+        	for(PersonDocumentName name: personDoc.getNames()){
+    	    	if(name.isActive()){
+    	    		activeExists = true;
+   	    		}
+        	}
+        	if(!activeExists){
+        		GlobalVariables.getErrorMap().putError("names[0]", RiceKeyConstants.ERROR_ONE_ACTIVE_ITEM_REQUIRED, "name");
+	     		valid = false;	    		
+        	}
+        	return valid;
+
+    	}
     	return valid;
     }
     

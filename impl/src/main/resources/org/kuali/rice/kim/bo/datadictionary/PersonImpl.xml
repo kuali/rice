@@ -295,9 +295,9 @@
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition" p:attributeName="principalId" />
-        <bean parent="FieldDefinition" p:attributeName="principalName" />
-        <bean parent="FieldDefinition" p:attributeName="name" />
-        <bean parent="FieldDefinition" p:attributeName="entityId" />
+        <bean parent="FieldDefinition" p:attributeName="principalName" p:noInquiry="true" />
+        <bean parent="FieldDefinition" p:attributeName="name" p:noInquiry="true" />
+        <bean parent="FieldDefinition" p:attributeName="entityId" p:noInquiry="true" />
         <bean parent="FieldDefinition" p:attributeName="campusCode" />
         <bean parent="FieldDefinition" p:attributeName="primaryDepartmentCode" />
         <bean parent="FieldDefinition" p:attributeName="employeeId" />

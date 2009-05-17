@@ -153,8 +153,10 @@ public class Field implements java.io.Serializable {
     private String fieldHelpName;
     private String script;
     private String universalIdAttributeName;
+    private String universalIdValue;
     private String userIdAttributeName;
     private String personNameAttributeName;
+    private String personNameValue;
     private String defaultValue = KNSConstants.EMPTY_STRING;
     private boolean keyField;
     private String displayEditMode;
@@ -1581,6 +1583,22 @@ public class Field implements java.io.Serializable {
 	 */
 	public void setAllowInlineRange(boolean allowInlineRange) {
 		this.allowInlineRange = allowInlineRange;
+	}
+
+	public String getUniversalIdValue() {
+		return this.universalIdValue;
+	}
+
+	public void setUniversalIdValue(String universalIdValue) {
+		this.universalIdValue = universalIdValue;
+	}
+
+	public String getPersonNameValue() {
+		return this.personNameValue;
+	}
+
+	public void setPersonNameValue(String personNameValue) {
+		this.personNameValue = personNameValue;
 	}
     
     //#END DOC SEARCH RELATED

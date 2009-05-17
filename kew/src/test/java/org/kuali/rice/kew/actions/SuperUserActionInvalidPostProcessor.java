@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -26,6 +27,7 @@ import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
 import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
@@ -106,7 +108,14 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
     }
     
-    private boolean isDocumentPostProcessable(WorkflowDocument doc) throws WorkflowException {
+    /**
+     * @see org.kuali.rice.kew.postprocessor.PostProcessor#getDocumentIdsToLock(org.kuali.rice.kew.postprocessor.DocumentLockingEvent)
+     */
+    public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
+		return null;
+	}
+
+	private boolean isDocumentPostProcessable(WorkflowDocument doc) throws WorkflowException {
     	return isDocumentPostProcessable(doc, new ArrayList<String>());
     }
     

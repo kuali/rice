@@ -34,6 +34,7 @@ import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -94,6 +95,7 @@ public class StandardDocumentSearchResultProcessor implements
 				for (org.kuali.rice.kns.web.ui.Field field : getFields(criteria)) {
 					if (field instanceof Field) {
 						Field dsField = (Field) field;
+						dsColumn.setFormatter((Formatter)dsField.getFormatter());
 //FIXME: Chris - either get rid of this
 //						if ((dsField.getPropertyName().equals(dsColumn
 //								.getPropertyName()))
@@ -285,14 +287,14 @@ public class StandardDocumentSearchResultProcessor implements
 								resultFieldLabel = dsField.getMainFieldLabel();
 							}
 							this.addSearchableAttributeColumnUsingKey(columns,
-									dsField.getDisplayParameters(), dsField
-											.getPropertyName(),
+									dsField.getFormatter(), dsField.getPropertyName(),
 									resultFieldLabel, Boolean.TRUE,
 									Boolean.TRUE);
 							if (dsField.getPropertyName() != null) {
 								alreadyProcessedFieldKeys.add(dsField
 										.getPropertyName());
 							}
+
 						}
 					}
 				}
@@ -704,6 +706,20 @@ public class StandardDocumentSearchResultProcessor implements
 						(sortableOverride != null) ? sortableOverride
 								: defaultSortable));
 	}
+
+   public void addSearchableAttributeColumnUsingKey(
+        List<Column> columns,
+        Formatter formatter, String key, String label,
+        Boolean sortableOverride, Boolean defaultSortable) {
+        Column column = this.constructColumnUsingKey(key, label,
+                (sortableOverride != null) ? sortableOverride
+                        : defaultSortable);
+        //if (formatter != null) {
+        column.setFormatter(formatter);
+        //}
+        columns.add(column);
+    }
+
 
 	/*
 	 * Below methods should probably not be overriden by overriding classes but

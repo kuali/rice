@@ -149,9 +149,8 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * @param document
      * @return boolean (true if can do ad hoc route)
      */
-    protected boolean canAdHocRoute(Document document){
-    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	return (canEdit(document)&& !workflowDocument.stateIsException());
+    protected boolean canAddAdhocRequests(Document document){
+    	return true;
     }
     
    
@@ -178,6 +177,16 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	KualiWorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
     	return !(kualiWorkflowDocument.stateIsInitiated() || kualiWorkflowDocument.stateIsSaved());
     }
+    
+    protected boolean canSendNoteFyi(Document document) {
+    	return true;
+    }
+    
+    protected boolean canEditDocumentOviewview(Document document){
+    	KualiWorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
+    	return (kualiWorkflowDocument.stateIsInitiated() || kualiWorkflowDocument.stateIsSaved());
+    }
+
 
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getDocumentActions(org.kuali.rice.kns.document.Document)
@@ -217,8 +226,8 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     		documentActions.add(KNSConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT);
     	}
     	
-    	if(canAdHocRoute(document)){
-    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_AD_HOC_ROUTE);
+    	if(canAddAdhocRequests(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS);
     	}
     	
     	if(canBlanketApprove(document)){
@@ -232,6 +241,12 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	}
     	if (canSendAdhocRequests(document)) {
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
+    	}
+    	if(canSendNoteFyi(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
+    	}
+    	if(this.canEditDocumentOviewview(document)){
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW);
     	}
     	return documentActions;
     }

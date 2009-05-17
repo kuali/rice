@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kns.document.MaintenanceLock;
@@ -27,7 +26,7 @@ import org.kuali.rice.kns.document.MaintenanceLock;
  */
 public interface MaintenanceDocumentDao {
 
-    public Collection getPendingDocumentsForClass(Class businessObjectClass);
+//    public Collection getPendingDocumentsForClass(Class businessObjectClass);
 
     /**
      * 

@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +52,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.w3c.dom.Document;
@@ -426,6 +428,14 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(documentNumber);
         }
     }
+    
+    @Override
+    /**
+     * @see org.kuali.rice.kns.document.DocumentBase#getWorkflowEngineDocumentIdsToLock()
+     */
+	public List<Long> getWorkflowEngineDocumentIdsToLock() {
+    	return getNewMaintainableObject().getWorkflowEngineDocumentIdsToLock();
+	}
 
     /**
      * Pre-Save hook.
@@ -453,6 +463,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (newMaintainableObject != null) {
         	newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
+            // If a maintenance lock exists, warn the user.
+            checkForLockingDocument(false);
         }
     }
 
@@ -588,6 +600,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
+        
         populateDocumentAttachment();
         populateXmlDocumentContentsFromMaintainables();
     }
@@ -665,9 +678,18 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         // check for locking documents for MaintenanceDocuments
         if (this instanceof MaintenanceDocument) {
-            checkForLockingDocument();
+            checkForLockingDocument(true);
         }
 
+        // Make sure the business object's version number matches that of the database's copy.
+        if (newMaintainableObject != null) {
+        	PersistableBusinessObject pbObject = KNSServiceLocator.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
+        	if (pbObject != null && newMaintainableObject.getBusinessObject().getVersionNumber().longValue() != pbObject.getVersionNumber().longValue()) {
+        		GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);
+        		throw new ValidationException("Version mismatch between the local business object and the database business object");
+        	}
+        }
+        
         // perform validation against rules engine
         if ( LOG.isInfoEnabled() ) {
             LOG.info("invoking rules engine on document " + getDocumentNumber());
@@ -701,8 +723,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
 
-    private void checkForLockingDocument() {
-        MaintenanceUtils.checkForLockingDocument(this);
+    private void checkForLockingDocument(boolean throwExceptionIfLocked) {
+        MaintenanceUtils.checkForLockingDocument(this, throwExceptionIfLocked);
     }
 
     /**

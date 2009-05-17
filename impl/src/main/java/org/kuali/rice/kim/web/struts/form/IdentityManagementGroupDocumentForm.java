@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
+import java.util.List;
+
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -22,7 +24,6 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -30,18 +31,17 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class IdentityManagementGroupDocumentForm extends KualiTransactionalDocumentFormBase {
+public class IdentityManagementGroupDocumentForm extends IdentityManagementDocumentFormBase {
 	private static final long serialVersionUID = -107836689162363400L;
+	
 	{
 		requiredNonEditableProperties.add("methodToCall");
 	}
 	
-	private boolean canAssignGroup = true;
-	private KimTypeImpl kimType;
-	private GroupDocumentMember member;
-	{
-		member = new GroupDocumentMember();
-	}
+	protected boolean canAssignGroup = true;
+	protected KimTypeImpl kimType;
+	protected GroupDocumentMember member = new GroupDocumentMember();
+	protected String groupId;
     
 	public IdentityManagementGroupDocumentForm() {
         super();
@@ -53,14 +53,16 @@ public class IdentityManagementGroupDocumentForm extends KualiTransactionalDocum
     }
 
 	public String getMemberFieldConversions(){
-		if(member==null)
+		if(member==null) {
 			return "";
+		}
 		return getMemberFieldConversions(member.getMemberTypeCode());
 	}
 
 	public String getMemberBusinessObjectName(){
-		if(member==null)
+		if(member==null) {
 			return "";
+		}
 		return getMemberBusinessObjectName(member.getMemberTypeCode());
 	}
 
@@ -124,6 +126,31 @@ public class IdentityManagementGroupDocumentForm extends KualiTransactionalDocum
 	 */
 	public void setMember(GroupDocumentMember member) {
 		this.member = member;
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase#getMemberRows()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List getMemberRows() {
+		return getGroupDocument().getMembers();
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	/**
+	 * @param groupId the groupId to set
+	 */
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 
 }

@@ -21,6 +21,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 
@@ -30,6 +32,9 @@ import org.apache.ojb.broker.query.Criteria;
 
 public class MySQLPlatform extends ANSISqlPlatform {
 
+	private static final Pattern APOS_PAT = Pattern.compile("'");
+	private static final Pattern BSLASH_PAT = Pattern.compile(Matcher.quoteReplacement("\\"));
+	
     public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
         return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE";
     }
@@ -102,4 +107,12 @@ public class MySQLPlatform extends ANSISqlPlatform {
         return newString;
     }
 
+    /**
+     * Performs MySQL-specific escaping of String parameters.
+     * 
+     * @see org.kuali.rice.core.database.platform.Platform#escapeString(java.lang.String)
+     */
+    public String escapeString(String sqlString) {
+    	return (sqlString != null) ? BSLASH_PAT.matcher(APOS_PAT.matcher(sqlString).replaceAll("''")).replaceAll(Matcher.quoteReplacement("\\\\")) : null;
+    }
 }

@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 
 public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
+
+	{
+		workflowRoutingAttributes.add( KimAttributes.CAMPUS_CODE );
+	}
 
 }

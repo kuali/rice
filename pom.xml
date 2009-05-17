@@ -32,65 +32,65 @@
          b/c of non-unit test classes that are included in default expression --> 
     	<test.includes>**/*Test.java</test.includes>
     
-        <spring.version>2.0.4</spring.version>
         <acegi.version>1.0.6</acegi.version>
-        <servlet-api.version>2.4</servlet-api.version>
+        <asm.version>2.2.3</asm.version>
+        <backport-util-concurrent.version>2.1</backport-util-concurrent.version>
+        <bcel.version>5.1</bcel.version>
+		<bcprov.version>133</bcprov.version>
+        <bsf.version>2.4.0</bsf.version>
         <casclient.version>2.1.1</casclient.version>
-        <oro.version>2.0.8</oro.version>
-        <commons-io.version>1.4</commons-io.version>
         <cglib.version>2.1_3</cglib.version>
-        <jmeter.version>2.3-RC4</jmeter.version>
-        <jetty.version>6.1.1</jetty.version>
-        <jstl.version>1.1.2</jstl.version>
-        <taglibs-standard.version>1.1.2</taglibs-standard.version>
+        <commons-beanutils.version>1.7.0</commons-beanutils.version>
+        <commons-codec.version>1.3</commons-codec.version>
+        <commons-collections.version>3.2</commons-collections.version>
+        <commons-dbcp.version>1.2.1</commons-dbcp.version>
+        <commons-fileupload.version>1.2.1</commons-fileupload.version>
+        <commons-httpclient.version>3.0.1</commons-httpclient.version>
+        <commons-io.version>1.4</commons-io.version>
+        <commons-lang.version>2.3</commons-lang.version>
+        <commons-logging.version>1.1</commons-logging.version>
+        <commons-pool.version>1.2</commons-pool.version>
+        <concurrent.version>1.3.4</concurrent.version>
+        <connector-api.version>1.5</connector-api.version>
+		<cxf.version>2.1.3</cxf.version>
+        <db-ojb.version>1.0.4-patch2</db-ojb.version>
+        <derby.version>10.2.2.0</derby.version>
+        <displaytag.version>1.1</displaytag.version>
+        <dwr.version>1.1.3</dwr.version>
+		<groovy.version>1.5.4</groovy.version>
+        <hibernate-entitymanager.version>3.3.1.ga</hibernate-entitymanager.version>
+        <hibernate.version>3.2.6.ga</hibernate.version>
+        <htmlunit.version>1.13</htmlunit.version>
+        <jasper-compiler-jdt.version>5.5.15</jasper-compiler-jdt.version>
         <jasper-compiler.version>5.5.15</jasper-compiler.version>
         <jasper-runtime.version>5.5.15</jasper-runtime.version>
-        <jasper-compiler-jdt.version>5.5.15</jasper-compiler-jdt.version>
-        <xalan.version>2.7.0</xalan.version>
-        <junit.version>4.4</junit.version>
-        <commons-logging.version>1.1</commons-logging.version>
-        <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-        <jta.version>1.0.1B</jta.version>
-        <connector-api.version>1.5</connector-api.version>
-        <wss4j.version>1.5.1</wss4j.version>
-        <commons-lang.version>2.3</commons-lang.version>
-        <db-ojb.version>1.0.4-patch2</db-ojb.version>
-        <commons-beanutils.version>1.7.0</commons-beanutils.version>
-        <commons-httpclient.version>3.0.1</commons-httpclient.version>
-        <commons-dbcp.version>1.2.1</commons-dbcp.version>
-        <backport-util-concurrent.version>2.1</backport-util-concurrent.version>
-        <log4j.version>1.2.14</log4j.version>
-        <xapool.version>1.5.0-patch3</xapool.version>
-        <jotm.version>2.0.10</jotm.version>
-        <derby.version>10.2.2.0</derby.version>
-        <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
-        <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
-        <hibernate.version>3.2.6.ga</hibernate.version>
-        <hibernate-entitymanager.version>3.3.1.ga</hibernate-entitymanager.version>
-        <concurrent.version>1.3.4</concurrent.version>
-        <struts.version>1.2.9</struts.version>
-        <struts-el.version>1.2.9</struts-el.version>
-        <displaytag.version>1.1</displaytag.version>
-        <xstream.version>1.2.2</xstream.version>
-        <oscache.version>2.3.2</oscache.version>
-        <dwr.version>1.1.3</dwr.version>
-        <htmlunit.version>1.13</htmlunit.version>
-        <quartz.version>1.6.0</quartz.version>
-        <commons-fileupload.version>1.2</commons-fileupload.version>
-        <bsf.version>2.4.0</bsf.version>
-        <bcel.version>5.1</bcel.version>
-        <xercesImpl.version>2.6.2</xercesImpl.version>
-        <xml-apis.version>1.0.b2</xml-apis.version>
-        <jdom.version>1.0</jdom.version>
-        <commons-collections.version>3.2</commons-collections.version>
-        <commons-codec.version>1.3</commons-codec.version>
-        <commons-pool.version>1.2</commons-pool.version>
-        <asm.version>2.2.3</asm.version>
-		<cxf.version>2.1.3</cxf.version>
-		<bcprov.version>133</bcprov.version>
-		<groovy.version>1.5.4</groovy.version>
 		<javamail.version>1.4</javamail.version>
 		<jaxen.version>1.1.1</jaxen.version>
+        <jdom.version>1.0</jdom.version>
+        <jetty.version>6.1.1</jetty.version>
+        <jmeter.version>2.3-RC4</jmeter.version>
+        <jotm.version>2.0.10</jotm.version>
+        <jstl.version>1.1.2</jstl.version>
+        <jta.version>1.0.1B</jta.version>
+        <junit.version>4.4</junit.version>
+        <log4j.version>1.2.14</log4j.version>
+        <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
+        <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
+        <oro.version>2.0.8</oro.version>
+        <oscache.version>2.3.2</oscache.version>
+        <quartz.version>1.6.0</quartz.version>
+        <servlet-api.version>2.4</servlet-api.version>
+        <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
+        <spring.version>2.0.4</spring.version>
+        <struts-el.version>1.2.9</struts-el.version>
+        <struts.version>1.2.9</struts.version>
+        <taglibs-standard.version>1.1.2</taglibs-standard.version>
+        <wss4j.version>1.5.1</wss4j.version>
+        <xalan.version>2.7.0</xalan.version>
+        <xapool.version>1.5.0-patch3</xapool.version>
+        <xercesImpl.version>2.6.2</xercesImpl.version>
+        <xml-apis.version>1.0.b2</xml-apis.version>
+        <xstream.version>1.2.2</xstream.version>
     </properties>
     
     <profiles>

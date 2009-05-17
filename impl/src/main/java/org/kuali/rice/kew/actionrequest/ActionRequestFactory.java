@@ -385,7 +385,10 @@ public class ActionRequestFactory {
 			        responsibility.getParallelRoutingGroupingCode(), // description
 			        new Long(responsibility.getResponsibilityId()), 
 			        responsibility.isForceAction(), 
-			        approvePolicy, 
+			        // If not nested in a parent action request, ensure that the request
+			        // is first approve so delegations of this request do not require 
+			        // ALL_APPROVE as well
+			        (responsibilities.size() == 1)?KEWConstants.APPROVE_POLICY_FIRST_APPROVE:approvePolicy, 
 			        null, // ruleId
 			        annotationStr);
 			// if there is only a single request, don't create the nesting structure

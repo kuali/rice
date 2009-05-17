@@ -107,7 +107,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 		
 		if (timestampToStringFormatForFileName == null) {
 			timestampToStringFormatForFileName = kualiConfigurationService.getParameterValue(KNSConstants.KNS_NAMESPACE, 
-					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(timestampToStringFormatForFileName);
 		}

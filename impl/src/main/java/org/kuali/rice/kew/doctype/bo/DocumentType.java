@@ -1016,9 +1016,13 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     public CustomNoteAttribute getCustomNoteAttribute() throws ResourceUnavailableException {
     	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.NOTE_ATTRIBUTE_TYPE);
     	if (objDef == null) {
-    		String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
-    		if (defaultNoteClass == null){
-    			return null;
+    		String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
+    		if (defaultNoteClass == null) {
+    		    // attempt to use deprecated parameter
+    		    defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
+    		    if (ObjectUtils.isNull(defaultNoteClass)) {
+    		        return null;
+    		    }
     		}
     		objDef = new ObjectDefinition(defaultNoteClass);
     	}

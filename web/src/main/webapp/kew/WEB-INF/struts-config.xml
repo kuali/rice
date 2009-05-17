@@ -159,6 +159,7 @@
       	input="/WEB-INF/jsp/backdoor/index.jsp"
       	type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
       	<forward name="viewPortal" path="/WEB-INF/jsp/backdoor/index.jsp"/>
+      	<forward name="portal" path="/../portal.jsp" redirect="true" />
       </action>
 
       <action path="/Administration" name="BackdoorForm" scope="request" parameter="methodToCall"

@@ -1,26 +1,18 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="responsibilityAttributes" value="${DataDictionary.ResponsibilityImpl.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-
-<c:if test="${readOnly}">
-	<c:set var="inquiry" value="${readOnly}"/>
-</c:if>
 
 <kul:tab tabTitle="Responsibilities" defaultOpen="true" tabErrorKey="document.resp*">
 	<div class="tab-container" align="center">
-    <h3>
-    	<span class="subhead-left">Responsibilities</span>
-    </h3>
     
     <table cellpadding=0 cellspacing=0 summary="">
-          <c:if test="${not inquiry}">	
+          <c:if test="${!readOnly}">	
           	
              <tr>
 				<td align="center">
 	                <div align="center">
 	                	<br/>
-						<strong><c:out value="Add Responsibility ID:" /></strong>
+						<b>Add Responsibility ID:</b>
 						<kul:htmlControlAttribute property="responsibility.responsibilityId" attributeEntry="${responsibilityAttributes.responsibilityId}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.ResponsibilityImpl" fieldConversions=
 	                	"template.name:responsibility.kimResponsibility.template.name,responsibilityId:responsibility.responsibilityId,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
@@ -44,13 +36,13 @@
 	</table>
 	<table>
         	<tr>
-        		<th><div align="left">&nbsp</div></th> 
+        		<th>&nbsp;</th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.namespaceCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.responsibilityId}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.detailObjectsValues}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.active}" noColon="true" /></div></th>
-				<c:if test="${not inquiry}">	
+				<c:if test="${!readOnly}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
         	</tr>     
@@ -93,7 +85,7 @@
 						</td>
         	       	</c:otherwise>
        	     	</c:choose>  
-			<c:if test="${not inquiry}">	
+			<c:if test="${!readOnly}">	
 				<td>
 					<div align=center>&nbsp;
 						<c:choose>
@@ -109,7 +101,7 @@
 				</td>
 			</c:if>    
 			</tr>
-	        <c:if test="${responsibility.roleRspAction!=null}">	
+	        <c:if test="${responsibility.roleRspAction != null}">	
     			<tr>
 	              <td colspan="7" style="padding:0px;">
 	              	<kim:responsibilityAction responsibilityIdx="${status.index}" />

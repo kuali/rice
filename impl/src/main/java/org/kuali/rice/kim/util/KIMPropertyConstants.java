@@ -81,6 +81,8 @@ public class KIMPropertyConstants extends JSTLConstants {
 	public static class KimMember {
 		public static final String MEMBER_ID = "memberId";
 		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
+		public static final String ACTIVE_FROM_DATE = "activeFromDate";
+		public static final String ACTIVE_TO_DATE = "activeToDate";
 	}
 	
 	public static class RoleMember extends KimMember {
@@ -88,6 +90,11 @@ public class KIMPropertyConstants extends JSTLConstants {
 		public static final String ROLE_ID = Role.ROLE_ID;
 	}
 
+	public static class GroupMember extends KimMember {
+		public static final String GROUP_MEMBER_ID = "groupMemberId";
+		public static final String GROUP_ID = Group.GROUP_ID;
+	}
+	
 	public static class DelegationMember extends KimMember {
 		public static final String DELEGATION_MEMBER_ID = "delegationMemberId";
 		public static final String DELEGATION_ID = Delegation.DELEGATION_ID;

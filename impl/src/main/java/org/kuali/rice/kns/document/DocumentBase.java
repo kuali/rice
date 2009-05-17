@@ -340,8 +340,19 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void beforeWorkflowEngineProcess() {
     // do nothing
     }
+    
+    
 
     /**
+     * The default implementation returns no additional ids for the workflow engine to lock prior to processing.
+     * 
+     * @see org.kuali.rice.kns.document.Document#getWorkflowEngineDocumentIdsToLock()
+     */
+    public List<Long> getWorkflowEngineDocumentIdsToLock() {
+		return null;
+	}
+
+	/**
      * @see org.kuali.rice.kns.document.Copyable#toCopy()
      */
     public void toCopy() throws WorkflowException, IllegalStateException {

@@ -112,7 +112,12 @@ public interface Config {
 	public static final String DATASOURCE_USERNAME = "datasource.username";
 	public static final String DATASOURCE_PASSWORD = "datasource.password";
 
+	/**
+	 * Use DEFAULT_KEW_NOTE_CLASS
+	 */
+	@Deprecated
 	public static final String DEFAULT_NOTE_CLASS = "default.note.class";
+    public static final String DEFAULT_KEW_NOTE_CLASS = "default.kew.note.class";
 	public static final String M_BEANS = "mBeans";
 	public static final String ALT_SPRING_FILE = "config.spring.file";
 	public static final String ALT_OJB_FILE	= "config.obj.file";
@@ -194,9 +199,15 @@ public interface Config {
 
 	public String getServiceNamespace();
 
+    /**
+     * This method has been deprecated.  Use {@link #getDefaultKewNoteClass()} instead.
+     * @deprecated
+     */
 	public String getDefaultNoteClass();
 
-	public String getEmbeddedPluginLocation();
+    public String getDefaultKewNoteClass();
+
+    public String getEmbeddedPluginLocation();
 
 	public Integer getRefreshRate();
 

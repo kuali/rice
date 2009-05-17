@@ -2,12 +2,11 @@
 
 <%@ attribute name="afflnIdx" required="true" %>
 <c:set var="docEmploymentInfoAttributes" value="${DataDictionary.PersonDocumentEmploymentInfo.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:subtab lookedUpCollectionName="empInfo" width="${tableWidth}" subTabTitle="Employment Information">      
-	<table cellpadding=0 cellspacing=0 summary="">
+	<table cellpadding="0" cellspacing="0" summary="">
        	<tr>
-            <th width="5%" rowspan=20 style=border-style:none>&nbsp;</th>
+            <th width="5%" rowspan="20" style="border-style:none">&nbsp;</th>
        		<th><div align="left">&nbsp</div></th> 
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.entityEmploymentId}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.primary}" noColon="true" /></div></th>
@@ -21,9 +20,7 @@
         </tr>     
       	<c:if test="${not inquiry and not readOnly}">	          	
              <tr>
-				<th class="infoline">
-					<c:out value="Add:" />
-				</th>
+				<th class="infoline">Add:</th>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
                 	<kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeId" attributeEntry="${docEmploymentInfoAttributes.employeeId}" readOnly="${readOnly}" />

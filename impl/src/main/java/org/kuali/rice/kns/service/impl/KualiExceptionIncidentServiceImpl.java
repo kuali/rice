@@ -120,8 +120,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         // First check if message template already define mailing list
         Set emails=messageTemplate.getToAddresses();
         if (emails == null || emails.isEmpty()) {
-            String mailingList=KNSServiceLocator.getKualiConfigurationService().
-            getPropertyString(REPORT_MAIL_LIST);
+            String mailingList=KNSServiceLocator.getKualiConfigurationService().getPropertyString(REPORT_MAIL_LIST);
             if (mailingList == null || mailingList.trim().length() == 0) {
                 String em=REPORT_MAIL_LIST+"?";
                 LOG.error(em);
@@ -237,9 +236,11 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * @see org.kuali.rice.kns.service.KualiExceptionIncidentService#getExceptionIncident(
      * java.lang.Exception,java.util.Map)
      */
-    @SuppressWarnings("unchecked")
     public KualiExceptionIncident getExceptionIncident(Exception exception,
             Map<String, String> properties) {
+    	if ( exception == null ) {
+    		return getExceptionIncident(properties);
+    	}
         if (LOG.isTraceEnabled()) {
             String lm=String.format("ENTRY %s;%s", exception.getMessage(),
                     properties.toString());

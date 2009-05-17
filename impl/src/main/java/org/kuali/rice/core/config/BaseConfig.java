@@ -327,8 +327,14 @@ public abstract class BaseConfig implements Config {
         return getProperty(SERVICE_NAMESPACE);
     }
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String getDefaultNoteClass() {
         return getProperty(DEFAULT_NOTE_CLASS);
+    }
+
+    public String getDefaultKewNoteClass() {
+        return getProperty(DEFAULT_KEW_NOTE_CLASS);
     }
 
     public String getEmbeddedPluginLocation() {

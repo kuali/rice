@@ -13,6 +13,7 @@
     <property name="attributes" >
       <list>
         <ref bean="DocDelegationMember-delegationMemberId" />
+        <ref bean="DocDelegationMember-roleMemberId" />
         <ref bean="DocDelegationMember-memberId" />
         <ref bean="DocDelegationMember-memberTypeCode" />
         <ref bean="DocDelegationMember-delegationTypeCode" />
@@ -31,6 +32,19 @@
         p:forceUppercase="true"
         p:label="Delegation Member Identifier"
         p:shortLabel="Delegation Member Id"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+  </bean>
+
+  <bean id="DocDelegationMember-roleMemberId" parent="DocDelegationMember-roleMemberId-parentBean" />
+  <bean id="DocDelegationMember-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="roleMemberId"
+        p:forceUppercase="true"
+        p:label="Role Member"
+        p:shortLabel="Role Member"
         p:maxLength="40"
         p:required="false" >
     <property name="control" >

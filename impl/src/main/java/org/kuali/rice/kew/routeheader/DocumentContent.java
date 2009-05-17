@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
 
 /**
  * A facade for the XML content of the document.  Provides methods for
- * accessing the various relevent portions of the content as well as the
+ * accessing the various relevant portions of the content as well as the
  * entire document content in DOM or String form.  If the document does
  * not contain a particular piece, then the associated getter should return
  * null.

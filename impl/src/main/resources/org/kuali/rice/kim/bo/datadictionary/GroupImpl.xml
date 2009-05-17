@@ -242,6 +242,7 @@
         <bean parent="FieldDefinition" p:attributeName="namespaceCode" />
         <bean parent="FieldDefinition" p:attributeName="groupName" />
         <bean parent="FieldDefinition" p:attributeName="kimTypeId" />
+        <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y" />
         <!--
              Note that kimTypeId and PrincipalName fields
              are overwritten/created in GroupLookupableHelperServiceImpl

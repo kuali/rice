@@ -1078,6 +1078,7 @@
     <class-descriptor class="org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember" table="KRIM_PND_DLGN_MBR_T">
   	  <field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
       <field-descriptor name="delegationMemberId" column="DLGN_MBR_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_DLGN_MBR_ID_S" />
+      <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
       <field-descriptor name="delegationId" column="DLGN_ID" jdbc-type="VARCHAR" />
       <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
       <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="VARCHAR" />

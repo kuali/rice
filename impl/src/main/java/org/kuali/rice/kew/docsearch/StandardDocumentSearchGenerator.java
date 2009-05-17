@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -50,6 +54,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 
 
 /**
@@ -76,6 +81,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private boolean usingAtLeastOneSearchAttribute = false;
 
     private boolean isProcessResultSet = true;
+
+    private Platform dbPlatform;
+    private MessageMap messageMap;
+
 
 	public StandardDocumentSearchGenerator() {
 		super();
@@ -295,6 +304,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         boolean valueIsDate = (criteriaComponent.getSearchableAttributeValue() instanceof SearchableAttributeDateTimeValue);
         boolean valueIsString = (criteriaComponent.getSearchableAttributeValue() instanceof SearchableAttributeStringValue);
+        boolean valueIsLong = (criteriaComponent.getSearchableAttributeValue() instanceof SearchableAttributeLongValue);
+        boolean valueIsFloat = (criteriaComponent.getSearchableAttributeValue() instanceof SearchableAttributeFloatValue);
         boolean addCaseInsensitivityForValue = (!criteriaComponent.isCaseSensitive()) && criteriaComponent.getSearchableAttributeValue().allowsCaseInsensitivity();
         String attributeValueSearched = criteriaComponent.getValue();
         List<String> attributeValuesSearched = criteriaComponent.getValues();
@@ -379,13 +390,15 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 whereSqlTemp.append(initialClauseStarter).append(" (");
                 boolean firstValue = true;
                 for (String attributeValueEntered : attributeValuesSearched) {
+                	checkNumberFormattingIfNumeric(attributeValueEntered, valueIsLong, valueIsFloat);
+
                     String separator = " or ";
                     if (firstValue) {
                         firstValue = false;
                         separator = "";
                     }
                     String sqlOperand = getSqlOperand(criteriaComponent.isRangeSearch(), criteriaComponent.isSearchInclusive(), (criteriaComponent.isRangeSearch() && criteriaComponent.isComponentLowerBoundValue()), usingWildcards);
-                    whereSqlTemp.append(constructWhereClauseElement(separator, queryTableColumnName, sqlOperand, attributeValueEntered, prefixToUse, suffixToUse));
+                    whereSqlTemp.append(constructWhereClauseElement(separator, queryTableColumnName, sqlOperand, getDbPlatform().escapeString(attributeValueEntered), prefixToUse, suffixToUse));
                 }
                 whereSqlTemp.append(") ");
             } else {
@@ -397,12 +410,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 							sqlOperand=range;
 							if(!StringUtils.equals(sqlOperand, "..")) {
 								attributeValueSearched = StringUtils.remove(attributeValueSearched, range);
-								
+
 							} else {
 								String[] rangeValues = StringUtils.split(attributeValueSearched, "..");
 								if(rangeValues!=null && rangeValues.length>1) {
+									checkNumberFormattingIfNumeric(rangeValues[0], valueIsLong, valueIsFloat);
+
 									//append first one here and then set the second one and break
-									whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, ">=", rangeValues[0], prefixToUse, suffixToUse));
+									whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, ">=", getDbPlatform().escapeString(rangeValues[0]), prefixToUse, suffixToUse));
 									attributeValueSearched = rangeValues[1];
 									sqlOperand = "<=";
 								} else {
@@ -411,13 +426,33 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 							}
 							break;
 						}
-					}	
+					}
               }
-                whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, sqlOperand, attributeValueSearched, prefixToUse, suffixToUse));
+              	checkNumberFormattingIfNumeric(attributeValueSearched, valueIsLong, valueIsFloat);
+                whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, sqlOperand, getDbPlatform().escapeString(attributeValueSearched), prefixToUse, suffixToUse));
             }
         }
         whereSqlTemp.append(" ");
         return whereSql.append(whereSqlTemp);
+    }
+
+    /**
+     *  Checks if a particular String value is supposed to be numeric, and, if so, will throw an exception if the String is not numeric.
+     *
+     * @param testValue The String to test.
+     * @param valueIsLong Indicates if the input value should be a Long.
+     * @param valueIsFloat Indicates if the input value should be a BigDecimal.
+     * @throws RiceRuntimeException if the value is supposed to be numeric, but is not.
+     */
+    private void checkNumberFormattingIfNumeric(String testValue, boolean valueIsLong, boolean valueIsFloat) {
+    	if (valueIsLong) {
+    		try { Long.parseLong(testValue); }
+    		catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
+    	}
+    	if (valueIsFloat) {
+    		try { new BigDecimal(testValue); }
+    		catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
+    	}
     }
 
     public QueryComponent getSearchableAttributeJoinSql(SearchableAttributeValue attributeValue,String tableIdentifier,String whereSqlStarter,String attributeTableKeyColumnName) {
@@ -425,27 +460,27 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public StringBuffer generateSearchableAttributeWhereClauseJoin(String whereSqlStarter,String tableIdentifier,String attributeTableKeyColumnName) {
-    	StringBuffer whereSql = new StringBuffer(constructWhereClauseElement(whereSqlStarter, "DOC_HDR.DOC_HDR_ID", "=", tableIdentifier + ".DOC_HDR_ID", null, null));
-    	whereSql.append(constructWhereClauseElement(" and ", tableIdentifier + ".KEY_CD", "=", attributeTableKeyColumnName, "'", "'"));
+    	StringBuffer whereSql = new StringBuffer(constructWhereClauseElement(whereSqlStarter, "DOC_HDR.DOC_HDR_ID", "=", getDbPlatform().escapeString(tableIdentifier + ".DOC_HDR_ID"), null, null));
+    	whereSql.append(constructWhereClauseElement(" and ", tableIdentifier + ".KEY_CD", "=", getDbPlatform().escapeString(attributeTableKeyColumnName), "'", "'"));
         return whereSql;
     }
 
     public StringBuffer generateSearchableAttributeFromSql(SearchableAttributeValue attributeValue,String tableIdentifier) {
         StringBuffer fromSql = new StringBuffer();
-        String tableName = attributeValue.getAttributeTableName();
+        String tableName = getDbPlatform().escapeString(attributeValue.getAttributeTableName());
         if (StringUtils.isBlank(tableName)) {
         	String errorMsg = "The table name associated with Searchable Attribute with class '" + attributeValue.getClass() + "' returns as '" + tableName + "'";
         	LOG.error("getSearchableAttributeSql() " + errorMsg);
         	throw new RuntimeException(errorMsg);
         }
-        fromSql.append(" ," + tableName + " " + tableIdentifier + " ");
+        fromSql.append(" ," + tableName + " " + getDbPlatform().escapeString(tableIdentifier) + " ");
         return fromSql;
     }
 
     public StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch) {
     	return constructWhereClauseDateElement(clauseStarter, queryTableColumnName, inclusive, valueIsLowerBound, dateValueToSearch,false);
     }
-    
+
     public StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch, boolean isAllowInlineRange) {
     	StringBuffer whereSQLBuffer = new StringBuffer();
     	StringBuffer sqlOperand = new StringBuffer(getSqlOperand(true, inclusive, valueIsLowerBound, false));
@@ -477,8 +512,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 							//Enhancement Idea - Could possibly use recursion here (would have to set the lower bound and inclusive variables
 							//append first one here and then set the second one and break
 							timeValueToSearch = lowerTimeBound;
-							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim()), timeValueToSearch.trim()), "", ""));
-							
+							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
+
 							dateValueToSearch = rangeValues[1];
 							sqlOperand = new StringBuffer("<=");
 							timeValueToSearch = upperTimeBound;
@@ -488,16 +523,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 					}
 					break;
 				}
-			}	
+			}
         }
-		return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim()), timeValueToSearch.trim()), "", ""));
+		return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim())), timeValueToSearch.trim()), "", ""));
     }
 
     public StringBuffer constructWhereClauseElement(String clauseStarter,String queryTableColumnName,String operand,String valueToSearch,String valuePrefix,String valueSuffix) {
     	StringBuffer whereSql = new StringBuffer();
     	valuePrefix = (valuePrefix != null) ? valuePrefix : "";
     	valueSuffix = (valueSuffix != null) ? valueSuffix : "";
-    	whereSql.append(" " + clauseStarter + " ").append(queryTableColumnName).append(" " + operand + " ").append(valuePrefix).append(valueToSearch).append(valueSuffix).append(" ");
+    	whereSql.append(" " + clauseStarter + " ").append(getDbPlatform().escapeString(queryTableColumnName)).append(" " + operand + " ").append(valuePrefix).append(valueToSearch).append(valueSuffix).append(" ");
     	return whereSql;
     }
 
@@ -664,10 +699,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docCriteriaDTO.setInitiatorWorkflowId(rs.getString("INITR_PRNCPL_ID"));
 
         Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
-        
+
         if (user != null) {
         	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
-        
+
         	docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
         	docCriteriaDTO.setInitiatorName(user.getName());
         	docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
@@ -910,7 +945,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             // quick and dirty ' replacement that isn't the best but should work for all dbs
             docTitle = docTitle.trim().replace('\'', '%');
-            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.TTL) like '%").append(docTitle.toUpperCase()).append("'").toString();
+            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.TTL) like '%").append(getDbPlatform().escapeString(docTitle.toUpperCase())).append("'").toString();
         }
     }
 
@@ -925,7 +960,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             } else {
                 appDocId = appDocId.trim().replace('*', '%');
             }
-            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.APP_DOC_ID) like '%").append(appDocId.toUpperCase()).append("'").toString();
+            return new StringBuffer(whereClausePredicatePrefix + " upper(DOC_HDR.APP_DOC_ID) like '%").append(getDbPlatform().escapeString(appDocId.toUpperCase())).append("'").toString();
         }
     }
 
@@ -1021,7 +1056,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((docRouteLevel != null) && (!"".equals(docRouteLevel.trim())) && (!docRouteLevel.equals("-1"))) {
         	StringBuffer routeNodeCriteria = new StringBuffer("and " + ROUTE_NODE_TABLE + ".NM ");
         	if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
-        		routeNodeCriteria.append("= '" + docRouteLevel + "' ");
+        		routeNodeCriteria.append("= '" + getDbPlatform().escapeString(docRouteLevel) + "' ");
         	} else {
         		routeNodeCriteria.append("in (");
         		// below buffer used to facilitate the addition of the string ", " to separate out route node names
@@ -1061,7 +1096,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((docRouteStatus == null) || "".equals(docRouteStatus.trim())) {
             return whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
-            return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD = '" + docRouteStatus.trim() + "'";
+            return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD = '" + getDbPlatform().escapeString(docRouteStatus.trim()) + "'";
         }
     }
 
@@ -1091,14 +1126,15 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public String establishDateString(String fromDate, String toDate, String columnDbName, String whereStatementClause) {
-    	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + columnDbName + " ");
+    	Platform platform = getDbPlatform();
+    	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + platform.escapeString(columnDbName) + " ");
         if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null && toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-            return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(fromDate.trim()), null) + " and " + columnDbName + " <= " + DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(toDate.trim()), "23:59:59")).toString();
+            return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
         } else {
             if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null) {
-                return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(fromDate.trim()), null)).toString();
+                return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null)).toString();
             } else if (toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-                return dateSqlString.append(" <= " + DocSearchUtils.getDateSQL(DocSearchUtils.getSqlFormattedDate(toDate.trim()), "23:59:59")).toString();
+                return dateSqlString.append(" <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
             } else {
                 return "";
             }
@@ -1114,5 +1150,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
     public void setProcessResultSet(boolean isProcessResultSet){
     	this.isProcessResultSet = isProcessResultSet;
+    }
+
+    public Platform getDbPlatform() {
+    	if (dbPlatform == null) {
+    		dbPlatform = (Platform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+    	}
+    	return dbPlatform;
+    }
+
+    public MessageMap getMessageMap(DocSearchCriteriaDTO searchCriteria) {
+        setCriteria(searchCriteria);
+        return this.messageMap;
     }
 }

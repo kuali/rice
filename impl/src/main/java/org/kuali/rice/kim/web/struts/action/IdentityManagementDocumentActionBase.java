@@ -22,15 +22,20 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
  * 
@@ -39,11 +44,13 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
  */
 abstract public class IdentityManagementDocumentActionBase extends KualiTransactionalDocumentActionBase {
 
+	public static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode";
+	public static final String CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL = "changeDelegationRoleMember";
 
 	protected IdentityService identityService;
 	protected ResponsibilityService responsibilityService;
 	protected UiDocumentService uiDocumentService;
-
+		
     /**
      * 
      * This overridden method is to add 'kim/" to the return path
@@ -63,21 +70,21 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 
 	protected abstract String getActionName();
 	
-    public IdentityService getIdentityService() {
+    protected IdentityService getIdentityService() {
     	if ( identityService == null ) {
     		identityService = KIMServiceLocator.getIdentityService();
     	}
 		return identityService;
 	}
 
-    public ResponsibilityService getResponsibilityService() {
+    protected ResponsibilityService getResponsibilityService() {
     	if ( responsibilityService == null ) {
     		responsibilityService = KIMServiceLocator.getResponsibilityService();
     	}
 		return responsibilityService;
 	}
 
-	public UiDocumentService getUiDocumentService() {
+    protected UiDocumentService getUiDocumentService() {
 		if ( uiDocumentService == null ) {
 			uiDocumentService = KIMServiceLocator.getUiDocumentService();
 		}
@@ -125,4 +132,31 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         return newDest;
     }
 
+    /**
+     * @see org.kuali.rice.kns.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
+     *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    public ActionForward switchToPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementDocumentFormBase idmForm = (IdentityManagementDocumentFormBase) form;
+        
+        KualiTableRenderFormMetadata memberTableMetadata = idmForm.getMemberTableMetadata();
+        memberTableMetadata.jumpToPage(memberTableMetadata.getSwitchToPageNumber(), idmForm.getMemberRows().size(), idmForm.getRecordsPerPage());
+        memberTableMetadata.setColumnToSortIndex(memberTableMetadata.getPreviouslySortedColumnIndex());
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    protected void applyPagingAndSortingFromPreviousPageView(IdentityManagementDocumentFormBase idmForm) {
+        KualiTableRenderFormMetadata memberTableMetadata = idmForm.getMemberTableMetadata();
+
+        memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), idmForm.getMemberRows().size(), idmForm.getRecordsPerPage());
+    }
+
+    protected boolean validateRole(RoleImpl roleImpl, String propertyName, String message){
+    	boolean valid = true;
+    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+        	GlobalVariables.getErrorMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, new String[] {message});
+        	valid = false;
+        }
+    	return valid;
+    }
 }

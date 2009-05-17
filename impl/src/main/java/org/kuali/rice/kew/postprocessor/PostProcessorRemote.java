@@ -22,6 +22,7 @@ import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -113,4 +114,18 @@ public interface PostProcessorRemote {
    * @throws java.lang.Exception A general Exception will put the document into Exception routing
    */
   public boolean afterProcess(AfterProcessEventDTO event) throws Exception;
+  
+  /**
+   * Executed prior to document locking in the workflow engine.  This method returns an array of document
+   * ids to lock prior to execution of the document in the workflow engine.  If the engine processing is
+   * going to result in updates to any other documents, they should be locked at the beginning of the engine
+   * processing transaction.  This method facilitates that.
+   * 
+   * <p>Note that, by default, the id of the document that is being processed by the engine is always
+   * locked.  So there is no need to return that document id in the array of document ids to lock.
+   * 
+   * @return an array of document ids to lock prior to execution of the workflow engine
+   */
+  public Long[] getDocumentIdsToLock(DocumentLockingEventDTO event) throws Exception;
+  
 }

@@ -63,6 +63,7 @@
   <tr>
     <td style="border=solid gray">
       <iframe src="<c:out value="${SuperUserForm.docHandlerUrl}"/>" width="100%" height="500" hspace="0" vspace="0" frameborder="0"></iframe>
+      <html-el:hidden property="docHandlerUrl" />
     </td>
   </tr>
 
@@ -76,16 +77,16 @@
 
 <c:if test="${(! SuperUserForm.routeHeader.final)}">
   <tr>
-    <td height=30>
-      <table width="100%" border=0 cellpadding=0 cellspacing=0" class="bord-r-t">
+    <td height="30">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="bord-r-t">
         <tr>
-          <td width="25%" align=right valign=top class="thnormal">Annotation:</td>
+          <td width="25%" align="right" valign="top" class="thnormal">Annotation:</td>
           <td width="75%" class="datacell">
-            <textarea name="annotation" cols=50 rows=6></textarea>
+            <textarea name="annotation" cols="50" rows="6"></textarea>
           </td>
         </tr>
         <tr>
-          <td align=right valign=top class="thnormal">Perform Post Processor Logic:</td>
+          <td align="right" valign="top" class="thnormal">Perform Post Processor Logic:</td>
           <td class="datacell">
             Value Before: ${SuperUserForm.runPostProcessorLogic}
             <html-el:checkbox property="runPostProcessorLogic" value="true"/>
@@ -103,7 +104,7 @@
 
   <tr>
     <td height="30" class="headercell1" align="center" nowrap>
-      <table width="100%" border=0 cellpadding=0 cellspacing=0>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
        <tr>
 	     <td nowrap align="center">
            <c:if test="${SuperUserForm.SUDocument && SuperUserForm.stateAllowsAction}">
@@ -176,8 +177,20 @@
 </table>
 --%>
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>
+
+<%-- KULRICE-3035: The superuser form now stores the "returnLocation" needed by the doc search after the "cancel" button is clicked. --%>
+<html-el:hidden property="returnLocation" />
+<c:choose>
+	<c:when test="${not empty SuperUserForm.returnLocation}">
+		<c:set var="returnLocParam" value="returnLocation=${SuperUserForm.returnLocation}&" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="returnLocParam" value="" />
+	</c:otherwise>
+</c:choose>
+
 <div class="globalbuttons">
-<a href="DocumentSearch.do?&superUserSearch=YES"><img src="images/buttonsmall_cancel.gif" border=0 alt="cancel"></a>
+	<a href="DocumentSearch.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&${returnLocParam}hideReturnLink=true&superUserSearch=YES&isAdvancedSearch=YES"><img src="images/buttonsmall_cancel.gif" border="0" alt="cancel"></a>
 </div>
 <%--
 </body>

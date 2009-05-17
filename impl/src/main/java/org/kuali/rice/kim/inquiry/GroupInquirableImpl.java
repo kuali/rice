@@ -82,12 +82,10 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 		    	idx2 = href.length();
 		    }
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
 		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+
-				KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters)+hrefPart;
+				KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION, parameters)+hrefPart;
 	}
 
 	/**

@@ -122,10 +122,8 @@
 	</target>
 	
 	<target name="retrieve-maven-dependencies" depends="install-oracle-jar">
-		<!--
-        <maven goals="dependency:resolve" options="-DexcludeGroupIds=org.kuali.rice,"/>
-        -->
-		<maven goals="install" options="-DskipTests=true"/>
+        <maven goals="dependency:resolve" options="-DexcludeGroupIds=org.kuali.rice"/>
+		<!--<maven goals="install" options="-DskipTests=true"/>-->
 	</target>
 
 	<target name="install-rice-jars" depends="init">

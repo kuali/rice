@@ -22,13 +22,11 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -40,8 +38,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
@@ -72,13 +68,13 @@ public class ServiceInfo implements Serializable {
 	private Long messageEntryId;
     @Transient
 	private QName qname;
-	@Column(name="SVC_URL")
+	@Column(name="SVC_URL", length=500)
 	private String endpointUrl;
     @Transient
 	private String endpointAlternateUrl;
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="SVC_DEF")
+	@Column(name="SVC_DEF", length=4000)
 	private String serializedServiceNamespace;
 	@Column(name="SVC_NM")
 	private String serviceName;

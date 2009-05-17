@@ -123,7 +123,7 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 
 	public KimTypeImpl getKimGroupType() {
 		if (kimGroupType == null) {
-			Map pkMap = new HashMap();
+			Map<String,String> pkMap = new HashMap<String,String>();
 			pkMap.put("kimTypeId", kimTypeId);
 			setKimGroupType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap));			
 		}
@@ -193,7 +193,11 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	public AttributeSet getAttributes() {
 		AttributeSet attributes = new AttributeSet( groupAttributes.size() );
         for ( GroupAttributeDataImpl attr : groupAttributes ) {
-            attributes.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
+        	if ( attr.getKimAttribute() != null ) {
+        		attributes.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
+        	} else {
+        		attributes.put("Unknown Attribute ID: " + attr.getKimAttributeId(), attr.getAttributeValue());
+        	}
         }
 
         return attributes;

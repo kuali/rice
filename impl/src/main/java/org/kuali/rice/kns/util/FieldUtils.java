@@ -27,6 +27,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -317,17 +319,17 @@ public class FieldUtils {
             upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, attributeName);
         }
         catch (UnknownBusinessClassAttributeException t) {
-            boolean catchme = true;
-            // throw t;
+        	// do nothing
+        	LOG.warn( "UnknownBusinessClassAttributeException in fieldUtils.getPropertyField() : " + t.getMessage() );
         }
         if (upperCase != null) {
             field.setUpperCase(upperCase.booleanValue());
         }
 
-        Class formatterClass = getDataDictionaryService().getAttributeFormatter(businessObjectClass, attributeName);
+        Class<? extends Formatter> formatterClass = getDataDictionaryService().getAttributeFormatter(businessObjectClass, attributeName);
         if (formatterClass != null) {
             try {
-                field.setFormatter((Formatter) formatterClass.newInstance());
+                field.setFormatter(formatterClass.newInstance());
             }
             catch (InstantiationException e) {
                 LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
@@ -459,11 +461,11 @@ public class FieldUtils {
      * @param bo business object to get field values from
      * @return List of fields with values populated from business object.
      */
-    public static List populateFieldsFromBusinessObject(List fields, BusinessObject bo) {
-        List populatedFields = new ArrayList();
+    public static List<Field> populateFieldsFromBusinessObject(List<Field> fields, BusinessObject bo) {
+        List<Field> populatedFields = new ArrayList<Field>();
 
-        for (Iterator iter = fields.iterator(); iter.hasNext();) {
-            Field element = (Field) iter.next();
+        for (Iterator<Field> iter = fields.iterator(); iter.hasNext();) {
+            Field element = iter.next();
             if (element.containsBOData()) {
                 String propertyName = element.getPropertyName();
 
@@ -487,6 +489,26 @@ public class FieldUtils {
         Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
         if (obj != null) {
         	field.setPropertyValue(obj);
+            // for user fields, attempt to pull the principal ID and person's name from the source object
+            if ( field.getFieldType().equals(Field.KUALIUSER) ) {
+            	// this is supplemental, so catch and log any errors 
+            	try {
+            		if ( StringUtils.isNotBlank(field.getUniversalIdAttributeName()) ) {
+            			Object principalId = ObjectUtils.getNestedValue(businessObject, field.getUniversalIdAttributeName());
+            			if ( principalId != null ) {
+            				field.setUniversalIdValue(principalId.toString());
+            			}
+            		}
+            		if ( StringUtils.isNotBlank(field.getPersonNameAttributeName()) ) {
+            			Object personName = ObjectUtils.getNestedValue(businessObject, field.getPersonNameAttributeName());
+            			if ( personName != null ) {
+            				field.setPersonNameValue( personName.toString() );
+            			}
+            		}
+            	} catch ( Exception ex ) {
+            		LOG.warn( "Unable to get principal ID or person name property in FieldBridge.", ex );
+            	}
+            }
         }
         populateSecureField(field, obj);
     }
@@ -667,7 +689,7 @@ public class FieldUtils {
      * @param readOnly - Indicates whether all fields should be read only.
      * @return Field
      */
-    public static Field fixFieldForForm(Field field, List keyFieldNames, String namePrefix, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
+    public static Field fixFieldForForm(Field field, List keyFieldNames, String namePrefix, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
         String propertyName = field.getPropertyName();
         // We only need to do the following processing if the field is not a sub section header
         if (field.containsBOData()) {
@@ -688,13 +710,21 @@ public class FieldUtils {
             }
 
             // set keys read only for edit
-            if (keyFieldNames.contains(propertyName) && KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
-                field.setReadOnly(true);
-                field.setKeyField(true);
+            if ( KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) ) {
+            	if (keyFieldNames.contains(propertyName) ) {
+	                field.setReadOnly(true);
+	                field.setKeyField(true);
+	            } else if ( StringUtils.isNotBlank( field.getUniversalIdAttributeName() )
+	            		&& keyFieldNames.contains(field.getUniversalIdAttributeName() ) ) {
+	            	// special handling for when the principal ID is the PK field for a record
+	            	// this causes locking down of the user ID field
+	                field.setReadOnly(true);
+	                field.setKeyField(true);
+	            }
             }
 
             // apply any authorization restrictions to field availability on the UI
-            applyAuthorization(field, maintenanceAction, auths);
+            applyAuthorization(field, maintenanceAction, auths, documentStatus, documentInitiatorPrincipalId);
 
             // if fieldConversions specified, prefix with new constant
             if (StringUtils.isNotBlank(field.getFieldConversions())) {
@@ -748,8 +778,10 @@ public class FieldUtils {
             	int suffixIndex = field.getPropertyName().indexOf( field.getUserIdAttributeName() );
             	if ( suffixIndex != -1 ) {
             		field.setPersonNameAttributeName( field.getPropertyName().substring( 0, suffixIndex ) + field.getPersonNameAttributeName() );
+            		field.setUniversalIdAttributeName( field.getPropertyName().substring( 0, suffixIndex ) + field.getUniversalIdAttributeName() );
             	} else {
             		field.setPersonNameAttributeName(namePrefix + field.getPersonNameAttributeName());
+            		field.setUniversalIdAttributeName(namePrefix + field.getUniversalIdAttributeName());
             	}
 
                 // TODO: do we need to prefix the universalIdAttributeName in Field as well?
@@ -789,7 +821,7 @@ public class FieldUtils {
 
                     for (Iterator iterator = containerFields.iterator(); iterator.hasNext();) {
                         Field containerField = (Field) iterator.next();
-                        containerField = fixFieldForForm(containerField, keyFieldNames, namePrefix, maintenanceAction, readOnly, auths);
+                        containerField = fixFieldForForm(containerField, keyFieldNames, namePrefix, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
                         fixedFields.add(containerField);
                     }
 
@@ -802,9 +834,10 @@ public class FieldUtils {
         return field;
     }
 
-    public static void applyAuthorization(Field field, String maintenanceAction, MaintenanceDocumentRestrictions auths) {
+    public static void applyAuthorization(Field field, String maintenanceAction, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
     	String fieldName = "";
     	FieldRestriction fieldAuth = null;
+    	Person user = GlobalVariables.getUserSession().getPerson();
         // only apply this on the newMaintainable
         if (field.getPropertyName().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
             // get just the actual fieldName, with the document.newMaintainableObject, etc etc removed
@@ -813,6 +846,30 @@ public class FieldUtils {
             // if the field is restricted somehow
             if (auths.hasRestriction(fieldName)) {
                 fieldAuth = auths.getFieldRestriction(fieldName);
+                if(KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)){
+                	if((KEWConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus) || KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus))
+                		&& user.getPrincipalId().equals(documentInitiatorPrincipalId)){
+                		
+                		//user should be able to see the unmark value
+                	}else{
+                		if(fieldAuth.isPartiallyMasked()){
+    	                	field.setSecure(true);
+    	                	fieldAuth.setShouldBeEncrypted(true);
+    	                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+    	                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+    	                	field.setDisplayMaskValue(displayMaskValue);
+    	                	populateSecureField(field, field.getPropertyValue());
+                    	}
+    	                else if(fieldAuth.isMasked()){
+    	                	field.setSecure(true);
+    	                	fieldAuth.setShouldBeEncrypted(true);
+    	                	MaskFormatter maskFormatter = fieldAuth.getMaskFormatter();
+    	                	String displayMaskValue = maskFormatter.maskValue(field.getPropertyValue());
+    	                	field.setDisplayMaskValue(displayMaskValue);
+    	                	populateSecureField(field, field.getPropertyValue());
+    	                }
+                	}
+                }
 
                 if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
                 	// if there's existing data on the page that we're not going to clear out, then we will mask it out
@@ -905,7 +962,7 @@ public class FieldUtils {
      * @param readOnly
      * @return List of Section objects
      */
-    public static List meshSections(List oldSections, List newSections, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
+    public static List meshSections(List oldSections, List newSections, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
         List meshedSections = new ArrayList();
 
         for (int i = 0; i < newSections.size(); i++) {
@@ -914,7 +971,7 @@ public class FieldUtils {
             Section oldMaintSection = (Section) oldSections.get(i);
             List oldSectionRows = oldMaintSection.getRows();
             List<Row> meshedRows = new ArrayList();
-            meshedRows = meshRows(oldSectionRows, sectionRows, keyFieldNames, maintenanceAction, readOnly, auths);
+            meshedRows = meshRows(oldSectionRows, sectionRows, keyFieldNames, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
             maintSection.setRows(meshedRows);
             if (StringUtils.isBlank(maintSection.getErrorKey())) {
                 maintSection.setErrorKey(MaintenanceUtils.generateErrorKeyForSection(maintSection));
@@ -937,12 +994,12 @@ public class FieldUtils {
      * @param auths
      * @return a List of Field
      */
-    private static List<Field> arrangeNewFields(List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
+    private static List<Field> arrangeNewFields(List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
         List<Field> results = new ArrayList();
         for (int k = 0; k < newFields.size(); k++) {
             Field newMaintField = (Field) newFields.get(k);
             String propertyName = newMaintField.getPropertyName();
-            newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, KNSConstants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths);
+            newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, KNSConstants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
 
             results.add(newMaintField);
         }
@@ -959,7 +1016,7 @@ public class FieldUtils {
      * @param readOnly
      * @return List of Row objects
      */
-    public static List meshRows(List oldRows, List newRows, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
+    public static List meshRows(List oldRows, List newRows, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
         List<Row> meshedRows = new ArrayList<Row>();
 
         for (int j = 0; j < newRows.size(); j++) {
@@ -973,7 +1030,7 @@ public class FieldUtils {
                 oldRowFields = oldSectionRow.getFields();
             }
 
-            List meshedFields = meshFields(oldRowFields, rowFields, keyFieldNames, maintenanceAction, readOnly, auths);
+            List meshedFields = meshFields(oldRowFields, rowFields, keyFieldNames, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
             if (meshedFields.size() > 0) {
                 Row meshedRow = new Row(meshedFields);
                 if (sectionRow.isHidden()) {
@@ -998,7 +1055,7 @@ public class FieldUtils {
      * @param readOnly
      * @return List of Field objects
      */
-    public static List meshFields(List oldFields, List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
+    public static List meshFields(List oldFields, List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
         List meshedFields = new ArrayList();
 
         List newFieldsToMerge = new ArrayList();
@@ -1014,15 +1071,15 @@ public class FieldUtils {
             else if (Field.CONTAINER.equals(newMaintField.getFieldType())) {
                 if (oldFields.size() > k) {
                     Field oldMaintField = (Field) oldFields.get(k);
-                    newMaintField = meshContainerFields(oldMaintField, newMaintField, keyFieldNames, maintenanceAction, readOnly, auths);
+                    newMaintField = meshContainerFields(oldMaintField, newMaintField, keyFieldNames, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
                 }
                 else {
-                    newMaintField = meshContainerFields(newMaintField, newMaintField, keyFieldNames, maintenanceAction, readOnly, auths);
+                    newMaintField = meshContainerFields(newMaintField, newMaintField, keyFieldNames, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
                 }
                 meshedFields.add(newMaintField);
             }
             else {
-                newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, KNSConstants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths);
+                newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, KNSConstants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
                 // add old fields for edit
                 if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                     Field oldMaintField = (Field) oldFields.get(k);
@@ -1034,7 +1091,7 @@ public class FieldUtils {
                         newMaintField.setHighlightField(true);
                     }
 
-                    oldMaintField = FieldUtils.fixFieldForForm(oldMaintField, keyFieldNames, KNSConstants.MAINTENANCE_OLD_MAINTAINABLE, maintenanceAction, true, auths);
+                    oldMaintField = FieldUtils.fixFieldForForm(oldMaintField, keyFieldNames, KNSConstants.MAINTENANCE_OLD_MAINTAINABLE, maintenanceAction, true, auths, documentStatus, documentInitiatorPrincipalId);
                     oldFieldsToMerge.add(oldMaintField);
                 }
 
@@ -1180,9 +1237,9 @@ public class FieldUtils {
 		return newDate;
 	}
 
-    private static Field meshContainerFields(Field oldMaintField, Field newMaintField, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths) {
+    private static Field meshContainerFields(Field oldMaintField, Field newMaintField, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
         List resultingRows = new ArrayList();
-        resultingRows.addAll(meshRows(oldMaintField.getContainerRows(), newMaintField.getContainerRows(), keyFieldNames, maintenanceAction, readOnly, auths));
+        resultingRows.addAll(meshRows(oldMaintField.getContainerRows(), newMaintField.getContainerRows(), keyFieldNames, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId));
         Field resultingField = newMaintField;
         resultingField.setFieldType(Field.CONTAINER);
 

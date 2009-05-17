@@ -30,6 +30,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -39,10 +41,11 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 @Table(name="KRIM_TYP_T")
 @NamedQueries({
   @NamedQuery(name="KimTypeImpl.FindByKimTypeId", query="select kt from KimTypeImpl kt where kt.kimTypeId = :kimTypeId"),
-  @NamedQuery(name="KimTypeImpl.FindByeKimTypeName", query="select kt from KimTypeImpl kt where kt.name = :name and kt.namespaceCode = :namespaceCode")
+  @NamedQuery(name="KimTypeImpl.FindByKimTypeName", query="select kt from KimTypeImpl kt where kt.name = :name and kt.namespaceCode = :namespaceCode")
 })
 public class KimTypeImpl extends PersistableBusinessObjectBase {
 
+	private static final long serialVersionUID = 7752050088434254168L;
 	@Id
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
@@ -131,4 +134,24 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 		this.kimTypeId = kimTypeId;
 	}
 
+	public KimTypeInfo toInfo() {
+		KimTypeInfo info = new KimTypeInfo();
+		info.setKimTypeId( kimTypeId );
+		info.setName( name );
+		info.setKimTypeServiceName(kimTypeServiceName);
+		info.setNamespaceCode(namespaceCode);
+		List<KimTypeAttributeInfo> attribs = new ArrayList<KimTypeAttributeInfo>(); 
+		info.setAttributeDefinitions( attribs );
+		for ( KimTypeAttributeImpl attribImpl : getAttributeDefinitions() ) {
+			KimTypeAttributeInfo attrib = new KimTypeAttributeInfo();
+			attrib.setAttributeName( attribImpl.getKimAttribute().getAttributeName() );
+			attrib.setSortCode( attribImpl.getSortCode() );
+			attrib.setComponentName( attribImpl.getKimAttribute().getComponentName() );
+			attrib.setNamespaceCode( attribImpl.getKimAttribute().getNamespaceCode() );
+			attrib.setApplicationUrl( attribImpl.getKimAttribute().getApplicationUrl() );
+			attrib.setAttributeLabel( attribImpl.getKimAttribute().getAttributeLabel() );
+			attribs.add(attrib);
+		}		
+		return info;
+	}
 }

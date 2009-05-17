@@ -29,6 +29,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -98,7 +99,25 @@ public class AttributeValidationHelper {
 			GlobalVariables.getErrorMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
 		}
     }
-    
+
+	public AttributeSet convertErrorsForMappedFields(String errorPath, AttributeSet attrIdxMap, AttributeSet localErrors) {
+		AttributeSet errors = new AttributeSet();
+		if (errorPath == null) {
+			errorPath = KNSConstants.EMPTY_STRING;
+		}
+		else if (StringUtils.isNotEmpty(errorPath)) {
+			errorPath = errorPath + ".";
+		}
+		for ( String key : localErrors.keySet() ) {
+			Map<String,String> criteria = new HashMap<String,String>();
+			criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, key);
+			KimAttributeImpl attribute = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+			String attributeDefnId = attribute==null?"":attribute.getKimAttributeId();
+			errors.put(errorPath+"qualifier("+attributeDefnId+").attrVal", localErrors.get(key));
+		}
+		return errors;
+	}
+
 	public AttributeSet convertErrors(String errorPath, AttributeSet attrIdxMap, AttributeSet localErrors) {
 		AttributeSet errors = new AttributeSet();
 		if (errorPath == null) {

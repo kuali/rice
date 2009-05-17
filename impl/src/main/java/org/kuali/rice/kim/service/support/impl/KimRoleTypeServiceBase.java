@@ -36,10 +36,6 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 
 	private static final Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
 	
-	public String getWorkflowDocumentTypeName() {
-		return KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
-	}
-
 	/**
 	 * Performs a simple check that the qualifier on the role matches the qualification.
 	 * Extra qualification attributes are ignored.

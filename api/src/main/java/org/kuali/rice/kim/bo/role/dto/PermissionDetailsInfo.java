@@ -27,6 +27,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  */
 public class PermissionDetailsInfo implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	protected String permissionId;
 
 	protected AttributeSet details;

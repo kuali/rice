@@ -40,8 +40,11 @@ public class MaskFormatterSubString implements MaskFormatter {
         if (strValue.length() < maskLength) {
             throw new RuntimeException("Data value length exceeds mask length defined in field authorization.");
         }
-
-        return StringUtils.repeat(maskCharacter, maskLength) + strValue.substring(maskLength - 1);
+        if(maskLength >0){
+        	return StringUtils.repeat(maskCharacter, maskLength) + strValue.substring(maskLength - 1);
+        }else{
+        	return strValue;
+        }
     }
 
     /**

@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
@@ -59,6 +60,8 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public static final String DOCUMENT_NUMBER = "documentNumber";	
 	public static final String DOCUMENT_TYPE_NAME = "documentTypeName";
 	public static final String SECTION_ID = "sectionId";
+	public static final String KIM_TYPE_ID = KimConstants.PrimaryKeyConstants.KIM_TYPE_ID;
+	public static final String QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER = "qualifierResolverProvidedIdentifier";
 	
 	protected String methodToCall;
 	protected String beanName;
@@ -84,6 +87,8 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected boolean actionDetailsAtRoleMemberLevel;
 	protected String documentNumber;
 	protected String sectionId;
+	protected String kimTypeId;
+	protected String qualifierResolverProvidedIdentifier;
 	
 	protected Campus campus;
 	protected Namespace parameterNamespace;
@@ -489,6 +494,22 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
+	}
+
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
+	}
+
+	public String getQualifierResolverProvidedIdentifier() {
+		return qualifierResolverProvidedIdentifier;
+	}
+
+	public void setQualifierResolverProvidedIdentifier(String qualifierResolverProvidedIdentifier) {
+		this.qualifierResolverProvidedIdentifier = qualifierResolverProvidedIdentifier;
 	}
 	
 }

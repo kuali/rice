@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -57,21 +59,35 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         }
     	if(!validAssignRole(newMember, document))
     		return false;
+		List<AttributeSet> attributeSetListToValidate = new ArrayList<AttributeSet>();
+		AttributeSet attributeSetToValidate;
+		AttributeSet validationErrors = new AttributeSet();
+        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( document.getKimType() );
+
+		for(KimDocumentRoleMember roleMember: document.getMembers()) {
+			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
+			attributeSetListToValidate.add(attributeSetToValidate);
+    	}
+		boolean attributesUnique;
 
 	    int i = 0;
 	    for (KimDocumentRoleMember member: document.getMembers()){
-	    	if (member.getMemberId().equals(newMember.getMemberId()) && member.getMemberTypeCode().equals(newMember.getMemberTypeCode())){
+	    	attributesUnique = kimTypeService.validateUniqueAttributes(
+					document.getKimType().getKimTypeId(), 
+					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
+					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));
+	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
+	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
 	            rulePassed = false;
-	            GlobalVariables.getErrorMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            GlobalVariables.getErrorMap().putError("member.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            break;
 	    	}
 	    	i++;
 	    }
 	    
-		AttributeSet validationErrors = new AttributeSet();
-        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( document.getKimType() );
         if ( kimTypeService != null ) {
-        		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-		        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
+    		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
     	if (!validationErrors.isEmpty()) {
     		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);

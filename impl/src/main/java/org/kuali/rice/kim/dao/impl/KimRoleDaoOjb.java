@@ -40,6 +40,7 @@ import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 
 /**
@@ -75,7 +76,32 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		}
 		return results;
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
+	 *      java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GroupMemberImpl> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId) {
+		
+		Criteria c = new Criteria();
+		
+		if ( groupIds != null ) {
+			c.addIn(KIMPropertyConstants.GroupMember.GROUP_ID, groupIds);
+		}
+		c.addEqualTo(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
+		Query query = QueryFactory.newQuery(GroupMemberImpl.class, c);
+		Collection<GroupMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		ArrayList<GroupMemberImpl> results = new ArrayList<GroupMemberImpl>( coll.size() );
+		for ( GroupMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
+	}
+
 	/**
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection,
 	 *      java.util.Collection)
@@ -100,13 +126,15 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	@SuppressWarnings("unchecked")
 	public Map<String,RoleImpl> getRoleImplMap(Collection<String> roleIds) {
 		HashMap<String,RoleImpl> results = new HashMap<String, RoleImpl>();
-		Criteria c = new Criteria();
-		c.addIn(KIMPropertyConstants.Role.ROLE_ID, roleIds);
-		c.addEqualTo(KIMPropertyConstants.Role.ACTIVE, "Y");
-		Query query = QueryFactory.newQuery(RoleImpl.class, c);
-		Collection<RoleImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		for ( RoleImpl role : coll ) {
-			results.put( role.getRoleId(), role);
+		if ( roleIds != null && !roleIds.isEmpty() ) {
+			Criteria c = new Criteria();
+			c.addIn(KIMPropertyConstants.Role.ROLE_ID, roleIds);
+			c.addEqualTo(KIMPropertyConstants.Role.ACTIVE, "Y");
+			Query query = QueryFactory.newQuery(RoleImpl.class, c);
+			Collection<RoleImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+			for ( RoleImpl role : coll ) {
+				results.put( role.getRoleId(), role);
+			}
 		}
 		return results;
 	}
@@ -114,17 +142,35 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	@SuppressWarnings("unchecked")
 	public Map<String,KimDelegationImpl> getDelegationImplMapFromRoleIds(Collection<String> roleIds) {
 		HashMap<String,KimDelegationImpl> results = new HashMap<String, KimDelegationImpl>();
-		Criteria c = new Criteria();
-		c.addIn(KIMPropertyConstants.Delegation.ROLE_ID, roleIds);
-		c.addEqualTo(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE);
-		Query query = QueryFactory.newQuery(KimDelegationImpl.class, c);
-		Collection<KimDelegationImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		for ( KimDelegationImpl dele : coll ) {
-			results.put( dele.getDelegationId(), dele);
+		if ( roleIds != null && !roleIds.isEmpty() ) {
+			Criteria c = new Criteria();
+			c.addIn(KIMPropertyConstants.Delegation.ROLE_ID, roleIds);
+			c.addEqualTo(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE);
+			Query query = QueryFactory.newQuery(KimDelegationImpl.class, c);
+			Collection<KimDelegationImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+			for ( KimDelegationImpl dele : coll ) {
+				results.put( dele.getDelegationId(), dele);
+			}
 		}
 		return results;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<KimDelegationImpl> getDelegationImplsForRoleIds(Collection<String> roleIds) {
+		List<KimDelegationImpl> results = new ArrayList<KimDelegationImpl>();
+		if ( roleIds != null && !roleIds.isEmpty() ) {
+			Criteria c = new Criteria();
+			c.addIn(KIMPropertyConstants.Delegation.ROLE_ID, roleIds);
+			c.addEqualTo(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE);
+			Query query = QueryFactory.newQuery(KimDelegationImpl.class, c);
+			Collection<KimDelegationImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+			for ( KimDelegationImpl dele : coll ) {
+				results.add(dele);
+			}
+		}
+		return results;
+	}
+
 	/**
 	 * This overridden method ...
 	 * 
@@ -185,6 +231,27 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		if ( memberTypeCode != null ) {
 			c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, memberTypeCode );
 		}
+		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
+		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
+	}
+
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers( Collection<String> roleIds) {	
+		Criteria c = new Criteria();
+		
+		c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds);
+		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
 		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );

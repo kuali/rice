@@ -111,6 +111,9 @@ public class RiceKeyConstants {
     public static final String ERROR_ZERO_OR_NEGATIVE_AMOUNT = "error.zeroOrNegativeAmount";
     public static final String ERROR_NEGATIVE_AMOUNT = "error.negativeAmount";
     public static final String ERROR_NOT_AMONG = "error.invalidNotAmong";
+    
+    public static final String WARNING_MAINTENANCE_LOCKED = "warning.maintenance.locked";
+    public static final String ERROR_VERSION_MISMATCH = "error.version.mismatch";
 
     public static final String MESSAGE_RELOADED = "message.document.reloaded";
     public static final String MESSAGE_ROUTE_SUCCESSFUL = "message.route.successful";
@@ -161,7 +164,8 @@ public class RiceKeyConstants {
     public static final String ERROR_ONE_ACTIVE_ITEM_REQUIRED = "error.one.active.item.required";
     public static final String ERROR_MEMBERID_MEMBERTYPE_MISMATCH = "error.memberid.membertype.mismatch";
     public static final String ERROR_PRIORITY_NUMBER_RANGE = "error.prioritynumber.range";
-    
+    public static final String ERROR_CANT_ADD_DERIVED_ROLE = "error.cant.add.derived.role";
+    public static final String ERROR_REQUIRED_CONDITIONALLY = "error.required.conditionally";
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
     

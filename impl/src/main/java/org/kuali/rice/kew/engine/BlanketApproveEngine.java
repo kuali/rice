@@ -128,6 +128,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             if (config.isSendNotifications()) {
                 notifyContext = new NotificationContext(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getPrincipal(), config.getCause().getActionTaken());
             }
+            lockAdditionalDocuments(document);
             try {
                 List processingQueue = new LinkedList();
                 for (Iterator iterator = nodeInstancesToProcess.iterator(); iterator.hasNext();) {

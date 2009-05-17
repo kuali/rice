@@ -150,6 +150,26 @@ public class FieldBridge {
 
             }
             field.setPropertyValue(propValue);
+            // for user fields, attempt to pull the principal ID and person's name from the source object
+            if ( fieldControl != null && fieldControl.isKualiUser() ) {
+            	// this is supplemental, so catch and log any errors 
+            	try {
+            		if ( StringUtils.isNotBlank(field.getUniversalIdAttributeName()) ) {
+            			Object principalId = ObjectUtils.getNestedValue(bo, field.getUniversalIdAttributeName());
+            			if ( principalId != null ) {
+            				field.setUniversalIdValue(principalId.toString());
+            			}
+            		}
+            		if ( StringUtils.isNotBlank(field.getPersonNameAttributeName()) ) {
+            			Object personName = ObjectUtils.getNestedValue(bo, field.getPersonNameAttributeName());
+            			if ( personName != null ) {
+            				field.setPersonNameValue( personName.toString() );
+            			}
+            		}
+            	} catch ( Exception ex ) {
+            		LOG.warn( "Unable to get principal ID or person name property in FieldBridge.", ex );
+            	}
+            }
             FieldUtils.setInquiryURL(field, bo, propertyName);
 
             // populatedColumns.add(col);

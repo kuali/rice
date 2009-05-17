@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -351,14 +350,14 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	static String getCustomRoleInquiryHref(String backLocation, String href){
         Properties parameters = new Properties();
         String hrefPart = "";
-    	String docTypeName = "";
+//    	String docTypeName = "";
     	String docTypeAction = "";
     	if(StringUtils.isBlank(backLocation) || backLocation.contains(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION)
     			|| !backLocation.contains(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION)){
-    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
-    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+//    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
+    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
     	} else{
-    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
+//    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
 		if (StringUtils.isNotBlank(href) && href.indexOf(ROLE_ID_URL_KEY)!=-1) {
@@ -368,8 +367,8 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		    	idx2 = href.length();
 		    }
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
+//	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
+//	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
 		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters)+hrefPart;

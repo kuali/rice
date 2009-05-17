@@ -1,11 +1,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docCitizenshipAttributes" value="${DataDictionary.PersonDocumentCitizenship.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
 <kul:subtab lookedUpCollectionName="citizenship" width="${tableWidth}" subTabTitle="Citizenships">      
-        <table cellpadding=0 cellspacing=0 summary="">
+        <table cellpadding="0" cellspacing="0" summary="">
           	<tr>
-          		<th><div align="left">&nbsp</div></th> 
+          		<th><div align="left">&nbsp;</div></th> 
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docCitizenshipAttributes.countryCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docCitizenshipAttributes.startDate}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docCitizenshipAttributes.endDate}" noColon="true" /></div></th>
@@ -14,9 +14,7 @@
           	</tr>     
           	
              <tr>
-				<th class="infoline">
-					<c:out value="Add:" />
-				</th>
+				<th class="infoline">Add:</th>
 
                 <td class="infoline">   
                 <div align="center">             	

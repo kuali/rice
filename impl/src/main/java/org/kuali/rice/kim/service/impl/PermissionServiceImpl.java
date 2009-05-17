@@ -30,6 +30,7 @@ import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
@@ -39,9 +40,11 @@ import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -547,4 +550,40 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 		return results;
 	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.PermissionService#getPermissionDetailLabel(java.lang.String)
+	 */
+	public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName) {
+    	// get the type service for this permission
+		KimPermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
+		if ( typeService != null ) {
+			// ask the type service for the attribute definition for the given attribute name
+			AttributeDefinitionMap attributes = typeService.getAttributeDefinitions( kimTypeId );
+			String label = null;
+			for ( AttributeDefinition attributeDef : attributes.values() ) {
+				if ( attributeDef.getName().equals(attributeName) ) {
+					label = attributeDef.getLabel();
+				}
+			}
+			// return the attribute label
+			if ( label != null ) {
+				return label;
+			} else {
+				return "Missing Def: " + attributeName;
+			}
+		} else {
+			return "No Label: " + attributeName;
+		}
+	}
+
+	private DataDictionaryService dataDictionaryService;
+	protected DataDictionaryService getDataDictionaryService() {
+		if(dataDictionaryService == null){
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
+	
 }

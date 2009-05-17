@@ -753,8 +753,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected Properties getParameters(BusinessObject bo, Map fieldConversions, String lookupImpl, List returnKeys) {
         Properties parameters = new Properties();
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.RETURN_METHOD_TO_CALL);
-        parameters.put(KNSConstants.DOC_FORM_KEY, getDocFormKey());
-        parameters.put(KNSConstants.REFRESH_CALLER, lookupImpl);
+        if ( getDocFormKey() != null ) {
+        	parameters.put(KNSConstants.DOC_FORM_KEY, getDocFormKey());
+        }
+        if ( lookupImpl != null ) {
+        	parameters.put(KNSConstants.REFRESH_CALLER, lookupImpl);
+        }
         if(getDocNum() != null){
         	parameters.put(KNSConstants.DOC_NUM, getDocNum());
         }

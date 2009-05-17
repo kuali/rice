@@ -16,6 +16,9 @@
  */
 package org.kuali.rice.kew.postprocessor;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.kuali.rice.kew.dto.DTOConverter;
 
 
@@ -57,5 +60,13 @@ public class PostProcessorRemoteAdapter implements PostProcessor {
 
     public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
         return new ProcessDocReport(postProcessor.afterProcess(DTOConverter.convertAfterProcessEvent(event)));
+    }
+    
+    public List<Long> getDocumentIdsToLock(DocumentLockingEvent event) throws Exception {
+    	Long[] documentIdsToLock = postProcessor.getDocumentIdsToLock(DTOConverter.convertDocumentLockingEvent(event));
+    	if (documentIdsToLock == null) {
+    		return null;
+    	}
+    	return Arrays.asList(documentIdsToLock);
     }
 }

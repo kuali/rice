@@ -17,7 +17,7 @@
 
 <%@ attribute name="editingMode" required="true" description="used to decide editability of overview fields" type="java.util.Map"%>
 <c:set var="isMaintenance" value="${KualiForm.class.name eq 'org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm' || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
-<c:set var="readOnly" value="${ ! KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+<c:set var="readOnly" value="${ ! KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW]}" />
 
 <c:set var="docHeaderAttributes" value="${DataDictionary.DocumentHeader.attributes}" />
 <c:set var="documentTypeName" value="${KualiForm.docTypeName}" />

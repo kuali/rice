@@ -1,11 +1,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docAffiliationAttributes" value="${DataDictionary.PersonDocumentAffiliation.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+
 <kul:subtab lookedUpCollectionName="affiliations" width="${tableWidth}" subTabTitle="Affiliations" noShowHideButton="true" >      
-        <table cellpadding=0 cellspacing=0 summary="">
+        <table cellpadding="0" cellspacing="0" summary="">
           	<tr>
-          		<th><div align="left">&nbsp</div></th> 
+          		<th><div align="left">&nbsp;</div></th> 
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.affiliationTypeCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.campusCode}" noColon="true" /></div></th>
           		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.dflt}" noColon="true" /></div></th>

@@ -132,5 +132,7 @@ public interface RoleService {
 	 */
 	void principalInactivated( String principalId );
 	
+	void roleInactivated(String roleId);
+	
 	List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds);
 }

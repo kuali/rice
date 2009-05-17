@@ -33,6 +33,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Table(name="KRIM_PND_ROLE_RSP_T")
 public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 	
+	private static final long serialVersionUID = -4465768714850961538L;
 	@Id
 	@Column(name="ROLE_RSP_ID")
 	protected String roleResponsibilityId;

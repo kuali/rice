@@ -29,6 +29,7 @@ import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
+import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
@@ -118,6 +119,15 @@ public class EmployeeAttribute extends GenericRoleAttribute {
         return qualifiers;
     }
 
+	@Override
+	protected ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
+        List<Id> recipients = resolveRecipients(routeContext, qualifiedRoleName);
+        ResolvedQualifiedRole rqr = new ResolvedQualifiedRole(getLabelForQualifiedRoleName(qualifiedRoleName),
+                                                              recipients,
+                                                              qualifiedRoleName.getBaseRoleName()); // default to no annotation...
+        return rqr;
+    }
+	
 	@Override
     protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
         List<Id> members = new ArrayList<Id>();

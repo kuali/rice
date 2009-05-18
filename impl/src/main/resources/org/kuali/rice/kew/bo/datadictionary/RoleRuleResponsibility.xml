@@ -41,7 +41,7 @@
 
   <bean id="RoleRuleResponsibility-roleName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Role Name" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="80" />
     <property name="validationPattern" >
       <bean parent="AnyCharacterValidationPattern" />
     </property>

@@ -158,11 +158,15 @@ public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute
         log.info("getRuleExtensionValues");
         List<RuleExtensionValue> exts = new ArrayList<RuleExtensionValue>();
         Map<String, String> props = getProperties();
-        for (Map.Entry<String, String> entry: props.entrySet()) {
-            RuleExtensionValue ruleVal = new RuleExtensionValue();
-            ruleVal.setKey(entry.getKey());
-            ruleVal.setValue(entry.getValue());
-            exts.add(ruleVal);
+        if (props != null) {
+            for (Map.Entry<String, String> entry: props.entrySet()) {
+                if (entry.getValue() != null) {
+                    RuleExtensionValue ruleVal = new RuleExtensionValue();
+                    ruleVal.setKey(entry.getKey());
+                    ruleVal.setValue(entry.getValue());
+                    exts.add(ruleVal);
+                }
+            }
         }
         return exts;
     }

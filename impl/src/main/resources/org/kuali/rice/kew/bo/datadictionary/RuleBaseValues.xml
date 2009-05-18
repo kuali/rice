@@ -347,15 +347,16 @@
     <property name="forceUppercase" value="false" />
     <property name="label" value="From Date" />
     <property name="shortLabel" value="From Date" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="10" />
     <property name="validationPattern" >
       <bean parent="DateValidationPattern"/>
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-      	p:size="30"
+      	p:size="10"
       	p:datePicker="true"/>
     </property>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateFormatter" />
   </bean>
 
   <bean id="RuleBaseValues-toDate" parent="RuleBaseValues-toDate-parentBean" />
@@ -365,15 +366,16 @@
     <property name="forceUppercase" value="false" />
     <property name="label" value="To Date" />
     <property name="shortLabel" value="To Date" />
-    <property name="maxLength" value="30" />
+    <property name="maxLength" value="10" />
     <property name="validationPattern" >
       <bean parent="DateValidationPattern"/>
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition"
-      	p:size="30"
+      	p:size="10"
       	p:datePicker="true"/>
     </property>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateFormatter" />
   </bean>
 
   <bean id="RuleBaseValues-active" parent="RuleBaseValues-active-parentBean"/>

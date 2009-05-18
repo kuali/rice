@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
@@ -154,7 +155,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         	isValid &= false;
         }
         if(ruleBaseValues.getName() != null){
-        	if(ruleExists(ruleBaseValues.getName())){
+        	if(ruleExists(ruleBaseValues)){
         		this.putFieldError("name", "routetemplate.ruleservice.name.unique");
             	isValid &= false;
         	}
@@ -202,13 +203,18 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         return isValid;
 	}
 
-	protected boolean ruleExists(String ruleName){
+	protected boolean ruleExists(RuleBaseValues rule){
 		boolean bRet = false;
 
-		RuleBaseValues tmp = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
+		RuleBaseValues tmp = KEWServiceLocator.getRuleService().getRuleByName(rule.getName());
 
-		if(tmp != null)
-			bRet = true;
+		if(tmp != null) {
+		    if ((rule.getPreviousVersionId() == null) 
+		         || (rule.getPreviousVersionId() != null
+		            && !rule.getPreviousVersionId().equals(tmp.getRuleBaseValuesId()))) {
+			    bRet = true;
+		    }
+		}
 
 		return bRet;
 	}

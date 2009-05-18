@@ -96,7 +96,7 @@
         p:forceUppercase="false"
         p:label="Role Name"
         p:shortLabel="Role Name"
-        p:maxLength="100"
+        p:maxLength="80"
         p:required="false" >
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="30" />

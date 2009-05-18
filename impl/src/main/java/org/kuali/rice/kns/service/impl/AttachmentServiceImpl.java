@@ -157,6 +157,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     public void deleteAttachmentContents(Attachment attachment) {
+    	if (attachment.getNote() == null) throw new RuntimeException("Attachment.note must be set in order to delete the attachment");
         String fullPathUniqueFileName = getDocumentDirectory(attachment.getNote().getRemoteObjectIdentifier()) + File.separator + attachment.getAttachmentIdentifier();
         File attachmentFile = new File(fullPathUniqueFileName);
         attachmentFile.delete();

@@ -1338,11 +1338,13 @@ public class KualiDocumentActionBase extends KualiAction {
         	throw buildAuthorizationException("annotate", document);
         }
 
-        if (attachment != null) {
+        if (attachment != null) { // only do this if the note has been persisted
             //KFSMI-798 - refresh() changed to refreshNonUpdateableReferences()
         	//All references for the business object Attachment are auto-update="none",
         	//so refreshNonUpdateableReferences() should work the same as refresh()
-        	attachment.refreshNonUpdateableReferences();
+        	if (note.getNoteIdentifier() != null) { // KULRICE-2343 don't blow away note reference if the note wasn't persisted
+        		attachment.refreshNonUpdateableReferences();
+        	}
             getAttachmentService().deleteAttachmentContents(attachment);
         }
         // delete the note if the document is already saved

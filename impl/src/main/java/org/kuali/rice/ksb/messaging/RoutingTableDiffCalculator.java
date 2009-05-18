@@ -123,7 +123,7 @@ public class RoutingTableDiffCalculator {
 		    if (ObjectUtils.isNotNull(info)) {
     			String endpointURL = info.getEndpointUrl();
     			if (serviceMap.containsKey(endpointURL)) {
-    				LOG.warn("Multiple services with same endpoint url declared and saved in routing table.  " +
+    				LOG.trace("Multiple services with same endpoint url declared and saved in routing table.  " +
     						"Service will be ingored.  Endpoint " + endpointURL);
     			} else {
     				serviceMap.put(endpointURL, info);

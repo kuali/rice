@@ -20,9 +20,9 @@
 <div class="body">
  	
     <ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Notification Search" url="${KFSConstants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.kfs.gl.businessobject.AccountBalance&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
-	    <li><portal:portalLink displayTitle="true" title="Channel Subscriptions" url="${KFSConstants.GL_ACCOUNT_BALANCE_BY_CONSOLIDATION_LOOKUP_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.kfs.gl.businessobject.AccountBalanceByConsolidation&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
-	   	<li><portal:portalLink displayTitle="true" title="Delivery Types" url="${KFSConstants.GL_MODIFIED_INQUIRY_ACTION}?methodToCall=start&businessObjectClassName=org.kuali.kfs.gl.businessobject.CashBalance&docFormKey=88888888&returnLocation=portal.do&hideReturnLink=true" /></li>
+		<li><portal:portalLink displayTitle="true" title="Notification Search" url="${ConfigProperties.kew.url}/DocumentSearch.do?&docTypeFullName=KualiNotification" /></li>
+	    <li><portal:portalLink displayTitle="true" title="Channel Subscriptions" url="${ConfigProperties.ken.url}/DisplayUserPreferences.form" /></li>
+	   	<li><portal:portalLink displayTitle="true" title="Delivery Types" url="${ConfigProperties.kcb.url}/prefs.kcb" /></li>
 	    
     </ul>
     

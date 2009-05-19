@@ -19,8 +19,8 @@
 <div class="body">
 	
    	<ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Simple Notification" url="kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.kfs.sys.businessobject.DataMappingFieldDefinition&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-        <li><portal:portalLink displayTitle="true" title="Event Notification" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+		<li><portal:portalLink displayTitle="true" title="Simple Notification" url="${ConfigProperties.ken.url}/SendSimpleNotificationMessage.form" /></li>
+        <li><portal:portalLink displayTitle="true" title="Event Notification" url="${ConfigProperties.ken.url}/SendEventNotificationMessage.form" /></li>
 		
 	</ul>
 

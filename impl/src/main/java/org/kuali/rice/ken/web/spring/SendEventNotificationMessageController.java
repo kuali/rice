@@ -277,7 +277,13 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    document.routeDocument("This message was submitted via the event notification message submission form by user "
 			    + initiator.getWorkflowId());
 
-	    view = "HomePage";
+	    view = "SendEventNotificationMessage";
+	    
+	    // This ain't pretty, but it gets the job done for now.
+	    ErrorList el = new ErrorList();
+	    el.addError("Notifcation(s) sent.");
+	    model.put("errors", el);
+	    
 	} catch (ErrorList el) {
 	    // route back to the send form again
 	    Map<String, Object> model2 = setupModelForSendEventNotification(request);

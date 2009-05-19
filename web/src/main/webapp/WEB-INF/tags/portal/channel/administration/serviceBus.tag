@@ -21,24 +21,24 @@
 	<ul class="chan">
 		<li>
 		<portal:portalLink displayTitle="true" title="Message Queue"
-			url="kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.kfs.sys.businessobject.DataMappingFieldDefinition&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
+			url="${ConfigProperties.ksb.url}/MessageQueue.do" />
 		</li>
 		<li>
 		<portal:portalLink displayTitle="true" title="Thread Pool"
-			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
+			url="${ConfigProperties.ksb.url}/ThreadPool.do" />
 		</li>
 		<li>
 		<portal:portalLink displayTitle="true" title="Service Registry"
-			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
+			url="${ConfigProperties.ksb.url}/ServiceRegistry.do" />
 		</li>
 		<li>
 		<portal:portalLink displayTitle="true" title="Quartz"
-			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
+			url="${ConfigProperties.ksb.url}/Quartz.do" />
 		</li>
 		<li>
 		<portal:portalLink displayTitle="true" title="Security Management"
-			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
-		</li>		
+			url="${ConfigProperties.ksb.url}/JavaSecurityManagement.do" />
+		</li>
 	
 	</ul>
 

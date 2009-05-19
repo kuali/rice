@@ -335,7 +335,9 @@ public class Note extends PersistableBusinessObjectBase {
 
         // copy foreign key and redundant values into attachment
         attachment.setNoteIdentifier(noteIdentifier);
-
+        // we'll need this note reference if the attachment is deleted
+        // before the note is saved
+        attachment.setNote(this);
     }
 
     /**

@@ -138,18 +138,4 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
 
         return hashCode;
     }
-
-    /**
-     * @see org.kuali.rice.kns.bo.KualiCode#getCodeProperty()
-     */
-    public String getCodeProperty() {
-    	return code;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.KualiCode#getNameProperty()
-     */
-    public String getNameProperty() {
-    	return name;
-    }
 }

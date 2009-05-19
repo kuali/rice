@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
@@ -42,6 +43,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.maintenance.KualiGlobalMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -170,7 +172,16 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap, DocumentSearchContext searchContext) {
-        // TODO Auto-generated method stub
+        List<WorkflowAttributeValidationError> validationErrors = new ArrayList<WorkflowAttributeValidationError>();
+        DictionaryValidationService validationService = KNSServiceLocator.getDictionaryValidationService();
+        
+        for (Object key : paramMap.keySet()) {
+            String value = paramMap.get(key);
+            if (!StringUtils.isEmpty(value)) {
+                validationService.validateAttributeFormat(searchContext.getDocumentTypeName(), (String)key, value, (String)key);
+            }
+        }
+
         return null;
     }
     

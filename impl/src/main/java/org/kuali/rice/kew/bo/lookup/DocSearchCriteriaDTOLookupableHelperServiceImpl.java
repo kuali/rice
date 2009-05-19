@@ -140,13 +140,19 @@ KualiLookupableHelperServiceImpl {
     	Collection displayList=null;
 
     	DocumentSearchResultComponents components = null;
-    	try {
-    		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
-    	} catch (WorkflowServiceErrorException wsee) {
-    		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
-    			GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
-    		};
+    	if (GlobalVariables.getErrorMap().hasNoErrors()) {
+        	try {
+        		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
+        	} catch (WorkflowServiceErrorException wsee) {
+        		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
+        			GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+        		};
+        	}
     	}
+    	
+    	if (GlobalVariables.getErrorMap().hasErrors()) {
+            throw new ValidationException("errors in search criteria");
+        }
 
     	//FIXME: for now if not set set the create date back from the criteria, however eventually we should convert all
     	for (Row row : this.getRows()) {
@@ -157,10 +163,11 @@ KualiLookupableHelperServiceImpl {
 			}
 		}
 
-    	List<DocumentSearchResult> result = components.getSearchResults();
-//    	for (DocumentSearchResult documentSearchResult : result) {
-			displayList = result;//.getResultContainers();
-//		}
+    	displayList = new ArrayList<DocumentSearchResult>();
+        //displayList = result;
+        if (components != null) {
+            displayList = components.getSearchResults();
+        }
 
 		//####BEGIN COPIED CODE#########
         setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
@@ -199,11 +206,7 @@ KualiLookupableHelperServiceImpl {
 
 //          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 //ADDED (4 lines)
-        for (Iterator iter = result.iterator(); iter.hasNext();) {
-
-
-
-
+        for (Iterator iter = displayList.iterator(); iter.hasNext();) {
 
         	DocumentSearchResult docSearchResult = (DocumentSearchResult)iter.next();
 //TODO: where to get these from?

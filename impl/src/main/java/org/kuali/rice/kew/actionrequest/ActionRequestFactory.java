@@ -565,7 +565,7 @@ public class ActionRequestFactory {
     	if (request.getRuleBaseValuesId() != null) {
     		notification += " Rule Id " + request.getRuleBaseValuesId();
     	}
-    	if (request.getAnnotation() != null && !request.getAnnotation().isEmpty()){
+    	if (request.getAnnotation() != null && request.getAnnotation().length()!=0){
     		notification += " " + request.getAnnotation();
     	}
     	return notification;

@@ -709,7 +709,8 @@ KualiLookupableHelperServiceImpl {
 		if(!StringUtils.isEmpty(docTypeName)) {
 		    DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
             MessageMap messages = getValidDocumentType(docTypeName).getDocumentSearchGenerator().getMessageMap(criteria);
-            if (messages.hasMessages()) {
+            if (messages != null 
+                    && messages.hasMessages()) {
                 GlobalVariables.mergeErrorMap(messages);
             }
 		}

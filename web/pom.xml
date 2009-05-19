@@ -24,7 +24,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 				    <!-- exclude the sample app files and the jars that we don't want to include -->
-					<warSourceExcludes>*, WEB-INF/struts-config.xml, **/ojdbc14*.jar, **/mysql*.jar, **/junit*.jar, **/htmlunit*.jar, **/jetty*.jar, **/jasper*.jar, **/jsp*.jar</warSourceExcludes>
+					<warSourceExcludes>**/ojdbc14*.jar, **/mysql*.jar, **/junit*.jar, **/htmlunit*.jar, **/jetty*.jar, **/jasper*.jar, **/jsp*.jar</warSourceExcludes>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -91,7 +91,6 @@
             Value Before: ${SuperUserForm.runPostProcessorLogic}
             <html-el:checkbox property="runPostProcessorLogic" value="true"/>
             <html-el:hidden property="runPostProcessorLogic" value=""/>
-            <html-el:image src="images/test.gif" property="methodToCall.test"/>
           </td>
         </tr>
       </table>
@@ -140,7 +139,7 @@
 		         &nbsp;&nbsp;&nbsp;&nbsp;Select a node name:&nbsp;
 			     <html-el:select property="returnDestNodeName">
 		           <html-el:options collection="previousNodeNameCol" labelProperty="value" property="key"/>
-		         </html-el:select>&nbsp;<html-el:image src="images/buttonsmall_retprevrtlevel.gif" align="absmiddle" property="methodToCall.returnToPreviousNode" />&nbsp;&nbsp;&nbsp;&nbsp;
+		         </html-el:select>&nbsp;<html-el:image src="images/buttonsmall_retprevrtlevel.gif" align="absmiddle" property="methodToCall.returnToPreviousNode" style="border-style:none;" />&nbsp;&nbsp;&nbsp;&nbsp;
 	           </c:if>
             </c:if>
          </td>

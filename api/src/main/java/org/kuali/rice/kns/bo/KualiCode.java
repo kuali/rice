@@ -40,4 +40,14 @@ public interface KualiCode extends Summarizable, Inactivateable {
      * @param name - Setter for the active field.
      */
     public void setActive(boolean a);
+    
+    /**
+     * @return The current code property.
+     */
+    public String getCodeProperty();
+    
+    /**
+     * @return The current name property.
+     */
+    public String getNameProperty();
 }

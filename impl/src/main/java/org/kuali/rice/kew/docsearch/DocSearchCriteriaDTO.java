@@ -458,7 +458,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
             abbreviatedString.append("Viewer=").append(viewer).append("; ");
         }
         if (workgroupViewerName != null) {
-            abbreviatedString.append("Workgroup Viewer=").append(workgroupViewerName).append(";");
+            abbreviatedString.append("Group Viewer=").append(workgroupViewerName).append(";");
         }
         if (dateLastModifiedString != null) {
             abbreviatedString.append("Date Last Modified=").append(dateLastModifiedString).append("; ");

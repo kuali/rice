@@ -90,24 +90,20 @@
 	                          </c:choose>
 	                          <c:choose>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_ACKNOWLEDGE_REQ}">
-	                          	  <a href=""><img src="images/buttonsmall_acknowledge.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','acknowlege');" />
-	                          	  </a>
+	                          		<html-el:image src="${resourcePath}images/buttonsmall_acknowledge.gif" styleClass="tinybutton"
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%acknowledge%))" />
                                 </c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_FYI_REQ}">
-	                          	  <img src="images/buttonsmall_fyi.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','FYI');" />
-
+	                          		<html-el:image src="${resourcePath}images/buttonsmall_fyi.gif" styleClass="tinybutton"
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%FYI%))" />
 	                          	</c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_COMPLETE_REQ}">
-	                          	  <img src="images/buttonsmall_complete.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','complete');" />
-
+	                          		<html-el:image src="${resourcePath}images/buttonsmall_complete.gif" styleClass="tinybutton"
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%complete%))" />
 	                          	</c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_APPROVE_REQ}">
-	                          	  <img src="images/buttonsmall_approve.gif" onclick="processActionRequest('SuperUserForm', '<c:out value="${actionRequest.recipientTypeCd}"/>',
-	                               '<c:out value="${username}"/>', '<c:out value="${actionRequest.groupId}"/>', '<c:out value="${actionRequest.actionRequestId}"/>','approved');" />
-
+	                          		<html-el:image src="${resourcePath}images/buttonsmall_approve.gif" styleClass="tinybutton"
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%approved%))" />
 	                          	</c:when>
 	                         </c:choose>
 	                        </td>

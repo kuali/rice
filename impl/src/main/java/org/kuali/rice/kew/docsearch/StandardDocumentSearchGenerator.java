@@ -790,20 +790,15 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         whereSQL.append(getDateApprovedSql(criteria.getFromDateApproved(), criteria.getToDateApproved(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getDateFinalizedSql(criteria.getFromDateFinalized(), criteria.getToDateFinalized(), getGeneratedPredicatePrefix(whereSQL.length())));
         // flags for the table being added to the FROM class of the sql
-        boolean actionTakenTable = false;
         if ((!"".equals(getViewerSql(criteria.getViewer(), getGeneratedPredicatePrefix(whereSQL.length())))) || (!"".equals(getWorkgroupViewerSql(criteria.getWorkgroupViewerId(), criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
             whereSQL.append(getViewerSql(criteria.getViewer(), getGeneratedPredicatePrefix(whereSQL.length())));
             whereSQL.append(getWorkgroupViewerSql(criteria.getWorkgroupViewerId(), criteria.getWorkgroupViewerName(), getGeneratedPredicatePrefix(whereSQL.length())));
             fromSQL.append(", KREW_ACTN_RQST_T ");
-            actionTakenTable = true;
         }
 
         if (!("".equals(getApproverSql(criteria.getApprover(), getGeneratedPredicatePrefix(whereSQL.length()))))) {
             whereSQL.append(getApproverSql(criteria.getApprover(), getGeneratedPredicatePrefix(whereSQL.length())));
-            if (!actionTakenTable) {
-                fromSQL.append(", KREW_ACTN_TKN_T ");
-            }
-            actionTakenTable = true;
+            fromSQL.append(", KREW_ACTN_TKN_T ");
         }
 
         String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));

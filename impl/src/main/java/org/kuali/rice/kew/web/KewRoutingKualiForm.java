@@ -48,17 +48,22 @@ public class KewRoutingKualiForm extends KualiForm {
 
     private boolean showBlanketApproveButton;
     protected Map appSpecificRouteActionRequestCds = new HashMap();
+    // KULRICE-2924: Added appSpecificRouteRecipient2 to allow for better separation between person and group routing.
     protected AppSpecificRouteRecipient appSpecificRouteRecipient = new AppSpecificRouteRecipient();
+    protected AppSpecificRouteRecipient appSpecificRouteRecipient2 = new AppSpecificRouteRecipient();
     protected List appSpecificRouteList = new ArrayList();
 
     protected String appSpecificRouteRecipientType = "person";
+    // KULRICE-2924: Added appSpecificRouteActionRequestCd2 to allow for better separation between person and group routing.
     protected String appSpecificRouteActionRequestCd;
+    protected String appSpecificRouteActionRequestCd2;
     protected Integer recipientIndex;
     protected String docHandlerReturnUrl;
     protected String removedAppSpecificRecipient;
 
     public void resetAppSpecificRoute(){
         appSpecificRouteRecipient = new AppSpecificRouteRecipient();
+        appSpecificRouteRecipient2 = new AppSpecificRouteRecipient();
     }
 
     public Map getAppSpecificRouteActionRequestCds() {
@@ -164,10 +169,10 @@ public class KewRoutingKualiForm extends KualiForm {
         if(workgroupId != null){
             Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
             if(workgroup != null){
-                getAppSpecificRouteRecipient().setId(workgroup.getGroupId());
+                getAppSpecificRouteRecipient2().setId(workgroup.getGroupId());
             }
         }
-        getAppSpecificRouteRecipient().setType("workgroup");
+        getAppSpecificRouteRecipient2().setType("workgroup");
     }
 
     public AppSpecificRouteRecipient getAppSpecificRouteRecipient() {
@@ -176,6 +181,14 @@ public class KewRoutingKualiForm extends KualiForm {
     public void setAppSpecificRouteRecipient(AppSpecificRouteRecipient appSpecificRouteRecipient) {
         this.appSpecificRouteRecipient = appSpecificRouteRecipient;
     }
+    
+    public AppSpecificRouteRecipient getAppSpecificRouteRecipient2() {
+        return appSpecificRouteRecipient2;
+    }
+    public void setAppSpecificRouteRecipient2(AppSpecificRouteRecipient appSpecificRouteRecipient2) {
+        this.appSpecificRouteRecipient2 = appSpecificRouteRecipient2;
+    }
+    
     public List getAppSpecificRouteList() {
         return appSpecificRouteList;
     }
@@ -212,6 +225,15 @@ public class KewRoutingKualiForm extends KualiForm {
             String appSpecificRouteActionRequestCd) {
         this.appSpecificRouteActionRequestCd = appSpecificRouteActionRequestCd;
     }
+    
+    public String getAppSpecificRouteActionRequestCd2() {
+        return appSpecificRouteActionRequestCd2;
+    }
+    public void setAppSpecificRouteActionRequestCd2(
+            String appSpecificRouteActionRequestCd2) {
+        this.appSpecificRouteActionRequestCd2 = appSpecificRouteActionRequestCd2;
+    }
+    
     public Integer getRecipientIndex() {
         return recipientIndex;
     }
@@ -228,8 +250,19 @@ public class KewRoutingKualiForm extends KualiForm {
                 DocumentType documentType = document.getDocumentType();
                 boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(workflowDocument.getPrincipalId(), documentType);
                 if (isSuperUser){
-                    appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
-                }else if(workflowDocument.isFYIRequested()){
+                	if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved() || workflowDocument.stateIsEnroute()) {
+                		appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
+                	}
+                	else if (workflowDocument.stateIsProcessed() || workflowDocument.stateIsApproved() || workflowDocument.stateIsDisapproved()) {
+                        appSpecificRouteActionRequestCds.clear();
+                        appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+                        appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+                	}
+                	else {
+                        appSpecificRouteActionRequestCds.clear();
+                        appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+                	}
+                } else if(workflowDocument.isFYIRequested()){
                     appSpecificRouteActionRequestCds.clear();
                     appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
                 } else if (workflowDocument.isAcknowledgeRequested()){

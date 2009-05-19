@@ -301,8 +301,8 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="DocSearchCriteriaDTO-workgroupViewerName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="workgroupViewerName" />
-    <property name="label" value="Workgroup Viewer" />
-    <property name="shortLabel" value="WorkView" />
+    <property name="label" value="Group Viewer" />
+    <property name="shortLabel" value="GroupView" />
     
     <property name="control" >
       <bean parent="TextControlDefinition"

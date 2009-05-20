@@ -64,7 +64,6 @@ public class QuickLinksAction extends KewKualiAction {
 
         LOG.debug("getting Named Searches");
         List namedSearches = new ArrayList();
-        namedSearches.add(new KeyValue("", "Named Searches"));
         namedSearches.addAll(getQuickLinksService().getNamedSearches(principalId));
         quickLinksForm.setNamedSearches(namedSearches);
         request.setAttribute("namedSearches",namedSearches);

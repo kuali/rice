@@ -35,6 +35,7 @@ public class QuickLinksForm extends KualiForm {
     private List namedSearches;
     private List actionListStats;
     private List initiatedDocumentTypes;
+    private String namedSearch = "";
 
     /**
      * @return Returns the actionListStats.
@@ -96,4 +97,16 @@ public class QuickLinksForm extends KualiForm {
     public void setWatchedDocuments(List watchedDocuments) {
         this.watchedDocuments = watchedDocuments;
     }
+	/**
+	 * @return the namedSearch
+	 */
+	public String getNamedSearch() {
+		return this.namedSearch;
+	}
+	/**
+	 * @param namedSearch the namedSearch to set
+	 */
+	public void setNamedSearch(String namedSearch) {
+		this.namedSearch = namedSearch;
+	}
 }

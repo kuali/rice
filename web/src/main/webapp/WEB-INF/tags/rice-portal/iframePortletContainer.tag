@@ -13,16 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
-<%@ attribute name="url" required="true" %>
-<%@ attribute name="title" required="true" %>
-<%@ attribute name="displayTitle" required="false" %>
-<%@ attribute name="prefix" required="false" %>
+<%@ attribute name="channelTitle" required="true" %>
+<%@ attribute name="channelUrl" required="true" %>
 
-<c:if test="${displayTitle}" >
-  <a class="portal_link" href="${prefix}portal.do?channelTitle=${title}&channelUrl=${url}"  title="${title}">${title}</a>
-</c:if>
-<c:if test="${! displayTitle}" >
-  <a class="portal_link" href="${prefix}portal.do?channelTitle=${title}&channelUrl=${url}" title="${title}"><jsp:doBody/></a>
-</c:if>
+
+<iframe src="${channelUrl}" onload='setFocusedIframeDimensions("iframeportlet", 500, true); setIframeAnchor("iframeportlet")' name="iframeportlet" id="iframeportlet" hspace="0" vspace="0" style="height: 500px;" title="E-Doc" frameborder="0" height="500" scrolling="auto" width="100%"></iframe>
+                     

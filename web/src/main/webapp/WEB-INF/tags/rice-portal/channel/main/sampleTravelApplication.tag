@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
 <channel:portalChannelTop channelTitle="Sample Travel Application" />
 <div class="body">

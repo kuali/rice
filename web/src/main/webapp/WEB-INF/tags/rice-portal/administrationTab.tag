@@ -13,16 +13,17 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
-<channel:portalChannelTop channelTitle="Send Notification" />
-<div class="body">
-	
-   	<ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Simple Notification" url="${ConfigProperties.ken.url}/SendSimpleNotificationMessage.form" /></li>
-        <li><portal:portalLink displayTitle="true" title="Event Notification" url="${ConfigProperties.ken.url}/SendEventNotificationMessage.form" /></li>
-		
-	</ul>
 
-</div>
-<channel:portalChannelBottom />
+<td class="content" valign="top">      
+      <administrationChannel:workflow />
+      <administrationChannel:sendNotification />
+</td>
+<td class="content" valign="top">
+      <administrationChannel:identity />
+</td>
+<td class="content" valign="top">      
+      <administrationChannel:configuration />      
+      <administrationChannel:serviceBus/>
+</td>

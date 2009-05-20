@@ -13,19 +13,18 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
-
-<channel:portalChannelTop channelTitle="Notification" />
+<channel:portalChannelTop channelTitle="Kuali Rice Modules (1.0)" />
 <div class="body">
- 	
-    <ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Notification Search" url="${ConfigProperties.kew.url}/DocumentSearch.do?&docTypeFullName=KualiNotification" /></li>
-	    <li><portal:portalLink displayTitle="true" title="Channel Subscriptions" url="${ConfigProperties.ken.url}/DisplayUserPreferences.form" /></li>
-	   	<li><portal:portalLink displayTitle="true" title="Delivery Types" url="${ConfigProperties.kcb.url}/prefs.kcb" /></li>
-	    
-    </ul>
-    
- 	
+  
+  <ul class="chan">
+	 <li><portal:portalLink displayTitle="true" title="Kuali Enterprise Workflow" url="kew/Portal.do" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Kuali Service Bus" url="ksb/index.html" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Kuali Identity Management" url="kim/index.jsp" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Kuali Enterprise Notification" url="ken/index.jsp" /></li>
+  </ul>
+
+  
 </div>
 <channel:portalChannelBottom />

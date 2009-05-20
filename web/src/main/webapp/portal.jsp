@@ -15,7 +15,7 @@
 --%>
 
 
-<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 <%
 //need to change path of the included file 
 %>

@@ -113,7 +113,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	 * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
 	 */
 	@Override
-	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
 		super.doRouteStatusChange(statusChangeEvent);
 		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
 			KIMServiceLocator.getUiDocumentService().saveGroup(this);

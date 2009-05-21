@@ -208,7 +208,7 @@ public interface Document extends PersistableBusinessObject{
      * Handle the doRouteStatusChange event from the post processor
      * 
      */
-    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception ;
+    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent);
     
     
     /**

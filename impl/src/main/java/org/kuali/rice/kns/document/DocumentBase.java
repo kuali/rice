@@ -630,7 +630,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @see org.kuali.rice.kns.document.Document#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
-    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
         // do nothing
     }
 

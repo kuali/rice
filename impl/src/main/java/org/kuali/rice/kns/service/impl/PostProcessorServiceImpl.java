@@ -72,6 +72,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 }
             }
             else {
+                document.doRouteStatusChange(statusChangeEvent);
                 // PLEASE READ BEFORE YOU MODIFY:
                 // we dont want to update the document on a Save, as this will cause an
                 // OptimisticLockException in many cases, because the DB versionNumber will be
@@ -81,7 +82,6 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 // be a problem anytime where the user can continue to edit the document after a
                 // workflow state change, without reloading the form.
                 if (!document.getDocumentHeader().getWorkflowDocument().stateIsSaved()) {
-                    document.doRouteStatusChange(statusChangeEvent);
                     documentService.updateDocument(document);
                 }
             }

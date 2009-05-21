@@ -50,8 +50,6 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 	protected Date activeToDate;
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@SuppressWarnings("unchecked")

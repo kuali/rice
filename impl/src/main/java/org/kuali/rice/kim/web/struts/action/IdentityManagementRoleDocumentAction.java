@@ -52,6 +52,7 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
@@ -63,10 +64,15 @@ import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
  */
 public class IdentityManagementRoleDocumentAction extends IdentityManagementDocumentActionBase {
 
+	public static final String CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL = "changeDelegationRoleMember";
+	public static final String SWITCH_TO_ROLE_MEMBER_METHOD_TO_CALL = "jumpToRoleMember";
+	
 	private List<String> methodToCallToUncheckedList = new ArrayList<String>();
 	{
 		methodToCallToUncheckedList.add(CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL);
 		methodToCallToUncheckedList.add(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL);
+		methodToCallToUncheckedList.add(CHANGE_NAMESPACE_METHOD_TO_CALL);
+		methodToCallToUncheckedList.add(SWITCH_TO_ROLE_MEMBER_METHOD_TO_CALL);
 	}
 	/**
 	 * This constructs a ...
@@ -83,8 +89,6 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ActionForward forward = null;
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        if(methodToCallToUncheckedList.contains(roleDocumentForm.getRoleCommand()))
-        	forward = dispatchMethod(mapping, form, request, response, roleDocumentForm.getRoleCommand());
         if ( roleDocumentForm.getRoleId() == null ) {
             String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         	roleDocumentForm.setRoleId(roleId);
@@ -118,8 +122,11 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     	super.loadDocument(form);
 
     	IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-    	if(roleDocumentForm.getRoleDocument().getKimType()==null)
+       	if(roleDocumentForm.getRoleDocument().getKimType()==null) {
     		roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
+    	}
+    	getUiDocumentService().setDelegationMembersInDocument( roleDocumentForm.getRoleDocument() );
+
         roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
         roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
 
@@ -204,8 +211,8 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	
 	public ActionForward changeMemberTypeCode(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        roleDocumentForm.getMember().setMemberName("");
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        roleDocumentForm.getMember().setMemberId("");
+        return refresh(mapping, roleDocumentForm, request, response);
 	}
 
 	public ActionForward changeDelegationRoleMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -218,7 +225,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 				delegationMemberQualifier.setAttrVal(roleQualifier.getAttrVal());
 			}
 		}
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        return refresh(mapping, roleDocumentForm, request, response);
 	}
 	
     public ActionForward addResponsibility(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -340,6 +347,30 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         roleDocumentForm.getRoleDocument().getDelegationMembers().remove(getLineToDelete(request));
         roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    /**
+     * @see org.kuali.rice.kns.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
+     *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    public ActionForward jumpToRoleMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm idmForm = (IdentityManagementRoleDocumentForm) form;
+        String delegationRoleMemberId = getDelegationRoleMemberToJumpTo(request);
+        KualiTableRenderFormMetadata memberTableMetadata = idmForm.getMemberTableMetadata();
+        memberTableMetadata.jumpToPage(idmForm.getPageNumberOfRoleMemberId(delegationRoleMemberId), 
+        								idmForm.getMemberRows().size(), idmForm.getRecordsPerPage());
+        memberTableMetadata.setColumnToSortIndex(memberTableMetadata.getPreviouslySortedColumnIndex());
+        idmForm.setAnchor(delegationRoleMemberId);
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    protected String getDelegationRoleMemberToJumpTo(HttpServletRequest request) {
+        String delegationRoleMemberIdToJumpTo = "";
+        String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+        if (StringUtils.isNotBlank(parameterName)) {
+            delegationRoleMemberIdToJumpTo = StringUtils.substringBetween(parameterName, ".dmrmi", ".");
+        }
+        return delegationRoleMemberIdToJumpTo;
     }
 
 }

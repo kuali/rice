@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -88,7 +89,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     	return results;
     }
     
-    protected KimResponsibilityImpl getResponsibilityImpl(String responsibilityId) {
+    public KimResponsibilityImpl getResponsibilityImpl(String responsibilityId) {
     	if ( StringUtils.isBlank( responsibilityId ) ) {
     		return null;
     	}
@@ -96,6 +97,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     	pk.put( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityId );
     	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
     }
+    
+    public RoleResponsibilityImpl getRoleResponsibilityImpl(String roleResponsibilityId) {
+    	if ( StringUtils.isBlank( roleResponsibilityId ) ) {
+    		return null;
+    	}
+    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
+    	pk.put( KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId );
+    	return (RoleResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( RoleResponsibilityImpl.class, pk );
+    }
+    
     
     @SuppressWarnings("unchecked")
 	protected List<KimResponsibilityImpl> getResponsibilityImplsByName( String namespaceCode, String responsibilityName ) {
@@ -109,9 +120,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     @SuppressWarnings("unchecked")
 	protected List<KimResponsibilityImpl> getResponsibilityImplsByTemplateName( String namespaceCode, String responsibilityTemplateName ) {
     	HashMap<String,Object> pk = new HashMap<String,Object>( 4 );
-    	pk.put( "template.namespaceCode", namespaceCode );
-    	pk.put( "template.name", responsibilityTemplateName );
-		pk.put( "template.active", "Y");
+    	pk.put( "template."+KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+    	pk.put( "template."+KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, responsibilityTemplateName );
+		pk.put( "template."+KNSPropertyConstants.ACTIVE, "Y");
 		pk.put( KNSPropertyConstants.ACTIVE, "Y");
     	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
     }

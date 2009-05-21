@@ -114,4 +114,5 @@ public interface UiDocumentService {
 
 	public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName);
 
+	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
 }

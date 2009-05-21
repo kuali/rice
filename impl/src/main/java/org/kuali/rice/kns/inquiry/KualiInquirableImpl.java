@@ -250,10 +250,24 @@ public class KualiInquirableImpl implements Inquirable {
 
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
 
+        /*
         List keys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
         if (keys == null) {
         	keys = Collections.emptyList();
         }
+         */
+        if(attributeRefName == null || "".equals(attributeRefName)){
+        	return hRef;
+        }
+        BusinessObjectRelationship businessObjectRelationship =
+    		getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+    				businessObject, attributeRefName);
+    	List<String> keys = new ArrayList<String>();
+    	if (businessObjectRelationship != null && businessObjectRelationship.getParentToChildReferences() != null) {
+	    	for (String targetNamePrimaryKey : businessObjectRelationship.getParentToChildReferences().values()) {
+	    		keys.add(targetNamePrimaryKey);
+	    	}
+    	}
 
         // build key value url parameters used to retrieve the business object
         String keyName = null;
@@ -285,9 +299,11 @@ public class KualiInquirableImpl implements Inquirable {
                 	//since otherwise, relationship information from datadictionary is not used at all
                 	//Also, BOMDS.getBusinessObjectRelationship uses PersistenceStructureService,
                 	//so both datadictionary and the persistance layer get covered
+                	/*
                 	BusinessObjectRelationship businessObjectRelationship =
                 		getBusinessObjectMetaDataService().getBusinessObjectRelationship(
                 				businessObject, attributeRefName);
+                				*/
                 	BidiMap bidiMap = new DualHashBidiMap(businessObjectRelationship.getParentToChildReferences());
                 	keyConversion = (String)bidiMap.getKey(keyName);
                     //keyConversion = getPersistenceStructureService().getForeignKeyFieldName(businessObject.getClass(), attributeRefName, keyName);
@@ -490,7 +506,7 @@ public class KualiInquirableImpl implements Inquirable {
         Properties parameters = new Properties();
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.START_METHOD);
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, clazz.getName());
-        
+
         String titleAttributeValue;
         Map<String, String> fieldList = new HashMap<String, String>();
         for(String primaryKey: primaryKeys){
@@ -509,7 +525,7 @@ public class KualiInquirableImpl implements Inquirable {
     	AnchorHtmlData a = new AnchorHtmlData(inquiryUrl, KNSConstants.EMPTY_STRING, displayText);
     	a.setTitle(AnchorHtmlData.getTitleText(
                 getKualiConfigurationService().getPropertyString(
-                        INQUIRY_TITLE_PREFIX) + " " + 
+                        INQUIRY_TITLE_PREFIX) + " " +
                         getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryClass.getName()).getObjectLabel()+
                         " ", inquiryClass, fieldList));
     	return a;

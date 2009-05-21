@@ -250,6 +250,9 @@ public class KualiLookupAction extends KualiAction {
         		else if (values.get(field.getPropertyName()) != null) {
         			field.setPropertyValue(values.get(field.getPropertyName()));
         		}
+        		
+        		kualiLookupable.applyFieldAuthorizationsFromNestedLookups(field);
+        		
         		fieldValues.put(field.getPropertyName(), field.getPropertyValue());
         	}
         }

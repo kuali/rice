@@ -61,7 +61,7 @@
         p:maxLength="40"
         p:required="false" >
     <property name="control" >
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.bo.options.MemberTypeValuesFinder"/>
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.bo.options.GroupMemberTypeValuesFinder"/>
     </property>
   </bean>
 

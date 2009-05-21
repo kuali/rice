@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.lang.ref.SoftReference;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -370,6 +372,29 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 				if ( StringUtils.isEmpty( criteria.get(key) ) ) {
 					continue;
 				}
+				// check if the value needs to be encrypted
+				// handle encrypted external identifiers
+				if ( key.equals( KIMPropertyConstants.Person.EXTERNAL_ID ) && StringUtils.isNotBlank(criteria.get(key)) ) {
+					// look for a ext ID type property
+					if ( criteria.containsKey( KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE ) ) {
+						String extIdTypeCode = criteria.get(KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE);
+						if ( StringUtils.isNotBlank(extIdTypeCode) ) {
+							// if found, load that external ID Type via service
+							ExternalIdentifierTypeInfo extIdType = KIMServiceLocator.getTypeInfoService().getExternalIdentifierType(extIdTypeCode);
+							// if that type needs to be encrypted, encrypt the value in the criteria map
+							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
+								try {
+									criteria.put(key, 
+											KNSServiceLocator.getEncryptionService().encrypt(criteria.get(key))
+											);
+								} catch (GeneralSecurityException ex) {
+									LOG.error("Unable to encrypt value for external ID search of type " + extIdTypeCode, ex );
+								}								
+							}
+						}
+					}
+				}
+				
 				// convert the property to the Entity data model
 				String entityProperty = criteriaConversion.get( key );
 				if ( entityProperty != null ) {

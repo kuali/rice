@@ -35,6 +35,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -83,9 +85,9 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
 
 	@Transient
-	private List<PersonImpl> memberPersons = new TypedArrayList(PersonImpl.class);
+	private List<Person> memberPersons;
 	@Transient
-	private List<GroupImpl> memberGroups = new TypedArrayList(GroupImpl.class);
+	private List<GroupInfo> memberGroups;
 	@Transient
 	private KimTypeImpl kimTypeImpl;
 
@@ -234,28 +236,28 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	/**
 	 * @return the memberGroups
 	 */
-	public List<GroupImpl> getMemberGroups() {
+	public List<GroupInfo> getMemberGroups() {
 		return this.memberGroups;
 	}
 
 	/**
 	 * @param memberGroups the memberGroups to set
 	 */
-	public void setMemberGroups(List<GroupImpl> memberGroups) {
+	protected void setMemberGroups(List<GroupInfo> memberGroups) {
 		this.memberGroups = memberGroups;
 	}
 
 	/**
 	 * @return the memberPersons
 	 */
-	public List<PersonImpl> getMemberPersons() {
+	public List<Person> getMemberPersons() {
 		return this.memberPersons;
 	}
 
 	/**
 	 * @param memberPersons the memberPersons to set
 	 */
-	public void setMemberPersons(List<PersonImpl> memberPersons) {
+	protected void setMemberPersons(List<Person> memberPersons) {
 		this.memberPersons = memberPersons;
 	}
 
@@ -300,18 +302,17 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	}
 
     public void setMemberPersonsAndGroups() {
-        List<PersonImpl> personMembers = new ArrayList<PersonImpl>();
-        List<GroupImpl> groupMembers = new ArrayList<GroupImpl>();
+        List<Person> personMembers = new ArrayList<Person>();
+        List<GroupInfo> groupMembers = new ArrayList<GroupInfo>();
         if (getMembers() != null) {
             for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
                 if ( groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )
                         && groupMemberImpl.isActive() ) {
-                    personMembers.add((PersonImpl)KIMServiceLocator.getPersonService().getPerson(groupMemberImpl.getMemberId()));
+                    personMembers.add( KIMServiceLocator.getPersonService().getPerson(groupMemberImpl.getMemberId()) );
                 } else if (groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )
                         && groupMemberImpl.isActive() ) {
-                    Map<String,String> criteria = new HashMap<String,String>();
-                    criteria.put("groupId", groupMemberImpl.getMemberId());
-                    groupMembers.add((GroupImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria));
+                    groupMembers.add( 
+                    		KIMServiceLocator.getIdentityManagementService().getGroup(groupMemberImpl.getMemberId()) );
                 }
             }
         }

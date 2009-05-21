@@ -32,12 +32,11 @@
 					<th class="infoline">Add:</th>
 	                <td align="left" valign="middle" class="infoline">
 		                <div align="center">
-		                	<input type="hidden" name="command"/>
 		                	<kul:htmlControlAttribute property="member.memberTypeCode" 
 		                	attributeEntry="${groupMemberAttributes.memberTypeCode}" 
-		                	onchange="changeMemberTypeCode()" disabled="${readOnly}" />
+		                	onchange="changeMemberTypeCode( this.form );" disabled="${readOnly}" />
 							<NOSCRIPT>
-		   						<html:submit value="select" alt="press this button to refresh the page after changing the delegation type." />
+                                <input type="image" tabindex="32768" name="methodToCall.changeMemberTypeCode" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-refresh.gif" class="tinybutton" title="Click to refresh the page after changing the member type." alt="Click to refresh the page after changing the member type." />
 							</NOSCRIPT>                
 			            </div>
 		            	<c:set var="bo" value="${KualiForm.memberBusinessObjectName}"/>

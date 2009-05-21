@@ -114,6 +114,10 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return true;
     }
 
+    public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes){
+        return new AttributeSet();
+    }
+    
     public List<String> getUniqueAttributes(String kimTypeId){
         return new ArrayList<String>();
     }

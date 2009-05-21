@@ -100,7 +100,7 @@ public class AttributeValidationHelper {
 		}
     }
 
-	public AttributeSet convertErrorsForMappedFields(String errorPath, AttributeSet attrIdxMap, AttributeSet localErrors) {
+	public AttributeSet convertErrorsForMappedFields(String errorPath, AttributeSet localErrors) {
 		AttributeSet errors = new AttributeSet();
 		if (errorPath == null) {
 			errorPath = KNSConstants.EMPTY_STRING;

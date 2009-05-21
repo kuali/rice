@@ -49,6 +49,8 @@ public interface KimTypeService {
 	 */
 	AttributeSet validateAttributes(AttributeSet attributes);
 	
+	AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes);
+	
 	boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
 	
     List<KeyLabelPair> getAttributeValidValues(String attributeName);

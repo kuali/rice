@@ -183,5 +183,24 @@ public class KEWModuleService extends ModuleServiceBase {
 		return super.getExternalizableBusinessObjectInquiryUrl(
 				inquiryBusinessObjectClass, parameters);
 	}
+	/**
+	 * We want to be able to use name as an alternate key
+	 *
+	 * @see org.kuali.rice.kns.service.ModuleService#listAlternatePrimaryKeyFieldNames(java.lang.Class)
+	 */
+	public List<List<String>> listAlternatePrimaryKeyFieldNames(
+			Class businessObjectInterfaceClass) {
+		if ( DocumentTypeEBO.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
+			ArrayList<List<String>> retList = new ArrayList<List<String>>();
+			ArrayList<String> keyList = new ArrayList<String>();
+
+			keyList.add("name");
+			retList.add(keyList);
+			return retList;
+		}else{
+			return null;
+		}
+
+	}
 }
 

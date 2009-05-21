@@ -195,7 +195,7 @@
 
                     <td class="grid" width="${dataCellWidth}%">
                          <c:out value="${field.displayMaskValue}"/>
-                        <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
+                        <kul:fieldShowIcons isReadOnly="${isFieldReadOnly && !isLookup}" field="${field}" addHighlighting="${addHighlighting}" />
 
                     </td>
 

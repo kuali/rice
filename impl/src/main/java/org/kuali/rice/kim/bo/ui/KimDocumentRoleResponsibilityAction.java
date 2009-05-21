@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -28,6 +30,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
  *
  */
 public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
+	private static final long serialVersionUID = 696663543888096105L;
 	protected String roleResponsibilityActionId;
 	protected String roleResponsibilityId;
 	protected String roleMemberId;
@@ -48,7 +51,13 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 * @return the kimResponsibility
 	 */
 	public KimResponsibilityImpl getKimResponsibility() {
-		return this.kimResponsibility;
+		if ( kimResponsibility == null && getRoleResponsibility() != null ) {
+			//TODO: this needs to be changed to use the KimResponsibilityInfo object
+			// but the changes are involved in the UiDocumentService based on the copyProperties method used
+			// to move the data to/from the document/real objects
+			kimResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getRoleResponsibility().getResponsibilityId());
+		}
+		return kimResponsibility;
 	}
 	/**
 	 * @param kimResponsibility the kimResponsibility to set
@@ -130,7 +139,13 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 * @return the roleResponsibility
 	 */
 	public RoleResponsibilityImpl getRoleResponsibility() {
-		return this.roleResponsibility;
+		if ( roleResponsibility == null && roleResponsibilityId != null ) {
+			//TODO: this needs to be changed to use the KimResponsibilityInfo object
+			// but the changes are involved in the UiDocumentService based on the copyProperties method used
+			// to move the data to/from the document/real objects
+			roleResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getRoleResponsibilityImpl(getRoleResponsibilityId());
+		}
+		return roleResponsibility;
 	}
 	/**
 	 * @param roleResponsibility the roleResponsibility to set

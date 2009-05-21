@@ -92,6 +92,7 @@ import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.BlankFormFile;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -547,7 +548,6 @@ public class KualiDocumentActionBase extends KualiAction {
 //        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
 //            }
 //        }
-
         return actionForward;
     }
 
@@ -563,6 +563,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
         //get any possible changes to to adHocWorkgroups
         refreshAdHocRoutingWorkgroupLookups(request, kualiDocumentFormBase);
         Document document = kualiDocumentFormBase.getDocument();
@@ -683,6 +684,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward route(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
 
         kualiDocumentFormBase.setDerivedValuesOnForm(request);
         ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
@@ -712,6 +714,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward blanketApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
     	
     	kualiDocumentFormBase.setDerivedValuesOnForm(request);
         ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
@@ -737,6 +740,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
 
     	kualiDocumentFormBase.setDerivedValuesOnForm(request);
     	ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
@@ -808,6 +812,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
         getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), disapprovalNoteText);
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
         kualiDocumentFormBase.setAnnotation("");
@@ -843,6 +848,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
         getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
 
         return returnToSender(mapping, kualiDocumentFormBase);
@@ -861,6 +867,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward close(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( docForm, request );
 
         // only want to prompt them to save if they already can save
         if (canSave(docForm)) {
@@ -904,6 +911,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward fyi(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
         getDocumentService().clearDocumentFyi(kualiDocumentFormBase.getDocument(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_FYIED);
         kualiDocumentFormBase.setAnnotation("");
@@ -922,6 +930,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward acknowledge(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost( kualiDocumentFormBase, request );
         getDocumentService().acknowledgeDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_ACKNOWLEDGED);
         kualiDocumentFormBase.setAnnotation("");
@@ -1431,7 +1440,7 @@ public class KualiDocumentActionBase extends KualiAction {
 	            message.append(" [versionNumber = " ).append( persistableObject.getVersionNumber() ).append( "]" );
 	        }
 
-        	LOG.info(message.toString());
+        	LOG.info(message.toString(), e);
         }
     }
 
@@ -1725,15 +1734,14 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return super.toggleTab(mapping, form, request, response);
 	}
-
-	/**
-	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#performLookup(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
-	@Override
-	public ActionForward performLookup(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return super.performLookup(mapping, form, request, response);
-	}
+	
+	protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
+		super.doProcessingAfterPost(form, request);
+		if ( form instanceof KualiDocumentFormBase ) {
+	        Document document = ((KualiDocumentFormBase)form).getDocument();
+	        
+	        getBusinessObjectService().linkUserFields(document);
+		}
+    }
 }
 

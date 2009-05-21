@@ -27,14 +27,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.SupportAttributeDefinition;
-import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -268,13 +266,13 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 			}
 			return relationship;
 		}
+		int maxSize = Integer.MAX_VALUE;
 		// try persistable reference first
 		if (PersistableBusinessObject.class.isAssignableFrom(boClass)) {
 			Map<String, BusinessObjectRelationship> rels = persistenceStructureService
 					.getRelationshipMetadata(boClass, attributeName,
 							attributePrefix);
 			if (rels.size() > 0) {
-				int maxSize = 255;
 				for (BusinessObjectRelationship rel : rels.values()) {
 					if (rel.getParentToChildReferences().size() < maxSize
 							&& isLookupable(rel.getRelatedClass())) {
@@ -288,8 +286,9 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 			if(moduleService!=null && moduleService.isExternalizable(boClass)){
 				relationship = getRelationshipMetadata(boClass, attributeName, attributePrefix);
 				//relationship = moduleService.getBusinessObjectRelationship(boClass, attributeName, attributePrefix);
-				if(relationship!=null)
+				if(relationship!=null) {
 					return relationship;
+				}
 			}
 		}
 
@@ -297,26 +296,24 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		// TODO move out to a separate method
 		// so that the logic for finding the relationships is similar to
 		// primitiveReference
-		if (relationship == null) {
-			if (ddReference != null
-					&& isLookupable(ddReference.getTargetClass())) {
-				if(bo!=null){
-					relationship = new BusinessObjectRelationship(boClass,
-						ddReference.getObjectAttributeName(), ddReference
-								.getTargetClass());
-				for (PrimitiveAttributeDefinition def : ddReference
-						.getPrimitiveAttributes()) {
+		if (ddReference != null
+				&& isLookupable(ddReference.getTargetClass()) 
+				&& bo != null
+				&& ddReference.getPrimitiveAttributes().size() < maxSize ) {
+			relationship = new BusinessObjectRelationship(boClass,
+				ddReference.getObjectAttributeName(), ddReference
+						.getTargetClass());
+			for (PrimitiveAttributeDefinition def : ddReference
+					.getPrimitiveAttributes()) {
+				relationship.getParentToChildReferences().put(
+						def.getSourceName(), def.getTargetName());
+			}
+			if (!keysOnly) {
+				for (SupportAttributeDefinition def : ddReference
+						.getSupportAttributes()) {
 					relationship.getParentToChildReferences().put(
 							def.getSourceName(), def.getTargetName());
 				}
-				if (!keysOnly) {
-					for (SupportAttributeDefinition def : ddReference
-							.getSupportAttributes()) {
-						relationship.getParentToChildReferences().put(
-								def.getSourceName(), def.getTargetName());
-					}
-				}
-			}
 			}
 		}
 

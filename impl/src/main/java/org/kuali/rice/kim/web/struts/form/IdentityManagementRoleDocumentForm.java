@@ -17,6 +17,7 @@ package org.kuali.rice.kim.web.struts.form;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -29,6 +30,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.util.TableRenderUtil;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -44,7 +46,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	}
 	
 	protected String delegationMemberRoleMemberId;
-	protected String roleCommand;
+	protected String dmrmi;
 	protected boolean canAssignRole = true;
 	protected boolean canModifyAssignees = true;
 	protected KimTypeImpl kimType;
@@ -228,6 +230,23 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 		return getRoleDocument().getMembers();
 	}
 
+	public int getIndexOfRoleMemberFromMemberRows(String roleMemberId){
+		int index = 0;
+		for(KimDocumentRoleMember roleMember: getMemberRows()){
+			if(StringUtils.equals(roleMember.getRoleMemberId(), roleMemberId)){
+				break;
+			}
+			index++;
+		}
+		return index;
+	}
+
+	public int getPageNumberOfRoleMemberId(String roleMemberId){
+		if(StringUtils.isEmpty(roleMemberId)) return 1;
+		int index = getIndexOfRoleMemberFromMemberRows(roleMemberId);
+		return TableRenderUtil.computeTotalNumberOfPages(index+1, getRecordsPerPage())-1;
+	}
+	
 	/**
 	 * @return the roleId
 	 */
@@ -240,20 +259,6 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	 */
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
-	}
-
-	/**
-	 * @return the roleCommand
-	 */
-	public String getRoleCommand() {
-		return this.roleCommand;
-	}
-
-	/**
-	 * @param roleCommand the roleCommand to set
-	 */
-	public void setRoleCommand(String roleCommand) {
-		this.roleCommand = roleCommand;
 	}
 
 	/**
@@ -271,12 +276,29 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 		getDelegationMember().setRoleMemberId(delegationMemberRoleMemberId);
 		KimDocumentRoleMember roleMember = getRoleDocument().getMember(delegationMemberRoleMemberId);
 		if(roleMember!=null){
+			delegationMember.setRoleMemberId(roleMember.getRoleMemberId());
+			delegationMember.setRoleMemberName(roleMember.getMemberName());
+			delegationMember.setRoleMemberNamespaceCode(roleMember.getMemberNamespaceCode());
 			RoleDocumentDelegationMemberQualifier delegationMemberQualifier;
 			for(KimDocumentRoleQualifier roleQualifier: roleMember.getQualifiers()){
 				delegationMemberQualifier = getDelegationMember().getQualifier(roleQualifier.getKimAttrDefnId());
 				delegationMemberQualifier.setAttrVal(roleQualifier.getAttrVal());
 			}
 		}
+	}
+
+	/**
+	 * @return the dmrmi
+	 */
+	public String getDmrmi() {
+		return this.dmrmi;
+	}
+
+	/**
+	 * @param dmrmi the dmrmi to set
+	 */
+	public void setDmrmi(String dmrmi) {
+		this.dmrmi = dmrmi;
 	}
 
 }

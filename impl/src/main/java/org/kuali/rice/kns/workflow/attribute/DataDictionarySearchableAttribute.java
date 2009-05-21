@@ -58,7 +58,8 @@ import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionSe
  */
 public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
-    private static final Logger LOG = Logger.getLogger(DataDictionarySearchableAttribute.class);
+    private static final long serialVersionUID = 173059488280366451L;
+	private static final Logger LOG = Logger.getLogger(DataDictionarySearchableAttribute.class);
     public static final String DATA_TYPE_BOOLEAN = "boolean";
 
     /**
@@ -73,32 +74,45 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
      * @see org.kuali.rice.kew.docsearch.SearchableAttribute#getSearchStorageValues(org.kuali.rice.kew.docsearch.DocumentSearchContext)
      */
     public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
-
         List<SearchableAttributeValue> saValues = new ArrayList<SearchableAttributeValue>();
 
-
         String docId = documentSearchContext.getDocumentId();
-        DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
 
         DocumentService docService = KNSServiceLocator.getDocumentService();
         Document doc = null;
         try  {
             doc = docService.getByDocumentHeaderIdSessionless(docId);
         } catch (WorkflowException we) {
-
+        	LOG.error( "Unable to retrieve document " + docId + " in getSearchStorageValues()", we);
         }
 
         SearchableAttributeStringValue searchableAttributeValue = new SearchableAttributeStringValue();
         searchableAttributeValue.setSearchableAttributeKey("documentDescription");
-        searchableAttributeValue.setSearchableAttributeValue(doc.getDocumentHeader().getDocumentDescription());
+        if ( doc != null ) {
+        	if ( doc.getDocumentHeader() != null ) {
+                searchableAttributeValue.setSearchableAttributeValue(doc.getDocumentHeader().getDocumentDescription());
+        	} else {
+        		searchableAttributeValue.setupAttributeValue( "null document header" );
+        	}
+        } else {
+    		searchableAttributeValue.setupAttributeValue( "null document" );
+        }
         saValues.add(searchableAttributeValue);
 
         searchableAttributeValue = new SearchableAttributeStringValue();
         searchableAttributeValue.setSearchableAttributeKey("organizationDocumentNumber");
-        searchableAttributeValue.setSearchableAttributeValue(doc.getDocumentHeader().getOrganizationDocumentNumber());
+        if ( doc != null ) {
+        	if ( doc.getDocumentHeader() != null ) {
+                searchableAttributeValue.setSearchableAttributeValue(doc.getDocumentHeader().getOrganizationDocumentNumber());
+        	} else {
+        		searchableAttributeValue.setupAttributeValue( "null document header" );
+        	}
+        } else {
+    		searchableAttributeValue.setupAttributeValue( "null document" );
+        }
         saValues.add(searchableAttributeValue);
 
-        if (doc instanceof MaintenanceDocument) {
+        if ( doc != null && doc instanceof MaintenanceDocument) {
             final Class<? extends BusinessObject> businessObjectClass = getBusinessObjectClass(documentSearchContext.getDocumentTypeName());
             if (businessObjectClass != null) {
                 if (GlobalBusinessObject.class.isAssignableFrom(businessObjectClass)) {
@@ -114,10 +128,16 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
             }
         }
-
-        WorkflowAttributes workflowAttributes = docEntry.getWorkflowAttributes();
-        WorkflowAttributePropertyResolutionService waprs = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
-        saValues.addAll(waprs.resolveSearchableAttributeValues(doc, workflowAttributes));
+        if ( doc != null ) {
+            DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
+            if ( docEntry != null ) {
+		        WorkflowAttributes workflowAttributes = docEntry.getWorkflowAttributes();
+		        WorkflowAttributePropertyResolutionService waprs = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
+		        saValues.addAll(waprs.resolveSearchableAttributeValues(doc, workflowAttributes));
+            } else {
+            	LOG.error( "Unable to find DD document entry for document type: " + documentSearchContext.getDocumentTypeName() );
+            }
+        }
         return saValues;
     }
 

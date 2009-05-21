@@ -16,9 +16,14 @@
 	 	</tr>
 	 	<tr>
     		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.namespaceCode}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.roleNamespace" attributeEntry="${roleAttributes.namespaceCode}" readOnly="${readOnly}" /></td>
+	 		<td>
+	 			<kul:htmlControlAttribute property="document.roleNamespace" attributeEntry="${roleAttributes.namespaceCode}" readOnly="${readOnly || editingDocument}" onchange="namespaceChanged( this.form );" />
+	 		    <noscript>
+	 		        <input type="image" tabindex="32768" name="methodToCall.changeNamespace" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-refresh.gif" class="tinybutton" title="Click to refresh the page after changing the namespace." alt="Click to refresh the page after changing the namespace." />
+	 		    </noscript>
+	 		</td>
     		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.roleName}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.roleName" attributeEntry="${roleAttributes.roleName}" readOnly="${readOnly}" /></td>
+	 		<td><kul:htmlControlAttribute property="document.roleName" attributeEntry="${roleAttributes.roleName}" readOnly="${readOnly || editingDocument}" /></td>
 	 	</tr>
 	 	<tr>
 			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.active}"  /></div></th>

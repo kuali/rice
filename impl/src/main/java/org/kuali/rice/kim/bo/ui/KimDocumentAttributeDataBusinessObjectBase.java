@@ -45,6 +45,8 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBas
 	@Transient
 	private String qualifierKey;
 
+	private Boolean unique;
+	
 	/**
 	 * This constructs a ...
 	 * 
@@ -105,6 +107,20 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBas
 	 */
 	public void setKimAttribute(KimAttributeImpl kimAttribute) {
 		this.kimAttribute = kimAttribute;
+	}
+
+	/**
+	 * @return the uniqueAndReadOnly
+	 */
+	public Boolean isUnique() {
+		return this.unique;
+	}
+
+	/**
+	 * @param uniqueAndReadOnly the uniqueAndReadOnly to set
+	 */
+	public void setUnique(Boolean unique) {
+		this.unique = unique;
 	}
 
 }

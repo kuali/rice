@@ -143,9 +143,11 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	private void populateAssignedToRoles(PermissionImpl permission){
 		AttributeSet criteria;
 		for(RolePermissionImpl rolePermission: permission.getRolePermissions()){
-			criteria = new AttributeSet();
-			criteria.put("roleId", rolePermission.getRoleId());
-			permission.getAssignedToRoles().add((RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria));
+			if ( rolePermission.isActive() ) {
+				criteria = new AttributeSet();
+				criteria.put("roleId", rolePermission.getRoleId());
+				permission.getAssignedToRoles().add((RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria));
+			}
 		}
 	}
 	

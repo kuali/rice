@@ -16,6 +16,8 @@
 package org.kuali.rice.kns.bo.options;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.State;
@@ -35,6 +37,13 @@ public class StateValuesFinder extends KeyValuesBase {
     public List<KeyLabelPair> getKeyValues() {
     	if ( labels == null ) {
     		List<State> codes = KNSServiceLocator.getStateService().findAllStates();
+
+    		Collections.sort(codes, new Comparator<State> () {
+				public int compare(State o1, State o2) {
+					return o1.getPostalStateName().compareTo(o2.getPostalStateName());
+				}
+    		});
+    		
 	        labels = new ArrayList<KeyLabelPair>();
 	        labels.add(new KeyLabelPair("", ""));
 	        for (State state : codes) {

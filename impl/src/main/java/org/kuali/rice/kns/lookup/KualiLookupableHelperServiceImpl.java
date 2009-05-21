@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -216,7 +218,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
         // remove hidden fields
         LookupUtils.removeHiddenCriteriaFields( getBusinessObjectClass(), fieldValues );
-
+        
         searchUsingOnlyPrimaryKeyValues = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(getBusinessObjectClass(), fieldValues);
 
         setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
@@ -225,8 +227,19 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         List searchResults;
     	Map<String,String> nonBlankFieldValues = new HashMap<String, String>();
     	for (String fieldName : fieldValues.keySet()) {
-    		if (StringUtils.isNotBlank(fieldValues.get(fieldName)) ) {
-    			nonBlankFieldValues.put(fieldName, fieldValues.get(fieldName));
+    		String fieldValue = fieldValues.get(fieldName);
+    		if (StringUtils.isNotBlank(fieldValue) ) {
+    			if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+    				String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+    				try {
+    					fieldValue = getEncryptionService().decrypt(encryptedValue);
+    				}
+    				catch (GeneralSecurityException e) {
+            			LOG.error("Error decrypting value for business object " + getBusinessObjectService() + " attribute " + fieldName, e);
+            			throw new RuntimeException("Error decrypting value for business object " + getBusinessObjectService() + " attribute " + fieldName, e);
+            		}
+    			}
+    			nonBlankFieldValues.put(fieldName, fieldValue);
     		}
     	}
         

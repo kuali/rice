@@ -23,7 +23,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -35,6 +37,8 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_PND_ROLE_MBR_MT")
 public class KimDocumentRoleMember  extends KimDocumentBoBase {
+	private static final long serialVersionUID = -2463865643038170979L;
+
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
 	
@@ -129,7 +133,10 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	 * @return the memberName
 	 */
 	public String getMemberName() {
-		return this.memberName;
+		if ( memberName == null ) {
+			populateDerivedValues();
+		}
+		return memberName;
 	}
 
 	/**
@@ -152,7 +159,10 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	 * @return the memberNamespaceCode
 	 */
 	public String getMemberNamespaceCode() {
-		return this.memberNamespaceCode;
+		if ( memberNamespaceCode == null ) {
+			populateDerivedValues();
+		}
+		return memberNamespaceCode;
 	}
 
 	/**
@@ -162,6 +172,14 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 		this.memberNamespaceCode = memberNamespaceCode;
 	}
 
+	protected void populateDerivedValues() {
+    	BusinessObject member = KIMServiceLocator.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
+    	if ( member != null ) {
+	        setMemberName(KIMServiceLocator.getUiDocumentService().getMemberName(getMemberTypeCode(), member));
+	        setMemberNamespaceCode(KIMServiceLocator.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
+    	}
+	}
+	
 	public boolean isRole(){
 		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
 	}

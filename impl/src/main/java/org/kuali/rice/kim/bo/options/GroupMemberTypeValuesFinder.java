@@ -27,20 +27,18 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class MemberTypeValuesFinder extends KeyValuesBase {
+public class GroupMemberTypeValuesFinder extends KeyValuesBase {
 
 	static final List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>( 3 );
 	static {
-        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
-        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
-        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE));
+	    labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
+	    labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
 	}
 	
-    /*
-     * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
-     */
-    public List<KeyLabelPair> getKeyValues() {
-        return labels;
-    }    
-
+	/*
+	 * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
+	 */
+	public List<KeyLabelPair> getKeyValues() {
+	    return labels;
+	}    
 }

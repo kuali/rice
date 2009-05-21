@@ -23,8 +23,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -46,7 +47,9 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	@Id
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
-	
+	protected String roleMemberName;
+	protected String roleMemberNamespaceCode;
+
 	@Id
 	@Column(name="DLGN_ID")
 	protected String delegationId;
@@ -182,6 +185,9 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	 * @return the memberNamespaceCode
 	 */
 	public String getMemberNamespaceCode() {
+		if ( memberNamespaceCode == null ) {
+			populateDerivedValues();
+		}
 		return this.memberNamespaceCode;
 	}
 
@@ -192,6 +198,13 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 		this.memberNamespaceCode = memberNamespaceCode;
 	}
 
+	protected void populateDerivedValues() {
+    	BusinessObject member = KIMServiceLocator.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
+    	if ( member != null ) {
+	        setMemberNamespaceCode(KIMServiceLocator.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
+    	}
+	}
+	
 	/**
 	 * @return the roleMemberId
 	 */
@@ -218,4 +231,31 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
 	}
 
+	/**
+	 * @return the roleMemberName
+	 */
+	public String getRoleMemberName() {
+		return this.roleMemberName;
+	}
+
+	/**
+	 * @param roleMemberName the roleMemberName to set
+	 */
+	public void setRoleMemberName(String roleMemberName) {
+		this.roleMemberName = roleMemberName;
+	}
+
+	/**
+	 * @return the roleMemberNamespaceCode
+	 */
+	public String getRoleMemberNamespaceCode() {
+		return this.roleMemberNamespaceCode;
+	}
+
+	/**
+	 * @param roleMemberNamespaceCode the roleMemberNamespaceCode to set
+	 */
+	public void setRoleMemberNamespaceCode(String roleMemberNamespaceCode) {
+		this.roleMemberNamespaceCode = roleMemberNamespaceCode;
+	}
 }

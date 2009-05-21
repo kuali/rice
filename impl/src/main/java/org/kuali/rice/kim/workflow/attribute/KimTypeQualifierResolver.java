@@ -84,7 +84,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	KimTypeService typeService = typeServices.get(typeId);
     	if ( typeService == null ) {       		
         	KimTypeInfo typeInfo = getKimTypeInfoService().getKimType(typeId);
-        	if ( typeInfo != null ) {
+        	if ( typeInfo != null && StringUtils.isNotEmpty( typeInfo.getKimTypeServiceName() ) ) {
         		typeService = (KimTypeService)KIMServiceLocator.getBean(typeInfo.getKimTypeServiceName());
         		typeServices.put(typeId, typeService);
         	} else {
@@ -104,26 +104,11 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	}
 	
 	protected String handleGroupDocument( List<AttributeSet> qualifiers, IdentityManagementGroupDocument groupDoc, String routeLevel ) {
-        String customDocTypeName = null;
     	// get the appropriate type service for the group being edited
     	String typeId = groupDoc.getGroupTypeId();
-    	KimTypeService typeService = getTypeService(typeId);
-    	if ( typeService != null ) {
-        	// get the list of attributes which should be exposed at this time
-    		AttributeSet qualifier = new AttributeSet();
-    		putMatchingAttributesIntoQualifier(qualifier, groupDoc.getQualifiersAsAttributeSet(), typeService.getWorkflowRoutingAttributes(routeLevel) );
-        	qualifiers.add( qualifier );
-    		customDocTypeName = typeService.getWorkflowDocumentTypeName();
-    	}
+    	qualifiers.add( getGroupQualifier(groupDoc.getGroupId(), typeId, groupDoc.getQualifiersAsAttributeSet(), routeLevel) );
     	
-    	// add group ID
-    	// add KIM Type ID
-        for (AttributeSet qualifier : qualifiers) {
-            qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, typeId);
-            qualifier.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupDoc.getGroupId());
-            qualifier.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, typeId);
-        }        	
-        return customDocTypeName;
+        return null;
 	}
 
 	protected String handleRoleDocument( List<AttributeSet> qualifiers, IdentityManagementRoleDocument roleDoc, String routeLevel ) {
@@ -153,43 +138,38 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	}
 	
 	protected String handlePersonDocument( List<AttributeSet> qualifiers, IdentityManagementPersonDocument personDoc, String routeLevel ) {
-        // TODO:
-        	// check the route level - see if we are doing groups or roles at the moment
+    	// check the route level - see if we are doing groups or roles at the moment
+        String principalId = personDoc.getPrincipalId();
+        if ( GROUP_ROUTE_LEVEL.equals(routeLevel) ) {
         	// if groups, find any groups to which the user was added or removed
         	// get the type and service for each group
         	// handle as per the group document, a qualifier for each group
-        	// if roles, check the role member data for any roles added
-        	// get the type and service for each role
-        	// handle as for the role document, a qualifier for each role membership added
-        String principalId = personDoc.getPrincipalId();
-        if ( GROUP_ROUTE_LEVEL.equals(routeLevel) ) {
+        	List<String> currentGroups = getGroupService().getDirectGroupIdsForPrincipal(principalId);
         	List<PersonDocumentGroup> groups = personDoc.getGroups();
         	for ( PersonDocumentGroup group : groups ) {
         		// if they are being added to the group, add a qualifier set
-        		if ( !getGroupService().isDirectMemberOfGroup(principalId, group.getGroupId() ) ) {
-        			AttributeSet qualifier = new AttributeSet();        			
+        		if ( group.isActive() && !currentGroups.contains( group.getGroupId() ) ) {
             		// pull the group to get its attributes for adding to the qualifier 
             		GroupInfo kimGroup = getGroupService().getGroupInfo(group.getGroupId());
-                    qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimGroup.getKimTypeId());
-                    qualifier.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimGroup.getKimTypeId());
-                    qualifier.put(KimConstants.PrimaryKeyConstants.GROUP_ID, kimGroup.getGroupId());
-                	KimTypeService typeService = getTypeService(kimGroup.getKimTypeId());
-                	if ( typeService != null ) {
-                		// check for the custom document type for the group
-                		String customDocTypeName = typeService.getWorkflowDocumentTypeName();
-                		if ( StringUtils.isNotBlank(customDocTypeName)) {
-                			qualifier.put(KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME, customDocTypeName );
-                		}
-                		putMatchingAttributesIntoQualifier(qualifier, kimGroup.getAttributes(), typeService.getWorkflowRoutingAttributes(routeLevel) );
-                	}
-                	qualifiers.add(qualifier);
+        			qualifiers.add( getGroupQualifier( group.getGroupId(), kimGroup.getKimTypeId(), kimGroup.getAttributes(), routeLevel ) );
         		}
         	}
-        	// TODO: add detection of removed/edited groups (Is this necessary?)
+        	// detect removed groups
+        	// get the existing directly assigned groups for the person
+        	for ( String groupId : currentGroups ) {
+        		for ( PersonDocumentGroup group : groups ) {
+        			if ( !group.isActive() ) {
+                		GroupInfo kimGroup = getGroupService().getGroupInfo(groupId);
+            			qualifiers.add( getGroupQualifier( groupId, kimGroup.getKimTypeId(), kimGroup.getAttributes(), routeLevel ) );
+        			}
+        		}
+        	}
         } else if ( ROLE_ROUTE_LEVEL.equals(routeLevel) ) {
+        	// if roles, check the role member data for any roles added
+        	// get the type and service for each role
+        	// handle as for the role document, a qualifier for each role membership added
         	LOG.warn( "Role-based data routing on the person document not implemented!" );
         }
-        
         
     	// get the appropriate type service for the group being edited
     	//String typeId = personDoc.getRoleTypeId();
@@ -210,6 +190,25 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 //    	}		
     	return null;
 	}
+
+    protected AttributeSet getGroupQualifier( String groupId, String kimTypeId, AttributeSet groupAttributes, String routeLevel ) {
+		AttributeSet qualifier = new AttributeSet();        			
+		// pull the group to get its attributes for adding to the qualifier 
+        qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
+        qualifier.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
+        qualifier.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupId);
+    	KimTypeService typeService = getTypeService(kimTypeId);
+    	if ( typeService != null ) {
+    		// check for the custom document type for the group
+    		String customDocTypeName = typeService.getWorkflowDocumentTypeName();
+    		if ( StringUtils.isNotBlank(customDocTypeName)) {
+    			qualifier.put(KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME, customDocTypeName );
+    		}
+    		putMatchingAttributesIntoQualifier(qualifier, groupAttributes, typeService.getWorkflowRoutingAttributes(routeLevel) );
+    	}
+    	return qualifier;
+    }
+    
 	
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {

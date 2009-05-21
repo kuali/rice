@@ -44,6 +44,31 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
     private int recordsPerPage = -1;
     protected boolean inquiry = false;
     
+	protected static final String CHANGE_NAMESPACE_METHOD_TO_CALL = "methodToCall.changeNamespace";
+	protected static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "methodToCall.changeMemberTypeCode";
+	protected static final String CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL = "methodToCall.changeDelegationRoleMember";
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#shouldMethodToCallParameterBeUsed(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
+     */
+    @Override
+    public boolean shouldMethodToCallParameterBeUsed(
+    		String methodToCallParameterName,
+    		String methodToCallParameterValue, HttpServletRequest request) {
+    	
+    	
+    	if ( methodToCallParameterName.startsWith( CHANGE_NAMESPACE_METHOD_TO_CALL )
+    			|| methodToCallParameterName.startsWith( CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL )
+    			|| methodToCallParameterName.startsWith( CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL ) ) {
+    		return true;
+    	}
+    	
+    	return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,
+    			methodToCallParameterValue, request);
+    }
+    
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#populate(javax.servlet.http.HttpServletRequest)
      */

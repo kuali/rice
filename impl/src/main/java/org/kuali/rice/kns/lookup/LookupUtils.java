@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -131,7 +132,7 @@ public class LookupUtils {
         catch (UnknownBusinessClassAttributeException ubae) {
             // do nothing, dont alter the fieldValue
         }
-        if (forceUpperCase) {
+        if (forceUpperCase && !fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
             return fieldValue.toUpperCase();
         }
         return fieldValue;

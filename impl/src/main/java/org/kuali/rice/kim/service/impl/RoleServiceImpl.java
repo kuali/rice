@@ -445,12 +445,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 						                 memberRole.getRoleName(),
 						                 qualification );
 					}
-					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
-					if ( !nestedRoleMembers.isEmpty() ) {
-						results.addAll( nestedRoleMembers );
-						matchingRoleIds.add( rm.getRoleId() );
+					if ( isRoleActive( rm.getRoleId() ) ) {
+						Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
+						if ( !nestedRoleMembers.isEmpty() ) {
+							results.addAll( nestedRoleMembers );
+							matchingRoleIds.add( rm.getRoleId() );
+						}
 					}
-				} else {
+				} else { // not a role member type
 					results.add( mi );
 					matchingRoleIds.add( rm.getRoleId() );
 				}
@@ -480,18 +482,20 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     					// given the qualification
                         // get the member role object
                         RoleImpl memberRole = getRoleImpl( mi.getMemberId() );
-    					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-    					        roles.get(mi.getRoleId()).getNamespaceCode(),
-    					        roles.get(mi.getRoleId()).getRoleName(),
-                                memberRole.getNamespaceCode(),
-                                memberRole.getRoleName(),
-    					        qualification );
-    					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
-    					if ( !nestedRoleMembers.isEmpty() ) {
-    						results.addAll( nestedRoleMembers );
-    						matchingRoleIds.add( mi.getRoleId() );
-    					}
-    				} else {
+                        if ( memberRole.isActive() ) {
+	    					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
+	    					        roles.get(mi.getRoleId()).getNamespaceCode(),
+	    					        roles.get(mi.getRoleId()).getRoleName(),
+	                                memberRole.getNamespaceCode(),
+	                                memberRole.getRoleName(),
+	    					        qualification );
+	    					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
+	    					if ( !nestedRoleMembers.isEmpty() ) {
+	    						results.addAll( nestedRoleMembers );
+	    						matchingRoleIds.add( mi.getRoleId() );
+	    					}
+                        }
+    				} else { // not a role member
     					results.add( mi );
     					matchingRoleIds.add( mi.getRoleId() );
     				}
@@ -921,8 +925,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// loop over the delegations - determine those which need to be inspected more directly
     	for ( KimDelegationImpl delegation : delegations.values() ) {
         	// check if each one matches via the original role type service
+    		if ( !delegation.isActive() ) {
+    			continue;
+    		}
     		KimRoleTypeService roleTypeService = getRoleTypeService( delegation.getRoleId() );
     		for ( KimDelegationMemberImpl dmi : delegation.getMembers() ) {
+    			if ( !dmi.isActive() ) {
+    				continue;
+    			}
     			// check if this delegation record applies to the given person
     			if ( dmi.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE )
     					&& !dmi.getMemberId().equals( principalId ) ) {
@@ -983,21 +993,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
     	return false;
     }
-
-	/**
-	 * Gets the roles directly assigned to the given role.
-	 */
-	@SuppressWarnings("unchecked")
-	protected List<RoleMemberImpl> getRolesForDirectGroup(String groupId) {
-		AttributeSet criteria = new AttributeSet();
-		criteria.put(KIMPropertyConstants.RoleMember.MEMBER_ID, groupId);
-		criteria.put(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
-
-		List<RoleMemberImpl> roles = (List<RoleMemberImpl>) getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
-
-		return roles;
-	}
-
 
     // --------------------
     // Persistence Methods
@@ -1270,4 +1265,36 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
     	return roleMembershipInfoList;
     }
+    
+
+    /**
+     * When a group is inactivated, inactivate the memberships of principals in that group 
+	 * and the memberships of that group in roles 
+     * 
+     * @see org.kuali.rice.kim.service.GroupUpdateService#groupInactivated(java.lang.String)
+     */
+    public void groupInactivated(String groupId) {
+    	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
+    	List<String> groupIds = new ArrayList<String>();
+    	groupIds.add(groupId);
+    	inactivatePrincipalGroupMemberships(groupIds, yesterday);
+    	inactivateGroupRoleMemberships(groupIds, yesterday);
+    }
+    
+    private void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday){
+    	List<GroupMemberImpl> groupMembers = roleDao.getGroupPrincipalsForPrincipalIdAndGroupIds(groupIds, null);
+    	for ( GroupMemberImpl rm : groupMembers ) {
+    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    	}
+    	getBusinessObjectService().save(groupMembers);
+    }
+
+    private void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday){
+    	List<RoleMemberImpl> roleMembersOfGroupType = roleDao.getRoleGroupsForGroupIdsAndRoleIds(null, groupIds);
+    	for(RoleMemberImpl rm: roleMembersOfGroupType){
+    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    	}
+    	getBusinessObjectService().save(roleMembersOfGroupType);
+    }
+
 }

@@ -293,4 +293,18 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		}
 	}
 
+	/**
+	 * @return the editing
+	 */
+	public boolean isEditing() {
+		return this.editing;
+	}
+
+	/**
+	 * @param editing the editing to set
+	 */
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+	}
+
 }

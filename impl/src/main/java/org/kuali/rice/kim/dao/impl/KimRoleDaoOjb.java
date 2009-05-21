@@ -90,7 +90,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 			c.addIn(KIMPropertyConstants.GroupMember.GROUP_ID, groupIds);
 		}
 		c.addEqualTo(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
-		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
+		c.addEqualTo( KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(GroupMemberImpl.class, c);
 		Collection<GroupMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		ArrayList<GroupMemberImpl> results = new ArrayList<GroupMemberImpl>( coll.size() );

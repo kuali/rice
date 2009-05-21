@@ -47,29 +47,29 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
 /**
- * This class implements ModuleService interface. 
- * 
+ * This class implements ModuleService interface.
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ModuleServiceBase implements ModuleService {
-	
+
 	protected static final Logger LOG = Logger.getLogger(ModuleServiceBase.class);
-	
+
 	protected ModuleConfiguration moduleConfiguration;
 	protected BusinessObjectService businessObjectService;
 	protected LookupService lookupService;
 	protected BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected KualiModuleService kualiModuleService;
 	protected ApplicationContext applicationContext;
-	
+
 	/***
 	 * @see org.kuali.rice.kns.service.ModuleService#isResponsibleFor(java.lang.Class)
 	 */
 	public boolean isResponsibleFor(Class businessObjectClass) {
 		if(getModuleConfiguration() == null)
 			throw new IllegalStateException("Module configuration has not been initialized for the module service.");
-		
+
 		if (getModuleConfiguration().getPackagePrefixes() == null || businessObjectClass == null) {
 			return false;
 		}
@@ -92,20 +92,20 @@ public class ModuleServiceBase implements ModuleService {
 	}
 
 
-	
+
 	/***
 	 * @see org.kuali.rice.kns.service.ModuleService#isResponsibleFor(java.lang.Class)
 	 */
 	public boolean isResponsibleForJob(String jobName) {
 		if(getModuleConfiguration() == null)
 			throw new IllegalStateException("Module configuration has not been initialized for the module service.");
-		
+
 		if (getModuleConfiguration().getJobNames() == null || StringUtils.isEmpty(jobName))
 			return false;
 
 		return getModuleConfiguration().getJobNames().contains(jobName);
 	}
-	
+
     /***
      * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObject(java.lang.Class, java.util.Map)
      */
@@ -142,7 +142,7 @@ public class ModuleServiceBase implements ModuleService {
 		Class clazz = getExternalizableBusinessObjectImplementation(businessObjectInterfaceClass);
 		return KNSServiceLocator.getPersistenceStructureService().listPrimaryKeyFieldNames(clazz);
 	}
-	
+
 	/***
 	 * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObjectDictionaryEntry(java.lang.Class)
 	 */
@@ -169,10 +169,10 @@ public class ModuleServiceBase implements ModuleService {
 			businessObjectClassAttribute = implementationClass.getName();
 		}else{
 			LOG.warn("Inquiry was invoked with a non-interface class object " + inquiryBusinessObjectClass.getName());
-			businessObjectClassAttribute = inquiryBusinessObjectClass.getName();			
+			businessObjectClassAttribute = inquiryBusinessObjectClass.getName();
 		}
         return UrlFactory.parameterizeUrl(
-        		getInquiryUrl(inquiryBusinessObjectClass), 
+        		getInquiryUrl(inquiryBusinessObjectClass),
         		getUrlParameters(businessObjectClassAttribute, parameters));
 	}
 
@@ -188,7 +188,7 @@ public class ModuleServiceBase implements ModuleService {
 		urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
 		return urlParameters;
 	}
-	
+
 	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
 		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.KUALI_RICE_URL_KEY);
 		String inquiryUrl = riceBaseUrl;
@@ -197,15 +197,15 @@ public class ModuleServiceBase implements ModuleService {
 		}
 		return inquiryUrl + KNSConstants.INQUIRY_ACTION;
 	}
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObjectLookupUrl(java.lang.Class, java.util.Map)
 	 */
 	public String getExternalizableBusinessObjectLookupUrl(Class inquiryBusinessObjectClass, Map<String, String> parameters) {
 		Properties urlParameters = new Properties();
-		
+
 		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.KUALI_RICE_URL_KEY);
 		String lookupUrl = riceBaseUrl;
 		if (!lookupUrl.endsWith("/")) {
@@ -220,18 +220,18 @@ public class ModuleServiceBase implements ModuleService {
 		for (String paramName : parameters.keySet()) {
 			urlParameters.put(paramName, parameters.get(paramName));
 		}
-		
+
 		Class clazz = getExternalizableBusinessObjectImplementation(inquiryBusinessObjectClass);
 		urlParameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, clazz==null?"":clazz.getName());
-		
+
 		return UrlFactory.parameterizeUrl(lookupUrl, urlParameters);
 	}
 
 	/***
-	 * 
+	 *
 	 * This method assumes that the property type for externalizable relationship in the business object is an interface
 	 * and gets the concrete implementation for it
-	 *  
+	 *
 	 * @see org.kuali.rice.kns.service.ModuleService#retrieveExternalizableBusinessObjectIfNecessary(org.kuali.rice.kns.bo.BusinessObject, org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	public <T extends ExternalizableBusinessObject> T retrieveExternalizableBusinessObjectIfNecessary(
@@ -248,9 +248,9 @@ public class ModuleServiceBase implements ModuleService {
 			return null;
 		}
 
-		//Get the business object entry for this business object from data dictionary 
+		//Get the business object entry for this business object from data dictionary
 		//using the class name (without the package) as key
-		BusinessObjectEntry entry = 
+		BusinessObjectEntry entry =
 			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntries().get(
 					businessObject.getClass().getSimpleName());
 		RelationshipDefinition relationshipDefinition = entry.getRelationshipDefinition(externalizableRelationshipName);
@@ -279,21 +279,21 @@ public class ModuleServiceBase implements ModuleService {
 	}
 
 	/***
-	 * 
+	 *
 	 * This method assumes that the externalizableClazz is an interface
 	 * and gets the concrete implementation for it
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.ModuleService#retrieveExternalizableBusinessObjectIfNecessary(org.kuali.rice.kns.bo.BusinessObject, org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	public List<? extends ExternalizableBusinessObject> retrieveExternalizableBusinessObjectsList(
 			BusinessObject businessObject, String externalizableRelationshipName, Class externalizableClazz) {
 
 		if(businessObject==null) return null;
-		//Get the business object entry for this business object from data dictionary 
+		//Get the business object entry for this business object from data dictionary
 		//using the class name (without the package) as key
 		String className = businessObject.getClass().getName();
 		String key = className.substring(className.lastIndexOf(".")+1);
-		BusinessObjectEntry entry = 
+		BusinessObjectEntry entry =
 			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntries().get(key);
 		RelationshipDefinition relationshipDefinition = entry.getRelationshipDefinition(externalizableRelationshipName);
 		List<PrimitiveAttributeDefinition> primitiveAttributeDefinitions = relationshipDefinition.getPrimitiveAttributes();
@@ -310,7 +310,7 @@ public class ModuleServiceBase implements ModuleService {
 		return getExternalizableBusinessObjectsList(
 				getExternalizableBusinessObjectImplementation(externalizableClazz), fieldValuesInEBO);
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.service.ModuleService#getExternalizableBusinessObjectImplementation(java.lang.Class)
 	 */
@@ -379,7 +379,7 @@ public class ModuleServiceBase implements ModuleService {
 	public boolean isExternalizableBusinessObjectLookupable(Class boClass) {
 		return getBusinessObjectDictionaryService().isLookupable(boClass);
 	}
-	
+
 	public boolean isExternalizableBusinessObjectInquirable(Class boClass) {
 		return getBusinessObjectDictionaryService().isInquirable(boClass);
 	}
@@ -391,13 +391,13 @@ public class ModuleServiceBase implements ModuleService {
 			throw new RuntimeException("Unable to create externalizable business object class", e);
 		}
 	}
-	
+
 	public BusinessObjectRelationship getBusinessObjectRelationship(Class boClass, String attributeName, String attributePrefix){
 		return null;
 	}
 
 
-	
+
 	public BusinessObjectDictionaryService getBusinessObjectDictionaryService () {
 		if ( businessObjectDictionaryService == null ) {
 			businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
@@ -414,7 +414,7 @@ public class ModuleServiceBase implements ModuleService {
 		}
 		return businessObjectService;
 	}
-	
+
     /**
      * Gets the lookupService attribute.
      * @return Returns the lookupService.
@@ -441,7 +441,20 @@ public class ModuleServiceBase implements ModuleService {
 	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
 	 */
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext; 
+		this.applicationContext = applicationContext;
 	}
+
+
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.service.ModuleService#listAlternatePrimaryKeyFieldNames(java.lang.Class)
+	 */
+	public List<List<String>> listAlternatePrimaryKeyFieldNames(
+			Class businessObjectInterfaceClass) {
+		return null;
+	}
+
 }
 

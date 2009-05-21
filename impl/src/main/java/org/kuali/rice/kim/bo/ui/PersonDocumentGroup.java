@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.ui;
 
 import java.sql.Date;
+import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +34,7 @@ import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 @Entity
 @Table(name="KRIM_PND_GRP_PRNCPL_MT")
 public class PersonDocumentGroup extends KimDocumentBoBase {
+	private static final long serialVersionUID = -1551337026170706411L;
 	@Id
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
@@ -54,6 +56,19 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	@Column(name="ACTV_TO_DT")
 	protected Date activeToDate;
 
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap m = super.toStringMapper();
+		m.put( "groupMemberId", groupMemberId );
+		m.put( "groupId", groupId );
+		m.put( "principalId", principalId );
+		return m;
+	}
+	
 	public String getGroupId() {
 		return this.groupId;
 	}
@@ -132,6 +147,14 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 
 	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;
+	}
+	/**
+	 * Returns active if the current time is between the from and to dates.  Null dates are 
+	 * considered to indicate an open range.
+	 */
+	public boolean isActive() {
+		long now = System.currentTimeMillis();		
+		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
 }

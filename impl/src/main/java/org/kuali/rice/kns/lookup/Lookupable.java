@@ -252,4 +252,6 @@ public interface Lookupable extends Serializable {
      * @return
      */
     public Field getExtraField();
+    
+    public void applyFieldAuthorizationsFromNestedLookups(Field field);
 }

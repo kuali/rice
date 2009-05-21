@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -43,7 +45,7 @@ public class LookupForm extends KualiForm {
 
     private String formKey;
     private String backLocation;
-    private Map fields;
+    private Map<String, String> fields;
     private Map fieldsForLookup;
     private String lookupableImplServiceName;
     private String conversionFields;
@@ -235,8 +237,8 @@ public class LookupForm extends KualiForm {
 
             // init lookupable with bo class
             localLookupable.setBusinessObjectClass(Class.forName(getBusinessObjectClassName()));
-            Map fieldValues = new HashMap();
-            Map formFields = getFields();
+            Map<String, String> fieldValues = new HashMap<String, String>();
+            Map<String, String> formFields = getFields();
             Class boClass = Class.forName(getBusinessObjectClassName());
 
             for (Iterator iter = localLookupable.getRows().iterator(); iter.hasNext();) {
@@ -260,9 +262,9 @@ public class LookupForm extends KualiForm {
                     	}
                     }
 
-                    // force uppercase if necessary
-                    field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
-                    fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+            		field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
+                	fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+                	localLookupable.applyFieldAuthorizationsFromNestedLookups(field);
                 }
             }
 
@@ -374,14 +376,14 @@ public class LookupForm extends KualiForm {
     /**
      * @return Returns the fields.
      */
-    public Map getFields() {
+    public Map<String, String> getFields() {
         return fields;
     }
 
     /**
      * @param fields The fields to set.
      */
-    public void setFields(Map fields) {
+    public void setFields(Map<String, String> fields) {
         this.fields = fields;
     }
 

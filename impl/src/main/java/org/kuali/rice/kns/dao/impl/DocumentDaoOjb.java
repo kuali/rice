@@ -54,6 +54,9 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @see org.kuali.dao.DocumentDao#save(null)
      */
     public void save(Document document) throws DataAccessException {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "About to store document: " + document, new Throwable() );
+    	}
         Document retrievedDocument = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
         KNSServiceLocator.getOjbCollectionHelper().processCollections(this, document, retrievedDocument);
         this.getPersistenceBrokerTemplate().store(document);

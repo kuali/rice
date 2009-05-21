@@ -166,6 +166,10 @@ public class RiceKeyConstants {
     public static final String ERROR_PRIORITY_NUMBER_RANGE = "error.prioritynumber.range";
     public static final String ERROR_CANT_ADD_DERIVED_ROLE = "error.cant.add.derived.role";
     public static final String ERROR_REQUIRED_CONDITIONALLY = "error.required.conditionally";
+    public static final String ERROR_CANT_BE_MODIFIED = "error.unmodifiable.attribute";
+    public static final String ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION = "error.delegation.notassociatedwith.rolemember";
+    public static final String ERROR_DELEGATION_TO_AMOUNT_GREATER = "error.delegation.toamount.greater";
+    public static final String ERROR_DELEGATION_FROM_AMOUNT_LESSER = "error.delegation.fromamount.lesser";
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
     

@@ -69,6 +69,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 
 
@@ -343,22 +344,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     }
 
     /**
-     * This method will save the document, which will then be available via the action list for the person who saved the document.
-     * 
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @return ActionForward
-     * @throws Exception
-     */
-    @Override
-    public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
-        return super.save(mapping, form, request, response);
-    }
-    
-    /**
      * Downloads the attachment to the user's browser
      *
      * @param mapping
@@ -411,8 +396,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      */
     @Override
     public ActionForward route(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
-        
         KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
         MaintenanceDocumentBase document = (MaintenanceDocumentBase) documentForm.getDocument();
         
@@ -423,38 +406,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         }
         
         return forward;
-    }
-
-    /**
-     * Calls the document service to blanket approve the document
-     * 
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @return ActionForward
-     * @throws Exception
-     */
-    @Override
-    public ActionForward blanketApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
-        return super.blanketApprove(mapping, form, request, response);
-    }
-
-    /**
-     * Calls the document service to approve the document
-     * 
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @return ActionForward
-     * @throws Exception
-     */
-    @Override
-    public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        doProcessingAfterPost( (KualiMaintenanceForm) form, request );
-        return super.approve(mapping, form, request, response);
     }
 
     /**
@@ -568,7 +519,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         	actionValue[0]= StringUtils.substringAfter(customAction, ".");
         	Map<String,String[]> paramMap = request.getParameterMap();
         	paramMap.put(KNSConstants.CUSTOM_ACTION, actionValue);
-        	 doProcessingAfterPost( (KualiMaintenanceForm) form, paramMap );
+        	doProcessingAfterPost( (KualiMaintenanceForm) form, paramMap );
         }
        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -972,8 +923,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
      * 
      * @param form
      */
-    private void doProcessingAfterPost( KualiMaintenanceForm form, HttpServletRequest request ) {
-        MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+    @SuppressWarnings("unchecked")
+	protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
+        MaintenanceDocument document = (MaintenanceDocument) ((KualiMaintenanceForm)form).getDocument();
         Maintainable maintainable = document.getNewMaintainableObject();
         PersistableBusinessObject bo = maintainable.getBusinessObject();
         
@@ -982,8 +934,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         maintainable.processAfterPost(document, request.getParameterMap() );
     }
     
-    private void doProcessingAfterPost( KualiMaintenanceForm form, Map<String,String[]> parameters ) {
-        MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+    protected void doProcessingAfterPost( KualiForm form, Map<String,String[]> parameters ) {
+        MaintenanceDocument document = (MaintenanceDocument) ((KualiMaintenanceForm)form).getDocument();
         Maintainable maintainable = document.getNewMaintainableObject();
         PersistableBusinessObject bo = maintainable.getBusinessObject();
         

@@ -368,5 +368,14 @@ public class KualiLookupableImpl implements Lookupable {
 	public Field getExtraField() {
 		return getLookupableHelperService().getExtraField();
 	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.Lookupable#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.kns.web.ui.Field)
+	 */
+	public void applyFieldAuthorizationsFromNestedLookups(Field field) {
+		getLookupableHelperService().applyFieldAuthorizationsFromNestedLookups(field);
+	}
 	
 }

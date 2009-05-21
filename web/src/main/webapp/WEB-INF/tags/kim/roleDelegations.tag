@@ -4,17 +4,15 @@
 <c:set var="delegationMemberAttributes" value="${DataDictionary.RoleDocumentDelegationMember.attributes}" />
 <c:set var="roleDocumentDelegationMemberQualifier" value="${DataDictionary.RoleDocumentDelegationMemberQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
-<script type="text/javascript">
-	function changeDelegationRoleMember(){
-		document.getElementById("roleCommand").value="changeDelegationRoleMember";
-		document.forms[0].submit();
-	}
-</script>
 
+<c:if test="${KualiForm.anchor ne ''}">
+	<script type="text/javascript">
+		jumpToAnchor(<c:out value="${KualiForm.anchor}"/>);
+	</script>
+</c:if>	
 <c:if test="${!(empty KualiForm.document.delegationMembers) || canModifyAssignees}">
 <kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.delegationMember*,delegationMember.*">
 	<div class="tab-container" align="center">    
-	<input type="hidden" id="roleCommand" name="roleCommand"/>
     <table cellpadding="0" cellspacing="0" summary="">
         	<tr>
         		<th>&nbsp;</th> 
@@ -43,18 +41,20 @@
                 <td class="infoline">   
                 <div align="center">
 					<!-- Combo of role members -->
-						<a href=""><kul:htmlControlAttribute property="delegationMemberRoleMemberId" attributeEntry="${delegationMemberAttributes.roleMemberId}" disabled="true" /></a>
-		               	<kul:lookup boClassName="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember" fieldConversions="roleMemberId:delegationMemberRoleMemberId" anchor="${tabKey}" />
+					<c:set var="jumpToRoleMemberAnchorName" value="methodToCall.jumpToRoleMember.dmrmi${KualiForm.delegationMemberRoleMemberId}.x" />
+		  	   		${kfunc:registerEditableProperty(KualiForm, jumpToRoleMemberAnchorName)}
+					<input type="submit" tabindex="${tabindex}" name="${jumpToRoleMemberAnchorName}" value="${KualiForm.delegationMember.roleMemberNamespaceCode}&nbsp;${KualiForm.delegationMember.roleMemberName}"/>
+	               	<kul:lookup boClassName="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember" fieldConversions="roleMemberId:delegationMemberRoleMemberId" anchor="${tabKey}" />
 				</div>
 				</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
                 	<kul:htmlControlAttribute property="delegationMember.memberTypeCode" 
                 	attributeEntry="${delegationMemberAttributes.memberTypeCode}" 
-                	onchange="changeDelegationMemberTypeCode()" disabled="${!canModifyAssignees}" />
+                	onchange="changeDelegationMemberTypeCode(this.form)" disabled="${!canModifyAssignees}" />
 					<NOSCRIPT>
-   						<html:submit value="select" alt="press this button to refresh the page after changing the delegation type." />
-					</NOSCRIPT>                
+                        <input type="image" tabindex="32768" name="methodToCall.changeDelegationMemberTypeCode" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-refresh.gif" class="tinybutton" title="Click to refresh the page after changing the member type." alt="Click to refresh the page after changing the member type." />
+					</NOSCRIPT>
 	            </div>
             	<c:set var="bo" value="${KualiForm.delegationMemberBusinessObjectName}"/>
             	<c:set var="fc" value="${KualiForm.delegationMemberFieldConversions}"/>
@@ -91,9 +91,10 @@
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
+        			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
-		               	<c:if test="${!empty attrDefinition.lookupBoClass and not readOnly}">
+		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+		               	<c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
 			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="delegationMember" attr="${attrDefinition}" />
 			          	</c:if>
 						</div>
@@ -128,7 +129,10 @@
 					<c:out value="${statusMember.index+1}" />
 				</th>
 	            <td align="left" valign="middle">
-	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].roleMemberId" attributeEntry="${delegationMemberAttributes.roleMemberId}" disabled="true" readOnly="false" />
+	               	<div align="center">
+						<c:set var="jumpToRoleMemberAnchorName" value="methodToCall.jumpToRoleMember.dmrmi${KualiForm.document.delegationMembers[statusMember.index].roleMemberId}.x" />
+			  	   		${kfunc:registerEditableProperty(KualiForm, jumpToRoleMemberAnchorName)}
+						<input type="submit" tabindex="${tabindex}" name="${jumpToRoleMemberAnchorName}" value="${KualiForm.document.delegationMembers[statusMember.index].roleMemberNamespaceCode}&nbsp;${KualiForm.document.delegationMembers[statusMember.index].roleMemberName}"/>
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -160,9 +164,10 @@
 					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
+        			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}"  />
-		               	<c:if test="${!empty attrDefinition.lookupBoClass and not readOnly}">
+		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}"  />
+		               	<c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
 			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.delegationMembers[${statusMember.index}]" attr="${attrDefinition}" />
 			          	</c:if>
 						</div>

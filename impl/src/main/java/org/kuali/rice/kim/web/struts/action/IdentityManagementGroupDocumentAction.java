@@ -51,7 +51,6 @@ import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
  */
 public class IdentityManagementGroupDocumentAction extends IdentityManagementDocumentActionBase {
 
-
 	/**
 	 * This constructs a ...
 	 * 
@@ -59,6 +58,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 	public IdentityManagementGroupDocumentAction() {
 		super();
 		addMethodToCallToUncheckedList( CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL );
+		addMethodToCallToUncheckedList( CHANGE_NAMESPACE_METHOD_TO_CALL );
 	}
 	
 	@Override
@@ -167,6 +167,12 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		return rulePassed;
 	}
 
+	public ActionForward changeMemberTypeCode(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
+        groupDocumentForm.getMember().setMemberName("");
+        return refresh(mapping, groupDocumentForm, request, response);
+	}	
+	
     public ActionForward addMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
         GroupDocumentMember newMember = groupDocumentForm.getMember();

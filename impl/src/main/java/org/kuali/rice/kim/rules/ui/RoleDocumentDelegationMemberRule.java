@@ -49,8 +49,12 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 		RoleDocumentDelegationMember newMember = addDelegationMemberEvent.getDelegationMember();
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addDelegationMemberEvent.getDocument();
 	    boolean rulePassed = true;
-        if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
+        if(newMember == null || StringUtils.isBlank(newMember.getMemberId())){
             GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Delegation Member"});
+            return false;
+        }
+        if(StringUtils.isBlank(newMember.getRoleMemberId())){
+            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Member"});
             return false;
         }
 		List<AttributeSet> attributeSetListToValidate = new ArrayList<AttributeSet>();
@@ -81,7 +85,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
         
         if ( kimTypeService != null ) {
     		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
+	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
     	if (!validationErrors.isEmpty()) {
     		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);

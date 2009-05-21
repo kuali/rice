@@ -107,7 +107,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
         valid &= validRoleMemberActiveDates(roleDoc.getMembers());
-        valid &= validateDelegationMemberRoleQualifier(roleDoc.getDelegationMembers(), roleDoc.getKimType());
+        valid &= validateDelegationMemberRoleQualifier(roleDoc.getMembers(), roleDoc.getDelegationMembers(), roleDoc.getKimType());
         valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
         valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
         valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
@@ -241,7 +241,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
 			errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
-			validationErrors.putAll( attributeValidationHelper.convertErrorsForMappedFields("members["+memberCounter+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(roleMember.getQualifiers()),errorsTemp) );
+			validationErrors.putAll( 
+					attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
 	        memberCounter++;
     	}
 
@@ -255,27 +256,56 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	}
     }
     
-    private boolean validateDelegationMemberRoleQualifier(List<RoleDocumentDelegationMember> delegationMembers, KimTypeImpl kimType){
-		AttributeSet validationErrors = new AttributeSet();
+    private KimDocumentRoleMember getRoleMemberForDelegation(
+    		List<KimDocumentRoleMember> roleMembers, RoleDocumentDelegationMember delegationMember){
+    	if(roleMembers==null || delegationMember==null || delegationMember.getRoleMemberId()==null) return null;
+    	for(KimDocumentRoleMember roleMember: roleMembers){
+    		if(delegationMember.getRoleMemberId().equals(roleMember.getRoleMemberId()))
+    			return roleMember;
+    	}
+    	return null;
+    }
 
+    private boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers, 
+    		List<RoleDocumentDelegationMember> delegationMembers, KimTypeImpl kimType){
+		AttributeSet validationErrors = new AttributeSet();
+		boolean valid;
 		int memberCounter = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        KimDocumentRoleMember roleMember;
+        String errorPath;
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
+			errorPath = "delegationMembers["+memberCounter+"]";
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
 			errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
-			validationErrors.putAll( attributeValidationHelper.convertErrorsForMappedFields("delegationMembers["+memberCounter+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()),errorsTemp) );
+			validationErrors.putAll(
+					attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
+
+			roleMember = getRoleMemberForDelegation(roleMembers, delegationMember);
+			if(roleMember==null){
+				valid = false;
+				GlobalVariables.getErrorMap().putError("document.delegationMembers["+memberCounter+"]", RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
+			} else{
+				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
+								kimType.getKimTypeId(), 
+								attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers()), 
+								attributeSetToValidate);
+				validationErrors.putAll(
+						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp) );
+			}
 	        memberCounter++;
     	}
 		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
     	if (validationErrors.isEmpty()) {
-    		return true;
+    		valid = true;
     	} else {
     		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
-    		return false;
+    		valid = false;
     	}
+    	return valid;
     }
     
 	private boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {

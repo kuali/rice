@@ -18,6 +18,8 @@ package org.kuali.rice.kim.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KimTypeInfoService;
@@ -36,6 +38,7 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 	private BusinessObjectService businessObjectService;
 	
 	protected Map<String,KimTypeInfo> infoCache = new HashMap<String, KimTypeInfo>();
+	protected Map<String,ExternalIdentifierTypeInfo> extIdTypeCache = new HashMap<String, ExternalIdentifierTypeInfo>();
 	
 	/**
 	 * This overridden method ...
@@ -59,5 +62,17 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
+	}
+	
+	public ExternalIdentifierTypeInfo getExternalIdentifierType( String externalIdentifierTypeCode ) {
+		if ( !extIdTypeCache.containsKey(externalIdentifierTypeCode) ) {
+			Map<String,String> pk = new HashMap<String, String>(1);
+			pk.put("code", externalIdentifierTypeCode);
+			ExternalIdentifierTypeImpl impl = (ExternalIdentifierTypeImpl)getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, pk);
+			if ( impl != null ) {
+				extIdTypeCache.put(externalIdentifierTypeCode, impl.toInfo());
+			}
+		}
+		return extIdTypeCache.get(externalIdentifierTypeCode);
 	}
 }

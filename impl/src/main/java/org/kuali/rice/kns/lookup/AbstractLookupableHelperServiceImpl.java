@@ -33,6 +33,8 @@ import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
+import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
@@ -466,7 +468,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             // Encrypt value if it is a secure field
             if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
                 try {
-                    fieldVal = getEncryptionService().encrypt(fieldVal);
+                    fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
@@ -781,7 +783,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
             if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
                 try {
-                    fieldVal = getEncryptionService().encrypt(fieldVal);
+                    fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
@@ -893,15 +895,22 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                     }
                 }
                 else if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
-                    // following loop would be trivial if Constants.QUERY_CHARACTERS would implement CharSequence but not so
-                    // sure if that makes sense...
-                    for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
-                        String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
-
-                        if (attributeValue.contains(queryCharacter)) {
-                            GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
-                        }
-                    }
+                	if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                		// encrypted values usually come from the DB, so we don't need to filter for wildcards
+                		
+                		// wildcards are not allowed on restricted fields, because they are typically encrypted, and wildcard searches cannot be performed without
+                		// decrypting every row, which is currently not supported by KNS
+                		
+	                    // following loop would be trivial if Constants.QUERY_CHARACTERS would implement CharSequence but not so
+	                    // sure if that makes sense...
+	                    for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
+	                        String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
+	
+	                        if (attributeValue.contains(queryCharacter)) {
+	                            GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
+	                        }
+	                    }
+                	}
                 }
             }
         }
@@ -985,6 +994,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		
 		preprocessDateFields(lookupFormFields);
         
+		Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
         // call search method to get results
         if (bounded) {
             displayList = getSearchResults(lookupForm.getFieldsForLookup());
@@ -1219,6 +1229,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             Row row = (Row) iter.next();
             for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
                 Field field = (Field) iterator.next();
+                if (field.isSecure()) {
+                	field.setSecure(false);
+                	field.setDisplayMaskValue(null);
+                	field.setEncryptedValue(null);
+                }
                 if (!field.getFieldType().equals(Field.RADIO)) {
                     field.setPropertyValue(field.getDefaultValue());
                 }
@@ -1273,4 +1288,49 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		throw new UnsupportedOperationException("Function not supported.");
 	}
 
+	/**
+	 * Functional requirements state that users are able to perform searches using criteria values that they are not allowed to view.
+	 * 
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.kns.web.ui.Field)
+	 */
+	public void applyFieldAuthorizationsFromNestedLookups(Field field) {
+		if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+			if (field.getPropertyValue() != null && field.getPropertyValue().endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+				if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, field.getPropertyName())) {
+					AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), field.getPropertyName());
+					Person user = GlobalVariables.getUserSession().getPerson();
+					String decryptedValue;
+					try {
+						String cipherText = StringUtils.removeEnd(field.getPropertyValue(), EncryptionService.ENCRYPTION_POST_PREFIX);
+						decryptedValue = getEncryptionService().decrypt(cipherText);
+					} catch (GeneralSecurityException e) {
+						throw new RuntimeException("Error decrypting value for business object " + businessObjectClass + " attribute " + field.getPropertyName(), e);
+					}
+					if (attributeSecurity.isMask() && !getBusinessObjectAuthorizationService().canFullyUnmaskField(user,
+							businessObjectClass, field.getPropertyName())) {
+						MaskFormatter maskFormatter = attributeSecurity.getMaskFormatter();
+						field.setEncryptedValue(field.getPropertyValue());
+						field.setDisplayMaskValue(maskFormatter.maskValue(decryptedValue));
+						field.setSecure(true);
+					}
+					else if (attributeSecurity.isPartialMask() && !getBusinessObjectAuthorizationService().canPartiallyUnmaskField(user,
+							businessObjectClass, field.getPropertyName())) {
+						MaskFormatter maskFormatter = attributeSecurity.getPartialMaskFormatter();
+						field.setEncryptedValue(field.getPropertyValue());
+						field.setDisplayMaskValue(maskFormatter.maskValue(decryptedValue));
+						field.setSecure(true);
+					}
+					else {
+						field.setPropertyValue(LookupUtils.forceUppercase(businessObjectClass, field.getPropertyName(), decryptedValue));
+					}
+				}
+				else {
+					throw new RuntimeException("Field " + field.getPersonNameAttributeName() + " was encrypted on " + businessObjectClass.getName() +
+							" lookup was encrypted when it should not have been encrypted according to the data dictionary.");
+				}
+			}
+    	} else {
+			throw new RuntimeException("Cannot handle multiple value field types");    		
+    	}
+	}
 }

@@ -19,6 +19,7 @@
 <c:set var="readOnly" scope="request" value="${inquiry}" />
 <c:set var="readOnly" scope="request" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || inquiry}" />
 <c:set var="canAssignGroup" scope="request" value="${KualiForm.canAssignGroup && !readOnly}" />
+<c:set var="editingDocument" scope="request" value="${KualiForm.document.editing}" />
 
 <c:set var="formAction" value="identityManagementGroupDocument" />
 <c:if test="${inquiry}">
@@ -55,13 +56,22 @@
     <c:choose>
         <c:when test="${!inquiry}">
             <kul:documentControls transactionalDocument="false" />
-            <input type="hidden" name="command" value="initiate" />
             <input type="hidden" name="groupId" value="${KualiForm.document.groupId}" />
             <script type="text/javascript">
-            function changeMemberTypeCode(){
-                document.getElementsByTagName("command").value="changeMemberTypeCode";
-                document.forms[0].submit();
+            function changeMemberTypeCode( frm ) {
+                postMethodToCall( frm, "changeMemberTypeCode" );
             }
+            function namespaceChanged( frm ) {
+                postMethodToCall( frm, "changeNamespace" );
+            }
+            function postMethodToCall( frm, methodToCall ) {
+                var methodToCallElement=document.createElement("input");
+                methodToCallElement.setAttribute("type","hidden");
+                methodToCallElement.setAttribute("name","methodToCall");
+                methodToCallElement.setAttribute("value", methodToCall );
+                frm.appendChild(methodToCallElement);
+                frm.submit();
+            } 
             </script>
         </c:when>
         <c:otherwise>

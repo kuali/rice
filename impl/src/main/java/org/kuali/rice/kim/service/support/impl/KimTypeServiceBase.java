@@ -27,9 +27,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -62,7 +65,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class KimTypeServiceBase implements KimTypeService {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
+	protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
 
 	protected BusinessObjectService businessObjectService;
 	protected DictionaryValidationService dictionaryValidationService;
@@ -135,7 +138,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		return false;
 	}
 
-	private Map<String, KimAttributeImpl> getAttributeImpls(AttributeSet attributes){
+	protected Map<String, KimAttributeImpl> getAttributeImpls(AttributeSet attributes){
 		Map<String, KimAttributeImpl> attributeImpls = new HashMap<String, KimAttributeImpl>();
 		for ( String attributeName: attributes.keySet() ) {
 			attributeImpls.put(attributeName, getAttributeImpl(attributeName));
@@ -143,7 +146,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		return attributeImpls;
 	}
 	
-	private KimAttributeImpl getAttributeImpl(String attributeName){
+	protected KimAttributeImpl getAttributeImpl(String attributeName){
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, attributeName);
 		return (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
@@ -458,6 +461,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
 		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
+		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		if ( definitions == null ) {
 			definitions = new AttributeDefinitionMap();
 	        Map<String,String> pk = new HashMap<String, String>( 1 );
@@ -472,7 +476,9 @@ public class KimTypeServiceBase implements KimTypeService {
 					} else {
 						definition = getDataDictionaryAttributeDefinition(typeAttribute);
 					}
-					
+					if(uniqueAttributes!=null && uniqueAttributes.contains(definition.getName())){
+						definition.setUnique(true);
+					}
 					// Perform a parameterized substitution on the applicationUrl
 					KimAttributeImpl kai = typeAttribute.getKimAttribute();
 					String url = kai.getApplicationUrl();
@@ -540,7 +546,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		return areAttributesUnique;
 	}
 	
-	private boolean areAttributesEqual(List<String> uniqueAttributeNames, AttributeSet aSet1, AttributeSet aSet2){
+	protected boolean areAttributesEqual(List<String> uniqueAttributeNames, AttributeSet aSet1, AttributeSet aSet2){
 		String attrVal1;
 		String attrVal2;
 		StringValueComparator comparator = new StringValueComparator();
@@ -554,7 +560,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		return true;
 	}
 	
-	private String getAttributeValue(AttributeSet aSet, String attributeName){
+	protected String getAttributeValue(AttributeSet aSet, String attributeName){
 		if(StringUtils.isEmpty(attributeName)) return null;
 		for(String attributeNameKey: aSet.keySet()){
 			if(attributeName.equals(attributeNameKey))
@@ -564,14 +570,43 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 	
 	public List<String> getUniqueAttributes(String kimTypeId){
-        Map<String,String> pk = new HashMap<String, String>( 1 );
-        pk.put("kimTypeId", kimTypeId);
-        KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
         List<String> uniqueAttributes = new ArrayList<String>();
-        for(KimTypeAttributeImpl attributeDefinition: kimType.getAttributeDefinitions()){
-        	uniqueAttributes.add(attributeDefinition.getKimAttribute().getAttributeName());
+        KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+        if ( kimType != null ) {
+	        for(KimTypeAttributeInfo attributeDefinition: kimType.getAttributeDefinitions()){
+	        	uniqueAttributes.add(attributeDefinition.getAttributeName());
+	        }
+        } else {
+        	LOG.error("Unable to retrieve a KimTypeInfo for the given type in getUniqueAttributes(): " + kimType );
         }
         return uniqueAttributes;
+	}
+
+	public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet originalAttributeSet, AttributeSet newAttributeSet){
+		AttributeSet validationErrors = new AttributeSet();
+		List<String> attributeErrors = null;
+		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
+		String mainAttributeValue = "";
+		String delegationAttributeValue = "";
+		KimAttributeImpl attributeImpl;
+		for(String attributeNameKey: uniqueAttributes){
+			attributeImpl = getAttributeImpl(attributeNameKey);
+			mainAttributeValue = getAttributeValue(originalAttributeSet, attributeNameKey);
+			delegationAttributeValue = getAttributeValue(newAttributeSet, attributeNameKey);
+
+			if(!StringUtils.equals(mainAttributeValue, delegationAttributeValue)){
+				GlobalVariables.getErrorMap().putError(
+					attributeNameKey, RiceKeyConstants.ERROR_CANT_BE_MODIFIED, 
+					dataDictionaryService.getAttributeLabel(attributeImpl.getComponentName(), attributeNameKey));
+				attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
+			}
+			if(attributeErrors!=null){
+				for(String err:attributeErrors){
+					validationErrors.put(attributeNameKey, err);
+				}
+			}
+		}
+		return validationErrors;
 	}
 
 }

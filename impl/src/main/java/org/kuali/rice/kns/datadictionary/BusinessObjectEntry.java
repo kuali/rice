@@ -243,7 +243,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         	// just rethrow
         	throw ex;
         } catch ( Exception ex ) {
-        	throw new DataDictionaryException( "Exception validating " + this);
+        	throw new DataDictionaryException( "Exception validating " + this, ex);
         }
     }
 

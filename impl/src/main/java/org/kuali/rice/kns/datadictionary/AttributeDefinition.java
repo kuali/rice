@@ -45,7 +45,8 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
     protected String displayLabelAttribute;
 
     protected Integer maxLength;
-
+    protected Boolean unique;
+    
     protected BigDecimal exclusiveMin;
     protected BigDecimal inclusiveMax;
 
@@ -476,4 +477,20 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
     	}
     	
     }
+
+
+	/**
+	 * @return the unique
+	 */
+	public Boolean getUnique() {
+		return this.unique;
+	}
+
+
+	/**
+	 * @param unique the unique to set
+	 */
+	public void setUnique(Boolean unique) {
+		this.unique = unique;
+	}
 }

@@ -204,6 +204,12 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
      */
     public void save(List businessObjects) throws DataAccessException {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "About to persist the following BOs:" );
+    		for ( Object bo : businessObjects ) {
+    			LOG.debug( "   --->" + bo );
+    		}
+    	}
         for (Iterator i = businessObjects.iterator(); i.hasNext();) {
             Object bo = i.next();
             getPersistenceBrokerTemplate().store(bo);

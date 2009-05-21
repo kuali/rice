@@ -134,5 +134,7 @@ public interface RoleService {
 	
 	void roleInactivated(String roleId);
 	
+    void groupInactivated(String groupId);
+    
 	List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds);
 }

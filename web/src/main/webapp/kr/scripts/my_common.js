@@ -111,3 +111,7 @@ function setIframeAnchor(iframeName) {
   }  
 }
 
+function jumpToAnchor(anchor){
+	var anchors = document.getElementsByName(anchor);
+	location.href = '#'+anchors[0].name;
+}

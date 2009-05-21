@@ -60,7 +60,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.responsibilityId"  attributeEntry="${responsibilityAttributes.responsibilityId}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].responsibilityId"  attributeEntry="${responsibilityAttributes.responsibilityId}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -101,7 +101,7 @@
 				</td>
 			</c:if>    
 			</tr>
-	        <c:if test="${responsibility.roleRspAction != null}">	
+	        <c:if test="${responsibility.roleRspAction != null && responsibility.roleRspAction.roleMemberId == '*'}">	
     			<tr>
 	              <td colspan="7" style="padding:0px;">
 	              	<kim:responsibilityAction responsibilityIdx="${status.index}" />

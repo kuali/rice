@@ -24,6 +24,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -82,6 +84,12 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 	 * @return the kimResponsibility
 	 */
 	public KimResponsibilityImpl getKimResponsibility() {
+		if ( kimResponsibility == null && responsibilityId != null ) {
+			//TODO: this needs to be changed to use the KimResponsibilityInfo object
+			// but the changes are involved in the UiDocumentService based on the copyProperties method used
+			// to move the data to/from the document/real objects
+			kimResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getResponsibilityId());
+		}
 		return this.kimResponsibility;
 	}
 

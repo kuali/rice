@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.group.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 
@@ -24,7 +25,8 @@ import java.sql.Date;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class GroupMembershipInfo {
+public class GroupMembershipInfo implements Serializable {
+	private static final long serialVersionUID = 8480290118998280178L;
 	protected String groupId;
 	protected String groupMemberId;
 	protected String memberId;

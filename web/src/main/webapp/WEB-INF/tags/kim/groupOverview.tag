@@ -16,9 +16,14 @@
 	 	</tr>
 	 	<tr>
     		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.namespaceCode}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.groupNamespace" attributeEntry="${groupAttributes.namespaceCode}" readOnly="${readOnly}" /></td>
+	 		<td>
+	 		    <kul:htmlControlAttribute property="document.groupNamespace" attributeEntry="${groupAttributes.namespaceCode}" readOnly="${(readOnly || editingDocument)}" onchange="namespaceChanged( this.form );" />
+	 		    <noscript>
+	 		        <input type="image" tabindex="32768" name="methodToCall.changeNamespace" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-refresh.gif" class="tinybutton" title="Click to refresh the page after changing the namespace." alt="Click to refresh the page after changing the namespace." />
+	 		    </noscript>
+	 		</td>
     		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.groupName}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.groupName" attributeEntry="${groupAttributes.groupName}" readOnly="${readOnly}" /></td>
+	 		<td><kul:htmlControlAttribute property="document.groupName" attributeEntry="${groupAttributes.groupName}" readOnly="${(readOnly || editingDocument)}" /></td>
 	 	</tr>
 	 	<tr>
 			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.active}"  /></div></th>

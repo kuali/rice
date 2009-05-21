@@ -29,15 +29,6 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  *
  */
 public interface PermissionService {
-
-    // --------------------
-    // Permission Data
-    // --------------------
-
-    /**
-     *  Return the list of details that the principal has been assigned for the given permission.
-     */
-    List<AttributeSet> getPermissionDetails( String principalId, String permissionId, AttributeSet qualification );
             
     // --------------------
     // Authorization Checks

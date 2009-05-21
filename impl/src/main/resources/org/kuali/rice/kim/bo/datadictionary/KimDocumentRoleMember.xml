@@ -75,7 +75,7 @@
   <bean id="DocRoleMember-memberName" parent="DocRoleMember-memberName-parentBean" />
   <bean id="DocRoleMember-memberName-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="memberName"
-        p:forceUppercase="true"
+        p:forceUppercase="false"
         p:label="Member Name"
         p:shortLabel="Name"
         p:maxLength="40"
@@ -105,9 +105,6 @@
     <property name="description" value="End Date" />
   </bean>
 
-
-
-  
   <bean id="DocRoleMember-inquiryDefinition" parent="DocRoleMember-inquiryDefinition-parentBean" />
 
   <bean id="DocRoleMember-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition"

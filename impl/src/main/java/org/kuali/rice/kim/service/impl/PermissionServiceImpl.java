@@ -384,19 +384,6 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	}
     	return roleIds;
     }
-    
-    // --------------------
-    // Role Permission Methods
-    // --------------------
-	
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionDetails(java.lang.String, java.lang.String, AttributeSet)
-     */
-    public List<AttributeSet> getPermissionDetails(String principalId, String permissionId, AttributeSet qualification) {
-    	throw new UnsupportedOperationException();
-    	// TODO: implement me!
-    }
-    
 
     // --------------------
     // Permission Data

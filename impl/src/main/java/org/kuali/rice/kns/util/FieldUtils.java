@@ -983,30 +983,6 @@ public class FieldUtils {
     }
 
     /**
-
-     * This method is a helper method for createRowsForNewFields. It puts together all the fields that should exist in a row after
-     * calling the fixFieldForForm for the other necessary prefixing and setting up of the fields.
-     *
-     * @param newFields
-     * @param keyFieldNames
-     * @param maintenanceAction
-     * @param readOnly
-     * @param auths
-     * @return a List of Field
-     */
-    private static List<Field> arrangeNewFields(List newFields, List keyFieldNames, String maintenanceAction, boolean readOnly, MaintenanceDocumentRestrictions auths, String documentStatus, String documentInitiatorPrincipalId) {
-        List<Field> results = new ArrayList();
-        for (int k = 0; k < newFields.size(); k++) {
-            Field newMaintField = (Field) newFields.get(k);
-            String propertyName = newMaintField.getPropertyName();
-            newMaintField = FieldUtils.fixFieldForForm(newMaintField, keyFieldNames, KNSConstants.MAINTENANCE_NEW_MAINTAINABLE, maintenanceAction, readOnly, auths, documentStatus, documentInitiatorPrincipalId);
-
-            results.add(newMaintField);
-        }
-        return results;
-    }
-
-    /**
      * Merges together rows of an old maintainable section and new maintainable section.
      *
      * @param oldRows

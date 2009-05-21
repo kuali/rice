@@ -13,33 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.reference.impl;
+package org.kuali.rice.kim.bo.reference.dto;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity
-@Table(name="KRIM_EXT_ID_TYP_T")
-@AttributeOverrides({
-	@AttributeOverride(name="code",column=@Column(name="EXT_ID_TYP_CD")),
-	@AttributeOverride(name="name",column=@Column(name="NM"))
-})
-public class ExternalIdentifierTypeImpl extends KimCodeBase implements ExternalIdentifierType {
+public class ExternalIdentifierTypeInfo implements ExternalIdentifierType {
 
 	private static final long serialVersionUID = 1L;
-
-    @Type(type="yes_no")
-	@Column(name="ENCR_REQ_IND")
+    protected String code;
+    protected String name;
+    protected String displaySortCode = "";
+    protected boolean active;
 	protected boolean encryptionRequired;
 	
 	/**
@@ -77,14 +64,37 @@ public class ExternalIdentifierTypeImpl extends KimCodeBase implements ExternalI
 	public void setEncryptionRequired(boolean encryptionRequired) {
 		this.encryptionRequired = encryptionRequired;
 	}
-	
-	public ExternalIdentifierTypeInfo toInfo() {
-		ExternalIdentifierTypeInfo info = new ExternalIdentifierTypeInfo();
-		info.setCode(code);
-		info.setName(name);
-		info.setActive(active);
-		info.setEncryptionRequired(encryptionRequired);
-		info.setDisplaySortCode(displaySortCode);
-		return info;
+
+	public String getCode() {
+		return this.code;
 	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDisplaySortCode() {
+		return this.displaySortCode;
+	}
+
+	public void setDisplaySortCode(String displaySortCode) {
+		this.displaySortCode = displaySortCode;
+	}
+
+	public boolean isActive() {
+		return this.active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 }

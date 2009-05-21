@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 
 /**
@@ -26,5 +27,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 public interface KimTypeInfoService {
 
 	KimTypeInfo getKimType( String kimTypeId );
+	
+	ExternalIdentifierTypeInfo getExternalIdentifierType( String externalIdentifierTypeCode );
 	
 }

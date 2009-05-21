@@ -44,8 +44,8 @@ import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
  */
 abstract public class IdentityManagementDocumentActionBase extends KualiTransactionalDocumentActionBase {
 
-	public static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode";
-	public static final String CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL = "changeDelegationRoleMember";
+	protected static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode";
+	protected static final String CHANGE_NAMESPACE_METHOD_TO_CALL = "changeNamespace";
 
 	protected IdentityService identityService;
 	protected ResponsibilityService responsibilityService;
@@ -158,5 +158,9 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         	valid = false;
         }
     	return valid;
+    }
+ 
+    public ActionForward changeNamespace(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return refresh(mapping, form, request, response);
     }
 }

@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
-import org.apache.log4j.Priority;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -202,6 +201,7 @@ public abstract class KualiAction extends DispatchAction {
             }
         }
 
+        doProcessingAfterPost( kualiForm, request );
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -224,6 +224,7 @@ public abstract class KualiAction extends DispatchAction {
             newTabStates.put(tabKey, "OPEN");
         }
         kualiForm.setTabStates(newTabStates);
+        doProcessingAfterPost( kualiForm, request );
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -246,6 +247,7 @@ public abstract class KualiAction extends DispatchAction {
         	newTabStates.put(tabKey, "CLOSE");
         }
         kualiForm.setTabStates(newTabStates);
+        doProcessingAfterPost( kualiForm, request );
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
@@ -410,7 +412,8 @@ public abstract class KualiAction extends DispatchAction {
      * @return
      * @throws Exception
      */
-    public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @SuppressWarnings("unchecked")
+	public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         // parse out the important strings from our methodToCall parameter
         String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         validateLookupInquiryFullParameter(request, form, fullParameter);
@@ -817,7 +820,7 @@ public abstract class KualiAction extends DispatchAction {
         String headerTabDispatch = getHeaderTabDispatch(request);
         if (StringUtils.isNotEmpty(headerTabDispatch)) {
             ActionForward forward = dispatchMethod(mapping, form, request, response, headerTabDispatch);
-            if (GlobalVariables.getErrorMap().size() > 0) {
+            if (GlobalVariables.getErrorMap().getNumberOfPropertiesWithErrors() > 0) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
             this.hideAllTabs(mapping, form, request, response);
@@ -919,7 +922,6 @@ public abstract class KualiAction extends DispatchAction {
      * @param response
      * @return
      */
-    @SuppressWarnings("unchecked")
     public ActionForward updateTextArea(ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
@@ -986,7 +988,6 @@ public abstract class KualiAction extends DispatchAction {
         }
                         
         return forward;
-
     }
     /**
      * This method is invoked from the TextArea.jsp for posting its value to the parent
@@ -1000,7 +1001,6 @@ public abstract class KualiAction extends DispatchAction {
      * @param response
      * @return
      */
-    @SuppressWarnings("unchecked")
     public ActionForward postTextAreaToParent(ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
@@ -1033,5 +1033,12 @@ public abstract class KualiAction extends DispatchAction {
      */
     protected final void addMethodToCallToUncheckedList( String methodToCall ) {
     	methodToCallsToNotCheckAuthorization.add(methodToCall);
+    }
+    
+    /**
+     * This method does all special processing on a document that should happen on each HTTP post (ie, save, route, approve, etc).
+     */
+    protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
+    	
     }
 }

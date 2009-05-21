@@ -27,7 +27,9 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -47,8 +49,8 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 			responsibilityIds.add( kp.getResponsibilityId() );
 		}
 		Criteria c = new Criteria();
-		c.addIn( "responsibilityId", responsibilityIds );
-		c.addEqualTo( "active", true );
+		c.addIn( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityIds );
+		c.addEqualTo( KNSPropertyConstants.ACTIVE, true );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );
 		Collection<RoleResponsibilityImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -65,8 +67,8 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 	@SuppressWarnings("unchecked")
 	public List<String> getRoleIdsForResponsibility( KimResponsibility responsibility) {
 		Criteria c = new Criteria();
-		c.addEqualTo( "responsibilityId", responsibility.getResponsibilityId() );
-		c.addEqualTo( "active", true );
+		c.addEqualTo( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibility.getResponsibilityId() );
+		c.addEqualTo( KNSPropertyConstants.ACTIVE, true );
 		
 		Query query = QueryFactory.newQuery( RoleResponsibilityImpl.class, c, true );
 		Collection<RoleResponsibilityImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -89,6 +91,7 @@ public class KimResponsibilityDaoOjb extends PlatformAwareDaoBaseOjb implements 
 		Criteria c = new Criteria();
 		c.addEqualTo( "roleResponsibility.responsibilityId", responsibilityId );
 		c.addEqualTo( "roleResponsibility.roleId", roleId );
+		c.addEqualTo( "roleResponsibility.active", true );
 		Criteria idCriteria = new Criteria();
 		idCriteria.addEqualTo( KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId );
 		// also handle when roleMemberId is "*" in table

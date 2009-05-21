@@ -354,20 +354,21 @@ public class ObjectUtils {
     public static void setObjectProperty(Object bo, String propertyName, Class propertyType, Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         // reformat propertyValue, if necessary
         boolean reformat = false;
-        if (propertyValue != null && propertyType.isAssignableFrom(String.class)) {
-            // always reformat if the destination is a String
-            reformat = true;
+        if ( propertyType != null ) {
+	        if (propertyValue != null && propertyType.isAssignableFrom(String.class)) {
+	            // always reformat if the destination is a String
+	            reformat = true;
+	        }
+	        else if (propertyValue != null && !propertyType.isAssignableFrom(propertyValue.getClass())) {
+	            // otherwise, only reformat if the propertyValue can't be assigned into the property
+	            reformat = true;
+	        }
+	        
+	        // attempting to set boolean fields to null throws an exception, set to false instead
+	        if (boolean.class.isAssignableFrom(propertyType) && propertyValue == null) {
+	            propertyValue = false;
+	        }
         }
-        else if (propertyValue != null && !propertyType.isAssignableFrom(propertyValue.getClass())) {
-            // otherwise, only reformat if the propertyValue can't be assigned into the property
-            reformat = true;
-        }
-        
-        // attempting to set boolean fields to null throws an exception, set to false instead
-        if (boolean.class.isAssignableFrom(propertyType) && propertyValue == null) {
-            propertyValue = false;
-        }
-
         if (reformat && Formatter.findFormatter(propertyType) != null) {
             Formatter formatter = Formatter.getFormatter(propertyType);
             LOG.debug("reformatting propertyValue using Formatter " + formatter.getClass().getName());

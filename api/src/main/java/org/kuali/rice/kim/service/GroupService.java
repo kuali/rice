@@ -30,7 +30,7 @@ public interface GroupService {
     
     GroupInfo getGroupInfoByName(String namespaceCode, String groupName);
 
-    Map<String, GroupInfo> getGroupInfos(List<String> groupIds);
+    Map<String, GroupInfo> getGroupInfos(Collection<String> groupIds);
     
 	/** 
 	 * Check whether the give principal is a member of the group.

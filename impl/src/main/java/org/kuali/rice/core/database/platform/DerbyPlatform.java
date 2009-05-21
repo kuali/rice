@@ -16,48 +16,11 @@
  */
 package org.kuali.rice.core.database.platform;
 
-import java.util.regex.Pattern;
-
-import javax.persistence.EntityManager;
-
-import org.apache.ojb.broker.PersistenceBroker;
 
 /**
- * Platform implementation that generates Mckoi-compliant SQL
+ * Use {@link DerbyDatabasePlatform} instead.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class DerbyPlatform extends ANSISqlPlatform {
-
-	private static final Pattern APOS_PAT = Pattern.compile("'");
-	
-    public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
-        return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=?";
-    }
-
-    private static long nextVal = 1000;
-    
-    public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
-		return nextVal++;
-	}
-
-    public String toString() {
-        return "[Derby]";
-    }
-
-    public Long getNextValSQL(String sequenceName, EntityManager entityManger) {
-        return nextVal++;
-    }
-    
-    public String getSelectForUpdateSuffix(long waitMillis) {
-    	throw new UnsupportedOperationException("Implement me!");
-    }
-
-    /**
-     * Performs Derby-specific escaping of String parameters.
-     * 
-     * @see org.kuali.rice.core.database.platform.Platform#escapeString(java.lang.String)
-     */
-    public String escapeString(String sqlString) {
-    	return (sqlString != null) ? APOS_PAT.matcher(sqlString).replaceAll("''") : null;
-    }
-}
+@Deprecated
+public class DerbyPlatform extends DerbyDatabasePlatform {}

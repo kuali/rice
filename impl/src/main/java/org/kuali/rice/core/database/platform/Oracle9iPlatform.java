@@ -17,10 +17,9 @@
 package org.kuali.rice.core.database.platform;
 
 /**
- * This allows us to use Oracle9i as an alias for the Oracle platform.  Oracle9i is one
- * of the platforms supported by OJB so we want to keep our platform identifiers
- * consistent with OJB.
+ * Use {@link Oracle9iDatabasePlatform} instead
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@Deprecated
 public class Oracle9iPlatform extends OraclePlatform {}

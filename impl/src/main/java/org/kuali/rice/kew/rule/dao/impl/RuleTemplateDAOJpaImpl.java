@@ -21,7 +21,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -86,8 +86,8 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
        return getPlatform().getNextValSQL("KREW_RTE_TMPL_S", entityManager);
     }
 
-    protected Platform getPlatform() {
-    	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+    protected DatabasePlatform getPlatform() {
+    	return (DatabasePlatform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
     public EntityManager getEntityManager() {

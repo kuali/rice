@@ -15,7 +15,6 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.dao.SequenceAccessorDao;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.springframework.transaction.annotation.Transactional;
 
 public class SequenceAccessorServiceImpl implements SequenceAccessorService {
     private SequenceAccessorDao sequenceAccessorDao;

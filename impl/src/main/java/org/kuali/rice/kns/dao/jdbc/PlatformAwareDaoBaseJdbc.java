@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kns.dao.jdbc;
 
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.kns.dao.PlatformAwareDao;
-import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public abstract class PlatformAwareDaoBaseJdbc extends SimpleJdbcDaoSupport implements PlatformAwareDao {
-    private KualiDBPlatform dbPlatform;
+    private DatabasePlatform dbPlatform;
     
-    public KualiDBPlatform getDbPlatform(){
+    public DatabasePlatform getDbPlatform(){
         return dbPlatform;
     }
     
-    public void setDbPlatform(KualiDBPlatform dbPlatform) {
+    public void setDbPlatform(DatabasePlatform dbPlatform) {
         this.dbPlatform = dbPlatform;
     }
 

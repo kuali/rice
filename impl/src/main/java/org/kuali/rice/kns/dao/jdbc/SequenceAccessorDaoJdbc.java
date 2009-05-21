@@ -15,17 +15,35 @@
  */
 package org.kuali.rice.kns.dao.jdbc;
 
+import javax.persistence.EntityManager;
+
+import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.kns.dao.SequenceAccessorDao;
 
 /**
  * This class uses the KualiDBPlatform to get the next number from a given sequence.
  */
 public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements SequenceAccessorDao {
-
+	private EntityManager entityManager;
+	private PersistenceBroker broker;
+	
     /**
      * @see org.kuali.rice.kns.dao.SequenceAccessorDao#getNextAvailableSequenceNumber(java.lang.String)
      */
     public Long getNextAvailableSequenceNumber(String sequenceName) {
-	return getDbPlatform().getNextAvailableSequenceNumber(sequenceName);
+    	if ( broker != null )
+    		return getDbPlatform().getNextValSQL(sequenceName, broker);
+    	else if ( entityManager != null ) 
+    		return getDbPlatform().getNextValSQL(sequenceName, entityManager);
+    	else
+    		throw new RuntimeException("Either broker or entityManager must be set");
     }
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+	
+	public void setPersistenceBroker(PersistenceBroker broker) {
+		this.broker = broker;
+	}
 }

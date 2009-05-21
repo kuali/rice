@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.responsibility.dao.impl;
 
 import org.apache.ojb.broker.PersistenceBroker;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
@@ -34,8 +34,8 @@ public class ResponsibilityIdDAOOjbImpl extends PersistenceBrokerDaoSupport impl
         });
     }
 
-	protected Platform getPlatform() {
-    	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+	protected DatabasePlatform getPlatform() {
+    	return (DatabasePlatform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
 }

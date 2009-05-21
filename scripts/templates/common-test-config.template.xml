@@ -3,7 +3,7 @@
 	<param name="kr.incident.mailing.list"></param>
 
 	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">org.kuali.rice.core.database.platform.OraclePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 
 	<param name="datasource.url">jdbc:oracle:thin:@esdbk02.uits.indiana.edu:1521:KUALI</param>	

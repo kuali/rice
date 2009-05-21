@@ -36,7 +36,7 @@ public class PlatformMySQLImpl extends PlatformDefaultImpl
     private static final String LIMIT = " LIMIT 1";
     
     /*
-	 * @see Platform#setObjectForStatement(PreparedStatement, int, Object, int)
+	 * @see DatabasePlatform#setObjectForStatement(PreparedStatement, int, Object, int)
 	 */
     public void setObjectForStatement(PreparedStatement ps, int index, Object value, int sqlType) throws SQLException
     {

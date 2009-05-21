@@ -149,18 +149,6 @@
         </property>
 	</bean>
 
-	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
-		<property name="ojbPlatform" value="${datasource.ojb.platform}" />
-		<property name="dataSource" ref="knsApplicationDataSource" />
-	</bean>
-
-	<bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
-
-	<bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
-		<property name="dataSource" ref="knsApplicationDataSource" />
-		<property name="dbPlatform" ref="dbPlatform" />
-	</bean>
-
 	<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="knsApplicationDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />
@@ -450,9 +438,17 @@
     	<property name="persistenceDaoOjb" ref="persistenceDaoOjb" />
 	</bean>
 
+    <bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
+        <property name="dataSource" ref="knsApplicationDataSource" />
+        <property name="dbPlatform" ref="dbPlatform" />
+    </bean>
+        
 	<bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistenceDaoJpa" />
 
-    <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb" />
+    <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb">
+        <property name="jcdAlias" value="knsApplicationDataSource" />
+        <property name="dbPlatform" ref="dbPlatform" />    
+    </bean>
 
 	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
 		<property name="dataDictionaryService">
@@ -478,7 +474,9 @@
 		</property>
 	</bean>
 
-	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc" />
+	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc">
+        <property name="entityManager" ref="knsEntityManager"/>	
+	</bean>
 
 	<bean id="sequenceAccessorService" class="org.kuali.rice.kns.service.impl.SequenceAccessorServiceImpl">
 		<property name="sequenceAccessorDao" ref="sequenceAccessorDao" />
@@ -1174,7 +1172,7 @@
 
 	<bean id="riceApplicationConfigurationMediationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationMediationServiceImpl"/>
 
-	<!-- RiceApplicationConfigurationService needs to be published using the serviceNamespace as it's namespace and not KNS -->
+	<!-- RiceApplicationConfigurationService needs to be published using the serviceNamespace as its namespace and not KNS -->
 	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl">
         <property name="parameterService" ref="parameterService"/>	
 	</bean>

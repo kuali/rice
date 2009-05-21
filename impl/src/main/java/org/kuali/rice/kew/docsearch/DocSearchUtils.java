@@ -130,7 +130,7 @@ public class DocSearchUtils {
         return dc.getYear() + "/" + dc.getMonth() + "/" + dc.getDate();
     }
 
-    // TODO Version 2.4 - Remove this and update DocSearchGenerator to use Platform
+    // TODO Version 2.4 - Remove this and update DocSearchGenerator to use DatabasePlatform
     public static String getDateSQL(String date, String time) {
         // SQL 92 date literal syntax:
         // http://www.stanford.edu/dept/itss/docs/oracle/9i/java.920/a96654/ref.htm#1005145

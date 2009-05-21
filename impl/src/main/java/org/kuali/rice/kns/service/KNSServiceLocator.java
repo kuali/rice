@@ -23,13 +23,13 @@ import java.util.Set;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
-import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
@@ -450,8 +450,8 @@ public class KNSServiceLocator<T extends Object> {
 
    public static final String DB_PLATFORM = "dbPlatform";
     
-    public static KualiDBPlatform getKualiDbPlatform() {
-        return (KualiDBPlatform) getService(DB_PLATFORM);
+    public static DatabasePlatform getDatabasePlatform() {
+        return (DatabasePlatform) getService(DB_PLATFORM);
     }
     
     public static final String MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE = "maintenanceDocumentAuthorizationService";

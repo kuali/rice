@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation.
+ * 
  * 
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.dao;
+package org.kuali.rice.core.database.platform;
 
-import org.kuali.rice.core.database.platform.DatabasePlatform;
-
-public interface PlatformAwareDao {
-    public void setDbPlatform(DatabasePlatform dbPlatform);
-
-    public DatabasePlatform getDbPlatform();
-}
+/**
+ * This allows us to use Oracle9i as an alias for the Oracle platform.  Oracle9i is one
+ * of the platforms supported by OJB so we want to keep our platform identifiers
+ * consistent with OJB.
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ */
+public class Oracle9iDatabasePlatform extends OracleDatabasePlatform {}

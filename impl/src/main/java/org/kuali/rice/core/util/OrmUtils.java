@@ -28,7 +28,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
@@ -74,7 +74,7 @@ public class OrmUtils {
 	private static Long getNextAutoIncValue(Sequence sequence, EntityManager manager) {
 		Long value = -1L;
 		try {
-			Platform platform = (Platform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+			DatabasePlatform platform = (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
 			value = platform.getNextValSQL(sequence.name(), manager);
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);

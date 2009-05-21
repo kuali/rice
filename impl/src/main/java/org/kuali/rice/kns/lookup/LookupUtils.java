@@ -28,13 +28,13 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
@@ -167,9 +167,9 @@ public class LookupUtils {
 
 
     /**
-     * @deprecated use {@link #applySearchResultsLimit(Class, Criteria, KualiDBPlatform)} instead
+     * @deprecated use {@link #applySearchResultsLimit(Class, Criteria, DatabasePlatform)} instead
      */
-    public static void applySearchResultsLimit(Criteria criteria, KualiDBPlatform platform) {
+    public static void applySearchResultsLimit(Criteria criteria, DatabasePlatform platform) {
         Integer limit = getApplicationSearchResultsLimit();
         if (limit != null) {
             platform.applyLimit(limit, criteria);
@@ -183,7 +183,7 @@ public class LookupUtils {
      * @param criteria search criteria
      * @param platform database platform
      */
-    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria, KualiDBPlatform platform) {
+    public static void applySearchResultsLimit(Class businessObjectClass, Criteria criteria, DatabasePlatform platform) {
         Integer limit = getSearchResultsLimit(businessObjectClass);
         if (limit != null) {
             platform.applyLimit(limit, criteria);

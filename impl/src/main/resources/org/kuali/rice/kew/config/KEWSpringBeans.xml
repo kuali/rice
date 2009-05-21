@@ -346,14 +346,6 @@
 
     <!-- <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.DefaultNotificationService"  lazy-init="true"/>  -->
 
-
-	<!-- db platform -->
-	<bean id="enDbPlatform" class="org.kuali.rice.core.config.BeanHolder">
-		<property name="objectType">
-		  <value>${datasource.platform}</value>
-	   </property>
-    </bean>
-
 	<!-- Action Registry -->
 	<bean id="enActionRegistry" class="org.kuali.rice.kew.actions.ActionRegistryImpl" lazy-init="true"/>
 

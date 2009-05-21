@@ -28,7 +28,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.ojb.SuffixableQueryByCriteria;
 import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.dao.DataAccessException;
@@ -230,9 +230,9 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
             SuffixableQueryByCriteria q = new SuffixableQueryByCriteria(clazz, criteria);
             // XXX: hax
             Config config = ConfigContext.getCurrentContextConfig();
-            Platform platform = null;
+            DatabasePlatform platform = null;
 			try {
-				platform = (Platform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();
+				platform = (DatabasePlatform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();
 			} catch (Exception e) {
 				throw new RuntimeException(e.getMessage(), e);
 			}

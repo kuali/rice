@@ -42,7 +42,7 @@ import java.sql.Types;
 import org.apache.ojb.broker.query.LikeCriteria;
 
 /**
- * Platform implementation for the Mckoi database.
+ * DatabasePlatform implementation for the Mckoi database.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * @see http://www.mckoi.com/database
@@ -50,7 +50,7 @@ import org.apache.ojb.broker.query.LikeCriteria;
 public class PlatformMckoiImpl extends PlatformDefaultImpl
 {
     /* (non-Javadoc)
-     * @see Platform#setObjectForStatement(PreparedStatement, int, Object, int)
+     * @see DatabasePlatform#setObjectForStatement(PreparedStatement, int, Object, int)
      */
     public void setObjectForStatement(PreparedStatement statement, int index, Object value, int sqlType) throws SQLException
     {

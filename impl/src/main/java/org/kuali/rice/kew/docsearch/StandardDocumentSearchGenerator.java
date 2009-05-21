@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
@@ -82,7 +82,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     private boolean isProcessResultSet = true;
 
-    private Platform dbPlatform;
+    private DatabasePlatform dbPlatform;
     private MessageMap messageMap;
 
 
@@ -150,7 +150,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.core.database.platform.Platform)
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.core.database.platform.DatabasePlatform)
      */
     public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) {
     	setCriteria(searchCriteria);
@@ -1121,7 +1121,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public String establishDateString(String fromDate, String toDate, String columnDbName, String whereStatementClause) {
-    	Platform platform = getDbPlatform();
+    	DatabasePlatform platform = getDbPlatform();
     	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + platform.escapeString(columnDbName) + " ");
         if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null && toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
             return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
@@ -1147,9 +1147,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	this.isProcessResultSet = isProcessResultSet;
     }
 
-    public Platform getDbPlatform() {
+    public DatabasePlatform getDbPlatform() {
     	if (dbPlatform == null) {
-    		dbPlatform = (Platform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+    		dbPlatform = (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     	}
     	return dbPlatform;
     }

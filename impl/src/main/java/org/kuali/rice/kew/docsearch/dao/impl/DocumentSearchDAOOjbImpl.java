@@ -182,7 +182,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     }
 
     //
-    //    protected Platform getPlatform() {
-    //    	return (Platform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
+    //    protected DatabasePlatform getPlatform() {
+    //    	return (DatabasePlatform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
     //    }
 }

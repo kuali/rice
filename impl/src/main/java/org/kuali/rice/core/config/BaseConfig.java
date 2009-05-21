@@ -182,14 +182,14 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "oracle.jdbc.driver.OracleDriver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.OraclePlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.OracleDatabasePlatform");
 	        }	        
         } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("MySQL")) {
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mysql.jdbc.Driver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MySQLPlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MySQLDatabasePlatform");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
 	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");
@@ -202,7 +202,7 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "org.apache.derby.jdbc.EmbeddedDriver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.DerbyPlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.DerbyDatabasePlatform");
 	        }
 	        /* TODO: Implement these for Derby
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
@@ -217,7 +217,7 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mckoi.JDBCDriver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MckoiPlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MckoiDatabasePlatform");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
 	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.PlatformMckoiImpl");

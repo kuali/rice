@@ -15,22 +15,22 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.kns.dao.PlatformAwareDao;
-import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public abstract class PlatformAwareDaoBaseOjb extends PersistenceBrokerDaoSupport implements PlatformAwareDao {
-    private KualiDBPlatform dbPlatform;
+    private DatabasePlatform dbPlatform;
  
-    public synchronized KualiDBPlatform getDbPlatform(){
+    public synchronized DatabasePlatform getDbPlatform(){
         if (this.dbPlatform == null) {
-            this.dbPlatform = KNSServiceLocator.getKualiDbPlatform();
+            this.dbPlatform = KNSServiceLocator.getDatabasePlatform();
         }
         return dbPlatform;
     }
     
-    public synchronized void setDbPlatform(KualiDBPlatform dbPlatform) {
+    public synchronized void setDbPlatform(DatabasePlatform dbPlatform) {
         this.dbPlatform = dbPlatform;
     }
 }

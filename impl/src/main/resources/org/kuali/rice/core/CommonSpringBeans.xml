@@ -25,6 +25,13 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+    <!-- db platform -->
+    <bean id="dbPlatform" class="org.kuali.rice.core.config.BeanHolder">
+        <property name="objectType">
+          <value>${datasource.platform}</value>
+       </property>
+    </bean>
+    
     <bean name="properties" class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer">
         <property name="properties">
             <props>

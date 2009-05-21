@@ -64,12 +64,10 @@ public class PluginEnvironment implements Reloadable {
     /**
 	 * Returns a boolean indicating whether or not this PluginEnvironment is truly reloadable.
 	 * 
-	 * This will return false if the Plugin represents a plugin which can not be reloaded
-	 * (like the institutional plugin).
+	 * This will return false if the Plugin represents a plugin which can not be reloaded.
 	 */
 	public boolean isReloadable() {
-		// TODO for now the institutional plugin is not reloadable
-	    return plugin == null || !PluginUtils.isInstitutionalPlugin(plugin);
+	    return plugin == null;
 	}
 
 	/**

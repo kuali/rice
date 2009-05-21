@@ -109,7 +109,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 
 	// create the ZipFilePluginLoader and load the plugin
 	ZipFilePluginLoader loader = new ZipFilePluginLoader(pluginZipFile, null, ClassLoaderUtils.getDefaultClassLoader(),
-		ConfigContext.getRootConfig(), false);
+		ConfigContext.getRootConfig());
 	this.plugin = loader.load();
 	assertNotNull("Plugin should have been successfully loaded.", plugin);
 	// check the plugin name, it's QName should be '{KEW}ziptest', it's plugin name should be 'ziptest'

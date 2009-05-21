@@ -54,8 +54,8 @@ public class ZipFilePluginLoader extends BasePluginLoader {
         return fileName.substring(0, indexOf);
     }
 
-    public ZipFilePluginLoader(File pluginZipFile, File sharedPluginDirectory, ClassLoader parentClassLoader, Config parentConfig, boolean institutionalPlugin) {
-    	super(validatePluginZipFile(pluginZipFile), sharedPluginDirectory, parentClassLoader, parentConfig, institutionalPlugin);
+    public ZipFilePluginLoader(File pluginZipFile, File sharedPluginDirectory, ClassLoader parentClassLoader, Config parentConfig) {
+    	super(validatePluginZipFile(pluginZipFile), sharedPluginDirectory, parentClassLoader, parentConfig);
     	this.pluginZipFile = pluginZipFile;
     	this.extractionDirectory = determineExtractionDirectory(getSimplePluginName(), pluginZipFile);
     }

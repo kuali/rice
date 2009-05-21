@@ -418,14 +418,7 @@ public class TestUtilities {
 		tmpDir.deleteOnExit();
 		return tmpDir;
 }
-	public static File getEnPluginsDirectory() {
-	    String directory = ConfigContext.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_DIR);
-	    if (StringUtils.isNotBlank(directory)) {
-	        return new File(directory);
-	    }
-		return new File("./work/unit-test/en-plugins");
-	}
-
+	
 	public static File getPluginsDirectory() {
         String directory = ConfigContext.getCurrentContextConfig().getProperty(Config.PLUGIN_DIR);
         if (StringUtils.isNotBlank(directory)) {
@@ -435,22 +428,15 @@ public class TestUtilities {
 	}
 
 	public static void initializePluginDirectories() throws Exception {
-		File enPluginDir = getEnPluginsDirectory();
-		if (enPluginDir.exists()) {
-			FileUtils.forceDelete(enPluginDir);
-		}
 		File pluginDir = getPluginsDirectory();
 		if (pluginDir.exists()) {
 			FileUtils.forceDelete(pluginDir);
 		}
-		FileUtils.forceMkdir(enPluginDir);
 		FileUtils.forceMkdir(pluginDir);
-		FileUtils.forceDeleteOnExit(enPluginDir);
 		FileUtils.forceDeleteOnExit(pluginDir);
 	}
 
 	public static void cleanupPluginDirectories() throws Exception {
-		FileUtils.deleteDirectory(getEnPluginsDirectory());
 		FileUtils.deleteDirectory(getPluginsDirectory());
 	}
 

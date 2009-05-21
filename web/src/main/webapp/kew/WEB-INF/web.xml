@@ -24,9 +24,6 @@
 		</filter-class>
 	</filter>
 
-	<!--
-		<description>Invokes any filters defined by the user in the institutional plugin</description>
-	-->
 	<filter>
 		<filter-name>BootstrapFilter</filter-name>
 

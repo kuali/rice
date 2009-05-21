@@ -58,8 +58,6 @@ public final class PluginUtils {
     // NOTE: MUST be LESS than the MAX WAIT otherwise, we will ALWAYS fail to wait
     public static final long DEFAULT_SAFE_TIME = 60000;
 
-    public static final String DEFAULT_INSTITUTIONAL_PLUGIN_NAME = "en";
-
     private static final FilenameFilter JAR_FILES_FILTER = new FilenameFilter() {
         public boolean accept(File dir, String name) {
             return name.matches(".+\\.jar");
@@ -91,11 +89,11 @@ public final class PluginUtils {
     }
 
     public static String getLogPrefix(Plugin plugin) {
-    	return getLogPrefix(plugin.getName(), isInstitutionalPlugin(plugin));
+    	return getLogPrefix(plugin.getName());
     }
 
-    public static String getLogPrefix(QName pluginName, boolean institutionalPlugin) {
-    	return "[" + (institutionalPlugin ? "Institutional " : "") + "Plugin: " + pluginName + "]";
+    public static String getLogPrefix(QName pluginName) {
+    	return "[Plugin: " + pluginName + "]";
     }
 
     static File[] findJars(File libDir) {
@@ -117,26 +115,6 @@ public final class PluginUtils {
             }
         }
         return null;
-    }
-
-    public static String getInstitutionalPluginName() {
-    	String pluginName = ConfigContext.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_NAME);
-    	if (StringUtils.isEmpty(pluginName)) {
-    		pluginName = DEFAULT_INSTITUTIONAL_PLUGIN_NAME;
-    	}
-    	return pluginName;
-    }
-
-    public static boolean isInstitutionalPlugin(String pluginName) {
-    	return pluginName.equals(getInstitutionalPluginName());
-    }
-
-    public static boolean isInstitutionalPlugin(QName pluginName) {
-    	return isInstitutionalPlugin(pluginName.getLocalPart());
-    }
-
-    public static boolean isInstitutionalPlugin(Plugin plugin) {
-    	return isInstitutionalPlugin(plugin.getName());
     }
 
     public static void validatePluginZipFile(File file) {

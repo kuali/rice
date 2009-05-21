@@ -74,8 +74,6 @@ public interface Config {
 
 	public static final String ENVIRONMENT = "environment";
 
-	public static final String INSTITUTIONAL_PLUGIN_DIR = "en.plugin.dir";
-
 	public static final String PLUGIN_DIR = "plugin.dir";
 
 	public static final String EXTRA_CLASSES_DIR = "extra.classes.dir";
@@ -83,8 +81,6 @@ public interface Config {
 	public static final String EXTRA_LIB_DIR = "extra.lib.dir";
 
 	public static final String EDL_CONFIG_LOCATION = "edl.config.loc";
-
-	public static final String INSTITUTIONAL_PLUGIN_NAME = "plugin.institutional.name";
 
 	public static final String SERVICE_NAMESPACE = "service.namespace";
 

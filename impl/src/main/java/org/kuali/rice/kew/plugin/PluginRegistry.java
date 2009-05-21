@@ -18,8 +18,6 @@ package org.kuali.rice.kew.plugin;
 
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 /**
@@ -38,40 +36,5 @@ public interface PluginRegistry extends ResourceLoader {
 	public PluginEnvironment removePluginEnvironment(String pluginName);
 	
 	public PluginEnvironment getPluginEnvironment(String pluginName);
-	
-	//public List<Plugin> getPlugins();
-	
-//    public Collection getPlugins();
-
-//    public Set getPluginNames();
-
-    //public Plugin getPlugin(QName pluginName);
-    
-//    public void removePlugin(String pluginName);
-
-//    public void addPlugin(Plugin plugin);
-    
-    public Plugin getInstitutionalPlugin();
-
-    //public void addPluginDirectory(String directoryName);
-
-    //public List getPluginDirectories();
-
-    //public void setPluginDirectories(List pluginDirectories);
-
-    //public Class findClass(String className) throws ClassNotFoundException;
-
-    //public Object loadObject(String className) throws ResourceUnavailableException;
-
-    //public void start();
-
-    //public void stop();
-
-    //public boolean isStarted();
-    
-    /**
-     * Returns a proxy to an extension object which sets the current context classloader appropriatly.
-     */
-    //public Object proxy(Object extensionObject);
     
 }

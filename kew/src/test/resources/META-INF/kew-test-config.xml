@@ -28,7 +28,6 @@
     <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
 
 	<param name="plugin.dir">${workflow.base}/../../../test/plugin</param> -->
-	<param name="en.plugin.dir">./work/unit-test/en-plugins</param>
 	<param name="plugin.dir">./work/unit-test/plugins</param>
 	<param name="data.xml.pending.location">${workflow.base}xml/pending</param>
 	<param name="data.xml.loaded.location">${workflow.base}xml/loaded</param>

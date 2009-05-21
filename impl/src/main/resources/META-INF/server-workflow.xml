@@ -19,9 +19,6 @@
 	<!-- default edl config location -->
 	<param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
 
-	<!-- shared class loader in workflow war - don't change -->
-	<param name="en.plugin.dir">${workflow.base}WEB-INF/plugins</param>
-
 	<!-- Default configurations for workgroups and users -->
 	<param name="http.port">8080</param>
 	<param name="serviceServletUrl">http://${host.ip}:${http.port}/en-${environment}/remoting/</param>

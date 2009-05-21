@@ -37,9 +37,6 @@
     <param name="xml.pipeline.lifecycle.enabled">true</param>
     <param name="email.reminder.lifecycle.enabled">true</param>
 
-    <!-- shared class loader in workflow war - don't change -->
-    <param name="en.plugin.dir">${rice.base}WEB-INF/plugins</param>
-
     <param name="data.xml.root.location">${rice.base}xml/${environment}/</param>
 
     <!-- KEN -->

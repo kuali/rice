@@ -91,12 +91,6 @@ public class HotDeployer implements Runnable {
 				removedPlugins.add(environment);
 			}
 		}
-//		for (Iterator iterator = registry.getPlugins().iterator(); iterator.hasNext();) {
-//			Plugin plugin = (Plugin) iterator.next();
-//			if (!plugin.getPluginDirectory().exists() || !plugin.getPluginDirectory().isDirectory()) {
-//				removedPlugins.add(plugin);
-//			}
-//		}
 		return removedPlugins;
 	}
 
@@ -113,9 +107,6 @@ public class HotDeployer implements Runnable {
 				for (File pluginZip : pluginDirFiles) {
 					int indexOf = pluginZip.getName().lastIndexOf(".zip");
 					String pluginName = pluginZip.getName().substring(0, indexOf);
-					if (PluginUtils.isInstitutionalPlugin(pluginName)) {
-						continue;
-					}
 					// check to see if this plugin environment has already been loaded
 					List<PluginEnvironment> currentEnvironments = registry.getPluginEnvironments();
 					boolean pluginExists = false;
@@ -140,16 +131,10 @@ public class HotDeployer implements Runnable {
 			}
 		}
 
-		// TODO this currently couldn't handle an institutional plugin being "added", should it be able to?!?
 		ClassLoader parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
 		Config parentConfig = ConfigContext.getCurrentContextConfig();
-		Plugin institutionalPlugin = registry.getInstitutionalPlugin();
-		if (institutionalPlugin != null) {
-			parentClassLoader = institutionalPlugin.getClassLoader();
-			parentConfig = institutionalPlugin.getConfig();
-		}
 		for (File newPluginZipFile : newPluginZipFiles) {
-			PluginLoader loader = new ZipFilePluginLoader(newPluginZipFile, sharedPluginDirectory, parentClassLoader, parentConfig, false);
+			PluginLoader loader = new ZipFilePluginLoader(newPluginZipFile, sharedPluginDirectory, parentClassLoader, parentConfig);
 			PluginEnvironment environment = new PluginEnvironment(loader, registry);
 			addedPlugins.add(environment);
 		}

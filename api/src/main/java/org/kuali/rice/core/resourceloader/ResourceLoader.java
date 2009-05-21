@@ -33,8 +33,6 @@ public interface ResourceLoader extends ObjectLoader, ServiceLocator, Lifecycle 
 	public static final String KSB_CONFIGURER_CONTAINER_NAME = "ksbConfigurerContainer";
 	public static final String ROOT_RESOURCE_LOADER_NAME = "ROOT_RESOURCE_LOADER_NAME";
 	public static final String PLUGIN_REGISTRY_LOADER_NAME = "pluginRegistryResourceLoader";
-//	public static final String REMOTE_RESOURCE_LOADER_NAME = "remoteResourceLoader";
-	public static final String INSTITUTIONAL_RESOURCE_LOADER_NAME = "institutionalResourceLoader";
 	public static final String EMBEDDED_PLUGIN = "embeddedPlugin";
 	public static final String WEB_SERVICE_PLUGIN = "webServicePlugin";
 	public static final String RMI_PLUGIN = "RMIPlugin";

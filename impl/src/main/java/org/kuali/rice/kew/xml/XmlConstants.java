@@ -124,7 +124,6 @@ public interface XmlConstants {
     public static final String PARENT_RESPONSIBILITY = "parentResponsibility";
     public static final String PARENT_RULE_NAME = "parentRuleName";
 
-    // workgroups, most of the elements are not known to the core and are dictated by the institutional plugin
     public static final String GROUPS = "groups";
     public static final String GROUP = "group";
     public static final String ID = "id";

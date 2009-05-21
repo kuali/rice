@@ -48,8 +48,6 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 
 	private List<String> pluginDirectories = new ArrayList<String>();
 	private File sharedPluginDirectory;
-	//consider removing this from here and using the super class to get it.
-	private Plugin institutionalPlugin;
 	private Reloader reloader;
 	private HotDeployer hotDeployer;
 
@@ -80,8 +78,6 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 		reloader = null;
 		hotDeployer = null;
 
-		// cleanup reference to institutional plugin
-		institutionalPlugin = null;
 		if (scheduledExecutor != null) {
 			scheduledExecutor.shutdownNow();
 			scheduledExecutor = null;
@@ -108,7 +104,7 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 	}
 
 	protected void loadPlugins(File sharedPluginDirectory) {
-        Map<String, File> pluginLocations = new TreeMap<String, File>(new PluginNameComparator(PluginUtils.getInstitutionalPluginName()));
+        Map<String, File> pluginLocations = new TreeMap<String, File>(new PluginNameComparator());
 		PluginZipFileFilter pluginFilter = new PluginZipFileFilter();
         //PluginDirectoryFilter pluginFilter = new PluginDirectoryFilter(sharedPluginDirectory);
         Set<File> visitedFiles = new HashSet<File>();
@@ -138,39 +134,23 @@ public class ServerPluginRegistry extends BasePluginRegistry {
         }
         for (String pluginName : pluginLocations.keySet()) {
         	File pluginZipFile = pluginLocations.get(pluginName);
-        	// now execute the loading of the plugins
-        	boolean isInstitutionalPlugin = PluginUtils.isInstitutionalPlugin(pluginName);
         	try {
-        		LOG.info("Loading "+(isInstitutionalPlugin ? "Institutional " : "")+"plugin '" + pluginName + "'");
+        		LOG.info("Loading plugin '" + pluginName + "'");
         		ClassLoader parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
         		Config parentConfig = ConfigContext.getCurrentContextConfig();
-        		if (institutionalPlugin != null) {
-        			parentClassLoader = institutionalPlugin.getClassLoader();
-        			parentConfig = institutionalPlugin.getConfig();
-        		}
         		ZipFilePluginLoader loader = new ZipFilePluginLoader(pluginZipFile,
         				sharedPluginDirectory,
         				parentClassLoader,
-        				parentConfig,
-        				isInstitutionalPlugin);
+        				parentConfig);
         		PluginEnvironment environment = new PluginEnvironment(loader, this);
         		try {
         		    environment.load();
         		} finally {
         		    // regardless of whether the plugin loads or not, let's add it to the environment
         		    addPluginEnvironment(environment);
-        		}
-        		// TODO consider moving this inside either the loader or the environment?  Because this will need to be able
-        		// to be reset if the institutional plugin is "hot deployed"
-        		if (isInstitutionalPlugin) {
-        			setInstitutionalPlugin(environment.getPlugin());
-        		}
-        		
+        		}        		
         	} catch (Exception e) {
         		LOG.error("Failed to read workflow plugin '"+pluginName+"'", e);
-        		if (isInstitutionalPlugin) {
-        			throw new PluginException("Failed to load the institutional plugin with name '" + pluginName +"'.", e);
-        		}
         	}
         }
     }
@@ -198,14 +178,6 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 
 	public void setSharedPluginDirectory(File sharedPluginDirectory) {
 		this.sharedPluginDirectory = sharedPluginDirectory;
-	}
-
-	public Plugin getInstitutionalPlugin() {
-		return institutionalPlugin;
-	}
-
-	public void setInstitutionalPlugin(Plugin institutionalPlugin) {
-		this.institutionalPlugin = institutionalPlugin;
 	}
 
 	protected HotDeployer getHotDeployer() {

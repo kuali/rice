@@ -47,7 +47,6 @@ public abstract class BasePluginLoader implements PluginLoader {
     private static final String PLUGIN_CONFIG_PATH = META_INF_PATH + "/workflow.xml";
 
     protected final String simplePluginName;
-    protected final boolean institutionalPlugin;
     protected String logPrefix;
 
     protected final ClassLoader parentClassLoader;
@@ -55,14 +54,13 @@ public abstract class BasePluginLoader implements PluginLoader {
     protected final File sharedPluginDirectory;
     protected String pluginConfigPath = PLUGIN_CONFIG_PATH;
 
-    public BasePluginLoader(String simplePluginName, File sharedPluginDirectory, ClassLoader parentClassLoader, Config parentConfig, boolean institutionalPlugin) {
+    public BasePluginLoader(String simplePluginName, File sharedPluginDirectory, ClassLoader parentClassLoader, Config parentConfig) {
         this.sharedPluginDirectory = sharedPluginDirectory;
         if (parentClassLoader == null) {
             parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
         }
         this.parentClassLoader = parentClassLoader;
         this.parentConfig = parentConfig;
-        this.institutionalPlugin = institutionalPlugin;
         this.simplePluginName = simplePluginName;
         this.logPrefix = simplePluginName;
     }
@@ -126,7 +124,7 @@ public abstract class BasePluginLoader implements PluginLoader {
         classLoader.setConfig(pluginConfig);
         ConfigContext.init(classLoader, pluginConfig);
         configureExtraClasspath(classLoader, pluginConfig);
-        this.logPrefix = PluginUtils.getLogPrefix(qPluginName, institutionalPlugin).toString();
+        this.logPrefix = PluginUtils.getLogPrefix(qPluginName).toString();
         LOG.info("Constructing plugin '" + simplePluginName + "' with classloader: " + classLoader);
         Plugin plugin = new Plugin(qPluginName, pluginConfig, classLoader);
         installResourceLoader(plugin);

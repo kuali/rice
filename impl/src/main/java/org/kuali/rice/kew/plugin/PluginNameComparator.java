@@ -19,34 +19,20 @@ package org.kuali.rice.kew.plugin;
 import java.util.Comparator;
 
 /**
- * A comparator which sorts a collection of plugins names alphabeticaly, putting the institutional plugin first.
+ * A comparator which sorts a collection of plugins names alphabeticaly.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PluginNameComparator implements Comparator<String> {
-
-	private final String institutionalPluginName;
-	
-	public PluginNameComparator(String institutionalPluginName) {
-		this.institutionalPluginName = institutionalPluginName;
-	}
 	
     public int compare(String pluginName1, String pluginName2) {
         int compareValue = 0;
         if (pluginName1.equals(pluginName2)) {
             compareValue = 0;
-        } else if (institutionalPluginName.equals(pluginName1)) {
-            compareValue = -1;
-        } else if (institutionalPluginName.equals(pluginName2)) {
-            compareValue = 1;
         } else {
             compareValue = pluginName1.compareTo(pluginName2);
         }
         return compareValue;
-    }
-
-    public String getInstitutionalPluginName() {
-    	return institutionalPluginName;
     }
 
 }

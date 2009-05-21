@@ -87,22 +87,6 @@ public abstract class BasePluginRegistry extends ResourceLoaderContainer impleme
 	public List<QName> getPluginNames() {
 		return super.getResourceLoaderNames();
 	}
-
-//	public PluginEnvironment removePlugin(QName pluginName) {
-//		super.removeResourceLoader(pluginName);
-//		for (Iterator<PluginEnvironment> iterator = pluginEnvironments.iterator(); iterator.hasNext();) {
-//			PluginEnvironment environment = iterator.next();
-//			if (environment.getPlugin().getName().equals(pluginName)) {
-//				iterator.remove();
-//				return environment;
-//			}
-//		}
-//		return null;
-//	}
-
-	public Plugin getInstitutionalPlugin() {
-		return null;
-	}
 	
 	public List<PluginEnvironment> getPluginEnvironments() {
 		return Collections.unmodifiableList(pluginEnvironments);

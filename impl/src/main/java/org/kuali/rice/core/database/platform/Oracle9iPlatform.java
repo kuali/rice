@@ -22,4 +22,4 @@ package org.kuali.rice.core.database.platform;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Deprecated
-public class Oracle9iPlatform extends Oracle9iPlatform {}
+public class Oracle9iPlatform extends Oracle9iDatabasePlatform {}

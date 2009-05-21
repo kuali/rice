@@ -474,9 +474,7 @@
 		</property>
 	</bean>
 
-	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc">
-        <property name="entityManager" ref="knsEntityManager"/>	
-	</bean>
+	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc"/>
 
 	<bean id="sequenceAccessorService" class="org.kuali.rice.kns.service.impl.SequenceAccessorServiceImpl">
 		<property name="sequenceAccessorDao" ref="sequenceAccessorDao" />

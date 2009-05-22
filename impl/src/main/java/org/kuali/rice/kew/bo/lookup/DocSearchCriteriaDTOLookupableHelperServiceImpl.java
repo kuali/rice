@@ -149,7 +149,7 @@ KualiLookupableHelperServiceImpl {
         		};
         	}
     	}
-    	
+
     	if (GlobalVariables.getErrorMap().hasErrors()) {
             throw new ValidationException("errors in search criteria");
         }
@@ -510,6 +510,9 @@ KualiLookupableHelperServiceImpl {
 		//call get rows
 		List<Row> rows = processor.getRows(docType,lookupRows, detailed, superSearch);
 
+		//could set here
+
+
 		super.getRows().addAll(rows);
 
 	}
@@ -538,12 +541,14 @@ KualiLookupableHelperServiceImpl {
 		}
 		//TODO: also check if standard here (maybe from object if use criteria)
 		String docTypeName = fieldsToClear.get("docTypeFullName")[0];
-		if(StringUtils.isEmpty(docTypeName)) {
+		DocumentType docType = getValidDocumentType(docTypeName);
+
+		if(docType == null) {
 			super.performClear(lookupForm);
 		} else {
 			DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsToClear);
 			//TODO: Chris - (2 stage clear) set the isOnlyDocTypeFilled, to true if only doc type coming in (besides hidden) and false otherwise)
-			docCriteria = getValidDocumentType(docTypeName).getDocumentSearchGenerator().clearSearch(docCriteria);
+			docCriteria = docType.getDocumentSearchGenerator().clearSearch(docCriteria);
 			//TODO: Chris - (2 stage clear) reset the isOnlyDocTypeFilled
 
 			FieldUtils.populateFieldsFromBusinessObject(critFields, docCriteria);
@@ -574,11 +579,7 @@ KualiLookupableHelperServiceImpl {
 	 * @return
 	 */
     private static DocumentType getValidDocumentType(String docTypeName) {
-        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
-        if (documentType == null) {
-            throw new RuntimeException("Document Type invalid : " + docTypeName);
-        }
-        return documentType;
+        return KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
     }
 
 
@@ -709,14 +710,6 @@ KualiLookupableHelperServiceImpl {
 			docTypeName = (String)fieldValues.get("docTypeFullName");
 		}
 
-		if(!StringUtils.isEmpty(docTypeName)) {
-		    DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
-            MessageMap messages = getValidDocumentType(docTypeName).getDocumentSearchGenerator().getMessageMap(criteria);
-            if (messages != null 
-                    && messages.hasMessages()) {
-                GlobalVariables.mergeErrorMap(messages);
-            }
-		}
 		setRows(fieldValues,docTypeName);
 		return true;
 	}

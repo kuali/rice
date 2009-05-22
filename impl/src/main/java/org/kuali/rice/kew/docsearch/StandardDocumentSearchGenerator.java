@@ -1008,21 +1008,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((docTypeFullName != null) && (!"".equals(docTypeFullName.trim()))) {
             DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
             DocumentType docType = docSrv.findByName(docTypeFullName.trim());
-            returnSql.append(getDocTypeFullNameWhereSql(docType,whereClausePredicatePrefix));
-        }
-        return returnSql.toString();
-    }
-
-    public String getDocTypeFullNameWhereSql(DocumentType docType, String whereClausePredicatePrefix) {
-    	StringBuffer returnSql = new StringBuffer("");
-        if (docType != null) {
-        	returnSql.append(whereClausePredicatePrefix).append("(");
-        	addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
-            if (docType.getChildrenDocTypes() != null) {
-                addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
+            if (docType != null) {
+            	returnSql.append(whereClausePredicatePrefix).append("(");
+            	addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
+                if (docType.getChildrenDocTypes() != null) {
+                    addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
+                }
+                addExtraDocumentTypesToSearch(returnSql,docType);
+                returnSql.append(")");
+            }else{
+            	returnSql.append(whereClausePredicatePrefix).append("(");
+            	addDocumentTypeLikeNameToSearchOn(returnSql,docTypeFullName.trim(), "");
+                returnSql.append(")");
             }
-            addExtraDocumentTypesToSearch(returnSql,docType);
-            returnSql.append(")");
         }
         return returnSql.toString();
     }
@@ -1042,6 +1040,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     public void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
     	whereSql.append(clause).append(" DOC1.DOC_TYP_NM = '" + documentTypeName + "'");
+    }
+    public void addDocumentTypeLikeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
+    	documentTypeName = documentTypeName.replace('*', '%');
+    	whereSql.append(clause).append(" DOC1.DOC_TYP_NM LIKE '" + documentTypeName + "'");
     }
 
     public String getDocRouteNodeSql(String documentTypeFullName, String docRouteLevel, String docRouteLevelLogic, String whereClausePredicatePrefix) {

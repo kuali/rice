@@ -347,13 +347,10 @@ public class DocSearchUtils {
         List<SearchAttributeCriteriaComponent> searchableAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
         Map criteriaComponentsByKey = new HashMap();
 
-        if (!Utilities.isEmpty(documentTypeName)) {
-            DocumentType docType = getDocumentType(documentTypeName);
-            if (docType == null) {
-                String errorMsg = "Cannot find document type for given name '" + documentTypeName + "'";
-                LOG.error("buildSearchableAttributesFromString() " + errorMsg);
-                throw new RuntimeException(errorMsg);
-            }
+        DocumentType docType = getDocumentType(documentTypeName);
+
+        if (docType != null) {
+
             for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
             	//KFSMI-1466 - DocumentSearchContext
                 for (Row row : searchableAttribute.getSearchingRows(

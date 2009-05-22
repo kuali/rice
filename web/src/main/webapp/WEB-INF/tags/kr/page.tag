@@ -93,13 +93,13 @@
 			  }
 			  <!-- allow for custom lookup calls -->
 			  function customLookupChanged() {
-				    
+
 				    methodToCallElement=document.createElement("input");
 				    methodToCallElement.setAttribute("type","hidden");
 				    methodToCallElement.setAttribute("name","methodToCall");
 				    methodToCallElement.setAttribute("value","refresh");
 				    document.forms[0].appendChild(methodToCallElement);
-				    
+
 				    refreshCallerElement=document.createElement("input");
 				    refreshCallerElement.setAttribute("type","hidden");
 				    refreshCallerElement.setAttribute("name","refreshCaller");
@@ -120,7 +120,7 @@
 </head>
 <c:choose>
 	<c:when test="${lookup}" >
-		<body onload="placeFocus();">
+		<body onload="placeFocus(); ${KualiForm.lookupable.extraOnLoad}">
 		<kul:backdoor />
 
 			<c:if
@@ -213,14 +213,14 @@
     </c:if>
 --%>
 
-	<c:set var="KualiForm" value="${KualiForm}" /> 
-	<jsp:useBean id="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" /> 
-	
+	<c:set var="KualiForm" value="${KualiForm}" />
+	<jsp:useBean id="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
+
     <c:set var="numberOfHeaderRows" value="<%=new Integer((int) java.lang.Math.ceil((double) KualiForm.getDocInfo().size()/KualiForm.getNumColumns()))%>" />
     <c:set var="headerFieldCount" value="<%=new Integer(KualiForm.getDocInfo().size())%>" />
   	<c:set var="headerFields" value="${KualiForm.docInfo}" />
   	<c:set var="fieldCounter" value="0" />
-  	
+
   <div class="headerbox">
 	<c:choose>
 		<c:when test="${lookup}" >
@@ -231,7 +231,7 @@
 			<table class="headerinfo" summary="document header: general information" cellpadding="0" cellspacing="0">
 		</c:otherwise>
 	</c:choose>
-		
+
 	<c:forEach var="i" begin="1" end="${numberOfHeaderRows}" varStatus="status">
 	 <tr>
 			<c:forEach var="j" begin="1" end="<%=KualiForm.getNumColumns()%>" varStatus="innerStatus">
@@ -252,7 +252,7 @@
 								<c:choose>
 									<c:when test="${headerField.lookupAware and (not lookup)}" >
 										${headerField.nonLookupValue}
-									</c:when> 
+									</c:when>
 									<c:otherwise>
 										${headerField.displayValue}
 									</c:otherwise>
@@ -268,7 +268,7 @@
 				</c:choose>
 		 		<c:if test="${headerFieldCount > fieldCounter}">
 			 	</c:if>
-				<c:set var="fieldCounter" value="${fieldCounter+1}" /> 
+				<c:set var="fieldCounter" value="${fieldCounter+1}" />
 		 </c:forEach>
 <%--
 		 <c:if test="${addColumn}">
@@ -286,7 +286,7 @@
 					<c:choose>
 						<c:when test="${lookup}" >
 							${docId}
-						</c:when> 
+						</c:when>
 						<c:otherwise>
 							<a href="${ConfigProperties.workflow.url}/DocHandler.do?docId=${docId}&command=displayDocSearchView">${docId}</a>
 						</c:otherwise>
@@ -315,7 +315,7 @@
 						<html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="javascript: return expandAllTab(document, tabStatesSize); " />
 						<html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " />
 					</div>
-				</div>		 
+				</div>
 			</div>
 		</c:if>
 	</c:when>
@@ -371,14 +371,14 @@
 		           <html:image src="${extraButton.extraButtonSource}" styleClass="tinybutton" property="${extraButton.extraButtonProperty}" alt="${extraButton.extraButtonAltText}" onclick="${extraButton.extraButtonOnclick}"/> &nbsp;&nbsp;
 		         </c:forEach>
 	           </c:if>
-			   <c:if test="${showTabButtons != '' && showTabButtons == true}">			 
+			   <c:if test="${showTabButtons != '' && showTabButtons == true}">
 				  <html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="javascript: return expandAllTab(document, tabStatesSize); " />
-				  <html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " />			  
+				  <html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " />
 		       </c:if>
 			   <c:if test="${renderRequiredFieldsLabel}" >
 				<br>* required field
-			   </c:if>	
-		  	 </div>		 
+			   </c:if>
+		  	 </div>
 		  </div>
 		</div>
 		<table width="100%" cellpadding="0" cellspacing="0">
@@ -423,13 +423,13 @@
 	</c:otherwise>
 </c:choose>
 <c:if test="${transactionalDocument || maintenanceDocument}">
-    <html:hidden property="documentWebScope" value="session"/>	
+    <html:hidden property="documentWebScope" value="session"/>
 	<html:hidden property="formKey" value="${KualiForm.formKey}" />
 	<html:hidden property="docFormKey" value="${KualiForm.formKey}" />
     <html:hidden property="docNum" value="${KualiForm.document.documentNumber}" />
 </c:if>
 
 </html:form>
-<div id="formComplete"></div> 
+<div id="formComplete"></div>
 </body>
 </html:html>

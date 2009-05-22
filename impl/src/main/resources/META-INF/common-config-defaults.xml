@@ -3,9 +3,9 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="http.port" override="false">8080</param>  
-    <param name="application.host" override="false">localhost</param>  
-    <param name="application.http.scheme" override="false">http</param>  
+    <param name="http.port" override="false">8080</param>
+    <param name="application.host" override="false">localhost</param>
+    <param name="application.http.scheme" override="false">http</param>
 
     <!--
       NOTE: The application.url parameter needs to be set by the client
@@ -19,7 +19,7 @@
     <param name="workflow.url" override="false">${application.url}/kew</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
-    
+
     <param name="cas.context.name" override="false">cas</param>
     <param name="cas.url" override="false">${appserver.url}/${cas.context.name}</param>
     <param name="cas.login.url" override="false">${cas.url}/login</param>
@@ -66,9 +66,9 @@
     <param name="mail.relay.server" override="false">mail.relay.server</param>
     <param name="mailing.list.batch" override="false">mailing.list.batch</param>
 
-    <param name="javascript.files" override="false">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
+    <param name="javascript.files" override="false">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js,dwr/interface/DocumentTypeService.js</param>
     <param name="css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
-    
+
     <param name="portal.css.files" override="false">rice-portal/css/portal.css</param>
     <param name="portal.javascript.files" override="false">kr/scripts/my_common.js</param>
 
@@ -201,5 +201,5 @@
     <!--  the files that define the struts context for the kim struts module -->
     <param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 
-    
+
 </config>

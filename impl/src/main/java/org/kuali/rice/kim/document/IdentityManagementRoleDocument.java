@@ -39,6 +39,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 
@@ -252,7 +253,9 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 * @param members the members to set
 	 */
 	public void addMember(KimDocumentRoleMember member) {
-		String roleMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S).toString();
+		SequenceAccessorService sas = getSequenceAccessorService();
+		Long nextSeq = sas.getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, KimDocumentRoleMember.class);
+		String roleMemberId = nextSeq.toString();
 		member.setRoleMemberId(roleMemberId);
 		setupMemberRspActions(member);
        	getMembers().add(member);
@@ -345,7 +348,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 
 	public void initializeDocumentForNewRole() {
 		if(StringUtils.isBlank(this.roleId)){
-			this.roleId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_ID_S).toString();
+			SequenceAccessorService sas = getSequenceAccessorService();
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					KimConstants.SequenceNames.KRIM_ROLE_ID_S, this.getClass());
+			this.roleId = nextSeq.toString();
 		}
 		if(StringUtils.isBlank(this.roleTypeId)) {
 			this.roleTypeId = "1";
@@ -361,9 +367,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	
 	@Override
 	public void prepareForSave(){
+		SequenceAccessorService sas = getSequenceAccessorService();
+		
 		String roleId;
 		if(StringUtils.isBlank(getRoleId())){
-			roleId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_ID_S).toString();
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					KimConstants.SequenceNames.KRIM_ROLE_ID_S, this.getClass()); 
+			roleId = nextSeq.toString();
 			setRoleId(roleId);
 		} else
 			roleId = getRoleId();
@@ -373,7 +383,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			for(KimDocumentRolePermission permission: getPermissions()){
 				permission.setRoleId(roleId);
 				if(StringUtils.isBlank(permission.getRolePermissionId())){
-					rolePermissionId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S).toString();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, 
+							KimDocumentRolePermission.class);
+					rolePermissionId = nextSeq.toString();
 					permission.setRolePermissionId(rolePermissionId);
 				}
 			}
@@ -382,7 +395,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			String roleResponsibilityId;
 			for(KimDocumentRoleResponsibility responsibility: getResponsibilities()){
 				if(StringUtils.isBlank(responsibility.getRoleResponsibilityId())){
-					roleResponsibilityId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_RSP_ID_S).toString();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							KimConstants.SequenceNames.KRIM_ROLE_RSP_ID_S, 
+							KimDocumentRoleResponsibility.class);
+					roleResponsibilityId = nextSeq.toString();
 					responsibility.setRoleResponsibilityId(roleResponsibilityId);
 				}
 				responsibility.setRoleId(roleId);
@@ -402,7 +418,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			for(KimDocumentRoleMember member: getMembers()){
 				member.setRoleId(roleId);
 				if(StringUtils.isBlank(member.getRoleMemberId())){
-					roleMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S).toString();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S,
+							KimDocumentRoleMember.class);
+					roleMemberId = nextSeq.toString();
 					member.setRoleMemberId(roleMemberId);
 				}
 				for(KimDocumentRoleQualifier qualifier: member.getQualifiers()){
@@ -410,7 +429,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 				}
 				for(KimDocumentRoleResponsibilityAction roleRespAction: member.getRoleRspActions()){
 					if(StringUtils.isBlank(roleRespAction.getRoleResponsibilityActionId())){
-						roleResponsibilityActionId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S).toString();
+						Long nextSeq = sas.getNextAvailableSequenceNumber(
+								KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S,
+								KimDocumentRoleResponsibilityAction.class);
+						roleResponsibilityActionId = nextSeq.toString();
 						roleRespAction.setRoleResponsibilityActionId(roleResponsibilityActionId);
 					}
 					roleRespAction.setRoleMemberId(member.getRoleMemberId());
@@ -470,7 +492,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	}
 
 	private String getDelegationId(){
-		return getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_DLGN_ID_S).toString();
+		SequenceAccessorService sas = getSequenceAccessorService();
+		Long nextSeq = sas.getNextAvailableSequenceNumber(
+				KimConstants.SequenceNames.KRIM_DLGN_ID_S, this.getClass());
+		return nextSeq.toString();
 	}
 	
 	private RoleDocumentDelegation getSecondaryDelegation(){

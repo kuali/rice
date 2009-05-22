@@ -319,8 +319,9 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         // we just performed the lookup, so we're on the first page (indexed from 0)
         multipleValueLookupForm.jumpToFirstPage(resultTable.size(), maxRowsPerPage);
         
-        SequenceAccessorService sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        String lookupResultsSequenceNumber = String.valueOf(sequenceAccessorService.getNextAvailableSequenceNumber(KNSConstants.LOOKUP_RESULTS_SEQUENCE));
+        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
+        Long nextSeq = sas.getNextAvailableSequenceNumber(KNSConstants.LOOKUP_RESULTS_SEQUENCE); 
+        String lookupResultsSequenceNumber = nextSeq.toString();
         multipleValueLookupForm.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
         try {
             LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();

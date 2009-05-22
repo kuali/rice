@@ -1018,7 +1018,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			// look up the attribute ID
 			a.setKimAttributeId( getKimAttributeId( attributeName ) );
 			// pull the next sequence number for the data ID
-			a.setAttributeDataId( getSequenceAccessorService().getNextAvailableSequenceNumber( ROLE_MEMBER_DATA_SEQUENCE ).toString() );
+			SequenceAccessorService sas = getSequenceAccessorService();		
+			Long nextSeq = sas.getNextAvailableSequenceNumber( ROLE_MEMBER_DATA_SEQUENCE, 
+					RoleMemberAttributeDataImpl.class );
+			a.setAttributeDataId( nextSeq.toString() );
 			attributes.add( a );
 		}
 		roleMember.setAttributes( attributes );
@@ -1059,7 +1062,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// create the new role member object
     	RoleMemberImpl newRoleMember = new RoleMemberImpl();
     	// get a new ID from the sequence
-    	newRoleMember.setRoleMemberId( getSequenceAccessorService().getNextAvailableSequenceNumber( ROLE_MEMBER_SEQUENCE ).toString() );
+    	SequenceAccessorService sas = getSequenceAccessorService();
+    	Long nextSeq = sas.getNextAvailableSequenceNumber( 
+    			ROLE_MEMBER_SEQUENCE, RoleMemberImpl.class );    	
+    	newRoleMember.setRoleMemberId( nextSeq.toString() );
 
     	newRoleMember.setRoleId( role.getRoleId() );
     	newRoleMember.setMemberId( principalId );
@@ -1083,7 +1089,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// create the new role member object
     	RoleMemberImpl newRoleMember = new RoleMemberImpl();
     	// get a new ID from the sequence
-    	newRoleMember.setRoleMemberId( getSequenceAccessorService().getNextAvailableSequenceNumber( ROLE_MEMBER_SEQUENCE ).toString() );
+    	SequenceAccessorService sas = getSequenceAccessorService();
+    	Long nextSeq = sas.getNextAvailableSequenceNumber(
+    			ROLE_MEMBER_SEQUENCE, RoleMemberImpl.class);
+    	newRoleMember.setRoleMemberId( nextSeq.toString() );
 
     	newRoleMember.setRoleId( role.getRoleId() );
     	newRoleMember.setMemberId( groupId );

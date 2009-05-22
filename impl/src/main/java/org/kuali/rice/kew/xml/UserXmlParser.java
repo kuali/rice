@@ -36,8 +36,8 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
 
 /**
@@ -102,7 +102,9 @@ public class UserXmlParser implements XmlConstants {
         	entityTypeCode = "PERSON";
         }
     	
-        Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S");
+        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
+        Long entityId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S", 
+        		KimEntityEmploymentInformationImpl.class);
         
         // if they define an empl id, let's set that up
         KimEntityEmploymentInformationImpl emplInfo = null;

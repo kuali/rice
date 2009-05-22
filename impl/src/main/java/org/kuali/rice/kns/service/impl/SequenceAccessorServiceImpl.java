@@ -13,23 +13,32 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.dao.SequenceAccessorDao;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 
 public class SequenceAccessorServiceImpl implements SequenceAccessorService {
     private SequenceAccessorDao sequenceAccessorDao;
 
+	public Long getNextAvailableSequenceNumber(String sequenceName, 
+			Class<? extends BusinessObject> clazz) {
+    	if (StringUtils.isBlank(sequenceName)) {
+    		throw new RuntimeException("Sequence name cannot be blank.");
+    	}
+    	return sequenceAccessorDao.getNextAvailableSequenceNumber(sequenceName, clazz);		
+	}
+	
     /**
      * @see org.kuali.rice.kns.service.SequenceAccessorService#getNextAvailableSequenceNumber(java.lang.String)
      */
     public Long getNextAvailableSequenceNumber(String sequenceName) {
-	if (StringUtils.isBlank(sequenceName)) {
-	    throw new RuntimeException("Sequence name cannot be blank.");
-	}
-	return sequenceAccessorDao.getNextAvailableSequenceNumber(sequenceName);
+    	if (StringUtils.isBlank(sequenceName)) {
+    		throw new RuntimeException("Sequence name cannot be blank.");
+    	}
+    	return sequenceAccessorDao.getNextAvailableSequenceNumber(sequenceName);
     }
 
     public void setSequenceAccessorDao(SequenceAccessorDao sequenceAccessorDao) {
-	this.sequenceAccessorDao = sequenceAccessorDao;
+    	this.sequenceAccessorDao = sequenceAccessorDao;
     }
 }

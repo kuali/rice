@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 
@@ -124,7 +125,9 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	public void prepareForSave(){
 		String groupId;
 		if(StringUtils.isBlank(getGroupId())){
-			groupId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ID_S").toString();
+			SequenceAccessorService sas = getSequenceAccessorService();
+			Long nextSeq = sas.getNextAvailableSequenceNumber("KRIM_GRP_ID_S", this.getClass());
+			groupId = nextSeq.toString();
 			setGroupId(groupId);
 		} else{
 			groupId = getGroupId();
@@ -134,7 +137,9 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 			for(GroupDocumentMember member: getMembers()){
 				member.setGroupId(groupId);
 				if(StringUtils.isBlank(member.getGroupMemberId())){
-					groupMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_MBR_ID_S").toString();
+					SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber("KRIM_GRP_MBR_ID_S", this.getClass());
+					groupMemberId = nextSeq.toString();
 					member.setGroupMemberId(groupMemberId);
 				}
 			}
@@ -154,7 +159,9 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 
 	public void initializeDocumentForNewGroup() {
 		if(StringUtils.isBlank(this.groupId)){
-			this.groupId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_GROUP_ID_S).toString();
+			SequenceAccessorService sas = getSequenceAccessorService();
+			Long nextSeq = sas.getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_GROUP_ID_S, this.getClass());
+			this.groupId = nextSeq.toString();
 		}
 		if(StringUtils.isBlank(this.groupTypeId)) {
 			this.groupTypeId = "1";

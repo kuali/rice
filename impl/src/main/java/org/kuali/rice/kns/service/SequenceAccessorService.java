@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.service;
 
+import org.kuali.rice.kns.bo.BusinessObject;
+
 
 /**
  * Provides access to sequence numbers.
@@ -22,11 +24,19 @@ package org.kuali.rice.kns.service;
  * 
  */
 public interface SequenceAccessorService {
-
+    /**
+     * This method retrieves the next available sequence number using the
+     * dataSource that is associated with the specified BusinessObject class.
+     * 
+     * @return next available sequence number
+     */	
+	public Long getNextAvailableSequenceNumber(String sequenceName, 
+			Class<? extends BusinessObject> clazz);
+	
     /**
      * This method retrieves the next available sequence number
      * 
-     * @return
+     * @return next available sequence number
      */
     public Long getNextAvailableSequenceNumber(String sequenceName);
 }

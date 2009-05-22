@@ -110,5 +110,6 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 		params.setParameter(HttpConnectionManagerParams.MAX_HOST_CONNECTIONS, maxHostConnectionsMap);
 		params.setIntParameter(HttpConnectionManagerParams.MAX_TOTAL_CONNECTIONS, 20);
 		params.setIntParameter(HttpConnectionParams.CONNECTION_TIMEOUT, 10000);
+		params.setIntParameter(HttpConnectionParams.SO_TIMEOUT, 2*60*1000);
 	}
 }

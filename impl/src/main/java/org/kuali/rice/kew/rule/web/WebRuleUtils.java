@@ -264,26 +264,28 @@ public class WebRuleUtils {
 	public static List<Row> getRuleTemplateRows(RuleBaseValues rule) {
 		List<Row> rows = new ArrayList<Row>();
 		RuleTemplate ruleTemplate = rule.getRuleTemplate();
-		// refetch rule template from service becaues after persistence in KNS, it comes back without any rule template attributes
-		ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
-		if (ruleTemplate != null) {
+		// refetch rule template from service because after persistence in KNS, it comes back without any rule template attributes
+		if (ruleTemplate != null){
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
+			if (ruleTemplate != null) {
 
-			List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
-			Collections.sort(ruleTemplateAttributes);
-			
-			for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
-				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
-					continue;
+				List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
+				Collections.sort(ruleTemplateAttributes);
+
+				for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
+						continue;
+					}
+					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
+					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+					}
+
+					List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule);
+					rows.addAll(attributeRows);
+
 				}
-				WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-					((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
-				}
-				
-				List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule);
-				rows.addAll(attributeRows);
-				
 			}
 		}
 		return rows;

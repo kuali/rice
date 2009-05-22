@@ -158,6 +158,12 @@
     <param name="kim.cache.person.max.size" override="false">3000</param>
     <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
 
+    <!-- KNS -->
+    <param name="kns.cache.parameter.max.size" override="false">200</param>
+    <param name="kns.cache.parameter.max.age.seconds" override="false">3600</param>
+    <param name="kns.cache.nonDatabaseComponent.max.size" override="false">50</param>
+    <param name="kns.cache.nonDatabaseComponent.max.age.seconds" override="false">3600</param>
+    
     <!-- KSB -->
 
     <param name="RouteQueue.timeIncrement" override="false">5000</param>

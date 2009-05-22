@@ -13,11 +13,13 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NamespaceService;
@@ -25,50 +27,103 @@ import org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.kns.bo.Namespace;
 
 //@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
-        
+     
+ // Max age defined in seconds
+    protected int configurationParameterCacheMaxSize = 200;
+    protected int configurationParameterCacheMaxAgeSeconds = 3600;
+    protected int nonDatabaseComponentsCacheMaxSize = 50;
+    protected int nonDatabaseComponentsCacheMaxAgeSeconds = 3600;
+
+    protected HashMap<String,MaxAgeSoftReference<String>> configurationParameterCache = new HashMap<String,MaxAgeSoftReference<String>>( configurationParameterCacheMaxSize );
+    protected HashMap<String,MaxAgeSoftReference<List<ParameterDetailType>>> nonDatabaseComponentsCache = new HashMap<String,MaxAgeSoftReference<List<ParameterDetailType>>>( nonDatabaseComponentsCacheMaxSize );
+    
     public String getConfigurationParameter( String namespaceCode, String parameterName ){
-    	
-    	// TODO we will want to do some caching here!!!
     	
     	String parameterValue = null;
     	if ( namespaceCode != null ) {
-			NamespaceService nsService = KNSServiceLocator.getNamespaceService();
-			String applicationNamespaceCode = nsService.getNamespace(namespaceCode).getApplicationNamespaceCode();
+    	    String parameterKey = (new StringBuffer(namespaceCode).append("|").append(parameterName)).toString();
+    	    parameterValue = getParameterValueFromConfigurationParameterCache( parameterKey );
+    	    if ( parameterValue != null ) {
+                return parameterValue;
+            }
+    	    NamespaceService nsService = KNSServiceLocator.getNamespaceService();
+    	    String applicationNamespaceCode = null;
+    	    Namespace namespace = nsService.getNamespace(namespaceCode);
+    	    if (namespace != null) {
+    	        applicationNamespaceCode = namespace.getApplicationNamespaceCode();
+    	    } else {
+    	        applicationNamespaceCode = namespaceCode;
+    	    }
 			if (applicationNamespaceCode != null) {
 				RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(applicationNamespaceCode);
 				if (rac != null) {
 					parameterValue = rac.getConfigurationParameter(parameterName);
 				}
 			}
+			if (parameterValue != null){
+			    configurationParameterCache.put( parameterKey, new MaxAgeSoftReference<String>( configurationParameterCacheMaxAgeSeconds, parameterValue ) );
+			}
 		}
     	return parameterValue;
     }
     
+
+    protected String getParameterValueFromConfigurationParameterCache(String parameterKey) {
+        if (configurationParameterCache == null) {
+            configurationParameterCache = new HashMap<String,MaxAgeSoftReference<String>>( configurationParameterCacheMaxSize );
+        }
+        MaxAgeSoftReference<String> parameterValue = configurationParameterCache.get( parameterKey );
+        if ( parameterValue != null ) {
+            return parameterValue.get();
+        }
+        return null;
+    }
+    
+    protected List<ParameterDetailType> getComponentListFromNonDatabaseComponentsCache(String nonDatabaseServiceNameKey) {
+        if (nonDatabaseComponentsCache == null) {
+            nonDatabaseComponentsCache =  new HashMap<String,MaxAgeSoftReference<List<ParameterDetailType>>>( nonDatabaseComponentsCacheMaxSize );
+        }
+        MaxAgeSoftReference<List<ParameterDetailType>> nonDatabaseComponent = nonDatabaseComponentsCache.get( nonDatabaseServiceNameKey );
+        if ( nonDatabaseComponent != null ) {
+            return nonDatabaseComponent.get();
+        }
+        return null;
+    }
+
     public List<ParameterDetailType> getNonDatabaseComponents() {
     	
-    	// TODO there is going to need to be some sort of caching here!
-    	
-		// TODO also, i think the code that's below here will actually pull in more than
+		// TODO I think the code that's below here will actually pull in more than
 		// one reference to a particular application's config service if it is deployed
 		// in a cluster, it needs to only pull a single RiceApplicationConfigurationService
 		// implementation per service namespace.  Also, may want to consider load balancing
 		// and failover in those cases?  It might be best to try and utilize the client-side
 		// KSB proxies that handle a lot of this stuff for us
     	
+
     	RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
     	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE);
 		
 		List<ParameterDetailType> nonDatabaseComponents = new ArrayList<ParameterDetailType>();
+		//add cache per serviceName
 		for ( QName serviceName : serviceNames ) {
-			RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(serviceName);
-			if (rac != null) {
-				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
-			}
+		    List<ParameterDetailType> nonDatabaseComponentFromCache = this.getComponentListFromNonDatabaseComponentsCache(serviceName.toString());
+	        if (nonDatabaseComponentFromCache != null) {
+	            nonDatabaseComponents.addAll(nonDatabaseComponentFromCache);
+	        } else {
+    			RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(serviceName);
+    			if (rac != null) {
+    				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
+    	            nonDatabaseComponentsCache.put(serviceName.toString(), new MaxAgeSoftReference<List<ParameterDetailType>>( nonDatabaseComponentsCacheMaxAgeSeconds, rac.getNonDatabaseComponents() ));
+    			}
+	        }
+			
 		}
+		
 		return nonDatabaseComponents;
     }
     
@@ -90,6 +145,30 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     		LOG.warn("Failed to locate RiceApplicationConfigurationService with namespace: " + namespace);
     	}
     	return null;
+    }
+
+
+    public void setConfigurationParameterCacheMaxSize(
+            int configurationParameterCacheMaxSize) {
+        this.configurationParameterCacheMaxSize = configurationParameterCacheMaxSize;
+    }
+
+
+    public void setConfigurationParameterCacheMaxAgeSeconds(
+            int configurationParameterCacheMaxAgeSeconds) {
+        this.configurationParameterCacheMaxAgeSeconds = configurationParameterCacheMaxAgeSeconds;
+    }
+
+
+    public void setNonDatabaseComponentsCacheMaxSize(
+            int nonDatabaseComponentsCacheMaxSize) {
+        this.nonDatabaseComponentsCacheMaxSize = nonDatabaseComponentsCacheMaxSize;
+    }
+
+
+    public void setNonDatabaseComponentsCacheMaxAgeSeconds(
+            int nonDatabaseComponentsCacheMaxAgeSeconds) {
+        this.nonDatabaseComponentsCacheMaxAgeSeconds = nonDatabaseComponentsCacheMaxAgeSeconds;
     }
     
 

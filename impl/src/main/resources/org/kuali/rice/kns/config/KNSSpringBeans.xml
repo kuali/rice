@@ -1168,7 +1168,11 @@
 	  </property>
 	</bean>
 
-	<bean id="riceApplicationConfigurationMediationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationMediationServiceImpl"/>
+	<bean id="riceApplicationConfigurationMediationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationMediationServiceImpl"
+	  p:configurationParameterCacheMaxSize="${kns.cache.parameter.max.size}"
+      p:configurationParameterCacheMaxAgeSeconds="${kns.cache.parameter.max.age.seconds}"
+      p:nonDatabaseComponentsCacheMaxSize="${kns.cache.nonDatabaseComponent.max.size}"
+      p:nonDatabaseComponentsCacheMaxAgeSeconds="${kns.cache.nonDatabaseComponent.max.age.seconds}"/>
 
 	<!-- RiceApplicationConfigurationService needs to be published using the serviceNamespace as its namespace and not KNS -->
 	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl">

@@ -93,6 +93,7 @@ public class UserXmlParser implements XmlConstants {
     }
     
     protected KimEntityImpl constructEntity(Element userElement) {
+        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
     	
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
@@ -102,7 +103,6 @@ public class UserXmlParser implements XmlConstants {
         	entityTypeCode = "PERSON";
         }
     	
-        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
         Long entityId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S", 
         		KimEntityEmploymentInformationImpl.class);
         
@@ -134,7 +134,8 @@ public class UserXmlParser implements XmlConstants {
 		entityType.setActive(true);
 		
 		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
-			Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_NM_ID_S");
+			Long entityNameId = sas.getNextAvailableSequenceNumber(
+					"KRIM_ENTITY_NM_ID_S", KimEntityNameImpl.class);
 			KimEntityNameImpl name = new KimEntityNameImpl();
 			name.setActive(true);
 			name.setEntityNameId("" + entityNameId);
@@ -152,7 +153,8 @@ public class UserXmlParser implements XmlConstants {
 		
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
 		if (!StringUtils.isBlank(emailAddress)) {
-			Long emailId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_EMAIL_ID_S");
+			Long emailId = sas.getNextAvailableSequenceNumber(
+					"KRIM_ENTITY_EMAIL_ID_S", KimEntityEmailImpl.class);
 			KimEntityEmailImpl email = new KimEntityEmailImpl();
 			email.setActive(true);
 			email.setEntityEmailId("" + emailId);

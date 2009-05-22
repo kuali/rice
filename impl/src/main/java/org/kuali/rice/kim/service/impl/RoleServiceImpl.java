@@ -1019,7 +1019,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			a.setKimAttributeId( getKimAttributeId( attributeName ) );
 			// pull the next sequence number for the data ID
 			SequenceAccessorService sas = getSequenceAccessorService();		
-			Long nextSeq = sas.getNextAvailableSequenceNumber( ROLE_MEMBER_DATA_SEQUENCE, 
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					ROLE_MEMBER_DATA_SEQUENCE, 
 					RoleMemberAttributeDataImpl.class );
 			a.setAttributeDataId( nextSeq.toString() );
 			attributes.add( a );

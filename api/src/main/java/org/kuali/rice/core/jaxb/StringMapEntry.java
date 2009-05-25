@@ -15,28 +15,40 @@
  */
 package org.kuali.rice.core.jaxb;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class JaxbStringMapEntryList implements Serializable{
-
+/**
+ * This is a description of what this class does - jimt don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ */
+public class StringMapEntry {
+	
 	private static final long serialVersionUID = 1L;
+	
+	@XmlAttribute
+	String key;
+	
 	@XmlElement
-	private List<JaxbStringMapEntry> entries;
-
+	String value;
+	
 	/**
-	 * @return the attribute
+	 *
 	 */
-	public List<JaxbStringMapEntry> getEntries() {
-		if (this.entries == null) {
-			this.entries = new ArrayList<JaxbStringMapEntry>();
-		}
-		return entries;
+	public StringMapEntry() {
+	    super();
+	}
+	
+	/**
+	 * @param name
+	 * @param value
+	 */
+	public StringMapEntry(String key, String value) {
+	    super();
+	    
+	    this.key = key;
+	    this.value = value;
 	}
 }

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class JaxbStringMapAdapter extends XmlAdapter<JaxbStringMapEntryList, Map<String, String>> {
+public class JaxbStringMapAdapter extends XmlAdapter<StringMapEntryList, Map<String, String>> {
 
 	/**
 	 * This overridden method ...
@@ -34,12 +34,12 @@ public class JaxbStringMapAdapter extends XmlAdapter<JaxbStringMapEntryList, Map
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public JaxbStringMapEntryList marshal(Map<String, String> map) throws Exception {
+	public StringMapEntryList marshal(Map<String, String> map) throws Exception {
 		if(null == map) return null;
-		JaxbStringMapEntryList entryList = new JaxbStringMapEntryList();
+		StringMapEntryList entryList = new StringMapEntryList();
 		for (Map.Entry<String, String> e : map.entrySet()) {
 			entryList.getEntries().add(
-					new JaxbStringMapEntry(e.getKey(), e.getValue()));
+					new StringMapEntry(e.getKey(), e.getValue()));
 		}
 		return entryList;
 	}
@@ -50,10 +50,10 @@ public class JaxbStringMapAdapter extends XmlAdapter<JaxbStringMapEntryList, Map
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Map<String, String> unmarshal(JaxbStringMapEntryList entryList) throws Exception {
+	public Map<String, String> unmarshal(StringMapEntryList entryList) throws Exception {
 		if (null == entryList) return null;
 		Map<String, String> resultMap = new HashMap<String, String>();
-		for (JaxbStringMapEntry entry : entryList.getEntries()) {
+		for (StringMapEntry entry : entryList.getEntries()) {
 			resultMap.put(entry.key, entry.value);
 		}
 		return resultMap;

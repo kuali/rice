@@ -27,7 +27,7 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
- * Test the PermissionService
+ * Test the RoleService
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

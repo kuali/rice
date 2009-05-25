@@ -30,12 +30,12 @@ import org.kuali.rice.ksb.messaging.serviceconnectors.SOAPConnector;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
- * Test the RoleService via remote calls
+ * Test the GroupService via remote calls
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleServiceRemoteTest extends RoleServiceTest {
+public class GroupServiceRemoteTest extends GroupServiceTest {
 
 	public void setUp() throws Exception {
 		super.setUp();

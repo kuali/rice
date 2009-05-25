@@ -18,6 +18,13 @@ package org.kuali.rice.kim.service;
 import java.util.Collection;
 import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.kuali.rice.core.jaxb.JaxbStringMapAdapter;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -29,6 +36,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@WebService(name = "RoleService", targetNamespace = "http://org.kuali.rice/kim/role")
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RoleService {
     // --------------------
     // Role Data
@@ -39,22 +48,22 @@ public interface RoleService {
 	 * 
 	 * If the roleId is blank, this method returns <code>null</code>.
 	 */
-	KimRoleInfo getRole( String roleId );
+	KimRoleInfo getRole( @WebParam(name="roleId") String roleId );
 	
-	List<KimRoleInfo> getRoles( List<String> roleIds );
+	List<KimRoleInfo> getRoles( @WebParam(name="roleIds") List<String> roleIds );
 
 	/** Get the KIM Role object with the unique combination of namespace, component,
 	 * and role name.
 	 * 
 	 * If any parameter is blank, this method returns <code>null</code>.
 	 */
-    KimRoleInfo getRoleByName( String namespaceCode, String roleName );
+    KimRoleInfo getRoleByName( @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName );
 	
 	/** 
 	 * Return the Role ID for the given unique combination of namespace,
 	 * component and role name.
 	 */
-	String getRoleIdByName( String namespaceCode, String roleName );
+	String getRoleIdByName( @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName );
     
 	/**
 	 * Checks whether the role with the given role ID is active.
@@ -62,33 +71,37 @@ public interface RoleService {
 	 * @param roleId
 	 * @return
 	 */
-    boolean isRoleActive( String roleId );
+    boolean isRoleActive( @WebParam(name="roleId") String roleId );
 
     /**
      * Returns a list of role qualifiers that the given principal has without taking into consideration
      * that the principal may be a member via an assigned group or role.  Use in situations where
      * you are only interested in the qualifiers that are directly assigned to the principal.
      */
-    List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, List<String> roleIds, AttributeSet qualification );
+    @WebMethod(operationName = "getRoleQualifersForPrincipalRoleIds")
+    List<AttributeSet> getRoleQualifiersForPrincipal( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
 
     /**
      * Returns a list of role qualifiers that the given principal has without taking into consideration
      * that the principal may be a member via an assigned group or role.  Use in situations where
      * you are only interested in the qualifiers that are directly assigned to the principal.
      */
-    List<AttributeSet> getRoleQualifiersForPrincipal( String principalId, String namespaceCode, String roleName, AttributeSet qualification );
+    @WebMethod(operationName = "getRoleQualifersForPrincipalNamespaceRolename")
+    List<AttributeSet> getRoleQualifiersForPrincipal( @WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification );
     
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
      */
-	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, String namespaceCode, String roleName, AttributeSet qualification );
+    @WebMethod(operationName = "getRoleQualifersForPrincipalIncludingNestedNamespaceRolename")
+	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( @WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification );
 
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
      */
-	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, List<String> roleIds, AttributeSet qualification );
+    @WebMethod(operationName = "getRoleQualifersForPrincipalIncludingNestedRoleIds")
+	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
 
     // --------------------
     // Role Membership Checks
@@ -101,40 +114,40 @@ public interface RoleService {
      * The return object will have each membership relationship along with the delegations
      * 
      */
-    List<RoleMembershipInfo> getRoleMembers( List<String> roleIds, AttributeSet qualification );
+    List<RoleMembershipInfo> getRoleMembers( @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
 
     /**
 	 * This method gets all the members, then traverses down into members of type role and group to obtain the nested principal ids
 	 * 
 	 * @return list of member principal ids
 	 */
-    Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification);
+    Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification);
 
     /**
      * Returns whether the given principal has any of the passed role IDs with the given qualification.
      */
-    boolean principalHasRole( String principalId, List<String> roleIds, AttributeSet qualification );
+    boolean principalHasRole( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
     
     /**
      * Returns the subset of the given principal ID list which has the given role and qualification.
      * This is designed to be used by lookups of people by their roles.
      */
-    List<String> getPrincipalIdSubListWithRole( List<String> principalIds, String roleNamespaceCode, String roleName, AttributeSet qualification );
+    List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds, @WebParam(name="roleNamespaceCode") String roleNamespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification );
 
     /**
 	 * 
 	 * This method get search results for role lookup
 	 */
-	List<? extends Role> getRolesSearchResults(java.util.Map<String,String> fieldValues);
+	List<? extends Role> getRolesSearchResults(@XmlJavaTypeAdapter(value = JaxbStringMapAdapter.class) @WebParam(name = "fieldValues") java.util.Map<String,String> fieldValues);
 	
 	/**
 	 * Notifies all of a principal's roles and role types that the principal has been inactivated.
 	 */
-	void principalInactivated( String principalId );
+	void principalInactivated( @WebParam(name="principalId") String principalId );
 	
-	void roleInactivated(String roleId);
+	void roleInactivated(@WebParam(name="roleId") String roleId);
 	
-    void groupInactivated(String groupId);
+    void groupInactivated(@WebParam(name="groupId") String groupId);
     
-	List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds);
+	List<RoleMembershipInfo> getFirstLevelRoleMembers(@WebParam(name="roleIds") List<String> roleIds);
 }

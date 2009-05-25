@@ -29,6 +29,10 @@ public class PermissionAssigneeInfo {
 	protected String groupId;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
+	// for jax-ws service construction
+	@SuppressWarnings("unused")
+	private PermissionAssigneeInfo() {}
+	
 	public PermissionAssigneeInfo(String principalId, String groupId, List<DelegateInfo> delegates) {
 		this.principalId = principalId;
 		this.groupId = groupId;

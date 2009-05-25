@@ -21,10 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.WebService;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
+import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -47,6 +50,10 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.springframework.transaction.annotation.Transactional;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -54,6 +61,8 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@WebService(endpointInterface = "org.kuali.rice.kim.service.PermissionService", serviceName = "PermissionService", portName = "PermissionService", targetNamespace = "http://org.kuali.rice/kim/permission")
+@Transactional
 public class PermissionServiceImpl implements PermissionService, PermissionUpdateService {
 	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 //	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );

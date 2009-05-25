@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.service;
 
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 /**
@@ -23,19 +27,21 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@WebService(name = "GroupUpdateService", targetNamespace = "http://org.kuali.rice/kim/group")
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface GroupUpdateService {
 
-	GroupInfo createGroup(GroupInfo groupInfo) throws UnsupportedOperationException;
+	GroupInfo createGroup(@WebParam(name="groupInfo") GroupInfo groupInfo) throws UnsupportedOperationException;
 
-    GroupInfo updateGroup(String groupId, GroupInfo groupInfo) throws UnsupportedOperationException;
+    GroupInfo updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="groupInfo") GroupInfo groupInfo) throws UnsupportedOperationException;
 
-    boolean addGroupToGroup(String childId, String parentId) throws UnsupportedOperationException;
+    boolean addGroupToGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws UnsupportedOperationException;
     
-    boolean removeGroupFromGroup(String childId, String parentId) throws UnsupportedOperationException;
+    boolean removeGroupFromGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws UnsupportedOperationException;
     
-    boolean addPrincipalToGroup(String principalId, String groupId) throws UnsupportedOperationException;
+    boolean addPrincipalToGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws UnsupportedOperationException;
     
-    boolean removePrincipalFromGroup(String principalId, String groupId) throws UnsupportedOperationException;
+    boolean removePrincipalFromGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws UnsupportedOperationException;
     
-    void removeAllGroupMembers( String groupId ) throws UnsupportedOperationException;
+    void removeAllGroupMembers( @WebParam(name="groupId") String groupId ) throws UnsupportedOperationException;
 }

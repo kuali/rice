@@ -27,6 +27,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebService;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
@@ -63,6 +65,9 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@WebService(endpointInterface = "org.kuali.rice.kim.service.RoleService", serviceName = "RoleService", portName = "RoleService", targetNamespace = "http://org.kuali.rice/kim/role")
+// TODO - this results in JdkDynamicAopProxy rather than Cglib2AopProxy, which doesn't allow us to test the Impl
+// @Transactional
 public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );

@@ -18,6 +18,10 @@ package org.kuali.rice.kim.bo.group.dto;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.kuali.rice.core.jaxb.JaxbDateAdapter;
+
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -45,7 +49,10 @@ public class GroupMembershipInfo implements Serializable {
 		this.activeToDate = activeToDate;
 	}
 	
-
+	// for jax-ws service construction
+	@SuppressWarnings("unused")
+	private GroupMembershipInfo() {}
+	
 	public String getMemberId() {
 		return this.memberId;
 	}
@@ -95,7 +102,7 @@ public class GroupMembershipInfo implements Serializable {
 		this.versionNumber = versionNumber;
 	}
 
-
+	@XmlJavaTypeAdapter(value = JaxbDateAdapter.class) 
 	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
@@ -105,11 +112,10 @@ public class GroupMembershipInfo implements Serializable {
 		this.activeFromDate = activeFromDate;
 	}
 
-
+	@XmlJavaTypeAdapter(value = JaxbDateAdapter.class) 
 	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
-
 
 	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;

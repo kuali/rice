@@ -39,6 +39,10 @@ public class RoleMembershipInfo implements Serializable {
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
 	
+	// for jax-ws client proxy creation
+	@SuppressWarnings("unused")
+	private RoleMembershipInfo() {}
+	
 	public RoleMembershipInfo(String roleId, String roleMemberId, String memberId, String memberTypeCode,
 			AttributeSet qualifier) {
 		super();
@@ -135,6 +139,4 @@ public class RoleMembershipInfo implements Serializable {
 	public void setRoleSortingCode(String roleSortingCode) {
 		this.roleSortingCode = roleSortingCode;
 	}
-	
-	
 }

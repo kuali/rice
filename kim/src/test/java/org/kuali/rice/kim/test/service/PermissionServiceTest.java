@@ -20,9 +20,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
@@ -30,7 +27,6 @@ import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
  * Test the PermissionService
@@ -44,7 +40,7 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		permissionService = getKimService("PermissionService");
+		permissionService = (PermissionService) getKimService("PermissionService");
 	}
 
 	@Test
@@ -160,24 +156,6 @@ public class PermissionServiceTest extends KIMTestCase {
 	public void testGetPermissionDetailLabel() {
 	}
 	
-	@Override
-	protected Lifecycle getLoadApplicationLifecycle() {
-		return new BaseLifecycle() {
-			public void start() throws Exception {
-				new JettyServerLifecycle(getConfigIntProp("kim.test.port"), "/" + getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
-				super.start();
-			}
-		};	
-	}
-	
-	private int getConfigIntProp(String intPropKey) {
-		return Integer.parseInt(getConfigProp(intPropKey));
-	}
-
-	private String getConfigProp(String propKey) {
-		return ConfigContext.getCurrentContextConfig().getProperty(propKey);
-	}
-	
 	/**
 	 * This method tries to get a client proxy for the specified KIM service
 	 * 
@@ -185,7 +163,7 @@ public class PermissionServiceTest extends KIMTestCase {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected PermissionService getKimService(String svcName) throws Exception {
-		return (PermissionService) GlobalResourceLoader.getService(new QName("KIM", "PermissionService"));
+	protected Object getKimService(String svcName) throws Exception {
+		return GlobalResourceLoader.getService(new QName("KIM", "PermissionService"));
 	}
 }

@@ -19,12 +19,15 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceconnectors.SOAPConnector;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
  * Test the PermissionService via remote calls
@@ -38,6 +41,24 @@ public class PermissionServiceRemoteTest extends PermissionServiceTest {
 		super.setUp();
 	}
 
+	@Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+		return new BaseLifecycle() {
+			public void start() throws Exception {
+				new JettyServerLifecycle(getConfigIntProp("kim.test.port"), "/" + getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
+				super.start();
+			}
+		};	
+	}
+	
+	private int getConfigIntProp(String intPropKey) {
+		return Integer.parseInt(getConfigProp(intPropKey));
+	}
+
+	private String getConfigProp(String propKey) {
+		return ConfigContext.getCurrentContextConfig().getProperty(propKey);
+	}
+	
 	/**
 	 * This method tries to get a client proxy for the specified KIM service
 	 * 
@@ -45,7 +66,7 @@ public class PermissionServiceRemoteTest extends PermissionServiceTest {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected PermissionService getKimService(String svcName) throws Exception {
+	protected Object getKimService(String svcName) throws Exception {
 		RemoteResourceServiceLocator rrl = KSBResourceLoaderFactory.getRemoteResourceLocator();
 		List<RemotedServiceHolder> svcHolders = rrl.getAllServices(new QName("KIM", svcName));
 		if (svcHolders.size() > 1) {
@@ -53,6 +74,6 @@ public class PermissionServiceRemoteTest extends PermissionServiceTest {
 		}
 		ServiceInfo svcInfo = svcHolders.get(0).getServiceInfo();
 		SOAPConnector connector = new SOAPConnector(svcInfo);
-		return (PermissionService) connector.getService();
+		return connector.getService();
 	}
 }

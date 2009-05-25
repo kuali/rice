@@ -19,7 +19,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * This is a description of what this class does - jimt don't forget to fill this in. 
+ * Single String-String key-value pair for 
+ * marshalling/unmarshalling
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -31,7 +32,7 @@ public class StringMapEntry {
 	@XmlAttribute
 	String key;
 	
-	@XmlElement
+	@XmlElement(required=true) // maxoccurs == minoccurs == 1
 	String value;
 	
 	/**

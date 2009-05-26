@@ -16,19 +16,34 @@
 package org.kuali.rice.kns.dao.proxy;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kns.bo.ModuleConfiguration;
+import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.LookupDao;
+import org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa;
+import org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb;
+import org.kuali.rice.kns.dao.impl.LookupDaoJpa;
+import org.kuali.rice.kns.dao.impl.LookupDaoOjb;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class LookupDaoProxy implements LookupDao {
-
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoProxy.class);
     
 	private LookupDao lookupDaoJpa;
-	private LookupDao lookupDaoOjb;		
+	private LookupDao lookupDaoOjb;
+    private static KualiModuleService kualiModuleService;
+    private static HashMap<String, LookupDao> lookupDaoValues = new HashMap<String, LookupDao>();
 	
     public void setLookupDaoJpa(LookupDao lookupDaoJpa) {
 		this.lookupDaoJpa = lookupDaoJpa;
@@ -39,7 +54,46 @@ public class LookupDaoProxy implements LookupDao {
 	}
 	
     private LookupDao getDao(Class clazz) {
-    	return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? lookupDaoJpa : lookupDaoOjb; 
+        ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
+        if (moduleService != null) {
+            ModuleConfiguration moduleConfig = moduleService.getModuleConfiguration();
+            String dataSourceName = "";
+            EntityManager entityManager = null;
+            if (moduleConfig != null) {
+                dataSourceName = moduleConfig.getDataSourceName();
+                entityManager = moduleConfig.getEntityManager();
+            }
+
+            if (StringUtils.isNotEmpty(dataSourceName)) {
+                if (lookupDaoValues.get(dataSourceName) != null) {
+                    return lookupDaoValues.get(dataSourceName);
+                } else {
+                    if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
+                        //using JPA
+                        LookupDaoJpa classSpecificLookupDaoJpa = new LookupDaoJpa();
+                        if (entityManager != null) {
+                        	classSpecificLookupDaoJpa.setEntityManager(entityManager);
+                        	classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                            lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
+                            return classSpecificLookupDaoJpa;
+                        } else {
+                            throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
+                        }
+
+                    } else {
+                        //using OJB
+                        LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
+                        classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
+                        classSpecificLookupDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                        lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
+                        return classSpecificLookupDaoOjb;
+                    }
+
+                }
+
+            }
+        }
+        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? lookupDaoJpa : lookupDaoOjb;
     }
     
 	/**
@@ -91,4 +145,10 @@ public class LookupDaoProxy implements LookupDao {
 		return getDao(example.getClass()).findObjectByMap(example, formProps);
 	}
 
+	private static KualiModuleService getKualiModuleService() {
+        if (kualiModuleService == null) {
+            kualiModuleService = KNSServiceLocator.getKualiModuleService();
+        }
+        return kualiModuleService;
+    }
 }

@@ -647,7 +647,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isApproveRequest() {
-        return KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested()) || KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
+        return KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
     }
 
     public boolean isCompleteRequst() {
@@ -665,9 +665,12 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param code2
      * @return -1 if less than, 0 if equal, 1 if greater than
      */
-    public static int compareActionCode(String code1, String code2) {
-        // hacked so that APPROVE and COMPLETE are equal
-        int cutoff = ACTION_CODE_RANK.length() - 3;
+    public static int compareActionCode(String code1, String code2, boolean completeAndApproveTheSame) {
+    	int cutoff = Integer.MAX_VALUE;
+    	if (completeAndApproveTheSame) {
+    		// hacked so that APPROVE and COMPLETE are equal
+    		cutoff = ACTION_CODE_RANK.length() - 3;
+    	}
         Integer code1Index = new Integer(Math.min(ACTION_CODE_RANK.indexOf(code1), cutoff));
         Integer code2Index = new Integer(Math.min(ACTION_CODE_RANK.indexOf(code2), cutoff));
         return code1Index.compareTo(code2Index);

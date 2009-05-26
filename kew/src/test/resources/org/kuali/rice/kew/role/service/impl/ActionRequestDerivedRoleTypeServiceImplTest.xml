@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>ActionRequestDerivedRoleTypeServiceImplTest</name>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="RouteNode1" />
+					<requests name="RouteNode1" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="RouteNode1">
+					<activationType>P</activationType>
+					<ruleSelector>Named</ruleSelector>
+					<ruleName>ActionRequestDerivedRule1</ruleName>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<name>ActionRequestDerivedRule1</name>
+			<documentType>ActionRequestDerivedRoleTypeServiceImplTest</documentType>
+			<description>ActionRequestDerivedRule1</description>
+			<forceAction>true</forceAction>
+			<responsibilities>
+				<responsibility>
+					<user>jhopf</user>
+					<actionRequested>A</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

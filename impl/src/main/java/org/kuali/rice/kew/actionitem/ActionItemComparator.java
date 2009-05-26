@@ -31,7 +31,7 @@ public class ActionItemComparator implements Comparator {
 	public int compare(Object object1, Object object2) throws ClassCastException {
 		ActionItem actionItem1 = (ActionItem)object1;
 		ActionItem actionItem2 = (ActionItem)object2;
-		int actionCodeValue = ActionRequestValue.compareActionCode(actionItem1.getActionRequestCd(), actionItem2.getActionRequestCd());
+		int actionCodeValue = ActionRequestValue.compareActionCode(actionItem1.getActionRequestCd(), actionItem2.getActionRequestCd(), true);
 		if (actionCodeValue != 0) {
 			return actionCodeValue;
 		}

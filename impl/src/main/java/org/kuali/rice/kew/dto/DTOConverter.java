@@ -126,7 +126,7 @@ public class DTOConverter {
             	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(principalId, routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
                 routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
-            AttributeSet actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(routeHeader, principalId);
+            AttributeSet actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(routeHeader, principalId, true);
             for (String actionRequestCode : actionsRequested.keySet()) {
 				if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
                     routeHeaderVO.setFyiRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));					

@@ -160,5 +160,5 @@ public interface ActionRequestService {
      */
     public boolean doesPrincipalHaveRequest(String principalId, Long documentId);
 
-    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId);
+    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame);
 }

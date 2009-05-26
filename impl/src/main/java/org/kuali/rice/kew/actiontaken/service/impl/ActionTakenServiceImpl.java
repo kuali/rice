@@ -86,7 +86,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
             for (ActionTakenValue actionTaken : actionsTakenByUser)
             {
                 if (ActionRequestValue.compareActionCode(actionTaken.getActionTaken(),
-                        actionRequest.getActionRequested()) >= 0)
+                        actionRequest.getActionRequested(), true) >= 0)
                 {
                   foundActionTaken = actionTaken;
                 }

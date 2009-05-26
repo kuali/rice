@@ -8,7 +8,7 @@
     <artifactId>rice</artifactId>
     <packaging>pom</packaging>
     <name>Kuali Rice</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.x-KC-SNAPSHOT</version>
     <description>
 		The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows both Kuali and non-Kuali applications
 		to be built in an agile fashion, such that developers will be able to react to end-user business requirements in an efficient and productive
@@ -729,7 +729,7 @@
         <site>
             <id>rice-site</id>
             <name>Rice Web Site</name>
-            <url>dav:https://www.kuali.org:8443/rice/docs/1.0.0-SNAPSHOT/site</url>
+            <url>dav:https://www.kuali.org:8443/rice/docs/1.0.x-KC-SNAPSHOT/site</url>
         </site>
     </distributionManagement>
 </project>

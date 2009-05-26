@@ -120,7 +120,11 @@
 </head>
 <c:choose>
 	<c:when test="${lookup}" >
-		<body onload="placeFocus(); ${KualiForm.lookupable.extraOnLoad}">
+		<body onload="placeFocus();
+		<c:if test='${KualiForm.class.name == "org.kuali.rice.kns.web.struts.form.LookupForm"}'>
+			<c:out value ="${KualiForm.lookupable.extraOnLoad}" />
+		</c:if>
+		">
 		<kul:backdoor />
 
 			<c:if

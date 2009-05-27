@@ -40,7 +40,7 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		permissionService = (PermissionService) getKimService("PermissionService");
+		permissionService = (PermissionService) getKimService(PermissionService.class);
 	}
 
 	@Test
@@ -159,11 +159,11 @@ public class PermissionServiceTest extends KIMTestCase {
 	/**
 	 * This method tries to get a client proxy for the specified KIM service
 	 * 
-	 * @param  svcName - name of the KIM service desired
+	 * @param  class1 - name of the KIM service desired
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(String svcName) throws Exception {
-		return GlobalResourceLoader.getService(new QName("KIM", "PermissionService"));
+	protected Object getKimService(Class<?> clazz) throws Exception {
+		return GlobalResourceLoader.getService(new QName("http://org.kuali.rice/kim/permission", clazz.getSimpleName()));
 	}
 }

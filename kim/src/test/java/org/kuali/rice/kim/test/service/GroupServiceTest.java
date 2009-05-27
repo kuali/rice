@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -23,10 +22,8 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
@@ -42,8 +39,8 @@ public class GroupServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		groupService = (GroupService) getKimService("GroupService");
-		groupUpdateService = (GroupUpdateService) getKimService("GroupUpdateService");
+		groupService = (GroupService) getKimService(GroupService.class);
+		groupUpdateService = (GroupUpdateService) getKimService(GroupUpdateService.class);
 	}
 	
 	@Test
@@ -98,7 +95,7 @@ public class GroupServiceTest extends KIMTestCase {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(String svcName) throws Exception {
-		return GlobalResourceLoader.getService(new QName("KIM", svcName));
+	protected Object getKimService(Class<?> clazz) throws Exception {
+		return GlobalResourceLoader.getService(new QName("http://org.kuali.rice/kim/group", clazz.getSimpleName()));
 	}
 }

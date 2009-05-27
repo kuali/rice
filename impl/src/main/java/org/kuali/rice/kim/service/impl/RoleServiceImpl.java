@@ -66,8 +66,6 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  *
  */
 @WebService(endpointInterface = "org.kuali.rice.kim.service.RoleService", serviceName = "RoleService", portName = "RoleService", targetNamespace = "http://org.kuali.rice/kim/role")
-// TODO - this results in JdkDynamicAopProxy rather than Cglib2AopProxy, which doesn't allow us to test the Impl
-// @Transactional
 public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );

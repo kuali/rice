@@ -30,8 +30,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 @WebService(endpointInterface = "org.kuali.rice.kim.service.GroupService", serviceName = "GroupService", portName = "GroupService", targetNamespace = "http://org.kuali.rice/kim/group")
-// TODO - this results in JdkDynamicAopProxy rather than Cglib2AopProxy, which doesn't allow us to test the Impl
-// @Transactional
 public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
 	private BusinessObjectService businessObjectService;

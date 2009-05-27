@@ -38,7 +38,7 @@ public class RoleServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		roleService = (RoleService) getKimService("RoleService");
+		roleService = (RoleService) getKimService(RoleService.class);
 	}
 	
 	@Test
@@ -80,7 +80,7 @@ public class RoleServiceTest extends KIMTestCase {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(String svcName) throws Exception {
-		return GlobalResourceLoader.getService(new QName("KIM", svcName));
+	protected Object getKimService(Class<?> svcClazz) throws Exception {
+		return GlobalResourceLoader.getService(new QName("http://org.kuali.rice/kim/role", svcClazz.getSimpleName()));
 	}
 }

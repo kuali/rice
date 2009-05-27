@@ -82,6 +82,9 @@
   	<property name="entityManagerFactory" ref="kimEntityManagerFactory"/>
   </bean>
 
+  <!-- Used for @Transactional so you don't have to wire services up in here -->
+  <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
   <!-- END JPA CONFIGURATION -->
 
   <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl">
@@ -185,7 +188,7 @@
              <property name="service" ref="kimRoleService" />
              <property name="serviceInterface" value="org.kuali.rice.kim.service.RoleService" />
              <property name="localServiceName" value="RoleService" />
-             <property name="serviceNameSpaceURI" value="KIM" />
+             <property name="serviceNameSpaceURI" value="http://org.kuali.rice/kim/role" />
              <property name="busSecurity" value="true"></property>
          </bean>
      </property>
@@ -197,7 +200,7 @@
              <property name="service" ref="kimRoleUpdateService" />
              <property name="serviceInterface" value="org.kuali.rice.kim.service.RoleUpdateService" />
              <property name="localServiceName" value="RoleUpdateService" />
-             <property name="serviceNameSpaceURI" value="KIM" />
+             <property name="serviceNameSpaceURI" value="http://org.kuali.rice/kim/role" />
              <property name="busSecurity" value="true"></property>
          </bean>
      </property>
@@ -259,7 +262,7 @@
              <property name="service" ref="kimGroupService" />
              <property name="serviceInterface" value="org.kuali.rice.kim.service.GroupService" />
              <property name="localServiceName" value="GroupService" />
-             <property name="serviceNameSpaceURI" value="KIM" />
+             <property name="serviceNameSpaceURI" value="http://org.kuali.rice/kim/group" />
              <property name="busSecurity" value="true"></property>
          </bean>
      </property>
@@ -272,7 +275,7 @@
              <property name="service" ref="kimGroupUpdateService" />
              <property name="serviceInterface" value="org.kuali.rice.kim.service.GroupUpdateService" />
              <property name="localServiceName" value="GroupUpdateService" />
-             <property name="serviceNameSpaceURI" value="KIM" />
+             <property name="serviceNameSpaceURI" value="http://org.kuali.rice/kim/group" />
              <property name="busSecurity" value="true"></property>
          </bean>
      </property>
@@ -311,8 +314,8 @@
              <property name="service" ref="kimPermissionService" />
              <property name="serviceInterface" value="org.kuali.rice.kim.service.PermissionService" />
              <property name="localServiceName" value="PermissionService" />
-             <property name="serviceNameSpaceURI" value="KIM" />
-             <property name="busSecurity" value="false"></property>
+             <property name="serviceNameSpaceURI" value="http://org.kuali.rice/kim/permission" />
+             <property name="busSecurity" value="true"></property>
          </bean>
      </property>
   </bean>

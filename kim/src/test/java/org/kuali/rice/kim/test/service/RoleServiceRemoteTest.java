@@ -15,18 +15,8 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.messaging.serviceconnectors.SOAPConnector;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
@@ -45,18 +35,10 @@ public class RoleServiceRemoteTest extends RoleServiceTest {
 	protected Lifecycle getLoadApplicationLifecycle() {
 		return new BaseLifecycle() {
 			public void start() throws Exception {
-				new JettyServerLifecycle(getConfigIntProp("kim.test.port"), "/" + getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
+				new JettyServerLifecycle(ServiceTestUtils.getConfigIntProp("kim.test.port"), "/" + ServiceTestUtils.getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
 				super.start();
 			}
 		};	
-	}
-	
-	private int getConfigIntProp(String intPropKey) {
-		return Integer.parseInt(getConfigProp(intPropKey));
-	}
-
-	private String getConfigProp(String propKey) {
-		return ConfigContext.getCurrentContextConfig().getProperty(propKey);
 	}
 	
 	/**
@@ -66,14 +48,7 @@ public class RoleServiceRemoteTest extends RoleServiceTest {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(String svcName) throws Exception {
-		RemoteResourceServiceLocator rrl = KSBResourceLoaderFactory.getRemoteResourceLocator();
-		List<RemotedServiceHolder> svcHolders = rrl.getAllServices(new QName("KIM", svcName));
-		if (svcHolders.size() > 1) {
-			fail("Found more than one RemotedServiceHolder for " + svcName);
-		}
-		ServiceInfo svcInfo = svcHolders.get(0).getServiceInfo();
-		SOAPConnector connector = new SOAPConnector(svcInfo);
-		return connector.getService();
+	protected Object getKimService(Class<?> svcClazz) throws Exception {
+		return ServiceTestUtils.getRemoteServiceProxy(svcClazz);
 	}
 }

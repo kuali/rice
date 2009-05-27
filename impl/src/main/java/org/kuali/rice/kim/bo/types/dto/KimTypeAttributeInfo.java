@@ -31,6 +31,7 @@ public class KimTypeAttributeInfo implements Serializable {
 	protected String attributeLabel;
 	protected String componentName;
 	protected String applicationUrl;
+	protected String kimAttributeId;
 
 	public String getSortCode() {
 		return this.sortCode;
@@ -67,5 +68,11 @@ public class KimTypeAttributeInfo implements Serializable {
 	}
 	public void setApplicationUrl(String applicationUrl) {
 		this.applicationUrl = applicationUrl;
+	}
+	public String getKimAttributeId() {
+		return this.kimAttributeId;
+	}
+	public void setKimAttributeId(String kimAttributeId) {
+		this.kimAttributeId = kimAttributeId;
 	}
 }

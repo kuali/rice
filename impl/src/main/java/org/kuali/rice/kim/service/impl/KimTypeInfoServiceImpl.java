@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,21 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 	private BusinessObjectService businessObjectService;
 	
 	protected Map<String,KimTypeInfo> infoCache = new HashMap<String, KimTypeInfo>();
+	protected Map<String,KimTypeInfo> infoCacheByName = new HashMap<String, KimTypeInfo>();
 	protected Map<String,ExternalIdentifierTypeInfo> extIdTypeCache = new HashMap<String, ExternalIdentifierTypeInfo>();
+	boolean allLoaded = false;
+	
+	@SuppressWarnings("unchecked")
+	public Collection<KimTypeInfo> getAllTypes() {
+		if ( !allLoaded ) {
+			Collection<KimTypeImpl> types = getBusinessObjectService().findAll(KimTypeImpl.class);
+			for ( KimTypeImpl typ : types ) {
+				infoCache.put(typ.getKimTypeId(), typ.toInfo());
+			}
+			allLoaded = true;
+		}
+		return new ArrayList<KimTypeInfo>( infoCache.values() );
+	}
 	
 	/**
 	 * This overridden method ...
@@ -57,6 +73,19 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 		return infoCache.get(kimTypeId);
 	}
 
+	public KimTypeInfo getKimTypeByName( String namespaceCode, String typeName ) {
+		if ( !infoCacheByName.containsKey(namespaceCode+typeName) ) {
+			Map<String,String> pk = new HashMap<String, String>(2);
+			pk.put(KimConstants.NAMESPACE_CODE, namespaceCode);
+			pk.put("name", typeName);
+			KimTypeImpl impl = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
+			if ( impl != null ) {
+				infoCache.put(namespaceCode+typeName, impl.toInfo());
+			}
+		}
+		return infoCacheByName.get(namespaceCode+typeName);
+	}
+	
 	public BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();

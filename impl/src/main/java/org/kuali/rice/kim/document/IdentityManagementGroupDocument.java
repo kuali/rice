@@ -16,21 +16,18 @@
 package org.kuali.rice.kim.document;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -93,21 +90,15 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
-		if ( kimType == null || !StringUtils.equals(kimType.getKimTypeId(), getGroupTypeId() ) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, getGroupTypeId());
-	        kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
-		}
-		return kimType;
+	public KimTypeInfo getKimType() {
+		return KIMServiceLocator.getTypeInfoService().getKimType(getGroupTypeId());
 	}
 	
 	/**
 	 * @param members the members to set
 	 */
 	public GroupDocumentMember getBlankMember() {
-		GroupDocumentMember member = new GroupDocumentMember();
-       	return member;
+		return new GroupDocumentMember();
 	}
 
 	/**

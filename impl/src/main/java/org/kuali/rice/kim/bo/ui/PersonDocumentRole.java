@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -51,7 +51,7 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	protected RoleImpl roleImpl;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
-	protected KimTypeImpl kimRoleType;
+	protected KimTypeInfo kimRoleType;
 	protected List<? extends KimAttributes> attributes;
 	protected transient AttributeDefinitionMap definitions;
 	protected transient Map<String,Object> attributeEntry;
@@ -108,11 +108,11 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 		this.attributes = attributes;
 	}
 
-	public KimTypeImpl getKimRoleType() {
+	public KimTypeInfo getKimRoleType() {
 		return this.kimRoleType;
 	}
 
-	public void setKimRoleType(KimTypeImpl kimRoleType) {
+	public void setKimRoleType(KimTypeInfo kimRoleType) {
 		this.kimRoleType = kimRoleType;
 	}
 

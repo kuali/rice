@@ -20,11 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
@@ -55,16 +54,16 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRuleBase implements AddPermissionRule, AddResponsibilityRule, AddMemberRule, AddDelegationRule, AddDelegationMemberRule {
-	private static final Logger LOG = Logger.getLogger( IdentityManagementRoleDocumentRule.class );
+//	private static final Logger LOG = Logger.getLogger( IdentityManagementRoleDocumentRule.class );
 			
     public static final int PRIORITY_NUMBER_MIN_VALUE = 1;
     public static final int PRIORITY_NUMBER_MAX_VALUE = 11;
@@ -135,7 +134,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		return rulePassed;
 	}
 
-    private boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
+    @SuppressWarnings("unchecked")
+	private boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("roleName", roleDoc.getRoleName());
     	criteria.put("namespaceCode", roleDoc.getRoleNamespace());
@@ -230,7 +230,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return rulePassed;
     }
 
-    private boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimTypeImpl kimType){
+    private boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimTypeInfo kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
 		int memberCounter = 0;
@@ -267,7 +267,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     private boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers, 
-    		List<RoleDocumentDelegationMember> delegationMembers, KimTypeImpl kimType){
+    		List<RoleDocumentDelegationMember> delegationMembers, KimTypeInfo kimType){
 		AttributeSet validationErrors = new AttributeSet();
 		boolean valid;
 		int memberCounter = 0;
@@ -312,7 +312,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
-	        ErrorMap errorMap = GlobalVariables.getErrorMap();
+	        MessageMap errorMap = GlobalVariables.getErrorMap();
             errorMap.putError(errorPath, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
             valid = false;
 			

@@ -33,7 +33,6 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -151,9 +150,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     		roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
     		roleDocumentForm.getRoleDocument().initializeDocumentForNewRole();
     		roleDocumentForm.setRoleId( roleDocumentForm.getRoleDocument().getRoleId() );
-            Map<String, String> criteria = new HashMap<String, String>();
-            criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, roleDocumentForm.getRoleDocument().getRoleTypeId() );
-            roleDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+            roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
     	} else {
     		loadRoleIntoDocument( roleDocumentForm.getRoleId(), roleDocumentForm );
     	}
@@ -169,13 +166,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     private void setKimType(String kimTypeId, IdentityManagementRoleDocumentForm roleDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-	        roleDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+            roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
 		} else if ( StringUtils.isNotBlank( roleDocumentForm.getRoleDocument().getRoleTypeId() ) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-	        roleDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+            roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
 		}
     }
     

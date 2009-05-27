@@ -134,7 +134,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         role.setRoleDescription("");
         role.setRoleName("RoleRouteModuleTestRole");
         role.setActive(true);
-        role.setKimRoleType(kimType);
         role.setKimTypeId(kimType.getKimTypeId());
 
         String roleMemberId1 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");

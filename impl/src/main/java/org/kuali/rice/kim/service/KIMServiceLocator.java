@@ -4,7 +4,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.service.support.KimTypeInternalService;
 
 /**
  * Service locator for KIM.
@@ -37,7 +36,6 @@ public final class KIMServiceLocator {
 	public static final String KIM_RESPONSIBILITY_UPDATE_SERVICE = "kimResponsibilityUpdateService";
 
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
-	public static final String KIM_TYPE_INTERNAL_SERVICE = "kimTypeInternalService";
 	public static final String KIM_TYPE_INFO_SERVICE = "kimTypeInfoService";
 	public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
@@ -104,10 +102,6 @@ public final class KIMServiceLocator {
 
     public static ResponsibilityUpdateService getResponsibilityUpdateService() {
     	return (ResponsibilityUpdateService)getService(KIM_RESPONSIBILITY_UPDATE_SERVICE);
-    }
-
-    public static KimTypeInternalService getTypeInternalService() {
-        return (KimTypeInternalService)getService(KIM_TYPE_INTERNAL_SERVICE);
     }
 
     public static KimTypeInfoService getTypeInfoService() {

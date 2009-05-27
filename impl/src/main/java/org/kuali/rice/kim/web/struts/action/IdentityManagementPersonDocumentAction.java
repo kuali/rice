@@ -31,7 +31,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
@@ -274,8 +274,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        GroupImpl groupImpl = (GroupImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, newGroup.getGroupId());
 	        newGroup.setGroupName(groupImpl.getGroupName());
 	        newGroup.setNamespaceCode(groupImpl.getNamespaceCode());
-	        newGroup.setKimGroupType(groupImpl.getKimTypeImpl());
-	        newGroup.setKimTypeId(groupImpl.getKimTypeImpl().getKimTypeId());
+	        newGroup.setKimTypeId(groupImpl.getKimTypeId());
         	personDocumentForm.getPersonDocument().getGroups().add(newGroup);
 	        personDocumentForm.setNewGroup(new PersonDocumentGroup());
         }
@@ -304,7 +303,6 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
 	        // role type populated from form is not a complete record
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
-	        newRole.getKimRoleType().refreshReferenceObject("attributeDefinitions");
 	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimTypeId()));
 	        KimDocumentRoleMember newRolePrncpl = newRole.getNewRolePrncpl();
 	        newRole.refreshReferenceObject("assignedResponsibilities");
@@ -399,7 +397,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 		return super.save(mapping, form, request, response);
 	}
 	
-	private String getKimTypeServiceName (KimTypeImpl kimType) {
+	private String getKimTypeServiceName (KimTypeInfo kimType) {
     	String serviceName = kimType.getKimTypeServiceName();
     	if (StringUtils.isBlank(serviceName)) {
     		serviceName = "kimTypeService";

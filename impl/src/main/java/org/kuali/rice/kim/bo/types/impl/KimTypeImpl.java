@@ -150,6 +150,7 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 			attrib.setNamespaceCode( attribImpl.getKimAttribute().getNamespaceCode() );
 			attrib.setApplicationUrl( attribImpl.getKimAttribute().getApplicationUrl() );
 			attrib.setAttributeLabel( attribImpl.getKimAttribute().getAttributeLabel() );
+			attrib.setKimAttributeId( attribImpl.getKimAttributeId() );
 			attribs.add(attrib);
 		}		
 		return info;

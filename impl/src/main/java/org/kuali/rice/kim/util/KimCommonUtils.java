@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -141,6 +142,14 @@ public class KimCommonUtils {
 			return null;
 		}
 		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName() ) );
+	}
+
+	public static KimTypeService getKimTypeService(KimTypeInfo kimTypeInfo){
+		if( kimTypeInfo == null ) {
+			LOG.warn( "null KimTypeInfo passed into getKimTypeService" );
+			return null;
+		}
+		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimTypeInfo.getKimTypeServiceName() ) );
 	}
 
 	public static KimTypeService getKimTypeService( String serviceName ) {

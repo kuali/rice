@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -144,9 +145,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			if ( kimType != null ) {
 				roleTypeName = kimType.getName();
 			} else if ( roleTypeId != null ) {
-		        Map<String, String> criteria = new HashMap<String, String>();
-		        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, roleTypeId);
-		        setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+				setKimType( KIMServiceLocator.getTypeInfoService().getKimType(roleTypeId) );
 		        if ( kimType != null ) {
 		        	roleTypeName = kimType.getName();
 		        }
@@ -553,7 +552,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		this.delegations = delegations;
 	}
 	
-	public void setKimType(KimTypeImpl kimType) {
+	public void setKimType(KimTypeInfo kimType) {
 		super.setKimType(kimType);
 		if (kimType != null){
 			setRoleTypeId(kimType.getKimTypeId());

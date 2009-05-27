@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.management.relation.RoleInfo;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -61,7 +59,7 @@ import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -1000,21 +998,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 
-	public BusinessObjectService getBusinessObjectService() {
+	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
 
-	public IdentityService getIdentityService() {
+	protected IdentityService getIdentityService() {
 		if ( identityService == null ) {
 			identityService = KIMServiceLocator.getIdentityService();
 		}
 		return identityService;
 	}
 
-	public GroupService getGroupService() {
+	protected GroupService getGroupService() {
 		if ( groupService == null ) {
 			groupService = KIMServiceLocator.getGroupService();
 		}
@@ -1024,7 +1022,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	/**
 	 * @return the permissionService
 	 */
-	public PermissionService getPermissionService() {
+	protected PermissionService getPermissionService() {
 	   	if(this.permissionService == null){
 	   		this.permissionService = KIMServiceLocator.getPermissionService();
     	}
@@ -1041,7 +1039,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	/**
 	 * @return the roleService
 	 */
-	public RoleService getRoleService() {
+	protected RoleService getRoleService() {
 	   	if(this.roleService == null){
 	   		this.roleService = KIMServiceLocator.getRoleService();
     	}
@@ -1055,7 +1053,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		this.roleService = roleService;
 	}
 
-	public ResponsibilityService getResponsibilityService() {
+	protected ResponsibilityService getResponsibilityService() {
 	   	if ( responsibilityService == null ) {
     		responsibilityService = KIMServiceLocator.getResponsibilityService();
     	}
@@ -1786,15 +1784,15 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		GroupImpl kimGroupImpl = (GroupImpl)
 			KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
 		identityManagementGroupDocument.setGroupId(kimGroupImpl.getGroupId());
-		identityManagementGroupDocument.setKimType(kimGroupImpl.getKimTypeImpl());
-		identityManagementGroupDocument.setGroupTypeName(kimGroupImpl.getKimTypeImpl().getName());
-		identityManagementGroupDocument.setGroupTypeId(kimGroupImpl.getKimTypeImpl().getKimTypeId());
+		identityManagementGroupDocument.setKimType(kimGroupImpl.getKimTypeInfo());
+		identityManagementGroupDocument.setGroupTypeName(kimGroupImpl.getKimTypeInfo().getName());
+		identityManagementGroupDocument.setGroupTypeId(kimGroupImpl.getKimTypeInfo().getKimTypeId());
 		identityManagementGroupDocument.setGroupName(kimGroupImpl.getGroupName());
 		identityManagementGroupDocument.setActive(kimGroupImpl.isActive());
 		identityManagementGroupDocument.setGroupNamespace(kimGroupImpl.getNamespaceCode());
 		identityManagementGroupDocument.setMembers(loadGroupMembers(identityManagementGroupDocument, kimGroupImpl.getMembers()));
 		identityManagementGroupDocument.setQualifiers(loadGroupQualifiers(identityManagementGroupDocument, kimGroupImpl.getGroupAttributes()));
-		identityManagementGroupDocument.setKimType(kimGroupImpl.getKimTypeImpl());
+		identityManagementGroupDocument.setKimType(kimGroupImpl.getKimTypeInfo());
 		identityManagementGroupDocument.setEditing(true);
 	}
 
@@ -1887,14 +1885,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 
 		kimGroup.setGroupId(identityManagementGroupDocument.getGroupId());
-		criteria = new HashMap<String, String>();
-		criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, identityManagementGroupDocument.getGroupTypeId());
-		KimTypeImpl typeImpl = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
-		if(typeImpl==null)
+		KimTypeInfo kimType = getKimTypeInfoService().getKimType(identityManagementGroupDocument.getGroupTypeId());
+		if( kimType == null ) {
 			throw new RuntimeException("Kim type not found for:"+identityManagementGroupDocument.getGroupTypeId());
+		}
 
-		kimGroup.setKimTypeImpl(typeImpl);
-		kimGroup.setKimTypeId(typeImpl.getKimTypeId());
+		kimGroup.setKimTypeId(kimType.getKimTypeId());
 		kimGroup.setNamespaceCode(identityManagementGroupDocument.getGroupNamespace());
 		kimGroup.setGroupName(identityManagementGroupDocument.getGroupName());
 		kimGroup.setGroupAttributes(getGroupAttributeData(identityManagementGroupDocument, kimGroup.getGroupAttributes()));

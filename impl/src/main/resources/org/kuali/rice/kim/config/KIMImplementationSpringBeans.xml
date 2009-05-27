@@ -345,17 +345,6 @@
     <property name="propertyName" value="kimResponsibilityServiceSOAP.expose"/>
   </bean>
 
-  <!-- Kim Type Internal Service -->
-  <bean id="kimTypeDaoJpa" class="org.kuali.rice.kim.dao.impl.KimTypeDaoJpa">
-    <property name="entityManager" ref="kimEntityManager"/>
-  </bean>
-
-  <bean id="kimTypeDao" class="org.kuali.rice.kim.dao.impl.KimTypeDaoOjb" parent="kimPlatformAwareDao" />
-
-  <!-- deprecated - remove this service and related DTOs -->
-  <bean id="kimTypeInternalService" class="org.kuali.rice.kim.service.support.impl.KimTypeInternalServiceImpl"
-    p:kimTypeDao-ref="kimTypeDao" />
-
   <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />
 
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />

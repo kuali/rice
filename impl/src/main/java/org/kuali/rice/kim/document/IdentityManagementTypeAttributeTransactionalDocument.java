@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -33,7 +31,8 @@ import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.TypedArrayList;
+
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -44,8 +43,10 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 public class IdentityManagementTypeAttributeTransactionalDocument extends IdentityManagementKimDocument {
 
+	private static final long serialVersionUID = -9064436454008712125L;
+	
 	private transient KimTypeService kimTypeService;
-	protected KimTypeImpl kimType = new KimTypeImpl();
+	protected KimTypeInfo kimType = new KimTypeInfo();
 	protected List<? extends KimAttributes> attributes;
 	
 	private transient SequenceAccessorService sequenceAccessorService;
@@ -67,13 +68,13 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
+	public KimTypeInfo getKimType() {
 		return this.kimType;
 	}
 	/**
 	 * @param kimType the kimType to set
 	 */
-	public void setKimType(KimTypeImpl kimType) {
+	public void setKimType(KimTypeInfo kimType) {
 		this.kimType = kimType;
 	}
 
@@ -123,11 +124,11 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		this.definitions = definitions;
 	}
 
-	public KimTypeService getKimTypeService(KimTypeImpl kimType){
-		if(this.kimTypeService==null){
-	    	this.kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+	protected KimTypeService getKimTypeService(KimTypeInfo kimType){
+		if( kimTypeService==null){
+	    	kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 		}
-		return this.kimTypeService;
+		return kimTypeService;
 	}
 
 	protected SequenceAccessorService getSequenceAccessorService(){

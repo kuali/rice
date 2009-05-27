@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
@@ -49,14 +50,14 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		List<KimTypeImpl> filteredSearchResults = new ArrayList<KimTypeImpl>();
 		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY)))
 			for(KimTypeImpl kimTypeImpl: searchResults){
-				if(hasRoleTypeService(kimTypeImpl)) {
+				if(hasRoleTypeService(kimTypeImpl.toInfo())) {
 					filteredSearchResults.add(kimTypeImpl);
 				}
 			}
 		
 		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY)))
 			for(KimTypeImpl kimTypeImpl: searchResults){
-				if(hasGroupTypeService(kimTypeImpl)) {
+				if(hasGroupTypeService(kimTypeImpl.toInfo())) {
 					filteredSearchResults.add(kimTypeImpl);
 				}
 			}
@@ -103,22 +104,22 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
         return href;
     }
 
-	static boolean hasRoleTypeService(KimTypeImpl kimTypeImpl){
+	static boolean hasRoleTypeService(KimTypeInfo kimTypeImpl){
 		return (kimTypeImpl!=null && kimTypeImpl.getKimTypeServiceName()==null) || 
 					(KimCommonUtils.getKimTypeService(kimTypeImpl) instanceof KimRoleTypeService);
 	}
 
-	static boolean hasRoleTypeService(KimTypeImpl kimTypeImpl, KimTypeService kimTypeService){
+	static boolean hasRoleTypeService(KimTypeInfo kimTypeImpl, KimTypeService kimTypeService){
 		return (kimTypeImpl!=null && kimTypeImpl.getKimTypeServiceName()==null) || 
 					(kimTypeService instanceof KimRoleTypeService);
 	}
 	
-    static boolean hasGroupTypeService(KimTypeImpl kimTypeImpl){
+    static boolean hasGroupTypeService(KimTypeInfo kimTypeImpl){
 		return (kimTypeImpl!=null && kimTypeImpl.getKimTypeServiceName()==null) || 
 					(KimCommonUtils.getKimTypeService(kimTypeImpl) instanceof KimGroupTypeService);
     }
 
-	public static boolean hasDerivedRoleTypeService(KimTypeImpl kimTypeImpl){
+	public static boolean hasDerivedRoleTypeService(KimTypeInfo kimTypeImpl){
 		boolean hasDerivedRoleTypeService = false;
 		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimTypeImpl);
 		if(hasRoleTypeService(kimTypeImpl, kimTypeService))

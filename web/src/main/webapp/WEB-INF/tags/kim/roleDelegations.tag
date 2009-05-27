@@ -24,7 +24,7 @@
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeFromDate}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.activeToDate}" noColon="true" /></div></th>
 				<c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
-        			<c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
+        			<c:set var="fieldName" value="${attrDefn.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
          		    <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
 		        </c:forEach>
@@ -88,7 +88,7 @@
                 </div>
                 </td>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
-					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
+					<c:set var="fieldName" value="${qualifier.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
         			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>
@@ -161,7 +161,7 @@
 				</td>
 				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+6}"/>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
-					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
+					<c:set var="fieldName" value="${qualifier.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
         			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>

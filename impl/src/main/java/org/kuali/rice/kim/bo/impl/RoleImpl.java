@@ -28,15 +28,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -72,8 +72,6 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
 
 	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	@Transient
-	protected KimTypeImpl kimRoleType; 
 	
 	protected String principalName;
 	protected String groupNamespaceCode;
@@ -267,17 +265,10 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 		return new HashCodeBuilder( -460627871, 746615189 ).append( this.roleId ).toHashCode();
 	}
 
-	public KimTypeImpl getKimRoleType() {
-		if (StringUtils.isNotBlank(this.kimTypeId) && this.kimRoleType == null) {
-			this.refreshReferenceObject("kimRoleType");
-		}
-		return this.kimRoleType;
+	public KimTypeInfo getKimRoleType() {
+		return KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
 	}
 
-	public void setKimRoleType(KimTypeImpl kimRoleType) {
-		this.kimRoleType = kimRoleType;
-	}
-	
 	public KimRoleInfo toSimpleInfo() {
 		KimRoleInfo dto = new KimRoleInfo();
 		

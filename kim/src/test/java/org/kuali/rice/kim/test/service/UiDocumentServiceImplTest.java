@@ -54,6 +54,7 @@ import org.kuali.rice.kim.service.impl.UiDocumentServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
@@ -158,7 +159,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		List<KimTypeAttributeImpl> attributeDefinitions = new ArrayList<KimTypeAttributeImpl>();
 		Map pkMap = new HashMap();
 		pkMap.put("kimTypeAttributeId", "kimAttr3");
-		KimTypeAttributeImpl attr1 = (KimTypeAttributeImpl)uiDocumentService.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeImpl attr1 = (KimTypeAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
 
 //		attr1.setKimAttributeId("kimAttrDefn2");
 //		attr1.setSortCode("a");
@@ -171,11 +172,11 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 //		attr1.setKimTypeAttributeId("kimAttr4");
 		
 		pkMap.put("kimTypeAttributeId", "kimAttr4");
-		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl)uiDocumentService.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
 
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);
-		docRole.setKimRoleType(kimType);
+		docRole.setKimRoleType(kimType.toInfo());
 		
 		return docRole;
 	}

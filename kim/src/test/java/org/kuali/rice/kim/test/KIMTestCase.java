@@ -24,9 +24,8 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
@@ -105,8 +104,8 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		return KIM_MODULE_NAME;
 	}
 	
-	protected KimTypeImpl getDefaultKimType() {
-		KimTypeImpl type = KIMServiceLocator.getTypeInternalService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+	protected KimTypeInfo getDefaultKimType() {
+		KimTypeInfo type = KIMServiceLocator.getTypeInfoService().getKimType("1");
 		if (type == null) {
 			fail("Failed to locate the default Kim Type.");
 		}

@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -51,11 +52,16 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 * @return the kimResponsibility
 	 */
 	public KimResponsibilityImpl getKimResponsibility() {
-		if ( kimResponsibility == null && getRoleResponsibility() != null ) {
-			//TODO: this needs to be changed to use the KimResponsibilityInfo object
-			// but the changes are involved in the UiDocumentService based on the copyProperties method used
-			// to move the data to/from the document/real objects
-			kimResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getRoleResponsibility().getResponsibilityId());
+		try {
+			if ( kimResponsibility == null && ObjectUtils.isNotNull( getRoleResponsibility() ) ) {
+				//TODO: this needs to be changed to use the KimResponsibilityInfo object
+				// but the changes are involved in the UiDocumentService based on the copyProperties method used
+				// to move the data to/from the document/real objects
+				kimResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getRoleResponsibility().getResponsibilityId());
+			}
+		} catch( RuntimeException ex ) {
+			ex.printStackTrace();
+			throw ex;
 		}
 		return kimResponsibility;
 	}

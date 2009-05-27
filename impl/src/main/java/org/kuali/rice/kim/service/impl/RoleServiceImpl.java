@@ -43,6 +43,7 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
@@ -573,7 +574,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	KimRoleTypeService service = roleTypeServiceCache.get( roleId );
     	if ( service == null && !roleTypeServiceCache.containsKey( roleId ) ) {
     		RoleImpl role = getRoleImpl( roleId );
-    		KimTypeImpl roleType = role.getKimRoleType();
+    		KimTypeInfo roleType = role.getKimRoleType();
     		if ( roleType != null ) {
 	    		String serviceName = roleType.getKimTypeServiceName();
 	    		if ( serviceName != null ) {

@@ -40,6 +40,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
@@ -88,10 +89,7 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	private List<Person> memberPersons;
 	@Transient
 	private List<GroupInfo> memberGroups;
-	@Transient
-	private KimTypeImpl kimTypeImpl;
 
-	protected KimTypeImpl kimGroupType; 
 	protected AttributeSet attributes;
 	
 	/**
@@ -121,19 +119,6 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
-	}
-
-	public KimTypeImpl getKimGroupType() {
-		if (kimGroupType == null) {
-			Map<String,String> pkMap = new HashMap<String,String>();
-			pkMap.put("kimTypeId", kimTypeId);
-			setKimGroupType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap));			
-		}
-		return this.kimGroupType;
-	}
-
-	public void setKimGroupType(KimTypeImpl kimGroupType) {
-		this.kimGroupType = kimGroupType;
 	}
 
 	/**
@@ -224,13 +209,6 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	 */
 	public void setGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {
 		this.groupAttributes = groupAttributes;
-	}
-
-	/**
-	 * @param kimTypeImpl the kimTypeImpl to set
-	 */
-	public void setKimTypeImpl(KimTypeImpl kimTypeImpl) {
-		this.kimTypeImpl = kimTypeImpl;
 	}
 
 	/**
@@ -347,8 +325,8 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	    return null;
 	}
 
-    public KimTypeImpl getKimTypeImpl() {
-        return KIMServiceLocator.getTypeInternalService().getKimType(this.kimTypeId);
+    public KimTypeInfo getKimTypeInfo() {
+        return KIMServiceLocator.getTypeInfoService().getKimType(this.kimTypeId);
     }
 
 }

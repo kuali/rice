@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -47,7 +48,8 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_PERM_T")
 public class KimPermissionImpl extends PersistableBusinessObjectBase implements KimPermission {
-
+	private static final Logger LOG = Logger.getLogger(KimPermissionImpl.class);	
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -174,10 +176,13 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 				KimTypeAttributeInfo attribute = null;
 				if ( kimType != null ) {
 					attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+				} else {
+					LOG.warn( "Unable to get KimTypeInfo for permission: " + this + "\nKim Type ID: " + getTemplate().kimTypeId );
 				}
 				if ( attribute != null ) {
 					m.put( attribute.getAttributeName(), data.getAttributeValue() );
 				} else {
+					LOG.warn( "Unable to get attribute for ID: " + data.getKimAttributeId() + " from KimTypeInfo: " + kimType );
 					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 				}
 			}

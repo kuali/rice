@@ -20,12 +20,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimTypeInfo extends TransientBusinessObjectBase implements Serializable {
+public class KimTypeInfo extends TransientBusinessObjectBase implements KimType, Serializable {
 
 	private static final long serialVersionUID = 4229466320569714756L;
 	
@@ -86,6 +87,7 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements Serializ
 		m.put( "kimTypeId", kimTypeId );
 		m.put( "name", name );
 		m.put( "kimTypeServiceName", kimTypeServiceName );
+		m.put( "attributeDefinitions",  attributeDefinitions );
 		return m.toString();
 	}
 

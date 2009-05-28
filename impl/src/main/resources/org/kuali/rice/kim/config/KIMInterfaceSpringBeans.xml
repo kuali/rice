@@ -101,6 +101,7 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityType.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeInfo.xml</value>
             </list>
     </property>
         <property name="packagePrefixes">

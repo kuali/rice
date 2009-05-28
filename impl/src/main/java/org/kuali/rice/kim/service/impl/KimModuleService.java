@@ -16,16 +16,19 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -46,6 +49,7 @@ public class KimModuleService extends ModuleServiceBase {
 	private PersonService<Person> personService;
 	private RoleService kimRoleService;
 	private GroupService groupService;
+	private KimTypeInfoService kimTypeInfoService;
 
 	/**
 	 * This overridden method ...
@@ -70,6 +74,9 @@ public class KimModuleService extends ModuleServiceBase {
 		} else if(Group.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID))
 				return (T) getGroupService().getGroupInfo((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
+		} else if(KimType.class.isAssignableFrom(businessObjectClass)){
+			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID))
+				return (T) getTypeInfoService().getKimType((String)fieldValues.get(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
@@ -133,6 +140,8 @@ public class KimModuleService extends ModuleServiceBase {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( KimConstants.PrimaryKeyConstants.GROUP_ID );
 			return pkFields;
+		} else if ( KimType.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
+			return Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID );
 		}
 
 		// otherwise, use the default implementation
@@ -140,25 +149,32 @@ public class KimModuleService extends ModuleServiceBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	public PersonService<Person> getPersonService() {
+	protected PersonService<Person> getPersonService() {
 		if ( personService == null ) {
 			personService = KIMServiceLocator.getPersonService();
 		}
 		return personService;
 	}
 
-	public RoleService getKimRoleService() {
+	protected RoleService getKimRoleService() {
 		if ( kimRoleService == null ) {
 			kimRoleService = KIMServiceLocator.getRoleManagementService();
 		}
 		return kimRoleService;
 	}
 
-	public GroupService getGroupService() {
+	protected GroupService getGroupService() {
 		if ( groupService == null ) {
 			groupService = KIMServiceLocator.getGroupService();
 		}
 		return groupService;
+	}
+
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return kimTypeInfoService;
 	}
 
 	protected Properties getUrlParameters(String businessObjectClassAttribute, Map<String, String[]> parameters){
@@ -181,15 +197,14 @@ public class KimModuleService extends ModuleServiceBase {
 		if (!inquiryUrl.endsWith("/")) {
 			inquiryUrl = inquiryUrl + "/";
 		}
-		String inquiryAction = "";
-		if(Role.class.isAssignableFrom(inquiryBusinessObjectClass))
-			inquiryAction = KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
-		else if(Group.class.isAssignableFrom(inquiryBusinessObjectClass))
-			inquiryAction = KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
-		else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass))
-			inquiryAction = KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;
-		inquiryUrl = inquiryUrl + inquiryAction;
-		return inquiryUrl;
+		if(Role.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+			return inquiryUrl + KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
+		} else if(Group.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+			return inquiryUrl + KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
+		} else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+			return inquiryUrl + KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;
+		}
+		return super.getInquiryUrl(inquiryBusinessObjectClass);
 	}
 
 }

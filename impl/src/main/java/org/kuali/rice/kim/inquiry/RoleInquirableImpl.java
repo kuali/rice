@@ -16,10 +16,13 @@
 package org.kuali.rice.kim.inquiry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
@@ -59,6 +62,10 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 			Namespace parameterNamespace = new Namespace();
 			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
 			return getInquiryUrlForPrimaryKeys(Namespace.class, parameterNamespace, primaryKeys, null);
+		} else if("kimRoleType.name".equals(attributeName)){
+			KimTypeImpl kimType = new KimTypeImpl();
+			kimType.setKimTypeId( ((RoleImpl)businessObject).getKimTypeId() );
+			return getInquiryUrlForPrimaryKeys(KimTypeImpl.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
         }
 		
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);

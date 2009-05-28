@@ -16,14 +16,14 @@
 package org.kuali.rice.kim.inquiry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.lookup.GroupLookupableHelperServiceImpl;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -67,6 +67,10 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 			Namespace parameterNamespace = new Namespace();
 			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
 			return getInquiryUrlForPrimaryKeys(Namespace.class, parameterNamespace, primaryKeys, null);
+		} else if("kimTypeInfo.name".equals(attributeName)){
+			KimTypeImpl kimType = new KimTypeImpl();
+			kimType.setKimTypeId( ((GroupImpl)businessObject).getKimTypeId() );
+			return getInquiryUrlForPrimaryKeys(KimTypeImpl.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
         }
 		
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);

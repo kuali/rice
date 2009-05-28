@@ -37,7 +37,7 @@ import org.springmodules.orm.ojb.OjbFactoryUtils;
 public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements SequenceAccessorDao {
 	private KualiModuleService kualiModuleService;
 	
-	public Long getNextAvailableSequenceNumber(String sequenceName, 
+	private Long nextAvailableSequenceNumber(String sequenceName, 
 			Class<? extends BusinessObject> clazz) {
 		
         ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
@@ -70,12 +70,30 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         }
 	}
 	
+	public Long getNextAvailableSequenceNumber(String sequenceName, 
+			Class<? extends BusinessObject> clazz) {
+		
+		// There are situations where a module hasn't been configured with
+		// a dataSource.  In these cases, this method would have previously
+		// thrown an error.  Instead, we've opted to factor out the code,
+		// catch any configuration-related exceptions, and if one occurs,
+		// attempt to use the dataSource associated with KNS. -- tbradford
+		
+		try {
+			return nextAvailableSequenceNumber(sequenceName, clazz);
+		}
+		catch ( ConfigurationException e  ) {
+	    	// Use DocumentHeader to get the dataSourceName associated with KNS			
+			return nextAvailableSequenceNumber(sequenceName, DocumentHeader.class);			
+		}
+	}
+	
     /**
      * @see org.kuali.rice.kns.dao.SequenceAccessorDao#getNextAvailableSequenceNumber(java.lang.String)
      */
     public Long getNextAvailableSequenceNumber(String sequenceName) {
     	// Use DocumentHeader to get the dataSourceName associated with KNS
-    	return getNextAvailableSequenceNumber(sequenceName, DocumentHeader.class);
+    	return nextAvailableSequenceNumber(sequenceName, DocumentHeader.class);
     }
     
     private KualiModuleService getKualiModuleService() {

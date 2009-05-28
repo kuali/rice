@@ -24,7 +24,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -36,6 +42,8 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_ROLE_MBR_T")
 public class RoleMemberImpl extends KimAbstractMemberImpl {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name="ROLE_MBR_ID")
@@ -83,12 +91,27 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 		this.attributes = attributes;
 	}
 
+	protected transient AttributeSet qualifierAsAttributeSet = null;
+
 	public AttributeSet getQualifier() {
-		AttributeSet m = new AttributeSet();
-		for ( RoleMemberAttributeDataImpl data : getAttributes() ) {
-			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+		if ( qualifierAsAttributeSet == null ) {
+			KimRoleInfo role = getRoleService().getRole(roleId);
+			KimTypeInfo kimType = getTypeInfoService().getKimType( role.getKimTypeId() );
+			AttributeSet m = new AttributeSet();
+			for ( RoleMemberAttributeDataImpl data : getAttributes() ) {
+				KimTypeAttributeInfo attribute = null;
+				if ( kimType != null ) {
+					attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+				}
+				if ( attribute != null ) {
+					m.put( attribute.getAttributeName(), data.getAttributeValue() );
+				} else {
+					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+				}
+			}
+			qualifierAsAttributeSet = m;
 		}
-		return m;
+		return qualifierAsAttributeSet;
 	}
 	
 	public boolean hasQualifier() {
@@ -108,4 +131,19 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 		this.roleRspActions = roleRspActions;
 	}
 
+	private transient static KimTypeInfoService kimTypeInfoService;
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return kimTypeInfoService;
+	}
+	private transient static RoleService roleService;
+	protected RoleService getRoleService() {
+		if(roleService == null){
+			roleService = KIMServiceLocator.getRoleManagementService();
+		}
+		return roleService;
+	}
+	
 }

@@ -82,9 +82,6 @@
   	<property name="entityManagerFactory" ref="kimEntityManagerFactory"/>
   </bean>
 
-  <!-- Used for @Transactional so you don't have to wire services up in here -->
-  <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-
   <!-- END JPA CONFIGURATION -->
 
   <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl">
@@ -213,10 +210,6 @@
   <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
 
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-  	<!--  TODO - need to generate Cglib2AopProxy for this service, but getting JdkDynamicAopProxy
-  	             instead. This isn't working to make that happen.
-	<aop:scoped-proxy proxy-target-class="true"/>
-    -->
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimService"

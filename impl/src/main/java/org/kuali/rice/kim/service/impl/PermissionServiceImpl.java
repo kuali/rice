@@ -34,6 +34,7 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -125,7 +126,7 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	if ( permissionTemplate == null ) {
     		throw new IllegalArgumentException( "permissionTemplate may not be null" );
     	}
-    	KimTypeImpl kimType = permissionTemplate.getKimType();
+    	KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType( permissionTemplate.getKimTypeId() );
     	String serviceName = kimType.getKimTypeServiceName();
     	// if no service specified, return a default implementation
     	if ( StringUtils.isBlank( serviceName ) ) {

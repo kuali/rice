@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -266,7 +267,14 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	}
 
 	public KimTypeInfo getKimRoleType() {
-		return KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		return getTypeInfoService().getKimType(kimTypeId);
+	}
+	private transient static KimTypeInfoService kimTypeInfoService;
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return kimTypeInfoService;
 	}
 
 	public KimRoleInfo toSimpleInfo() {
@@ -293,6 +301,7 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
     public String toStringBuilder(LinkedHashMap mapper) {
         if(getKimRoleType() != null){

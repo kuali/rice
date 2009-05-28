@@ -39,10 +39,10 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 
 	private BusinessObjectService businessObjectService;
 	
-	protected Map<String,KimTypeInfo> infoCache = new HashMap<String, KimTypeInfo>();
-	protected Map<String,KimTypeInfo> infoCacheByName = new HashMap<String, KimTypeInfo>();
-	protected Map<String,ExternalIdentifierTypeInfo> extIdTypeCache = new HashMap<String, ExternalIdentifierTypeInfo>();
-	boolean allLoaded = false;
+	protected static Map<String,KimTypeInfo> infoCache = new HashMap<String, KimTypeInfo>();
+	protected static Map<String,KimTypeInfo> infoCacheByName = new HashMap<String, KimTypeInfo>();
+	protected static Map<String,ExternalIdentifierTypeInfo> extIdTypeCache = new HashMap<String, ExternalIdentifierTypeInfo>();
+	protected static boolean allLoaded = false;
 	
 	@SuppressWarnings("unchecked")
 	public Collection<KimTypeInfo> getAllTypes() {

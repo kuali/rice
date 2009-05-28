@@ -32,6 +32,10 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -126,14 +130,13 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	public KimPermissionInfo toSimpleInfo() {
 		KimPermissionInfo dto = new KimPermissionInfo();
-		
 		dto.setPermissionId( getPermissionId() );
 		dto.setNamespaceCode( getNamespaceCode() );
 		dto.setName( getName() );
 		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
-		dto.setDetails( getDetails() );
 		dto.setTemplate( getTemplate().toSimpleInfo() );
+		dto.setDetails( getDetails() );
 		
 		return dto;
 	}
@@ -163,9 +166,18 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	}
 
 	public AttributeSet getDetails() {
+		KimTypeInfo kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 		AttributeSet m = new AttributeSet();
 		for ( PermissionAttributeDataImpl data : getDetailObjects() ) {
-			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+			KimTypeAttributeInfo attribute = null;
+			if ( kimType != null ) {
+				attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+			}
+			if ( attribute != null ) {
+				m.put( attribute.getAttributeName(), data.getAttributeValue() );
+			} else {
+				m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+			}
 		}
 		return m;
 	}
@@ -231,6 +243,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
     }
 
 	private transient static DataDictionaryService dataDictionaryService;
+	
 	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
@@ -238,4 +251,11 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		return dataDictionaryService;
 	}
 
+	private transient static KimTypeInfoService kimTypeInfoService;
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return kimTypeInfoService;
+	}
 }

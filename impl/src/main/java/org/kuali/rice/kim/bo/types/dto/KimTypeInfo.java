@@ -59,6 +59,18 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements Serializ
 	public void setAttributeDefinitions(List<KimTypeAttributeInfo> attributeDefinitions) {
 		this.attributeDefinitions = attributeDefinitions;
 	}
+	
+	public KimTypeAttributeInfo getAttributeDefinition( String kimAttributeId ) {
+		if ( kimAttributeId == null ) {
+			return null;
+		}
+		for ( KimTypeAttributeInfo def : attributeDefinitions ) {
+			if ( def.kimAttributeId.equals( kimAttributeId ) ) {
+				return def;
+			}
+		}
+		return null;
+	}
 
 	public void setKimTypeServiceName(String kimTypeServiceName) {
 		this.kimTypeServiceName = kimTypeServiceName;
@@ -94,6 +106,7 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements Serializ
 	 * 
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		return null;

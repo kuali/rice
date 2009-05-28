@@ -208,7 +208,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         return refresh(mapping, roleDocumentForm, request, response);
 	}
 
-	public ActionForward changeDelegationRoleMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward changeDelegationMemberTypeCode(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
 		KimDocumentRoleMember roleMember = roleDocumentForm.getRoleDocument().getMember(roleDocumentForm.getDelegationMember().getRoleMemberId());
 		if(roleMember!=null){

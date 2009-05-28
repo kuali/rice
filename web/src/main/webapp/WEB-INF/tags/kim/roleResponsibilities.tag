@@ -101,7 +101,7 @@
 				</td>
 			</c:if>    
 			</tr>
-	        <c:if test="${responsibility.roleRspAction != null && responsibility.roleRspAction.roleMemberId == '*'}">	
+	        <c:if test="${responsibility.roleRspAction != null}">	
     			<tr>
 	              <td colspan="7" style="padding:0px;">
 	              	<kim:responsibilityAction responsibilityIdx="${status.index}" />

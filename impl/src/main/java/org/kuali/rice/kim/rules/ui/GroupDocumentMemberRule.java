@@ -53,7 +53,7 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 
 	    int i = 0;
 	    for (GroupDocumentMember member: document.getMembers()){
-	    	if (member.getMemberId().equals(newMember.getMemberId())){
+	    	if (member.getMemberId().equals(newMember.getMemberId()) && member.getMemberTypeCode().equals(newMember.getMemberTypeCode())){
 	            rulePassed = false;
 	            GlobalVariables.getErrorMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	    	}

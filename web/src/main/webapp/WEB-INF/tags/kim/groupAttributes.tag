@@ -20,13 +20,14 @@
                         <c:set var="fieldName" value="${qualifier.attributeName}" />
                         <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                         <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
-                        <td align="left" valign="middle">
-                            <div align="center"> <kul:htmlControlAttribute property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
-                            <c:if test="${!empty attrDefinition.lookupBoClass and not readOnly}">
-                              <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document" attr="${attrDefinition}" />
-                            </c:if>
-                            </div>
-                        </td>
+                        <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.unique && KualiForm.document.editing))}"/>
+			            <td align="left" valign="middle">
+			               	<div align="center"> <kul:htmlControlAttribute property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+			               	<c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
+				       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document" attr="${attrDefinition}" />
+				          	</c:if>
+							</div>
+						</td>
                     </c:forEach>
                 </tr>
             </table>

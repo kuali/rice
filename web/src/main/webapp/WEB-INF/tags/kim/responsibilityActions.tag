@@ -17,8 +17,15 @@
            	<tr>	
 				<td>
 					<div align="center">
-					${roleRspAction.kimResponsibility.namespaceCode}
-					${roleRspAction.kimResponsibility.name}		            
+					<c:choose>
+						<c:when test="${roleRspAction.kimResponsibility != null}">
+                        	${roleRspAction.kimResponsibility.namespaceCode}
+                            ${roleRspAction.kimResponsibility.name}
+                        </c:when>
+ 						<c:otherwise>
+							All
+						</c:otherwise>
+					</c:choose>            
 					</div>
         		</td>
 				<td>

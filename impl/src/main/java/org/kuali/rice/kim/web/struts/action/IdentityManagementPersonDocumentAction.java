@@ -333,11 +333,23 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
         		roleRspAction.setRoleResponsibilityId(roleResp.getRoleResponsibilityId());        		
         		roleRspAction.refreshReferenceObject("roleResponsibility");
-        		rolePrncpl.getRoleRspActions().add(roleRspAction);
+        		if(isUniqueRoleRspAction(rolePrncpl.getRoleRspActions(), roleRspAction))
+        			 rolePrncpl.getRoleRspActions().add(roleRspAction);
         	}        	
         }
     }
     
+	private boolean isUniqueRoleRspAction(List<KimDocumentRoleResponsibilityAction> roleRspActions, KimDocumentRoleResponsibilityAction roleRspAction){
+ 	 	if(roleRspActions==null || roleRspAction==null) return false;
+ 	 	for(KimDocumentRoleResponsibilityAction roleRspActionTemp: roleRspActions){
+ 	 		if(roleRspActionTemp.getRoleMemberId().equals(roleRspAction.getRoleMemberId()) &&
+ 	 				roleRspActionTemp.getRoleResponsibilityId().equals(roleRspAction.getRoleResponsibilityId()))
+ 	 				return false;
+ 	 	}
+ 	 		return true;
+	}
+	    
+
     private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
@@ -361,11 +373,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         int selectedRoleIdx = getSelectedLine(request);
         PersonDocumentRole role = personDOc.getRoles().get(selectedRoleIdx);
         KimDocumentRoleMember newRolePrncpl = role.getNewRolePrncpl();
-    	setupRoleRspActions(role, newRolePrncpl);
     	
     	if (getKualiRuleService().applyRules(new AddPersonDocumentRoleQualifierEvent("",
     			personDOc, newRolePrncpl, role, selectedRoleIdx))) {
-	        role.getRolePrncpls().add(newRolePrncpl);
+        	setupRoleRspActions(role, newRolePrncpl);
+    		role.getRolePrncpls().add(newRolePrncpl);
 	        role.setNewRolePrncpl(new KimDocumentRoleMember());
 	        for (String key : role.getDefinitions().keySet()) {
 	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();

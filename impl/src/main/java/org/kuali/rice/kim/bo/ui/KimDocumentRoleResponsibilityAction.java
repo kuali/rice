@@ -53,7 +53,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 */
 	public KimResponsibilityImpl getKimResponsibility() {
 		try {
-			if ( kimResponsibility == null && ObjectUtils.isNotNull( getRoleResponsibility() ) ) {
+			if ( ObjectUtils.isNull( kimResponsibility ) && ObjectUtils.isNotNull( getRoleResponsibility() ) ) {
 				//TODO: this needs to be changed to use the KimResponsibilityInfo object
 				// but the changes are involved in the UiDocumentService based on the copyProperties method used
 				// to move the data to/from the document/real objects
@@ -145,7 +145,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 * @return the roleResponsibility
 	 */
 	public RoleResponsibilityImpl getRoleResponsibility() {
-		if ( roleResponsibility == null && roleResponsibilityId != null ) {
+		if ( ObjectUtils.isNull( roleResponsibility ) && roleResponsibilityId != null ) {
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects

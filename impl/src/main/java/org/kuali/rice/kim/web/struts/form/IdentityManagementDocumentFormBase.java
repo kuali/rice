@@ -61,7 +61,8 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
     	
     	if ( methodToCallParameterName.startsWith( CHANGE_NAMESPACE_METHOD_TO_CALL )
     			|| methodToCallParameterName.startsWith( CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL )
-    			|| methodToCallParameterName.startsWith( CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL ) ) {
+    			|| methodToCallParameterName.startsWith( CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL )
+    			|| methodToCallParameterName.startsWith( "methodToCall.addRoleQualifier" ) ) {
     		return true;
     	}
     	

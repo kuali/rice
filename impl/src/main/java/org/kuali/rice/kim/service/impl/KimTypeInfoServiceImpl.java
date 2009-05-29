@@ -76,11 +76,11 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 	public KimTypeInfo getKimTypeByName( String namespaceCode, String typeName ) {
 		if ( !infoCacheByName.containsKey(namespaceCode+typeName) ) {
 			Map<String,String> pk = new HashMap<String, String>(2);
-			pk.put(KimConstants.NAMESPACE_CODE, namespaceCode);
+			pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
 			pk.put("name", typeName);
 			KimTypeImpl impl = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
 			if ( impl != null ) {
-				infoCache.put(namespaceCode+typeName, impl.toInfo());
+				infoCacheByName.put(namespaceCode+typeName, impl.toInfo());
 			}
 		}
 		return infoCacheByName.get(namespaceCode+typeName);

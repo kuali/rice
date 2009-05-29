@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -191,5 +192,13 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	public boolean isPrincipal(){
 		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
 	}
-	
+
+	public AttributeSet getQualifierAsAttributeSet() {
+		AttributeSet m = new AttributeSet();
+		for ( KimDocumentRoleQualifier data : getQualifiers() ) {
+			m.put( data.getKimAttribute().getAttributeName(), data.getAttrVal() );
+		}
+		return m;
+	}
+
 }

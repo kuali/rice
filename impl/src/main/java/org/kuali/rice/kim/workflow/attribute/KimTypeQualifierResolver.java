@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.workflow.attribute;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
@@ -34,6 +37,7 @@ import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
@@ -53,6 +57,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 
 	private static KimTypeInfoService kimTypeInfoService;
 	private static GroupService groupService;
+	private static RoleService roleService;
 	
 	protected static Map<String,KimTypeService> typeServices = new HashMap<String, KimTypeService>();
 	
@@ -114,24 +119,33 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	protected String handleRoleDocument( List<AttributeSet> qualifiers, IdentityManagementRoleDocument roleDoc, String routeLevel ) {
         String customDocTypeName = null;
 
-        LOG.warn( "Role member data routing not implemented for the Role document yet!" );
+//        LOG.warn( "Role member data routing not implemented for the Role document yet!" );
     	// get the appropriate type service for the group being edited
     	String typeId = roleDoc.getRoleTypeId();
     	KimTypeService typeService = getTypeService(typeId);
     	if ( typeService != null ) {
-    		// TODO: get from role document the role members which are being added
-    		// QUESTION: can they be modified in a way which requires routing?
-    		// loop over the added role members
-    		// pull the needed information off the member data and add to qualifier
-    		// create a qualifier set for each role
+    		// QUESTION: can roles be modified in a way which requires routing?
+    		// get the existing role members
+    		List<RoleMembershipInfo> currentRoleMembers = KIMServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
+    		// loop over the role members on the document, check  if added or removed
+    		for ( KimDocumentRoleMember rm : roleDoc.getMembers() ) {
+    			boolean foundMember = false;
+    			for ( RoleMembershipInfo rmi : currentRoleMembers ) {
+    				if ( rmi.getRoleMemberId().equals( rm.getRoleMemberId() ) ) {
+    					foundMember = true;
+    					if ( !rm.isActive() ) { // don't need to check the role member information 
+    											// - only active members are returned
+    						// inactivated member, add a qualifier
+    						qualifiers.add( getRoleQualifier(rm.getRoleId(), typeId, typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+    					}
+    					break;
+    				}
+    			}
+    			if ( !foundMember ) {
+    				qualifiers.add( getRoleQualifier(rm.getRoleId(), typeId, typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+    			}
+    		}
     		
-        	// add role ID
-        	// add KIM Type ID
-            for (AttributeSet qualifier : qualifiers) {
-                qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, typeId);
-                qualifier.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleDoc.getRoleId());
-                qualifier.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, typeId);
-            }        	
     		customDocTypeName = typeService.getWorkflowDocumentTypeName();
     	}		
     	return customDocTypeName;
@@ -209,6 +223,20 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	return qualifier;
     }
     
+    protected AttributeSet getRoleQualifier( String roleId, String kimTypeId, KimTypeService typeService, AttributeSet roleAttributes, String routeLevel ) {
+		AttributeSet qualifier = new AttributeSet();        			
+		// pull the group to get its attributes for adding to the qualifier 
+        qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
+        qualifier.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
+        qualifier.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+		// check for the custom document type for the group
+		String customDocTypeName = typeService.getWorkflowDocumentTypeName();
+		if ( StringUtils.isNotBlank(customDocTypeName)) {
+			qualifier.put(KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME, customDocTypeName );
+		}
+		putMatchingAttributesIntoQualifier(qualifier, roleAttributes, typeService.getWorkflowRoutingAttributes(routeLevel) );
+    	return qualifier;
+    }
 	
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
@@ -224,4 +252,10 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 		return groupService;
 	}
 
+	public static RoleService getRoleService() {
+		if ( roleService == null ) {
+			roleService = KIMServiceLocator.getRoleService();
+		}
+		return roleService;
+	}
 }

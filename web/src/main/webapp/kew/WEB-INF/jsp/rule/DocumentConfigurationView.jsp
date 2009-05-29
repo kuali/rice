@@ -113,6 +113,7 @@ tr.overridden td a {
 	 	</div>
    	    <kul:tab tabTitle="Permissions" defaultOpen="true">
 			<div class="tab-container" style="width:auto;">
+			 Gray lines that are stricken through represent inherited permissions that have been overridden by a more specific permission.
 			 <%-- loop over the document types, going up the hierarchy --%>
                 <c:forEach var="permDocTypeName" items="${KualiForm.docTypeHierarchyList}">
 				  <c:choose>
@@ -132,8 +133,8 @@ tr.overridden td a {
  	    </kul:tab>
 
  	    <kul:tab tabTitle="Workflow / Responsibilities" defaultOpen="true" >
- 	      <%-- TODO: need separate section for the exception routing --%>
  	  		<div class="tab-container" style="width:auto;">
+             Gray lines that are stricken through represent inherited responsibilities that have been overridden by a more specific responsibilities.
  	  			<kul:subtab width="100%" subTabTitle="Exception Routing" noShowHideButton="true">
 				  <c:set var="responsibilities" value="${KualiForm.exceptionResponsibilities}" scope="request" />
 	           	  <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />

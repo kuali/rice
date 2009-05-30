@@ -139,6 +139,8 @@ public interface Config {
 	public static final String OUT_BOX_MODE = "actionlist.outbox";
 	public static final String OUT_BOX_DEFAULT_PREFERENCE_ON = "actionlist.outbox.default.preference.on";
 
+	public static final String PORTAL_SHOW_SAMPLE_APP = "portal.show.sample.app";
+	
 	public void parseConfig() throws IOException;
 
 	/**
@@ -221,6 +223,12 @@ public interface Config {
 
 	public String getDocumentLockTimeout();
 
+	/**
+	 * This has to be a string because BooleanS don't work when accessed through 
+	 * ConfigProperties like ${ConfigProperties.portal.show.sample.app} in JSPs.
+	 */
+	public String getPortalShowSampleApp();
+	
     public Boolean getEmailReminderLifecycleEnabled();
 
     public Boolean getXmlPipelineLifeCycleEnabled();
@@ -230,4 +238,5 @@ public interface Config {
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
 	public Boolean getOutBoxDefaultPreferenceOn();
+	
 }

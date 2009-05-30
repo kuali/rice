@@ -389,36 +389,40 @@ public abstract class BaseConfig implements Config {
         return getProperty(Config.DOCUMENT_LOCK_TIMEOUT);
     }
     
+    public String getPortalShowSampleApp() {
+    	return getProperty(Config.PORTAL_SHOW_SAMPLE_APP);
+    }
+    
     public Boolean getEmailReminderLifecycleEnabled() {
-        return new Boolean(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
+        return Boolean.valueOf(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
     }
 
     public Boolean getXmlPipelineLifeCycleEnabled() {
-        return new Boolean(getProperty(ENABLE_XML_PIPELINE_LIFECYCLE));
+        return Boolean.valueOf(getProperty(ENABLE_XML_PIPELINE_LIFECYCLE));
     }
 
     public Boolean getDevMode() {
-        return new Boolean(getProperty(DEV_MODE));
+        return Boolean.valueOf(getProperty(DEV_MODE));
     }
 
     public Boolean getStoreAndForward() {
-        return new Boolean(getProperty(Config.STORE_AND_FORWARD));
+        return Boolean.valueOf(getProperty(Config.STORE_AND_FORWARD));
     }
 
     public Boolean getOutBoxOn() {
         if (getProperty(Config.OUT_BOX_MODE) == null) {
             return true;
         } 
-        return new Boolean(getProperty(Config.OUT_BOX_MODE));
+        return Boolean.valueOf(getProperty(Config.OUT_BOX_MODE));
     }
 
     public Boolean getOutBoxDefaultPreferenceOn() {
         if (getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON) == null) {
             return true;
         }
-        return new Boolean(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
+        return Boolean.valueOf(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
     }
-    
+
     public String toString() {
         return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();
     }

@@ -971,7 +971,7 @@ public class ObjectUtils {
 				return clazz.newInstance();
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Error occured while trying to create a new instance for class " + clazz);
+			throw new RuntimeException("Error occured while trying to create a new instance for class " + clazz,e);
 		}
     }
 

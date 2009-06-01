@@ -44,6 +44,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_PND_ROLE_MT")
 public class PersonDocumentRole extends KimDocumentBoBase {
+	private static final long serialVersionUID = 4908044213007222739L;
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	protected String kimTypeId;
@@ -109,9 +110,13 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	}
 
 	public KimTypeInfo getKimRoleType() {
-		return this.kimRoleType;
+		if ( kimRoleType == null ) {
+			kimRoleType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		}
+		return kimRoleType;
 	}
 
+	@Deprecated // for testing only
 	public void setKimRoleType(KimTypeInfo kimRoleType) {
 		this.kimRoleType = kimRoleType;
 	}

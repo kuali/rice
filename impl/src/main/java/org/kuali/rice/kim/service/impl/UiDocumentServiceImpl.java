@@ -448,7 +448,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        	docRole.setNamespaceCode(role.getNamespaceCode());
 	        	docRole.setEdit(true);
 	        	docRole.setRoleId(role.getRoleId());
-	        	docRole.setKimRoleType(role.getKimRoleType());
 	        	docRole.setRoleName(role.getRoleName());
 	        	docRole.setRolePrncpls(populateDocRolePrncpl(role.getMembers(), identityManagementPersonDocument.getPrincipalId(), getAttributeDefinitionsForRole(docRole)));
 	        	docRole.refreshReferenceObject("assignedResponsibilities");
@@ -536,7 +535,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (List<RoleMemberImpl>)getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
 	}
 
-	@SuppressWarnings("unchecked")
 	public RoleMemberImpl getRoleMember(String roleMemberId) {
 		if ( roleMemberId == null ) {
 			return null;
@@ -1079,7 +1077,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleMembers;
 	}
 
-    private List<KimDelegationImpl> getDelegations(String principalId){
+    @SuppressWarnings("unchecked")
+	private List<KimDelegationImpl> getDelegations(String principalId){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put(KIMPropertyConstants.DelegationMember.MEMBER_ID, principalId);
 		criteria.put( KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );

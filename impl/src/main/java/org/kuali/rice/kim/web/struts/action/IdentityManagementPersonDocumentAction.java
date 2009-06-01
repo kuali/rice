@@ -314,8 +314,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        }
 	        newRole.setRoleName(roleImpl.getRoleName());
 	        newRole.setNamespaceCode(roleImpl.getNamespaceCode());
-	        newRole.setKimRoleType(roleImpl.getKimRoleType());
-	        newRole.setKimTypeId(roleImpl.getKimRoleType().getKimTypeId());
+	        newRole.setKimTypeId(roleImpl.getKimTypeId());
         	KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(newRole.getKimRoleType()));
 	        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
 	        // role type populated from form is not a complete record

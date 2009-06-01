@@ -25,7 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -35,7 +34,6 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -72,8 +70,6 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
 
-	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	
 	protected String principalName;
 	protected String groupNamespaceCode;
 	protected String groupName;

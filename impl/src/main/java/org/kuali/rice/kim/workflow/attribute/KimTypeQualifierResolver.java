@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
+import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -179,29 +180,35 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         		}
         	}
         } else if ( ROLE_ROUTE_LEVEL.equals(routeLevel) ) {
+//        	getRoleService().get
+        	for ( PersonDocumentRole pdr : personDoc.getRoles() ) {
+            	KimTypeService typeService = getTypeService(pdr.getKimTypeId());
+        		for ( KimDocumentRoleMember rm : pdr.getRolePrncpls() ) {
+        			if ( StringUtils.equals( rm.getMemberId(), personDoc.getPrincipalId() ) ) {
+            			boolean foundMember = false;
+                		for ( RoleMembershipInfo rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), null ) ) {
+                			if ( StringUtils.equals( rmi.getRoleMemberId(), rm.getRoleMemberId() ) ) {
+                				foundMember = true;
+            					if ( !rm.isActive() ) { // don't need to check the role member information 
+									// - only active members are returned
+            						// inactivated member, add a qualifier
+									qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+								}
+								break;
+                			}
+                		}
+            			if ( !foundMember ) {
+            				qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+            			}
+        			}
+        		}
+        	}
         	// if roles, check the role member data for any roles added
         	// get the type and service for each role
         	// handle as for the role document, a qualifier for each role membership added
-        	LOG.warn( "Role-based data routing on the person document not implemented!" );
+//        	LOG.warn( "Role-based data routing on the person document not implemented!" );
         }
         
-    	// get the appropriate type service for the group being edited
-    	//String typeId = personDoc.getRoleTypeId();
-//    	KimTypeService typeService = typeServices.get(typeId);
-//    	if ( typeService == null ) {       		
-//        	KimTypeInfo typeInfo = getKimTypeInfoService().getKimType(typeId);
-//    		typeService = (KimTypeService)KIMServiceLocator.getBean(typeInfo.getKimTypeServiceName());
-//    		typeServices.put(typeId, typeService);
-//    	}
-//    	if ( typeService != null ) {
-//        	// add role ID
-//        	// add KIM Type ID
-//            for (AttributeSet qualifier : qualifiers) {
-//                qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, typeId);
-//                qualifier.put(KimConstants.PrimaryKeyConstants.ROLE_ID, personDoc.getRoleId());
-//            }        	
-//    		customDocTypeName = typeService.getWorkflowDocumentTypeName();
-//    	}		
     	return null;
 	}
 

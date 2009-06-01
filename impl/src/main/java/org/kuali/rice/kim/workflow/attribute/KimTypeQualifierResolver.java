@@ -184,22 +184,20 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         	for ( PersonDocumentRole pdr : personDoc.getRoles() ) {
             	KimTypeService typeService = getTypeService(pdr.getKimTypeId());
         		for ( KimDocumentRoleMember rm : pdr.getRolePrncpls() ) {
-        			if ( StringUtils.equals( rm.getMemberId(), personDoc.getPrincipalId() ) ) {
-            			boolean foundMember = false;
-                		for ( RoleMembershipInfo rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), null ) ) {
-                			if ( StringUtils.equals( rmi.getRoleMemberId(), rm.getRoleMemberId() ) ) {
-                				foundMember = true;
-            					if ( !rm.isActive() ) { // don't need to check the role member information 
-									// - only active members are returned
-            						// inactivated member, add a qualifier
-									qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
-								}
-								break;
-                			}
-                		}
-            			if ( !foundMember ) {
-            				qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+        			boolean foundMember = false;
+            		for ( RoleMembershipInfo rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), null ) ) {
+            			if ( StringUtils.equals( rmi.getRoleMemberId(), rm.getRoleMemberId() ) ) {
+            				foundMember = true;
+        					if ( !rm.isActive() ) { // don't need to check the role member information 
+								// - only active members are returned
+        						// inactivated member, add a qualifier
+								qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+							}
+							break;
             			}
+            		}
+        			if ( !foundMember ) {
+        				qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
         			}
         		}
         	}

@@ -45,6 +45,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
@@ -115,7 +116,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			// just skip - and don't display links
         	LOG.error( "Unable to check Permission initiation permission for "+ permissionDocumentType, ex );
 		}
-    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimPermissionImpl.class);
+    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimResponsibilityImpl.class);
         try {
             if ((responsibilityDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(responsibilityDocumentType).canInitiate(responsibilityDocumentType, GlobalVariables.getUserSession().getPerson())) {
                 form.setCanInitiateResponsibilityDocument( true );

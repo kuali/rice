@@ -18,6 +18,7 @@
 	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="travel.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="kr.url">${application.url}/kr</param>
+    <param name="portal.show.sample.app">true</param>
 
 	<!-- Misc parameters -->
 	<param name="institution">rice</param>

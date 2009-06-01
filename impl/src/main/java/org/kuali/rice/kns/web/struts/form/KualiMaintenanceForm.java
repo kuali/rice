@@ -61,8 +61,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     private String businessObjectClassName;
     private String description;
     private boolean readOnly;
-    private Map oldMaintainableValues;
-    private Map newMaintainableValues;
+    private Map<String, String> oldMaintainableValues;
+    private Map<String, String> newMaintainableValues;
     private String maintenanceAction;
     
     /**
@@ -179,8 +179,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
         // document type name is null on start, otherwise should be here
         if (StringUtils.isNotBlank(getDocTypeName())) {
-            Map localOldMaintainableValues = new HashMap();
-            Map localNewMaintainableValues = new HashMap();
+            Map<String, String> localOldMaintainableValues = new HashMap<String, String>();
+            Map<String, String> localNewMaintainableValues = new HashMap<String, String>();
             Map<String,String> localNewCollectionValues = new HashMap<String,String>();
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameter = (String) i.nextElement();
@@ -200,11 +200,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             
             // now, get all add lines and store them to a separate map
             // for use in a separate call to the maintainable
-            for ( Object obj : localNewMaintainableValues.entrySet() ) {
-                String key = (String)((Map.Entry)obj).getKey(); 
+            for ( Map.Entry<String, String> entry : localNewMaintainableValues.entrySet() ) {
+                String key = entry.getKey(); 
                 if ( key.startsWith( KNSConstants.MAINTENANCE_ADD_PREFIX ) ) {
                     localNewCollectionValues.put( key.substring( KNSConstants.MAINTENANCE_ADD_PREFIX.length() ),
-                            (String)((Map.Entry)obj).getValue() );
+                            entry.getValue() );
                 }
             }
             if ( LOG.isDebugEnabled() ) {
@@ -217,13 +217,13 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
 
             GlobalVariables.getErrorMap().addToErrorPath("document.oldMaintainableObject");
-            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument);
+            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument, getMethodToCall());
             GlobalVariables.getErrorMap().removeFromErrorPath("document.oldMaintainableObject");
 
             GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
             // update the main object
             Map cachedValues = 
-            	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument);
+            	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument, getMethodToCall());
             
             if(maintenanceDocument.getFileAttachment() != null) {
                 populateAttachmentPropertyForBO(maintenanceDocument);
@@ -231,7 +231,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             
             // update add lines
             localNewCollectionValues = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().resolvePrincipalNamesToPrincipalIds((BusinessObject)maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
-            cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues ) );
+            cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues, maintenanceDocument, getMethodToCall() ) );
             GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
 
             if (cachedValues.size() > 0) {

@@ -551,12 +551,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         Map<String, String> requestParameters = new HashMap<String, String>();
 
 
-        // List of encrypted fields - Change for KFSMI-1374 -
-        // Getting rid of encryptionValues and fetching the list of fields, that should be encrypted, from DataDictionary
-        List encryptedList = 
-        	getDataDictionaryService().getEncryptedFieldsList(maintainable.getBusinessObject().getClass().getName());
-
-
         for (Iterator iter = keyFieldNames.iterator(); iter.hasNext();) {
             String keyPropertyName = (String) iter.next();
 
@@ -564,8 +558,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 String keyValue = request.getParameter(keyPropertyName);
 
                 // Check if this element was encrypted, if it was decrypt it
-                if (encryptedList.contains(keyPropertyName)) {
+                if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(maintainable.getBoClass(), keyPropertyName)) {
                     try {
+                    	keyValue = StringUtils.removeEnd(keyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
                         keyValue = encryptionService.decrypt(keyValue);
                     }
                     catch (GeneralSecurityException e) {

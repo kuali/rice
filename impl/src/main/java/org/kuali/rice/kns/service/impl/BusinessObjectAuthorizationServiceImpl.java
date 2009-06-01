@@ -658,7 +658,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			Class<? extends BusinessObject> businessObjectClass,
 			String attributeName) {
 		AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), attributeName);
-		return attributeSecurity != null && (attributeSecurity.isHide() || attributeSecurity.isMask() || attributeSecurity.isPartialMask() || attributeSecurity.isReadOnly());
+		return attributeSecurity != null && attributeSecurity.hasAnyRestriction();
 	}
 	
 }

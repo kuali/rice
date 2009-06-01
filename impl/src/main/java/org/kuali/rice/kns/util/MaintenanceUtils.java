@@ -28,19 +28,23 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiExceptionIncidentService;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -55,6 +59,8 @@ public class MaintenanceUtils {
     private static WorkflowDocumentService workflowDocumentService;
     private static KualiConfigurationService kualiConfigurationService;
     private static KualiExceptionIncidentService kualiExceptionIncidentService; 
+    private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    private static DataDictionaryService dataDictionaryService;
     
     /**
      * Returns the field templates defined in the maint dictionary xml files. Field templates are used in multiple value lookups.
@@ -458,4 +464,52 @@ public class MaintenanceUtils {
 		return kualiExceptionIncidentService;
 	}
     
+	private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		if ( maintenanceDocumentDictionaryService == null ) {
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
+		return maintenanceDocumentDictionaryService;
+	}
+	
+	private static DataDictionaryService getDataDictionaryService() {
+		if ( dataDictionaryService == null ) {
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
+	public static Map<String, AttributeSecurity> retrievePropertyPathToAttributeSecurityMappings(String docTypeName) {
+		Map<String, AttributeSecurity> results = new HashMap<String, AttributeSecurity>();
+		MaintenanceDocumentEntry entry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+		String className = entry.getBusinessObjectClass().getName();
+		
+		for (MaintainableSectionDefinition section : entry.getMaintainableSections()) {
+			for (MaintainableItemDefinition item : section.getMaintainableItems()) {
+				if (item instanceof MaintainableFieldDefinition) {
+					MaintainableFieldDefinition field = (MaintainableFieldDefinition) item;
+					AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(className, field.getName());
+					if (attributeSecurity != null) {
+						results.put(field.getName(), attributeSecurity);
+					}
+				}
+				else if (item instanceof MaintainableCollectionDefinition) {
+					addMaintenanceDocumentCollectionPathToSecurityMappings(results, "", (MaintainableCollectionDefinition) item);
+				}
+			}
+		}
+		return results;
+	}
+	
+	private static void addMaintenanceDocumentCollectionPathToSecurityMappings(Map<String, AttributeSecurity> mappings, String propertyPathPrefix, MaintainableCollectionDefinition collectionDefinition) {
+		propertyPathPrefix = propertyPathPrefix + collectionDefinition.getName() + ".";
+		String boClassName = collectionDefinition.getBusinessObjectClass().getName();
+		for (MaintainableFieldDefinition field : collectionDefinition.getMaintainableFields()) {
+			AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(boClassName, field.getName());
+			if (attributeSecurity != null) {
+				mappings.put(propertyPathPrefix + field.getName(), attributeSecurity);
+			}
+		}
+		for (MaintainableCollectionDefinition nestedCollection : collectionDefinition.getMaintainableCollections()) {
+			addMaintenanceDocumentCollectionPathToSecurityMappings(mappings, propertyPathPrefix, nestedCollection);
+		}
+	}
 }

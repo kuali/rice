@@ -85,7 +85,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param maintenanceDocument
      * @return
      */
-    public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument);
+    public Map populateBusinessObject(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall);
 
 
     /**
@@ -184,7 +184,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param fieldValues
      * @return
      */
-    public Map populateNewCollectionLines( Map fieldValues );
+    public Map<String, String> populateNewCollectionLines( Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall );
     
     /**
      * Gets the holder for the "add line" for a collection on the business object 

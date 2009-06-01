@@ -777,9 +777,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (fieldVal == null) {
                 fieldVal = KNSConstants.EMPTY_STRING;
             }
-            if (fieldConversions.containsKey(fieldNm)) {
-                fieldNm = (String) fieldConversions.get(fieldNm);
-            }
 
             if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
                 try {
@@ -798,6 +795,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             	fieldVal = dateFormatter.format(fieldVal);
             }
 
+            if (fieldConversions.containsKey(fieldNm)) {
+                fieldNm = (String) fieldConversions.get(fieldNm);
+            }
+            
             parameters.put(fieldNm, fieldVal.toString());
         }
 

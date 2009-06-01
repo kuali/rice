@@ -617,13 +617,13 @@ public class FieldUtils {
      * @param propertyNamePrefix this value will be prepended to all property names in the returned unformattable values map
      * @return Cached Values from any formatting failures
      */
-    public static Map populateBusinessObjectFromMap(BusinessObject bo, Map fieldValues, String propertyNamePrefix) {
+    public static Map populateBusinessObjectFromMap(BusinessObject bo, Map<String, ?> fieldValues, String propertyNamePrefix) {
         Map cachedValues = new HashMap();
         ErrorMap errorMap = GlobalVariables.getErrorMap();
 
         try {
-            for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
-                String propertyName = (String) iter.next();
+            for (Iterator<String> iter = fieldValues.keySet().iterator(); iter.hasNext();) {
+                String propertyName = iter.next();
 
                 if (propertyName.endsWith(KNSConstants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION)) {
                     // since checkboxes do not post values when unchecked, this code detects whether a checkbox was unchecked, and

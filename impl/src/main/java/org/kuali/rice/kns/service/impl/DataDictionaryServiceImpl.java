@@ -885,22 +885,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         }
         return blockingClasses;
     }
-    
-    /***
-     * @see org.kuali.rice.kns.service.DataDictionaryService#getEncryptedValuesList(java.lang.String)
-     */
-    public List<String> getEncryptedFieldsList(String entryClassName){
-    	BusinessObjectEntry boEntry = getDataDictionary().getBusinessObjectEntry(entryClassName);
-    	List<String> encryptedFieldsList = new ArrayList<String>();
-    	AttributeSecurity attributeSecurity;
-    	for(AttributeDefinition attributeDefinition: boEntry.getAttributes()){
-    		attributeSecurity = attributeDefinition.getAttributeSecurity();
-        	if(attributeSecurity != null){
-        		encryptedFieldsList.add(attributeDefinition.getName());
-        	}
-    	}
-    	return encryptedFieldsList;
-    }
 
 	public KualiWorkflowInfo getWorkflowInfoService() {
 		if ( workflowInfoService == null ) {

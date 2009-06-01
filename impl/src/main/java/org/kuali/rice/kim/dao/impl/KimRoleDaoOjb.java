@@ -27,9 +27,9 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
+import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -39,6 +39,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
@@ -82,25 +83,31 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 *      java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GroupMemberImpl> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId) {
-		
-		Criteria c = new Criteria();
-		
-		if ( groupIds != null ) {
-			c.addIn(KIMPropertyConstants.GroupMember.GROUP_ID, groupIds);
-		}
-		if(StringUtils.isNotEmpty(principalId))
-			c.addEqualTo(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
-		c.addEqualTo( KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
-		Query query = QueryFactory.newQuery(GroupMemberImpl.class, c);
-		Collection<GroupMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		ArrayList<GroupMemberImpl> results = new ArrayList<GroupMemberImpl>( coll.size() );
-		for ( GroupMemberImpl rm : coll ) {
-			if ( rm.isActive() ) {
-				results.add(rm);
-			}
-		}
-		return results;
+	public List<GroupMembershipInfo> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId) {
+	    List<String> groupIdValues = new ArrayList<String>();
+	    List<GroupMembershipInfo> groupPrincipals = new ArrayList<GroupMembershipInfo>();
+	    if (groupIds != null
+	            && principalId == null) {
+	        groupIdValues = new ArrayList<String>(groupIds);
+	    } else if (principalId != null) {
+	        groupIdValues = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+	    }
+	    if (groupIdValues != null
+	            && groupIdValues.size() > 0) {
+    	    Collection<GroupMembershipInfo> groupMembershipInfos = KIMServiceLocator.getGroupService().getGroupMembers(groupIdValues);
+            for (GroupMembershipInfo groupMembershipInfo : groupMembershipInfos) {
+                if (principalId != null) {
+                    if (StringUtils.equals(groupMembershipInfo.getMemberTypeCode(), Role.PRINCIPAL_MEMBER_TYPE)
+                            && StringUtils.equals(principalId, groupMembershipInfo.getMemberId())
+                            && groupMembershipInfo.isActive()) {
+                        groupPrincipals.add(groupMembershipInfo); 
+                    }
+                } else {
+                    groupPrincipals.add(groupMembershipInfo);
+                }
+            }
+	    } 
+	    return groupPrincipals;
 	}
 
 	/**
@@ -108,20 +115,24 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 *      java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GroupMemberImpl> getGroupMembers(Collection<String> groupIds) {
-		Criteria c = new Criteria();
-		if ( groupIds != null ) {
-			c.addIn(KIMPropertyConstants.GroupMember.GROUP_ID, groupIds);
-		}
-		Query query = QueryFactory.newQuery(GroupMemberImpl.class, c);
-		Collection<GroupMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-		ArrayList<GroupMemberImpl> results = new ArrayList<GroupMemberImpl>( coll.size() );
-		for ( GroupMemberImpl rm : coll ) {
-			if ( rm.isActive() ) {
-				results.add(rm);
-			}
-		}
-		return results;
+	public List<GroupMembershipInfo> getGroupMembers(Collection<String> groupIds) {
+	    List<String> groupIdValues = new ArrayList<String>();
+	    List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
+	    if (groupIds != null) {
+	        groupIdValues = new ArrayList<String>(groupIds);
+
+	        if (groupIdValues != null
+	                && groupIdValues.size() > 0) {
+	            Collection<GroupMembershipInfo> groupMembershipInfos = KIMServiceLocator.getGroupService().getGroupMembers(groupIdValues);
+	            if (groupMembershipInfos != null) {
+	                groupMembers = new ArrayList<GroupMembershipInfo>(groupMembershipInfos);
+	            }
+	            //for (GroupMembershipInfo groupMembershipInfo : groupMembershipInfos) {
+	            //    groupPrincipals.add(groupMembershipInfo);
+	            //}
+	        } 
+	    }
+	    return groupMembers;
 	}
 	
 	/**
@@ -385,15 +396,17 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
 
     private List<String> getRoleIdsForPrincipalName(String value) {
-        Criteria subCrit = new Criteria();
 		String principalName = value.replace('*', '%');
-		addLikeToCriteria(subCrit, KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
-        subCrit.addEqualToField(KIMPropertyConstants.Principal.PRINCIPAL_ID, Criteria.PARENT_QUERY_PREFIX + "memberId");
-		ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(KimPrincipalImpl.class, subCrit);
         Criteria memberSubCrit = new Criteria();
-        //memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
+        List<Person> principalMembers = KIMServiceLocator.getPersonService().findPeople(criteria);
+        List<String> principalIds = new ArrayList<String>();
+        for (Person person : principalMembers) {
+            principalIds.add(person.getPrincipalId());
+        }
         memberSubCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE);
-        memberSubCrit.addExists(subQuery);
+        memberSubCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, principalIds);
         List<String> roleIds = new ArrayList<String>();
 		ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
 		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
@@ -401,14 +414,20 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 				roleIds.add(roleMbr.getRoleId());
 			}
 		}
-		Criteria groupMSubCrit = new Criteria();
-	        groupMSubCrit.addEqualToField("groupId", Criteria.PARENT_QUERY_PREFIX + "memberId");
-	        groupMSubCrit.addEqualTo("memberTypeCode", "P");
-	        groupMSubCrit.addExists(subQuery);
-		ReportQueryByCriteria groupMbrSubQuery = QueryFactory.newReportQuery(GroupMemberImpl.class, groupMSubCrit);
+		
+		List<String> groupIds = new ArrayList<String>();
+		for (String principalId : principalIds) {
+		    List<String> principalGroupIds = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+		    for (String groupId : principalGroupIds) {
+		        if (!groupIds.contains(groupId)) {
+		            groupIds.add(groupId);
+		        }
+		    }
+		}
+		
         Criteria grpRoleCrit = new Criteria();
-        grpRoleCrit.addEqualTo("memberTypeCode", "G");
-        grpRoleCrit.addExists(groupMbrSubQuery);
+        grpRoleCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE);
+        grpRoleCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
         memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, grpRoleCrit);
 
 		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
@@ -416,6 +435,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 				roleIds.add(roleMbr.getRoleId());
 			}
 		}
+		
     	return roleIds;
     }
     

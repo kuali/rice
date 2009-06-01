@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
@@ -1261,10 +1262,13 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     }
     
     private void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday){
-    	List<GroupMemberImpl> groupMembers = roleDao.getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
-    	for ( GroupMemberImpl rm : groupMembers ) {
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
-    	}
+        List<GroupMembershipInfo> groupMemberInfos = roleDao.getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
+        List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
+        for ( GroupMembershipInfo rm : groupMemberInfos ) {
+            rm.setActiveToDate( new Date(yesterday.getTime()) );
+            groupMembers.add(toGroupMemberImpl(rm));
+        }
+        
     	getBusinessObjectService().save(groupMembers);
     }
 
@@ -1296,15 +1300,17 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
     	List<String> groupIds = new ArrayList<String>();
     	groupIds.add(groupId);
-    	inactivateGroupMemberships(groupIds, yesterday);
+    	inactivatePrincipalGroupMemberships(groupIds, yesterday);
     	inactivateGroupRoleMemberships(groupIds, yesterday);
     }
     
-    private void inactivateGroupMemberships(List<String> groupIds, Timestamp yesterday){
-    	List<GroupMemberImpl> groupMembers = roleDao.getGroupMembers(groupIds);
-    	for ( GroupMemberImpl rm : groupMembers ) {
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
-    	}
+    private void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday){
+        List<GroupMembershipInfo> groupMemberInfos = roleDao.getGroupMembers(groupIds);
+        List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
+        for ( GroupMembershipInfo rm : groupMemberInfos ) {
+            rm.setActiveToDate( new Date(yesterday.getTime()) );
+            groupMembers.add(toGroupMemberImpl(rm));
+        }
     	getBusinessObjectService().save(groupMembers);
     }
 
@@ -1314,6 +1320,23 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}
     	getBusinessObjectService().save(roleMembersOfGroupType);
+    }
+    
+    protected GroupMemberImpl toGroupMemberImpl(GroupMembershipInfo kimGroupMember) {
+        GroupMemberImpl groupMemberImpl = null;
+
+        if (kimGroupMember != null) {
+            groupMemberImpl = new GroupMemberImpl();
+            groupMemberImpl.setGroupId(kimGroupMember.getGroupId());
+            groupMemberImpl.setGroupMemberId(kimGroupMember.getGroupMemberId());
+            groupMemberImpl.setMemberId(kimGroupMember.getMemberId());
+            groupMemberImpl.setMemberTypeCode(kimGroupMember.getMemberTypeCode());
+            groupMemberImpl.setActiveFromDate(kimGroupMember.getActiveFromDate());
+            groupMemberImpl.setActiveToDate(kimGroupMember.getActiveToDate());
+            groupMemberImpl.setVersionNumber(kimGroupMember.getVersionNumber());
+        }
+
+        return groupMemberImpl;
     }
 
 }

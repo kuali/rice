@@ -9,7 +9,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.kuali.rice.core.jaxb.JaxbStringMapAdapter;
+import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 
@@ -32,13 +32,13 @@ public interface GroupService {
      */
     List<GroupInfo> getGroupsForPrincipalByNamespace(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode);
 	
-    List<String> lookupGroupIds(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = JaxbStringMapAdapter.class) Map<String, String> searchCriteria);
+    List<String> lookupGroupIds(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
     
     GroupInfo getGroupInfo(@WebParam(name="groupId") String groupId);
     
     GroupInfo getGroupInfoByName(@WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="groupName") String groupName);
 
-    @XmlJavaTypeAdapter(value = JaxbStringMapAdapter.class) Map<String, GroupInfo> getGroupInfos(@WebParam(name="groupIds") Collection<String> groupIds);
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, GroupInfo> getGroupInfos(@WebParam(name="groupIds") Collection<String> groupIds);
     
 	/** 
 	 * Check whether the give principal is a member of the group.
@@ -119,7 +119,7 @@ public interface GroupService {
 	/**
 	 * Get all the attributes of the given group.
 	 */
-    @XmlJavaTypeAdapter(value = JaxbStringMapAdapter.class) Map<String,String> getGroupAttributes( @WebParam(name="groupId") String groupId );
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> getGroupAttributes( @WebParam(name="groupId") String groupId );
 	
 	Collection<GroupMembershipInfo> getGroupMembers( @WebParam(name="groupIds") List<String> groupIds );
 	

@@ -42,7 +42,7 @@ public class PermissionServiceRemoteTest extends PermissionServiceTest {
 	}
 	
 	@Override
-	protected Object getKimService(Class<?> svcClazz) throws Exception {
-		return ServiceTestUtils.getRemoteServiceProxy(svcClazz);
+	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
+		return ServiceTestUtils.getRemoteServiceProxy(svcNamespace, svcNames[0], svcNames[1]);
 	}
 }

@@ -38,7 +38,10 @@ public class RoleServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		roleService = (RoleService) getKimService(RoleService.class);
+		roleService = (RoleService) getKimService(ServiceTestUtils.getConfigProp("kim.test.namespace.role"),
+												  ServiceTestUtils.getConfigProp("kim.test.servicename.role"),
+												  ServiceTestUtils.getConfigProp("kim.test.serviceclass.role"));
+
 	}
 	
 	@Test
@@ -80,7 +83,8 @@ public class RoleServiceTest extends KIMTestCase {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(Class<?> svcClazz) throws Exception {
-		return GlobalResourceLoader.getService(new QName("http://org.kuali.rice/kim/role", svcClazz.getSimpleName()));
+	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
+		// TODO: local namespace should be a valid, non-partial namespace (unlike 'KIM')
+		return GlobalResourceLoader.getService(new QName("KIM", svcNames[0]));
 	}
 }

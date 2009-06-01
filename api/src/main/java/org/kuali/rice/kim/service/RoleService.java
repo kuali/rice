@@ -24,7 +24,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.kuali.rice.core.jaxb.JaxbStringMapAdapter;
+import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -138,7 +138,7 @@ public interface RoleService {
 	 * 
 	 * This method get search results for role lookup
 	 */
-	List<? extends Role> getRolesSearchResults(@XmlJavaTypeAdapter(value = JaxbStringMapAdapter.class) @WebParam(name = "fieldValues") java.util.Map<String,String> fieldValues);
+	List<? extends Role> getRolesSearchResults(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") java.util.Map<String,String> fieldValues);
 	
 	/**
 	 * Notifies all of a principal's roles and role types that the principal has been inactivated.

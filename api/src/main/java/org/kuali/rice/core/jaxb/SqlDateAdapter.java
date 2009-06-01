@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.core.jaxb;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
+ * Marshall/unmarshall java.util.Date
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class JaxbStringMapAdapter extends XmlAdapter<StringMapEntryList, Map<String, String>> {
+public class SqlDateAdapter extends XmlAdapter<String, Date> {
 
 	/**
 	 * This overridden method ...
@@ -34,14 +33,8 @@ public class JaxbStringMapAdapter extends XmlAdapter<StringMapEntryList, Map<Str
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public StringMapEntryList marshal(Map<String, String> map) throws Exception {
-		if(null == map) return null;
-		StringMapEntryList entryList = new StringMapEntryList();
-		for (Map.Entry<String, String> e : map.entrySet()) {
-			entryList.getEntries().add(
-					new StringMapEntry(e.getKey(), e.getValue()));
-		}
-		return entryList;
+	public String marshal(Date date) throws Exception {
+		return (null != date ? Long.toString(date.getTime()) : null);
 	}
 
 	/**
@@ -50,12 +43,7 @@ public class JaxbStringMapAdapter extends XmlAdapter<StringMapEntryList, Map<Str
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Map<String, String> unmarshal(StringMapEntryList entryList) throws Exception {
-		if (null == entryList) return null;
-		Map<String, String> resultMap = new HashMap<String, String>();
-		for (StringMapEntry entry : entryList.getEntries()) {
-			resultMap.put(entry.key, entry.value);
-		}
-		return resultMap;
+	public Date unmarshal(String dateStr) throws Exception {
+		return (null != dateStr ? new Date(Long.parseLong(dateStr)) : null);
 	}
 }

@@ -48,7 +48,8 @@ public class GroupServiceRemoteTest extends GroupServiceTest {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(Class<?> clazz) throws Exception {
-		return ServiceTestUtils.getRemoteServiceProxy(clazz);
+	@Override
+	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
+		return ServiceTestUtils.getRemoteServiceProxy(svcNamespace, svcNames[0], svcNames[1]);
 	}
 }

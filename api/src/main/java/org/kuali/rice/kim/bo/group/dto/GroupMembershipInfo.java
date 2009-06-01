@@ -20,7 +20,7 @@ import java.sql.Date;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.kuali.rice.core.jaxb.JaxbDateAdapter;
+import org.kuali.rice.core.jaxb.SqlDateAdapter;
 
 
 /**
@@ -102,7 +102,7 @@ public class GroupMembershipInfo implements Serializable {
 		this.versionNumber = versionNumber;
 	}
 
-	@XmlJavaTypeAdapter(value = JaxbDateAdapter.class) 
+	@XmlJavaTypeAdapter(value = SqlDateAdapter.class) 
 	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
@@ -112,7 +112,7 @@ public class GroupMembershipInfo implements Serializable {
 		this.activeFromDate = activeFromDate;
 	}
 
-	@XmlJavaTypeAdapter(value = JaxbDateAdapter.class) 
+	@XmlJavaTypeAdapter(value = SqlDateAdapter.class) 
 	public Date getActiveToDate() {
 		return this.activeToDate;
 	}

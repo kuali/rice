@@ -10,8 +10,24 @@
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
 	
+	<param name="keystore.alias">rice</param>
 	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/ricekeystore</param>
+	<param name="keystore.password">r1c3pw</param>
 	
 	<param name="kim.test.port">9912</param>
 	<param name="kim.test.host">localhost</param>
+	
+	<param name="kim.test.namespace.permission">http://org.kuali.rice/kim/permission</param>
+	<param name="kim.test.servicename.permission">kimPermissionServiceSOAP</param>
+	<param name="kim.test.serviceclass.permission">org.kuali.rice.kim.service.PermissionService</param>
+	
+	<param name="kim.test.namespace.group">http://org.kuali.rice/kim/group</param>
+	<param name="kim.test.servicename.group">kimGroupServiceSOAP</param>
+	<param name="kim.test.serviceclass.group">org.kuali.rice.kim.service.GroupService</param>
+	<param name="kim.test.servicename.groupupdate">kimGroupUpdateServiceSOAP</param>
+	<param name="kim.test.serviceclass.groupupdate">org.kuali.rice.kim.service.GroupUpdateService</param>
+	
+	<param name="kim.test.namespace.role">http://org.kuali.rice/kim/role</param>
+	<param name="kim.test.servicename.role">kimRoleServiceSOAP</param>
+	<param name="kim.test.serviceclass.role">org.kuali.rice.kim.service.RoleService</param>
 </config>

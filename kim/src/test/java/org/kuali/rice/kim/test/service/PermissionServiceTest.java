@@ -40,7 +40,9 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		permissionService = (PermissionService) getKimService(PermissionService.class);
+		permissionService = (PermissionService) getKimService(ServiceTestUtils.getConfigProp("kim.test.namespace.permission"),
+															  ServiceTestUtils.getConfigProp("kim.test.servicename.permission"),
+															  ServiceTestUtils.getConfigProp("kim.test.serviceclass.permission"));
 	}
 
 	@Test
@@ -163,7 +165,8 @@ public class PermissionServiceTest extends KIMTestCase {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(Class<?> clazz) throws Exception {
-		return GlobalResourceLoader.getService(new QName("http://org.kuali.rice/kim/permission", clazz.getSimpleName()));
+	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
+		// TODO: local namespace should be a valid, non-partial namespace (unlike 'KIM')
+		return GlobalResourceLoader.getService(new QName("KIM", svcNames[0]));
 	}
 }

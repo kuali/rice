@@ -41,14 +41,8 @@ public class RoleServiceRemoteTest extends RoleServiceTest {
 		};	
 	}
 	
-	/**
-	 * This method tries to get a client proxy for the specified KIM service
-	 * 
-	 * @param  svcName - name of the KIM service desired
-	 * @return the proxy object
-	 * @throws Exception 
-	 */
-	protected Object getKimService(Class<?> svcClazz) throws Exception {
-		return ServiceTestUtils.getRemoteServiceProxy(svcClazz);
+	@Override
+	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
+		return ServiceTestUtils.getRemoteServiceProxy(svcNamespace, svcNames[0], svcNames[1]);
 	}
 }

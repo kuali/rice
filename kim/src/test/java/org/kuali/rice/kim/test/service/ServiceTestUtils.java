@@ -30,6 +30,10 @@ import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
  *
  */
 class ServiceTestUtils {
+	static	String serverHostStr = getConfigProp("kim.test.host");
+	static	String serverPortStr = getConfigProp("kim.test.port");
+	static	String appContext = getConfigProp("app.context.name");
+	
 	static int getConfigIntProp(String intPropKey) {
 		return Integer.parseInt(getConfigProp(intPropKey));
 	}
@@ -46,18 +50,16 @@ class ServiceTestUtils {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	static Object getRemoteServiceProxy(Class<?> clazz) throws Exception {
-		String serverHostStr = getConfigProp("kim.test.host");
-		String serverPortStr = getConfigProp("kim.test.port");
-		String serviceName = clazz.getSimpleName();
+	static Object getRemoteServiceProxy(String svcNamespace, String svcName, String svcClassName) throws Exception {
+		Class<?> serviceClass = Class.forName(svcClassName);
 		
 		// protocol will probably be configured eventually as well
 		String svcAddr = "http://" + serverHostStr + 
 							(null != serverPortStr ? ":" + Integer.parseInt(serverPortStr) : "") + "/" +
-							getConfigProp("app.context.name") + "/" + "remoting/" + serviceName;
+							appContext + "/" + "remoting/" + svcName;
 
 		ClientProxyFactoryBean clientFactory = new JaxWsProxyFactoryBean();
-		clientFactory.setServiceClass(clazz);
+		clientFactory.setServiceClass(serviceClass);
 		clientFactory.setAddress(svcAddr);
 		
 		ServiceInfo svcInfo = new ServiceInfo();

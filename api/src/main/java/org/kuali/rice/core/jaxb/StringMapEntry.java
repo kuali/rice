@@ -20,7 +20,9 @@ import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Single String-String key-value pair for 
- * marshalling/unmarshalling
+ * marshalling/unmarshalling. Need this rather than
+ * general Map.Entry<String, String> to specify
+ * cardinality in resulting wsdl's.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

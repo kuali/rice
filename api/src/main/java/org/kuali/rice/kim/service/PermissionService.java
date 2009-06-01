@@ -23,7 +23,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.kuali.rice.core.jaxb.JaxbStringMapAdapter;
+import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -243,7 +243,7 @@ public interface PermissionService {
      * 
      * If the searchCriteria parameter is null or empty, an empty list will be returned.
      */
-    List<KimPermissionInfo> lookupPermissions( @WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = JaxbStringMapAdapter.class) Map<String,String> searchCriteria,
+    List<KimPermissionInfo> lookupPermissions( @WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> searchCriteria,
     										   @WebParam(name="unbounded") boolean unbounded);
     
     /**

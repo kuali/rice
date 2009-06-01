@@ -39,8 +39,12 @@ public class GroupServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		groupService = (GroupService) getKimService(GroupService.class);
-		groupUpdateService = (GroupUpdateService) getKimService(GroupUpdateService.class);
+		groupService = (GroupService) getKimService(ServiceTestUtils.getConfigProp("kim.test.namespace.group"),
+													  ServiceTestUtils.getConfigProp("kim.test.servicename.group"),
+													  ServiceTestUtils.getConfigProp("kim.test.serviceclass.group"));
+		groupUpdateService = (GroupUpdateService) getKimService(ServiceTestUtils.getConfigProp("kim.test.namespace.group"),
+														  ServiceTestUtils.getConfigProp("kim.test.servicename.groupupdate"),
+														  ServiceTestUtils.getConfigProp("kim.test.serviceclass.groupupdate"));
 	}
 	
 	@Test
@@ -95,7 +99,8 @@ public class GroupServiceTest extends KIMTestCase {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	protected Object getKimService(Class<?> clazz) throws Exception {
-		return GlobalResourceLoader.getService(new QName("http://org.kuali.rice/kim/group", clazz.getSimpleName()));
+	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
+		// TODO: local namespace should be a valid, non-partial namespace (unlike 'KIM')
+		return GlobalResourceLoader.getService(new QName("KIM", svcNames[0]));
 	}
 }

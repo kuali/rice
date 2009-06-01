@@ -89,7 +89,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		if ( groupIds != null ) {
 			c.addIn(KIMPropertyConstants.GroupMember.GROUP_ID, groupIds);
 		}
-		c.addEqualTo(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+		if(StringUtils.isNotEmpty(principalId))
+			c.addEqualTo(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
 		c.addEqualTo( KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(GroupMemberImpl.class, c);
 		Collection<GroupMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -103,13 +104,35 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 
 	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
+	 *      java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GroupMemberImpl> getGroupMembers(Collection<String> groupIds) {
+		Criteria c = new Criteria();
+		if ( groupIds != null ) {
+			c.addIn(KIMPropertyConstants.GroupMember.GROUP_ID, groupIds);
+		}
+		Query query = QueryFactory.newQuery(GroupMemberImpl.class, c);
+		Collection<GroupMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		ArrayList<GroupMemberImpl> results = new ArrayList<GroupMemberImpl>( coll.size() );
+		for ( GroupMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
+	}
+	
+	/**
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection,
 	 *      java.util.Collection)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds ) {
 		Criteria c = new Criteria();
-		c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
 		c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
 		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);

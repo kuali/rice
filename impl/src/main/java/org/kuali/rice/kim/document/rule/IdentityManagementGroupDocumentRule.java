@@ -138,7 +138,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
-		errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
+		errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
 		validationErrors.putAll( attributeValidationHelper.convertErrors("",attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers),errorsTemp) );
 		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		

@@ -16,7 +16,9 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
 public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
@@ -24,4 +26,17 @@ public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 		workflowRoutingAttributes.add( KimAttributes.CAMPUS_CODE );
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#getAttributeDefinitions(java.lang.String)
+	 */
+	@Override
+	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
+		AttributeDefinitionMap map = super.getAttributeDefinitions(kimTypeId);
+		for (AttributeDefinition definition : map.values()) {
+			if (KimAttributes.CAMPUS_CODE.equals(definition.getName())) {
+				definition.setRequired(Boolean.TRUE);
+			}
+		}
+		return map;
+	}
 }

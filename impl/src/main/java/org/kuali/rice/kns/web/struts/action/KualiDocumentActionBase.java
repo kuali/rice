@@ -548,6 +548,7 @@ public class KualiDocumentActionBase extends KualiAction {
 //        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
 //            }
 //        }
+
         return actionForward;
     }
 
@@ -1579,10 +1580,10 @@ public class KualiDocumentActionBase extends KualiAction {
         if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, GlobalVariables.getUserSession().getPerson())) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
         }
-        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
+        if (!document.getDocumentHeader().getWorkflowDocument().stateIsFinal() && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
         }
-        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
+        if (!(document.getDocumentHeader().getWorkflowDocument().stateIsApproved() || document.getDocumentHeader().getWorkflowDocument().stateIsProcessed() || document.getDocumentHeader().getWorkflowDocument().stateIsFinal()) && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         }
         
@@ -1734,7 +1735,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return super.toggleTab(mapping, form, request, response);
 	}
-	
+
 	protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
 		super.doProcessingAfterPost(form, request);
 		if ( form instanceof KualiDocumentFormBase ) {
@@ -1742,6 +1743,6 @@ public class KualiDocumentActionBase extends KualiAction {
 	        
 	        getBusinessObjectService().linkUserFields(document);
 		}
-    }
+	}
 }
 

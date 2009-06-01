@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.document.Document;
@@ -75,7 +76,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     protected boolean sessionDocument = false;
     protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
-
+    protected Class<? extends DocumentSearchGenerator> documentSearchGeneratorClass;
+    
     /**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getJstlKey()
      */
@@ -464,4 +466,14 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 			boolean encryptDocumentDataInPersistentSessionStorage) {
 		this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
 	}
+
+    public Class<? extends DocumentSearchGenerator> getDocumentSearchGeneratorClass() {
+        return this.documentSearchGeneratorClass;
+    }
+
+    public void setDocumentSearchGeneratorClass(
+            Class<? extends DocumentSearchGenerator> documentSearchGeneratorClass) {
+        this.documentSearchGeneratorClass = documentSearchGeneratorClass;
+    }
+	
 }

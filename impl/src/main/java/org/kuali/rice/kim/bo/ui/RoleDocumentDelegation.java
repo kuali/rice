@@ -20,14 +20,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -61,10 +57,6 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 
 	protected List<KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 
-	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
-	protected KimTypeImpl kimType;
-
 	/**
 	 * This overridden method ...
 	 *
@@ -94,14 +86,6 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 
 	public void setKimTypeId(String typeId) {
 		this.kimTypeId = typeId;
-	}
-
-	public KimTypeImpl getKimType() {
-		return this.kimType;
-	}
-
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
 	}
 
 	public String getDelegationTypeCode() {

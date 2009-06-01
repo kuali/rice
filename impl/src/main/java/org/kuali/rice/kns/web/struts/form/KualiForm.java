@@ -372,7 +372,9 @@ public class KualiForm extends PojoFormBase {
 	}
     
     public boolean shouldMethodToCallParameterBeUsed(String methodToCallParameterName, String methodToCallParameterValue, HttpServletRequest request) {
-    	
+    	if ("GET".equalsIgnoreCase(request.getMethod())) {
+    		return true;
+    	}
     	if (shouldPropertyBePopulatedInForm(methodToCallParameterName, request)) {
     		return true;
     	}

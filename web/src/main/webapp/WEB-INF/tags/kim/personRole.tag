@@ -100,15 +100,16 @@
                 	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].kimRoleType.name"  attributeEntry="${docRoleAttributes.kimGroupType.name}" readOnly="true"  />
 				</div>
 				</td>
+				<c:set var="roleMemberActiveDatesReadOnly" value="${fn:length(KualiForm.document.roles[status.index].rolePrncpls) > 0}" />
                 <td align="left" valign="middle">
                    	<c:if test="${fn:length(role.rolePrncpls) > 0}">
-                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${readOnly}" />
+                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${roleMemberActiveDatesReadOnly}" />
 						</div>
                 	</c:if>
 				</td>
                 <td align="left" valign="middle">
                    	<c:if test="${fn:length(role.rolePrncpls) > 0}">
-                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true" readOnly="${readOnly}" />
+                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true" readOnly="${roleMemberActiveDatesReadOnly}" />
 						</div>
 					</c:if>
 				</td>

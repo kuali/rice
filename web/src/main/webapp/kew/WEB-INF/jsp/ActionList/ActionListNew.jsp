@@ -94,7 +94,7 @@
          border="0" /></a>
         </div>
 
-        <!-- Delegates selection lists -->
+        <!-- Delegates selection list -->
 
 		<c:if test="${! empty ActionListFormNew.delegators}">
 			<div style="float:left; width:226px; position: relative; top: -.5em;">
@@ -106,17 +106,6 @@
 				  </c:forEach>
 	            </html-el:select>
     		</div>
-		</c:if>
-		<c:if test="${! empty ActionListFormNew.primaryDelegates}">
-			<div style="float:left; width:193px; position: relative; top: -.5em;">
-	            <html-el:select property="primaryDelegateId" onchange="document.forms[0].methodToCall.value='start';document.forms[0].submit();">
-	              <html-el:option value="${Constants.PRIMARY_DELEGATION_DEFAULT}"><c:out value="${Constants.PRIMARY_DELEGATION_DEFAULT}" /></html-el:option>
-	              <html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
-				  <c:forEach var="delegatee" items="${ActionListFormNew.primaryDelegates}">
-					<html-el:option value="${delegatee.recipientId}"><c:out value="${delegatee.displayName}" /></html-el:option>
-				  </c:forEach>
-	            </html-el:select>
-            </div>
 		</c:if>
 
 		<c:if test="${kewUserSession.actionListFilter != null && kewUserSession.actionListFilter.filterOn}">

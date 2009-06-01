@@ -468,54 +468,6 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			}
 		}
 	}
-
-	private void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
-		RoleDocumentDelegation delegation;
-		if(KEWConstants.DELEGATION_PRIMARY.equals(delegationMember.getDelegationTypeCode())){
-			delegation = getPrimaryDelegation();
-		} else{
-			delegation = getSecondaryDelegation();
-		}
-		delegationMember.setDelegationId(delegation.getDelegationId());
-		delegation.getMembers().add(delegationMember);
-	}
-
-	private RoleDocumentDelegation getPrimaryDelegation(){
-		RoleDocumentDelegation primaryDelegation = null;
-		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationPrimary())
-				primaryDelegation = delegation;
-		}
-		if(primaryDelegation==null){
-			primaryDelegation = new RoleDocumentDelegation();
-			primaryDelegation.setDelegationId(getDelegationId());
-			primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
-			getDelegations().add(primaryDelegation);
-		}
-		return primaryDelegation;
-	}
-
-	private String getDelegationId(){
-		SequenceAccessorService sas = getSequenceAccessorService();
-		Long nextSeq = sas.getNextAvailableSequenceNumber(
-				KimConstants.SequenceNames.KRIM_DLGN_ID_S, this.getClass());
-		return nextSeq.toString();
-	}
-	
-	private RoleDocumentDelegation getSecondaryDelegation(){
-		RoleDocumentDelegation secondaryDelegation = null;
-		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationSecondary())
-				secondaryDelegation = delegation;
-		}
-		if(secondaryDelegation==null){
-			secondaryDelegation = new RoleDocumentDelegation();
-			secondaryDelegation.setDelegationId(getDelegationId());
-			secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
-			getDelegations().add(secondaryDelegation);
-		}
-		return secondaryDelegation;
-	}
 	
     public ResponsibilityService getResponsibilityService() {
     	if ( responsibilityService == null ) {

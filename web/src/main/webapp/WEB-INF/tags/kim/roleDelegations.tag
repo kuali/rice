@@ -5,9 +5,9 @@
 <c:set var="roleDocumentDelegationMemberQualifier" value="${DataDictionary.RoleDocumentDelegationMemberQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 
-<c:if test="${KualiForm.anchor ne ''}">
+<c:if test="${KualiForm.anchor ne '' && KualiForm.anchor ne 'topOfForm'}">
 	<script type="text/javascript">
-		jumpToAnchor(<c:out value="${KualiForm.anchor}"/>);
+		jumpToAnchorName(<c:out value="${KualiForm.anchor}"/>);
 	</script>
 </c:if>	
 <c:if test="${!(empty KualiForm.document.delegationMembers) || canModifyAssignees}">
@@ -29,11 +29,11 @@
          		    <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
 		        </c:forEach>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${delegationMemberAttributes.delegationTypeCode}" noColon="true" /></div></th>
-				<c:if test="${!readOnly}">	
+				<c:if test="${!readOnlyAssignees}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 				</c:if>	
         	</tr>     
-          <c:if test="${!readOnly}">	
+          <c:if test="${!readOnlyAssignees}">	
              <tr>
 				<th class="infoline">
 					<c:out value="Add:" />
@@ -41,9 +41,11 @@
                 <td class="infoline">   
                 <div align="center">
 					<!-- Combo of role members -->
-					<c:set var="jumpToRoleMemberAnchorName" value="methodToCall.jumpToRoleMember.dmrmi${KualiForm.delegationMemberRoleMemberId}.x" />
-		  	   		${kfunc:registerEditableProperty(KualiForm, jumpToRoleMemberAnchorName)}
-					<input type="submit" tabindex="${tabindex}" name="${jumpToRoleMemberAnchorName}" value="${KualiForm.delegationMember.roleMemberNamespaceCode}&nbsp;${KualiForm.delegationMember.roleMemberName}"/>
+					<c:if test="${KualiForm.delegationMemberRoleMemberId ne ''}" >
+						<c:set var="jumpToRoleMemberAnchorName" value="methodToCall.jumpToRoleMember.dmrmi${KualiForm.delegationMemberRoleMemberId}.x" />
+			  	   		${kfunc:registerEditableProperty(KualiForm, jumpToRoleMemberAnchorName)}
+						<input type="submit" tabindex="${tabindex}" name="${jumpToRoleMemberAnchorName}" value="${KualiForm.delegationMember.roleMemberNamespaceCode}&nbsp;${KualiForm.delegationMember.roleMemberName}"/>
+					</c:if>
 	               	<kul:lookup boClassName="org.kuali.rice.kim.bo.ui.KimDocumentRoleMember" fieldConversions="roleMemberId:delegationMemberRoleMemberId" anchor="${tabKey}" />
 				</div>
 				</td>
@@ -62,7 +64,7 @@
                 <td class="infoline">   
                 <div align="center">
 					<kul:htmlControlAttribute property="delegationMember.memberId" attributeEntry="${delegationMemberAttributes.memberId}" readOnly="${!canModifyAssignees}" />
-					<c:if test="${!readOnly}" >
+					<c:if test="${!readOnlyAssignees}" >
 		               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
 		            </c:if>
 				</div>
@@ -109,7 +111,7 @@
                 <td class="infoline">
 					<div align=center>
 						<c:choose>
-				        <c:when test="${!readOnly}">
+				        <c:when test="${!readOnlyAssignees}">
 							<html:image property="methodToCall.addDelegationMember.anchor${tabKey}"
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
 						</c:when>
@@ -177,11 +179,11 @@
 	               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].delegationTypeCode"  attributeEntry="${delegationMemberAttributes.delegationTypeCode}" disabled="${!canModifyAssignees}" readOnly="false" />
 					</div>
 				</td>
-			<c:if test="${!readOnly}">	
+			<c:if test="${!readOnlyAssignees}">	
 				<td>
 					<div align="center">&nbsp;
 						<c:choose>
-							<c:when test="${member.edit or readOnly}">
+							<c:when test="${member.edit or readOnlyAssignees}">
 	        	          		<img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 							</c:when>
 	        	       		<c:otherwise>

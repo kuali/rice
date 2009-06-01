@@ -220,11 +220,6 @@ public class ActionListAction extends KualiAction {
                 actionList = null;
             }
 
-            if (!StringUtils.isEmpty(form.getPrimaryDelegateId())) {
-                uSession.getActionListFilter().setPrimaryDelegateId(form.getPrimaryDelegateId());
-                actionList = null;
-            }
-
             // if the user has changed, we need to refresh the action list
             if (!principalId.equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
@@ -260,9 +255,6 @@ public class ActionListAction extends KualiAction {
                 Collection delegators = actionListSrv.findUserSecondaryDelegators(principalId);
                 form.setDelegators(getWebFriendlyRecipients(delegators));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
-                Collection delegates = actionListSrv.findUserPrimaryDelegations(principalId);
-                form.setPrimaryDelegates(getWebFriendlyRecipients(delegates));
-                form.setPrimaryDelegateId(uSession.getActionListFilter().getDelegatorId());
             }
 
             form.setFilterLegend(uSession.getActionListFilter().getFilterLegend());

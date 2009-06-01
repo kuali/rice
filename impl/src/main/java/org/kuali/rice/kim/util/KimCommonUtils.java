@@ -143,7 +143,7 @@ public class KimCommonUtils {
 		}
 		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName() ) );
 	}
-
+	
 	public static KimTypeService getKimTypeService(KimTypeInfo kimTypeInfo){
 		if( kimTypeInfo == null ) {
 			LOG.warn( "null KimTypeInfo passed into getKimTypeService" );

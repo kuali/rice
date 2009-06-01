@@ -86,7 +86,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    }
 	    
         if ( kimTypeService != null ) {
-    		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+    		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
     	if (!validationErrors.isEmpty()) {

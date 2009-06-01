@@ -85,7 +85,7 @@
                     <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                     <td align="left" valign="middle">
                         <div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
-                        <c:if test="${!empty attrDefinition.lookupBoClass and not readOnly}">
+ 	               	    <c:if test="${!empty attrDefinition.lookupBoClass and not readOnlyAssignees}">
                           <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${attrDefinition}" />
                         </c:if>
                         </div>
@@ -163,7 +163,7 @@
                 <td>
                     <div align="center">&nbsp;
                         <c:choose>
-                            <c:when test="${member.edit or readOnly}">
+							<c:when test="${member.edit or readOnlyAssignees}">
                                 <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
                             </c:when>
                             <c:otherwise>

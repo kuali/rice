@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,8 +33,11 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -44,8 +51,13 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.document.KimTypeAttributesHelper;
+import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
+import org.kuali.rice.kim.rule.event.ui.AddPersonDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDocumentRoleQualifierEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
@@ -58,7 +70,9 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
@@ -89,7 +103,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         	personDocumentForm.setPrincipalId(principalId);
         }
         forward =  super.execute(mapping, form, request, response);
-
+        personDocumentForm.setCanModifyEntity(canModifyEntity(personDocumentForm.getPersonDocument()));
 		return forward;
     }
     
@@ -133,7 +147,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 			throws WorkflowException {
 		super.createDocument(form);
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        if ( StringUtils.isNotBlank( personDocumentForm.getPrincipalId() ) ) {
+        if(StringUtils.isBlank(personDocumentForm.getPrincipalId())){
+    		personDocumentForm.getPersonDocument().initializeDocumentForNewPerson();
+    		personDocumentForm.setPrincipalId(personDocumentForm.getPersonDocument().getPrincipalId());
+        } else {
         	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
         	populateRoleInformation( personDocumentForm.getPersonDocument() );
         }
@@ -340,14 +357,14 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     }
     
 	private boolean isUniqueRoleRspAction(List<KimDocumentRoleResponsibilityAction> roleRspActions, KimDocumentRoleResponsibilityAction roleRspAction){
- 	 	if(roleRspActions==null || roleRspAction==null) return false;
- 	 	for(KimDocumentRoleResponsibilityAction roleRspActionTemp: roleRspActions){
- 	 		if(roleRspActionTemp.getRoleMemberId().equals(roleRspAction.getRoleMemberId()) &&
- 	 				roleRspActionTemp.getRoleResponsibilityId().equals(roleRspAction.getRoleResponsibilityId()))
- 	 				return false;
- 	 	}
- 	 		return true;
-	}
+    	if(roleRspActions==null || roleRspAction==null) return false;
+    	for(KimDocumentRoleResponsibilityAction roleRspActionTemp: roleRspActions){
+    		if((StringUtils.isNotEmpty(roleRspActionTemp.getRoleMemberId()) && roleRspActionTemp.getRoleMemberId().equals(roleRspAction.getRoleMemberId())) && 
+    			(StringUtils.isNotEmpty(roleRspActionTemp.getRoleResponsibilityId())	&& roleRspActionTemp.getRoleResponsibilityId().equals(roleRspAction.getRoleResponsibilityId())))
+    			return false;
+    	}
+    	return true;
+    }
 	    
 
     private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
@@ -401,6 +418,42 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
+    public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
+        IdentityManagementPersonDocument personDocument = (IdentityManagementPersonDocument)personDocumentForm.getPersonDocument();
+        RoleDocumentDelegationMember newDelegationMember = personDocumentForm.getNewDelegationMember();
+        KimTypeAttributesHelper attrHelper = newDelegationMember.getAttributesHelper();
+        if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
+	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleImpl().getRoleId());
+	        if(!validateRole(roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+	        }
+	        newDelegationMember.setRoleImpl(roleImpl);
+	        AttributeDefinition attrDefinition;
+	        RoleMemberImpl roleMember = KIMServiceLocator.getUiDocumentService().getRoleMember(newDelegationMember.getRoleMemberId());
+	        AttributeSet roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributes());
+	        for (String key: attrHelper.getDefinitions().keySet()) {
+	        	RoleDocumentDelegationMemberQualifier qualifier = new RoleDocumentDelegationMemberQualifier();
+	        	attrDefinition = attrHelper.getDefinitions().get(key);
+	        	qualifier.setKimAttrDefnId(attrHelper.getKimAttributeDefnId(attrDefinition));
+	        	qualifier.setAttrVal(attrHelper.getAttributeValue(roleMemberAttributes, attrDefinition.getName()));
+	        	newDelegationMember.setMemberId(personDocument.getPrincipalId());
+	        	newDelegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+	        	newDelegationMember.getQualifiers().add(qualifier);
+	        }
+	        //newDelegationMember.setAttributeEntry(getUiDocumentService().getAttributeEntries(newDelegationMember.getAttributesHelper().getDefinitions())));
+	        personDocument.getDelegationMembers().add(newDelegationMember);
+	        personDocumentForm.setNewDelegationMember(new RoleDocumentDelegationMember());
+        }
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    public ActionForward deleteDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
+        personDocumentForm.getPersonDocument().getDelegationMembers().remove(getLineToDelete(request));
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
 	@Override
 	public ActionForward save(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -417,4 +470,111 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     	return serviceName;
 
 	}
+
+	private boolean canModifyEntity(IdentityManagementPersonDocument document){
+        boolean rulePassed = true;
+        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
+        additionalPermissionDetails.put(KimAttributes.PRINCIPAL_ID, document.getPrincipalId());
+		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorized(
+				document,
+				KimConstants.NAMESPACE_CODE,
+				KimConstants.PermissionTemplateNames.MODIFY_ENTITY,
+				GlobalVariables.getUserSession().getPrincipalId(),
+				additionalPermissionDetails, null)){
+            rulePassed = false;
+		}
+		return rulePassed;
+	}
+
+    @Override
+    public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementPersonDocumentForm impdForm = (IdentityManagementPersonDocumentForm) form;
+
+        ActionForward actionAfterPayeeLookup = this.refreshAfterDelegationMemberRoleSelection(mapping, impdForm, request);
+        if (actionAfterPayeeLookup != null) {
+            return actionAfterPayeeLookup;
+        }
+
+        return super.refresh(mapping, form, request, response);
+	}
+
+    public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	return super.performLookup(mapping, form, request, response);
+}
+    private ActionForward refreshAfterDelegationMemberRoleSelection(ActionMapping mapping, IdentityManagementPersonDocumentForm impdForm, HttpServletRequest request) {
+        String refreshCaller = impdForm.getRefreshCaller();
+
+        boolean isRoleLookupable = KimConstants.KimUIConstants.ROLE_LOOKUPABLE_IMPL.equals(refreshCaller);
+        boolean isRoleMemberLookupable = KimConstants.KimUIConstants.ROLE_MEMBER_LOOKUPABLE_IMPL.equals(refreshCaller);
+
+        // do not execute the further refreshing logic if the refresh caller is not a lookupable
+        if (!isRoleLookupable && !isRoleMemberLookupable) {
+            return null;
+        }
+
+        //In case of delegation member lookup impdForm.getNewDelegationMemberRoleId() will be populated.
+        if(impdForm.getNewDelegationMemberRoleId() == null){
+            return null;
+        }
+        if(isRoleLookupable){
+            return renderRoleMemberSelection(mapping, request, impdForm);
+        }
+
+        String roleMemberId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID);
+        if(StringUtils.isNotBlank(roleMemberId)){
+            impdForm.getNewDelegationMember().setRoleMemberId(roleMemberId);
+            RoleMemberImpl roleMember = getUiDocumentService().getRoleMember(roleMemberId);
+            impdForm.getNewDelegationMember().setRoleMemberMemberId(roleMember.getMemberId());
+            impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getMemberTypeCode());
+            impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
+            impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
+	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
+	        if(!validateRole(roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+	        }
+	        impdForm.getNewDelegationMember().setRoleImpl(roleImpl);
+        }
+        impdForm.setNewDelegationMemberRoleId(null);
+        return null;
+    }
+    
+    /**
+     * render the vendor address lookup results if there are multiple addresses for the selected vendor
+     */
+    private ActionForward renderRoleMemberSelection(ActionMapping mapping, HttpServletRequest request, IdentityManagementPersonDocumentForm impdForm) {
+        Properties props = new Properties();
+
+        props.put(KNSConstants.SUPPRESS_ACTIONS, Boolean.toString(true));
+        props.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, RoleMemberImpl.class.getName());
+        props.put(KNSConstants.LOOKUP_ANCHOR, KNSConstants.ANCHOR_TOP_OF_FORM);
+        props.put(KNSConstants.LOOKED_UP_COLLECTION_NAME, KimConstants.KimUIConstants.ROLE_MEMBERS_COLLECTION_NAME);
+
+        String conversionPatttern = "{0}" + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + "{0}";
+        StringBuilder fieldConversion = new StringBuilder();
+        fieldConversion.append(MessageFormat.format(conversionPatttern, 
+       		KimConstants.PrimaryKeyConstants.ROLE_ID)).append(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+        fieldConversion.append(MessageFormat.format(conversionPatttern, 
+           		KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)).append(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+
+        props.put(KNSConstants.CONVERSION_FIELDS_PARAMETER, fieldConversion);
+
+        props.put(KimConstants.PrimaryKeyConstants.ROLE_ID, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
+
+        props.put(KNSConstants.RETURN_LOCATION_PARAMETER, this.getReturnLocation(request, mapping));
+        props.put(KNSConstants.BACK_LOCATION, this.getReturnLocation(request, mapping));
+
+        props.put(KNSConstants.LOOKUP_AUTO_SEARCH, "Yes");
+        props.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.SEARCH_METHOD);
+
+        props.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(impdForm));
+        props.put(KNSConstants.DOC_NUM, impdForm.getDocument().getDocumentNumber());
+
+        // TODO: how should this forward be handled
+        String url = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + KNSConstants.LOOKUP_ACTION, props);
+
+        impdForm.registerEditableProperty("methodToCall");
+
+        return new ActionForward(url, true);
+    }
+
 }

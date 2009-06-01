@@ -352,7 +352,7 @@ public abstract class ParameterServiceBase implements ParameterService {
      * @see org.kuali.kfs.sys.service.ParameterService#clearCache()
      */
     public void clearCache() {
-        parameterCache.set(null);
+        parameterCache = new ThreadLocal<Map<String,Parameter>>();
     }
  
     @SuppressWarnings("unchecked")

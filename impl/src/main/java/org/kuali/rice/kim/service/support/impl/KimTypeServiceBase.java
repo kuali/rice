@@ -16,11 +16,14 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -41,6 +44,7 @@ import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -53,7 +57,9 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.comparator.StringValueComparator;
+import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
@@ -159,7 +165,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 *
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
 	 */
-	public AttributeSet validateAttributes(AttributeSet attributes) {
+	public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
 		AttributeSet validationErrors = new AttributeSet();
 		if ( attributes == null ) {
 			return validationErrors;
@@ -180,7 +186,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					if ( propertyDescriptor != null ) {
 						// set the value on the object so that it can be checked
 						propertyDescriptor.getWriteMethod().invoke( componentObject, attributes.get( attributeName ) );
-						attributeErrors = validateDataDictionaryAttribute(attributeImpl.getComponentName(), componentObject, propertyDescriptor, true);
+						attributeErrors = validateDataDictionaryAttribute(kimTypeId, attributeImpl.getComponentName(), componentObject, propertyDescriptor);
 					} else {
 						LOG.warn( "Unable to obtain property descriptor for: " + attributeImpl.getClass().getName() + "/" + attributeImpl.getAttributeName() );
 					}
@@ -292,11 +298,190 @@ public class KimTypeServiceBase implements KimTypeService {
 		return errors;
 	}
 	
-	protected List<String> validateDataDictionaryAttribute(String entryName, Object object, PropertyDescriptor propertyDescriptor, boolean validateRequired) {
-		getDictionaryValidationService().validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, "", validateRequired);
+    protected void validateAttributeRequired(String kimTypeId, String objectClassName, String attributeName, Object attributeValue, String errorKey) {
+        // check if field is a required field for the business object
+        if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
+        	AttributeDefinitionMap map = getAttributeDefinitions(kimTypeId);
+        	AttributeDefinition definition = map.getByAttributeName(attributeName);
+        	
+            Boolean required = definition.isRequired();
+            ControlDefinition controlDef = definition.getControl();
+
+            if (required != null && required.booleanValue() && !(controlDef != null && controlDef.isHidden())) {
+
+                // get label of attribute for message
+                String errorLabel = getAttributeErrorLabel(definition);
+                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
+            }
+        }
+    }
+    
+	protected List<String> validateDataDictionaryAttribute(String kimTypeId, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
+		validatePrimitiveFromDescriptor(kimTypeId, entryName, object, propertyDescriptor);
 		return extractErrorsFromGlobalVariablesErrorMap(propertyDescriptor.getName());
 	}
 
+    protected void validatePrimitiveFromDescriptor(String kimTypeId, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
+        // validate the primitive attributes if defined in the dictionary
+        if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
+            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+            Class propertyType = propertyDescriptor.getPropertyType();
+
+            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+
+                // check value format against dictionary
+                if (value != null && StringUtils.isNotBlank(value.toString())) {
+                    if (!TypeUtils.isTemporalClass(propertyType)) {
+                        validateAttributeFormat(kimTypeId, entryName, propertyDescriptor.getName(), value.toString(), propertyDescriptor.getName());
+                    }
+                }
+                else {
+                	// if it's blank, then we check whether the attribute should be required
+                    validateAttributeRequired(kimTypeId, entryName, propertyDescriptor.getName(), value, propertyDescriptor.getName());
+                }
+            }
+        }
+    }
+    
+    /**
+     * Constant defines a validation method for an attribute value.
+     * <p>Value is "validate"
+     */
+    public static final String VALIDATE_METHOD="validate";
+    
+    private String getAttributeErrorLabel(AttributeDefinition definition) {
+        String longAttributeLabel = definition.getLabel();
+        String shortAttributeLabel = definition.getShortLabel();
+        return longAttributeLabel + " (" + shortAttributeLabel + ")";
+    }
+    
+    private Pattern getAttributeValidatingExpression(AttributeDefinition definition) {
+    	Pattern regex = null;
+        if (definition != null) {
+            if (definition.hasValidationPattern()) {
+                regex = definition.getValidationPattern().getRegexPattern();
+            } else {
+                // workaround for existing calls which don't bother checking for null return values
+                regex = Pattern.compile(".*");
+            }
+        }
+
+        return regex;
+    }
+    
+    private Class<? extends Formatter> getAttributeFormatter(AttributeDefinition definition) {
+        Class<? extends Formatter> formatterClass = null;
+        if (definition != null) {
+            if (definition.hasFormatterClass()) {
+                formatterClass = definition.getFormatterClass();
+            }
+        }
+        return formatterClass;
+    }
+    
+	public String getAttributeValidatingErrorMessageKey(AttributeDefinition definition) {
+        if (definition != null) {
+        	if (definition.hasValidationPattern()) {
+        		ValidationPattern validationPattern = definition.getValidationPattern();
+        		return validationPattern.getValidationErrorMessageKey();
+        	}
+        }
+        return null;
+	}
+	
+	public String[] getAttributeValidatingErrorMessageParameters(AttributeDefinition definition) {
+        if (definition != null) {
+        	if (definition.hasValidationPattern()) {
+        		ValidationPattern validationPattern = definition.getValidationPattern();
+        		String attributeLabel = getAttributeErrorLabel(definition);
+        		return validationPattern.getValidationErrorMessageParameters(attributeLabel);
+        	}
+        }
+        return null;
+	}
+    
+	private BigDecimal getAttributeExclusiveMin(AttributeDefinition definition) {
+        return definition == null ? null : definition.getExclusiveMin();
+    }
+
+	private BigDecimal getAttributeInclusiveMax(AttributeDefinition definition) {
+        return definition == null ? null : definition.getInclusiveMax();
+    }
+	
+    protected void validateAttributeFormat(String kimTypeId, String objectClassName, String attributeName, String attributeValue, String errorKey) {
+    	AttributeDefinitionMap attributeDefinitions = getAttributeDefinitions(kimTypeId);
+    	AttributeDefinition definition = attributeDefinitions.getByAttributeName(attributeName);
+    	
+        String errorLabel = getAttributeErrorLabel(definition);
+
+        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeValue + ")");
+
+        if (StringUtils.isNotBlank(attributeValue)) {
+            Integer maxLength = definition.getMaxLength();
+            if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
+                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
+                return;
+            }
+            Pattern validationExpression = getAttributeValidatingExpression(definition);
+            if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
+                LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+
+                if (!validationExpression.matcher(attributeValue).matches()) {
+                    boolean isError=true;
+                    // Calling formatter class
+                    Class<?> formatterClass=getAttributeFormatter(definition);
+                    if (formatterClass != null) {
+                        try {
+                            Method validatorMethod=formatterClass.getDeclaredMethod(
+                                    VALIDATE_METHOD, new Class<?>[] {String.class});
+                            Object o=validatorMethod.invoke(
+                                    formatterClass.newInstance(), attributeValue);
+                            if (o instanceof Boolean) {
+                                isError=!((Boolean)o).booleanValue();
+                            }
+                        } catch (Exception e) {
+                            LOG.debug(e.getMessage(), e);
+                        }
+                    }
+                    if (isError) {
+                    	String errorMessageKey = getAttributeValidatingErrorMessageKey(definition);
+                    	String[] errorMessageParameters = getAttributeValidatingErrorMessageParameters(definition);
+                        GlobalVariables.getErrorMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+                    }
+                    return;
+                }
+            }
+            BigDecimal exclusiveMin = getAttributeExclusiveMin(definition);
+            if (exclusiveMin != null) {
+                try {
+                    if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
+                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
+                        // todo: Formatter for currency?
+                                new String[] { errorLabel, exclusiveMin.toString() });
+                        return;
+                    }
+                }
+                catch (NumberFormatException e) {
+                    // quash; this indicates that the DD contained a min for a non-numeric attribute
+                }
+            }
+            BigDecimal inclusiveMax = getAttributeInclusiveMax(definition);
+            if (inclusiveMax != null) {
+                try {
+                    if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
+                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
+                        // todo: Formatter for currency?
+                                new String[] { errorLabel, inclusiveMax.toString() });
+                        return;
+                    }
+                }
+                catch (NumberFormatException e) {
+                    // quash; this indicates that the DD contained a max for a non-numeric attribute
+                }
+            }
+        }
+    }
+    
 	protected List<String> extractErrorsFromGlobalVariablesErrorMap(String attributeName) {
 		Object results = GlobalVariables.getErrorMap().getErrorMessagesForProperty(attributeName);
 		List<String> errors = new ArrayList<String>();

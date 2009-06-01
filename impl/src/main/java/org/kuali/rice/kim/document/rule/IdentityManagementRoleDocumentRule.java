@@ -240,7 +240,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-			errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
+			errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
 			validationErrors.putAll( 
 					attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
 	        memberCounter++;
@@ -280,7 +280,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			errorPath = "delegationMembers["+memberCounter+"]";
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
-			errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
+			errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
 			validationErrors.putAll(
 					attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
 

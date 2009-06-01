@@ -224,7 +224,7 @@
         p:label="Document Type Name"
         p:shortLabel="Document Type Name"
         p:maxLength="255"
-        p:required="true" >
+        p:required="false" >
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="30" />
     </property>    

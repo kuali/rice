@@ -250,25 +250,25 @@ public class KualiInquirableImpl implements Inquirable {
 
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
 
-        /*
-        List keys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
+
+        List<String> keys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
         if (keys == null) {
         	keys = Collections.emptyList();
         }
-         */
-        if(attributeRefName == null || "".equals(attributeRefName)){
-        	return hRef;
-        }
-        BusinessObjectRelationship businessObjectRelationship =
-    		getBusinessObjectMetaDataService().getBusinessObjectRelationship(
-    				businessObject, attributeRefName);
-    	List<String> keys = new ArrayList<String>();
-    	if (businessObjectRelationship != null && businessObjectRelationship.getParentToChildReferences() != null) {
-	    	for (String targetNamePrimaryKey : businessObjectRelationship.getParentToChildReferences().values()) {
-	    		keys.add(targetNamePrimaryKey);
-	    	}
-    	}
 
+        BusinessObjectRelationship businessObjectRelationship = null;
+
+        if(attributeRefName != null && !"".equals(attributeRefName)){
+	        businessObjectRelationship =
+	    		getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+	    				businessObject, attributeRefName);
+
+	    	if (businessObjectRelationship != null && businessObjectRelationship.getParentToChildReferences() != null) {
+		    	for (String targetNamePrimaryKey : businessObjectRelationship.getParentToChildReferences().values()) {
+		    		keys.add(targetNamePrimaryKey);
+		    	}
+	    	}
+        }
         // build key value url parameters used to retrieve the business object
         String keyName = null;
         String keyConversion = null;

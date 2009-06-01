@@ -86,7 +86,7 @@
 						</div>
 					</td>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberId"  attributeEntry="${groupMemberAttributes.memberId}" readOnly="${!canAssignGroup || member.edit}" />
+		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberId"  attributeEntry="${groupMemberAttributes.memberId}" readOnly="true" />
 						</div>
 					</td>
 		            <td align="left" valign="middle">

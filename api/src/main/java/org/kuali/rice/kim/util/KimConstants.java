@@ -169,6 +169,9 @@ public class KimConstants {
 	    	return delegationTypesMap;
 	    }
 
+	    public static final String ROLE_LOOKUPABLE_IMPL = "roleLookupable";
+	    public static final String ROLE_MEMBER_LOOKUPABLE_IMPL = "roleMemberImplLookupable";
+	    public static final String ROLE_MEMBERS_COLLECTION_NAME = "roleMembers";
 	}
 
 	public static class PrimaryKeyConstants {
@@ -204,6 +207,8 @@ public class KimConstants {
 	}
 
 	public static class SequenceNames {
+		public static final String KRIM_PRNCPL_ID_S = "KRIM_PRNCPL_ID_S";
+		public static final String KRIM_ENTITY_ID_S = "KRIM_ENTITY_ID_S";
 		public static final String KRIM_ROLE_ID_S = "KRIM_ROLE_ID_S";
 		public static final String KRIM_GROUP_ID_S = "KRIM_GRP_ID_S";
 		public static final String KRIM_ROLE_PERM_ID_S = "KRIM_ROLE_PERM_ID_S";

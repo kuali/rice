@@ -21,6 +21,7 @@ import java.util.Map;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -96,10 +97,10 @@ public interface UiDocumentService {
 
 	public BusinessObject getMember(String memberTypeCode, String memberId);
 	
-//	public String getMemberName(String memberTypeCode, String memberId);
-//	
-//	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
-//
+	public String getMemberName(String memberTypeCode, String memberId);
+	
+	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
+
 	public String getMemberName(String memberTypeCode, BusinessObject member);
 	
 	public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member);
@@ -115,4 +116,6 @@ public interface UiDocumentService {
 	public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName);
 
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
+	
+	public RoleMemberImpl getRoleMember(String roleMemberId);
 }

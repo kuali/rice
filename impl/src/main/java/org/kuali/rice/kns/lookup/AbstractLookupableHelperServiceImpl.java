@@ -1330,7 +1330,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				}
 			}
     	} else {
-			throw new RuntimeException("Cannot handle multiple value field types");    		
+			if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, field.getPropertyName())) {
+				LOG.error("Cannot handle multiple value field types that have field authorizations, please implement custom lookupable helper service");
+				throw new RuntimeException("Cannot handle multiple value field types that have field authorizations.");
+			}
     	}
 	}
 }

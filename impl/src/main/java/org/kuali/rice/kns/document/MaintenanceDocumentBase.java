@@ -684,7 +684,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         // Make sure the business object's version number matches that of the database's copy.
         if (newMaintainableObject != null) {
         	PersistableBusinessObject pbObject = KNSServiceLocator.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
-        	if (pbObject != null && newMaintainableObject.getBusinessObject().getVersionNumber().longValue() != pbObject.getVersionNumber().longValue()) {
+        	Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
+        	Long newObjectVerNbr = newMaintainableObject.getBusinessObject().getVersionNumber();
+        	if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
         		GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);
         		throw new ValidationException("Version mismatch between the local business object and the database business object");
         	}

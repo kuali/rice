@@ -644,11 +644,16 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	    			// in this case, the qualifiers must also match, allowing a person to
     	    			// delegate only part of their authority.
     	    			if ( StringUtils.isBlank( delegationMember.getRoleMemberId() )
-    	    					|| delegationMember.getRoleMemberId().equals( mi.getRoleMemberId() ) ) {
+    	    					|| StringUtils.equals( delegationMember.getRoleMemberId(), mi.getRoleMemberId() ) ) {
     	    	    		// this check is against the qualifier from the role relationship
     	    	    		// that resulted in this record
     	    	    		// This is to determine that the delegation
-		    	    		if ( roleTypeService == null
+    	    				// but - don't need to check the role qualifiers against delegation qualifiers
+    	    				// if the delegation is linked directly to the role member
+		    	    		if ( (StringUtils.isNotBlank( delegationMember.getRoleMemberId() ) 
+		    	    					&& StringUtils.equals( delegationMember.getRoleMemberId(), mi.getRoleMemberId() )
+		    	    					)
+		    	    				|| roleTypeService == null
 		    	    				|| roleTypeService.doesRoleQualifierMatchQualification( mi.getQualifier(), delegationMember.getQualifier() ) ) {
 		    	    			// add the delegate member to the role member information list
 		    	    			// these will be checked by a later method against the request
@@ -1291,12 +1296,12 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
     	List<String> groupIds = new ArrayList<String>();
     	groupIds.add(groupId);
-    	inactivatePrincipalGroupMemberships(groupIds, yesterday);
+    	inactivateGroupMemberships(groupIds, yesterday);
     	inactivateGroupRoleMemberships(groupIds, yesterday);
     }
     
-    private void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday){
-    	List<GroupMemberImpl> groupMembers = roleDao.getGroupPrincipalsForPrincipalIdAndGroupIds(groupIds, null);
+    private void inactivateGroupMemberships(List<String> groupIds, Timestamp yesterday){
+    	List<GroupMemberImpl> groupMembers = roleDao.getGroupMembers(groupIds);
     	for ( GroupMemberImpl rm : groupMembers ) {
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}

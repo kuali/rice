@@ -47,7 +47,7 @@ public interface KimTypeService {
 	 * This method can be used to perform compound validations across multiple
 	 * attributes attached to an object.
 	 */
-	AttributeSet validateAttributes(AttributeSet attributes);
+	AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes);
 	
 	AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes);
 	

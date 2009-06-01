@@ -16,7 +16,7 @@
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>
          </tr>     
-         <c:if test="${not inquiry and not readOnly}">	          	
+         <c:if test="${not inquiry and not readOnlyEntity}">	          	
              <tr>
 				<th class="infoline">
 					<c:out value="Add:" />
@@ -24,31 +24,31 @@
 
                 <td align="left" valign="middle" class="infoline">
 	                <div align="center">
-	                	<kul:htmlControlAttribute property="newPhone.phoneTypeCode" attributeEntry="${docPhoneAttributes.phoneTypeCode}" readOnly="${readOnly}" />
+	                	<kul:htmlControlAttribute property="newPhone.phoneTypeCode" attributeEntry="${docPhoneAttributes.phoneTypeCode}" readOnly="${readOnlyEntity}" />
 		            </div>
 				</td>
                 <td class="infoline">
 	                <div align="center">
-	                	<kul:htmlControlAttribute property="newPhone.phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnly}" />
+	                	<kul:htmlControlAttribute property="newPhone.phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnlyEntity}" />
 	                </div>
                 </td>
                 <td class="infoline">   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newPhone.extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="newPhone.extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="newPhone.countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newPhone.countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td class="infoline">   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newPhone.dflt" attributeEntry="${docPhoneAttributes.dflt}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="newPhone.dflt" attributeEntry="${docPhoneAttributes.dflt}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
                 <td class="infoline">   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newPhone.active" attributeEntry="${docPhoneAttributes.active}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="newPhone.active" attributeEntry="${docPhoneAttributes.active}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>                                
                 <td class="infoline">
@@ -65,35 +65,35 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${phone.phoneType.phoneTypeName}" readOnly="${readOnly}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${phone.phoneType.phoneTypeName}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
                 <td>
-	                <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnly}" />
+	                <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnlyEntity}" />
 	                </div>
                 </td>
                 <td>     
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].dflt" attributeEntry="${docPhoneAttributes.dflt}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].dflt" attributeEntry="${docPhoneAttributes.dflt}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].active" attributeEntry="${docPhoneAttributes.active}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].active" attributeEntry="${docPhoneAttributes.active}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
          		<c:if test="${not inquiry}">						
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>
-			        	       <c:when test="${phone.edit  or readOnly}">
+			        	       <c:when test="${phone.edit or readOnlyEntity}">
 			        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 			        	       </c:when>
 			        	       <c:otherwise>

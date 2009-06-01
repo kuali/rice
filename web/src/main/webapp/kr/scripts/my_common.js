@@ -111,7 +111,8 @@ function setIframeAnchor(iframeName) {
   }  
 }
 
-function jumpToAnchor(anchor){
+function jumpToAnchorName(anchor){
 	var anchors = document.getElementsByName(anchor);
-	location.href = '#'+anchors[0].name;
+	if (anchors != null)
+		location.href = '#'+anchors[0].name;
 }

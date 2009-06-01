@@ -25,52 +25,52 @@
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>
      	</tr>     
-        <c:if test="${not inquiry and not readOnly}">	          	
+        <c:if test="${not inquiry and not readOnlyEntity}">	          	
              <tr>
 				<th class="infoline">
 					<c:out value="Add:" />
 				</th>
                 <td>
                 <div align="center">
-                	<kul:htmlControlAttribute property="newAddress.addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnly="${readOnly}" />
+                	<kul:htmlControlAttribute property="newAddress.addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnly="${readOnlyEntity}" />
 	            	</div>
 				</td>
                 <td>
                 	<div align="center">
-                		<kul:htmlControlAttribute property="newAddress.line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnly}" />
+                		<kul:htmlControlAttribute property="newAddress.line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>   
 	                <div align="center">             	
-	                  <kul:htmlControlAttribute property="newAddress.line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="newAddress.line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>                
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="newAddress.active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="newAddress.active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>                                
                 <td>
@@ -87,51 +87,51 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${address.addressType.addressTypeName}" readOnly="${readOnly}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${address.addressType.addressTypeName}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
                 <td>
-	                <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnly}" />
+	                <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity}" />
 	                </div>
                 </td>
                 <td>     
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
 				<td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnly}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
            		<c:if test="${not inquiry}">						
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>
-			        	       <c:when test="${address.edit or readOnly}">
+			        	       <c:when test="${address.edit or readOnlyEntity}">
 			        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 			        	       </c:when>
 			        	       <c:otherwise>

@@ -24,6 +24,8 @@ import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
@@ -36,9 +38,11 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
-import org.kuali.rice.kns.document.TransactionalDocumentBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -47,7 +51,7 @@ import org.kuali.rice.kns.document.TransactionalDocumentBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
-public class IdentityManagementPersonDocument extends TransactionalDocumentBase {
+public class IdentityManagementPersonDocument extends IdentityManagementKimDocument {
 
 	private static final long serialVersionUID = -534993712085516925L;
 	// principal data
@@ -78,6 +82,7 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 	protected List<PersonDocumentEmail> emails;
 	protected List<PersonDocumentGroup> groups;
 	protected List<PersonDocumentRole> roles;
+
 	protected PersonDocumentPrivacy privacy;
 
 	public IdentityManagementPersonDocument() {
@@ -247,6 +252,15 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		this.privacy = privacy;
 	}
 
+	public void initializeDocumentForNewPerson() {
+		if(StringUtils.isBlank(this.principalId)){
+			this.principalId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PRNCPL_ID_S).toString();
+		}
+		if(StringUtils.isBlank(this.entityId)){
+			this.entityId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ENTITY_ID_S).toString();
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List buildListOfDeletionAwareLists() {
@@ -289,15 +303,24 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 		for (PersonDocumentRole role : getRoles()) {
 			for (KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
 				rolePrncpl.setDocumentNumber(getDocumentNumber());
-				for (KimDocumentRoleQualifier qualifier : rolePrncpl
-						.getQualifiers()) {
+				for (KimDocumentRoleQualifier qualifier : rolePrncpl.getQualifiers()) {
 					qualifier.setDocumentNumber(getDocumentNumber());
 					qualifier.setKimTypId(role.getKimTypeId());
 				}
 			}
 		}
+		if(getDelegationMembers()!=null){
+			for(RoleDocumentDelegationMember delegationMember: getDelegationMembers()){
+				delegationMember.setDocumentNumber(getDocumentNumber());
+				for (RoleDocumentDelegationMemberQualifier qualifier: delegationMember.getQualifiers()) {
+					qualifier.setDocumentNumber(getDocumentNumber());
+					qualifier.setKimTypId(delegationMember.getRoleImpl().getKimTypeId());
+				}
+				addDelegationMemberToDelegation(delegationMember);
+			}
+		}
 	}
-	
+
 	private void setEmployeeRecordIds(){
 		KimEntityImpl origEntity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(getEntityId());
 		for(PersonDocumentAffiliation affiliation: getAffiliations()) {
@@ -318,5 +341,12 @@ public class IdentityManagementPersonDocument extends TransactionalDocumentBase 
 			}
 		}
 	}
-	
+
+    public KimTypeAttributesHelper getKimTypeAttributesHelper(String roleId) {
+    	KimRoleInfo roleInfo = KIMServiceLocator.getRoleService().getRole(roleId);
+    	KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
+    	return new KimTypeAttributesHelper(kimTypeInfo);
+     	//addDelegationRoleKimTypeAttributeHelper(roleId, helper);
+    }
+
 }

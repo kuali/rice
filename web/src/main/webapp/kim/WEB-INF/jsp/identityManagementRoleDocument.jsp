@@ -18,8 +18,8 @@
 
 <c:set var="inquiry" scope="request" value="${KualiForm.inquiry}" />
 <c:set var="readOnly" scope="request" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || inquiry}" />
-<c:set var="readOnly" scope="request" value="${!KualiForm.canAssignRole || readOnly}" />
-<c:set var="canModifyAssignees" scope="request" value="${KualiForm.canModifyAssignees && !readOnly}" />
+<c:set var="readOnlyAssignees" scope="request" value="${!KualiForm.canAssignRole || readOnly}" />
+<c:set var="canModifyAssignees" scope="request" value="${KualiForm.canModifyAssignees && !readOnlyAssignees}" />
 <c:set var="editingDocument" scope="request" value="${KualiForm.document.editing}" />
 
 <c:set var="formAction" value="identityManagementRoleDocument" />

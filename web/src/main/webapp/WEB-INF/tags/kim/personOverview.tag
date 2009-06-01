@@ -16,7 +16,7 @@
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.principalName}"  /></div></th>
 		 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnly}" /></td>
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.taxId}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.taxId" attributeEntry="${personAttributes.taxId}" readOnly="${readOnly}" /></td>
+		 		<td><kul:htmlControlAttribute property="document.taxId" attributeEntry="${personAttributes.taxId}" readOnly="${readOnlyEntity}" /></td>
 		 	</tr>
 		 	<tr>
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}" /></div></th>

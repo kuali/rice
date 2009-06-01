@@ -714,26 +714,32 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
     }
 
     public Collection<GroupMembershipInfo> getGroupMembers( List<String> groupIds ) {
+		if ( groupIds == null ) {
+			return Collections.emptyList();
+		}
     	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
     	for (String groupId : groupIds) {
-    		for (GroupMemberImpl groupMember : getGroupMembers(groupId)) {
-    			if (groupMember != null && groupMember.isActive()) {
-    				groupMembers.add(toGroupMemberInfo(groupMember));
-    			}
-    		}
+    		groupMembers.addAll( getGroupMembers(groupId) );
     	}
     	return groupMembers;
     }
 
 
 	@SuppressWarnings("unchecked")
-	protected List<GroupMemberImpl> getGroupMembers( String groupId) {
+	public Collection<GroupMembershipInfo> getGroupMembers( String groupId ) {
 		if ( groupId == null ) {
 			return Collections.emptyList();
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 1 );
 		criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
-		return (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+    	List<GroupMemberImpl> groupMemberImpls = (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+    	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>( groupMemberImpls.size() );
+		for (GroupMemberImpl groupMember : groupMemberImpls) {
+			if (groupMember != null && groupMember.isActive()) {
+				groupMembers.add(toGroupMemberInfo(groupMember));
+			}
+		}
+		return groupMembers;
 	}
 
     protected GroupMembershipInfo toGroupMemberInfo(GroupMemberImpl kimGroupMember) {

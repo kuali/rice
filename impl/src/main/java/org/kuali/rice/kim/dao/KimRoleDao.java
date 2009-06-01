@@ -64,5 +64,5 @@ public interface KimRoleDao {
 	
     List<RoleImpl> getRoles(Map<String,String> fieldValues);
 
-
+	List<GroupMemberImpl> getGroupMembers(Collection<String> groupIds);
 }

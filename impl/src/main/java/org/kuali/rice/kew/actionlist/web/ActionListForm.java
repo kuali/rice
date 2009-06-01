@@ -56,8 +56,6 @@ public class ActionListForm extends KualiForm {
     private Map defaultActions = new HashMap();
     private String delegationId;
     private List delegators;
-    private String primaryDelegateId;
-    private List primaryDelegates;
     private Boolean hasCustomActions;
     private Boolean routeLogPopup;
     private Boolean documentPopup;
@@ -104,22 +102,6 @@ public class ActionListForm extends KualiForm {
     public void setDelegator(String delegator) {
 	this.delegator = delegator;
     }
-
-    public String getPrimaryDelegateId() {
-		return this.primaryDelegateId;
-	}
-
-	public void setPrimaryDelegateId(String primaryDelegateId) {
-		this.primaryDelegateId = primaryDelegateId;
-	}
-
-	public List getPrimaryDelegates() {
-		return this.primaryDelegates;
-	}
-
-	public void setPrimaryDelegates(List primaryDelegates) {
-		this.primaryDelegates = primaryDelegates;
-	}
 
 	public String getDocType() {
 	return docType;

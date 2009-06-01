@@ -15,81 +15,76 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill
- * this in.
+ * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- * 
+ *
  */
-public class IdentityManagementTypeAttributeTransactionalDocument extends IdentityManagementKimDocument {
+public class KimTypeAttributesHelper implements Serializable {
 
-	private static final long serialVersionUID = -9064436454008712125L;
-	
+	private KimTypeInfo kimType = new KimTypeInfo();
 	private transient KimTypeService kimTypeService;
-	protected KimTypeInfo kimType = new KimTypeInfo();
-	protected List<? extends KimAttributes> attributes;
-	
+	private List<? extends KimAttributes> attributes;
 	private transient AttributeDefinitionMap definitions;
 	private transient Map<String,Object> attributeEntry;
-	
+
+	public KimTypeAttributesHelper(KimTypeInfo kimType){
+		this.kimType = kimType;
+	}
+
 	/**
 	 * @return the attributes
 	 */
 	public List<? extends KimAttributes> getAttributes() {
 		return this.attributes;
 	}
-	/**
-	 * @param attributes the attributes to set
-	 */
-	public void setAttributes(List<? extends KimAttributes> attributes) {
-		this.attributes = attributes;
-	}
+
 	/**
 	 * @return the kimType
 	 */
 	public KimTypeInfo getKimType() {
 		return this.kimType;
 	}
-	/**
-	 * @param kimType the kimType to set
-	 */
-	public void setKimType(KimTypeInfo kimType) {
-		this.kimType = kimType;
-	}
 
+	public KimTypeService getKimTypeService(KimTypeInfo kimType){
+		if(this.kimTypeService==null){
+	    	this.kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+		}
+		return this.kimTypeService;
+	}
+	
 	public Map<String,Object> getAttributeEntry() {
 		if(attributeEntry==null || attributeEntry.isEmpty())
 			attributeEntry = KIMServiceLocator.getUiDocumentService().getAttributeEntries(getDefinitions());
 		return attributeEntry;
 	}
 
-	public String getCommaDelimitedAttributesLabels(String commaDelimitedAttributesNamesList){
-		String[] names = StringUtils.splitByWholeSeparator(commaDelimitedAttributesNamesList, KimConstants.KimUIConstants.COMMA_SEPARATOR);
-		StringBuffer commaDelimitedAttributesLabels = new StringBuffer();
-		for(String name: names){
-			commaDelimitedAttributesLabels.append(getAttributeEntry().get(name.trim())+KimConstants.KimUIConstants.COMMA_SEPARATOR);
-		}
-        if(commaDelimitedAttributesLabels.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
-        return commaDelimitedAttributesLabels.toString();
-	}
-	
+    public String getKimAttributeDefnId(AttributeDefinition definition){
+    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
+    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    	} else {
+    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    	}
+    }
+    
 	/**
 	 * Returns an {@link AttributeDefinitionMap}
 	 * 
@@ -115,22 +110,23 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		return returnValue;
 	}
 	
-	public void setDefinitions(AttributeDefinitionMap definitions) {
-		this.definitions = definitions;
-	}
-
-	protected KimTypeService getKimTypeService(KimTypeInfo kimType){
-		if( kimTypeService==null){
-	    	kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+	public String getCommaDelimitedAttributesLabels(String commaDelimitedAttributesNamesList){
+		String[] names = StringUtils.splitByWholeSeparator(commaDelimitedAttributesNamesList, KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		StringBuffer commaDelimitedAttributesLabels = new StringBuffer();
+		for(String name: names){
+			commaDelimitedAttributesLabels.append(getAttributeEntry().get(name.trim())+KimConstants.KimUIConstants.COMMA_SEPARATOR);
 		}
-		return kimTypeService;
+        if(commaDelimitedAttributesLabels.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
+        	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
+        return commaDelimitedAttributesLabels.toString();
 	}
 
-	protected SequenceAccessorService getSequenceAccessorService(){
-		if(this.sequenceAccessorService==null){
-	    	this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+	public String getAttributeValue(AttributeSet aSet, String attributeName){
+		if(StringUtils.isEmpty(attributeName) || aSet==null) return null;
+		for(String attributeNameKey: aSet.keySet()){
+			if(attributeName.equals(attributeNameKey))
+				return aSet.get(attributeNameKey);
 		}
-		return this.sequenceAccessorService;
+		return null;
 	}
-
 }

@@ -155,6 +155,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";
     public static final String LOOKUP_AUTO_SEARCH = "autoSearch";
+    public static final String SEARCH_METHOD = "search";
 //    public static final String DEFAULT_RETURN_LOCATION = "lookup.do";
     public static final String DELETE_LINE_METHOD = "deleteLine";
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";

@@ -14,27 +14,27 @@
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>
       	</tr>     
-        <c:if test="${not inquiry and not readOnly}">	          	
+        <c:if test="${not inquiry and not readOnlyEntity}">
            	<tr>
 				<th class="infoline">Add:</th>
                 <td class="infoline">   
                 <div align="center">             	
-                  <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnly}" />
+                  <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity}" />
 				</div>
 				</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
-                	<kul:htmlControlAttribute property="newEmail.emailTypeCode" attributeEntry="${docEmailAttributes.emailTypeCode}" readOnly="${readOnly}" />
+                	<kul:htmlControlAttribute property="newEmail.emailTypeCode" attributeEntry="${docEmailAttributes.emailTypeCode}" readOnly="${readOnlyEntity}" />
 	            </div>
 				</td>
                 <td class="infoline">   
                 <div align="center">             	
-                  <kul:htmlControlAttribute property="newEmail.dflt" attributeEntry="${docEmailAttributes.dflt}" readOnly="${readOnly}" />
+                  <kul:htmlControlAttribute property="newEmail.dflt" attributeEntry="${docEmailAttributes.dflt}" readOnly="${readOnlyEntity}" />
 				</div>
 				</td>
                 <td class="infoline">   
                 <div align="center">             	
-                  <kul:htmlControlAttribute property="newEmail.active" attributeEntry="${docEmailAttributes.active}" readOnly="${readOnly}" />
+                  <kul:htmlControlAttribute property="newEmail.active" attributeEntry="${docEmailAttributes.active}" readOnly="${readOnlyEntity}" />
 				</div>
 				</td>                                
                 <td class="infoline">
@@ -52,28 +52,28 @@
 				</th>
                 <td>     
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  readOnlyAlternateDisplay="${email.emailType.name}" readOnly="${readOnly}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  readOnlyAlternateDisplay="${email.emailType.name}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
 				<td>
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.emails[${status.index}].dflt" attributeEntry="${docEmailAttributes.dflt}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="document.emails[${status.index}].dflt" attributeEntry="${docEmailAttributes.dflt}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
 				<td>
 	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.emails[${status.index}].active" attributeEntry="${docEmailAttributes.active}" readOnly="${readOnly}" />
+	                  <kul:htmlControlAttribute property="document.emails[${status.index}].active" attributeEntry="${docEmailAttributes.active}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
            		<c:if test="${not inquiry}">						
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>
-			        	       <c:when test="${email.edit  or readOnly}">
+			        	       <c:when test="${email.edit  or readOnlyEntity}">
 			        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 			        	       </c:when>
 			        	       <c:otherwise>

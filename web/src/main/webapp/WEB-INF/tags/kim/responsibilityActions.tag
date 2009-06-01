@@ -16,7 +16,6 @@
 		<c:forEach var="roleRspAction" items="${roleMember.roleRspActions}" varStatus="actionStatus">
            	<tr>	
 				<td>
-					<div align="center">
 					<c:choose>
 						<c:when test="${roleRspAction.kimResponsibility != null}">
                         	${roleRspAction.kimResponsibility.namespaceCode}
@@ -26,7 +25,6 @@
 							All
 						</c:otherwise>
 					</c:choose>            
-					</div>
         		</td>
 				<td>
 					<div align="center">

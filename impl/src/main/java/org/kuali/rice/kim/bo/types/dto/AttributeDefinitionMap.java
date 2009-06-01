@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.types.dto;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
 /**
@@ -36,4 +37,11 @@ public class AttributeDefinitionMap extends TreeMap<String,AttributeDefinition> 
 		super( map );
 	}
 	
+	public AttributeDefinition getByAttributeName(String attributeName) {
+		for (AttributeDefinition definition : values()) {
+			if (StringUtils.equals(attributeName, definition.getName())) 
+				return definition;
+		}
+		return null;
+	}
 }

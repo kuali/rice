@@ -122,5 +122,6 @@ public interface GroupService {
     @XmlJavaTypeAdapter(value = JaxbStringMapAdapter.class) Map<String,String> getGroupAttributes( @WebParam(name="groupId") String groupId );
 	
 	Collection<GroupMembershipInfo> getGroupMembers( @WebParam(name="groupIds") List<String> groupIds );
-    Collection<GroupMembershipInfo> getGroupMembers( String groupId );
+	
+    Collection<GroupMembershipInfo> getGroupMembersOfGroup( @WebParam(name="groupId") String groupId );
 }

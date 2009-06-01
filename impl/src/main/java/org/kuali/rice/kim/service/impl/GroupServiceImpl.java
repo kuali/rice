@@ -719,14 +719,14 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 		}
     	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
     	for (String groupId : groupIds) {
-    		groupMembers.addAll( getGroupMembers(groupId) );
+    		groupMembers.addAll( getGroupMembersOfGroup(groupId) );
     	}
     	return groupMembers;
     }
 
 
 	@SuppressWarnings("unchecked")
-	public Collection<GroupMembershipInfo> getGroupMembers( String groupId ) {
+	public Collection<GroupMembershipInfo> getGroupMembersOfGroup( String groupId ) {
 		if ( groupId == null ) {
 			return Collections.emptyList();
 		}

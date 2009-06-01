@@ -1002,7 +1002,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			// get the ORM-layer optimisic locking value
 			// TODO: this should be replaced with the retrieval and storage of that value
 			// in the document tables and not re-retrieved here
-			Collection<GroupMembershipInfo> currGroupMembers = getGroupService().getGroupMembers(group.getGroupId());
+			Collection<GroupMembershipInfo> currGroupMembers = getGroupService().getGroupMembersOfGroup(group.getGroupId());
 			for (GroupMembershipInfo origGroupMember: currGroupMembers) {
 				if(origGroupMember.getGroupMemberId().equals(group.getGroupMemberId())){
 					groupPrincipalImpl.setVersionNumber(origGroupMember.getVersionNumber());

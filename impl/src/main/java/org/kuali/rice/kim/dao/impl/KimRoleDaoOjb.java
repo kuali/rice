@@ -27,8 +27,9 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -397,17 +398,26 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     private List<String> getRoleIdsForPrincipalName(String value) {
 		String principalName = value.replace('*', '%');
-        Criteria memberSubCrit = new Criteria();
+		List<String> roleIds = new ArrayList<String>();
+		Criteria memberSubCrit = new Criteria();
         Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
-        List<Person> principalMembers = KIMServiceLocator.getPersonService().findPeople(criteria);
-        List<String> principalIds = new ArrayList<String>();
-        for (Person person : principalMembers) {
-            principalIds.add(person.getPrincipalId());
+        criteria.put("principals.principalName", principalName);
+        List<? extends KimEntityDefaultInfo> entities = KIMServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
+        if (entities == null
+                || entities.size() == 0) {
+            return roleIds;
         }
+        
+        List<String> principalIds = new ArrayList<String>();
+        for (KimEntityDefaultInfo entity : entities) {
+            for (KimPrincipal principal : entity.getPrincipals()) {
+                principalIds.add(principal.getPrincipalId());
+            }
+        }
+
         memberSubCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE);
         memberSubCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, principalIds);
-        List<String> roleIds = new ArrayList<String>();
+        
 		ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
 		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
 			if (!roleIds.contains(roleMbr.getRoleId())) {

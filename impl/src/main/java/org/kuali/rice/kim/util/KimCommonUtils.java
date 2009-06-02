@@ -196,4 +196,17 @@ public class KimCommonUtils {
     		path = path.replace(kimActionName, kimContext+kimActionName);
     	return path;
 	}
+	
+	public static String stripEnd(String toStripFrom, String toStrip){
+		String stripped;
+		if(toStripFrom==null) stripped = null;
+		if(toStrip==null) stripped = toStripFrom;
+		if(toStripFrom.endsWith(toStrip)){ 
+			StringBuffer buffer = new StringBuffer(toStripFrom);
+			buffer.delete(buffer.length()-toStrip.length(), buffer.length());
+			stripped = buffer.toString();
+		} else stripped = toStripFrom;
+		return stripped;
+	}
+
 }

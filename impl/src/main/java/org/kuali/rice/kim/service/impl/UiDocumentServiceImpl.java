@@ -85,7 +85,6 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -117,7 +116,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
  */
 public class UiDocumentServiceImpl implements UiDocumentService {
 	private static final Logger LOG = Logger.getLogger(UiDocumentServiceImpl.class);
-	
+
 	private PermissionService permissionService;
 	private RoleService roleService;
 	private BusinessObjectService businessObjectService;
@@ -2266,30 +2265,29 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				roleMemberObject = getMember(roleMember.getMemberTypeCode(), roleMember.getMemberId());
 				matchingRoleMember = new KimDocumentRoleMember();
 				KimCommonUtils.copyProperties(matchingRoleMember, roleMember);
-				matchingRoleMember.setQualifiersToDisplay(getAttributesToDisplay(roleMember));
 				matchingRoleMember.setMemberName(getMemberName(roleMember.getMemberTypeCode(), roleMemberObject));
 				matchingRoleMember.setMemberNamespaceCode(getMemberNamespaceCode(roleMember.getMemberTypeCode(), roleMemberObject));
+				matchingRoleMember.setQualifiers(getQualifiers(roleMember.getAttributes()));
 				matchingRoleMembers.add(matchingRoleMember);
 			}
 		}
 		return matchingRoleMembers;
     }
 
-	public String getAttributesToDisplay(RoleMemberImpl roleMember) {
-		KimRoleInfo roleInfo = KIMServiceLocator.getRoleService().getRole(roleMember.getRoleId());
-		KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
-		KimTypeAttributesHelper attributesHelper = new KimTypeAttributesHelper(kimType);
-		StringBuffer attributesToDisplay = new StringBuffer();
-		AttributeDefinition attribDefn;
-		for(RoleMemberAttributeDataImpl attribute: roleMember.getAttributes()){
-			attribDefn = attributesHelper.getAttributeDefinition(attribute.getKimAttribute().getAttributeName());
-			attributesToDisplay.append(attribDefn!=null?attribDefn.getLabel():"");
-			attributesToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
-			attributesToDisplay.append(attribute.getAttributeValue());
-			attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
-		}
-		StringUtils.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
-		return attributesToDisplay.toString();
-	}
-
+    private List<KimDocumentRoleQualifier> getQualifiers(List<RoleMemberAttributeDataImpl> attributes){
+    	if(attributes==null) return null;
+    	List<KimDocumentRoleQualifier> qualifiers = new ArrayList<KimDocumentRoleQualifier>();
+    	KimDocumentRoleQualifier qualifier;
+    	for(RoleMemberAttributeDataImpl attribute: attributes){
+	    	qualifier = new KimDocumentRoleQualifier();
+			qualifier.setAttrDataId(attribute.getAttributeDataId());
+			qualifier.setAttrVal(attribute.getAttributeValue());
+			qualifier.setRoleMemberId(attribute.getRoleMemberId());
+			qualifier.setKimTypId(attribute.getKimTypeId());
+			qualifier.setKimAttrDefnId(attribute.getKimAttributeId());
+			qualifier.setKimAttribute(attribute.getKimAttribute());
+			qualifiers.add(qualifier);
+    	}
+    	return qualifiers;
+    }
 }

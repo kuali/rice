@@ -1067,9 +1067,6 @@
         <inverse-foreignkey field-ref="documentNumber" />
         <inverse-foreignkey field-ref="delegationId" />
       </collection-descriptor>
-      <reference-descriptor name="kimType" class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-        <foreignkey field-ref="kimTypeId" />
-      </reference-descriptor>
     </class-descriptor>
 
     <class-descriptor class="org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember" table="KRIM_PND_DLGN_MBR_T">

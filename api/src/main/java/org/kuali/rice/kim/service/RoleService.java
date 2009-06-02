@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -150,4 +151,7 @@ public interface RoleService {
     void groupInactivated(@WebParam(name="groupId") String groupId);
     
 	List<RoleMembershipInfo> getFirstLevelRoleMembers(@WebParam(name="roleIds") List<String> roleIds);
+	
+	List<RoleMembershipInfo> findRoleMembers(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
+	
 }

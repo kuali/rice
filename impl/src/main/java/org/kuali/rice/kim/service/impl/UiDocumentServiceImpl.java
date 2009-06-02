@@ -52,6 +52,7 @@ import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
@@ -84,6 +85,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -2251,4 +2253,43 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return kimTypeInfoService;
 	}
+	
+    public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues) {
+		List<KimDocumentRoleMember> matchingRoleMembers = new ArrayList<KimDocumentRoleMember>();
+		List<RoleMembershipInfo> matchingRoleMembersTemp = getRoleService().findRoleMembers(fieldValues);
+		KimDocumentRoleMember matchingRoleMember;
+		BusinessObject roleMemberObject;
+		RoleMemberImpl roleMember;
+		if(matchingRoleMembersTemp!=null && !matchingRoleMembersTemp.isEmpty()){
+			for(RoleMembershipInfo roleMembership: matchingRoleMembersTemp){
+				roleMember = getRoleMember(roleMembership.getRoleMemberId());
+				roleMemberObject = getMember(roleMember.getMemberTypeCode(), roleMember.getMemberId());
+				matchingRoleMember = new KimDocumentRoleMember();
+				KimCommonUtils.copyProperties(matchingRoleMember, roleMember);
+				matchingRoleMember.setQualifiersToDisplay(getAttributesToDisplay(roleMember));
+				matchingRoleMember.setMemberName(getMemberName(roleMember.getMemberTypeCode(), roleMemberObject));
+				matchingRoleMember.setMemberNamespaceCode(getMemberNamespaceCode(roleMember.getMemberTypeCode(), roleMemberObject));
+				matchingRoleMembers.add(matchingRoleMember);
+			}
+		}
+		return matchingRoleMembers;
+    }
+
+	public String getAttributesToDisplay(RoleMemberImpl roleMember) {
+		KimRoleInfo roleInfo = KIMServiceLocator.getRoleService().getRole(roleMember.getRoleId());
+		KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
+		KimTypeAttributesHelper attributesHelper = new KimTypeAttributesHelper(kimType);
+		StringBuffer attributesToDisplay = new StringBuffer();
+		AttributeDefinition attribDefn;
+		for(RoleMemberAttributeDataImpl attribute: roleMember.getAttributes()){
+			attribDefn = attributesHelper.getAttributeDefinition(attribute.getKimAttribute().getAttributeName());
+			attributesToDisplay.append(attribDefn!=null?attribDefn.getLabel():"");
+			attributesToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
+			attributesToDisplay.append(attribute.getAttributeValue());
+			attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		}
+		StringUtils.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		return attributesToDisplay.toString();
+	}
+
 }

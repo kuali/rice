@@ -170,6 +170,7 @@ public class KimConstants {
 	    }
 
 	    public static final String ROLE_LOOKUPABLE_IMPL = "roleLookupable";
+	    public static final String KIM_DOCUMENT_ROLE_MEMBER_LOOKUPABLE_IMPL = "kimDocumentRoleMemberLookupable";
 	    public static final String ROLE_MEMBER_LOOKUPABLE_IMPL = "roleMemberImplLookupable";
 	    public static final String ROLE_MEMBERS_COLLECTION_NAME = "roleMembers";
 	}

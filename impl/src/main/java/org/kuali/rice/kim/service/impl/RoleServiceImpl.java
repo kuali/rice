@@ -1339,4 +1339,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         return groupMemberImpl;
     }
 
+    public List<RoleMembershipInfo> findRoleMembers(Map<String,String> fieldValues){
+    	return roleDao.getRoleMembers(fieldValues);
+    }
+
 }

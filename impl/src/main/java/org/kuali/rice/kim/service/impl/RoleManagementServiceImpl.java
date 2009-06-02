@@ -28,6 +28,7 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
@@ -528,6 +529,10 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
     public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){
     	return getRoleService().getFirstLevelRoleMembers(roleIds);
+    }
+
+    public List<RoleMembershipInfo> findRoleMembers(Map<String, String> fieldValues){
+    	return getRoleService().findRoleMembers(fieldValues);
     }
 
 }

@@ -57,7 +57,8 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	protected String memberNamespaceCode;
 
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
-
+	protected String qualifiersToDisplay;
+	
 	@Transient
 	private List<KimDocumentRoleResponsibilityAction> roleRspActions;
 
@@ -199,6 +200,20 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 			m.put( data.getKimAttribute().getAttributeName(), data.getAttrVal() );
 		}
 		return m;
+	}
+
+	/**
+	 * @return the qualifiersToDisplay
+	 */
+	public String getQualifiersToDisplay() {
+		return this.qualifiersToDisplay;
+	}
+
+	/**
+	 * @param qualifiersToDisplay the qualifiersToDisplay to set
+	 */
+	public void setQualifiersToDisplay(String qualifiersToDisplay) {
+		this.qualifiersToDisplay = qualifiersToDisplay;
 	}
 
 }

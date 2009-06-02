@@ -30,10 +30,12 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -597,4 +599,98 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     	return keyValues;
     }
     
+    public List<RoleMembershipInfo> getRoleMembers(Map<String,String> fieldValues) {
+		Criteria queryCriteria = new Criteria();
+		List<String> memberIds = new ArrayList<String>();
+		if(hasExtraRoleMemberCriteria(fieldValues)){
+			String memberName = fieldValues.get(KimConstants.KimUIConstants.MEMBER_NAME);
+			String memberNamespaceCode = fieldValues.get(KimConstants.KimUIConstants.MEMBER_NAMESPACE_CODE);
+			//Only name or namespace fields are provided in search
+			//member type code is not provided
+			List<RoleImpl> roles = getRoleMembersRoles(memberNamespaceCode, memberName);
+			if(roles!=null){
+				for(RoleImpl role: roles)
+					memberIds.add(role.getRoleId());
+			}
+			List<KimPrincipalImpl> principals = getRoleMembersPrincipals(memberName);
+			if(roles!=null){
+				for(KimPrincipalImpl principal: principals)
+					memberIds.add(principal.getPrincipalId());
+			}
+			List<GroupImpl> groups = getRoleMembersGroups(memberNamespaceCode, memberName);
+			if(groups!=null){
+				for(GroupImpl group: groups)
+					memberIds.add(group.getGroupId());
+			}
+	        if(memberIds!=null && !memberIds.isEmpty())
+	        	queryCriteria.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, memberIds);
+		}
+		if(hasCoreRoleMemberCriteria(fieldValues)){
+	    	String roleMemberId = fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID);
+			String roleId = fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID);
+			String memberId = fieldValues.get(KimConstants.PrimaryKeyConstants.MEMBER_ID);
+			String memberTypeCode = fieldValues.get(KIMPropertyConstants.KimMember.MEMBER_TYPE_CODE);
+			String activeFromDate = fieldValues.get(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE);
+			String activeToDate = fieldValues.get(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE);
+			//role member id, role id, member id, member type code, active dates are provided in search
+			if(StringUtils.isNotEmpty(roleMemberId))
+				addEqualToCriteria(queryCriteria, KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+			if(StringUtils.isNotEmpty(roleId))
+				addEqualToCriteria(queryCriteria, KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+			if(StringUtils.isNotEmpty(memberId))
+				addEqualToCriteria(queryCriteria, KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
+			if(StringUtils.isNotEmpty(memberTypeCode))
+				addEqualToCriteria(queryCriteria, KIMPropertyConstants.KimMember.MEMBER_TYPE_CODE, memberTypeCode);
+			if(StringUtils.isNotEmpty(activeFromDate))
+				queryCriteria.addGreaterOrEqualThan(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE, activeFromDate);
+			if(StringUtils.isNotEmpty(activeToDate))
+				queryCriteria.addLessOrEqualThan(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE, activeToDate);
+		}
+        Query q = QueryFactory.newQuery(RoleMemberImpl.class, queryCriteria);
+        List<RoleMemberImpl> roleMembers = (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(q);
+        List<RoleMembershipInfo> roleMemberships = new ArrayList<RoleMembershipInfo>();
+        for(RoleMemberImpl roleMember: roleMembers){
+        	RoleMembershipInfo roleMembership = new RoleMembershipInfo(roleMember.getRoleId(), roleMember.getRoleMemberId(), roleMember.getMemberId(), roleMember.getMemberTypeCode(), roleMember.getQualifier() );
+        	roleMemberships.add(roleMembership);
+        }
+        return roleMemberships;
+    }
+
+    private boolean hasCoreRoleMemberCriteria(Map<String, String> fieldValues){
+		return StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)) ||
+				StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID)) ||
+				StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.MEMBER_ID)) ||
+				StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.KimMember.MEMBER_TYPE_CODE)) ||
+				StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE)) || 
+				StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE)); 
+    }
+
+    private boolean hasExtraRoleMemberCriteria(Map<String, String> fieldValues){
+    	return StringUtils.isNotEmpty(fieldValues.get(KimConstants.KimUIConstants.MEMBER_NAME)) ||
+    			StringUtils.isNotEmpty(fieldValues.get(KimConstants.KimUIConstants.MEMBER_NAMESPACE_CODE));
+    }
+    
+    private List<RoleImpl> getRoleMembersRoles(String memberNamespaceCode, String memberName){
+		Criteria queryCriteria = new Criteria();
+		addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.NAMESPACE_CODE, memberNamespaceCode);
+		addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.ROLE_NAME, memberName);
+		Query q = QueryFactory.newQuery(RoleImpl.class, queryCriteria);
+		return (List<RoleImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(q);
+    }
+
+    private List<KimPrincipalImpl> getRoleMembersPrincipals(String memberName){
+		Criteria queryCriteria = new Criteria();
+		addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.PRINCIPAL_NAME, memberName);
+		Query q = QueryFactory.newQuery(KimPrincipalImpl.class, queryCriteria);
+		return (List<KimPrincipalImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(q);
+    }
+
+    private List<GroupImpl> getRoleMembersGroups(String memberNamespaceCode, String memberName){
+		Criteria queryCriteria = new Criteria();
+		addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.NAMESPACE_CODE, memberNamespaceCode);
+		addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.GROUP_NAME, memberName);
+		Query q = QueryFactory.newQuery(GroupImpl.class, queryCriteria);
+		return (List<GroupImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(q);
+    }
+
 }

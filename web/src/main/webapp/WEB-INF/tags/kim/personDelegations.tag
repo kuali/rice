@@ -77,7 +77,7 @@
 				</th>
                 <td align="left" valign="middle">
                 	<div align="center"> 
-           	        Role: ${KualiForm.document.delegationMembers[status.index].roleImpl.namespaceCode}&nbsp;&nbsp;Role Member:&nbsp;${KualiForm.document.delegationMembers[status.index].roleImpl.roleName}&nbsp;&nbsp;${KualiForm.document.delegationMembers[status.index].roleMemberNamespaceCode}&nbsp;${KualiForm.document.delegationMembers[status.index].roleMemberName}
+           	        <b>Role:</b> ${KualiForm.document.delegationMembers[status.index].roleImpl.namespaceCode}&nbsp;${KualiForm.document.delegationMembers[status.index].roleImpl.roleName}&nbsp;&nbsp;<b>Role Member:</b>&nbsp;${KualiForm.document.delegationMembers[status.index].roleMemberNamespaceCode}&nbsp;${KualiForm.document.delegationMembers[status.index].roleMemberName}
 				</div>
 				</td>
                 <td align="left" valign="middle">

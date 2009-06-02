@@ -15,11 +15,13 @@
     <property name="attributes" >
       <list>
         <ref bean="DocRoleMember-roleMemberId" />
+        <ref bean="DocRoleMember-roleId" />
         <ref bean="DocRoleMember-memberId" />
         <!-- TODO: create entry for this  -->
         <ref bean="DocRoleMember-memberTypeCode" />
         <ref bean="DocRoleMember-memberNamespaceCode" />
         <ref bean="DocRoleMember-memberName" />
+        <ref bean="DocRoleMember-qualifiersToDisplay" />
         <ref bean="DocRoleMember-activeFromDate" />
         <ref bean="DocRoleMember-activeToDate" />
       </list>
@@ -27,7 +29,7 @@
     
   </bean>
  
-   <bean id="DocRoleMember-roleMemberId" parent="DocRoleMember-roleMemberId-parentBean" />
+  <bean id="DocRoleMember-roleMemberId" parent="DocRoleMember-roleMemberId-parentBean" />
   <bean id="DocRoleMember-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="roleMemberId"
         p:forceUppercase="true"
@@ -39,6 +41,9 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
+  
+  <bean id="DocRoleMember-roleId" parent="DocRoleMember-roleId-parentBean" />
+  <bean id="DocRoleMember-roleId-parentBean" parent="RoleImpl-roleId" />
   
   <bean id="DocRoleMember-memberId" parent="DocRoleMember-memberId-parentBean" />
   <bean id="DocRoleMember-memberId-parentBean" parent="AttributeDefinition" abstract="true"
@@ -84,7 +89,19 @@
       <bean parent="TextControlDefinition" p:size="10" />
     </property>
   </bean>
-            
+         
+  <bean id="DocRoleMember-qualifiersToDisplay" parent="DocRoleMember-qualifiersToDisplay-parentBean" />
+  <bean id="DocRoleMember-qualifiersToDisplay-parentBean" parent="AttributeDefinition" abstract="true"
+        p:name="qualifiersToDisplay"
+        p:label="Qualifiers"
+        p:shortLabel="Qualifiers"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
   <bean id="DocRoleMember-activeFromDate" parent="DocRoleMember-activeFromDate-parentBean" />
   <bean id="DocRoleMember-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="activeFromDate" />
@@ -145,7 +162,7 @@
     </property>
     <property name="lookupFields" >
       <list>
-              <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
+              <bean parent="FieldDefinition" p:attributeName="roleId" />
               <bean parent="FieldDefinition" p:attributeName="memberId" />
               <bean parent="FieldDefinition" p:attributeName="memberTypeCode" />
               <bean parent="FieldDefinition" p:attributeName="memberName" />
@@ -156,11 +173,13 @@
     </property>
     <property name="resultFields" >
       <list>
+              <bean parent="FieldDefinition" p:attributeName="roleId" />
               <bean parent="FieldDefinition" p:attributeName="roleMemberId" />
               <bean parent="FieldDefinition" p:attributeName="memberId" />
               <bean parent="FieldDefinition" p:attributeName="memberTypeCode" />
               <bean parent="FieldDefinition" p:attributeName="memberName" />
               <bean parent="FieldDefinition" p:attributeName="memberNamespaceCode" />
+              <bean parent="FieldDefinition" p:attributeName="qualifiersToDisplay" />
               <bean parent="FieldDefinition" p:attributeName="activeFromDate" />
               <bean parent="FieldDefinition" p:attributeName="activeToDate" />
       </list>

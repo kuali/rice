@@ -504,7 +504,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         String refreshCaller = impdForm.getRefreshCaller();
 
         boolean isRoleLookupable = KimConstants.KimUIConstants.ROLE_LOOKUPABLE_IMPL.equals(refreshCaller);
-        boolean isRoleMemberLookupable = KimConstants.KimUIConstants.ROLE_MEMBER_LOOKUPABLE_IMPL.equals(refreshCaller);
+        boolean isRoleMemberLookupable = KimConstants.KimUIConstants.KIM_DOCUMENT_ROLE_MEMBER_LOOKUPABLE_IMPL.equals(refreshCaller);
 
         // do not execute the further refreshing logic if the refresh caller is not a lookupable
         if (!isRoleLookupable && !isRoleMemberLookupable) {
@@ -537,14 +537,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return null;
     }
     
-    /**
-     * render the vendor address lookup results if there are multiple addresses for the selected vendor
-     */
     private ActionForward renderRoleMemberSelection(ActionMapping mapping, HttpServletRequest request, IdentityManagementPersonDocumentForm impdForm) {
         Properties props = new Properties();
 
         props.put(KNSConstants.SUPPRESS_ACTIONS, Boolean.toString(true));
-        props.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, RoleMemberImpl.class.getName());
+        props.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimDocumentRoleMember.class.getName());
         props.put(KNSConstants.LOOKUP_ANCHOR, KNSConstants.ANCHOR_TOP_OF_FORM);
         props.put(KNSConstants.LOOKED_UP_COLLECTION_NAME, KimConstants.KimUIConstants.ROLE_MEMBERS_COLLECTION_NAME);
 

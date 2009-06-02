@@ -118,4 +118,7 @@ public interface UiDocumentService {
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
 	
 	public RoleMemberImpl getRoleMember(String roleMemberId);
+	
+	public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues);
+
 }

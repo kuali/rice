@@ -121,6 +121,10 @@ public class KimTypeAttributesHelper implements Serializable {
         return commaDelimitedAttributesLabels.toString();
 	}
 
+	public AttributeDefinition getAttributeDefinition(String attributeName){
+		return getDefinitionsKeyedByAttributeName().get(attributeName);
+	}
+	
 	public String getAttributeValue(AttributeSet aSet, String attributeName){
 		if(StringUtils.isEmpty(attributeName) || aSet==null) return null;
 		for(String attributeNameKey: aSet.keySet()){

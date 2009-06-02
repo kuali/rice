@@ -237,7 +237,22 @@ public class DataDictionary {
         }
     }
     
+    static boolean validateEBOs = true;
+    
+    public void validateDD( boolean validateEbos ) {
+    	DataDictionary.validateEBOs = validateEbos;
+        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
+        for ( BusinessObjectEntry entry : boBeans.values() ) {
+            entry.completeValidation();
+        }
+        Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
+        for ( DocumentEntry entry : docBeans.values() ) {
+            entry.completeValidation();
+        }
+    }
+    
     public void validateDD() {
+    	DataDictionary.validateEBOs = true;
         Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
         for ( BusinessObjectEntry entry : boBeans.values() ) {
             entry.completeValidation();

@@ -343,10 +343,10 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 					"invalid (blank) sourceAttributeName for attribute '"
 							+ rootObjectClass.getName() + "." + getName() + "'");
 		}
-
-		getDelegate(); // forces validation
-		super.completeValidation(rootObjectClass, otherObjectClass);
-
+		if ( DataDictionary.validateEBOs ) {
+			getDelegate(); // forces validation
+			super.completeValidation(rootObjectClass, otherObjectClass);
+		}
 	}
 
 	/**

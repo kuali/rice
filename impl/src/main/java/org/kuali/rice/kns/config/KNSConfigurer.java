@@ -33,6 +33,7 @@ public class KNSConfigurer extends ModuleConfigurer {
 
 	private boolean loadDataDictionary = true;
 	private boolean validateDataDictionary = false;
+	private boolean validateDataDictionaryEboReferences = true;
 
 	private DataSource applicationDataSource;
 	private DataSource serverDataSource;
@@ -100,7 +101,7 @@ public class KNSConfigurer extends ModuleConfigurer {
 
     			if ( isValidateDataDictionary() ) {
                     LOG.info("KNS Configurer - Validating DD");
-    				dds.getDataDictionary().validateDD();
+    				dds.getDataDictionary().validateDD( validateDataDictionaryEboReferences );
     			}
     		}
     		KNSServiceLocator.getDateTimeService().initializeDateTimeService();
@@ -188,4 +189,13 @@ public class KNSConfigurer extends ModuleConfigurer {
     public void setServerDataSourceJndiName(String serverDataSourceJndiName) {
         this.serverDataSourceJndiName = serverDataSourceJndiName;
     }
+
+	public void setValidateDataDictionaryEboReferences(
+			boolean validateDataDictionaryEboReferences) {
+		this.validateDataDictionaryEboReferences = validateDataDictionaryEboReferences;
+	}
+
+	public boolean isValidateDataDictionaryEboReferences() {
+		return validateDataDictionaryEboReferences;
+	}
 }

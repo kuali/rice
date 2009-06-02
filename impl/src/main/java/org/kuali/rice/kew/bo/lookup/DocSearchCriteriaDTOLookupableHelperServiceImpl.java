@@ -780,7 +780,14 @@ KualiLookupableHelperServiceImpl {
 		else if(fieldValues.get("docTypeFullName")!=null) {
 			docTypeName = (String)fieldValues.get("docTypeFullName");
 		}
-
+		if(!StringUtils.isEmpty(docTypeName)) {
+            DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
+            MessageMap messages = getValidDocumentType(docTypeName).getDocumentSearchGenerator().getMessageMap(criteria);
+            if (messages != null 
+                    && messages.hasMessages()) {
+                GlobalVariables.mergeErrorMap(messages);
+            }
+        }
 		setRows(fieldValues,docTypeName);
 		return true;
 	}

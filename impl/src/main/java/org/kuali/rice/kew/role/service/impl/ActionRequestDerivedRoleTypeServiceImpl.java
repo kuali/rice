@@ -42,6 +42,11 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
 
+	{
+		requiredAttributes.add( KimAttributes.DOCUMENT_NUMBER );
+		checkRequiredAttributes = true;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
@@ -59,11 +64,11 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 		return members;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
 			AttributeSet qualification) {
+		validateRequiredAttributesAgainstReceived(qualification);
 		try {
 			if ( qualification != null && StringUtils.isNumeric( qualification.get(KimAttributes.DOCUMENT_NUMBER) ) ) {
 				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(Long

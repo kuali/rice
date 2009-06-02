@@ -26,7 +26,6 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill
@@ -36,8 +35,12 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  * 
  */
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
-	DocumentTypeService documentTypeService;
-
+	protected transient DocumentTypeService documentTypeService;
+	
+	{
+		requiredAttributes.add( KimAttributes.DOCUMENT_TYPE_NAME );
+		checkRequiredAttributes = true;
+	}
 	/**
 	 * Loops over the given permissions and returns the most specific permission that matches.
 	 * 
@@ -47,7 +50,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
 	@Override
-	public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 		// pull all the potential parent doc type names from the permission list
 		List<String> permissionDocTypeNames = new ArrayList<String>( permissionsList.size() );
@@ -83,7 +86,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 * @param parentDocTypeName
 	 * @return
 	 */
-	private List<String> isParentDocument(DocumentType currentDocType,
+	protected List<String> isParentDocument(DocumentType currentDocType,
 			List<String> parentDocTypeNames, List<String> matchingParentDocTypeNames ) {
 		if ( matchingParentDocTypeNames == null ) {
 			matchingParentDocTypeNames = new ArrayList<String>();
@@ -106,7 +109,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		return matchingParentDocTypeNames;
 	}
 	
-	public DocumentTypeService getDocumentTypeService() {
+	protected DocumentTypeService getDocumentTypeService() {
 		if ( documentTypeService == null ) {
 			documentTypeService = KEWServiceLocator.getDocumentTypeService();
 		}

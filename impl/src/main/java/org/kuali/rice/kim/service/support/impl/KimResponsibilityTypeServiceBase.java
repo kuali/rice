@@ -36,6 +36,7 @@ public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
 	 */
 	public final List<KimResponsibilityInfo> getMatchingResponsibilities( AttributeSet requestedDetails, List<KimResponsibilityInfo> responsibilitiesList ) {
 		requestedDetails = translateInputAttributeSet(requestedDetails);
+		validateRequiredAttributesAgainstReceived(requestedDetails);
 		return performResponsibilityMatches(requestedDetails, responsibilitiesList);
 	}
 

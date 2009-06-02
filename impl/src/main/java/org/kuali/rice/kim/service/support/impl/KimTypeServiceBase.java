@@ -21,6 +21,7 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -78,22 +79,24 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected DataDictionaryService dataDictionaryService;
 //	protected Class<? extends KimAttributes> kimAttributesClass;
 	protected List<String> workflowRoutingAttributes = new ArrayList<String>();
+	protected List<String> requiredAttributes = new ArrayList<String>();
+	protected boolean checkRequiredAttributes = false;
 
-	public BusinessObjectService getBusinessObjectService() {
+	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
 
-	public DictionaryValidationService getDictionaryValidationService() {
+	protected DictionaryValidationService getDictionaryValidationService() {
 		if ( dictionaryValidationService == null ) {
 			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}
 
-	public DataDictionaryService getDataDictionaryService() {
+	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
@@ -325,7 +328,7 @@ public class KimTypeServiceBase implements KimTypeService {
         // validate the primitive attributes if defined in the dictionary
         if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
             Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
-            Class propertyType = propertyDescriptor.getPropertyType();
+            Class<? extends Object> propertyType = propertyDescriptor.getPropertyType();
 
             if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
 
@@ -349,13 +352,13 @@ public class KimTypeServiceBase implements KimTypeService {
      */
     public static final String VALIDATE_METHOD="validate";
     
-    private String getAttributeErrorLabel(AttributeDefinition definition) {
+    protected String getAttributeErrorLabel(AttributeDefinition definition) {
         String longAttributeLabel = definition.getLabel();
         String shortAttributeLabel = definition.getShortLabel();
         return longAttributeLabel + " (" + shortAttributeLabel + ")";
     }
     
-    private Pattern getAttributeValidatingExpression(AttributeDefinition definition) {
+    protected Pattern getAttributeValidatingExpression(AttributeDefinition definition) {
     	Pattern regex = null;
         if (definition != null) {
             if (definition.hasValidationPattern()) {
@@ -369,7 +372,7 @@ public class KimTypeServiceBase implements KimTypeService {
         return regex;
     }
     
-    private Class<? extends Formatter> getAttributeFormatter(AttributeDefinition definition) {
+    protected Class<? extends Formatter> getAttributeFormatter(AttributeDefinition definition) {
         Class<? extends Formatter> formatterClass = null;
         if (definition != null) {
             if (definition.hasFormatterClass()) {
@@ -400,11 +403,11 @@ public class KimTypeServiceBase implements KimTypeService {
         return null;
 	}
     
-	private BigDecimal getAttributeExclusiveMin(AttributeDefinition definition) {
+	protected BigDecimal getAttributeExclusiveMin(AttributeDefinition definition) {
         return definition == null ? null : definition.getExclusiveMin();
     }
 
-	private BigDecimal getAttributeInclusiveMax(AttributeDefinition definition) {
+	protected BigDecimal getAttributeInclusiveMax(AttributeDefinition definition) {
         return definition == null ? null : definition.getInclusiveMax();
     }
 	
@@ -414,7 +417,9 @@ public class KimTypeServiceBase implements KimTypeService {
     	
         String errorLabel = getAttributeErrorLabel(definition);
 
-        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeValue + ")");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeValue + ")");
+        }
 
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = definition.getMaxLength();
@@ -424,7 +429,9 @@ public class KimTypeServiceBase implements KimTypeService {
             }
             Pattern validationExpression = getAttributeValidatingExpression(definition);
             if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
-                LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+            	}
 
                 if (!validationExpression.matcher(attributeValue).matches()) {
                     boolean isError=true;
@@ -440,7 +447,7 @@ public class KimTypeServiceBase implements KimTypeService {
                                 isError=!((Boolean)o).booleanValue();
                             }
                         } catch (Exception e) {
-                            LOG.debug(e.getMessage(), e);
+                            LOG.warn(e.getMessage(), e);
                         }
                     }
                     if (isError) {
@@ -684,28 +691,39 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	protected final String COMMA_SEPARATOR = ", ";
-	protected final String QUALIFICATION_RECEIVED_ATTIBUTES_NAME = "qualification";
-	protected final String ROLE_QUALIFIERS_RECEIVED_ATTIBUTES_NAME = "role qualifiers";
-	protected final String REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME = "requested details";
-	protected final String STORED_DETAILS_RECEIVED_ATTIBUTES_NAME = "stored details";
 
-	protected void validateRequiredAttributesAgainstReceived(
-			List<String> requiredAttributes, AttributeSet receivedAttributes, String receivedAttributesName){
-		//TODO: Remove comment
-		/*List<String> missingAttributes = new ArrayList<String>();
-		for(String requiredAttribute: requiredAttributes){
-			if(receivedAttributes==null || !receivedAttributes.containsKey(requiredAttribute))
-				missingAttributes.add(requiredAttribute);
+	protected void validateRequiredAttributesAgainstReceived(AttributeSet receivedAttributes){
+		// abort if type does not want the qualifiers to be checked
+		if ( !isCheckRequiredAttributes() ) {
+			return;
+		}
+		// abort if the list is empty, no attributes need to be checked
+		if ( requiredAttributes == null || requiredAttributes.isEmpty() ) {
+			return;
+		}
+		List<String> missingAttributes = new ArrayList<String>();
+		// if attributes are null or empty, they're all missing
+		if ( receivedAttributes == null || receivedAttributes.isEmpty() ) {
+			missingAttributes.addAll(receivedAttributes.keySet());			
+		} else {
+			for( String requiredAttribute : requiredAttributes ) {
+				if( !receivedAttributes.containsKey(requiredAttribute) ) {
+					missingAttributes.add(requiredAttribute);
+				}
+			}
 		}
         if(missingAttributes.size()>0) {
-        	String errorMessage = "";
-        	for(String missingAttribute: missingAttributes){
-        		errorMessage += missingAttribute + COMMA_SEPARATOR;
+        	StringBuffer errorMessage = new StringBuffer();
+        	Iterator<String> attribIter = missingAttributes.iterator();
+        	while ( attribIter.hasNext() ) {
+        		errorMessage.append( attribIter.next() );
+        		if( attribIter.hasNext() ) {
+        			errorMessage.append( COMMA_SEPARATOR );
+        		}
         	}
-        	errorMessage = errorMessage.substring(0,
-        			errorMessage.length()-COMMA_SEPARATOR.length()) + " not found in "+receivedAttributesName+" .";
-            throw new RuntimeException(errorMessage);
-        }*/
+        	errorMessage.append( " not found in required attributes for this type." );
+            throw new KimTypeAttributeValidationException(errorMessage.toString());
+        }
 	}
 
 	/**
@@ -792,6 +810,14 @@ public class KimTypeServiceBase implements KimTypeService {
 			}
 		}
 		return validationErrors;
+	}
+
+	public boolean isCheckRequiredAttributes() {
+		return this.checkRequiredAttributes;
+	}
+
+	public void setCheckRequiredAttributes(boolean checkRequiredAttributes) {
+		this.checkRequiredAttributes = checkRequiredAttributes;
 	}
 
 }

@@ -31,7 +31,7 @@ public class NamespacePermissionTypeServiceImpl extends
 		KimPermissionTypeServiceBase {
 
 	{
-		requiredAttributes.add(KimAttributes.NAMESPACE_CODE);
+//		requiredAttributes.add(KimAttributes.NAMESPACE_CODE);
 	}
 	
 	/**

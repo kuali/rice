@@ -32,6 +32,7 @@ public class ParameterPermissionTypeServiceImpl extends
     {
         requiredAttributes.add(KimAttributes.PARAMETER_NAME);
         requiredAttributes.add(KimAttributes.COMPONENT_NAME);
+        checkRequiredAttributes = true;
     }
     
     @Override

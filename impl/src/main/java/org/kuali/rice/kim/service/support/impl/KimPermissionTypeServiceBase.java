@@ -30,14 +30,12 @@ import org.kuali.rice.kim.service.support.KimPermissionTypeService;
  */
 public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements KimPermissionTypeService {
 
-	protected List<String> requiredAttributes = new ArrayList<String>();
-	
 	/**
 	 * @see org.kuali.rice.kim.service.support.KimPermissionTypeService#getMatchingPermissions(AttributeSet, List)
 	 */
 	public final List<KimPermissionInfo> getMatchingPermissions( AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList ) {
 		requestedDetails = translateInputAttributeSet(requestedDetails);
-		validateRequiredAttributesAgainstReceived(requiredAttributes, requestedDetails, REQUESTED_DETAILS_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(requestedDetails);
 		return performPermissionMatches(requestedDetails, permissionsList);
 	}
 

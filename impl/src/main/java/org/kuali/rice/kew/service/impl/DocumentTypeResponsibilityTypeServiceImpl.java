@@ -36,6 +36,11 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 	DocumentTypeService documentTypeService;
 	protected String exactMatchStringAttributeName;
 
+	{
+		requiredAttributes.add( KimAttributes.DOCUMENT_TYPE_NAME );
+		checkRequiredAttributes = true;
+	}
+	
 	@Override
 	protected List<KimResponsibilityInfo> performResponsibilityMatches(
 			AttributeSet requestedDetails,

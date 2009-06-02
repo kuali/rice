@@ -32,6 +32,11 @@ import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
  * 
  */
 public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
+	
+	{
+		requiredAttributes.add( KimAttributes.ACTION_REQUEST_CD );
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet,
 	 *      java.util.List)

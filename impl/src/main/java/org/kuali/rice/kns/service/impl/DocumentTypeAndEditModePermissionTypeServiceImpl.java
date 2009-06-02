@@ -21,15 +21,18 @@ import java.util.List;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class DocumentTypeAndEditModePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
+	
+	{
+		requiredAttributes.add(KimAttributes.EDIT_MODE);
+	}
+	
 	@Override
-	public List<KimPermissionInfo> performPermissionMatches(
+	protected List<KimPermissionInfo> performPermissionMatches(
 			AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();

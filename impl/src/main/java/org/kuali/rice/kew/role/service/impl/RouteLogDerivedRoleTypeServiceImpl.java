@@ -39,9 +39,9 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
     
-	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
 		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
+		checkRequiredAttributes = true;
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	 */
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
-		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(qualification);
 		
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
@@ -89,11 +89,10 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	/***
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean hasApplicationRole(
 			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
-		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
+		validateRequiredAttributesAgainstReceived(qualification);
 	
 		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
         boolean isUserInRouteLog = false;

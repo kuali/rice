@@ -18,7 +18,6 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -30,7 +29,7 @@ public class DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService
 		extends DocumentTypePermissionTypeServiceImpl {
 
 	@Override
-	public List<KimPermissionInfo> performPermissionMatches(
+	protected List<KimPermissionInfo> performPermissionMatches(
 			AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 				

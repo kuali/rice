@@ -24,7 +24,6 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -43,7 +42,9 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(AttributeSet, AttributeSet)
 	 */
 	public boolean doesRoleQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
-		return performMatch(translateInputAttributeSet(qualification), roleQualifier);
+		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
+		validateRequiredAttributesAgainstReceived(translatedQualification);
+		return performMatch(translatedQualification, roleQualifier);
 	}
 	
 	/**
@@ -51,6 +52,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 */
 	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
 		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
+		validateRequiredAttributesAgainstReceived(translatedQualification);
 		List<RoleMembershipInfo> matchingMemberships = new ArrayList<RoleMembershipInfo>();
 		for ( RoleMembershipInfo rmi : roleMemberList ) {
 			if ( performMatch( translatedQualification, rmi.getQualifier() ) ) {
@@ -67,6 +69,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#getRoleMembersFromApplicationRole(String, String, AttributeSet)
 	 */
 	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+		validateRequiredAttributesAgainstReceived(qualification);
 		if ( !isApplicationRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
 		} else {
@@ -115,7 +118,6 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		return false;
 	}
 		
-	/**
 	/**
 	 * No conversion performed.  Simply returns the passed in Map.
 	 * 

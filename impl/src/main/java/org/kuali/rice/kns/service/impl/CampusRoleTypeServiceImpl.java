@@ -24,6 +24,8 @@ public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
 	{
 		workflowRoutingAttributes.add( KimAttributes.CAMPUS_CODE );
+		requiredAttributes.add( KimAttributes.CAMPUS_CODE );
+//		checkRequiredAttributes = true;
 	}
 
 	/**

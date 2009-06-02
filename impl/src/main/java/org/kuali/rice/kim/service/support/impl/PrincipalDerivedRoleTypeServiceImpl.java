@@ -35,14 +35,12 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	
-	private static IdentityManagementService identityManagementService;
+	private IdentityManagementService identityManagementService;
 	
-	/**
-	 * 
-	 */
-	public PrincipalDerivedRoleTypeServiceImpl() {
+	{
+		requiredAttributes.add( KimAttributes.PRINCIPAL_ID );
+		checkRequiredAttributes = false;
 	}
-	
 	
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimTypeServiceBase#performMatch(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)

@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl {
 	{
 		exactMatchStringAttributeName = KimAttributes.ROUTE_NODE_NAME;
+		requiredAttributes.add( KimAttributes.ROUTE_NODE_NAME );
 	}
 	
 	/**
@@ -43,7 +44,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 		// get the base responsibility matches based on the route level and document type
 		List<KimResponsibilityInfo> baseMatches = super.performResponsibilityMatches(requestedDetails,
 				responsibilitiesList);
-		// now, if any of the responsibilities have the "additionalMatchValue" detail property
+		// now, if any of the responsibilities have the "qualifierResolverProvidedIdentifier" detail property
 		// perform an exact match on the property with the requested details
 		// if the property does not match or does not exist in the requestedDetails, remove
 		// the responsibility from the list

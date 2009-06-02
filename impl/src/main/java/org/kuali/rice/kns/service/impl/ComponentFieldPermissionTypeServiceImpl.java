@@ -31,8 +31,8 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 
 	{
-		requiredAttributes.add(KimAttributes.COMPONENT_NAME);
-		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
+//		requiredAttributes.add(KimAttributes.COMPONENT_NAME);
+//		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
 	}
 	
 	/**

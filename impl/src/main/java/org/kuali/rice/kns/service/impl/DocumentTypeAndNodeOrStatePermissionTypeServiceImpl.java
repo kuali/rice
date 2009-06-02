@@ -32,8 +32,8 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
 	{
-		requiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
-		requiredAttributes.add(KimAttributes.ROUTE_STATUS_CODE);
+//		requiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
+//		requiredAttributes.add(KimAttributes.ROUTE_STATUS_CODE);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
     @Override
-    public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+    protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
             List<KimPermissionInfo> permissionsList) {
         List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
         // loop over the permissions, checking the non-document-related ones

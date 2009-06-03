@@ -28,17 +28,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.Guid;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -179,7 +175,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 				try{
 					externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
 				}catch (GeneralSecurityException e) {
-		            throw new RuntimeException("Unable to decrypt value : " + e.getMessage());
+		            throw new RuntimeException("Unable to decrypt value : " + e.getMessage(), e);
 		        }
 
 			}

@@ -48,7 +48,7 @@ public interface BusinessObjectDao {
      * @param primaryKey
      * @return
      */
-    public PersistableBusinessObject findByPrimaryKey(Class clazz, Object primaryKey);
+    public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey);
     
     /**
      * Retrieves an object instance identified bys it primary keys and values. This can be done by constructing a map where the key

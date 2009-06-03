@@ -49,9 +49,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	private OjbCollectionHelper ojbCollectionHelper;
 
 	/**
-	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.lang.Object)
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
-	public PersistableBusinessObject findByPrimaryKey(Class clazz, Object primaryKey) {
+	public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey) {
 		return (PersistableBusinessObject) entityManager.find(clazz, primaryKey);
 	}
 

@@ -163,10 +163,10 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.lang.Object)
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
-	public PersistableBusinessObject findByPrimaryKey(Class clazz, Object primaryKey) {
-		return getDao(clazz).findByPrimaryKey(clazz, primaryKey);
+	public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey) {
+		return getDao(clazz).findBySinglePrimaryKey(clazz, primaryKey);
 	}
 	
 	/**

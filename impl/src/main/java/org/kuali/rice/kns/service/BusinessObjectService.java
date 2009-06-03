@@ -80,7 +80,7 @@ public interface BusinessObjectService {
      * @param primaryKey
      * @return
      */
-    public PersistableBusinessObject findByPrimaryKey(Class clazz, Object primaryKey);
+    public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey);
     
     /**
      * Retrieves an object instance identified by its primary keys and values. This can be done by constructing a map where the key

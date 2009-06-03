@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 
 /**
@@ -31,7 +32,7 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRoleTypeService {
+public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRoleTypeService, KimDelegationTypeService {
 
 	private static final Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
 	
@@ -158,4 +159,17 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		}
 		// base implementation - do nothing
 	}
+	
+	/**
+	 * Performs a simple check that the qualifier on the delegation matches the qualification.
+	 * Extra qualification attributes are ignored.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimDelegationTypeService#doesDelegationQualifierMatchQualification(org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public boolean doesDelegationQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
+		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
+		validateRequiredAttributesAgainstReceived(translatedQualification);
+		return performMatch(translatedQualification, roleQualifier);
+	}
+
 }

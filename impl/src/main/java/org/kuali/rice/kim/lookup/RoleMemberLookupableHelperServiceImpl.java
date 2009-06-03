@@ -27,6 +27,7 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -62,27 +63,14 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     protected static final String DETAIL_OBJECTS_ATTRIBUTE_NAME = "detailObjects.kimAttribute.attributeName";
     
     @Override
-    public List<? extends BusinessObject> getSearchResults(Map<String,String> fieldValues) {
+    protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
     	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
     	if(searchCriteria == null)
     		return new ArrayList<BusinessObject>();
-        return getMemberSearchResults(fieldValues);
-    }
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResultsUnbounded(java.util.Map)
-     */
-    @Override
-    public List<? extends BusinessObject> getSearchResultsUnbounded(
-    		Map<String, String> fieldValues) {
-    	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
-    	if(searchCriteria == null)
-    		return new ArrayList<BusinessObject>();
-        return getMemberSearchResults(fieldValues);
+        return getMemberSearchResults(fieldValues, unbounded);
     }
 
-    protected abstract List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria);
+    protected abstract List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria, boolean unbounded);
     
     protected Map<String, String> buildSearchCriteria(Map<String, String> fieldValues){
         String templateNamespaceCode = fieldValues.get(TEMPLATE_NAMESPACE_CODE);
@@ -288,4 +276,11 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 		return rows;
 	}
     
+	protected Long getActualSizeIfTruncated(List result){
+		Long actualSizeIfTruncated = new Long(0); 
+		if(result instanceof CollectionIncomplete)
+			actualSizeIfTruncated = ((CollectionIncomplete)result).getActualSizeIfTruncated();
+		return actualSizeIfTruncated;
+	}
+
 }

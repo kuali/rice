@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 
@@ -48,38 +49,39 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
 	 */
 	@Override
-	protected List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria) {
+	protected List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria, boolean unbounded) {
 		Map<String, String> permissionSearchCriteria = buildSearchCriteria(searchCriteria);
 		Map<String, String> roleSearchCriteria = buildRoleSearchCriteria(searchCriteria);
 		boolean permissionCriteriaEmpty = permissionSearchCriteria==null || permissionSearchCriteria.isEmpty();
 		boolean roleCriteriaEmpty = roleSearchCriteria==null || roleSearchCriteria.isEmpty();
 		
-		List<PermissionImpl> permissionSearchResultsCopy = new ArrayList<PermissionImpl>();
+		List<PermissionImpl> permissionSearchResultsCopy = new CollectionIncomplete<PermissionImpl>(new ArrayList<PermissionImpl>(), new Long(0));
 		if(!permissionCriteriaEmpty && !roleCriteriaEmpty){
-			permissionSearchResultsCopy = getCombinedSearchResults(permissionSearchCriteria, roleSearchCriteria);
+			permissionSearchResultsCopy = getCombinedSearchResults(permissionSearchCriteria, roleSearchCriteria, unbounded);
 		} else if(permissionCriteriaEmpty && !roleCriteriaEmpty){
-			permissionSearchResultsCopy = getPermissionsWithRoleSearchCriteria(roleSearchCriteria);
+			permissionSearchResultsCopy = getPermissionsWithRoleSearchCriteria(roleSearchCriteria, unbounded);
 		} else if(!permissionCriteriaEmpty && roleCriteriaEmpty){
-			permissionSearchResultsCopy = getPermissionsWithPermissionSearchCriteria(permissionSearchCriteria);
+			permissionSearchResultsCopy = getPermissionsWithPermissionSearchCriteria(permissionSearchCriteria, unbounded);
 		} else if(permissionCriteriaEmpty && roleCriteriaEmpty){
-			return getAllPermissions();
+			return getAllPermissions(unbounded);
 		}
 		return permissionSearchResultsCopy;
 	}
 	
-	private List<PermissionImpl> getAllPermissions(){
-		List<PermissionImpl> permissions = searchPermissions(new HashMap<String, String>());
+	private List<PermissionImpl> getAllPermissions(boolean unbounded){
+		List<PermissionImpl> permissions = searchPermissions(new HashMap<String, String>(), unbounded);
 		for(PermissionImpl permission: permissions)
 			populateAssignedToRoles(permission);
 		return permissions;
 	}
 	
 	private List<PermissionImpl> getCombinedSearchResults(
-			Map<String, String> permissionSearchCriteria, Map<String, String> roleSearchCriteria){
-		List<PermissionImpl> permissionSearchResults = searchPermissions(permissionSearchCriteria);
-		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
-		List<PermissionImpl> permissionsForRoleSearchResults = getPermissionsForRoleSearchResults(roleSearchResults);
-		List<PermissionImpl> matchedPermissions = new ArrayList<PermissionImpl>();
+			Map<String, String> permissionSearchCriteria, Map<String, String> roleSearchCriteria, boolean unbounded){
+		List<PermissionImpl> permissionSearchResults = searchPermissions(permissionSearchCriteria, unbounded);
+		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
+		List<PermissionImpl> permissionsForRoleSearchResults = getPermissionsForRoleSearchResults(roleSearchResults, unbounded);
+		List<PermissionImpl> matchedPermissions = new CollectionIncomplete<PermissionImpl>(
+			new ArrayList<PermissionImpl>(), getActualSizeIfTruncated(permissionsForRoleSearchResults));
 		if((permissionSearchResults!=null && !permissionSearchResults.isEmpty()) && 
 				(permissionsForRoleSearchResults!=null && !permissionsForRoleSearchResults.isEmpty())){
 			for(PermissionImpl permission: permissionSearchResults){
@@ -89,38 +91,27 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				}
 			}
 		}
-		/*for(PermissionImpl permission: permissionSearchResults){
-			for(RolePermissionImpl rolePermission: permission.getRolePermissions()){
-				for(RoleImpl roleImpl: roleSearchResults){
-					if(roleImpl.getRoleId().equals(rolePermission.getRoleId())){
-						permission.getAssignedToRoles().add(roleImpl);
-						matchedPermissions.add(permission);
-					}
-				}
-			}
-		}*/
 		return matchedPermissions;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<PermissionImpl> searchPermissions(Map<String, String> permissionSearchCriteria){
-		return getPermissionsSearchResultsCopy((List<KimPermissionImpl>)
-					getLookupService().findCollectionBySearchHelper(
-							KimPermissionImpl.class, permissionSearchCriteria, true));	
+	private List<PermissionImpl> searchPermissions(Map<String, String> permissionSearchCriteria, boolean unbounded){
+		return getPermissionsSearchResultsCopy((List<KimPermissionImpl>)getLookupService().findCollectionBySearchHelper(
+				KimPermissionImpl.class, permissionSearchCriteria, unbounded));	
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria){
+	private List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria, boolean unbounded){
 		return (List<RoleImpl>)getLookupService().findCollectionBySearchHelper(
-					RoleImpl.class, roleSearchCriteria, true);
+					RoleImpl.class, roleSearchCriteria, unbounded);
 	}
 	
-	private List<PermissionImpl> getPermissionsWithRoleSearchCriteria(Map<String, String> roleSearchCriteria){
-		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria);
-		return getPermissionsForRoleSearchResults(roleSearchResults);
+	private List<PermissionImpl> getPermissionsWithRoleSearchCriteria(Map<String, String> roleSearchCriteria, boolean unbounded){
+		return getPermissionsForRoleSearchResults(searchRoles(roleSearchCriteria, unbounded), unbounded);
 	}
 
-	private List<PermissionImpl> getPermissionsForRoleSearchResults(List<RoleImpl> roleSearchResults){
+	private List<PermissionImpl> getPermissionsForRoleSearchResults(List<RoleImpl> roleSearchResults, boolean unbounded){
+		Long actualSizeIfTruncated = getActualSizeIfTruncated(roleSearchResults);
 		List<PermissionImpl> permissions = new ArrayList<PermissionImpl>();
 		List<PermissionImpl> tempPermissions;
 		List<String> collectedPermissionIds = new ArrayList<String>();
@@ -128,7 +119,8 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		for(RoleImpl roleImpl: roleSearchResults){
 			permissionCriteria = new HashMap<String, String>();
 			permissionCriteria.put("rolePermissions.roleId", roleImpl.getRoleId());
-			tempPermissions = searchPermissions(permissionCriteria);
+			tempPermissions = searchPermissions(permissionCriteria, unbounded);
+			actualSizeIfTruncated += getActualSizeIfTruncated(tempPermissions);
 			for(PermissionImpl permission: tempPermissions){
 				if(!collectedPermissionIds.contains(permission.getPermissionId())){
 					populateAssignedToRoles(permission);
@@ -137,7 +129,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				}
 			}
 		}
-		return permissions;
+		return new CollectionIncomplete<PermissionImpl>(permissions, actualSizeIfTruncated);
 	}
 
 	private void populateAssignedToRoles(PermissionImpl permission){
@@ -157,19 +149,21 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
     private static final Map<Map<String,String>,MaxAgeSoftReference<List<PermissionImpl>>> permResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<PermissionImpl>>>(); 
 	private static final long PERM_CACHE_EXPIRE_SECONDS = 30L;
 	
-	private List<PermissionImpl> getPermissionsWithPermissionSearchCriteria(Map<String, String> permissionSearchCriteria){
+	private List<PermissionImpl> getPermissionsWithPermissionSearchCriteria(
+			Map<String, String> permissionSearchCriteria, boolean unbounded){
 		String detailCriteriaStr = permissionSearchCriteria.remove( DETAIL_CRITERIA );
 		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
 
 		MaxAgeSoftReference<List<PermissionImpl>> cachedResult = permResultCache.get(permissionSearchCriteria);
 		List<PermissionImpl> permissions = null;
 		if ( cachedResult == null || cachedResult.get() == null ) {
-			permissions = searchPermissions(permissionSearchCriteria);
+			permissions = searchPermissions(permissionSearchCriteria, unbounded);
 			permResultCache.put(permissionSearchCriteria, new MaxAgeSoftReference<List<PermissionImpl>>( PERM_CACHE_EXPIRE_SECONDS, permissions ) ); 
 		} else {
 			permissions = cachedResult.get();
 		}
-		List<PermissionImpl> filteredPermissions = new ArrayList<PermissionImpl>(); 
+		List<PermissionImpl> filteredPermissions = new CollectionIncomplete<PermissionImpl>(
+				new ArrayList<PermissionImpl>(), getActualSizeIfTruncated(permissions)); 
 		for(PermissionImpl perm: permissions){
 			if ( detailCriteria.isEmpty() ) {
 				filteredPermissions.add(perm);
@@ -185,7 +179,8 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	}
 	
 	private List<PermissionImpl> getPermissionsSearchResultsCopy(List<KimPermissionImpl> permissionSearchResults){
-		List<PermissionImpl> permissionSearchResultsCopy = new ArrayList<PermissionImpl>();
+		List<PermissionImpl> permissionSearchResultsCopy = new CollectionIncomplete<PermissionImpl>(
+			new ArrayList<PermissionImpl>(), getActualSizeIfTruncated(permissionSearchResults));
 		for(KimPermissionImpl permissionImpl: permissionSearchResults){
 			PermissionImpl permissionCopy = new PermissionImpl();
 			try{
@@ -198,7 +193,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		}
 		return permissionSearchResultsCopy;
 	}
-	
+
 	/**
 	 * @return the lookupService
 	 */

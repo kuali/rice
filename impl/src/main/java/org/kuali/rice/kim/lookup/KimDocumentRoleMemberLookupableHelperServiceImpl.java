@@ -84,19 +84,27 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
 	}
 
 	public String getQualifiersToDisplay(KimDocumentRoleMember roleMember) {
-		KimRoleInfo roleInfo = getRoleService().getRole(roleMember.getRoleId());
-		KimTypeInfo kimType = getKimTypeInfoService().getKimType(roleInfo.getKimTypeId());
-		KimTypeAttributesHelper attributesHelper = new KimTypeAttributesHelper(kimType);
-		StringBuffer attributesToDisplay = new StringBuffer();
-		AttributeDefinition attribDefn;
-		for(KimDocumentRoleQualifier attribute: roleMember.getQualifiers()){
-			attribDefn = attributesHelper.getAttributeDefinition(attribute.getKimAttribute().getAttributeName());
-			attributesToDisplay.append(attribDefn!=null?attribDefn.getLabel():"");
-			attributesToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
-			attributesToDisplay.append(attribute.getAttrVal());
-			attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		if(roleMember!=null && StringUtils.isNotEmpty(roleMember.getRoleId()) && 
+				roleMember.getQualifiers()!=null && !roleMember.getQualifiers().isEmpty()){
+			KimRoleInfo roleInfo = getRoleService().getRole(roleMember.getRoleId());
+			KimTypeInfo kimType = null;
+			if(roleInfo!=null)
+				kimType = getKimTypeInfoService().getKimType(roleInfo.getKimTypeId());
+			if(kimType!=null){
+				KimTypeAttributesHelper attributesHelper = new KimTypeAttributesHelper(kimType);
+				StringBuffer attributesToDisplay = new StringBuffer();
+				AttributeDefinition attribDefn;
+				for(KimDocumentRoleQualifier attribute: roleMember.getQualifiers()){
+					attribDefn = attributesHelper.getAttributeDefinition(attribute.getKimAttribute().getAttributeName());
+					attributesToDisplay.append(attribDefn!=null?attribDefn.getLabel():"");
+					attributesToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
+					attributesToDisplay.append(attribute.getAttrVal());
+					attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+				}
+				return KimCommonUtils.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
+			}
 		}
-		return KimCommonUtils.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		return "";
 	}
 
 	public RoleService getRoleService() {

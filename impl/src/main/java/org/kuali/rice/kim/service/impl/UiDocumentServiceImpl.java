@@ -417,6 +417,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					PersonDocumentGroup docGroup = new PersonDocumentGroup();
 					docGroup.setGroupId(group.getGroupId());
 					docGroup.setGroupName(group.getGroupName());
+					docGroup.setNamespaceCode(group.getNamespaceCode());
 					docGroup.setPrincipalId(memberId);
 					List<String> groupIds = new ArrayList<String>();
 					groupIds.add(group.getGroupId());

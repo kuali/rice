@@ -74,6 +74,15 @@ public interface BusinessObjectService {
     public void linkAndSave(List<PersistableBusinessObject> businessObjects);
 
     /**
+     * Retrieves an object instance identified by its primary key. For composite keys, use {@link #findByPrimaryKey(Class, Map)}
+     * 
+     * @param clazz
+     * @param primaryKey
+     * @return
+     */
+    public PersistableBusinessObject findByPrimaryKey(Class clazz, Object primaryKey);
+    
+    /**
      * Retrieves an object instance identified by its primary keys and values. This can be done by constructing a map where the key
      * to the map entry is the primary key attribute and the value of the entry being the primary key value. For composite keys,
      * pass in each primaryKey attribute and its value as a map entry.

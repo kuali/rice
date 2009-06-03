@@ -43,6 +43,13 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     private PersistenceStructureService persistenceStructureService;
 
     /**
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.lang.Object)
+	 */
+	public PersistableBusinessObject findByPrimaryKey(Class clazz, Object primaryKey) {
+		return (PersistableBusinessObject) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
+	}
+    
+    /**
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.util.Map)
      */
     public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys) {

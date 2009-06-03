@@ -192,4 +192,8 @@ public class NodeType {
 
     }
 
+    public static List<NodeType> getTypeList(){
+    	return typeList;
+    }
+
 }

@@ -177,7 +177,7 @@
           <superUserWorkgroupName>KR-WKFLW:NotificationAdmin</superUserWorkgroupName>
           <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
           <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
-          <docHandler>${notification.basewebappurl}/DetailView.form</docHandler>
+          <docHandler>${ken.url}/DetailView.form</docHandler>
           <active>true</active>
           <attributes>
               <attribute>
@@ -229,7 +229,7 @@
             <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
-            <docHandler>${notification.basewebappurl}/AdministerNotificationRequest.form</docHandler>
+            <docHandler>${ken.url}/AdministerNotificationRequest.form</docHandler>
             <active>true</active>
 
             <attributes>

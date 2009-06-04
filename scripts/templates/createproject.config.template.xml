@@ -28,7 +28,7 @@
 	<param name="workflow.url">http://localhost:8080/${app.context.name}/en</param>
 	<param name="application.url">http://localhost:8080/${app.context.name}</param>
 	<param name="serviceServletUrl">http://localhost:8080/${app.context.name}/remoting/</param>
-	<param name="notification.basewebappurl">http://localhost:8080/${app.context.name}/ken</param>
+	<param name="ken.url">http://localhost:8080/${app.context.name}/ken</param>
 
 	<param name="datasource.url"></param>
 	<param name="datasource.username"></param>

@@ -1509,7 +1509,7 @@
           <superUserWorkgroupName>NotificationAdmin</superUserWorkgroupName>
           <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
           <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-          <docHandler>${notification.basewebappurl}/DetailView.form</docHandler>
+          <docHandler>${ken.url}/DetailView.form</docHandler>
           <active>true</active>
           <attributes>
               <attribute>
@@ -1561,7 +1561,7 @@
             <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
             <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
             <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
-            <docHandler>${notification.basewebappurl}/AdministerNotificationRequest.form</docHandler>
+            <docHandler>${ken.url}/AdministerNotificationRequest.form</docHandler>
             <active>true</active>
 
             <attributes>

@@ -89,7 +89,7 @@
     <param name="notification.quartz.autostartup">false</param>
     <param name="notification.concurrent.jobs">true</param>
 
-    <param name="notification.basewebappurl">http://localhost:9912/${app.context.name}/ken</param>
+    <param name="ken.url">http://localhost:9912/${app.context.name}/ken</param>
 
 
     <!-- Email Plugin Properties -->

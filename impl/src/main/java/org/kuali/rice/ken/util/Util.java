@@ -102,7 +102,7 @@ public final class Util {
      * @return the name of the user configured to be the Notification system user
      */
     public static String getNotificationSystemUser() {
-        String system_user = ConfigContext.getCurrentContextConfig().getProperty(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME);
+        String system_user = ConfigContext.getCurrentContextConfig().getProperty(NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_PARAM);
         if (system_user == null) {
             system_user = NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER;
         }

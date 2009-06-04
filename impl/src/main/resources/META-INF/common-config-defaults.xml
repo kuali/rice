@@ -176,6 +176,7 @@
     <!-- KEN -->
 
 	<param name="ken.url" override="false">${application.url}/ken</param>
+	<param name="ken.system.user" override="false">notsys</param>
     <param name="notification.resolveMessageDeliveriesJob.startDelayMS" override="false">5000</param>
     <param name="notification.resolveMessageDeliveriesJob.intervalMS" override="false">10000</param>
     <param name="notification.processAutoRemovalJob.startDelayMS" override="false">60000</param>

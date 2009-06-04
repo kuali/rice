@@ -130,7 +130,7 @@ public class ActionFormUtilMap extends HashMap {
 
     // Method added to keep backward compatibility for non-kimTypeName cases
     public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeKeyInLabel) {
-    	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, includeKeyInLabel, null);
+    	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, null, includeKeyInLabel );
     }
     
     public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel) {

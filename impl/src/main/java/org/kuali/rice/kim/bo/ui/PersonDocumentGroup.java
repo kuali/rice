@@ -22,8 +22,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -49,7 +52,8 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	protected String namespaceCode;
 
 	protected String principalId;
-	protected KimTypeImpl kimGroupType = new KimTypeImpl();
+	@Transient
+	protected transient KimTypeInfo kimGroupType = new KimTypeInfo();
 	protected String kimTypeId;
 	@Column(name="ACTV_FRM_DT")
 	protected Date activeFromDate;
@@ -85,12 +89,11 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 		this.groupName = groupName;
 	}
 
-	public KimTypeImpl getKimGroupType() {
-		return this.kimGroupType;
-	}
-
-	public void setKimGroupType(KimTypeImpl kimGroupType) {
-		this.kimGroupType = kimGroupType;
+	public KimTypeInfo getKimGroupType() {
+		if ( kimGroupType == null || !StringUtils.equals( kimGroupType.getKimTypeId(), kimTypeId ) ) {
+			kimGroupType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		}
+		return kimGroupType;
 	}
 
 	public String getKimTypeId() {

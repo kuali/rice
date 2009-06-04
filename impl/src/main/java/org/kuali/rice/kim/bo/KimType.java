@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

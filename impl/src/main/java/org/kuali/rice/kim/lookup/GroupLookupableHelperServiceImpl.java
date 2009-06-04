@@ -144,7 +144,6 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
 	@Override
 	public List<Row> getRows() {
-		List<Row> attributeRows = new ArrayList<Row>();
 		if (getGrpRows().isEmpty()) {
 			List<Row> rows = super.getRows();
 			List<Row> returnRows = new ArrayList<Row>();
@@ -374,16 +373,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 				if (!StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
-					Map<String,Object> pkMap = new HashMap<String,Object>();
-					pkMap.put(KIM_TYPE_ID_PROPERTY_NAME, field.getPropertyValue());
-					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
-					// TODO what if servicename is null.  also check other places that have similar issue
-					// use default_service ?
-					String serviceName = kimType.getKimTypeServiceName();
-					if (StringUtils.isBlank(serviceName)) {
-						serviceName = "kimTypeService";
-					}
-			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
+					KimTypeInfo kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
+					KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
 		            for (AttributeDefinition definition  : definitions.values()) {

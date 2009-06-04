@@ -24,8 +24,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.types.KimAttributeData;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -56,9 +59,8 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
 	protected KimAttributeImpl kimAttribute;
 
-	@ManyToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_TYP_ID", insertable = false, updatable = false)
-	protected KimTypeImpl kimType;
+	@Transient
+	protected transient KimTypeInfo kimType;
 
 	public String getAttributeDataId() {
 		return this.attributeDataId;
@@ -91,11 +93,11 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	public void setKimAttribute(KimAttributeImpl kimAttribute) {
 		this.kimAttribute = kimAttribute;
 	}
-	public KimTypeImpl getKimType() {
-		return this.kimType;
-	}
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
+	public KimTypeInfo getKimType() {
+		if ( kimType == null ) {
+			kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		}
+		return kimType;
 	}
 
 	/**

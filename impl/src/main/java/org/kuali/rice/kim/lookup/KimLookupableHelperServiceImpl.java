@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.lookup;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -33,7 +35,8 @@ public class KimLookupableHelperServiceImpl extends KualiLookupableHelperService
 
 	private static final long serialVersionUID = 1L;
 	
-	private DocumentHelperService documentHelperService;
+	private static DocumentHelperService documentHelperService;
+	private static KimTypeInfoService typeInfoService;
 	
     @Override
 	public boolean allowsNewOrCopyAction(String documentTypeName) {
@@ -50,7 +53,13 @@ public class KimLookupableHelperServiceImpl extends KualiLookupableHelperService
 	    if ( documentHelperService == null ) {
 	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
-	    return this.documentHelperService;
+	    return documentHelperService;
 	}
 
+	protected KimTypeInfoService getTypeInfoService() {
+	    if ( typeInfoService == null ) {
+	    	typeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+	    return typeInfoService;
+	}
 }

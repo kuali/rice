@@ -34,9 +34,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -74,13 +73,20 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
 
-	protected BusinessObjectService businessObjectService;
-	protected DictionaryValidationService dictionaryValidationService;
-	protected DataDictionaryService dataDictionaryService;
-//	protected Class<? extends KimAttributes> kimAttributesClass;
+	private BusinessObjectService businessObjectService;
+	private DictionaryValidationService dictionaryValidationService;
+	private DataDictionaryService dataDictionaryService;
+	private KimTypeInfoService typeInfoService;
 	protected List<String> workflowRoutingAttributes = new ArrayList<String>();
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	protected boolean checkRequiredAttributes = false;
+
+	protected KimTypeInfoService getTypeInfoService() {
+		if ( typeInfoService == null ) {
+			typeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return typeInfoService;
+	}
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
@@ -547,10 +553,10 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected AttributeDefinition getDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
+	protected AttributeDefinition getDataDictionaryAttributeDefinition( String namespaceCode, KimTypeAttributeInfo typeAttribute) {
 		KimDataDictionaryAttributeDefinition definition = new KimDataDictionaryAttributeDefinition();
-		String componentClassName = typeAttribute.getKimAttribute().getComponentName();
-		String attributeName = typeAttribute.getKimAttribute().getAttributeName();
+		String componentClassName = typeAttribute.getComponentName();
+		String attributeName = typeAttribute.getAttributeName();
 		AttributeDefinition baseDefinition;
 		try {
 			baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
@@ -576,7 +582,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		definition.setControl(control);
 		definition.setSortCode(typeAttribute.getSortCode());
 		definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
-		definition.setApplicationUrl(typeAttribute.getKimAttribute().getApplicationUrl());
+		definition.setApplicationUrl( Utilities.substituteConfigParameters( namespaceCode, typeAttribute.getApplicationUrl() ) );
 
 		Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
 		Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
@@ -610,7 +616,7 @@ public class KimTypeServiceBase implements KimTypeService {
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Unable to get DD data for: " + typeAttribute.getKimAttribute(), e);
+			LOG.error("Unable to get DD data for: " + typeAttribute, e);
 		}
 		return definition;
 	}
@@ -640,10 +646,10 @@ public class KimTypeServiceBase implements KimTypeService {
 		return copy;
 	}
 
-	protected AttributeDefinition getNonDataDictionaryAttributeDefinition(KimTypeAttributeImpl typeAttribute) {
+	protected AttributeDefinition getNonDataDictionaryAttributeDefinition(KimTypeAttributeInfo typeAttribute) {
 		KimNonDataDictionaryAttributeDefinition definition = new KimNonDataDictionaryAttributeDefinition();
-		definition.setName(typeAttribute.getKimAttribute().getAttributeName());
-		definition.setLabel(typeAttribute.getKimAttribute().getAttributeLabel());
+		definition.setName(typeAttribute.getAttributeName());
+		definition.setLabel(typeAttribute.getAttributeLabel());
 		definition.setSortCode(typeAttribute.getSortCode());
 		definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
 		return definition;
@@ -653,29 +659,26 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
 		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
-		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		if ( definitions == null ) {
+			List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 			definitions = new AttributeDefinitionMap();
-	        Map<String,String> pk = new HashMap<String, String>( 1 );
-	        pk.put("kimTypeId", kimTypeId);
-	        KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pk);
+	        KimTypeInfo kimType = getTypeInfoService().getKimType(kimTypeId);
 	        if ( kimType != null ) {
 				String nsCode = kimType.getNamespaceCode();	        
-				for (KimTypeAttributeImpl typeAttribute : kimType.getAttributeDefinitions()) {
+				for (KimTypeAttributeInfo typeAttribute : kimType.getAttributeDefinitions()) {
 					AttributeDefinition definition = null;
-					if (typeAttribute.getKimAttribute().getComponentName() == null) {
+					if (typeAttribute.getComponentName() == null) {
 						definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
 					} else {
-						definition = getDataDictionaryAttributeDefinition(typeAttribute);
+						definition = getDataDictionaryAttributeDefinition(nsCode,typeAttribute);
 					}
 					if(uniqueAttributes!=null && uniqueAttributes.contains(definition.getName())){
 						definition.setUnique(true);
 					}
 					// Perform a parameterized substitution on the applicationUrl
-					KimAttributeImpl kai = typeAttribute.getKimAttribute();
-					String url = kai.getApplicationUrl();
-					url = Utilities.substituteConfigParameters(nsCode, url);
-					kai.setApplicationUrl(url);
+//					String url = typeAttribute.getApplicationUrl();
+//					url = Utilities.substituteConfigParameters(nsCode, url);
+//					kai.setApplicationUrl(url);
 					
 					// TODO : use id for defnid ?
 			//		definition.setId(typeAttribute.getKimAttributeId());

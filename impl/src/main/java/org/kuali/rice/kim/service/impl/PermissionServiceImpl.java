@@ -484,14 +484,6 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	return permissions;
     }
     
-    protected String getPermissionTypeServiceName( String permissionId ) {
-    	KimTypeImpl permType = getPermissionImpl( permissionId ).getTemplate().getKimType();
-    	if ( permType != null ) {
-    		return permType.getKimTypeServiceName();
-    	}
-    	return null;
-    }
-
     // --------------------
     // Support Methods
     // --------------------

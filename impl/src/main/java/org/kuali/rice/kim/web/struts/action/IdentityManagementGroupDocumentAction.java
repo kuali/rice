@@ -30,7 +30,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
@@ -78,14 +77,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
 		// TODO: move this into the UI service - action should not be making ORM-layer calls
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
 	        groupDocumentForm.getGroupDocument().setGroupTypeId(kimTypeId);
-	        groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
-		} else if ( StringUtils.isNotBlank( groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-	        groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
 		}
 
 		groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
@@ -126,9 +118,6 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     	if ( groupDocumentForm.getGroupId() == null ) {
     		groupDocumentForm.getGroupDocument().initializeDocumentForNewGroup();
     		groupDocumentForm.setGroupId( groupDocumentForm.getGroupDocument().getGroupId() );
-            Map<String, String> criteria = new HashMap<String, String>();
-            criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, groupDocumentForm.getGroupDocument().getGroupTypeId() );
-            groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
     	} else {
     		loadGroupIntoDocument( groupDocumentForm.getGroupId(), groupDocumentForm );
     	}

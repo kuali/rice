@@ -17,10 +17,7 @@ package org.kuali.rice.kim.lookup;
 
 import java.util.Properties;
 
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -33,6 +30,8 @@ import org.kuali.rice.kns.util.UrlFactory;
  *
  */
 public class RoleLookupableImpl extends KualiLookupableImpl {
+
+	private static final long serialVersionUID = -543816772634893348L;
 
 	@Override
 	public String getCreateNewUrl() {

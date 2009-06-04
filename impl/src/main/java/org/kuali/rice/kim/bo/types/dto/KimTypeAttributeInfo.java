@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.bo.types.dto;
 
 import java.io.Serializable;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -75,4 +77,19 @@ public class KimTypeAttributeInfo implements Serializable {
 	public void setKimAttributeId(String kimAttributeId) {
 		this.kimAttributeId = kimAttributeId;
 	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("attributeName", this.attributeName)
+				.append("componentName",this.componentName)
+				.append("kimAttributeId",this.kimAttributeId)
+				.append("namespaceCode", this.namespaceCode)
+				.append("sortCode",this.sortCode)
+				.append("attributeLabel",this.attributeLabel)
+				.append("applicationUrl",this.applicationUrl)
+				.toString();
+	}
+	
 }

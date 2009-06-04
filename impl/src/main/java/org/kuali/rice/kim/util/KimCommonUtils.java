@@ -22,11 +22,10 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.UserSession;
@@ -139,22 +138,14 @@ public class KimCommonUtils {
     	return kimTypeServiceName;
 	}
 
-	public static KimTypeService getKimTypeService(KimTypeImpl kimTypeImpl){
-		if( kimTypeImpl == null ) {
-			LOG.warn( "null KimTypeImpl passed into getKimTypeService" );
+	public static KimTypeService getKimTypeService(KimType kimType){
+		if( kimType == null ) {
+			LOG.warn( "null KimType passed into getKimTypeService" );
 			return null;
 		}
-		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName() ) );
+		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName() ) );
 	}
 	
-	public static KimTypeService getKimTypeService(KimTypeInfo kimTypeInfo){
-		if( kimTypeInfo == null ) {
-			LOG.warn( "null KimTypeInfo passed into getKimTypeService" );
-			return null;
-		}
-		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimTypeInfo.getKimTypeServiceName() ) );
-	}
-
 	public static KimTypeService getKimTypeService( String serviceName ) {
 		KimTypeService service = null;
 		if ( StringUtils.isNotBlank(serviceName) ) {

@@ -29,7 +29,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -154,9 +153,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 										
-					Map<String,Object> pkMap = new HashMap<String,Object>();
-					pkMap.put("kimTypeId", field.getPropertyValue());
-					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
+					KimTypeInfo kimType = getTypeInfoService().getKimType(field.getPropertyValue() );
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
 			        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);

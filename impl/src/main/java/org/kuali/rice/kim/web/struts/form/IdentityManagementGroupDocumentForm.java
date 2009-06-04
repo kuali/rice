@@ -20,9 +20,10 @@ import java.util.List;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -39,7 +40,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	}
 	
 	protected boolean canAssignGroup = true;
-	protected KimTypeImpl kimType;
+	protected KimTypeInfo kimType;
 	protected GroupDocumentMember member = new GroupDocumentMember();
 	protected String groupId;
     
@@ -89,15 +90,8 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
-		return this.kimType;
-	}
-
-	/**
-	 * @param kimType the kimType to set
-	 */
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
+	public KimTypeInfo getKimType() {
+		return KIMServiceLocator.getTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
 	}
 
 	/**

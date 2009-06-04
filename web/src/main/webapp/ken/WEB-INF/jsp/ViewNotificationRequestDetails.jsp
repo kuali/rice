@@ -10,7 +10,7 @@
 <body>
 
 <div id="pagebody">
-        <div class="title">View a ${command.notification.contentType.name} Notification Message (${command.docId})</div>
+        <div class="title">View a(n) ${command.notification.contentType.name} Notification Message (${command.docId})</div>
 
         <c:if test="${! empty command.message}">
             <div class="note">${command.message}</div>
@@ -24,7 +24,7 @@
 				<tr>
 					<td class="thnormal"><strong>Sent By:</strong></td>
 					<td class="thnormal">
-						<i> ${command.document.routeHeader.initiator.displayName} on ${document.dateCreated} </i>
+						<i> ${command.document.routeHeader.initiatorPrincipalId} on ${document.dateCreated} </i>
 					</td>
 				</tr>
 				<tr>

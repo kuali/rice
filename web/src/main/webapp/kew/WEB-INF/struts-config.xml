@@ -147,26 +147,6 @@
         <forward name="finalStateError" path="/WEB-INF/jsp/Preferences/Preferences.jsp"/>
       </action>
 
-      <action path="/Backdoor" name="BackdoorForm" input="/WEB-INF/jsp/backdoor/Backdoor.jsp" type="org.kuali.rice.kew.web.backdoor.BackdoorAction"
-          scope="request" parameter="methodToCall" validate="false" >
-        <forward name="basic" path="/WEB-INF/jsp/backdoor/Backdoor.jsp"/>
-        <forward name="viewPortal" path="/WEB-INF/jsp/backdoor/index.jsp"/>
-        <forward name="requiredStateError" path="/WEB-INF/jsp/backdoor/Backdoor.jsp"/>
-        <forward name="finalStateError" path="/WEB-INF/jsp/backdoor/Backdoor.jsp"/>
-      </action>
-
-      <action path="/Portal" name="BackdoorForm" scope="request" parameter="methodToCall"
-      	input="/WEB-INF/jsp/backdoor/index.jsp"
-      	type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
-      	<forward name="viewPortal" path="/WEB-INF/jsp/backdoor/index.jsp"/>
-      	<forward name="portal" path="/../portal.jsp" redirect="true" />
-      </action>
-
-      <action path="/Administration" name="BackdoorForm" scope="request" parameter="methodToCall"
-        type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
-        <forward name="administration" path="/WEB-INF/jsp/backdoor/Admin.jsp"/>
-      </action>
-
       <action path="/DocHandler" name="DocHandlerForm" scope="request" parameter="methodToCall"
         type="org.kuali.rice.kew.routing.web.ClientAppDocHandlerRedirectAction" >
         <forward name="requiredStateError" path="/WEB-INF/jsp/DocumentLocked.jsp"/>

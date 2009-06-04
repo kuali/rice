@@ -23,25 +23,8 @@ function cancel() {
 </head>
 <body>
 
-<%@ include file="Header.jsp"%>
-
 <div id="pagebody">
-<table width="100%" border="0" align="center" cellpadding="3"
-	cellspacing="0" summary="">
-	<tr>
-		<td colspan="2">
-		
-        <%@ include file="LogoutForm.jsp"%>
-        
-        </td>
-	</tr>
-	<tr>
-		
-		<!-- Include the Menu -->
-		<%@ include file="Menu.jsp" %>
 
-		<!-- Include the top half of the Work Area -->
-		<%@ include file="WorkAreaTop.jsp" %>
 		<div style="padding: 5px">
 								<div class="title">Content Type Manager</div>
 								<form name="AddOrUpdateContentType" action="#"><input
@@ -98,14 +81,8 @@ function cancel() {
 								</table>
 								</form>
         </div>                       
-		<!-- Include the bottom half of the Work Area -->
-		<%@ include file="WorkAreaBottom.jsp" %>
 
-	</tr>
-</table>
 </div>
-
-<%@ include file="Footer.jsp"%>
 
 </body>
 </html>

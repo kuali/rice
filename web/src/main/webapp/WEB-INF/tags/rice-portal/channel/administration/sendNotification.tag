@@ -15,13 +15,13 @@
 --%>
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
-<channel:portalChannelTop channelTitle="Send Notification" />
+<channel:portalChannelTop channelTitle="Notification" />
 <div class="body">
 	
    	<ul class="chan">
-		<li><portal:portalLink displayTitle="true" title="Simple Notification" url="${ConfigProperties.ken.url}/SendSimpleNotificationMessage.form" /></li>
-        <li><portal:portalLink displayTitle="true" title="Event Notification" url="${ConfigProperties.ken.url}/SendEventNotificationMessage.form" /></li>
-		
+		<li><portal:portalLink displayTitle="true" title="Send Simple Notification" url="${ConfigProperties.ken.url}/SendSimpleNotificationMessage.form" /></li>
+        <li><portal:portalLink displayTitle="true" title="Send Event Notification" url="${ConfigProperties.ken.url}/SendEventNotificationMessage.form" /></li>
+        <li><portal:portalLink displayTitle="true" title="Manage Content Types" url="${ConfigProperties.ken.url}/ContentTypeManager.form" /></li>
 	</ul>
 
 </div>

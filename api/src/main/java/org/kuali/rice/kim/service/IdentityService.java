@@ -18,15 +18,6 @@ import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
-import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
-import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
-import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
-import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
-import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
-import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
-import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
-import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 
 public interface IdentityService {
 	

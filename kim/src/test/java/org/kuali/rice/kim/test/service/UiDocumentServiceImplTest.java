@@ -233,7 +233,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 				docEmpInfo.setEmployeeId("12345");
 				docEmpInfo.setEntityAffiliationId(docAffiliation.getEntityAffiliationId());
 				docEmpInfo.setEntityEmploymentId("empId123");
-				docEmpInfo.setEmploymentRecordId("emprec1");
+				docEmpInfo.setEmploymentRecordId("1");
 				docEmpInfo.setBaseSalaryAmount(new KualiDecimal(8000));
 				docEmpInfo.setPrimaryDepartmentCode("BL-CHEM");
 				docEmpInfo.setEmployeeStatusCode("A");

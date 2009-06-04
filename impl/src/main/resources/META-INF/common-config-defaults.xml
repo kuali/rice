@@ -158,6 +158,10 @@
     <param name="kim.cache.person.max.size" override="false">3000</param>
     <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
 
+	<!-- KEW -->
+
+	<param name="rice.kew.enableKENNotification" override="false">true</param>
+
     <!-- KNS -->
     <param name="kns.cache.parameter.max.size" override="false">200</param>
     <param name="kns.cache.parameter.max.age.seconds" override="false">3600</param>
@@ -172,17 +176,10 @@
     <!-- KEN -->
 
 	<param name="notification.basewebappurl" override="false">${application.url}/ken</param>
-
     <param name="notification.resolveMessageDeliveriesJob.startDelayMS" override="false">5000</param>
     <param name="notification.resolveMessageDeliveriesJob.intervalMS" override="false">10000</param>
-
-    <param name="notification.processUndeliveredJob.startDelayMS" override="false">10000</param>
-    <param name="notification.processUndeliveredJob.intervalMS" override="false">10000</param>
-
     <param name="notification.processAutoRemovalJob.startDelayMS" override="false">60000</param>
     <param name="notification.processAutoRemovalJob.intervalMS" override="false">60000</param>
-
-    <param name="rice.kew.enableKENNotification" override="false">true</param>
 
 	<param name="kcb.messaging.synchronous" override="false">false</param>
     <param name="kcb.messageprocessing.startDelayMS" override="false">50000</param>

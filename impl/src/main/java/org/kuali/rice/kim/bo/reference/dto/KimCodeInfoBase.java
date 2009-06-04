@@ -122,6 +122,5 @@ public abstract class KimCodeInfoBase implements KimCode {
 	 */
 	public void setDisplaySortCode(String displaySortCode) {
 		this.displaySortCode = displaySortCode;
-	}
-	
+	}	
 }

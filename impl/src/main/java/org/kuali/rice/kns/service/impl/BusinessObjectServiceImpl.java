@@ -113,8 +113,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findByPrimaryKey(java.lang.Class, java.lang.Object)
      */
-    public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey) {
-		return businessObjectDao.findBySinglePrimaryKey(clazz, primaryKey);
+    @SuppressWarnings("unchecked")
+	public <T> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
+		return (T)businessObjectDao.findBySinglePrimaryKey(clazz, primaryKey);
 	}
 
 	/**

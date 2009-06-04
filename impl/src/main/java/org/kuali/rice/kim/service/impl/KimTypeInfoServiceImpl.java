@@ -41,7 +41,6 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 	
 	protected static Map<String,KimTypeInfo> infoCache = new HashMap<String, KimTypeInfo>();
 	protected static Map<String,KimTypeInfo> infoCacheByName = new HashMap<String, KimTypeInfo>();
-	protected static Map<String,ExternalIdentifierTypeInfo> extIdTypeCache = new HashMap<String, ExternalIdentifierTypeInfo>();
 	protected static boolean allLoaded = false;
 	
 	@SuppressWarnings("unchecked")
@@ -93,15 +92,4 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 		return businessObjectService;
 	}
 	
-	public ExternalIdentifierTypeInfo getExternalIdentifierType( String externalIdentifierTypeCode ) {
-		if ( !extIdTypeCache.containsKey(externalIdentifierTypeCode) ) {
-			Map<String,String> pk = new HashMap<String, String>(1);
-			pk.put("code", externalIdentifierTypeCode);
-			ExternalIdentifierTypeImpl impl = (ExternalIdentifierTypeImpl)getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, pk);
-			if ( impl != null ) {
-				extIdTypeCache.put(externalIdentifierTypeCode, impl.toInfo());
-			}
-		}
-		return extIdTypeCache.get(externalIdentifierTypeCode);
-	}
 }

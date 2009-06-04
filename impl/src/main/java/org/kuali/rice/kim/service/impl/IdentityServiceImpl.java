@@ -27,6 +27,26 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
+import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -349,5 +369,98 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		}
 		return businessObjectService;
 	}
+
+	public AddressTypeInfo getAddressType( String code ) {
+		AddressTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(AddressTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+	
+	public AffiliationTypeInfo getAffiliationType( String code ) {
+		AffiliationTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(AffiliationTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public CitizenshipStatusInfo getCitizenshipStatus( String code ) {
+		CitizenshipStatusImpl impl = getBusinessObjectService().findBySinglePrimaryKey(CitizenshipStatusImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EmailTypeInfo getEmailType( String code ) {
+		EmailTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmailTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EmploymentStatusInfo getEmploymentStatus( String code ) {
+		EmploymentStatusImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmploymentStatusImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EmploymentTypeInfo getEmploymentType( String code ) {
+		EmploymentTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmploymentTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EntityNameTypeInfo getEntityNameType( String code ) {
+		EntityNameTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EntityNameTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EntityTypeInfo getEntityType( String code ) {
+		EntityTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EntityTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
+		ExternalIdentifierTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(ExternalIdentifierTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+	
+	public PhoneTypeInfo getPhoneType( String code ) {
+		PhoneTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(PhoneTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+//	protected static Map<String,ExternalIdentifierTypeInfo> externalIdentifierTypeInfoCache = new HashMap<String, ExternalIdentifierTypeInfo>();
+//	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
+//		if ( !externalIdentifierTypeInfoCache.containsKey(code) ) {
+//			Map<String,String> pk = new HashMap<String, String>(1);
+//			pk.put("code", code);
+//			ExternalIdentifierTypeImpl impl = (ExternalIdentifierTypeImpl)getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, pk);
+//			if ( impl != null ) {
+//				externalIdentifierTypeInfoCache.put(code, impl.toInfo());
+//			}
+//		}
+//		return externalIdentifierTypeInfoCache.get(code);
+//	}
 	
 }

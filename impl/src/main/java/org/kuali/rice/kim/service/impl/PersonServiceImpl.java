@@ -380,7 +380,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 						String extIdTypeCode = criteria.get(KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE);
 						if ( StringUtils.isNotBlank(extIdTypeCode) ) {
 							// if found, load that external ID Type via service
-							ExternalIdentifierTypeInfo extIdType = KIMServiceLocator.getTypeInfoService().getExternalIdentifierType(extIdTypeCode);
+							ExternalIdentifierTypeInfo extIdType = getIdentityManagementService().getExternalIdentifierType(extIdTypeCode);
 							// if that type needs to be encrypted, encrypt the value in the criteria map
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {

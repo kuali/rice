@@ -1,6 +1,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,17 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.KimCodeInfoBase;
+import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -74,6 +86,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isAuthorizedByTemplateNameCache;
     protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
 	
+    protected HashMap<String,KimCodeInfoBase> kimReferenceTypeCache = new HashMap<String, KimCodeInfoBase>();
+    
 	public void afterPropertiesSet() throws Exception {
 		entityDefaultInfoCache = new MaxSizeMap<String,MaxAgeSoftReference<KimEntityDefaultInfo>>( entityPrincipalCacheMaxSize );
 		entityCache = new MaxSizeMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
@@ -842,6 +856,47 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     public int getMatchingEntityCount(Map<String,String> searchCriteria) {
     	return getIdentityService().getMatchingEntityCount( searchCriteria );
     }
+    
+	public AddressTypeInfo getAddressType( String code ) {
+		AddressTypeInfo type = (AddressTypeInfo)kimReferenceTypeCache.get(AddressTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getAddressType(code);
+			kimReferenceTypeCache.put(AddressTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
+	}
+	public AffiliationTypeInfo getAffiliationType( String code ) {
+		AffiliationTypeInfo type = (AffiliationTypeInfo)kimReferenceTypeCache.get(AffiliationTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getAffiliationType(code);
+			kimReferenceTypeCache.put(AddressTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
+	}
+	public CitizenshipStatusInfo getCitizenshipStatus( String code ) {
+		return getIdentityService().getCitizenshipStatus(code);
+	}
+	public EmailTypeInfo getEmailType( String code ) {
+		return getIdentityService().getEmailType(code);
+	}
+	public EmploymentStatusInfo getEmploymentStatus( String code ) {
+		return getIdentityService().getEmploymentStatus(code);
+	}
+	public EmploymentTypeInfo getEmploymentType( String code ) {
+		return getIdentityService().getEmploymentType(code);
+	}
+	public EntityNameTypeInfo getEntityNameType( String code ) {
+		return getIdentityService().getEntityNameType(code);	
+	}
+	public EntityTypeInfo getEntityType( String code ) {
+		return getIdentityService().getEntityType(code);	
+	}
+	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
+		return getIdentityService().getExternalIdentifierType(code);
+	}
+	public PhoneTypeInfo getPhoneType( String code ) {
+		return getIdentityService().getPhoneType(code);	
+	}
     
 	// OTHER METHODS
 	

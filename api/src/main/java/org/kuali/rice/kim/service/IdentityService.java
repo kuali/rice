@@ -8,6 +8,25 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
+import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 
 public interface IdentityService {
 	
@@ -57,5 +76,16 @@ public interface IdentityService {
 //
 //	/** Find entity IDs based on the given criteria. */
 //	List<String> lookupEntityIds(Map<String,String> searchCriteria);
+
+	public AddressTypeInfo getAddressType( String code );
+	public AffiliationTypeInfo getAffiliationType( String code );
+	public CitizenshipStatusInfo getCitizenshipStatus( String code );
+	public EmailTypeInfo getEmailType( String code );
+	public EmploymentStatusInfo getEmploymentStatus( String code );
+	public EmploymentTypeInfo getEmploymentType( String code );
+	public EntityNameTypeInfo getEntityNameType( String code );
+	public EntityTypeInfo getEntityType( String code );
+	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code );
+	public PhoneTypeInfo getPhoneType( String code );
     
 }

@@ -9,6 +9,16 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -52,6 +62,17 @@ public interface IdentityManagementService {
 	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
 	int getMatchingEntityCount( Map<String,String> searchCriteria );
 	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
+
+	AddressTypeInfo getAddressType( String code );
+	AffiliationTypeInfo getAffiliationType( String code );
+	CitizenshipStatusInfo getCitizenshipStatus( String code );
+	EmailTypeInfo getEmailType( String code );
+	EmploymentStatusInfo getEmploymentStatus( String code );
+	EmploymentTypeInfo getEmploymentType( String code );
+	EntityNameTypeInfo getEntityNameType( String code );
+	EntityTypeInfo getEntityType( String code );
+	ExternalIdentifierTypeInfo getExternalIdentifierType( String code );
+	PhoneTypeInfo getPhoneType( String code );
 
 	// *******************************
 	// GroupService

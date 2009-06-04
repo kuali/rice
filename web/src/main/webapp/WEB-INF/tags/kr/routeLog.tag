@@ -15,9 +15,20 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <kul:tab tabTitle="Route Log" defaultOpen="false">
-<div class="tab-container" align=center>
+<div class="tab-container" align="center">
 	<c:if test="${ConfigProperties.test.mode ne 'true'}">
-	  <iframe onload="setRouteLogIframeDimensions();" name="routeLogIFrame" id="routeLogIFrame" src="${ConfigProperties.workflow.url}/RouteLog.do?routeHeaderId=${KualiForm.workflowDocument.routeHeaderId}" height="500" width="95%" hspace='0' vspace='0' frameborder='0' title='Workflow Route Log for document id: ${KualiForm.workflowDocument.routeHeaderId}'>
+<script type="text/javascript">
+function resize_routelog_iframe() {
+    var iframe = document.getElementById('routeLogIFrame');
+    if ( !iframe ) return;
+    var iframeDocElement = iframe.contentWindow.document.documentElement;
+    if ( !iframeDocElement ) return;
+    iframe.style.height = iframeDocElement.offsetHeight + "px";
+    //console.log( "Set route log iframe height to " + iframe.style.height );
+}
+</script>
+	
+	  <iframe onload="resize_routelog_iframe();" name="routeLogIFrame" id="routeLogIFrame" src="${ConfigProperties.workflow.url}/RouteLog.do?routeHeaderId=${KualiForm.workflowDocument.routeHeaderId}" height="200" width="95%" hspace='0' vspace='0' frameborder='0' title='Workflow Route Log for document id: ${KualiForm.workflowDocument.routeHeaderId}'>
 	  </iframe>
 	</c:if>
 </div>

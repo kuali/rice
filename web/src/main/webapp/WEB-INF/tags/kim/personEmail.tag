@@ -1,6 +1,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docEmailAttributes" value="${DataDictionary.PersonDocumentEmail.attributes}" />
+<c:set var="suppressEmail" value="${KualiForm.document.suppressEmail}"/>
 
 <kul:subtab lookedUpCollectionName="email" width="${tableWidth}" subTabTitle="Email Addresses" noShowHideButton="true">      
   	<table cellpadding="0" cellspacing="0" summary="">
@@ -18,9 +19,9 @@
            	<tr>
 				<th class="infoline">Add:</th>
                 <td class="infoline">   
-                <div align="center">             	
-                  <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity}" />
-				</div>
+                  <div align="center">
+                    <kul:htmlControlAttribute property="newEmail.emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity}" />  
+				  </div>
 				</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
@@ -51,8 +52,15 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td>     
-	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity}" />
+	                <div align="center">   
+                      <c:choose>
+                        <c:when test="${suppressEmail && readOnlyEntity}">
+                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
+                        </c:when>
+                        <c:otherwise>         	
+	                      <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity}" />
+                        </c:otherwise>
+                      </c:choose>  
 					</div>
 				</td>
                 <td align="left" valign="middle">

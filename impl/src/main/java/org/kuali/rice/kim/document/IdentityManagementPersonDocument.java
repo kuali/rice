@@ -42,6 +42,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -348,5 +349,26 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     	return new KimTypeAttributesHelper(kimTypeInfo);
      	//addDelegationRoleKimTypeAttributeHelper(roleId, helper);
     }
+    
+    public boolean isSuppressName() {
+        return KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId());
+    }
+    
+    public boolean isSuppressEmail() {
+        return KimCommonUtils.isSuppressEmail(getPrincipalId(), getEntityId());
+    }
+    
+    public boolean isSuppressPersonal() {
+        return KimCommonUtils.isSuppressPersonal(getPrincipalId(), getEntityId());
+    }
+    
+    public boolean isSuppressAddress() {
+        return KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId());
+    }
+    
+    public boolean isSuppressPhone() {
+        return KimCommonUtils.isSuppressPhone(getPrincipalId(), getEntityId());
+    }
+    
 
 }

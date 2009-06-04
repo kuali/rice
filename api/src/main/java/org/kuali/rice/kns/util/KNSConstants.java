@@ -184,6 +184,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String FIELD_CONVERSION_PAIR_SEPARATOR = ":";
     public static final String FIELD_CONVERSIONS_SEPARATOR = ",";
     public static final String REFERENCES_TO_REFRESH_SEPARATOR = ",";
+    public static final String RESTRICTED_DATA_MASK = "xxxxxx";
 //    public static final String GENERIC_FIELD_NAME = "Field";
 //    public static final String GENERIC_CODE_PROPERTY_NAME = "code";
 //    public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";

@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
@@ -30,7 +29,6 @@ import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
@@ -40,10 +38,10 @@ import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
@@ -101,7 +99,6 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected KualiDecimal baseSalaryAmount = KualiDecimal.ZERO;
 	protected boolean active = true;
-	protected static final String RESTRICTED_DATA_MASK = "xxxxxx";
 	
 	public PersonImpl() {}
 	
@@ -317,38 +314,59 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getFirstName()
 	 */
 	public String getFirstName() {
-	    if (isSuppressName()) {
-            return RESTRICTED_DATA_MASK;
+	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return firstName;
 	}
+	
+	/**
+     * @see org.kuali.rice.kim.bo.Person#getFirstNameUnmasked()
+     */
+    public String getFirstNameUnmasked() {
+        return firstName;
+    }
 
 	/**
 	 * @see org.kuali.rice.kim.bo.Person#getMiddleName()
 	 */
 	public String getMiddleName() {
-	    if (isSuppressName()) {
-            return RESTRICTED_DATA_MASK;
+	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return middleName;
+	}
+	
+	/**
+     * @see org.kuali.rice.kim.bo.Person#getMiddleNameUnmasked()
+     */
+	public String getMiddleNameUnmasked() {
+	    return middleName;
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.Person#getLastName()
 	 */
 	public String getLastName() {
-	    if (isSuppressName()) {
-            return RESTRICTED_DATA_MASK;
+	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return lastName;
 	}
 	
 	/**
+     * @see org.kuali.rice.kim.bo.Person#getLastNameUnmasked()
+     */
+    public String getLastNameUnmasked() {
+        return lastName;
+    }
+	
+	/**
 	 * @see org.kuali.rice.kim.bo.Person#getName()
 	 */
 	public String getName() {
-	    if (isSuppressName()) {
-		    return RESTRICTED_DATA_MASK;
+	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
+		    return KimConstants.RESTRICTED_DATA_MASK;
 		}
 	    return name;
 	}
@@ -361,21 +379,31 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
+	    if (KimCommonUtils.isSuppressPhone(getPrincipalId(), getEntityId())) {
+	        return KimConstants.RESTRICTED_DATA_MASK;
+	    }
 		return phoneNumber;
 	}
+	
+	   /**
+     * @see org.kuali.rice.kim.bo.Person#getPhoneNumberUnmasked()
+     */
+    public String getPhoneNumberUnmasked() {
+        return phoneNumber;
+    }
 
 	/**
 	 * @see org.kuali.rice.kim.bo.Person#getEmailAddress()
 	 */
 	public String getEmailAddress() {
-	    if (isSuppressEmail()) {
-            return RESTRICTED_DATA_MASK;
+	    if (KimCommonUtils.isSuppressEmail(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return emailAddress;
 	}
 	
-	public String getEmailAdrressUnmasked() {
-	    return null;
+	public String getEmailAddressUnmasked() {
+	    return emailAddress;
 	}
 	
 	public List<? extends KimEntityAffiliation> getAffiliations() {
@@ -466,32 +494,81 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	public String getAddressLine1() {
+	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return this.addressLine1;
+	}
+	
+	public String getAddressLine1Unmasked() {
+	    return this.addressLine1;
 	}
 
 	public String getAddressLine2() {
+	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return this.addressLine2;
 	}
+	
+	public String getAddressLine2Unmasked() {
+        return this.addressLine2;
+    }
 
 	public String getAddressLine3() {
+	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return this.addressLine3;
 	}
+	
+	public String getAddressLine3Unmasked() {
+        return this.addressLine3;
+    }
 
 	public String getAddressCityName() {
+	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return this.addressCityName;
 	}
+	
+	public String getAddressCityNameUnmasked() {
+        return this.addressCityName;
+    }
 
 	public String getAddressStateCode() {
+	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return this.addressStateCode;
 	}
+	
+	public String getAddressStateCodeUnmasked() {
+        return this.addressStateCode;
+    }
 
 	public String getAddressPostalCode() {
+	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return this.addressPostalCode;
 	}
+	
+	public String getAddressPostalCodeUnmasked() {
+        return this.addressPostalCode;
+    }
 
 	public String getAddressCountryCode() {
+	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return this.addressCountryCode;
 	}
+	
+	public String getAddressCountryCodeUnmasked() {
+        return this.addressCountryCode;
+    }
 
 	public String getEmployeeStatusCode() {
 		return this.employeeStatusCode;
@@ -578,34 +655,4 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	public EmploymentTypeImpl getEmployeeType() {
 		return this.employeeType;
 	}
-	
-	private boolean isSuppressName() {
-	    UserSession userSession = GlobalVariables.getUserSession();
-        KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( getEntityId() );
-        boolean suppressName = false;
-        if (privacy != null) {
-            suppressName = privacy.isSuppressName();
-        }
-        if (userSession != null 
-                && !StringUtils.equals(userSession.getPrincipalId(), getPrincipalId())
-                && suppressName) {
-            return true;
-        }
-        return false;
-	}
-	
-	private boolean isSuppressEmail() {
-        UserSession userSession = GlobalVariables.getUserSession();
-        KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( getEntityId() );
-        boolean suppressEmail = false;
-        if (privacy != null) {
-            suppressEmail = privacy.isSuppressEmail();
-        }
-        if (userSession != null 
-                && !StringUtils.equals(userSession.getPrincipalId(), getPrincipalId())
-                && suppressEmail) {
-            return true;
-        }
-        return false;
-    }
 }

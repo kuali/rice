@@ -42,8 +42,12 @@ public class UserUtils {
 		return getDisplayableName(userSession, KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId));
 	}
 	
+	/*
+     * @deprecated  Person getEmailName method accounts for privacy.
+     */
+    @Deprecated
 	public static String getDisplayableName(UserSession userSession, KimPrincipal principal) {
-		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
+		if (userSession != null && !userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
 			return RESTRICTED_DATA_MASK;
 		}
 		Person person = getPersonService().getPerson(principal.getPrincipalId());
@@ -51,9 +55,6 @@ public class UserUtils {
 	}
 	
 	public static String getTransposedName(UserSession userSession, KimPrincipal principal) {
-		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
-			return RESTRICTED_DATA_MASK;
-		}
 		Person person = getPersonService().getPerson(principal.getPrincipalId());
 		return contructTransposedName(person);
 	}
@@ -62,8 +63,12 @@ public class UserUtils {
 		return person.getLastName() + (StringUtils.isNotBlank(person.getFirstName())?", " + person.getFirstName():"");
 	}
 
+	/*
+	 * @deprecated  Person getEmailAddress method accounts for privacy.
+	 */
+	@Deprecated
 	public static String getDisplayableEmailAddress(UserSession userSession, KimPrincipal principal) {
-		if (userSession != null && userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityEmailRestricted(principal.getEntityId())) {
+		if (userSession != null && !userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityEmailRestricted(principal.getEntityId())) {
 			return RESTRICTED_DATA_MASK;
 		}
 		Person person = getPersonService().getPerson(principal.getPrincipalId());

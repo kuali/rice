@@ -22,15 +22,18 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -209,4 +212,78 @@ public class KimCommonUtils {
 		return stripped;
 	}
 
+	public static boolean isSuppressName(String principalId, String entityId) {
+        UserSession userSession = GlobalVariables.getUserSession();
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+        boolean suppressName = false;
+        if (privacy != null) {
+            suppressName = privacy.isSuppressName();
+        }
+        if (userSession != null 
+                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && suppressName) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean isSuppressEmail(String principalId, String entityId) {
+        UserSession userSession = GlobalVariables.getUserSession();
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+        boolean suppressEmail = false;
+        if (privacy != null) {
+            suppressEmail = privacy.isSuppressEmail();
+        }
+        if (userSession != null 
+                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && suppressEmail) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean isSuppressAddress(String principalId, String entityId) {
+        UserSession userSession = GlobalVariables.getUserSession();
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+        boolean suppressAddress = false;
+        if (privacy != null) {
+            suppressAddress = privacy.isSuppressAddress();
+        }
+        if (userSession != null 
+                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && suppressAddress) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean isSuppressPhone(String principalId, String entityId) {
+        UserSession userSession = GlobalVariables.getUserSession();
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+        boolean suppressPhone = false;
+        if (privacy != null) {
+            suppressPhone = privacy.isSuppressPhone();
+        }
+        if (userSession != null 
+                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && suppressPhone) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean isSuppressPersonal(String principalId, String entityId) {
+        UserSession userSession = GlobalVariables.getUserSession();
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+        boolean suppressPersonal = false;
+        if (privacy != null) {
+            suppressPersonal = privacy.isSuppressPersonal();
+        }
+        if (userSession != null 
+                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && suppressPersonal) {
+            return true;
+        }
+        return false;
+    }
 }

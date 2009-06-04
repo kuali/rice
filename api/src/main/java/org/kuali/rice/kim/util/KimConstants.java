@@ -31,6 +31,7 @@ public class KimConstants {
 	public static final String KIM_TYPE_DEFAULT_NAME = "Default";
 	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KUALI";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
+	public static final String RESTRICTED_DATA_MASK = "xxxxxx";
 
 	//Kim services constants for API
 	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";

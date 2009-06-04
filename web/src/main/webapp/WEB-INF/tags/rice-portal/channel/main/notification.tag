@@ -18,7 +18,7 @@
 
 <channel:portalChannelTop channelTitle="Notification" />
 <div class="body">
- 	yo!
+
     <ul class="chan">
 		<li><portal:portalLink displayTitle="true" title="Notification Search" url="${ConfigProperties.kew.url}/DocumentSearch.do?&docTypeFullName=KualiNotification" /></li>
 	    <li><portal:portalLink displayTitle="true" title="Channel Subscriptions" url="${ConfigProperties.ken.url}/DisplayUserPreferences.form" /></li>

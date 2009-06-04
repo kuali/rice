@@ -71,6 +71,8 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     protected String extraButtonSource;
     protected String extraButtonParams;
+    
+    protected String searchIconOverride;
 
     public LookupDefinition() {}
 
@@ -377,6 +379,35 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         this.extraButtonParams = extraButtonParams;
     }
 
+    
+    /**
+     * @return true if this instance has an alternate icon to use for lookup icon
+     */
+    public boolean hasSearchIconOverride() {
+        return searchIconOverride != null;
+    }
+
+    /**
+     * @return search icon override url
+     */
+    public String getSearchIconOverride() {
+        return searchIconOverride;
+    }
+
+    /**
+                The searchIconOverride element is used to define alternative icons
+                appear on the lookup screen next to the Search and Clear buttons.
+                You can define the image source.
+     * @throws IllegalArgumentException if the given source is blank
+     */
+    public void setSearchIconOverride(String searchIconOverride) {
+        if (StringUtils.isBlank(searchIconOverride)) {
+            throw new IllegalArgumentException("invalid (blank) search icon override");
+        }
+        this.searchIconOverride = searchIconOverride;
+    }
+
+    
     public String toString() {
         return "LookupDefinition '" + getTitle() + "'";
     }

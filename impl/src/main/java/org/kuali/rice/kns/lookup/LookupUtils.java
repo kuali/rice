@@ -381,6 +381,7 @@ public class LookupUtils {
                     field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
                     field.setFieldConversions(generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
                     field.setLookupParameters(generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
+                    field.setImageSrc(businessObjectDictionaryService.getSearchIconOverride(businessObject.getClass()));
                 }
             }
 
@@ -398,6 +399,7 @@ public class LookupUtils {
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
         }
+        field.setImageSrc(businessObjectDictionaryService.getSearchIconOverride(businessObject.getClass()));
 
         return field;
     }

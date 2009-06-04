@@ -259,6 +259,24 @@ public class BusinessObjectDictionaryServiceImpl implements
         return buttonParams;
     }
 
+    
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getSearchIconOverride(java.lang.Class)
+     */
+    public String getSearchIconOverride(Class businessObjectClass) {
+        String iconUrl = "";
+
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if (lookupDefinition != null) {
+            if (lookupDefinition.hasSearchIconOverride()) {
+                iconUrl = lookupDefinition.getSearchIconOverride();
+            }
+        }
+
+        return iconUrl;
+    }
+
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
      */

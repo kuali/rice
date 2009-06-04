@@ -185,6 +185,11 @@ public interface BusinessObjectDictionaryService {
     public Integer getLookupResultSetLimit(Class businessObjectClass);
 
     /**
+     * returns String indicating the location of the lookup icon.
+     */
+    public String getSearchIconOverride(Class businessObjectClass);
+
+    /**
      * indicates whether a field is required for a lookup
      */
     public Boolean getLookupAttributeRequired(Class businessObjectClass, String attributeName);

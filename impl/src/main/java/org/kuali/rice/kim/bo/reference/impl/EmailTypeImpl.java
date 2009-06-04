@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.EmailType;
+import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -64,4 +65,13 @@ public class EmailTypeImpl extends KimCodeBase implements EmailType {
 		setName(emailTypeName);
 	}
 	
+	public EmailTypeInfo toInfo() {
+		EmailTypeInfo info = new EmailTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
+	}
+
 }

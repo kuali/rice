@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.AddressType;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -62,6 +63,15 @@ public class AddressTypeImpl extends KimCodeBase implements AddressType {
 	 */
 	public void setAddressTypeName(String addressTypeName) {
 		setName(addressTypeName);
+	}
+	
+	public AddressTypeInfo toInfo() {
+		AddressTypeInfo info = new AddressTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
 	}
 	
 }

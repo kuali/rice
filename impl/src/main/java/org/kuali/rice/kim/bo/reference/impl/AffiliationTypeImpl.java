@@ -23,6 +23,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -75,6 +76,15 @@ public class AffiliationTypeImpl extends KimCodeBase implements AffiliationType 
 
 	public void setEmploymentAffiliationType(boolean employmentAffiliationType) {
 		this.employmentAffiliationType = employmentAffiliationType;
+	}
+	
+	public AffiliationTypeInfo toInfo() {
+		AffiliationTypeInfo info = new AffiliationTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
 	}
 	
 }

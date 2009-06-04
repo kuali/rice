@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.EmploymentType;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -62,6 +63,15 @@ public class EmploymentTypeImpl extends KimCodeBase implements EmploymentType {
 	 */
 	public void setEmploymentTypeName(String employmentTypeName) {
 		setName(employmentTypeName);
+	}
+
+	public EmploymentTypeInfo toInfo() {
+		EmploymentTypeInfo info = new EmploymentTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
 	}
 	
 }

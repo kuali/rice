@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.EntityNameType;
+import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -64,4 +65,12 @@ public class EntityNameTypeImpl extends KimCodeBase implements EntityNameType {
 		setName(entityNameTypeName);
 	}
 	
+	public EntityNameTypeInfo toInfo() {
+		EntityNameTypeInfo info = new EntityNameTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
+	}
 }

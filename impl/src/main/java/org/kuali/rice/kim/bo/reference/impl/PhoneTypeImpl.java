@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.PhoneType;
+import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -64,4 +65,12 @@ public class PhoneTypeImpl extends KimCodeBase implements PhoneType {
 		setName(phoneTypeName);
 	}
 	
+	public PhoneTypeInfo toInfo() {
+		PhoneTypeInfo info = new PhoneTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
+	}
 }

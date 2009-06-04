@@ -23,8 +23,8 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.KimCode;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
 import org.kuali.rice.kns.bo.KualiCodeBase;
 
 /**
@@ -38,7 +38,8 @@ import org.kuali.rice.kns.bo.KualiCodeBase;
 })
 public abstract class KimCodeBase extends KualiCodeBase implements KimCode {
     
-    @Column(name="DISPLAY_SORT_CD")
+    private static final long serialVersionUID = 1660166679188995697L;
+	@Column(name="DISPLAY_SORT_CD")
     protected String displaySortCode = "";
 	
 	/**

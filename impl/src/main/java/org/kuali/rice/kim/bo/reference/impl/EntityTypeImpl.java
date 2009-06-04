@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.EntityType;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -65,6 +66,15 @@ public class EntityTypeImpl extends KimCodeBase implements EntityType {
 	 */
 	public void setEntityTypeName(String entityTypeName) {
 		setName(entityTypeName);
+	}
+	
+	public EntityTypeInfo toInfo() {
+		EntityTypeInfo info = new EntityTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
 	}
 
 }

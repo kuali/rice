@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.EmploymentStatus;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -64,4 +65,13 @@ public class EmploymentStatusImpl extends KimCodeBase implements EmploymentStatu
 		setName(employmentStatusName);
 	}
 	
+	public EmploymentStatusInfo toInfo() {
+		EmploymentStatusInfo info = new EmploymentStatusInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
+	}
+
 }

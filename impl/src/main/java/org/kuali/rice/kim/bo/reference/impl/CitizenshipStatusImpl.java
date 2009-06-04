@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.CitizenshipStatus;
+import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -64,4 +65,13 @@ public class CitizenshipStatusImpl extends KimCodeBase implements CitizenshipSta
 		setName(citizenshipStatusName);
 	}
 	
+	public CitizenshipStatusInfo toInfo() {
+		CitizenshipStatusInfo info = new CitizenshipStatusInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
+	}
+
 }

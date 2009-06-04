@@ -20,13 +20,10 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class ExternalIdentifierTypeInfo implements ExternalIdentifierType {
+public class ExternalIdentifierTypeInfo extends KimCodeInfoBase implements ExternalIdentifierType {
 
 	private static final long serialVersionUID = 1L;
-    protected String code;
-    protected String name;
-    protected String displaySortCode = "";
-    protected boolean active;
+
 	protected boolean encryptionRequired;
 	
 	/**
@@ -65,36 +62,4 @@ public class ExternalIdentifierTypeInfo implements ExternalIdentifierType {
 		this.encryptionRequired = encryptionRequired;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDisplaySortCode() {
-		return this.displaySortCode;
-	}
-
-	public void setDisplaySortCode(String displaySortCode) {
-		this.displaySortCode = displaySortCode;
-	}
-
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
 }

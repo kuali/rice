@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.exception;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
+
 /**
  * This class represents an FileUploadLimitExceededException.
  * 
@@ -23,13 +26,18 @@ package org.kuali.rice.kns.exception;
 
 public class FileUploadLimitExceededException extends KualiException {
 
+	private ActionForm actionForm;
+	private ActionMapping actionMapping;
+	
     /**
      * Create an FileUploadLimitExceededException with the given message
      * 
      * @param message
      */
-    public FileUploadLimitExceededException(String message) {
+    public FileUploadLimitExceededException(String message, ActionForm actionForm, ActionMapping actionMapping) {
         super(message);
+        this.actionForm = actionForm;
+        this.actionMapping = actionMapping;
     }
 
     /**
@@ -41,5 +49,19 @@ public class FileUploadLimitExceededException extends KualiException {
     public FileUploadLimitExceededException(String message, Throwable cause) {
         super(message, cause);
     }
+
+	/**
+	 * @return the actionForm
+	 */
+	public ActionForm getActionForm() {
+		return this.actionForm;
+	}
+
+	/**
+	 * @return the actionMapping
+	 */
+	public ActionMapping getActionMapping() {
+		return this.actionMapping;
+	}
 
 }

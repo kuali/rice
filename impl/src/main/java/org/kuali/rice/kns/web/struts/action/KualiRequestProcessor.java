@@ -41,6 +41,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -88,7 +89,12 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 		try {
 			super.process(request, response);
-		} finally {
+		}
+		catch (FileUploadLimitExceededException e) {
+			ActionForward actionForward = processException(request, response, e, e.getActionForm(), e.getActionMapping());
+			processForwardConfig(request, response, actionForward);
+		}
+		finally {
 			GlobalVariables.setKualiForm(null);
 		}
 
@@ -349,7 +355,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data"))) {
 				// this method parses the multipart request and adds new
 				// non-file parameters into the request
-				WebUtils.getMultipartParameters(request, null, form);
+				WebUtils.getMultipartParameters(request, null, form, mapping);
 			}
 			// The form can be null if the document is not a session document
 			if (form != null) {
@@ -384,7 +390,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		// request, but we need to parse it now
 		// to determine the doc form key value.
 		if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data"))) {
-			WebUtils.getMultipartParameters(request, null, form);
+			WebUtils.getMultipartParameters(request, null, form, mapping);
 			docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
 			documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
 

@@ -45,16 +45,12 @@ public class KualiMultipartRequestHandler extends CommonsMultipartRequestHandler
         return convertSizeToBytes( sizeMax, super.getSizeMax(mc) );
     }
 
-    public long getSizeMax() {
-        return convertSizeToBytes( sizeMax, 0L );
-    }    
-
     public String getSizeMaxString() {
         return sizeMax;
     }    
 
     public void setSizeMax( String sizeString ) {
-	this.sizeMax = sizeString;
+    	this.sizeMax = sizeString;
     }
     
 //    public long convertSizeToBytes(String sizeString, long defaultSize) {

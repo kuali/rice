@@ -45,6 +45,7 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
+import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -76,6 +77,11 @@ public class WebUtils {
 
     private static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
     private static final String IMAGE_COORDINATE_CLICKED_Y_EXTENSION = ".y";
+    
+    /**
+     * A request attribute name that indicates that a {@link FileUploadLimitExceededException} has already been thrown for the request.
+     */
+    public static final String FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN = "fileUploadLimitExceededExceptionAlreadyThrown";
     
     /**
      * Checks for methodToCall parameter, and picks off the value using set dot notation. Handles the problem of image submits.
@@ -311,7 +317,7 @@ public class WebUtils {
         return key;
     }
 
-    public static void getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form) {
+    public static void getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form, ActionMapping mapping) {
         Map params = new HashMap();
 
         // Get the ActionServletWrapper from the form bean
@@ -319,7 +325,7 @@ public class WebUtils {
         boolean isMultipart = false;
         try {
             // Obtain a MultipartRequestHandler
-            MultipartRequestHandler multipartHandler = getMultipartHandler(request, form);
+        	KualiMultipartRequestHandler multipartHandler = getMultipartHandler(request, form);
 
             if (multipartHandler != null) {
                 isMultipart = true;
@@ -335,7 +341,14 @@ public class WebUtils {
                 // stop here if the maximum length has been exceeded
                 Boolean maxLengthExceeded = (Boolean) request.getAttribute(MultipartRequestHandler.ATTRIBUTE_MAX_LENGTH_EXCEEDED);
                 if ((maxLengthExceeded != null) && (maxLengthExceeded.booleanValue())) {
-                    throw new FileUploadLimitExceededException("");
+                	Boolean fileUploadLimitExceededExceptionAlreadyThrown = (Boolean) request.getAttribute(FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN);
+                	if (fileUploadLimitExceededExceptionAlreadyThrown != null && fileUploadLimitExceededExceptionAlreadyThrown) {
+                		request.setAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY, new HashMap());
+                		return;
+                	}
+                	request.setAttribute(FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN, Boolean.TRUE);
+                	ModuleConfig mc = (ModuleConfig) request.getAttribute(Globals.MODULE_KEY);
+                    throw new FileUploadLimitExceededException("Uploaded file was too large.  Maximum size is " + multipartHandler.getSizeMax(mc) + " bytes.", form, mapping);
                 }
                 // get file elements for kualirequestprocessor
                 if (servletWrapper == null) {
@@ -348,7 +361,7 @@ public class WebUtils {
         }
     }
 
-    private static MultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
+    private static KualiMultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
         KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
         if (form instanceof PojoFormBase) {
             multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );

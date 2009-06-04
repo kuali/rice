@@ -243,7 +243,7 @@ public class KualiExceptionIncidentForm extends KualiForm {
     public final void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
-
+    
     /**
      * @return the userEmail
      */

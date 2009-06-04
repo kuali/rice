@@ -39,7 +39,7 @@
     <param name="ksb.url" override="false">${application.url}/ksb</param>
     <param name="kim.url" override="false">${application.url}/kim</param>
     <param name="kew.url" override="false">${application.url}/kew</param>
-    <param name="notification.basewebappurl" override="false">${application.url}/ken</param>
+    
     <param name="workflow.url" override="false">${application.url}/en</param>
 
     <!-- by default non-tests are not in "dev.mode" -->
@@ -171,6 +171,8 @@
 
     <!-- KEN -->
 
+	<param name="notification.basewebappurl" override="false">${application.url}/ken</param>
+
     <param name="notification.resolveMessageDeliveriesJob.startDelayMS" override="false">5000</param>
     <param name="notification.resolveMessageDeliveriesJob.intervalMS" override="false">10000</param>
 
@@ -180,9 +182,17 @@
     <param name="notification.processAutoRemovalJob.startDelayMS" override="false">60000</param>
     <param name="notification.processAutoRemovalJob.intervalMS" override="false">60000</param>
 
-    <param name="ken.system.user" override="false">notsys</param>
     <param name="rice.kew.enableKENNotification" override="false">true</param>
 
+	<param name="kcb.messaging.synchronous" override="false">false</param>
+    <param name="kcb.messageprocessing.startDelayMS" override="false">50000</param>
+    <param name="kcb.messageprocessing.repeatIntervalMS" override="false">30000</param>
+    <param name="kcb.quartz.group" override="false">KCB-Delivery</param>
+    <param name="kcb.quartz.job.name" override="false">MessageProcessingJobDetail</param>
+    <param name="kcb.maxProcessAttempts" override="false">3</param>
+    <param name="kcb.messaging.synchronous" override="false">false</param>
+    <param name="kcb.smtp.host" override="false">${mail.smtp.host}</param>
+    
     <!-- what mode should KIM be run in?
         local - use the master data source
         embedded - run locally, but may have separate data source from rest of application

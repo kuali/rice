@@ -6,6 +6,7 @@
   
     <form-beans>
     	<!-- Begin required KNS forms -->
+        <form-bean name="BackdoorForm" type="org.kuali.rice.kew.web.backdoor.BackdoorForm" />
         <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="TravelDocumentForm2" type="edu.sampleu.travel.web.form.TravelDocumentForm2" />
@@ -37,10 +38,17 @@
             <forward name="basic" path="/kr/kualiExceptionIncidentReport.do" />
         </action>        
 		<!-- End Rice Pass-through Actions -->
-       	<!-- Begin required KNS mappings -->       
+       	<!-- Begin required KNS mappings -->
         <action path="/portal" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
+
+        <action path="/backdoorlogin" name="BackdoorForm" scope="request" parameter="methodToCall"
+        input="/WEB-INF/jsp/backdoor/index.jsp" type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
+            <forward name="basic" path="/portal.jsp" />
+            <forward name="viewPortal" path="/portal.jsp" />
+        </action>
+
         <action path="/index" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>

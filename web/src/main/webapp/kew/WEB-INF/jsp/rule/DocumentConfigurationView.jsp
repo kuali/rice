@@ -19,6 +19,7 @@ tr.overridden td a {
 
 <kul:page headerTitle="Document Configuration - ${documentType.name}" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="DocumentConfigurationView" docTitle="Document Configuration - ${documentType.name}">
+	<html-el:hidden property="documentTypeName" />
     <c:if test="${empty documentType}">
         Unknown Document Type - <c:out value="${KualiForm.documentTypeName}" />
     </c:if>
@@ -149,8 +150,8 @@ tr.overridden td a {
 	            </c:forEach>
  	  		</div>
  	    </kul:tab>
+ 	  </kul:tabTop>
  	  <kul:panelFooter />
-	  </kul:tabTop>
   </c:if>
 	
 </kul:page>

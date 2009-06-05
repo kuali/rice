@@ -276,6 +276,17 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	}
 	
 	/**
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// Repopulating the form is necessary when toggling tab states on the server side.
+		ActionForward actionForward = super.toggleTab(mapping, form, request, response);
+		populateForm( (DocumentConfigurationViewForm)form );
+		return actionForward;
+	}
+
+	/**
 	 * Internal delegate class to wrap a responsibility and add an overridden flag.
 	 */
 	public static class ResponsibilityForDisplay {

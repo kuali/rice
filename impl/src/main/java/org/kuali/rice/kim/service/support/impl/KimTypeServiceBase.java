@@ -152,20 +152,6 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return false;
 	}
-
-	protected Map<String, KimAttributeImpl> getAttributeImpls(AttributeSet attributes){
-		Map<String, KimAttributeImpl> attributeImpls = new HashMap<String, KimAttributeImpl>();
-		for ( String attributeName: attributes.keySet() ) {
-			attributeImpls.put(attributeName, getAttributeImpl(attributeName));
-		}
-		return attributeImpls;
-	}
-	
-	protected KimAttributeImpl getAttributeImpl(String attributeName){
-		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, attributeName);
-		return (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-	}
 	
 	/**
 	 * This is the default implementation.  It calls into the service for each attribute to
@@ -179,25 +165,25 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( attributes == null ) {
 			return validationErrors;
 		}
-		Map<String, KimAttributeImpl> attributeImpls = getAttributeImpls(attributes);
+		KimTypeInfo kimType = getTypeInfoService().getKimType(kimTypeId);
 		
 		for ( String attributeName : attributes.keySet() ) {
-            KimAttributeImpl attributeImpl = attributeImpls.get(attributeName);
+            KimTypeAttributeInfo attr = kimType.getAttributeDefinitionByName(attributeName);
 			List<String> attributeErrors = null;
 			try {
-				if ( attributeImpl.getComponentName() == null) {
+				if ( attr.getComponentName() == null) {
 					attributeErrors = validateNonDataDictionaryAttribute(attributeName, attributes.get( attributeName ), true);
 				} else {
 					// create an object of the proper type per the component
-		            Object componentObject = Class.forName( attributeImpl.getComponentName() ).newInstance();
+		            Object componentObject = Class.forName( attr.getComponentName() ).newInstance();
 		            // get the bean utils descriptor for accessing the attribute on that object
-					PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attributeImpl.getAttributeName());
+					PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attr.getAttributeName());
 					if ( propertyDescriptor != null ) {
 						// set the value on the object so that it can be checked
 						propertyDescriptor.getWriteMethod().invoke( componentObject, attributes.get( attributeName ) );
-						attributeErrors = validateDataDictionaryAttribute(kimTypeId, attributeImpl.getComponentName(), componentObject, propertyDescriptor);
+						attributeErrors = validateDataDictionaryAttribute(kimTypeId, attr.getComponentName(), componentObject, propertyDescriptor);
 					} else {
-						LOG.warn( "Unable to obtain property descriptor for: " + attributeImpl.getClass().getName() + "/" + attributeImpl.getAttributeName() );
+						LOG.warn( "Unable to obtain property descriptor for: " + attr.getClass().getName() + "/" + attr.getAttributeName() );
 					}
 				}
 			} catch (Exception e) {
@@ -776,8 +762,8 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 	
 	public List<String> getUniqueAttributes(String kimTypeId){
+		KimTypeInfo kimType = getTypeInfoService().getKimType(kimTypeId);
         List<String> uniqueAttributes = new ArrayList<String>();
-        KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
         if ( kimType != null ) {
 	        for(KimTypeAttributeInfo attributeDefinition: kimType.getAttributeDefinitions()){
 	        	uniqueAttributes.add(attributeDefinition.getAttributeName());
@@ -791,19 +777,17 @@ public class KimTypeServiceBase implements KimTypeService {
 	public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet originalAttributeSet, AttributeSet newAttributeSet){
 		AttributeSet validationErrors = new AttributeSet();
 		List<String> attributeErrors = null;
+		KimTypeInfo kimType = getTypeInfoService().getKimType(kimTypeId);
 		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
-		String mainAttributeValue = "";
-		String delegationAttributeValue = "";
-		KimAttributeImpl attributeImpl;
 		for(String attributeNameKey: uniqueAttributes){
-			attributeImpl = getAttributeImpl(attributeNameKey);
-			mainAttributeValue = getAttributeValue(originalAttributeSet, attributeNameKey);
-			delegationAttributeValue = getAttributeValue(newAttributeSet, attributeNameKey);
+			KimTypeAttributeInfo attr = kimType.getAttributeDefinitionByName(attributeNameKey);
+			String mainAttributeValue = getAttributeValue(originalAttributeSet, attributeNameKey);
+			String delegationAttributeValue = getAttributeValue(newAttributeSet, attributeNameKey);
 
 			if(!StringUtils.equals(mainAttributeValue, delegationAttributeValue)){
 				GlobalVariables.getErrorMap().putError(
 					attributeNameKey, RiceKeyConstants.ERROR_CANT_BE_MODIFIED, 
-					dataDictionaryService.getAttributeLabel(attributeImpl.getComponentName(), attributeNameKey));
+					dataDictionaryService.getAttributeLabel(attr.getComponentName(), attributeNameKey));
 				attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
 			}
 			if(attributeErrors!=null){

@@ -46,7 +46,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -54,7 +53,9 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -598,17 +599,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		Map<String,String> pk = new HashMap<String,String>(1);
     		pk.put( KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId );
     		KimDelegationImpl delegation = (KimDelegationImpl)getBusinessObjectService().findByPrimaryKey( KimDelegationImpl.class, pk );
-    		KimTypeImpl delegationType = delegation.getKimType();
+    		KimTypeInfo delegationType = delegation.getKimType();
     		if ( delegationType != null ) {
-	    		String serviceName = delegationType.getKimTypeServiceName();
-	    		if ( serviceName != null ) {
-	    			try {
-	    				service = (KimDelegationTypeService)KIMServiceLocator.getService( serviceName );
-	    			} catch ( Exception ex ) {
-	    				LOG.error( "Unable to find delegation type service with name: " + serviceName, ex );
-	    				service = (KimDelegationTypeService)KIMServiceLocator.getService( "kimDelegationTypeService" );
-	    			}
-	    		}
+    			KimTypeService tempService = KimCommonUtils.getKimTypeService(delegationType);
+    			if ( tempService != null && tempService instanceof KimDelegationTypeService ) {
+    				service = (KimDelegationTypeService)tempService;
+    			} else {
+    				LOG.error( "Service returned for type " + delegationType + "("+delegationType.getKimTypeServiceName()+") was not a KimDelegationTypeService.  Was a " + tempService.getClass() );
+    			}
     		} else { // delegation has no type - default to role type if possible
     			KimRoleTypeService roleTypeService = getRoleTypeService( delegation.getRoleId() );
     			if ( roleTypeService != null && roleTypeService instanceof KimDelegationTypeService ) {

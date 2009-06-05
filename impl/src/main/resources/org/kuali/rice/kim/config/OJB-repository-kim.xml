@@ -512,9 +512,6 @@
     <collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="delegationId" />
     </collection-descriptor>
-    <reference-descriptor name="kimType" class-ref="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-      <foreignkey field-ref="kimTypeId" />
-    </reference-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl" table="KRIM_DLGN_MBR_T">

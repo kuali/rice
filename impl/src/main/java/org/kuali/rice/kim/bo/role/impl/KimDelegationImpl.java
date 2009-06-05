@@ -25,13 +25,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.KimDelegation;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -67,9 +66,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationMemberImpl> members = new TypedArrayList(KimDelegationMemberImpl.class);
 
-	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
-	protected KimTypeImpl kimType; 
+	protected KimTypeInfo kimType; 
 	
 	/**
 	 * This overridden method ...
@@ -110,12 +107,8 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		this.kimTypeId = typeId;
 	}
 
-	public KimTypeImpl getKimType() {
+	public KimTypeInfo getKimType() {
 		return this.kimType;
-	}
-
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
 	}
 
 	public String getDelegationTypeCode() {

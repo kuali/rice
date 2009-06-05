@@ -554,7 +554,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		delegate.setDelegationId(id);
 		delegate.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
 		delegate.setActive(true);
-		delegate.setKimType(kimDlgnType);
 		delegate.setKimTypeId("" + kimDlgnTypeId);
 		/*
 		 * Assign it a role that was created above.  This should mean that every

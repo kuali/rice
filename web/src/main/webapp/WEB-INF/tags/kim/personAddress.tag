@@ -6,7 +6,6 @@
 
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <c:set var="docAddressAttributes" value="${DataDictionary.PersonDocumentAddress.attributes}" />
-<c:set var="suppressAddress" value="${KualiForm.document.suppressAddress}"/>
 
 <kul:subtab lookedUpCollectionName="address" width="${tableWidth}" subTabTitle="Addresses" noShowHideButton="true">      
    	<table cellpadding="0" cellspacing="0" summary="">
@@ -92,92 +91,36 @@
 					</div>
 				</td>
                 <td>
-	                <div align="center"> 
-                      <c:choose>
-                        <c:when test="${suppressAddress && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>  
-                          <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+	                <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity}" />
 	                </div>
                 </td>
                 <td>     
-	                <div align="center"> 
-                      <c:choose>
-                        <c:when test="${suppressAddress && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>          	
-	                      <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>  
+	                <div align="center">           	
+	                  <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
 				<td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressAddress && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressAddress && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressAddress && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
                 </div>
                 </td>
                 <td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressAddress && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressAddress && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>
-                	<div align="center">
-                      <kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnlyEntity}" />  
+                	<div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td>

@@ -1,7 +1,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docPhoneAttributes" value="${DataDictionary.PersonDocumentPhone.attributes}" />
-<c:set var="suppressPhone" value="${KualiForm.document.suppressPhone}"/>
 
 <kul:subtab lookedUpCollectionName="phone" width="${tableWidth}" subTabTitle="Phone Numbers" noShowHideButton="true">      
   	<table cellpadding="0" cellspacing="0" summary="">
@@ -70,46 +69,23 @@
 					</div>
 				</td>
                 <td>
-	                <div align="center"> 
-                      <c:choose>
-                        <c:when test="${suppressPhone && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+	                <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnlyEntity}" />
 	                </div>
                 </td>
                 <td>     
-	                <div align="center">
-                      <c:choose>
-                        <c:when test="${suppressPhone && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>          	
-	                      <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>  
+	                <div align="center">           	
+	                  <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
-				<td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressPhone && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>    
+				<td align="left" valign="middle" class="infoline">
+                	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
-				<td>
+				<td align="left" valign="middle" class="infoline">
                 	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].dflt" attributeEntry="${docPhoneAttributes.dflt}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
-				<td>
+				<td align="left" valign="middle" class="infoline">
                 	<div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].active" attributeEntry="${docPhoneAttributes.active}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>

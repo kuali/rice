@@ -1,7 +1,6 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docNameAttributes" value="${DataDictionary.PersonDocumentName.attributes}" />
-<c:set var="suppressName" value="${KualiForm.document.suppressName}"/>
 
 <kul:subtab lookedUpCollectionName="name" width="${tableWidth}" subTabTitle="Names" noShowHideButton="true">      
 	<table cellpadding="0" cellspacing="0" summary="">
@@ -72,62 +71,29 @@
 					</div>
 				</td>
                 <td>
-	                <div align="center">
-                      <c:choose>
-                        <c:when test="${suppressName && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.names[${status.index}].title" attributeEntry="${docNameAttributes.title}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>      
+	                <div align="center"> <kul:htmlControlAttribute property="document.names[${status.index}].title" attributeEntry="${docNameAttributes.title}" readOnly="${readOnlyEntity}" />
 	                </div>
                 </td>
                 <td>     
-	                <div align="center">    
-                      <c:choose>
-                        <c:when test="${suppressName && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>       	
-	                      <kul:htmlControlAttribute property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity}" />
-					    </c:otherwise>
-                      </c:choose>
-                    </div>
+	                <div align="center">           	
+	                  <kul:htmlControlAttribute property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity}" />
+					</div>
 				</td>
-				<td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressName && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>
-                    </div>
+				<td align="left" valign="middle" class="infoline">
+                	<div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity}" />
+                </div>
                 </td>
-                <td>
-                	<div align="center">
-                      <c:choose>
-                        <c:when test="${suppressName && readOnlyEntity}">
-                          <c:out value="${Constants.RESTRICTED_DATA_MASK}"/>
-                        </c:when>
-                        <c:otherwise>
-                          <kul:htmlControlAttribute property="document.names[${status.index}].suffix" attributeEntry="${docNameAttributes.suffix}" readOnly="${readOnlyEntity}" />
-                        </c:otherwise>
-                      </c:choose>
-                    </div>
+                <td align="left" valign="middle" class="infoline">
+                	<div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].suffix" attributeEntry="${docNameAttributes.suffix}" readOnly="${readOnlyEntity}" />
+                </div>
                 </td>
-                <td>
-                	<div align="center">
-                      <kul:htmlControlAttribute property="document.names[${status.index}].dflt" attributeEntry="${docNameAttributes.dflt}" readOnly="${readOnlyEntity}" />
-                    </div>
+                <td align="left" valign="middle" class="infoline">
+                	<div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].dflt" attributeEntry="${docNameAttributes.dflt}" readOnly="${readOnlyEntity}" />
+                </div>
                 </td>
-                <td>
-                	<div align="center">
-                      <kul:htmlControlAttribute property="document.names[${status.index}].active" attributeEntry="${docNameAttributes.active}" readOnly="${readOnlyEntity}" />
-                    </div>
+                <td align="left" valign="middle" class="infoline">
+                	<div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].active" attributeEntry="${docNameAttributes.active}" readOnly="${readOnlyEntity}" />
+                </div>
                 </td>
 	           	<c:if test="${not inquiry}">						
 					<td>

@@ -874,28 +874,68 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		return type; 
 	}
 	public CitizenshipStatusInfo getCitizenshipStatus( String code ) {
-		return getIdentityService().getCitizenshipStatus(code);
+		CitizenshipStatusInfo type = (CitizenshipStatusInfo)kimReferenceTypeCache.get(CitizenshipStatusInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getCitizenshipStatus(code);
+			kimReferenceTypeCache.put(CitizenshipStatusInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
 	public EmailTypeInfo getEmailType( String code ) {
-		return getIdentityService().getEmailType(code);
+		EmailTypeInfo type = (EmailTypeInfo)kimReferenceTypeCache.get(EmailTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getEmailType(code);
+			kimReferenceTypeCache.put(EmailTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
 	public EmploymentStatusInfo getEmploymentStatus( String code ) {
-		return getIdentityService().getEmploymentStatus(code);
+		EmploymentStatusInfo type = (EmploymentStatusInfo)kimReferenceTypeCache.get(EmploymentStatusInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getEmploymentStatus(code);
+			kimReferenceTypeCache.put(EmploymentStatusInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
 	public EmploymentTypeInfo getEmploymentType( String code ) {
-		return getIdentityService().getEmploymentType(code);
+		EmploymentTypeInfo type = (EmploymentTypeInfo)kimReferenceTypeCache.get(EmploymentTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getEmploymentType(code);
+			kimReferenceTypeCache.put(EmploymentTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
 	public EntityNameTypeInfo getEntityNameType( String code ) {
-		return getIdentityService().getEntityNameType(code);	
+		EntityNameTypeInfo type = (EntityNameTypeInfo)kimReferenceTypeCache.get(EntityNameTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getEntityNameType(code);
+			kimReferenceTypeCache.put(EntityNameTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
 	public EntityTypeInfo getEntityType( String code ) {
-		return getIdentityService().getEntityType(code);	
+		EntityTypeInfo type = (EntityTypeInfo)kimReferenceTypeCache.get(EntityTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getEntityType(code);
+			kimReferenceTypeCache.put(EntityTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
 	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
-		return getIdentityService().getExternalIdentifierType(code);
+		ExternalIdentifierTypeInfo type = (ExternalIdentifierTypeInfo)kimReferenceTypeCache.get(ExternalIdentifierTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getExternalIdentifierType(code);
+			kimReferenceTypeCache.put(ExternalIdentifierTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
 	public PhoneTypeInfo getPhoneType( String code ) {
-		return getIdentityService().getPhoneType(code);	
+		PhoneTypeInfo type = (PhoneTypeInfo)kimReferenceTypeCache.get(PhoneTypeInfo.class.getSimpleName()+"-"+code);
+		if ( type == null ) {
+			type = getIdentityService().getPhoneType(code);
+			kimReferenceTypeCache.put(PhoneTypeInfo.class.getSimpleName()+"-"+code, type);
+		}
+		return type; 
 	}
     
 	// OTHER METHODS

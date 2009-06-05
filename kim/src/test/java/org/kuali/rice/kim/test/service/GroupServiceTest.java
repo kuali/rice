@@ -34,8 +34,8 @@ import org.kuali.rice.kim.test.KIMTestCase;
  */
 public class GroupServiceTest extends KIMTestCase {
 
-	private GroupService groupService;
-	private GroupUpdateService groupUpdateService;
+	protected GroupService groupService;
+	protected GroupUpdateService groupUpdateService;
 
 	public void setUp() throws Exception {
 		super.setUp();

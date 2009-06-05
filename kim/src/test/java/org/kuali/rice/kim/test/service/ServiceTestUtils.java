@@ -29,16 +29,16 @@ import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-class ServiceTestUtils {
+public class ServiceTestUtils {
 	static	String serverHostStr = getConfigProp("kim.test.host");
 	static	String serverPortStr = getConfigProp("kim.test.port");
 	static	String appContext = getConfigProp("app.context.name");
 	
-	static int getConfigIntProp(String intPropKey) {
+	public static int getConfigIntProp(String intPropKey) {
 		return Integer.parseInt(getConfigProp(intPropKey));
 	}
 
-	static String getConfigProp(String propKey) {
+	public static String getConfigProp(String propKey) {
 		return ConfigContext.getCurrentContextConfig().getProperty(propKey);
 	}
 	
@@ -50,7 +50,7 @@ class ServiceTestUtils {
 	 * @return the proxy object
 	 * @throws Exception 
 	 */
-	static Object getRemoteServiceProxy(String svcNamespace, String svcName, String svcClassName) throws Exception {
+	public static Object getRemoteServiceProxy(String svcNamespace, String svcName, String svcClassName) throws Exception {
 		Class<?> serviceClass = Class.forName(svcClassName);
 		
 		// protocol will probably be configured eventually as well

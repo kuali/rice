@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.test.service;
+package org.kuali.rice.kim.test.service.remote;
 
+import org.junit.Test;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.test.service.GroupServiceTest;
+import org.kuali.rice.kim.test.service.ServiceTestUtils;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
@@ -41,6 +45,18 @@ public class GroupServiceRemoteTest extends GroupServiceTest {
 		};
 	}
 	
+	@Override
+	@Test
+	public void testPrincipalMembership() {
+		super.testPrincipalMembership();
+		
+		// change group g4 back to inactive; remote service not transactional
+		// TODO - fix that
+		GroupInfo g4Info = groupService.getGroupInfo("g4");
+		g4Info.setActive(false);
+		groupUpdateService.updateGroup("g4", g4Info);
+	}
+
 	/**
 	 * This method tries to get a client proxy for the specified KIM service
 	 * 

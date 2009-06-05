@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.test.service;
+package org.kuali.rice.kim.test.service.remote;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kim.test.service.PermissionServiceTest;
+import org.kuali.rice.kim.test.service.ServiceTestUtils;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
- * Test the RoleService via remote calls
+ * Test the PermissionService via remote calls
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class RoleServiceRemoteTest extends RoleServiceTest {
+public class PermissionServiceRemoteTest extends PermissionServiceTest {
 
 	public void setUp() throws Exception {
 		super.setUp();

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
@@ -62,7 +63,7 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements KimType,
 	}
 	
 	public KimTypeAttributeInfo getAttributeDefinition( String kimAttributeId ) {
-		if ( kimAttributeId == null ) {
+		if ( kimAttributeId == null || attributeDefinitions == null ) {
 			return null;
 		}
 		for ( KimTypeAttributeInfo def : attributeDefinitions ) {
@@ -73,6 +74,18 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements KimType,
 		return null;
 	}
 
+	public KimTypeAttributeInfo getAttributeDefinitionByName( String attributeName ) {
+		if ( attributeName == null || attributeDefinitions == null ) {
+			return null;
+		}
+		for ( KimTypeAttributeInfo def : attributeDefinitions ) {
+			if ( StringUtils.equals(def.attributeName, attributeName) ) {
+				return def;
+			}
+		}
+		return null;
+	}
+	
 	public void setKimTypeServiceName(String kimTypeServiceName) {
 		this.kimTypeServiceName = kimTypeServiceName;
 	}

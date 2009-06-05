@@ -283,23 +283,28 @@ function getStyleObject(objectId) {
 }
 
 function resizeIframes() {	
-	console.log( "resizing iframes" );
-	if ( typeof resize_routelog_iframe == "function" ) {
-		console.log( "resizing route log" );
-		resize_routelog_iframe();
-	}
-	if ( parent ) {
-		if ( typeof parent.resize_routelog_iframe == "function" ) {
-			console.log( "resizing parent route log" );
-			parent.resize_routelog_iframe();
+	try {
+		//console.log( "resizing iframes" );
+		if ( typeof resize_routelog_iframe == "function" ) {
+			//console.log( "resizing route log" );
+			resize_routelog_iframe();
 		}
-		if ( typeof parent.resize_iframe == "function" ) {
-			console.log( "resizing main iframe" );
-			parent.resize_iframe();
+		if ( parent ) {
+			if ( typeof parent.resize_routelog_iframe == "function" ) {
+				//console.log( "resizing parent route log" );
+				parent.resize_routelog_iframe();
+			}
+			if ( typeof parent.resize_iframe == "function" ) {
+				//console.log( "resizing main iframe" );
+				parent.resize_iframe();
+			}
+			if ( parent.parent.resize_iframe == "function" ) {
+				//console.log( "resizing main iframe from route log" );
+				parent.parent.resize_iframe();
+			}
 		}
-		if ( parent.parent.resize_iframe == "function" ) {
-			console.log( "resizing main iframe from route log" );
-			parent.parent.resize_iframe();
-		}
+	} catch ( ex ) {
+		//console.log( "Exception: " + ex );
+		window.status = ex;
 	}
 }

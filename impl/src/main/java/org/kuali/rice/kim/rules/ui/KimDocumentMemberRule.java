@@ -59,23 +59,24 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         }
     	if(!validAssignRole(newMember, document))
     		return false;
-		List<AttributeSet> attributeSetListToValidate = new ArrayList<AttributeSet>();
-		AttributeSet attributeSetToValidate;
 		AttributeSet validationErrors = new AttributeSet();
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( document.getKimType() );
 
-		for(KimDocumentRoleMember roleMember: document.getMembers()) {
-			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-			attributeSetListToValidate.add(attributeSetToValidate);
-    	}
 		boolean attributesUnique;
-
+		AttributeSet errorsAttributesAgainstExisting;
 	    int i = 0;
+	    AttributeSet newMemberQualifiers;
+	    AttributeSet oldMemberQualifiers;
 	    for (KimDocumentRoleMember member: document.getMembers()){
+	    	newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers());
+	    	oldMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(member.getQualifiers());
+	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
+	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
+			validationErrors.putAll( 
+					attributeValidationHelper.convertErrorsForMappedFields("member.memberId", errorsAttributesAgainstExisting));
+
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
-					document.getKimType().getKimTypeId(), 
-					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
-					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));
+	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
 	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
 	            rulePassed = false;

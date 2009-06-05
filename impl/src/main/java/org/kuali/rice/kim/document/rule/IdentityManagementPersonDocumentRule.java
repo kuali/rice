@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -49,6 +50,7 @@ import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -77,6 +79,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	private IdentityManagementKimDocumentAuthorizer authorizer;
 	private BusinessObjectService businessObjectService;
 	private IdentityService identityService;
+	private RoleService roleService;
 	private Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
 	private Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
 	private Class<? extends AddPersonDelegationMemberRule> addPersonDelegationMemberRuleClass = PersonDocumentDelegationMemberRule.class;
@@ -421,7 +424,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return identityService;
 	}
 
-
+	public RoleService getRoleService() {
+		if ( roleService == null ) {
+			roleService = KIMServiceLocator.getRoleService();
+		}
+		return roleService;
+	}
 
 	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
@@ -528,21 +536,54 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public boolean processAddPersonDocumentRoleQualifier(PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
 		boolean dateValidationSuccess = validateActiveDate("document.roles[" + selectedRoleIdx + "].newRolePrncpl.activeFromDate", kimDocumentRoleMember.getActiveFromDate(), kimDocumentRoleMember.getActiveToDate());
-		
+		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
 		AttributeSet validationErrors = new AttributeSet();
         GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
+
+        boolean attributesUnique;
+		AttributeSet errorsAttributesAgainstExisting;
+	    int i = 0;
+	    boolean rulePassed = true;
+	    AttributeSet newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(kimDocumentRoleMember.getQualifiers());
+	    AttributeSet oldMemberQualifiers;
+	    List<String> roleIds = new ArrayList<String>();
+	    roleIds.add(role.getRoleId());
+	    List<RoleMembershipInfo> roleMembersForRole = getRoleService().getFirstLevelRoleMembers(roleIds);
+	    for(RoleMembershipInfo member: roleMembersForRole){
+	    	oldMemberQualifiers = member.getQualifier();
+	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
+	    			role.getKimRoleType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
+	    	validationErrors.putAll( 
+					attributeValidationHelper.convertErrors(
+						errorPath,
+						attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()), 
+						errorsAttributesAgainstExisting));
+
+	    	attributesUnique = kimTypeService.validateUniqueAttributes(
+	    			role.getKimRoleType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
+	    	if (!attributesUnique && (member.getMemberId().equals(kimDocumentRoleMember.getMemberId()) && 
+	    			member.getMemberTypeCode().equals(kimDocumentRoleMember.getMemberTypeCode()))){
+	            rulePassed = false;
+	            GlobalVariables.getErrorMap().putError(errorPath, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role"});
+	            break;
+	    	}
+	    	i++;
+	    }
+
         if ( kimTypeService != null ) {
-        		AttributeSet localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( kimDocumentRoleMember.getQualifiers() ) );
-		        validationErrors.putAll( attributeValidationHelper.convertErrors("roles[" + selectedRoleIdx + "].newRolePrncpl",attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()),localErrors) );
+        	AttributeSet localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getKimTypeId(), newMemberQualifiers );
+    	    validationErrors.putAll( attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()), localErrors));
         }
+
         GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
     	if (validationErrors.isEmpty()) {
-    		return dateValidationSuccess;
+    		rulePassed = dateValidationSuccess;
     	} else {
     		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
-    		return false;
+    		rulePassed = false;
     	}
+    	return rulePassed;
 	}
 	
     private boolean validateDelegationMemberRoleQualifier(List<RoleDocumentDelegationMember> delegationMembers){

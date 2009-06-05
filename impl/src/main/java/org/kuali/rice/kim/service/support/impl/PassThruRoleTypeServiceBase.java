@@ -122,4 +122,8 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return new ArrayList<String>();
     }
     
+	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+		return new AttributeSet();
+	}
+
 }

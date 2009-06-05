@@ -745,13 +745,39 @@ public class KimTypeServiceBase implements KimTypeService {
 		for(String uniqueAttributeName: uniqueAttributeNames){
 			attrVal1 = getAttributeValue(aSet1, uniqueAttributeName);
 			attrVal2 = getAttributeValue(aSet2, uniqueAttributeName);
+			attrVal1 = attrVal1==null?"":attrVal1;
+			attrVal2 = attrVal2==null?"":attrVal2;
 			if(comparator.compare(attrVal1, attrVal2)!=0){
 				return false;
 			}
 		}
 		return true;
 	}
+
+	protected AttributeSet getErrorAttributeSet(String attributeNameKey, String errorKey, String[] errorArguments){
+		AttributeSet validationErrors = new AttributeSet();
+		GlobalVariables.getErrorMap().putError(attributeNameKey, errorKey, errorArguments);
+		List<String> attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
+		if(attributeErrors!=null){
+			for(String err:attributeErrors){
+				validationErrors.put(attributeNameKey, err);
+			}
+		}
+		return validationErrors;
+	}
 	
+    protected boolean areAllAttributeValuesEmpty(AttributeSet attributes){
+    	boolean areAllAttributesEmpty = true;
+    	if(attributes!=null)
+	    	for(String attributeNameKey: attributes.keySet()){
+				if(StringUtils.isNotEmpty(attributes.get(attributeNameKey))){
+					areAllAttributesEmpty = false;
+					break;
+				}
+			}
+    	return areAllAttributesEmpty;
+    }
+
 	protected String getAttributeValue(AttributeSet aSet, String attributeName){
 		if(StringUtils.isEmpty(attributeName)) return null;
 		for(String attributeNameKey: aSet.keySet()){
@@ -805,6 +831,10 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	public void setCheckRequiredAttributes(boolean checkRequiredAttributes) {
 		this.checkRequiredAttributes = checkRequiredAttributes;
+	}
+
+	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+		return new AttributeSet();
 	}
 
 }

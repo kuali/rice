@@ -155,11 +155,10 @@
     <param name="RouteQueue.timeIncrement" override="false">5000</param>
     
     <param name="useQuartzDatabase" override="false">true</param>
-	<!-- <param name="ksb.org.quartz.scheduler.instanceId" override="false">AUTO</param>
+	<param name="ksb.org.quartz.scheduler.instanceId" override="false">AUTO</param>
     <param name="ksb.org.quartz.scheduler.instanceName" override="false">KSBScheduler</param>
     <param name="ksb.org.quartz.jobStore.isClustered" override="false">true</param>
     <param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_</param>
-	-->
 	
 	<!-- KIM -->
 	

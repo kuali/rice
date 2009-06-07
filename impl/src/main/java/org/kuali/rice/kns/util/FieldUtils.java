@@ -373,7 +373,7 @@ public class FieldUtils {
         List<Field> fieldOnlyList = new ArrayList();
         int fieldsPosition = 0;
         for (Field element : fields) {
-            if (Field.SUB_SECTION_SEPARATOR.equals(element.getFieldType())) {
+            if (Field.SUB_SECTION_SEPARATOR.equals(element.getFieldType()) || Field.CONTAINER.equals(element.getFieldType())) {
                 fieldsPosition = createBlankSpace(fieldOnlyList, rows, numberOfColumns, fieldsPosition);
                 List fieldList = new ArrayList();
                 fieldList.add(element);

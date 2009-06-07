@@ -32,43 +32,7 @@
        </property>
     </bean>
     
-    <bean name="properties" class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer">
-        <property name="properties">
-            <props>
-                <prop key="kcb.url">KCBSpringBeans.xml default kcb.url</prop>
-                <prop key="coo">localhost</prop>
-                <prop key="kcb.messaging.synchronous">false</prop>
-                <prop key="kcb.messageprocessing.startDelayMS">50000</prop>
-                <prop key="kcb.messageprocessing.repeatIntervalMS">30000</prop>
-                <prop key="kcb.quartz.group">KCB-Delivery</prop>
-                <prop key="kcb.quartz.job.name">MessageProcessingJobDetail</prop>
-                <prop key="kcb.maxProcessAttempts">3</prop>
-                <prop key="kcb.messaging.synchronous">false</prop>
-                <prop key="message.delivery">asynchronous</prop>
-                <prop key="message.persistence">true</prop>
-                <!-- TODO: Put the actual value of kcb.smtp.host here  -->
-                <prop key="kcb.smtp.host">kcb.smtp.host</prop>
-                <prop key="Routing.ImmediateExceptionRouting">false</prop>
-            
-                <prop key="notification.resolveMessageDeliveriesJob.startDelayMS">5000</prop>
-                <prop key="notification.resolveMessageDeliveriesJob.intervalMS">10000</prop>
-            
-                <prop key="notification.processUndeliveredJob.startDelayMS">10000</prop>
-                <prop key="notification.processUndeliveredJob.intervalMS">10000</prop>
-            
-                <prop key="notification.processAutoRemovalJob.startDelayMS">60000</prop>
-                <prop key="notification.processAutoRemovalJob.intervalMS">60000</prop>
-            
-                <prop key="notification.quartz.autostartup">true</prop>
-                <prop key="notification.concurrent.jobs">true</prop>
-            
-                <!-- Turn off KEW use of quartz db to avoid db clear issues -->
-                <prop key="useQuartzDatabase">false</prop>   
-
-            </props>
-        </property>
-    </bean>
-
+    <bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
 
 	<bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
 

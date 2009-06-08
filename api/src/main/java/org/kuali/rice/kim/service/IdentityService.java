@@ -31,7 +31,7 @@ import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
  * <p>An entity represents a person or system.  Additionally, other "types" of entities can
  * be defined in KIM.  Information like name, phone number, etc. is associated with an entity.
  * It is the representation of a concrete person or system.  While an entity will typically
- * have a single principal associated with it, it is possible for an enttity to hae more than
+ * have a single principal associated with it, it is possible for an entity to have more than
  * one principal or even no principals at all (in the case where the entity does not actually
  * authenticate).
  * 

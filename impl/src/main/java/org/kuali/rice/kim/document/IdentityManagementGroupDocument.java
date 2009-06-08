@@ -308,4 +308,11 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		this.editing = editing;
 	}
 
+	public void setKimType(KimTypeInfo kimType) {
+		super.setKimType(kimType);
+		if (kimType != null){
+			setGroupTypeId(kimType.getKimTypeId());
+			setGroupTypeName(kimType.getName());
+		}
+	}
 }

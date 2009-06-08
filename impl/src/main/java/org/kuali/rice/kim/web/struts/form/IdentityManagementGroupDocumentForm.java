@@ -17,6 +17,7 @@ package org.kuali.rice.kim.web.struts.form;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -40,6 +41,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	}
 	
 	protected boolean canAssignGroup = true;
+	
 	protected KimTypeInfo kimType;
 	protected GroupDocumentMember member = new GroupDocumentMember();
 	protected String groupId;
@@ -91,7 +93,9 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	 * @return the kimType
 	 */
 	public KimTypeInfo getKimType() {
-		return KIMServiceLocator.getTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
+		if(StringUtils.isNotBlank(getGroupDocument().getGroupTypeId()))
+			return KIMServiceLocator.getTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
+		else return kimType;
 	}
 
 	/**
@@ -145,6 +149,13 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	 */
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	/**
+	 * @param kimType the kimType to set
+	 */
+	public void setKimType(KimTypeInfo kimType) {
+		this.kimType = kimType;
 	}
 
 }

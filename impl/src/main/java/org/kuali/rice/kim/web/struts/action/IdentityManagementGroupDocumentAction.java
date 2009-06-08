@@ -36,6 +36,7 @@ import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
+import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -69,22 +70,28 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
             String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
         	groupDocumentForm.setGroupId(groupId);
         }
+		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
+        setKimType(kimTypeId, groupDocumentForm);
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
 		if (groupDocumentForm.getMemberRows() != null) {
 		    memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
 		}
         forward = super.execute(mapping, groupDocumentForm, request, response);
-		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
-		// TODO: move this into the UI service - action should not be making ORM-layer calls
-		if ( StringUtils.isNotBlank(kimTypeId) ) {
-	        groupDocumentForm.getGroupDocument().setGroupTypeId(kimTypeId);
-		}
 
 		groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
 		return forward;
     }
     
-
+    private void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
+		if ( StringUtils.isNotBlank(kimTypeId) ) {
+			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
+			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
+		} else if ( StringUtils.isNotBlank(groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
+			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(
+					groupDocumentForm.getGroupDocument().getGroupTypeId()));
+			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
+		}
+    }
     
     /**
      * This overridden method ...
@@ -95,8 +102,9 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     protected void loadDocument(KualiDocumentFormBase form)
     		throws WorkflowException {
     	super.loadDocument(form);
-
+    	
     	IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
+        setKimType(groupDocumentForm.getGroupId(), groupDocumentForm);
         groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
 
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
@@ -116,8 +124,10 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     	super.createDocument(form);
     	IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
     	if ( groupDocumentForm.getGroupId() == null ) {
+    		groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
     		groupDocumentForm.getGroupDocument().initializeDocumentForNewGroup();
     		groupDocumentForm.setGroupId( groupDocumentForm.getGroupDocument().getGroupId() );
+    		setKimType(groupDocumentForm.getGroupDocument().getGroupTypeId(), groupDocumentForm);
     	} else {
     		loadGroupIntoDocument( groupDocumentForm.getGroupId(), groupDocumentForm );
     	}

@@ -33,7 +33,6 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -46,7 +45,6 @@ import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -54,14 +52,12 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.comparator.StringValueComparator;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -71,12 +67,13 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class KimTypeServiceBase implements KimTypeService {
 
-	protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
 
 	private BusinessObjectService businessObjectService;
 	private DictionaryValidationService dictionaryValidationService;
 	private DataDictionaryService dataDictionaryService;
 	private KimTypeInfoService typeInfoService;
+	
 	protected List<String> workflowRoutingAttributes = new ArrayList<String>();
 	protected List<String> requiredAttributes = new ArrayList<String>();
 	protected boolean checkRequiredAttributes = false;
@@ -197,7 +194,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			}
 		}
 		
-		Map<String, List<String>> referenceCheckErrors = validateReferencesExistAndActive(attributes, validationErrors);
+		Map<String, List<String>> referenceCheckErrors = validateReferencesExistAndActive(kimType, attributes, validationErrors);
 		for ( String attributeName : referenceCheckErrors.keySet() ) {
 			List<String> attributeErrors = referenceCheckErrors.get(attributeName);
 			for ( String err : attributeErrors ) {
@@ -209,29 +206,24 @@ public class KimTypeServiceBase implements KimTypeService {
 	}
 
 	
-	protected Map<String, List<String>> validateReferencesExistAndActive(AttributeSet attributes, Map<String, String> previousValidationErrors) {
-		Map<String, KimAttributeImpl> attributeImpls = new HashMap<String, KimAttributeImpl>();
+	protected Map<String, List<String>> validateReferencesExistAndActive( KimTypeInfo kimType, AttributeSet attributes, Map<String, String> previousValidationErrors) {
 		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();
 		Map<String, List<String>> errors = new HashMap<String, List<String>>();
 		
 		for ( String attributeName : attributes.keySet() ) {
-			Map<String,String> criteria = new HashMap<String,String>();
-            criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, attributeName);
-            KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-			attributeImpls.put(attributeName, attributeImpl);
+			KimTypeAttributeInfo attr = kimType.getAttributeDefinitionByName(attributeName);
 			
-			if (StringUtils.isNotBlank(attributeImpl.getComponentName())) {
-				if (!componentClassInstances.containsKey(attributeImpl.getComponentName())) {
+			if (StringUtils.isNotBlank(attr.getComponentName())) {
+				if (!componentClassInstances.containsKey(attr.getComponentName())) {
 					try {
-						Class<?> componentClass = Class.forName( attributeImpl.getComponentName() );
+						Class<?> componentClass = Class.forName( attr.getComponentName() );
 						if (!BusinessObject.class.isAssignableFrom(componentClass)) {
 							LOG.warn("Class " + componentClass.getName() + " does not implement BusinessObject.  Unable to perform reference existence and active validation");
 							continue;
 						}
 						BusinessObject componentInstance = (BusinessObject) componentClass.newInstance();
-						componentClassInstances.put(attributeImpl.getComponentName(), componentInstance);
-					}
-					catch (Exception e) {
+						componentClassInstances.put(attr.getComponentName(), componentInstance);
+					} catch (Exception e) {
 						LOG.error("Unable to instantiate class for attribute: " + attributeName, e);
 					}
 				}
@@ -244,11 +236,9 @@ public class KimTypeServiceBase implements KimTypeService {
 				for (Object componentInstance : componentClassInstances.values()) {
 					try {
 						ObjectUtils.setObjectProperty(componentInstance, attributeName, attributes.get(attributeName));
-					} 
-					catch (NoSuchMethodException e) {
+					} catch (NoSuchMethodException e) {
 						// this is expected since not all attributes will be in all components
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						LOG.error("Unable to set object property class: " + componentInstance.getClass().getName() + " property: " + attributeName, e);
 					}
 				}
@@ -277,11 +267,13 @@ public class KimTypeServiceBase implements KimTypeService {
 				}
 				
 				String attributeDisplayLabel;
-				if (attributeImpls.containsKey(attributeToHighlightOnFail) && StringUtils.isNotBlank(attributeImpls.get(attributeToHighlightOnFail).getComponentName())) {
-					attributeDisplayLabel = getDataDictionaryService().getAttributeLabel(attributeImpls.get(attributeToHighlightOnFail).getComponentName(), attributeToHighlightOnFail);
+				KimTypeAttributeInfo attr = kimType.getAttributeDefinitionByName(attributeToHighlightOnFail);
+				if (attr != null 
+						&& StringUtils.isNotBlank(attr.getComponentName())) {
+					attributeDisplayLabel = getDataDictionaryService().getAttributeLabel(attr.getComponentName(), attributeToHighlightOnFail);
 				}
 				else {
-					attributeDisplayLabel = attributeImpls.get(attributeToHighlightOnFail).getAttributeLabel();
+					attributeDisplayLabel = attr.getAttributeLabel();
 				}
 				
 				getDictionaryValidationService().validateReferenceExistsAndIsActive(componentInstance, relationshipDefinition.getObjectAttributeName(),
@@ -512,31 +504,32 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new ArrayList<String>();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected List<KeyLabelPair> getDataDictionaryAttributeValues(KimAttributeImpl attributeImpl) {
-		AttributeDefinition definition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attributeImpl.getComponentName()).getAttributeDefinition(attributeImpl.getAttributeName());
-		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
-		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();
-		try {
-			KeyValuesFinder finder = keyValuesFinderName.newInstance();
-			pairs = finder.getKeyValues();
-		} catch (Exception e) {
-			LOG.error("Unable to build a KeyValuesFinder for " + attributeImpl.getAttributeName(), e);
-		}
-		return pairs;
-	}
-
-	protected List<KeyLabelPair> getNonDataDictionaryAttributeValues(String attributeName) {
-		return new ArrayList<KeyLabelPair>();
-	}
-
-	// FIXME: the attributeName is not guaranteed to be unique!
-	public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
-		Map<String,String> criteria = new HashMap<String,String>();
-        criteria.put("attributeName", attributeName);
-        KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-        return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeImpl);
-	}
+	// JHK: commenting out - is not currently used by any code
+//	@SuppressWarnings("unchecked")
+//	protected List<KeyLabelPair> getDataDictionaryAttributeValues(KimTypeAttributeInfo attr) {
+//		AttributeDefinition definition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attr.getComponentName()).getAttributeDefinition(attr.getAttributeName());
+//		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
+//		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();
+//		try {
+//			KeyValuesFinder finder = keyValuesFinderName.newInstance();
+//			pairs = finder.getKeyValues();
+//		} catch (Exception e) {
+//			LOG.error("Unable to build a KeyValuesFinder for " + attr.getAttributeName(), e);
+//		}
+//		return pairs;
+//	}
+//
+//	protected List<KeyLabelPair> getNonDataDictionaryAttributeValues(String attributeName) {
+//		return new ArrayList<KeyLabelPair>(0);
+//	}
+//
+//	// FIXME: the attributeName is not guaranteed to be unique!
+//	public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
+//		Map<String,String> criteria = new HashMap<String,String>();
+//        criteria.put("attributeName", attributeName);
+//        KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+//        return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeImpl);
+//	}
 
 	@SuppressWarnings("unchecked")
 	protected AttributeDefinition getDataDictionaryAttributeDefinition( String namespaceCode, KimTypeAttributeInfo typeAttribute) {

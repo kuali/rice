@@ -55,7 +55,7 @@ public interface KimTypeService {
 	
 	boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
 	
-    List<KeyLabelPair> getAttributeValidValues(String attributeName);
+//    List<KeyLabelPair> getAttributeValidValues(String attributeName);
     
     AttributeDefinitionMap getAttributeDefinitions(String kimTypeId);
     

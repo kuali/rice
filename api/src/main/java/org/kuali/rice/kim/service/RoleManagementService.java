@@ -22,7 +22,13 @@ package org.kuali.rice.kim.service;
  */
 public interface RoleManagementService extends RoleService, RoleUpdateService {
 
+	/**
+	 * Flush all of the role-related caches.
+	 */
 	void flushRoleCaches();
 	
+	/**
+	 * Remove all cache entries for the given roleId and principalId combination.
+	 */
 	void removeCacheEntries( String roleId, String principalId );
 }

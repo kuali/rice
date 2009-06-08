@@ -23,7 +23,27 @@ import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * 
+ * This service provides operations for determining what responsibility actions
+ * a principal has and for querying about responsibility data.
+ * 
+ * <p>A responsibility represents an action that a principal is requested to
+ * take.  This is used for defining workflow actions (such as approve, 
+ * acknowledge, fyi) that the principal has the responsibility to take.  The
+ * workflow engine integrates with this service to provide
+ * responsibility-driven routing.
+ * 
+ * <p>A responsibility is very similar to a permission in a couple of ways.
+ * First of all, responsibilities are always granted to a role, never assigned
+ * directly to a principal or group.  Furthermore, in a similar fashion to
+ * permissions, a role has the concept of a responsibility template.  The
+ * responsibility template specifies what additional responsibility details
+ * need to be defined when the responsibility is created.
+ * 
+ * <p>This service provides read-only operations.  For write operations, see
+ * {@link ResponsibilityUpdateService}.
+ * 
+ * @see ResponsibilityUpdateService
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -32,7 +31,29 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * 
+ * This service provides operations for querying role and role qualification 
+ * data.
+ * 
+ * <p>A role is where permissions and responsibilities are granted.  Roles have
+ * a membership consisting of principals, groups or even other roles.  By
+ * being assigned as members of a role, the associated principals will be
+ * granted all permissions and responsibilities that have been granted to the
+ * role.
+ * 
+ * <p>Each membership assignment on the role can have a qualification which 
+ * defines extra information about that particular member of the role.  For 
+ * example, one may have the role of "Dean" but that can be further qualified
+ * by the school they are the dean of, such as "Dean of Computer Science".
+ * Authorization checks that are then done in the permission service can pass
+ * qualifiers as part of the operation if they want to restrict the subset of
+ * the role against which the check is made.
+ * 
+ * <p>This service provides read-only operations.  For write operations, see
+ * {@link RoleUpdateService}.
+ * 
+ * @see RoleUpdateService
+ * @see PermissionService
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -146,12 +167,32 @@ public interface RoleService {
 	 */
 	void principalInactivated( @WebParam(name="principalId") String principalId );
 	
+	/**
+	 * Notifies the role service that the role with the given id has been inactivated. 
+	 */
 	void roleInactivated(@WebParam(name="roleId") String roleId);
-	
+
+	/**
+	 * Notifies the role service that the group with the given id has been inactivated. 
+	 */
     void groupInactivated(@WebParam(name="groupId") String groupId);
     
+    /**
+     * Gets all direct members of the roles that have ids within the given list
+     * of role ids.  This method does not recurse into any nested roles.
+     * 
+     *  <p>The resulting List of role membership will contain membership for
+     *  all the roles with the specified ids.  The list is not guaranteed to be
+     *  in any particular order and may have membership info for the
+     *  different roles interleaved with each other.
+     */
 	List<RoleMembershipInfo> getFirstLevelRoleMembers(@WebParam(name="roleIds") List<String> roleIds);
 	
+	/**
+	 * Gets role member information based on the given search criteria.  The
+	 * map of criteria contains attributes of RoleMembershipInfo as it's
+	 * key and the values to search on as the value.
+	 */
 	List<RoleMembershipInfo> findRoleMembers(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
 	
 }

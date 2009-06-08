@@ -46,15 +46,9 @@ public interface IdentityManagementService {
 	// IdentityService
 	// *******************************
 	
-//	KimEntity getEntityByPrincipalId(String principalId);
-//    KimEntity getEntityByPrincipalName(String principalName);
-//	KimEntity getEntity(String entityId);
-
 	KimPrincipalInfo getPrincipal(String principalId);
 	KimPrincipalInfo getPrincipalByPrincipalName(String principalName);
 	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(String principalName, String password);
-
-//	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
 
 	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
@@ -115,13 +109,6 @@ public interface IdentityManagementService {
 	// AuthorizationService
 	// *******************************
 	   
-    // --------------------
-    // Permission Data
-    // --------------------
-    
-//    KimPermission getPermission(String permissionId);
-//    KimPermission getPermissionByName( String permissionName );    
-
     // --------------------
     // Authorization Checks
     // --------------------

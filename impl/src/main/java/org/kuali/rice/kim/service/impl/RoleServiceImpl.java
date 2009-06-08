@@ -1188,7 +1188,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.RoleService#principalInactivated(java.lang.String)
+     * @see org.kuali.rice.kim.service.RoleService#roleInactivated(java.lang.String)
      */
     public void roleInactivated(String roleId){
     	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );

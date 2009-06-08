@@ -17,10 +17,9 @@ package org.kuali.rice.kim.service;
 
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * This service provides operations for creating and updating principals and entities. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
 public interface IdentityUpdateService {
 

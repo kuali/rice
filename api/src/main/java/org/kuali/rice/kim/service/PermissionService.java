@@ -29,10 +29,34 @@ import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * This service provides operations for evaluating permissions and querying for permission data.
+ * 
+ * <p>A permission is the ability to perform an action.  All permissions have a permission template.
+ * Both permissions and permission templates are uniquely identified by a namespace code plus a name.
+ * The permission template defines the course-grained permission and specifies what additional
+ * permission details need to be collected on permissions that use that template.  For example, a
+ * permission template might have a name of "Initiate Document" which requires a permission detail
+ * specifying the document type that can be initiated.  A permission created from the "Initiate Document"
+ * template would define the name of the specific Document Type that can be initiated as a permission
+ * detail.
+ * 
+ * <p>The isAuthorized and isAuthorizedByTemplateName operations
+ * on this service are used to execute authorization checks for a principal against a
+ * permission.  Permissions are always assigned to roles (never directly to a principal or
+ * group).  A particular principal will be authorized for a given permission if the permission
+ * evaluates to true (according to the permission evaluation logic and based on any supplied
+ * permission details) and that principal is assigned to a role which has been granted the permission.
+ * 
+ * <p>The actual logic for how permission evaluation logic is defined and executed is dependent upon
+ * the permission service implementation.  However, it will typically be associated with the permission
+ * template used on the permission. 
+ * 
+ * <p>This service provides read-only operations.  For write operations, see
+ * {@link PermissionUpdateService}.
+ * 
+ * @see PermissionUpdateService
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
 @WebService(name = "PermissionService", targetNamespace = "http://org.kuali.rice/kim/permission")
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
@@ -259,7 +283,7 @@ public interface PermissionService {
     List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<KimPermissionInfo> permissions );
     
     /**
-     * 
+     * Returns the label of the permission detail for the given permissionId, kimType and attributeName. 
      */
     public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName);
 }

@@ -22,7 +22,21 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * 
+ * This service acts as a facade on the entity information that is provided
+ * through the IdentityService and provides a "person-centric" view of that 
+ * entity data.
+ * 
+ * <p>In general, the Person object flattens out the various related pieces of
+ * entity data into a denormalized view on that data.  In many cases, that
+ * data will have a defined "default" value in the entity data model.  This
+ * default data is what the Person object will be constructed with.  For
+ * example, an entity can have more than one name, but one of those names
+ * is flagged as the default.
+ * 
+ * <p>This service will do it's best to construct valid Person objects even
+ * for entities that don't have an entity type of "PERSON".  In those cases
+ * not all of the attributes on the Person object will be populated.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *

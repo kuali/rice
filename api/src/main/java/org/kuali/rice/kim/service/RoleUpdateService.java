@@ -15,29 +15,44 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.List;
-
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * This service provides operations for creating and updating roles. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
+
 @WebService(name = "RoleUpdateService", targetNamespace = "http://org.kuali.rice/kim/role")
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RoleUpdateService {
    
+	/**
+	 * Assigns the principal with the given id to the role with the specified
+	 * namespace code and name with the supplied set of qualifications.
+	 */
     void assignPrincipalToRole(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualifications") AttributeSet qualifications) throws UnsupportedOperationException;
+    
+	/**
+	 * Assigns the group with the given id to the role with the specified
+	 * namespace code and name with the supplied set of qualifications.
+	 */
     void assignGroupToRole(@WebParam(name="groupId") String groupId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualifications") AttributeSet qualifications) throws UnsupportedOperationException;
+    
+    /**
+     * Remove the principal with the given id and qualifications from the role
+     * with the specified namespace code and role name.
+     */
     void removePrincipalFromRole(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualifications") AttributeSet qualifications) throws UnsupportedOperationException;
+    
+    /**
+     * Remove the group with the given id and qualifications from the role
+     * with the specified namespace code and role name.
+     */
     void removeGroupFromRole(@WebParam(name="groupId") String groupId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualifications") AttributeSet qualifications) throws UnsupportedOperationException;
-    List<RoleMembershipInfo> getFirstLevelRoleMembers(@WebParam(name="roleIds") List<String> roleIds);
 
 }

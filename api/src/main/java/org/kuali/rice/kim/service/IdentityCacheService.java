@@ -18,18 +18,32 @@ package org.kuali.rice.kim.service;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * 
+ * This service implements a cache of KimEntityDefaultInfo. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface IdentityCacheService {
 
+	/**
+	 * Gets the KimEntityDefaultInfo from the cache for the given entityId.
+	 */
     KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCache( String entityId );
 
+	/**
+	 * Gets the KimEntityDefaultInfo from the cache for the entity with the given principalId.
+	 */
     KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalId( String principalId );
 
+	/**
+	 * Gets the KimEntityDefaultInfo from the cache for the entity with the given principalName.
+	 */
 	KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalName( String principalName );
 	
+	/**
+	 * Saves the given KimEntityDefaultInfo into the cache.
+	 */
 	void saveDefaultInfoToCache( KimEntityDefaultInfo entity );
+	
 }

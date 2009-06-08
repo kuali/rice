@@ -22,7 +22,8 @@ import javax.jws.soap.SOAPBinding;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * 
+ * This service provides operations for creating and updating groups.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -31,17 +32,38 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface GroupUpdateService {
 
+	/**
+	 * Creates a new group using the given GroupInfo.
+	 */
 	GroupInfo createGroup(@WebParam(name="groupInfo") GroupInfo groupInfo) throws UnsupportedOperationException;
 
+	/**
+	 * Updates the group with the given groupId using the supplied GroupInfo.
+	 */
     GroupInfo updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="groupInfo") GroupInfo groupInfo) throws UnsupportedOperationException;
 
+    /**
+     * Adds the group with the id supplied in childId as a member of the group with the id supplied in parentId.
+     */
     boolean addGroupToGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws UnsupportedOperationException;
     
+    /**
+     * Removes the group with the id supplied in childId from the group with the id supplied in parentId.
+     */
     boolean removeGroupFromGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws UnsupportedOperationException;
     
+    /**
+     * Add the principal with the given principalId as a member of the group with the given groupId.
+     */
     boolean addPrincipalToGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws UnsupportedOperationException;
     
+    /**
+     * Removes the member principal with the given principalId from the group with the given groupId.
+     */
     boolean removePrincipalFromGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws UnsupportedOperationException;
     
+    /**
+     * Removes all members from the group with the given groupId.
+     */
     void removeAllGroupMembers( @WebParam(name="groupId") String groupId ) throws UnsupportedOperationException;
 }

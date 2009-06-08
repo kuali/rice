@@ -72,6 +72,9 @@ public interface RoleService {
 	 */
 	KimRoleInfo getRole( @WebParam(name="roleId") String roleId );
 	
+	/**
+	 * Get the KIM Role objects for the role IDs in the given List.
+	 */
 	List<KimRoleInfo> getRoles( @WebParam(name="roleIds") List<String> roleIds );
 
 	/** Get the KIM Role object with the unique combination of namespace, component,

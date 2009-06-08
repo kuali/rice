@@ -121,9 +121,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     	super.loadDocument(form);
 
     	IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-       	if(roleDocumentForm.getRoleDocument().getKimType()==null) {
-    		roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
-    	}
+    	setKimType(roleDocumentForm.getRoleDocument().getRoleTypeId(), roleDocumentForm);
     	getUiDocumentService().setDelegationMembersInDocument( roleDocumentForm.getRoleDocument() );
 
         roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
@@ -167,8 +165,11 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     private void setKimType(String kimTypeId, IdentityManagementRoleDocumentForm roleDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
             roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
+            roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
 		} else if ( StringUtils.isNotBlank( roleDocumentForm.getRoleDocument().getRoleTypeId() ) ) {
-            roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
+            roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(
+            		roleDocumentForm.getRoleDocument().getRoleTypeId()));
+            roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
 		}
     }
     

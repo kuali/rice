@@ -42,7 +42,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	private static final long serialVersionUID = -9064436454008712125L;
 	
 	private transient KimTypeService kimTypeService;
-	protected KimTypeInfo kimType = new KimTypeInfo();
+	protected KimTypeInfo kimType;
 	protected List<? extends KimAttributes> attributes;
 	
 	private transient AttributeDefinitionMap definitions;

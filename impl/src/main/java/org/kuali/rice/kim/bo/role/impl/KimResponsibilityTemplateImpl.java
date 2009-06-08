@@ -17,17 +17,14 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -52,10 +49,6 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 	protected String description;
 	@Column(name="ACTV_IND")
 	protected boolean active;
-
-	@OneToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_TYP_ID", insertable = false, updatable = false)
-	protected KimTypeImpl kimType;
 	
 	public String getKimTypeId() {
 		return kimTypeId;
@@ -75,8 +68,8 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 		this.active = active;
 	}
 
-	public KimTypeImpl getKimType() {
-		return kimType;
+	public KimTypeInfo getKimType() {
+		return KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
 	}
 
 	/**

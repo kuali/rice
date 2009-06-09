@@ -37,6 +37,7 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
@@ -266,6 +267,13 @@ public class DocumentServiceImpl implements DocumentService {
         //if (!getDocumentActionFlags(document).getCanCancel()) {
         //    throw buildAuthorizationException("cancel", document);
         //}
+        if (document instanceof MaintenanceDocument) {
+        	MaintenanceDocument maintDoc = ((MaintenanceDocument) document);
+        	if (maintDoc.getOldMaintainableObject() != null) {
+        		maintDoc.getOldMaintainableObject().getBusinessObject().refresh();
+        	}
+       		maintDoc.getNewMaintainableObject().getBusinessObject().refresh();
+        }
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());

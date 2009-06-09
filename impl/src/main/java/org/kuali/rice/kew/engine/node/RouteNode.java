@@ -63,7 +63,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @Table(name="KREW_RTE_NODE_T")
 @Sequence(name="KREW_RTE_NODE_S", property="routeNodeId")
 @NamedQueries({
-	@NamedQuery(name="RouteNode.FindByRouteNodeId",query="select r from RouteNode as r where r.routeNodeId = :roudeNodeId"),
+	@NamedQuery(name="RouteNode.FindByRouteNodeId",query="select r from RouteNode as r where r.routeNodeId = :routeNodeId"),
 	@NamedQuery(name="RouteNode.FindRouteNodeByName", query="select r from RouteNode as r where r.routeNodeName = :routeNodeName and r.documentTypeId = :documentTypeId"),
 	@NamedQuery(name="RouteNode.FindApprovalRouteNodes", query="select r from RouteNode as r where r.documentTypeId = :documentTypeId and r.finalApprovalInd = :finalApprovalInd")
 })

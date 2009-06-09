@@ -39,8 +39,6 @@
     <param name="kim.url" override="false">${application.url}/kim</param>
     <param name="kew.url" override="false">${application.url}/kew</param>
     
-    <param name="workflow.url" override="false">${application.url}/en</param>
-
     <!-- TODO: doc this param -->
     <param name="production.environment.code" override="false">PRD</param>
      <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->

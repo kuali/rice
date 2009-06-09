@@ -24,18 +24,23 @@ function resize_iframe() {
     if ( !iframe ) return;
     var iframeDocElement = iframe.contentWindow.document.documentElement;
     if ( !iframeDocElement ) return;
-    iframe.style.height = iframeDocElement.offsetHeight + "px";
-    iframe.style.width = iframeDocElement.scrollWidth + "px";
-    // table
-    if ( iframe.parentNode.parentNode.parentNode ) {
-        if ( iframe.parentNode.parentNode.parentNode.tagName == "TBODY" ) {
-            // safari auto inserts one if not present, need to go up another level
-            iframe.parentNode.parentNode.parentNode.parentNode.style.width = iframeDocElement.scrollWidth + "px";
-        } else {
-        	iframe.parentNode.parentNode.parentNode.style.width = iframeDocElement.scrollWidth + "px";
-        }
+    if ( document.all ) {
+        iframe.style.height = iframeDocElement.scrollHeight + "px";
+        iframe.style.width = iframeDocElement.scrollWidth + "px";
+        //window.status = iframeDocElement.scrollWidth+"/"+iframeDocElement.offsetWidth+"/"+iframeDocElement.clientWidth;
+    } else {
+        iframe.style.height = iframeDocElement.offsetHeight + "px";
+        iframe.style.width = iframeDocElement.scrollWidth + "px";
     }
-    iframe.style.overflow = "hidden";
+    // table
+    var tableNode = iframe.parentNode.parentNode.parentNode;
+    if ( tableNode ) {
+        if ( tableNode.tagName == "TBODY" ) { // IE and safari insert this automatically
+            tableNode = tableNode.parentNode;
+        }
+        tableNode.style.width = iframe.style.width;
+    }
+    //iframe.scrolling = "no";
     //console.log( "Set iframe dimensions to " + iframe.style.height + "/"+iframe.style.width );
 }
 </script>

@@ -23,7 +23,11 @@ function resize_routelog_iframe() {
     if ( !iframe ) return;
     var iframeDocElement = iframe.contentWindow.document.documentElement;
     if ( !iframeDocElement ) return;
-    iframe.style.height = iframeDocElement.offsetHeight + "px";
+    if ( document.all ) {
+        iframe.style.height = iframeDocElement.scrollHeight + "px";
+    } else {
+        iframe.style.height = iframeDocElement.offsetHeight + "px";
+    }        
     //console.log( "Set route log iframe height to " + iframe.style.height );
 }
 </script>

@@ -65,7 +65,6 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected String univId = "";
     // affiliation data
     protected List<PersonDocumentAffiliation> affiliations;
-    protected KimEntityAffiliation defaultAffiliation;
 
     protected String campusCode = "";
     // external identifier data
@@ -130,14 +129,6 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
     public void setAffiliations(List<PersonDocumentAffiliation> affiliations) {
         this.affiliations = affiliations;
-    }
-
-    public KimEntityAffiliation getDefaultAffiliation() {
-        return this.defaultAffiliation;
-    }
-
-    public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
-        this.defaultAffiliation = defaultAffiliation;
     }
 
     public String getCampusCode() {

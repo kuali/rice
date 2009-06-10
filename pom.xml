@@ -39,6 +39,7 @@
 		<bcprov.version>133</bcprov.version>
         <bsf.version>2.4.0</bsf.version>
         <casclient.version>2.1.1</casclient.version>
+        <cas-client-core.version>3.1.6</cas-client-core.version>
         <cglib.version>2.1_3</cglib.version>
         <commons-beanutils.version>1.7.0</commons-beanutils.version>
         <commons-codec.version>1.3</commons-codec.version>
@@ -341,6 +342,11 @@
                 <groupId>cas</groupId>
                 <artifactId>casclient</artifactId>
                 <version>${casclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jasig.cas</groupId>
+                <artifactId>cas-client-core</artifactId>
+                <version>${cas-client-core.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>

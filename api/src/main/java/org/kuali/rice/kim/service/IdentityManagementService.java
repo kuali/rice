@@ -103,7 +103,6 @@ public interface IdentityManagementService {
 	// *******************************
 	
 	String getAuthenticatedPrincipalName(HttpServletRequest request);
-    boolean authenticationServiceValidatesPassword();
     
 	// *******************************
 	// AuthorizationService

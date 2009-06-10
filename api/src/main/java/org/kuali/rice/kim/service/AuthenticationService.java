@@ -27,12 +27,4 @@ public interface AuthenticationService {
 	 */
     public String getPrincipalName(HttpServletRequest request);
     
-    /**
-     * Indicates whether or not this authentication service should validate
-     * the principal's password.
-     * 
-     * @return true if the password should be validated, false otherwise
-     */
-    public boolean validatePassword();
-    
 }

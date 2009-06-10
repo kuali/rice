@@ -26,9 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -42,8 +40,10 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 public class DummyLoginFilter implements Filter {
     private String loginPath;
+    private boolean showPassword = false;
     public void init(FilterConfig config) throws ServletException {
         loginPath = config.getInitParameter("loginPath");
+        showPassword = new Boolean(config.getInitParameter("showPassword"));
         if (loginPath == null) {
             loginPath = "/WEB-INF/jsp/dummy_login.jsp";
         }
@@ -58,12 +58,12 @@ public class DummyLoginFilter implements Filter {
             }
             if (session == null) {
             	IdentityManagementService auth = KIMServiceLocator.getIdentityManagementService();
-           		request.setAttribute("showPasswordField", auth.authenticationServiceValidatesPassword());
+           		request.setAttribute("showPasswordField", showPassword);
                 final String user = request.getParameter("__login_user");
                 final String password = request.getParameter("__login_pw");
                 if (user != null) {
                 	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
-                    if (auth.authenticationServiceValidatesPassword()) {
+                    if (showPassword) {
         				KimPrincipal principal = auth.getPrincipalByPrincipalNameAndPassword( user, password );
         				if (principal == null ) {
         					request.setAttribute("invalidPassword", Boolean.TRUE);

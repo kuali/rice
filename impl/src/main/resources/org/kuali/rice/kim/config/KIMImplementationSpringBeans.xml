@@ -85,9 +85,7 @@
 
   <!-- END JPA CONFIGURATION -->
 
-  <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl">
-    <property name="validatePassword" value="false" />
-  </bean>
+  <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl"/>
 
   <!-- 
         Authentication Service

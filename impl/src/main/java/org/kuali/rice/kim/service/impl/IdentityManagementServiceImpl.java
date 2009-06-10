@@ -388,10 +388,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public String getAuthenticatedPrincipalName(HttpServletRequest request) {
 		return getAuthenticationService().getPrincipalName(request);
 	}
-
-    public boolean authenticationServiceValidatesPassword() {
-    	return getAuthenticationService().validatePassword();
-    }
     
     // AUTHORIZATION SERVICE
     

@@ -123,7 +123,7 @@
 			<html-el:text property="helpDeskActionListUserName" size="12" style="position: relative; top: -.35em;" />&nbsp;
             </div>
             <div style="float:left">
-            <html-el:image src="../kr/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin"/>
+            <html-el:image src="../kr/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" styleClass="tinybutton" />
             </div>
 			<c:if test="${kewUserSession.helpDeskActionListPerson != null}">
 				<a href="
@@ -156,16 +156,22 @@
 	</c:if>
 	<html-el:form action="ActionList">
 		<html-el:hidden property="methodToCall" value="" />
-		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<table width="100%">
+			<tr>
+			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"
+				height="20"></td>
+			<td>
+			<table align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
 					<tr>
 				<td></td>
 				<td>
                   <kul:errors errorTitle="Error loading action list : "/> <br/>
 				  <kul:messages/>
                 </td>
+                <td></td>
 			</tr>
 
-			<tr>
+			<tr><td></td><td>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td>
@@ -192,37 +198,39 @@
                         <td>
                         <div align="right">
                           <c:if test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox && !ActionListFormNew.outBoxEmpty}">
-                           <td align="right"><html-el:image
+                           <html-el:image
                               src="../kr/images/buttonsmall_delselitems.gif" align="absmiddle"
                               property="methodToCall.removeOutboxItems" />
-                           </td>
                           </c:if>
                         </div>
                         </td>
 					</tr>
 					</table>
+					</td>
+					<td></td>
+					</tr>
 			<c:if
 				test="${kewUserSession.actionListFilter.filterLegend != null && kewUserSession.actionListFilter.filterLegend != ''}">
-				<br><tr>
+					<tr>
 				 	<td></td>
 					<td><strong><c:out
 					value="${kewUserSession.actionListFilter.filterLegend}" /></strong></td>
 					<td></td>
+					</tr>
 			 </c:if>
-                <td></td>
-                <td></td>
+			 <tr>
+                <td colspan="3"><br /></td>
 			</tr>
             <tr>
               <td></td>
               <td>
 			 <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-            <td>
-				<div id="row" >
-				<div class="tab-container"><br />
+              <td>
+                <br />
 				<display:table class="datatable-100" cellpadding="2" cellspacing="0"
 					name="actionListPage" pagesize="${preferences.pageSize}"
-					export="true" id="result"
+					export="true" id="result" htmlId="row"
 					decorator="org.kuali.rice.kew.actionlist.web.ActionListDecorator"
 					excludedParams="*" requestURI="${actionListURI}">
 					<display-el:setProperty name="export.banner" value="" />
@@ -237,8 +245,8 @@
                              </c:url>"
                              target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
                              onclick="rend(this, false)"><img
-                             src="images/tinybutton-show.gif" alt="show" width=45 height=15
-                             border=0 id='F<c:out value="${result.actionItemIndex}"/>'></a>
+                             src="images/tinybutton-show.gif" alt="show" width="45" height="15"
+                             border="0" id='F<c:out value="${result.actionItemIndex}"/>'></a>
                              <br>
 
                       </display-el:column>
@@ -398,8 +406,7 @@
 						<img alt="Route Log for Document"
 							src="images/my_route_log.gif" /> </a></div>
 					</display-el:column>
-				</display:table></div>
-                </div>
+				</display:table>
 				</td>
 				</tr>
 				</table>
@@ -414,6 +421,7 @@
 			<c:if
 				test="${kewUserSession.helpDeskActionListPerson == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListFormNew.customActionList)}">
 				<tr>
+					<td></td>
 					<td height="0" class="tinybutton">
 					<div align="center"><a id="takeMassActions"
 						href="javascript: setMethodToCallAndSubmit('takeMassActions')">
@@ -423,5 +431,11 @@
 				</tr>
 			</c:if>
 		</table>
+		
+		</td>
+			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"
+				height="20"></td>
+		</tr>
+	</table>
 	</html-el:form>
 </kul:page>

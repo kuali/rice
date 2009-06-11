@@ -49,7 +49,6 @@ function showTab(doc, tabKey) {
     image.alt = image.alt.replace(/^open/, 'close');
     image.title = image.title.replace(/^show/, 'hide');
     image.title = image.title.replace(/^open/, 'close');
-    resizeIframes();
     return false;
 }
 
@@ -62,7 +61,6 @@ function hideTab(doc, tabKey) {
     image.alt = image.alt.replace(/^close/, 'open');
     image.title = image.title.replace(/^hide/, 'show');
     image.title = image.title.replace(/^close/, 'open');
-    resizeIframes();
     return false;
 }
 
@@ -170,6 +168,52 @@ function isReturnKeyAllowed(buttonPrefix , event) {
 		}
 	}
     return true;
+}
+
+//The following javascript is intended to resize the route log iframe
+// to stay at an appropriate height based on the size of the documents
+// contents contained in the iframe.
+//  NOTE: this will only work when the domain serving the content of kuali
+//         is the same as the domain serving the content of workflow.
+var routeLogResizeTimer = ""; // holds the timer for the  route log iframe resizer
+var currentHeight = 500; // holds the current height of the iframe
+var safari = navigator.userAgent.toLowerCase().indexOf('safari');
+
+function setRouteLogIframeDimensions() {
+  var routeLogFrame = document.getElementById("routeLogIFrame");
+  var routeLogFrameWin = window.frames["routeLogIFrame"];
+  var frameDocHeight = 0;
+  try {
+    frameDocHeight = routeLogFrameWin.document.height;
+  } catch ( e ) {
+    // unable to set due to cross-domain scripting
+    frameDocHeight = 0;
+  }
+
+  if ( frameDocHeight > 0 ) {
+	  if (routeLogFrame && routeLogFrameWin) {
+	  	
+	    if ((Math.abs(frameDocHeight - currentHeight)) > 20 ) {
+	      if (safari > -1) {
+	        if ((Math.abs(docHt - currentHeight)) > 59 ) {
+	          routeLogFrame.style.height = (frameDocHeight + 30) + "px";
+	          currentHeight = frameDocHeight;
+	        }
+	      } else {    
+	        routeLogFrame.style.height = (frameDocHeight + 30) + "px";
+	        currentHeight = frameDocHeight;
+	      }
+	    }
+	  
+	    if (routeLogResizeTimer == "" ) {
+	      routeLogResizeTimer = setInterval("resizeTheRouteLogFrame()",300);
+	    }
+	  }
+  }
+}
+
+function resizeTheRouteLogFrame() {
+  setRouteLogIframeDimensions();
 }
 
 // should be in rice for direct inquiry 
@@ -280,31 +324,4 @@ function getStyleObject(objectId) {
    } else {
 	return false;
    }
-}
-
-function resizeIframes() {	
-	try {
-		//console.log( "resizing iframes" );
-		if ( typeof resize_routelog_iframe == "function" ) {
-			//console.log( "resizing route log" );
-			resize_routelog_iframe();
-		}
-		if ( parent ) {
-			if ( typeof parent.resize_routelog_iframe == "function" ) {
-				//console.log( "resizing parent route log" );
-				parent.resize_routelog_iframe();
-			}
-			if ( typeof parent.resize_iframe == "function" ) {
-				//console.log( "resizing main iframe" );
-				parent.resize_iframe();
-			}
-			if ( parent.parent.resize_iframe == "function" ) {
-				//console.log( "resizing main iframe from route log" );
-				parent.parent.resize_iframe();
-			}
-		}
-	} catch ( ex ) {
-		//console.log( "Exception: " + ex );
-		window.status = ex;
-	}
 }

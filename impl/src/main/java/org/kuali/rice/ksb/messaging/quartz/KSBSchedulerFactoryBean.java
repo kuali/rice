@@ -13,6 +13,7 @@
 package org.kuali.rice.ksb.messaging.quartz;
 
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
@@ -33,6 +34,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
 
     private PlatformTransactionManager jtaTransactionManager;
+    private TransactionManager transactionManager;
+    private DataSource dataSource;
+    private DataSource nonTransactionalDataSource;
     private boolean transactionManagerSet = false;
     private boolean nonTransactionalDataSourceSet = false;
     private boolean nonTransactionalDataSourceNull = true;
@@ -64,15 +68,16 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
             setTransactionManager(jtaTransactionManager);
             if (!nonTransactionalDataSourceSet) {
             	// since transaction manager is required... require a non transactional datasource
-            	DataSource nonTransactionalDataSource = KSBServiceLocator.getMessageNonTransactionalDataSource();
+            	nonTransactionalDataSource = KSBServiceLocator.getMessageNonTransactionalDataSource();
             	if (nonTransactionalDataSource == null) {
             		throw new ConfigurationException("No non-transactional data source was found but is required for the KSB Quartz Scheduler");
             	}
-            	setNonTransactionalDataSource(nonTransactionalDataSource);
+            	super.setNonTransactionalDataSource(nonTransactionalDataSource);
             }
             if (!dataSourceSet) {
-            	setDataSource(KSBServiceLocator.getMessageDataSource());
+            	dataSource = KSBServiceLocator.getMessageDataSource();
             }
+            super.setDataSource(dataSource);
         }
         if (transactionManagerSet && nonTransactionalDataSourceNull) {
             throw new ConfigurationException("A valid transaction manager was set but no non-transactional data source was found");
@@ -100,12 +105,12 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
     public void setNonTransactionalDataSource(DataSource nonTransactionalDataSource) {
         nonTransactionalDataSourceSet = true;
         nonTransactionalDataSourceNull = (nonTransactionalDataSource == null);
-        super.setNonTransactionalDataSource(nonTransactionalDataSource);
+        this.nonTransactionalDataSource = nonTransactionalDataSource;
     }
     
     @Override
     public void setDataSource(DataSource dataSource) {
     	dataSourceSet = true;
-    	super.setDataSource(dataSource);
+    	this.dataSource = dataSource;
     }
 }

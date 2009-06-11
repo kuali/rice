@@ -57,6 +57,9 @@ public class KimCommonUtils {
 	public static String getClosestParentDocumentTypeName(
 			DocumentType documentType,
 			Set<String> potentialParentDocumentTypeNames) {
+		if ( potentialParentDocumentTypeNames == null || documentType == null ) {
+			return null;
+		}
 		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
 			return documentType.getName();
 		} else {

@@ -29,6 +29,8 @@ package org.kuali.rice.kns.util;
 @Deprecated
 public class ErrorMap extends MessageMap {
 	
+	public ErrorMap() {}
+	
 	public ErrorMap(MessageMap messageMap) {
 		super(messageMap);
 	}

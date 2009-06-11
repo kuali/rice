@@ -14,19 +14,19 @@
 		 	</tr>
 			<tr>
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.principalName}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnly}" /></td>
+		 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnlyEntity}" /></td>
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.taxId}"  /></div></th>
 		 		<td><kul:htmlControlAttribute property="document.taxId" attributeEntry="${personAttributes.taxId}" readOnly="${readOnlyEntity}" /></td>
 		 	</tr>
 		 	<tr>
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}" /></div></th>
 		 		<td>
-			 		<c:if test="${not readOnly}">
+			 		<c:if test="${not readOnlyEntity}">
 			 		    <html:password property="document.password" />
 			 		</c:if>
 		 		</td>
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.active}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" readOnly="${readOnly}" /></td>
+		 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" readOnly="${readOnlyEntity}" /></td>
 		 	</tr>
 		</table> 
 		<kim:personAffln />		

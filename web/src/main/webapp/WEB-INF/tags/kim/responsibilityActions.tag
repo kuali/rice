@@ -18,8 +18,7 @@
 				<td>
 					<c:choose>
 						<c:when test="${roleRspAction.kimResponsibility != null}">
-                        	${roleRspAction.kimResponsibility.namespaceCode}
-                            ${roleRspAction.kimResponsibility.name}
+                        	${roleRspAction.kimResponsibility.namespaceCode}&nbsp;${roleRspAction.kimResponsibility.name}
                         </c:when>
  						<c:otherwise>
 							All

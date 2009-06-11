@@ -615,21 +615,24 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 	public String getForeignKeyFieldName(Class businessObjectClass, String attributeName, String targetName) {
 
 		String fkName = "";
-		if(PersistableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
-			fkName =
-				getPersistenceStructureService().getForeignKeyFieldName(businessObjectClass, attributeName, targetName);
-		} else {
-			RelationshipDefinition relationshipDefinition = getDDRelationship(businessObjectClass, attributeName);
+		
+		// first try DD-based relationships
+		RelationshipDefinition relationshipDefinition = getDDRelationship(businessObjectClass, attributeName);
 
-			if(relationshipDefinition!=null){
-				List<PrimitiveAttributeDefinition> primitives = relationshipDefinition.getPrimitiveAttributes();
-				for(PrimitiveAttributeDefinition primitiveAttributeDefinition: primitives){
-					if(primitiveAttributeDefinition.getTargetName().equals(targetName)){
-						fkName = primitiveAttributeDefinition.getSourceName();
-						break;
-					}
+		if(relationshipDefinition!=null){
+			List<PrimitiveAttributeDefinition> primitives = relationshipDefinition.getPrimitiveAttributes();
+			for(PrimitiveAttributeDefinition primitiveAttributeDefinition: primitives){
+				if(primitiveAttributeDefinition.getTargetName().equals(targetName)){
+					fkName = primitiveAttributeDefinition.getSourceName();
+					break;
 				}
 			}
+		}
+		
+		// if we can't find anything in the DD, then try the persistence service
+		if(StringUtils.isBlank(fkName) && PersistableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
+			fkName =
+				getPersistenceStructureService().getForeignKeyFieldName(businessObjectClass, attributeName, targetName);
 		}
 		return fkName;
 	}

@@ -74,7 +74,7 @@ public class GlobalVariables {
      * @return ErrorMap containing error messages.
      */
     @Deprecated
-    public static ErrorMap geErrorMap() {
+    public static ErrorMap getErrorMap() {
         return new ErrorMap(getMessageMap());
     }
     

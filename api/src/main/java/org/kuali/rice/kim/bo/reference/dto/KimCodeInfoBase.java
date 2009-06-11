@@ -123,4 +123,12 @@ public abstract class KimCodeInfoBase implements KimCode {
 	public void setDisplaySortCode(String displaySortCode) {
 		this.displaySortCode = displaySortCode;
 	}	
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObject#prepareForWorkflow()
+	 */
+	public void prepareForWorkflow() {}
+	public void refresh() {}
 }

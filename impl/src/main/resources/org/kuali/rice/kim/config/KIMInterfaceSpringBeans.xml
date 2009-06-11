@@ -115,7 +115,17 @@
              <entry key="org.kuali.rice.kim.bo.Person" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
              <entry key="org.kuali.rice.kim.bo.Role" value="org.kuali.rice.kim.bo.impl.RoleImpl" />
              <entry key="org.kuali.rice.kim.bo.Group" value="org.kuali.rice.kim.bo.impl.GroupImpl" />
-             <entry key="org.kuali.rice.kim.bo.KimType" value="org.kuali.rice.kim.bo.types.dto.KimTypeInfo" />
+             <entry key="org.kuali.rice.kim.bo.KimType" value="org.kuali.rice.kim.bo.types.impl.KimTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EmailType" value="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.AddressType" value="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.AffiliationType" value="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.CitizenshipStatus" value="org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EmploymentStatus" value="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EmploymentType" value="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EntityNameType" value="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EntityType" value="org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.ExternalIdentifierType" value="org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.PhoneType" value="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" />
             </map>
         </property>
   </bean>

@@ -133,7 +133,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeInsert(persistenceBroker);
 		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
 	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
 			if(this.externalId != null){
@@ -151,7 +151,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeUpdate(persistenceBroker);
 		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
 	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
 			if(this.externalId != null){
@@ -168,7 +168,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
         super.afterLookup(persistenceBroker);
         Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
 	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
 			if(this.externalId != null){
@@ -185,7 +185,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	public void beforeInsert() {
 		super.beforeInsert();
 		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
 	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
 			if(this.externalId != null){
@@ -202,7 +202,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	public void beforeUpdate() {
 		super.beforeUpdate();
 		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
 	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
 			if(this.externalId != null){
@@ -219,7 +219,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	@javax.persistence.PostLoad 
 	public void afterLookup(){
 		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
 	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
 				if(this.externalId != null){

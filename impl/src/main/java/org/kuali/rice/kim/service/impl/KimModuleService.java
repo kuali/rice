@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
@@ -67,16 +67,19 @@ public class KimModuleService extends ModuleServiceBase {
 			}
 			// otherwise, fall through since critieria is not known
 		} else if(Role.class.isAssignableFrom(businessObjectClass)){
-			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID))
+			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID)) {
 				//KimRoleInfo roleInfo = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
 				//RoleImpl roleImpl
 				return null;
+			}
 		} else if(Group.class.isAssignableFrom(businessObjectClass)){
-			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID))
+			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID)) {
 				return (T) getGroupService().getGroupInfo((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
-		} else if(KimType.class.isAssignableFrom(businessObjectClass)){
-			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID))
-				return (T) getTypeInfoService().getKimType((String)fieldValues.get(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
+			}
+//		} else if(KimType.class.isAssignableFrom(businessObjectClass)){
+//			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
+//				return (T) getTypeInfoService().getKimType((String)fieldValues.get(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
+//			}
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
@@ -96,6 +99,8 @@ public class KimModuleService extends ModuleServiceBase {
 			return (List)getPersonService().findPeople( (Map)fieldValues );
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
+		} else if ( Group.class.isAssignableFrom(externalizableBusinessObjectClass) ) { 
+			return (List)getGroupService().lookupGroupIds( (Map)fieldValues );
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );
@@ -129,19 +134,15 @@ public class KimModuleService extends ModuleServiceBase {
 	public List listPrimaryKeyFieldNames(Class businessObjectInterfaceClass) {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
 		if ( Person.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
-			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( KimConstants.PrimaryKeyConstants.PRINCIPAL_ID );
-			return pkFields;
+			return Collections.singletonList( KimConstants.PrimaryKeyConstants.PRINCIPAL_ID );
 		} else if ( Role.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
-			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( KimConstants.PrimaryKeyConstants.ROLE_ID );
-			return pkFields;
+			return Collections.singletonList( KimConstants.PrimaryKeyConstants.ROLE_ID );
 		} else if ( Group.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
-			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( KimConstants.PrimaryKeyConstants.GROUP_ID );
-			return pkFields;
+			return Collections.singletonList( KimConstants.PrimaryKeyConstants.GROUP_ID );
 		} else if ( KimType.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
 			return Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID );
+		} else if ( KimCode.class.isAssignableFrom(businessObjectInterfaceClass)) {
+			return Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE );
 		}
 
 		// otherwise, use the default implementation

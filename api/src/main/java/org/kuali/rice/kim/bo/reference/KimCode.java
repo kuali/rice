@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.reference;
 
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.KualiCode;
 
 /**
@@ -23,6 +24,6 @@ import org.kuali.rice.kns.bo.KualiCode;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimCode extends KualiCode {
+public interface KimCode extends KualiCode, ExternalizableBusinessObject{
 
 }

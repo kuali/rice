@@ -49,28 +49,32 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
 		List<KimTypeImpl> searchResults = (List<KimTypeImpl>)super.getSearchResultsHelper(fieldValues, unbounded);
 		List<KimTypeImpl> filteredSearchResults = new ArrayList<KimTypeImpl>();
-		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY)))
+		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY))) {
 			for(KimTypeImpl kimTypeImpl: searchResults){
 				if(hasRoleTypeService(kimTypeImpl.toInfo())) {
 					filteredSearchResults.add(kimTypeImpl);
 				}
 			}
+			return filteredSearchResults;
+		}
 		
-		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY)))
+		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY))) {
 			for(KimTypeImpl kimTypeImpl: searchResults){
 				if(hasGroupTypeService(kimTypeImpl.toInfo())) {
 					filteredSearchResults.add(kimTypeImpl);
 				}
 			}
-
-		return filteredSearchResults;
+			return filteredSearchResults;
+		}
+		return searchResults;
 	}
 	
 	/**
      * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getReturnUrl(org.kuali.rice.kns.bo.BusinessObject, java.util.Map,
      *      java.lang.String)
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected String getReturnHref(Properties parameters, LookupForm lookupForm, List returnKeys) {
     	KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
     	String href = "";

@@ -194,7 +194,7 @@ public class KimConstants {
 		public static final String ROLE_RESPONSIBILITY_ACTION_ID = "roleResponsibilityActionId";
 		public static final String KIM_PERMISSION_REQUIRED_ATTR_ID = "kimPermissionRequiredAttributeId";
 		public static final String KIM_ATTRIBUTE_ID = "kimAttributeId";
-		public static final String EXTERNAL_IDENTIFIER_TYPE_CODE ="code";
+		public static final String KIM_TYPE_CODE ="code";
 	}
 
 	public static class UniqueKeyConstants {

@@ -30,11 +30,11 @@ public class AccountRequestDocumentRule extends TransactionalDocumentRuleBase {
 
         boolean valid = true;
 
-        GlobalVariables.getErrorMap().addToErrorPath("document");
+        GlobalVariables.getMessageMap().addToErrorPath("document");
 
         KNSServiceLocator.getDictionaryValidationService().validateDocument(document);
 
-        GlobalVariables.getErrorMap().removeFromErrorPath("document");
+        GlobalVariables.getMessageMap().removeFromErrorPath("document");
 
         return valid;
     }

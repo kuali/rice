@@ -54,7 +54,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    boolean rulePassed = true;
 
         if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
             return false;
         }
     	if(!validAssignRole(newMember, document))
@@ -80,7 +80,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
 	            rulePassed = false;
-	            GlobalVariables.getErrorMap().putError("member.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            GlobalVariables.getMessageMap().putError("member.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	            break;
 	    	}
 	    	i++;
@@ -110,7 +110,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 					KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
 					GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 					roleDetails, null)){
-	            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, 
+	            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, 
 	            		new String[] {document.getRoleNamespace(), document.getRoleName()});
 	            rulePassed = false;
 			}

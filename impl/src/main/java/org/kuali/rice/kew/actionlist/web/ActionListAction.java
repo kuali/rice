@@ -538,7 +538,7 @@ public class ActionListAction extends KualiAction {
     private void generateActionItemErrors(String propertyName, String errorKey, List documentIds) {
     	if (!documentIds.isEmpty()) {
     		String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
-    		GlobalVariables.getErrorMap().putError(propertyName, errorKey, documentIdsString);
+    		GlobalVariables.getMessageMap().putError(propertyName, errorKey, documentIdsString);
     	}
     }
     
@@ -552,10 +552,10 @@ public class ActionListAction extends KualiAction {
 //    		}
     		
     		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
-    			GlobalVariables.getErrorMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getActionItemId()+"");
+    			GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getActionItemId()+"");
     		}
     		if (actionItem.getDocTitle() == null) {
-    			GlobalVariables.getErrorMap().putError(DOCTITLE_PROP, ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY,actionItem.getActionItemId()+"");
+    			GlobalVariables.getMessageMap().putError(DOCTITLE_PROP, ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY,actionItem.getActionItemId()+"");
     			continue;
     		}
      	}
@@ -617,11 +617,11 @@ public class ActionListAction extends KualiAction {
         }
         catch (RiceRuntimeException rre)
         {
-        	GlobalVariables.getErrorMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
+        	GlobalVariables.getMessageMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
         }
         catch (NullPointerException npe)
         {
-        	GlobalVariables.getErrorMap().putError("null", HELPDESK_LOGIN_EMPTY_ERRKEY, name);
+        	GlobalVariables.getMessageMap().putError("null", HELPDESK_LOGIN_EMPTY_ERRKEY, name);
         }
     	actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");

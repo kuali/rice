@@ -76,7 +76,7 @@ public class ParameterEvaluatorImpl implements ParameterEvaluator {
 	public boolean evaluateAndAddError(Class<? extends Object> businessObjectOrDocumentClass,
 			String constrainedPropertyName, String userEditablePropertyName) {
 		if (!evaluationSucceeds()) {
-			GlobalVariables.getErrorMap().putError(
+			GlobalVariables.getMessageMap().putError(
 					userEditablePropertyName,
 					constraintIsAllow() ? RiceKeyConstants.ERROR_DOCUMENT_INVALID_VALUE_ALLOWED_VALUES_PARAMETER : RiceKeyConstants.ERROR_DOCUMENT_INVALID_VALUE_DENIED_VALUES_PARAMETER,
 					new String[] {

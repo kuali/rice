@@ -48,7 +48,7 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 	    rulePassed = validAssignRole(document, newRole);
         if (newRole == null || StringUtils.isBlank(newRole.getRoleId())) {
             rulePassed = false;
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role"});
         	
 //        } else if (roleIds.isEmpty() || !roleIds.contains(newRole.getRoleId())) {
 //            errorMap.putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, new String[] {newRole.getRoleId()});
@@ -57,7 +57,7 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 		    for (PersonDocumentRole role : document.getRoles()) {
 		    	if (role.getRoleId().equals(newRole.getRoleId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role"});
+		            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role"});
 		    		
 		    	}
 		    }
@@ -73,7 +73,7 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
 				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-    		GlobalVariables.getErrorMap().putError("document.newRole", 
+    		GlobalVariables.getMessageMap().putError("document.newRole", 
     				RiceKeyConstants.ERROR_ASSIGN_ROLE, 
     				new String[] {newRole.getNamespaceCode(), newRole.getRoleName()});
             rulePassed = false;

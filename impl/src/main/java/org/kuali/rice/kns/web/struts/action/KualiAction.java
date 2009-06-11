@@ -834,7 +834,7 @@ public abstract class KualiAction extends DispatchAction {
         String headerTabDispatch = getHeaderTabDispatch(request);
         if (StringUtils.isNotEmpty(headerTabDispatch)) {
             ActionForward forward = dispatchMethod(mapping, form, request, response, headerTabDispatch);
-            if (GlobalVariables.getErrorMap().getNumberOfPropertiesWithErrors() > 0) {
+            if (GlobalVariables.getMessageMap().getNumberOfPropertiesWithErrors() > 0) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
             this.hideAllTabs(mapping, form, request, response);

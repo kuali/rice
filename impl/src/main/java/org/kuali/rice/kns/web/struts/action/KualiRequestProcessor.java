@@ -48,12 +48,12 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.ErrorContainer;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ExceptionUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.InfoContainer;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WarningContainer;
 import org.kuali.rice.kns.util.WebUtils;
@@ -248,7 +248,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	protected boolean processValidate(HttpServletRequest request, HttpServletResponse response, ActionForm form, ActionMapping mapping) throws IOException, ServletException, InvalidCancelException {
 
 		// skip form validate if we had errors from populate
-		if (GlobalVariables.getErrorMap().hasNoErrors()) {
+		if (GlobalVariables.getMessageMap().hasNoErrors()) {
 			if (form == null) {
 				return (true);
 			}
@@ -270,7 +270,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 
 		publishMessages(request);
-		if (!GlobalVariables.getErrorMap().hasNoErrors()) {
+		if (!GlobalVariables.getMessageMap().hasNoErrors()) {
 			// Special handling for multipart request
 			if (form.getMultipartRequestHandler() != null) {
 				if (LOG.isDebugEnabled()) {
@@ -483,9 +483,9 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 			if (e instanceof ValidationException) {
 				// add a generic error message if there are none
-				if (GlobalVariables.getErrorMap().hasNoErrors()) {
+				if (GlobalVariables.getMessageMap().hasNoErrors()) {
 
-					GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
+					GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
 				}
 
 				// display error messages and return to originating page
@@ -558,7 +558,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * messages then stores in the request.
 	 */
 	private void publishMessages(HttpServletRequest request) {
-		ErrorMap errorMap = GlobalVariables.getErrorMap();
+		MessageMap errorMap = GlobalVariables.getMessageMap();
 		if (!errorMap.hasNoErrors()) {
 			ErrorContainer errorContainer = new ErrorContainer(errorMap);
 

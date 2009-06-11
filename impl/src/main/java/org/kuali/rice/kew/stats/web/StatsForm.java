@@ -140,14 +140,14 @@ public class StatsForm extends KualiForm {
             try {
                 new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT).parse(getBegDate().trim()+END_DAY_TIME);
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(BEGIN_DATE, "general.error.fieldinvalid", "Begin Date");
+                GlobalVariables.getMessageMap().putError(BEGIN_DATE, "general.error.fieldinvalid", "Begin Date");
             }
         }
         if (getEndDate() != null && getEndDate().length() != 0) {
             try {
                 new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT).parse(getEndDate().trim()+END_DAY_TIME);
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(END_DATE, "general.error.fieldinvalid", "End Date");
+                GlobalVariables.getMessageMap().putError(END_DATE, "general.error.fieldinvalid", "End Date");
             }
         }
     }

@@ -42,11 +42,11 @@ public class PersonDocumentDelegationMemberRule extends DocumentRuleBase impleme
 		IdentityManagementPersonDocument document = (IdentityManagementPersonDocument)addPersonDelegationMemberEvent.getDocument();
 	    boolean rulePassed = true;
         if(newDelegationMember == null){
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Delegation Member"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Delegation Member"});
             return false;
         }
         if(StringUtils.isBlank(newDelegationMember.getRoleMemberId())){
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Member"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Member"});
             return false;
         }
 		return rulePassed;

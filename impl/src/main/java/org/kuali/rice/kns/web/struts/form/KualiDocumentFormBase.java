@@ -41,6 +41,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -96,7 +97,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * Stores the error map from previous requests, so that we can continue to display error messages displayed during a previous request
      */
-    private ErrorMap errorMapFromPreviousRequest;
+    private MessageMap errorMapFromPreviousRequest;
     
 	/***
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -311,7 +312,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         setAnnotation(StringUtils.stripToNull(getAnnotation()));
         int diff = StringUtils.defaultString(getAnnotation()).length() - KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH;
         if (diff > 0) {
-            GlobalVariables.getErrorMap().putError("annotation", RiceKeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
+            GlobalVariables.getMessageMap().putError("annotation", RiceKeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
         }
         return super.validate(mapping, request);
     }
@@ -810,14 +811,24 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
 	 * @return the errorMapFromPreviousRequest
 	 */
+	@Deprecated
 	public ErrorMap getErrorMapFromPreviousRequest() {
+		return new ErrorMap(getMessageMapFromPreviousRequest());
+	}
+	
+	public MessageMap getMessageMapFromPreviousRequest() {
 		return this.errorMapFromPreviousRequest;
 	}
-
+	
 	/**
 	 * @param errorMapFromPreviousRequest the errorMapFromPreviousRequest to set
 	 */
+	@Deprecated
 	public void setErrorMapFromPreviousRequest(ErrorMap errorMapFromPreviousRequest) {
+		setMessageMapFromPreviousRequest(errorMapFromPreviousRequest);
+	}
+	
+	public void setMessageMapFromPreviousRequest(MessageMap errorMapFromPreviousRequest) {
 		this.errorMapFromPreviousRequest = errorMapFromPreviousRequest;
 	}
 	

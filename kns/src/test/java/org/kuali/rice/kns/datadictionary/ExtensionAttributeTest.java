@@ -152,11 +152,11 @@ public class ExtensionAttributeTest extends KNSTestCase {
         	failedAsExpected = true;
         }
         assertTrue( "validation should have failed", failedAsExpected );
-        System.out.println( "document errors: " + GlobalVariables.getErrorMap() );
-        assertTrue( "there should be errors", GlobalVariables.getErrorMap().getErrorCount() > 0 );
-	assertTrue("should be an error on the account type code", GlobalVariables.getErrorMap().containsKey(
+        System.out.println( "document errors: " + GlobalVariables.getMessageMap() );
+        assertTrue( "there should be errors", GlobalVariables.getMessageMap().getErrorCount() > 0 );
+	assertTrue("should be an error on the account type code", GlobalVariables.getMessageMap().containsKey(
 		"document.newMaintainableObject.extension.accountTypeCode"));
-	assertTrue("account type code should have an existence error", GlobalVariables.getErrorMap().fieldHasMessage(
+	assertTrue("account type code should have an existence error", GlobalVariables.getMessageMap().fieldHasMessage(
 		"document.newMaintainableObject.extension.accountTypeCode", "error.existence"));
 	}
 }

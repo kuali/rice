@@ -382,12 +382,12 @@ public class MaintenanceUtils {
         // If specified, add an error to the ErrorMap and throw an exception; otherwise, just add a warning to the ErrorMap instead.
         if (throwExceptionIfLocked) {
         	// post an error about the locked document
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
+            GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
             throw new ValidationException("Maintenance Record is locked by another document.");
         }
         else {
         	// Post a warning about the locked document.
-        	GlobalVariables.getErrorMap().putWarning(KNSConstants.GLOBAL_MESSAGES, RiceKeyConstants.WARNING_MAINTENANCE_LOCKED, errorParameters);
+        	GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, RiceKeyConstants.WARNING_MAINTENANCE_LOCKED, errorParameters);
         }
     }
 

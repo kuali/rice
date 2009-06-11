@@ -110,7 +110,7 @@ public class AttributeValidationHelper {
 		for ( String key : validationErrors.keySet() ) {
     		String[] errorMsg = StringUtils.split(validationErrors.get( key ), ":");
     		
-			GlobalVariables.getErrorMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
+			GlobalVariables.getMessageMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
 		}
     }
 

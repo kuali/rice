@@ -145,10 +145,10 @@ public class QuestionPromptAction extends KualiAction {
             }
             else {
                 if (StringUtils.isBlank(errorParameter)) {
-                    GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(errorPropertyName, errorKey);
+                    GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(errorPropertyName, errorKey);
                 }
                 else {
-                    GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(errorPropertyName, errorKey, errorParameter);
+                    GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(errorPropertyName, errorKey, errorParameter);
                 }
             }
         }

@@ -36,9 +36,9 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KualiRuleService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 
 /**
  * This class represents a rule evaluator for Kuali. This class is to be used for evaluating business rule checks. The class defines
@@ -192,7 +192,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
      * @param errorPathPrefix
      */
     private void increaseErrorPath(String errorPathPrefix) {
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
+        MessageMap errorMap = GlobalVariables.getMessageMap();
 
         if (!StringUtils.isBlank(errorPathPrefix)) {
             errorMap.addToErrorPath(errorPathPrefix);
@@ -205,7 +205,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
      * @param errorPathPrefix
      */
     private void decreaseErrorPath(String errorPathPrefix) {
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
+        MessageMap errorMap = GlobalVariables.getMessageMap();
 
         if (!StringUtils.isBlank(errorPathPrefix)) {
             errorMap.removeFromErrorPath(errorPathPrefix);

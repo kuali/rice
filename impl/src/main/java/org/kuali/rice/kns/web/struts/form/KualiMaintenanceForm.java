@@ -216,11 +216,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
             MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
 
-            GlobalVariables.getErrorMap().addToErrorPath("document.oldMaintainableObject");
+            GlobalVariables.getMessageMap().addToErrorPath("document.oldMaintainableObject");
             maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument, getMethodToCall());
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.oldMaintainableObject");
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.oldMaintainableObject");
 
-            GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
+            GlobalVariables.getMessageMap().addToErrorPath("document.newMaintainableObject");
             // update the main object
             Map cachedValues = 
             	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument, getMethodToCall());
@@ -232,10 +232,10 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             // update add lines
             localNewCollectionValues = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().resolvePrincipalNamesToPrincipalIds((BusinessObject)maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
             cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues, maintenanceDocument, getMethodToCall() ) );
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
 
             if (cachedValues.size() > 0) {
-                GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
+                GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
                 for (Iterator iter = cachedValues.keySet().iterator(); iter.hasNext();) {
                     String propertyName = (String) iter.next();
                     String value = (String) cachedValues.get(propertyName);

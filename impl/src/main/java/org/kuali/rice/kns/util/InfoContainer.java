@@ -25,7 +25,7 @@ import java.util.Set;
  *
  */
 public class InfoContainer extends MessageContainer {
-	public InfoContainer(ErrorMap errorMap) {
+	public InfoContainer(MessageMap errorMap) {
 		super(errorMap);
 	}
 	
@@ -34,7 +34,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	public int getMessageCount() {
-		return getErrorMap().getInfoCount();
+		return getMessageMap().getInfoCount();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	public List<String> getMessagePropertyList() {
-		return getErrorMap().getPropertiesWithInfo();
+		return getMessageMap().getPropertiesWithInfo();
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	protected Set<String> getMessagePropertyNames() {
-		return getErrorMap().getAllPropertiesWithInfo();
+		return getMessageMap().getAllPropertiesWithInfo();
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	protected List getMessagesForProperty(String propertyName) {
-		return getErrorMap().getInfoMessagesForProperty(propertyName);
+		return getMessageMap().getInfoMessagesForProperty(propertyName);
 	}
 
 }

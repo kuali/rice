@@ -99,7 +99,7 @@ public class ActionListFilterAction extends KualiAction {
         UserSession session = getUserSession(request);
         session.setActionListFilter(filterForm.getLoadedFilter());
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
-        if (GlobalVariables.getErrorMap().isEmpty()) {
+        if (GlobalVariables.getMessageMap().isEmpty()) {
             return mapping.findForward("viewActionList");
         } else {
             return mapping.findForward("viewFilter");

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class GlobalVariables {
 
     private static ThreadLocal<UserSession> userSessions = new ThreadLocal<UserSession>();
     private static ThreadLocal<String> hideSessionFromTestsMessage = new ThreadLocal<String>();
-    private static ThreadLocal<ErrorMap> errorMaps = new ThreadLocal<ErrorMap>();
+    private static ThreadLocal<MessageMap> messageMaps = new ThreadLocal<MessageMap>();
     // todo: generic collections
     private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>();
     private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>();
@@ -70,10 +69,17 @@ public class GlobalVariables {
     }
 
     /**
+     * @deprecated use {@link #getMessageMap()} instead.
+     * 
      * @return ErrorMap containing error messages.
      */
-    public static ErrorMap getErrorMap() {
-        return errorMaps.get();
+    @Deprecated
+    public static ErrorMap geErrorMap() {
+        return new ErrorMap(getMessageMap());
+    }
+    
+    public static MessageMap getMessageMap() {
+    	return messageMaps.get();
     }
 
     /**
@@ -81,18 +87,30 @@ public class GlobalVariables {
      * @param messageMap
      */
     public static void mergeErrorMap(MessageMap messageMap) {
-        getErrorMap().getErrorMessages().putAll(messageMap.getErrorMessages());
-        getErrorMap().getWarningMessages().putAll(messageMap.getWarningMessages());
-        getErrorMap().getInfoMessages().putAll(messageMap.getInfoMessages());
+        getMessageMap().getErrorMessages().putAll(messageMap.getErrorMessages());
+        getMessageMap().getWarningMessages().putAll(messageMap.getWarningMessages());
+        getMessageMap().getInfoMessages().putAll(messageMap.getInfoMessages());
+    }
+    
+    /**
+     * Sets a new (clean) MessageMap
+     *
+     * @param messageMap
+     */
+    public static void setMessageMap(MessageMap messageMap) {
+    	messageMaps.set(messageMap);
     }
 
     /**
      * Sets a new (clean) ErrorMap
      *
+     * @deprecated use {@link #setMessageMap(MessageMap)} instead
+     *
      * @param errorMap
      */
+    @Deprecated
     public static void setErrorMap(ErrorMap errorMap) {
-        errorMaps.set(errorMap);
+    	setMessageMap(errorMap);
     }
 
     /**
@@ -156,7 +174,7 @@ public class GlobalVariables {
      * Clears out GlobalVariable objects
      */
     public static void clear() {
-        errorMaps.set(new ErrorMap());
+        messageMaps.set(new MessageMap());
         auditErrorMaps.set(new HashMap());
         messageLists.set(new MessageList());
         requestCaches.set(new HashMap<String,Object>() );

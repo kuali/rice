@@ -520,7 +520,7 @@ public class LookupDaoJpa implements LookupDao {
 		try {
 			return new BigDecimal(cleanedValue);
 		} catch (NumberFormatException ex) {
-			GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
+			GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
 			return null;
 		}
 	}

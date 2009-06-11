@@ -38,7 +38,7 @@ import org.apache.struts.action.ActionMessages;
  * 
  */
 public class ErrorContainer implements Serializable {
-    private final ErrorMap errorMap;
+    private final MessageMap errorMap;
     private final int errorCount;
 
     /**
@@ -46,7 +46,7 @@ public class ErrorContainer implements Serializable {
      * 
      * @param errorMap
      */
-    public ErrorContainer(ErrorMap errorMap) {
+    public ErrorContainer(MessageMap errorMap) {
         this.errorMap = errorMap;
         this.errorCount = errorMap.getErrorCount();
     }

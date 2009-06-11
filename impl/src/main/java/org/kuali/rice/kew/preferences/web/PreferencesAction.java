@@ -67,7 +67,7 @@ public class PreferencesAction extends KewKualiAction {
         PreferencesForm prefForm = (PreferencesForm) form;
 
         prefForm.validatePreferences();
-        if (GlobalVariables.getErrorMap().hasNoErrors()) {
+        if (GlobalVariables.getMessageMap().hasNoErrors()) {
             prefSrv.savePreferences(getUserSession(request).getPrincipalId(), prefForm.getPreferences());
         }
         getUserSession(request).refreshPreferences();

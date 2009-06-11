@@ -154,7 +154,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     protected boolean validateRole(RoleImpl roleImpl, String propertyName, String message){
     	boolean valid = true;
     	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
-        	GlobalVariables.getErrorMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, new String[] {message});
+        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, new String[] {message});
         	valid = false;
         }
     	return valid;

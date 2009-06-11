@@ -68,23 +68,23 @@ public class RuleAction extends KewKualiAction {
 
     protected boolean validateCreateRule(RuleForm form) {
         if (Utilities.isEmpty(form.getRuleTemplateName())) {
-            GlobalVariables.getErrorMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
+            GlobalVariables.getMessageMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
         } else {
             RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(form.getRuleTemplateName().trim());
             if (ruleTemplate == null) {
-                GlobalVariables.getErrorMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
+                GlobalVariables.getMessageMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
             }
         }
 
         if (Utilities.isEmpty(form.getDocumentTypeName())) {
-            GlobalVariables.getErrorMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
+            GlobalVariables.getMessageMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
         } else {
             DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(form.getDocumentTypeName());
             if (docType == null) {
-                GlobalVariables.getErrorMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
+                GlobalVariables.getMessageMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
             }
         }
 
-        return GlobalVariables.getErrorMap().isEmpty();
+        return GlobalVariables.getMessageMap().isEmpty();
     }
 }

@@ -144,7 +144,7 @@ KualiLookupableHelperServiceImpl {
     		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
     	} catch (WorkflowServiceErrorException wsee) {
     		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
-    			GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+    			GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
     		};
     	}
 
@@ -815,10 +815,10 @@ KualiLookupableHelperServiceImpl {
 		} catch (WorkflowServiceErrorException wsee) {
 			for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
 				//TODO: can we add something to this to get it to highlight the right field too?  Maybe in arg1
-				GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+				GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
 			};
 		}
-        if(!GlobalVariables.getErrorMap().hasNoErrors()) {
+        if(!GlobalVariables.getMessageMap().hasNoErrors()) {
         	throw new ValidationException("errors in search criteria");
         }
 
@@ -846,7 +846,7 @@ KualiLookupableHelperServiceImpl {
 		String savedSearchName = ((String[])getParameters().get("savedSearchName"))[0];
 		if(StringUtils.isEmpty(savedSearchName)||"*ignore*".equals(savedSearchName)) {
 			if(!ignoreErrors) {
-				GlobalVariables.getErrorMap().putError("savedSearchName", RiceKeyConstants.ERROR_CUSTOM, "You must select a saved search");
+				GlobalVariables.getMessageMap().putError("savedSearchName", RiceKeyConstants.ERROR_CUSTOM, "You must select a saved search");
 			} else {
 				//if we're ignoring errors and we got an error just return, no reason to continue.  Also set false to indicate not to perform lookup
 				return false;
@@ -863,7 +863,7 @@ KualiLookupableHelperServiceImpl {
 				}
 			}
 		}
-        if (!GlobalVariables.getErrorMap().hasNoErrors()) {
+        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
         }
 

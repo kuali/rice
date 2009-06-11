@@ -116,7 +116,7 @@ public class RoutingReportAction extends KewKualiAction {
 		List errors = new ArrayList();
 
 		if (getDocumentTypeService().findByName(routingForm.getDocumentType()) == null) {
-		    GlobalVariables.getErrorMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
+		    GlobalVariables.getMessageMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
 		}
 		Timestamp date = null;
 		if (!Utilities.isEmpty(routingForm.getDateRef())) {
@@ -130,11 +130,11 @@ public class RoutingReportAction extends KewKualiAction {
 				date = new Timestamp(calendar.getTimeInMillis());
 			} catch (Exception e) {
 				LOG.error("error parsing date", e);
-				GlobalVariables.getErrorMap().putError("Invalid date.", "routereport.effectiveDate.invalid");
+				GlobalVariables.getMessageMap().putError("Invalid date.", "routereport.effectiveDate.invalid");
 			}
 		}
 
-		if (!GlobalVariables.getErrorMap().isEmpty()) {
+		if (!GlobalVariables.getMessageMap().isEmpty()) {
             throw new ValidationException("Errors populating rule attributes.");
         }
 
@@ -198,7 +198,7 @@ public class RoutingReportAction extends KewKualiAction {
                 }
             }
 
-            if (!GlobalVariables.getErrorMap().isEmpty()) {
+            if (!GlobalVariables.getMessageMap().isEmpty()) {
                 throw new ValidationException("errors in search criteria");
             }
 
@@ -244,11 +244,11 @@ public class RoutingReportAction extends KewKualiAction {
 
 		if (numberOfActionRequests == 0) {
 			if (numberOfRules == 0) {
-			    GlobalVariables.getErrorMap().putError("*", "routereport.noRules");
+			    GlobalVariables.getMessageMap().putError("*", "routereport.noRules");
 			} else {
-			    GlobalVariables.getErrorMap().putError("*", "routereport.noMatchingRules");
+			    GlobalVariables.getMessageMap().putError("*", "routereport.noMatchingRules");
 			}
-			if (GlobalVariables.getErrorMap().hasErrors()) {
+			if (GlobalVariables.getMessageMap().hasErrors()) {
 	            throw new ValidationException("errors in search criteria");
 	        }
 		}

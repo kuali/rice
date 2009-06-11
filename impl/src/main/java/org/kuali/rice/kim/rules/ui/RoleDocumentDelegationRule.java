@@ -38,7 +38,7 @@ public class RoleDocumentDelegationRule extends DocumentRuleBase implements AddD
 		boolean rulePassed = true;
 		if (newDelegation == null || StringUtils.isBlank(newDelegation.getDelegationTypeCode())) {
             rulePassed = false;
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
         }
 		return rulePassed;
 	} 

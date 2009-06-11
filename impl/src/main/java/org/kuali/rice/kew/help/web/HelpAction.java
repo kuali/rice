@@ -57,7 +57,7 @@ public class HelpAction extends KewKualiAction {
         HelpForm helpForm = (HelpForm) form;
         HelpEntry helpEntry = helpForm.getHelpEntry();
         getHelpService().save(helpEntry);
-        GlobalVariables.getErrorMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.saved");
+        GlobalVariables.getMessageMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.saved");
         return mapping.findForward("summary");
     }
 
@@ -67,7 +67,7 @@ public class HelpAction extends KewKualiAction {
     	LOG.info(helpEntry.getHelpName());
     	getHelpService().delete(helpEntry);
         helpForm.setShowDelete("no");
-        GlobalVariables.getErrorMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.deleted");
+        GlobalVariables.getMessageMap().putInfo(KNSConstants.GLOBAL_MESSAGES, "helpentry.deleted");
     	return mapping.findForward("delete");
     }
 
@@ -83,7 +83,7 @@ public class HelpAction extends KewKualiAction {
         HelpForm helpForm = (HelpForm) form;
         HelpEntry helpEntry = helpForm.getHelpEntry();
         if(helpForm.getHelpId() != null && !StringUtils.isNumeric(helpForm.getHelpId())){
-            GlobalVariables.getErrorMap().putError(HELP_ID_KEY, ID_INVALID);
+            GlobalVariables.getMessageMap().putError(HELP_ID_KEY, ID_INVALID);
         } else {
             if (helpForm.getHelpId() != null) {
                 helpEntry.setHelpId(new Long(helpForm.getHelpId()));

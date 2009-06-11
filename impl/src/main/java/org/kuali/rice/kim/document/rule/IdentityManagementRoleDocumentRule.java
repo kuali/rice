@@ -100,7 +100,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         IdentityManagementRoleDocument roleDoc = (IdentityManagementRoleDocument)document;
 
         boolean valid = true;
-        GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validAssignRole(roleDoc);
         valid &= validDuplicateRoleName(roleDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
@@ -110,7 +110,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
         valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
         valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
-        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
     }
@@ -125,7 +125,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
 					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-	    		GlobalVariables.getErrorMap().putError("document.roleName", 
+	    		GlobalVariables.getMessageMap().putError("document.roleName", 
 	    				RiceKeyConstants.ERROR_ASSIGN_ROLE, 
 	    				new String[] {document.getRoleNamespace(), document.getRoleName()});
 	            rulePassed = false;
@@ -145,7 +145,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     		if(roleImpls.size()==1 && roleImpls.get(0).getRoleId().equals(roleDoc.getRoleId()))
     			rulePassed = true;
     		else{
-	    		GlobalVariables.getErrorMap().putError("document.roleName", 
+	    		GlobalVariables.getMessageMap().putError("document.roleName", 
 	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role Name"});
 	    		rulePassed = false;
     		}
@@ -222,7 +222,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	if(roleRspAction.getPriorityNumber()!=null && 
     			(roleRspAction.getPriorityNumber()<PRIORITY_NUMBER_MIN_VALUE 
     					|| roleRspAction.getPriorityNumber()>PRIORITY_NUMBER_MAX_VALUE)){
-    		GlobalVariables.getErrorMap().putError(errorPath, 
+    		GlobalVariables.getMessageMap().putError(errorPath, 
    				RiceKeyConstants.ERROR_PRIORITY_NUMBER_RANGE, new String[] {PRIORITY_NUMBER_MIN_VALUE+"", PRIORITY_NUMBER_MAX_VALUE+""});
     		rulePassed = false;
     	}
@@ -237,7 +237,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
-        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
 			errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
@@ -246,7 +246,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	        memberCounter++;
     	}
 
-		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		
     	if (validationErrors.isEmpty()) {
     		return true;
@@ -274,7 +274,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
-        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         KimDocumentRoleMember roleMember;
         String errorPath;
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
@@ -287,7 +287,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			roleMember = getRoleMemberForDelegation(roleMembers, delegationMember);
 			if(roleMember==null){
 				valid = false;
-				GlobalVariables.getErrorMap().putError("document.delegationMembers["+memberCounter+"]", RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
+				GlobalVariables.getMessageMap().putError("document.delegationMembers["+memberCounter+"]", RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
 				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
 								kimType.getKimTypeId(), 
@@ -298,7 +298,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			}
 	        memberCounter++;
     	}
-		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
     	if (validationErrors.isEmpty()) {
     		valid = true;
     	} else {
@@ -312,7 +312,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
-	        MessageMap errorMap = GlobalVariables.getErrorMap();
+	        MessageMap errorMap = GlobalVariables.getMessageMap();
             errorMap.putError(errorPath, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
             valid = false;
 			

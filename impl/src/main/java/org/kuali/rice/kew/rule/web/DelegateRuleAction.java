@@ -53,18 +53,18 @@ public class DelegateRuleAction extends KewKualiAction {
 	
 	protected boolean validateCreateDelegateRule(DelegateRuleForm form) {
 		if (form.getParentRule() == null) {
-			GlobalVariables.getErrorMap().putError(PARENT_RULE_PROPERTY, PARENT_RULE_ERROR);
+			GlobalVariables.getMessageMap().putError(PARENT_RULE_PROPERTY, PARENT_RULE_ERROR);
 		} else {
 			RuleTemplate ruleTemplate = form.getParentRule().getRuleTemplate();
 			if (ruleTemplate.getDelegationTemplate() == null) {
-				GlobalVariables.getErrorMap().putError(PARENT_RULE_PROPERTY, DELEGATE_RULE_INVALID_ERROR);
+				GlobalVariables.getMessageMap().putError(PARENT_RULE_PROPERTY, DELEGATE_RULE_INVALID_ERROR);
 			}
 		}
 		if (form.getParentResponsibility() == null) {
-			GlobalVariables.getErrorMap().putError(PARENT_RESPONSIBILITY_PROPERTY, PARENT_RESPONSIBILITY_ERROR);
+			GlobalVariables.getMessageMap().putError(PARENT_RESPONSIBILITY_PROPERTY, PARENT_RESPONSIBILITY_ERROR);
 		}
 		
-		return GlobalVariables.getErrorMap().isEmpty();
+		return GlobalVariables.getMessageMap().isEmpty();
 	}
 	
 	protected String generateMaintenanceUrl(HttpServletRequest request, DelegateRuleForm form) {

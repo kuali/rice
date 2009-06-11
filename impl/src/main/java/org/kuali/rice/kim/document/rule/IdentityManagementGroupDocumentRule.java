@@ -72,13 +72,13 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         IdentityManagementGroupDocument groupDoc = (IdentityManagementGroupDocument)document;
 
         boolean valid = true;
-        GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validAssignGroup(groupDoc);
         valid &= validDuplicateGroupName(groupDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateGroupQualifier(groupDoc.getQualifiers(), groupDoc.getKimType());
         valid &= validGroupMemberActiveDates(groupDoc.getMembers());
-        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
     }
@@ -92,7 +92,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-	    		GlobalVariables.getErrorMap().putError("document.groupName", 
+	    		GlobalVariables.getMessageMap().putError("document.groupName", 
 	    				RiceKeyConstants.ERROR_ASSIGN_GROUP, 
 	    				new String[] {document.getGroupNamespace(), document.getGroupName()});
 	            rulePassed = false;
@@ -112,7 +112,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     		if(groupImpls.size()==1 && groupImpls.get(0).getGroupId().equals(groupDoc.getGroupId()))
     			rulePassed = true;
     		else{
-	    		GlobalVariables.getErrorMap().putError("document.groupName", 
+	    		GlobalVariables.getMessageMap().putError("document.groupName", 
 	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group Name"});
 	    		rulePassed = false;
     		}
@@ -136,11 +136,11 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
-        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
 		errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
 		validationErrors.putAll( attributeValidationHelper.convertErrors("",attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers),errorsTemp) );
-		GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		
     	if (validationErrors.isEmpty()) {
     		return true;
@@ -154,7 +154,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
-	        MessageMap errorMap = GlobalVariables.getErrorMap();
+	        MessageMap errorMap = GlobalVariables.getMessageMap();
             errorMap.putError(errorPath, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
             valid = false;
 			

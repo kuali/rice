@@ -23,23 +23,18 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
-import org.kuali.rice.kns.util.ErrorMap;
-import org.kuali.rice.kns.util.ErrorMessage;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the ErrorMap methods.
  */
-public class ErrorMapTest extends KNSTestCase {
+public class MessageMapTest extends KNSTestCase {
 
     /**
      * ErrorMap should only allow String keys and values.
      */
     @Test public void testPut() {
-        ErrorMap testMap = new ErrorMap();
+        MessageMap testMap = new MessageMap();
 
         // should be ok putting strings
         try {
@@ -63,7 +58,7 @@ public class ErrorMapTest extends KNSTestCase {
      * Test all errors are getting added and counted correctly.
      */
     @Test public void testErrorCount() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
 
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_INACTIVE);
         assertTrue(testMap.getErrorCount() == 1);
@@ -84,7 +79,7 @@ public class ErrorMapTest extends KNSTestCase {
      * Test messages are getting accumulated correctly for a property.
      */
     @Test public void testFieldMessages() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
 
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_INACTIVE);
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_INVALID_FORMAT);
@@ -99,7 +94,7 @@ public class ErrorMapTest extends KNSTestCase {
      * Test the error path is being prepended.
      */
     @Test public void testErrorPath() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
 
         assertTrue(testMap.getKeyPath("accountNbr", true).equals("accountNbr"));
         testMap.addToErrorPath("document");
@@ -131,7 +126,7 @@ public class ErrorMapTest extends KNSTestCase {
      * Test that properties added with errors are being kept.
      */
     @Test public void testPropertiesWithErrors() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
 
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_INACTIVE);
         testMap.putError("projectCode", RiceKeyConstants.ERROR_INACTIVE);
@@ -150,7 +145,7 @@ public class ErrorMapTest extends KNSTestCase {
      * Test message parameters are being correctly added and associated with an error message.
      */
     @Test public void testMessageParameters() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
 
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_INACTIVE, "Account Number");
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_REQUIRED, "Account Number");
@@ -182,7 +177,7 @@ public class ErrorMapTest extends KNSTestCase {
      */
     @Test public void testMessageCollisions() {
         final String PROPERTY_NAME = "document.sourceAccounting*,document.targetAccounting*,newSourceLine*,newTargetLine*";
-        ErrorMap testMap = new ErrorMap();
+        MessageMap testMap = new MessageMap();
 
         testMap.putError(PROPERTY_NAME, "error.inactive", "Chart Code");
         testMap.putError(PROPERTY_NAME, "error.document.subAccountClosed", "Sub-Account Number");
@@ -216,18 +211,18 @@ public class ErrorMapTest extends KNSTestCase {
     private final static String MIXED_LIST_PATTERN = "document.sourceAccounting*,document.targetAccounting*,foo,bar,newSourceLine*,newTargetLine*";
 
     @Test public void testContainsKeyMatchingPattern_mixedList_empty() {
-        assertEquals(false, new ErrorMap().containsKeyMatchingPattern(MIXED_LIST_PATTERN));
+        assertEquals(false, new MessageMap().containsKeyMatchingPattern(MIXED_LIST_PATTERN));
     }
 
     @Test public void testContainsKeyMatchingPattern_mixedList_simpleNoMatch() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
         testMap.putError("xxx", "error.inactive", "Chart Code");
         testMap.putError("yyy", "error.inactive", "Chart Code");
         assertEquals(false, testMap.containsKeyMatchingPattern(MIXED_LIST_PATTERN));
     }
 
     @Test public void testContainsKeyMatchingPattern_mixedList_simpleMatch() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
         testMap.putError("xxx", "error.inactive", "Chart Code");
         testMap.putError("foo", "error.inactive", "Chart Code");
         testMap.putError("yyy", "error.inactive", "Chart Code");
@@ -235,7 +230,7 @@ public class ErrorMapTest extends KNSTestCase {
     }
 
     @Test public void testContainsKeyMatchingPattern_mixedList_wildcardMatch() {
-        ErrorMap testMap = new ErrorMap();
+    	MessageMap testMap = new MessageMap();
         testMap.putError("xxx", "error.inactive", "Chart Code");
         testMap.putError("document.targetAccountingLine.something", "error.inactive", "Chart Code");
         testMap.putError("yyy", "error.inactive", "Chart Code");
@@ -244,8 +239,8 @@ public class ErrorMapTest extends KNSTestCase {
 
 
     @Test public void testReplace_testEquals() {
-        final ErrorMap constantMap = buildReplaceErrorMap();
-        ErrorMap replaceMap = buildReplaceErrorMap();
+        final MessageMap constantMap = buildReplaceErrorMap();
+        MessageMap replaceMap = buildReplaceErrorMap();
 
         assertEquals(replaceMap, replaceMap);
         assertEquals(replaceMap, constantMap);
@@ -258,8 +253,8 @@ public class ErrorMapTest extends KNSTestCase {
 
 
     @Test public void testReplace_noMatchingProperty() {
-        final ErrorMap constantMap = buildReplaceErrorMap();
-        ErrorMap replaceMap = buildReplaceErrorMap();
+        final MessageMap constantMap = buildReplaceErrorMap();
+        MessageMap replaceMap = buildReplaceErrorMap();
 
         assertTrue(replaceMap.equals(constantMap));
         assertFalse(replaceMap.containsMessageKey("fooKey"));
@@ -272,8 +267,8 @@ public class ErrorMapTest extends KNSTestCase {
     }
 
     @Test public void testReplace_matchingProperty_noMatchingKey() {
-        final ErrorMap constantMap = buildReplaceErrorMap();
-        ErrorMap replaceMap = buildReplaceErrorMap();
+        final MessageMap constantMap = buildReplaceErrorMap();
+        MessageMap replaceMap = buildReplaceErrorMap();
 
         assertTrue(replaceMap.equals(constantMap));
         assertFalse(replaceMap.containsMessageKey("fooKey"));
@@ -287,8 +282,8 @@ public class ErrorMapTest extends KNSTestCase {
 
 
     @Test public void testReplace_matchingProperty_matchingKey_noParams() {
-        final ErrorMap constantMap = buildReplaceErrorMap();
-        ErrorMap replaceMap = buildReplaceErrorMap();
+        final MessageMap constantMap = buildReplaceErrorMap();
+        MessageMap replaceMap = buildReplaceErrorMap();
 
         assertTrue(replaceMap.equals(constantMap));
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
@@ -321,8 +316,8 @@ public class ErrorMapTest extends KNSTestCase {
     }
 
     @Test public void testReplace_matchingProperty_matchingKey_withParams() {
-        final ErrorMap constantMap = buildReplaceErrorMap();
-        ErrorMap replaceMap = buildReplaceErrorMap();
+        final MessageMap constantMap = buildReplaceErrorMap();
+        MessageMap replaceMap = buildReplaceErrorMap();
 
         assertTrue(replaceMap.equals(constantMap));
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
@@ -357,8 +352,8 @@ public class ErrorMapTest extends KNSTestCase {
     }
 
 
-    private ErrorMap buildReplaceErrorMap() {
-        ErrorMap testMap = new ErrorMap();
+    private MessageMap buildReplaceErrorMap() {
+    	MessageMap testMap = new MessageMap();
 
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_INACTIVE, "Account Number");
         testMap.putError("accountNbr", RiceKeyConstants.ERROR_REQUIRED, "Account Number");

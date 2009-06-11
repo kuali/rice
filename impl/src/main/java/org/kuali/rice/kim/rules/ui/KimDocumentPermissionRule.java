@@ -43,13 +43,13 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 	public boolean processAddPermission(AddPermissionEvent addPermissionEvent) {
 		KimDocumentRolePermission newPermission = addPermissionEvent.getPermission();
 		if(newPermission==null || StringUtils.isEmpty(newPermission.getPermissionId())){
-			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
+			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
 			return false;
 		}
 
 		KimPermissionInfo kimPermissionInfo = newPermission.getKimPermission();
 		if(kimPermissionInfo==null){
-			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
+			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
 			return false;
 		}
 	    boolean rulePassed = true;
@@ -63,20 +63,20 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 				KimConstants.PermissionTemplateNames.GRANT_PERMISSION, 
 				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 				permissionDetails, null)) {
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
             		new String[] {kimPermissionInfo.getNamespaceCode(), kimPermissionInfo.getTemplate().getName()});
             return false;
 		}
 
 		if (newPermission == null || StringUtils.isBlank(newPermission.getPermissionId())) {
             rulePassed = false;
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
         } else {
 		    int i = 0;
         	for (KimDocumentRolePermission permission: document.getPermissions()) {
 		    	if (permission.getPermissionId().equals(newPermission.getPermissionId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError("document.permissions["+i+"].permissionId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Permission"});
+		            GlobalVariables.getMessageMap().putError("document.permissions["+i+"].permissionId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Permission"});
 		    	}
 		    	i++;
 		    }

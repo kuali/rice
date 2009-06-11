@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class WarningContainer extends MessageContainer {
 
-	public WarningContainer(ErrorMap errorMap) {
+	public WarningContainer(MessageMap errorMap) {
 		super(errorMap);
 	}
 	
@@ -37,7 +37,7 @@ public class WarningContainer extends MessageContainer {
 	 */
 	@Override
 	public int getMessageCount() {
-		return getErrorMap().getWarningCount();
+		return getMessageMap().getWarningCount();
 	}
 
 	
@@ -46,7 +46,7 @@ public class WarningContainer extends MessageContainer {
 	 */
 	@Override
 	protected Set<String> getMessagePropertyNames() {
-		return getErrorMap().getAllPropertiesWithWarnings();
+		return getMessageMap().getAllPropertiesWithWarnings();
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class WarningContainer extends MessageContainer {
 	 */
 	@Override
 	public List<String> getMessagePropertyList() {
-		return getErrorMap().getPropertiesWithWarnings();
+		return getMessageMap().getPropertiesWithWarnings();
 	}
 	
 	/**
@@ -62,6 +62,6 @@ public class WarningContainer extends MessageContainer {
 	 */
 	@Override
 	protected List getMessagesForProperty(String propertyName) {
-		return getErrorMap().getWarningMessagesForProperty(propertyName);
+		return getMessageMap().getWarningMessagesForProperty(propertyName);
 	}
 }

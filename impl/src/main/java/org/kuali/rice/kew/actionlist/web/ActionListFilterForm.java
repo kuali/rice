@@ -160,28 +160,28 @@ public class ActionListFilterForm extends KualiForm {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getCreateDateFrom());
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(CREATE_DATE_FROM, "general.error.fieldinvalid", "Create Date From");
+                GlobalVariables.getMessageMap().putError(CREATE_DATE_FROM, "general.error.fieldinvalid", "Create Date From");
             }
         }
         if (getCreateDateTo() != null && getCreateDateTo().length() != 0) {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getCreateDateTo());
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(CREATE_DATE_TO, "general.error.fieldinvalid", "Create Date To");
+                GlobalVariables.getMessageMap().putError(CREATE_DATE_TO, "general.error.fieldinvalid", "Create Date To");
             }
         }
         if (getLastAssignedDateFrom() != null && getLastAssignedDateFrom().length() != 0) {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom());
             } catch (ParseException e1) {
-                GlobalVariables.getErrorMap().putError(LAST_ASSIGNED_DATE_FROM, "general.error.fieldinvalid", "Last Assigned Date From");
+                GlobalVariables.getMessageMap().putError(LAST_ASSIGNED_DATE_FROM, "general.error.fieldinvalid", "Last Assigned Date From");
             }
         }
         if (getLastAssignedDateTo() != null && getLastAssignedDateTo().length() != 0) {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateTo());
             } catch (ParseException e1) {
-                GlobalVariables.getErrorMap().putError(LAST_ASSIGNED_DATE_TO, "general.error.fieldinvalid", "Last Assigned Date To");
+                GlobalVariables.getMessageMap().putError(LAST_ASSIGNED_DATE_TO, "general.error.fieldinvalid", "Last Assigned Date To");
             }
         }
     }

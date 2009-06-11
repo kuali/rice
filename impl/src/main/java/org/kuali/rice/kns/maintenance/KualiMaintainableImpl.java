@@ -31,7 +31,6 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -58,13 +57,13 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.ui.Section;
@@ -951,10 +950,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "values for sub collection: " + collectionValues );
                 }
-                GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                GlobalVariables.getMessageMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
                 cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( parent+"."+collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName + "." ) );
                 performFieldForceUpperCase(getNewCollectionLine( parent+"."+collName ), collectionValues);
-                GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                GlobalVariables.getMessageMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
             }
             
             cachedValues.putAll( populateNewSubCollectionLines( coll, fieldValues ) );
@@ -1299,7 +1298,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	  }
 	    
 	  private void performFieldForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableFieldDefinition fieldDefinition, Map fieldValues) {
-	    	ErrorMap errorMap = GlobalVariables.getErrorMap();
+	    	MessageMap errorMap = GlobalVariables.getMessageMap();
 	    	String fieldName = fieldDefinition.getName();
 	    	String mapKey = fieldNamePrefix + fieldName; 
 	    	if(fieldValues != null && fieldValues.get(mapKey) != null){
@@ -1363,7 +1362,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	  }
 	  
 	  private void performFieldForceUpperCase(BusinessObject bo, Map fieldValues) {
-	      ErrorMap errorMap = GlobalVariables.getErrorMap();
+	      MessageMap errorMap = GlobalVariables.getMessageMap();
 
 	      try {
 	    	  for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {

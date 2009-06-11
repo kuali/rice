@@ -18,8 +18,8 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.TransactionalLifecycle;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
@@ -69,7 +69,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
-		GlobalVariables.setErrorMap(new ErrorMap());
+		GlobalVariables.setMessageMap(new MessageMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
 			transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
@@ -84,7 +84,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 		        transactionalLifecycle.stop();
 		    }
 		}
-		GlobalVariables.setErrorMap(new ErrorMap());
+		GlobalVariables.setMessageMap(new MessageMap());
 		super.tearDown();
 	}
 

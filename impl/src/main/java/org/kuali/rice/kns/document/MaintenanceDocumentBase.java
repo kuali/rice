@@ -671,7 +671,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.kns.document.DocumentBase#validateBusinessRules(org.kuali.rice.kns.rule.event.KualiDocumentEvent)
      */
     public void validateBusinessRules(KualiDocumentEvent event) {
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().isEmpty()) {
             logErrors();
             throw new ValidationException("errors occured before business rule");
         }
@@ -687,7 +687,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         	Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
         	Long newObjectVerNbr = newMaintainableObject.getBusinessObject().getVersionNumber();
         	if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
-        		GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);
+        		GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);
         		throw new ValidationException("Version mismatch between the local business object and the database business object");
         	}
         }
@@ -706,7 +706,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             // needed here
             throw new ValidationException("business rule evaluation failed");
         }
-        else if (!GlobalVariables.getErrorMap().isEmpty()) {
+        else if (!GlobalVariables.getMessageMap().isEmpty()) {
             logErrors();
             if (event instanceof SaveDocumentEvent) {
                 // for maintenance documents, we want to always actually do a save if the

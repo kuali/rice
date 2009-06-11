@@ -173,14 +173,14 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	                    ObjectUtils.setObjectProperty(formatter, this, keypath, type, param);
 	                	}
 	                catch (FormatException e1) {
-	                    GlobalVariables.getErrorMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
+	                    GlobalVariables.getMessageMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
 	                    cacheUnconvertedValue(keypath, param);
 	                }
 	                catch (InvocationTargetException e1) {
 	                    if (e1.getTargetException().getClass().equals(FormatException.class)) {
 	                        // Handle occasional case where FormatException is wrapped in an InvocationTargetException
 	                        FormatException formatException = (FormatException) e1.getTargetException();
-	                        GlobalVariables.getErrorMap().putError(keypath, formatException.getErrorKey(), formatException.getErrorArgs());
+	                        GlobalVariables.getMessageMap().putError(keypath, formatException.getErrorKey(), formatException.getErrorArgs());
 	                        cacheUnconvertedValue(keypath, param);
 	                    }
 	                    else {
@@ -384,7 +384,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
             return Formatter.isSupportedType(type) ? formatter.formatForPresentation(value) : value;
         }
         catch (FormatException e) {
-            GlobalVariables.getErrorMap().putError(keypath, e.getErrorKey(), e.getErrorArgs());
+            GlobalVariables.getMessageMap().putError(keypath, e.getErrorKey(), e.getErrorArgs());
             return value.toString();
         }
     }

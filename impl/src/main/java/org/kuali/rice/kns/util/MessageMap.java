@@ -43,6 +43,15 @@ public class MessageMap implements Serializable {
     private Map<String, TypedArrayList> warningMessages = new LinkedHashMap<String, TypedArrayList>();
     private Map<String, TypedArrayList> infoMessages = new LinkedHashMap<String, TypedArrayList>();
 
+    public MessageMap() {}
+    
+    public MessageMap(MessageMap messageMap) {
+    	this.errorPath = messageMap.errorPath;
+    	this.errorMessages = messageMap.errorMessages;
+    	this.warningMessages = messageMap.warningMessages;
+    	this.infoMessages = messageMap.infoMessages;
+    }
+    
     /**
      * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
      * error key with any value in the errorPath list. This should be used when you do not want to add the error with the prepend

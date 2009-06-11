@@ -298,7 +298,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
                 // get label of attribute for message
                 String errorLabel = getAttributeErrorLabel(definition);
-                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
+                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
             }
         }
     }
@@ -408,7 +408,7 @@ public class KimTypeServiceBase implements KimTypeService {
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = definition.getMaxLength();
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
+                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
                 return;
             }
             Pattern validationExpression = getAttributeValidatingExpression(definition);
@@ -437,7 +437,7 @@ public class KimTypeServiceBase implements KimTypeService {
                     if (isError) {
                     	String errorMessageKey = getAttributeValidatingErrorMessageKey(definition);
                     	String[] errorMessageParameters = getAttributeValidatingErrorMessageParameters(definition);
-                        GlobalVariables.getErrorMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+                        GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
                     }
                     return;
                 }
@@ -446,7 +446,7 @@ public class KimTypeServiceBase implements KimTypeService {
             if (exclusiveMin != null) {
                 try {
                     if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
+                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, exclusiveMin.toString() });
                         return;
@@ -460,7 +460,7 @@ public class KimTypeServiceBase implements KimTypeService {
             if (inclusiveMax != null) {
                 try {
                     if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
+                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, inclusiveMax.toString() });
                         return;
@@ -474,7 +474,7 @@ public class KimTypeServiceBase implements KimTypeService {
     }
     
 	protected List<String> extractErrorsFromGlobalVariablesErrorMap(String attributeName) {
-		Object results = GlobalVariables.getErrorMap().getErrorMessagesForProperty(attributeName);
+		Object results = GlobalVariables.getMessageMap().getErrorMessagesForProperty(attributeName);
 		List<String> errors = new ArrayList<String>();
         if (results instanceof String) {
         	errors.add((String)results);
@@ -496,7 +496,7 @@ public class KimTypeServiceBase implements KimTypeService {
 				}
 	        }
         }
-        GlobalVariables.getErrorMap().removeAllErrorMessagesForProperty(attributeName);
+        GlobalVariables.getMessageMap().removeAllErrorMessagesForProperty(attributeName);
         return errors;
 	}
 	
@@ -749,7 +749,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected AttributeSet getErrorAttributeSet(String attributeNameKey, String errorKey, String[] errorArguments){
 		AttributeSet validationErrors = new AttributeSet();
-		GlobalVariables.getErrorMap().putError(attributeNameKey, errorKey, errorArguments);
+		GlobalVariables.getMessageMap().putError(attributeNameKey, errorKey, errorArguments);
 		List<String> attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
 		if(attributeErrors!=null){
 			for(String err:attributeErrors){
@@ -804,7 +804,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			String delegationAttributeValue = getAttributeValue(newAttributeSet, attributeNameKey);
 
 			if(!StringUtils.equals(mainAttributeValue, delegationAttributeValue)){
-				GlobalVariables.getErrorMap().putError(
+				GlobalVariables.getMessageMap().putError(
 					attributeNameKey, RiceKeyConstants.ERROR_CANT_BE_MODIFIED, 
 					dataDictionaryService.getAttributeLabel(attr.getComponentName(), attributeNameKey));
 				attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);

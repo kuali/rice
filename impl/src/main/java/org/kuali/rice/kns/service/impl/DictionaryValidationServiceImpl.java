@@ -46,8 +46,8 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
@@ -153,12 +153,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	        }
 
 	        BusinessObject referenceBusinessObject = (BusinessObject) referenceObj;
-	        GlobalVariables.getErrorMap().addToErrorPath(referenceName);
+	        GlobalVariables.getMessageMap().addToErrorPath(referenceName);
 	        validateBusinessObject(referenceBusinessObject, validateRequired);
 	        if (maxDepth > 0) {
 	            validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
 	        }
-	        GlobalVariables.getErrorMap().removeFromErrorPath(referenceName);
+	        GlobalVariables.getMessageMap().removeFromErrorPath(referenceName);
 
 	    }
 	}
@@ -188,12 +188,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 			}
 			BusinessObject element = (BusinessObject) list.get(i);
 			
-			GlobalVariables.getErrorMap().addToErrorPath(errorPathAddition);
+			GlobalVariables.getMessageMap().addToErrorPath(errorPathAddition);
 			validateBusinessObject(element, validateRequired);
 			if (maxDepth > 0) {
 			    validateUpdatabableReferencesRecursively(element, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
 			}
-			GlobalVariables.getErrorMap().removeFromErrorPath(errorPathAddition);
+			GlobalVariables.getMessageMap().removeFromErrorPath(errorPathAddition);
 		    }
 		}
 	    }
@@ -231,7 +231,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
     public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
         boolean retval = false;
-        final ErrorMap errorMap = GlobalVariables.getErrorMap();
+        final MessageMap errorMap = GlobalVariables.getMessageMap();
         int originalErrorCount = errorMap.getErrorCount();
 
         errorMap.addToErrorPath(prefix);
@@ -269,7 +269,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
+                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
                 return;
             }
             Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
@@ -297,7 +297,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     if (isError) {
                     	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
                     	String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                        GlobalVariables.getErrorMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+                        GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
                     }
                     return;
                 }
@@ -306,7 +306,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (exclusiveMin != null) {
                 try {
                     if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
+                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, exclusiveMin.toString() });
                         return;
@@ -320,7 +320,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (inclusiveMax != null) {
                 try {
                     if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
+                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, inclusiveMax.toString() });
                         return;
@@ -346,7 +346,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
                 // get label of attribute for message
                 String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
-                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
+                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
             }
         }
     }
@@ -366,9 +366,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (propertyDescriptor.getPropertyType() != null && PersistableBusinessObject.class.isAssignableFrom(propertyDescriptor.getPropertyType()) && ObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
                 BusinessObject bo = (BusinessObject) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
                 if (depth == 0) {
-                    GlobalVariables.getErrorMap().addToErrorPath(propertyDescriptor.getName());
+                    GlobalVariables.getMessageMap().addToErrorPath(propertyDescriptor.getName());
                     validateBusinessObject(bo);
-                    GlobalVariables.getErrorMap().removeFromErrorPath(propertyDescriptor.getName());
+                    GlobalVariables.getMessageMap().removeFromErrorPath(propertyDescriptor.getName());
                 }
                 else {
                     validateBusinessObjectsRecursively(bo, depth - 1);
@@ -384,9 +384,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 for (int j = 0; j < propertyList.size(); j++) {
                     if (propertyList.get(j) != null && propertyList.get(j) instanceof PersistableBusinessObject) {
                         if (depth == 0) {
-                            GlobalVariables.getErrorMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
+                            GlobalVariables.getMessageMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                             validateBusinessObject((BusinessObject) propertyList.get(j));
-                            GlobalVariables.getErrorMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
+                            GlobalVariables.getMessageMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                         }
                         else {
                             validateBusinessObjectsRecursively((BusinessObject) propertyList.get(j), depth - 1);
@@ -634,13 +634,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 if (!(bo instanceof Inactivateable) || ((Inactivateable) bo).isActive()) {
                     active = validateReferenceIsActive(bo, referenceName);
                     if (!active) {
-                        GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
+                        GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
                         success &= false;
                     }
                 }
             }
             else {
-                GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE, displayFieldName);
+                GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE, displayFieldName);
                 success &= false;
             }
         }
@@ -744,7 +744,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         String attrValueStr = attrValue.toString();
         if (!configService.evaluateConstrainedValue(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(),attrValueStr)) {
             success &= false;
-            GlobalVariables.getErrorMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());
+            GlobalVariables.getMessageMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());
         }
 
         return success;

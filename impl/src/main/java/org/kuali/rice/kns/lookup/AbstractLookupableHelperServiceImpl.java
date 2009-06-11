@@ -892,7 +892,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 // check for required if field does not have value
                 if (StringUtils.isBlank(attributeValue)) {
                     if ((getBusinessObjectDictionaryService().getLookupAttributeRequired(getBusinessObjectClass(), attributeName)).booleanValue()) {
-                        GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+                        GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
                     }
                 }
                 else if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
@@ -908,7 +908,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	                        String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
 	
 	                        if (attributeValue.contains(queryCharacter)) {
-	                            GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
+	                            GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
 	                        }
 	                    }
                 	}
@@ -916,7 +916,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             }
         }
 
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().isEmpty()) {
             throw new ValidationException("errors in search criteria");
         }
     }

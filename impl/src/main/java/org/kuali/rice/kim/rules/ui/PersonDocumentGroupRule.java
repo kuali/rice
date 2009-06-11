@@ -49,13 +49,13 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 
         if (newGroup == null || StringUtils.isBlank(newGroup.getGroupId())) {
             rulePassed = false;
-            GlobalVariables.getErrorMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
+            GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
         	
         } else {
 		    for (PersonDocumentGroup group : document.getGroups()) {
 		    	if (group.getGroupId().equals(newGroup.getGroupId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
+		            GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
 		    		
 		    	}
 		    }
@@ -80,7 +80,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-    		GlobalVariables.getErrorMap().putError("newGroup", 
+    		GlobalVariables.getMessageMap().putError("newGroup", 
     				RiceKeyConstants.ERROR_ASSIGN_GROUP, 
     				new String[] {newGroup.getNamespaceCode(), newGroup.getGroupName()});
             rulePassed = false;

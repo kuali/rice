@@ -158,7 +158,7 @@ public class KualiDocumentActionBase extends KualiAction {
             Throwable cause = ooe.getCause();
             if (cause instanceof OptimisticLockException) {
                 OptimisticLockException ole = (OptimisticLockException) cause;
-                GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_OPTIMISTIC_LOCK);
+                GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_OPTIMISTIC_LOCK);
                 logOjbOptimisticLockException(ole);
             }
             else {
@@ -168,7 +168,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         finally {
         	if (form instanceof KualiDocumentFormBase) {
-                ((KualiDocumentFormBase) form).setErrorMapFromPreviousRequest(GlobalVariables.getErrorMap());
+                ((KualiDocumentFormBase) form).setMessageMapFromPreviousRequest(GlobalVariables.getMessageMap());
         	}
         }
 
@@ -1186,7 +1186,7 @@ public class KualiDocumentActionBase extends KualiAction {
         
         FormFile attachmentFile = kualiDocumentFormBase.getAttachmentFile();
         if (attachmentFile == null) {
-            GlobalVariables.getErrorMap().putError(
+            GlobalVariables.getMessageMap().putError(
                     String.format("%s.%s",
                             KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
                             KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
@@ -1213,7 +1213,7 @@ public class KualiDocumentActionBase extends KualiAction {
         Attachment attachment = null;
         if (attachmentFile != null && !StringUtils.isBlank(attachmentFile.getFileName())) {
             if (attachmentFile.getFileSize() == 0) {
-                GlobalVariables.getErrorMap().putError(
+                GlobalVariables.getMessageMap().putError(
                         String.format("%s.%s",
                                 KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
                                 KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
@@ -1238,7 +1238,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if(entry.getDisplayTopicFieldInNotes()) {
             String topicText = kualiDocumentFormBase.getNewNote().getNoteTopicText();
             if(StringUtils.isBlank(topicText)) {
-                GlobalVariables.getErrorMap().putError(
+                GlobalVariables.getMessageMap().putError(
                         String.format("%s.%s",
                                 KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
                                 KNSConstants.NOTE_TOPIC_TEXT_PROPERTY_NAME),
@@ -1388,7 +1388,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // verify recipient was specified
         if (StringUtils.isBlank(note.getAdHocRouteRecipient().getId())) {
-            GlobalVariables.getErrorMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT);
+            GlobalVariables.getMessageMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT);
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
         // check recipient is valid
@@ -1409,7 +1409,7 @@ public class KualiDocumentActionBase extends KualiAction {
             GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL);
         }
         else {
-            GlobalVariables.getErrorMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS);
+            GlobalVariables.getMessageMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS);
         }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);

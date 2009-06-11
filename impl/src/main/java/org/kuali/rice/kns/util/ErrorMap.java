@@ -16,28 +16,22 @@
 package org.kuali.rice.kns.util;
 
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 
 
 /**
- * @deprecated
- * Should use org.kuali.rice.core.util.MessageMap
+ * @deprecated use org.kuali.rice.core.util.MessageMap instead
+ * 
  * Holds errors due to validation. Keys of map represent property paths, and value is a TypedArrayList that contains resource string
  * keys (to retrieve the error message).
  *
  * Note, prior to rice 1.0.0, this class implemented {@link java.util.Map}.  The implements has been removed as of rice 0.9.4
  */
-
+@Deprecated
 public class ErrorMap extends MessageMap {
+	
+	public ErrorMap(MessageMap messageMap) {
+		super(messageMap);
+	}
+	
 
 }

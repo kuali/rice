@@ -400,11 +400,12 @@ public abstract class KualiAction extends DispatchAction {
     	else {
     		if (form instanceof KualiForm) {
     			value = ((KualiForm) form).retrieveFormValueForLookupInquiryParameters(parameterName, parameterValuePropertyName);
+    		} else {
+	    		if (LOG.isDebugEnabled()) {
+	    			LOG.debug("Unable to retrieve lookup/inquiry parameter value for parameter name " + parameterName + " parameter value property " + parameterValuePropertyName);
+	    		}
+	    		value = null;
     		}
-    		if (LOG.isDebugEnabled()) {
-    			LOG.debug("Unable to retrieve lookup/inquiry parameter value for parameter name " + parameterName + " parameter value property " + parameterValuePropertyName);
-    		}
-    		value = null;
     	}
     	
     	if (value != null && getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, parameterName)) {
@@ -600,7 +601,8 @@ public abstract class KualiAction extends DispatchAction {
         }
     }
     
-    public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @SuppressWarnings("unchecked")
+	public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         // parse out the important strings from our methodToCall parameter
         String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
@@ -617,7 +619,6 @@ public abstract class KualiAction extends DispatchAction {
         if (StringUtils.isBlank(boClassName)) {
             throw new RuntimeException("Illegal call to perform inquiry, no business object class name specified.");
         }
-        Class boClass = Class.forName(boClassName);
 
         // build the parameters for the inquiry url
         Properties parameters = new Properties();
@@ -637,6 +638,7 @@ public abstract class KualiAction extends DispatchAction {
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "inquiryParams: " + inquiryParams );
             }
+            Class<? extends BusinessObject> boClass = (Class<? extends BusinessObject>) Class.forName(boClassName);
             for (int i = 0; i < inquiryParams.length; i++) {
                 String[] keyValue = inquiryParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
 

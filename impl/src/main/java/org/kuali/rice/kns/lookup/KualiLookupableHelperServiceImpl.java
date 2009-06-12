@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -380,10 +379,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     public String getPrimaryKeyFieldLabels() {
         StringBuilder buf = new StringBuilder();
         List<String> primaryKeyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
-        // the primaryKeyFieldNames may contain duplicate entries. Pushing into a Set object to maintain order and remove dups.
-        // This should not be necessary, but listPrimaryKeyFieldNames needs to return a proper list.
-        Set<String> hSet = new LinkedHashSet<String>(primaryKeyFieldNames);
-        Iterator pkIter = hSet.iterator();
+        Iterator<String> pkIter = primaryKeyFieldNames.iterator();
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();
             buf.append(getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), pkFieldName));

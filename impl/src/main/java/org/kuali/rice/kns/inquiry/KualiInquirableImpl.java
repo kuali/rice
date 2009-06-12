@@ -251,10 +251,11 @@ public class KualiInquirableImpl implements Inquirable {
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
 
 
-        List<String> keys = new ArrayList<String>();
-        List<String> primaryKeys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
-        if (primaryKeys != null) {
-        	keys.addAll(primaryKeys);
+        // listPrimaryKeyFieldNames returns an unmodifiable list.  So a copy is necessary.
+        List<String> keys = new ArrayList<String>(getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass));
+
+        if (keys == null) {
+        	keys = Collections.emptyList();
         }
 
         BusinessObjectRelationship businessObjectRelationship = null;

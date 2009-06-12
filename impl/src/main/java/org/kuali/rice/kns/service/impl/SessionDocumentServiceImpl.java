@@ -57,7 +57,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
     private SessionDocumentDao sessionDocumentDao;    
-	private Map cachedObjects;
+	private Map<String,CachedObject> cachedObjects;
 	private EncryptionService encryptionService;
 	private int maxCacheSize;
 
@@ -83,6 +83,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 		}
     }
 
+	@SuppressWarnings("unchecked")
 	public void afterPropertiesSet() throws Exception {
 		cachedObjects = Collections.synchronizedMap( new KualiLRUMap(maxCacheSize) );		
 	}

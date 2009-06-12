@@ -479,7 +479,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 		return false;
 	}
 
-	public BusinessObjectService getBusinessObjectService() {
+	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}

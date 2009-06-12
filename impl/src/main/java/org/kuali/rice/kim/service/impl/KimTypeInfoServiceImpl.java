@@ -17,11 +17,10 @@ package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
-import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KimTypeInfoService;
@@ -39,16 +38,20 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 
 	private BusinessObjectService businessObjectService;
 	
-	protected static Map<String,KimTypeInfo> infoCache = new HashMap<String, KimTypeInfo>();
-	protected static Map<String,KimTypeInfo> infoCacheByName = new HashMap<String, KimTypeInfo>();
-	protected static boolean allLoaded = false;
+	protected Map<String,KimTypeInfo> infoCache = Collections.synchronizedMap( new HashMap<String, KimTypeInfo>() );
+	protected Map<String,KimTypeInfo> infoCacheByName = Collections.synchronizedMap( new HashMap<String, KimTypeInfo>() );
+	protected boolean allLoaded = false;
 	
 	@SuppressWarnings("unchecked")
 	public Collection<KimTypeInfo> getAllTypes() {
 		if ( !allLoaded ) {
 			Collection<KimTypeImpl> types = getBusinessObjectService().findAll(KimTypeImpl.class);
-			for ( KimTypeImpl typ : types ) {
-				infoCache.put(typ.getKimTypeId(), typ.toInfo());
+			synchronized ( this ) {
+				for ( KimTypeImpl typ : types ) {
+					KimTypeInfo info = typ.toInfo();
+					infoCache.put(typ.getKimTypeId(), info);
+					infoCacheByName.put(typ.getNamespaceCode()+typ.getName(), info);
+				}
 			}
 			allLoaded = true;
 		}
@@ -85,7 +88,7 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 		return infoCacheByName.get(namespaceCode+typeName);
 	}
 	
-	public BusinessObjectService getBusinessObjectService() {
+	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}

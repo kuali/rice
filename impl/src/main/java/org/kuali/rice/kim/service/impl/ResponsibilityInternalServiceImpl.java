@@ -44,7 +44,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 public class ResponsibilityInternalServiceImpl implements ResponsibilityInternalService {
 
-	protected BusinessObjectService businessObjectService;
+	private BusinessObjectService businessObjectService;
 
 	public void saveRoleMember(RoleMemberImpl roleMember){
 

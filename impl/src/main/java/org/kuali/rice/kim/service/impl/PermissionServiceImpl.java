@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,11 +70,11 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 
     private static final long CACHE_MAX_AGE_SECONDS = 60L;
 
-    private Map<String,MaxAgeSoftReference<List<KimPermissionImpl>>> permissionCache = new HashMap<String,MaxAgeSoftReference<List<KimPermissionImpl>>>();
-    private Map<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>> permissionToRoleCache = new HashMap<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>>();
+    private Map<String,MaxAgeSoftReference<List<KimPermissionImpl>>> permissionCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<List<KimPermissionImpl>>>() );
+    private Map<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap( new HashMap<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>>() );
 
     // Not ThreadLocal or time limited- should not change during the life of the system
-	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = new HashMap<String, KimPermissionTypeService>();
+	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = Collections.synchronizedMap( new HashMap<String, KimPermissionTypeService>() );
 	
     // --------------------
     // Authorization Checks

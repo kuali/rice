@@ -83,12 +83,12 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     private static final long CACHE_MAX_AGE_SECONDS = 60L;
 
-    private Map<String,MaxAgeSoftReference<RoleImpl>> roleCache = new HashMap<String,MaxAgeSoftReference<RoleImpl>>();
-    private Map<String,MaxAgeSoftReference<List<String>>> impliedRoleCache = new HashMap<String,MaxAgeSoftReference<List<String>>>();
-    private Map<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>> roleImplMapCache = new HashMap<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>>();
+    private Map<String,MaxAgeSoftReference<RoleImpl>> roleCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<RoleImpl>>() );
+    private Map<String,MaxAgeSoftReference<List<String>>> impliedRoleCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<List<String>>>() );
+    private Map<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>> roleImplMapCache = Collections.synchronizedMap( new HashMap<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>>() );
 
-    private Map<String,KimRoleTypeService> roleTypeServiceCache = new HashMap<String,KimRoleTypeService>();
-    private Map<String,KimDelegationTypeService> delegationTypeServiceCache = new HashMap<String,KimDelegationTypeService>();
+    private Map<String,KimRoleTypeService> roleTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimRoleTypeService>() );
+    private Map<String,KimDelegationTypeService> delegationTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimDelegationTypeService>() );
 
     // --------------------
     // Role Data
@@ -114,8 +114,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     protected void addRoleImplToCache( RoleImpl role ) {
     	if (role != null) {
-    		roleCache.put( role.getRoleId(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
-    		roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    		synchronized ( roleCache ) {
+	    		roleCache.put( role.getRoleId(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+	    		roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+    		}
     	}
     }
 

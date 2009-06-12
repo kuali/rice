@@ -43,7 +43,7 @@ public class IdentityCacheServiceImpl implements IdentityCacheService {
 	
 	private BusinessObjectService businessObjectService;
 
-	public BusinessObjectService getBusinessObjectService() {
+	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}

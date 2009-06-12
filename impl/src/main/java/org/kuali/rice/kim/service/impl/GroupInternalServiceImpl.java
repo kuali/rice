@@ -42,7 +42,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  *
  */
 public class GroupInternalServiceImpl implements GroupInternalService {
-    public BusinessObjectService getBusinessObjectService() {
+    protected BusinessObjectService getBusinessObjectService() {
     	return KNSServiceLocator.getBusinessObjectService();
     }
 

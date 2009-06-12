@@ -19,6 +19,7 @@ import java.lang.ref.SoftReference;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	protected int personCacheMaxSize = 3000;
 	protected int personCacheMaxAgeSeconds = 3600;
 
-	protected HashMap<String,MaxAgeSoftReference<PersonImpl>> personCache = new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize );
+	protected Map<String,MaxAgeSoftReference<PersonImpl>> personCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize ) );
 	// PERSON/ENTITY RELATED METHODS
 
 	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
@@ -211,9 +212,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	
 	protected void addPersonImplToCache( PersonImpl person ) {
 		if ( person != null ) {
-			personCache.put( "principalName="+person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
-			personCache.put( "principalId="+person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
-			personCache.put( "employeeId="+person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+			synchronized (personCache) {
+				personCache.put( "principalName="+person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "principalId="+person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "employeeId="+person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+			}
 		}
 	}
 	
@@ -270,7 +273,6 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#findPeople(Map)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<PersonImpl> findPeople(Map<String, String> criteria) {
 		return findPeople(criteria, true);
 	}
@@ -310,7 +312,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 				Collection<String> principalIds = getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
 				int searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
 				if ( !unbounded && principalIds.size() > searchResultsLimit ) {
-					int actualResultSize = people.size();
+					int actualResultSize = principalIds.size();
 					// trim the list down before converting to people
 					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimit); // yes, this is a little wasteful
 					people = getPeople(principalIds); // convert the results to people

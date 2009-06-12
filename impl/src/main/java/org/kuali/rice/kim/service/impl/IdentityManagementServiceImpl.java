@@ -1,6 +1,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -69,41 +70,41 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	protected int responsibilityCacheMaxSize = 200;
 	protected int responsibilityCacheMaxAgeSeconds = 30;
 	
-	protected MaxSizeMap<String,MaxAgeSoftReference<KimEntityDefaultInfo>> entityDefaultInfoCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<KimEntity>> entityCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>> principalByIdCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>> principalByNameCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>> groupByIdCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>> groupByNameCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> groupIdsForPrincipalCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<? extends GroupInfo>>> groupsForPrincipalCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isGroupMemberOfGroupCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<String>>> groupMemberPrincipalIdsCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> hasPermissionCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> hasPermissionByTemplateCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isAuthorizedCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isAuthorizedByTemplateNameCache;
-    protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
+	protected Map<String,MaxAgeSoftReference<KimEntityDefaultInfo>> entityDefaultInfoCache;
+	protected Map<String,MaxAgeSoftReference<KimEntity>> entityCache;
+	protected Map<String,MaxAgeSoftReference<KimPrincipalInfo>> principalByIdCache;
+	protected Map<String,MaxAgeSoftReference<KimPrincipalInfo>> principalByNameCache;
+	protected Map<String,MaxAgeSoftReference<GroupInfo>> groupByIdCache;
+	protected Map<String,MaxAgeSoftReference<GroupInfo>> groupByNameCache;
+	protected Map<String,MaxAgeSoftReference<List<String>>> groupIdsForPrincipalCache;
+	protected Map<String,MaxAgeSoftReference<List<? extends GroupInfo>>> groupsForPrincipalCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> isMemberOfGroupCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> isGroupMemberOfGroupCache;
+	protected Map<String,MaxAgeSoftReference<List<String>>> groupMemberPrincipalIdsCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> hasPermissionCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> hasPermissionByTemplateCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> isAuthorizedCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> isAuthorizedByTemplateNameCache;
+    protected Map<String,MaxAgeSoftReference<Boolean>> isPermissionDefinedForTemplateNameCache;
 	
     protected HashMap<String,KimCodeInfoBase> kimReferenceTypeCache = new HashMap<String, KimCodeInfoBase>();
     
 	public void afterPropertiesSet() throws Exception {
-		entityDefaultInfoCache = new MaxSizeMap<String,MaxAgeSoftReference<KimEntityDefaultInfo>>( entityPrincipalCacheMaxSize );
-		entityCache = new MaxSizeMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize );
-		principalByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>>( entityPrincipalCacheMaxSize );
-		principalByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>>( entityPrincipalCacheMaxSize );
-		groupByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
-		groupByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize );
-		groupIdsForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
-		groupsForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<? extends GroupInfo>>>( groupCacheMaxSize );
-		isMemberOfGroupCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize );
-		groupMemberPrincipalIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize );
-		hasPermissionCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		hasPermissionByTemplateCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		isPermissionDefinedForTemplateNameCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		isAuthorizedByTemplateNameCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
-		isAuthorizedCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize );
+		entityDefaultInfoCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimEntityDefaultInfo>>( entityPrincipalCacheMaxSize ) );
+		entityCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimEntity>>( entityPrincipalCacheMaxSize ) );
+		principalByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>>( entityPrincipalCacheMaxSize ) );
+		principalByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimPrincipalInfo>>( entityPrincipalCacheMaxSize ) );
+		groupByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize ) );
+		groupByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<GroupInfo>>( groupCacheMaxSize ) );
+		groupIdsForPrincipalCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize ) );
+		groupsForPrincipalCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<List<? extends GroupInfo>>>( groupCacheMaxSize ) );
+		isMemberOfGroupCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( groupCacheMaxSize ) );
+		groupMemberPrincipalIdsCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<List<String>>>( groupCacheMaxSize ) );
+		hasPermissionCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize ) );
+		hasPermissionByTemplateCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize ) );
+		isPermissionDefinedForTemplateNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize ) );
+		isAuthorizedByTemplateNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize ) );
+		isAuthorizedCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( permissionCacheMaxSize ) );
 	}
 
 	public void flushAllCaches() {
@@ -676,13 +677,15 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	    	isMemberOfGroupCache.remove(principalId + "-" + groupId);
     	} else {
     		// added or removed a group - perform a more extensive purge
-    		Iterator<String> keys = isMemberOfGroupCache.keySet().iterator();
-    		while ( keys.hasNext() ) {
-    			String key = keys.next();
-    			if ( key.endsWith("-"+groupId) ) {
-    				keys.remove();
-    			}
-    		}
+    		synchronized (isMemberOfGroupCache) {
+	    		Iterator<String> keys = isMemberOfGroupCache.keySet().iterator();
+	    		while ( keys.hasNext() ) {
+	    			String key = keys.next();
+	    			if ( key.endsWith("-"+groupId) ) {
+	    				keys.remove();
+	    			}
+	    		}
+			}
     		// NOTE: There's no good way to selectively purge the other two group caches or the permission caches which could be
     		// affected - is this necessary or do we just wait for the cache items to expire    		
     	}

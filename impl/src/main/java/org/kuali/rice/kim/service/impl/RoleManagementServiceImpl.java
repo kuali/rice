@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,6 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
@@ -49,20 +49,20 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	protected int roleCacheMaxSize = 200;
 	protected int roleCacheMaxAgeSeconds = 30;
 	
-	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<RoleMembershipInfo>>> roleMembersWithDelegationCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>> roleQualifiersForPrincipalCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
-	protected MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
+	protected Map<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
+	protected Map<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
+	protected Map<String,MaxAgeSoftReference<List<RoleMembershipInfo>>> roleMembersWithDelegationCache;
+	protected Map<String,MaxAgeSoftReference<List<AttributeSet>>> roleQualifiersForPrincipalCache;
+	protected Map<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
+	protected Map<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
 	
 	public void afterPropertiesSet() throws Exception {
-		roleByIdCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
-		roleByNameCache = new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize );
-		roleMembersWithDelegationCache = new MaxSizeMap<String,MaxAgeSoftReference<List<RoleMembershipInfo>>>( roleCacheMaxSize );
-		roleQualifiersForPrincipalCache = new MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>>( roleCacheMaxSize );
-		principalHasRoleCache = new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize );
-		memberPrincipalIdsCache = new MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>>(roleCacheMaxSize );
+		roleByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize ) );
+		roleByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize ) );
+		roleMembersWithDelegationCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<List<RoleMembershipInfo>>>( roleCacheMaxSize ) );
+		roleQualifiersForPrincipalCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>>( roleCacheMaxSize ) );
+		principalHasRoleCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize ) );
+		memberPrincipalIdsCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>>( roleCacheMaxSize ) );
 	}
 	
 	public void flushRoleCaches() {
@@ -338,18 +338,22 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public void removeCacheEntries( String roleId, String principalId ) {
 		if ( principalId != null ) {
 			String keyPrefix = principalId + "-";
-			Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
-			while ( cacheIterator.hasNext() ) {
-				String cacheKey = cacheIterator.next();
-				if ( cacheKey.startsWith( keyPrefix ) ) {
-					cacheIterator.remove();
+			synchronized ( principalHasRoleCache ) {
+				Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
+				while ( cacheIterator.hasNext() ) {
+					String cacheKey = cacheIterator.next();
+					if ( cacheKey.startsWith( keyPrefix ) ) {
+						cacheIterator.remove();
+					}
 				}
 			}
-			cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
-			while ( cacheIterator.hasNext() ) {
-				String cacheKey = cacheIterator.next();
-				if ( cacheKey.startsWith( keyPrefix ) ) {
-					cacheIterator.remove();
+			synchronized ( roleQualifiersForPrincipalCache ) {
+				Iterator<String> cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
+				while ( cacheIterator.hasNext() ) {
+					String cacheKey = cacheIterator.next();
+					if ( cacheKey.startsWith( keyPrefix ) ) {
+						cacheIterator.remove();
+					}
 				}
 			}
 		}
@@ -357,35 +361,42 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			roleByIdCache.remove( roleId );
 			roleByNameCache.clear();
 			String keySubstring = "|" + roleId + "|";
-			Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
-			while ( cacheIterator.hasNext() ) {
-				String cacheKey = cacheIterator.next();
-				if( cacheKey.contains( keySubstring ) ) {
-					cacheIterator.remove();
+			synchronized ( principalHasRoleCache ) {
+				Iterator<String> cacheIterator = principalHasRoleCache.keySet().iterator();
+				while ( cacheIterator.hasNext() ) {
+					String cacheKey = cacheIterator.next();
+					if( cacheKey.contains( keySubstring ) ) {
+						cacheIterator.remove();
+					}
 				}
 			}
-			cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
-			while ( cacheIterator.hasNext() ) {
-				String cacheKey = cacheIterator.next();
-				if( cacheKey.contains( keySubstring ) ) {
-					cacheIterator.remove();
+			synchronized ( roleQualifiersForPrincipalCache ) {
+				Iterator<String> cacheIterator = roleQualifiersForPrincipalCache.keySet().iterator();
+				while ( cacheIterator.hasNext() ) {
+					String cacheKey = cacheIterator.next();
+					if( cacheKey.contains( keySubstring ) ) {
+						cacheIterator.remove();
+					}
 				}
 			}
-			cacheIterator = roleMembersWithDelegationCache.keySet().iterator();
-			while ( cacheIterator.hasNext() ) {
-				String cacheKey = cacheIterator.next();
-				if( cacheKey.contains( keySubstring ) ) {
-					cacheIterator.remove();
+			synchronized ( roleMembersWithDelegationCache ) {
+				Iterator<String> cacheIterator = roleMembersWithDelegationCache.keySet().iterator();
+				while ( cacheIterator.hasNext() ) {
+					String cacheKey = cacheIterator.next();
+					if( cacheKey.contains( keySubstring ) ) {
+						cacheIterator.remove();
+					}
 				}
 			}
-			cacheIterator = memberPrincipalIdsCache.keySet().iterator();
-			while ( cacheIterator.hasNext() ) {
-				String cacheKey = cacheIterator.next();
-				if( cacheKey.contains( keySubstring ) ) {
-					cacheIterator.remove();
+			synchronized ( memberPrincipalIdsCache ) {
+				Iterator<String> cacheIterator = memberPrincipalIdsCache.keySet().iterator();
+				while ( cacheIterator.hasNext() ) {
+					String cacheKey = cacheIterator.next();
+					if( cacheKey.contains( keySubstring ) ) {
+						cacheIterator.remove();
+					}
 				}
 			}
-			
 		}
 	}
 	

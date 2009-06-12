@@ -15,14 +15,9 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.util.HashMap;
 import org.apache.commons.collections.map.LRUMap;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl;
-
-
-
 
 /**
  * Override LRUMap removeEntity method

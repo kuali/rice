@@ -22,11 +22,17 @@ package org.kuali.rice.kns.util.cache;
 
 // Kuali Foundation modification: changed some imports
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
@@ -44,7 +50,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  * @since 2004.10.07
  */
 public class MethodCacheNoCopyInterceptor implements MethodInterceptor, InitializingBean {
-    private static final Log LOG = LogFactory.getLog(MethodCacheNoCopyInterceptor.class);
+    private static final Logger LOG = Logger.getLogger(MethodCacheNoCopyInterceptor.class);
 
     private Cache cache;
     // begin Kuali Foundation modification
@@ -94,7 +100,8 @@ public class MethodCacheNoCopyInterceptor implements MethodInterceptor, Initiali
      * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
      * end Kuali Foundation modification
      */
-    public Object invoke(MethodInvocation invocation) throws Throwable {
+    @SuppressWarnings("unchecked")
+	public Object invoke(MethodInvocation invocation) throws Throwable {
         // begin Kuali Foundation modification
         boolean cancelUpdate = true;
 
@@ -102,8 +109,8 @@ public class MethodCacheNoCopyInterceptor implements MethodInterceptor, Initiali
         String cacheKey = buildCacheKey(invocation);
 
         // lookup result in cache
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("looking for method result for invocation '" + cacheKey + "'");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("looking for method result for invocation '" + cacheKey + "'");
         }
         try {
             methodResult = cache.getFromCache(cacheKey, expirationTimeInSeconds);
@@ -116,8 +123,8 @@ public class MethodCacheNoCopyInterceptor implements MethodInterceptor, Initiali
         catch (NeedsRefreshException e) {
             // call intercepted method
             try {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("calling intercepted method for invocation '" + cacheKey + "'");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("calling intercepted method for invocation '" + cacheKey + "'");
                 }
                 methodResult = invocation.proceed();
             }
@@ -129,8 +136,24 @@ public class MethodCacheNoCopyInterceptor implements MethodInterceptor, Initiali
             // cache method result, if possible
             if ( methodResult == null || Serializable.class.isAssignableFrom(methodResult.getClass() ) ) {
                 try {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("caching results for invocation '" + cacheKey + "'");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("caching results for invocation '" + cacheKey + "'");
+                    }
+                    // ensure that items like lists/maps/collections are not modified once returned
+                    if ( methodResult != null ) {
+                    	if ( methodResult instanceof SortedMap ) {
+                    		methodResult = Collections.unmodifiableSortedMap((SortedMap)methodResult);
+                    	} else if ( methodResult instanceof Map ) {
+                    		methodResult = Collections.unmodifiableMap((Map)methodResult);
+                    	} else if ( methodResult instanceof List ) {
+                    		methodResult = Collections.unmodifiableList((List)methodResult);
+                    	} else if ( methodResult instanceof SortedSet ) {
+                    		methodResult = Collections.unmodifiableSortedSet((SortedSet)methodResult);
+                    	} else if ( methodResult instanceof Set ) {
+                    		methodResult = Collections.unmodifiableSet((Set)methodResult);
+                    	} else if ( methodResult instanceof Collection ) {
+                    		methodResult = Collections.unmodifiableCollection((Collection)methodResult);
+                    	}
                     }
                     cache.putInCache(cacheKey, methodResult);
     
@@ -228,7 +251,9 @@ public class MethodCacheNoCopyInterceptor implements MethodInterceptor, Initiali
           return;
       }
       
-      LOG.debug("removing method cache for key: " + cacheKey);
+      if ( LOG.isDebugEnabled() ) {
+    	  LOG.debug("removing method cache for key: " + cacheKey);
+      }
       cache.cancelUpdate(cacheKey);
       cache.flushEntry(cacheKey);
     }

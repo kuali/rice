@@ -38,7 +38,12 @@ public class CampusTypeValuesFinder extends KeyValuesBase {
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
         List campusTypes = (List) boService.findAll(CampusTypeImpl.class);
-
+        // copy the list of codes before sorting, since we can't modify the results from this method
+        if ( campusTypes == null ) {
+        	campusTypes = new ArrayList<CampusTypeImpl>(0);
+        } else {
+        	campusTypes = new ArrayList<CampusTypeImpl>( campusTypes );
+        }
         // calling comparator.
         CampusTypeComparator campusTypeComparator = new CampusTypeComparator();
 

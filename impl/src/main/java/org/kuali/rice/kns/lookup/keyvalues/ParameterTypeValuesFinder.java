@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.bo.ParameterType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -38,6 +39,12 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
         List<ParameterType> bos = (List) boService.findAll(ParameterType.class);
+        // copy the list of codes before sorting, since we can't modify the results from this method
+        if ( bos == null ) {
+        	bos = new ArrayList<ParameterType>(0);
+        } else {
+        	bos = new ArrayList<ParameterType>( bos );
+        }
 
         // sort using comparator.
         Collections.sort(bos, comparator);

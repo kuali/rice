@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,8 +41,6 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This class is the service implementation for a SessionDocument. This is
@@ -276,14 +275,14 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 		this.maxCacheSize = maxCacheSize;
 	}
 
-	public EncryptionService getEncryptionService() {
+	protected EncryptionService getEncryptionService() {
 		if ( encryptionService == null ) {
 			encryptionService = KNSServiceLocator.getEncryptionService();
 		}
 		return encryptionService;
 	}
 
-	public DataDictionaryService getDataDictionaryService() {
+	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}

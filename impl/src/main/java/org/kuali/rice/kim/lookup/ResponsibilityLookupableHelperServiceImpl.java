@@ -170,7 +170,9 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		List<ResponsibilityImpl> responsibilities = null;
 		if ( cachedResult == null || cachedResult.get() == null ) {
 			responsibilities = searchResponsibilities(responsibilitySearchCriteria, unbounded);
-			respResultCache.put(responsibilitySearchCriteria, new MaxAgeSoftReference<List<ResponsibilityImpl>>( RESP_CACHE_EXPIRE_SECONDS, responsibilities ) ); 
+			synchronized( respResultCache ) {
+				respResultCache.put(responsibilitySearchCriteria, new MaxAgeSoftReference<List<ResponsibilityImpl>>( RESP_CACHE_EXPIRE_SECONDS, responsibilities ) ); 
+			}
 		} else {
 			responsibilities = cachedResult.get();
 		}

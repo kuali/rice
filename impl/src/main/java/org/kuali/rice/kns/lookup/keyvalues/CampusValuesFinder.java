@@ -31,7 +31,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class CampusValuesFinder extends KeyValuesBase {
 
-	List<KeyLabelPair> campusCache = null;
+	protected static List<KeyLabelPair> campusCache = null;
 	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
@@ -39,15 +39,18 @@ public class CampusValuesFinder extends KeyValuesBase {
     @SuppressWarnings("unchecked")
 	public List<KeyLabelPair> getKeyValues() {
     	if ( campusCache == null ) {
-	        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-	        Collection<Campus> codes = (Collection<Campus>)boService.findAll(Campus.class);
-	        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
-	        labels.add(new KeyLabelPair("", ""));
-	        for ( Campus campus : codes ) {
-	            labels.add(new KeyLabelPair(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
-	        }
-	
-	        campusCache = labels;
+    		synchronized ( this.getClass() ) {
+				
+		        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+		        Collection<Campus> codes = (Collection<Campus>)boService.findAll(Campus.class);
+		        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
+		        labels.add(new KeyLabelPair("", ""));
+		        for ( Campus campus : codes ) {
+		            labels.add(new KeyLabelPair(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
+		        }
+		
+		        campusCache = labels;
+			}
     	}
     	return campusCache;
     }

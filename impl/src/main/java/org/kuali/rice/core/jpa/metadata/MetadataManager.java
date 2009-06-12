@@ -56,8 +56,8 @@ public class MetadataManager {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MetadataManager.class);
 	
-	private static Map<Class, EntityDescriptor> entitesByClass = new HashMap<Class, EntityDescriptor>();
-	private static Map<String, EntityDescriptor> entitesByName = new HashMap<String, EntityDescriptor>();
+	private static Map<Class, EntityDescriptor> entitesByClass = Collections.synchronizedMap( new HashMap<Class, EntityDescriptor>() );
+	private static Map<String, EntityDescriptor> entitesByName = Collections.synchronizedMap( new HashMap<String, EntityDescriptor>() );
 	
 	private MetadataManager() {}
 

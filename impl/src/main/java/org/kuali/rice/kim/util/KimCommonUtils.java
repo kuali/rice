@@ -47,6 +47,8 @@ public class KimCommonUtils {
     private static KualiModuleService kualiModuleService;
     private static Map<String,KimTypeService> kimTypeServiceCache = new HashMap<String,KimTypeService>();
 
+	private KimCommonUtils() {}
+    
 	private static KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {
 			kualiModuleService = KNSServiceLocator.getKualiModuleService();
@@ -161,7 +163,9 @@ public class KimCommonUtils {
     				service = null;
     			}
     		}
-			kimTypeServiceCache.put(serviceName, service);
+	    	synchronized (kimTypeServiceCache) {
+				kimTypeServiceCache.put(serviceName, service);
+			}
     	} else {
     		LOG.warn( "Blank service name passed into getKimTypeService" );
     	}

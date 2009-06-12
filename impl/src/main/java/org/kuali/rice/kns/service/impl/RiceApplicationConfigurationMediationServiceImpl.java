@@ -66,7 +66,9 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 				}
 			}
 			if (parameterValue != null){
-			    configurationParameterCache.put( parameterKey, new MaxAgeSoftReference<String>( configurationParameterCacheMaxAgeSeconds, parameterValue ) );
+				synchronized (configurationParameterCache) {
+				    configurationParameterCache.put( parameterKey, new MaxAgeSoftReference<String>( configurationParameterCacheMaxAgeSeconds, parameterValue ) );
+				}
 			}
 		}
     	return parameterValue;
@@ -118,7 +120,9 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     			RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(serviceName);
     			if (rac != null) {
     				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
-    	            nonDatabaseComponentsCache.put(serviceName.toString(), new MaxAgeSoftReference<List<ParameterDetailType>>( nonDatabaseComponentsCacheMaxAgeSeconds, rac.getNonDatabaseComponents() ));
+    				synchronized (nonDatabaseComponentsCache) {
+        	            nonDatabaseComponentsCache.put(serviceName.toString(), new MaxAgeSoftReference<List<ParameterDetailType>>( nonDatabaseComponentsCacheMaxAgeSeconds, rac.getNonDatabaseComponents() ));
+					}
     			}
 	        }
 			

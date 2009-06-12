@@ -83,7 +83,9 @@ public class OrmUtils {
 	}
 	
     public static void reattach(Object attached, Object detached) {
-        LOG.debug("Reattaching entity: " + detached.getClass().getName());
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Reattaching entity: " + detached.getClass().getName());
+    	}
     	// Don't want to get parent fields if overridden in children since we are walking the tree from child to parent
     	Set<String> cachedFields = new HashSet<String>(); 
     	Class attachedClass = attached.getClass();
@@ -126,7 +128,9 @@ public class OrmUtils {
     				LOG.error(e.getMessage(), e);
     			}
     		}
-    		cache.put(clazz.getName(), new Boolean(clazz.isAnnotationPresent(Entity.class) || clazz.isAnnotationPresent(MappedSuperclass.class)));
+    		synchronized (cache) {
+        		cache.put(clazz.getName(), new Boolean(clazz.isAnnotationPresent(Entity.class) || clazz.isAnnotationPresent(MappedSuperclass.class)));
+			}
     	}
     	return cache.get(clazz.getName()).booleanValue();
     }

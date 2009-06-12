@@ -41,6 +41,8 @@ import org.kuali.rice.kns.service.LookupService;
  */
 public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 
+	private static final long serialVersionUID = -3578448525862270477L;
+
 	private static final Logger LOG = Logger.getLogger( PermissionLookupableHelperServiceImpl.class );
 	
 	private static LookupService lookupService;
@@ -146,7 +148,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
 	 * so that queries against the details, which are done in memory, do not require repeated database trips.
 	 */
-    private static final Map<Map<String,String>,MaxAgeSoftReference<List<PermissionImpl>>> permResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<PermissionImpl>>>(); 
+    private static final HashMap<Map<String,String>,MaxAgeSoftReference<List<PermissionImpl>>> permResultCache = new HashMap<Map<String,String>, MaxAgeSoftReference<List<PermissionImpl>>>(); 
 	private static final long PERM_CACHE_EXPIRE_SECONDS = 30L;
 	
 	private List<PermissionImpl> getPermissionsWithPermissionSearchCriteria(
@@ -158,7 +160,9 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		List<PermissionImpl> permissions = null;
 		if ( cachedResult == null || cachedResult.get() == null ) {
 			permissions = searchPermissions(permissionSearchCriteria, unbounded);
-			permResultCache.put(permissionSearchCriteria, new MaxAgeSoftReference<List<PermissionImpl>>( PERM_CACHE_EXPIRE_SECONDS, permissions ) ); 
+			synchronized (permResultCache) {
+				permResultCache.put(permissionSearchCriteria, new MaxAgeSoftReference<List<PermissionImpl>>( PERM_CACHE_EXPIRE_SECONDS, permissions ) ); 
+			} 
 		} else {
 			permissions = cachedResult.get();
 		}

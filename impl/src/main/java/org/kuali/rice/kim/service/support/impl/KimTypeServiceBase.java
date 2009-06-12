@@ -634,13 +634,13 @@ public class KimTypeServiceBase implements KimTypeService {
 		return definition;
 	}
 
-	private Map<String,AttributeDefinitionMap> attributeDefinitionCache = new HashMap<String,AttributeDefinitionMap>();
+//	private Map<String,AttributeDefinitionMap> attributeDefinitionCache = new HashMap<String,AttributeDefinitionMap>();
 
 	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
-		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
-		if ( definitions == null ) {
+//		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
+//		if ( definitions == null ) {
 			List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
-			definitions = new AttributeDefinitionMap();
+			AttributeDefinitionMap definitions = new AttributeDefinitionMap();
 	        KimTypeInfo kimType = getTypeInfoService().getKimType(kimTypeId);
 	        if ( kimType != null ) {
 				String nsCode = kimType.getNamespaceCode();	        
@@ -668,7 +668,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	        } else {
 	        	LOG.warn( "Unable to resolve KIM Type: " + kimTypeId + " - returning an empty AttributeDefinitionMap." );
 	        }
-		}
+//		}
 		return definitions;
 	}
 

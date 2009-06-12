@@ -264,7 +264,11 @@ public class UserSession implements Serializable {
         this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         if (this.preferences.isRequiresSave()) {
             LOG.info("Detected that user preferences require saving.");
-            KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
+            try {
+            	KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
+            } catch (Exception e) {
+            	LOG.warn("Failed to save preferences for user!  Likely user tried to log in from more than one browser at the same time.  Reloading preferences.");
+            }
             this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         }
     }

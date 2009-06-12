@@ -21,6 +21,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,6 +41,8 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
  * This class is the service implementation for a SessionDocument. This is
  * the default, Kuali delivered implementation.
@@ -54,7 +57,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
     private SessionDocumentDao sessionDocumentDao;    
-	private KualiLRUMap cachedObjects;
+	private Map cachedObjects;
 	private EncryptionService encryptionService;
 	private int maxCacheSize;
 
@@ -81,7 +84,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     }
 
 	public void afterPropertiesSet() throws Exception {
-		cachedObjects = new KualiLRUMap(maxCacheSize);		
+		cachedObjects = Collections.synchronizedMap( new KualiLRUMap(maxCacheSize) );		
 	}
 
 	/**

@@ -87,7 +87,7 @@ public class PersistenceServiceStructureImplBase {
 	    	for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
 	    		fieldNames.add(field.getName());
 	    	}
-	    	return Collections.unmodifiableList(fieldNames);
+	    	return fieldNames;
 		} else {
 	    	// Legacy OJB
 			List fieldNamesLegacy = new ArrayList();
@@ -98,7 +98,7 @@ public class PersistenceServiceStructureImplBase {
 				FieldDescriptor keyDescriptor = keyDescriptors[i];
 				fieldNamesLegacy.add(keyDescriptor.getAttributeName());
 			}
-			return Collections.unmodifiableList(fieldNamesLegacy);
+			return fieldNamesLegacy;
 		}
 	}
 

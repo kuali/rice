@@ -30,21 +30,25 @@
         <c:set var="value_found" value="false" />
         <c:forEach items="${field.fieldValidValues}" var="select">
           <c:if test="${field.propertyValue==select.key}">
-            <c:out value="${select.label}" />
-            <c:if test="${isLookup}">
-      		  <input type="hidden" name="${field.propertyName}" value="<c:out value="${field.propertyValue}"/>" />
-		    </c:if>
-            <c:set var="value_found" value="true" />
+            <c:if test="${!value_found}">
+              <c:out value="${select.label}" />
+              <c:if test="${isLookup}">
+      		    <input type="hidden" name="${field.propertyName}" value="<c:out value="${field.propertyValue}"/>" />
+		      </c:if>
+              <c:set var="value_found" value="true" />
+            </c:if>
           </c:if>
         </c:forEach>
         <c:if test="${!value_found}">
 			<c:forEach items="${field.fieldInactiveValidValues}" var="select">
 	          <c:if test="${field.propertyValue==select.key}">
-	            <c:out value="${select.label}" />
-                <c:if test="${isLookup}">
-      		      <input type="hidden" name="${field.propertyName}" value="<c:out value="${field.propertyValue}"/>" />
-		        </c:if>
-	            <c:set var="value_found" value="true" />
+	            <c:if test="${!value_found}">
+	              <c:out value="${select.label}" />
+                  <c:if test="${isLookup}">
+      		        <input type="hidden" name="${field.propertyName}" value="<c:out value="${field.propertyValue}"/>" />
+		          </c:if>
+	              <c:set var="value_found" value="true" />
+	            </c:if>
 	          </c:if>
 	        </c:forEach>
         </c:if>

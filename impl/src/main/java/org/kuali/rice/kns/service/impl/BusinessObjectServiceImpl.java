@@ -20,12 +20,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -40,6 +43,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,14 +60,15 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     private org.kuali.rice.kim.service.PersonService personService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
 
+    private boolean illegalBusinessObjectsForSaveInitialized = false;
+    private Set<String> illegalBusinessObjectsForSave = new HashSet<String>();
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#save(org.kuali.bo.BusinessObject)
      */
     @Transactional
     public void save(PersistableBusinessObject bo) {
-        if (!(bo instanceof PersistableBusinessObject)) {
-            throw new IllegalArgumentException("Object passed in is not a BusinessObject class or subclass.");
-        }
+    	validateBusinessObjectForSave(bo);
         businessObjectDao.save(bo);
     }
 
@@ -71,14 +76,8 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#save(java.util.List)
      */
     @Transactional
-    public void save(List businessObjects) {
-        int index = 0;
-        for (Iterator i = businessObjects.iterator(); i.hasNext(); index++) {
-            Object current = i.next();
-            if (!(current instanceof PersistableBusinessObject)) {
-                throw new IllegalArgumentException("item '" + index + "' on the given list is not a BusinessObject");
-            }
-        }
+    public void save(List<? extends PersistableBusinessObject> businessObjects) {
+        validateBusinessObjectForSave(businessObjects);
         businessObjectDao.save(businessObjects);
     }
 
@@ -88,9 +87,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      */
     @Transactional
     public void linkAndSave(PersistableBusinessObject bo) {
-        if (!(bo instanceof PersistableBusinessObject)) {
-            throw new IllegalArgumentException("Object passed in is not a BusinessObject class or subclass.");
-        }
+    	validateBusinessObjectForSave(bo);
         persistenceService.linkObjects(bo);
         businessObjectDao.save(bo);
     }
@@ -100,16 +97,67 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#linkAndSave(java.util.List)
      */
     @Transactional
-    public void linkAndSave(List<PersistableBusinessObject> businessObjects) {
-        for (PersistableBusinessObject bo : businessObjects) {
-            if (!(bo instanceof PersistableBusinessObject)) {
-                throw new IllegalArgumentException("One of the items in the list passed in is not " + "a BusinessObject descendent: [" + bo.getClass().getName() + "] " + bo.toString());
-            }
-            persistenceService.linkObjects(bo);
-        }
+    public void linkAndSave(List<? extends PersistableBusinessObject> businessObjects) {
+        validateBusinessObjectForSave(businessObjects);
         businessObjectDao.save(businessObjects);
     }
 
+    /**
+     * Validates that the 
+     * This method ...
+     * 
+     * @param bo
+     */
+    protected void validateBusinessObjectForSave(PersistableBusinessObject bo) {
+    	if (bo == null) {
+            throw new IllegalArgumentException("Object passed in is null");
+        }
+        if (!isBusinessObjectAllowedForSave(bo)) {
+        	throw new IllegalArgumentException("Object passed in is a BusinessObject but has been restricted from save operations according to configuration parameter '" + KNSConstants.Config.ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE);
+        }
+    }
+    
+    protected void validateBusinessObjectForSave(List<? extends PersistableBusinessObject> businessObjects) {
+    	for (PersistableBusinessObject bo : businessObjects) {
+    		 if (bo == null) {
+                 throw new IllegalArgumentException("One of the objects in the List is null.");
+             }
+    		 if (!isBusinessObjectAllowedForSave(bo)) {
+    			 throw new IllegalArgumentException("One of the objects in the List is a BusinessObject but has been restricted from save operations according to configuration parameter '" + KNSConstants.Config.ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE
+    					 + "  Passed in type was '" + bo.getClass().getName() + "'.");
+    		 }
+    	}
+    }
+    
+    
+    /**
+     * Returns true if the BusinessObjectService should be permitted to save instances of the given PersistableBusinessObject.
+     * Implementation checks a configuration parameter for class names of PersistableBusinessObjects that shouldn't be allowed
+     * to be saved.
+     */
+    protected boolean isBusinessObjectAllowedForSave(PersistableBusinessObject bo) {
+    	if (!illegalBusinessObjectsForSaveInitialized) {
+    		synchronized (this) {
+    			boolean applyCheck = true;
+    			String applyCheckValue = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.Config.APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK);
+    			if (!StringUtils.isEmpty(applyCheckValue)) {
+    				applyCheck = new Boolean(applyCheckValue);
+    			}
+    			if (applyCheck) {
+    				String illegalBos = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.Config.ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE);
+    				if (!StringUtils.isEmpty(illegalBos)) {
+    					String[] illegalBosSplit = illegalBos.split(",");
+    					for (String illegalBo : illegalBosSplit) {
+    						illegalBusinessObjectsForSave.add(illegalBo.trim());
+    					}
+    				}
+    			}
+    		}
+    		illegalBusinessObjectsForSaveInitialized = true;
+    	}
+    	return !illegalBusinessObjectsForSave.contains(bo.getClass().getName());
+    }
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findByPrimaryKey(java.lang.Class, java.lang.Object)
      */

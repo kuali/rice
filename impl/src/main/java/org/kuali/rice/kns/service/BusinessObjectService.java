@@ -46,10 +46,10 @@ public interface BusinessObjectService {
      * This will throw an IllegalArgumentException (runtime exception) if any of the objects passed in is not a descendent of
      * BusinessObject.
      * 
-     * @param businessObjects A List<BusinessObject> of objects to persist.
+     * @param businessObjects A List<PersistableBusinessObject> of objects to persist.
      * 
      */
-    public void save(List businessObjects);
+    public void save(List<? extends PersistableBusinessObject> businessObjects);
 
     /**
      * Links up any contained objects, and then Saves the passed in object via the persistence layer.
@@ -71,7 +71,7 @@ public interface BusinessObjectService {
      * @param businessObjects A List<BusinessObject> of objects to persist.
      * 
      */
-    public void linkAndSave(List<PersistableBusinessObject> businessObjects);
+    public void linkAndSave(List<? extends PersistableBusinessObject> businessObjects);
 
     /**
      * Retrieves an object instance identified by its primary key. For composite keys, use {@link #findByPrimaryKey(Class, Map)}

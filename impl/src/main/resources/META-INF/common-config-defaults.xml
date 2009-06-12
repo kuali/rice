@@ -134,6 +134,8 @@
     
     <param name="attachments.pending.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
     
+    <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck">true</param>
+    
     <!-- KSB -->
     
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>

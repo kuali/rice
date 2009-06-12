@@ -557,5 +557,9 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
 
+    public class Config {
+    	public static final String APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK = "rice.kns.illegalBusinessObjectsForSave.applyCheck";
+    	public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.kns.illegalBusinessObjectsForSave";
+    }
    
 }

@@ -99,6 +99,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
@@ -172,7 +173,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List <GroupMemberImpl>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
 		List <RoleMemberImpl>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
 		List <KimDelegationImpl> personDelegations = populateDelegations(identityManagementPersonDocument);
-		List <BusinessObject> bos = new ArrayList<BusinessObject>();
+		List <PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 		List <RoleResponsibilityActionImpl> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 		List <RoleMemberAttributeDataImpl> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
 		bos.add(kimEntity);
@@ -1622,7 +1623,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			LOG.error( "Kim type not found for:"+identityManagementRoleDocument.getRoleTypeId(), new Throwable() );
 		}
 
-		List<BusinessObject> bos = new ArrayList<BusinessObject>();
+		List<PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 
 		bos.add(kimRole);
 		bos.addAll(getRolePermissions(identityManagementRoleDocument, origRolePermissions));
@@ -2075,7 +2076,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		
 		List<String> oldIds = null;
 		List<String> newIds = null;
-		List<BusinessObject> bos = new ArrayList<BusinessObject>();
+		List<PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 		oldIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the actionList update
 		bos.add(kimGroup);
 		List<GroupMemberImpl> newGroupMembersList = getGroupMembers(identityManagementGroupDocument, origGroupMembers);

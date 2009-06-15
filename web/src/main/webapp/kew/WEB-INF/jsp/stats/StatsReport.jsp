@@ -14,6 +14,7 @@
   <div id="workarea" >
     <div class="tab-container" align="center">
       <html-el:hidden property="methodToCall" value="" />
+      <html-el:hidden property="backLocation" />
       <table class="datatable-80" style="align:center" border="0" cellpadding="0" cellspacing="0" >
         <tr>
           <td colspan="2" class="subhead"><bean-el:message key="general.label.aggregates"/></td>
@@ -150,8 +151,8 @@
     </table>
     <br />
     <div width="100%" style="text-align:center">
-      <html-el:image src="images/buttonsmall_refresh.gif" style="border-width:0px" align="absmiddle" />&nbsp;&nbsp;
-      <html-el:image src="images/buttonsmall_cancel.gif" style="border-width:0px" align="absmiddle" onclick="javascript: window.close()"/>
+      <html-el:image src="images/buttonsmall_refresh.gif" styleClass="tinybutton" align="absmiddle" />&nbsp;&nbsp;
+      <a href="${KualiForm.backLocation}"><img src="images/buttonsmall_cancel.gif" class="tinybutton" align="absmiddle" alt="cancel" /></a>
     </div>
   </div>
 </kul:page>

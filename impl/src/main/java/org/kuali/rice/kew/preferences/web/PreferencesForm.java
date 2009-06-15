@@ -16,10 +16,13 @@
  */
 package org.kuali.rice.kew.preferences.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
@@ -40,7 +43,10 @@ public class PreferencesForm extends KualiForm {
     private String returnMapping;
     private boolean showOutbox = true;
 
-    public String getReturnMapping() {
+    // KULRICE-3137: Added a backLocation parameter similar to the one from lookups.
+    private String backLocation;
+    
+	public String getReturnMapping() {
         return returnMapping;
     }
     public void setReturnMapping(String returnMapping) {
@@ -67,6 +73,27 @@ public class PreferencesForm extends KualiForm {
     public void setShowOutbox(boolean showOutbox) {
         this.showOutbox = showOutbox;
     }
+    
+	public String getBackLocation() {
+		return this.backLocation;
+	}
+	public void setBackLocation(String backLocation) {
+		this.backLocation = backLocation;
+	}
+	
+	/**
+	 * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public void populate(HttpServletRequest request) {
+		super.populate(request);
+		
+        if (getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER) != null) {
+            setBackLocation(getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER));
+        }
+	}
 
     public void validatePreferences() {
         try {

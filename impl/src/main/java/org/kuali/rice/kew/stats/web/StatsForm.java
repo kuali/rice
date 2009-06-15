@@ -22,9 +22,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
@@ -64,10 +67,27 @@ public class StatsForm extends KualiForm {
     private Date beginningDate;
     private Date endingDate;
 
-    public StatsForm() {
+    // KULRICE-3137: Added a backLocation parameter similar to the one from lookups.
+    private String backLocation;
+    
+	public StatsForm() {
         stats = new Stats();
     }
 
+	/**
+	 * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public void populate(HttpServletRequest request) {
+		super.populate(request);
+		
+        if (getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER) != null) {
+            setBackLocation(getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER));
+        }
+	}
+	
     public void determineBeginDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT);
 
@@ -259,4 +279,12 @@ public class StatsForm extends KualiForm {
         return YEAR_TIME_UNIT;
     }
 
+	public String getBackLocation() {
+		return this.backLocation;
+	}
+
+	public void setBackLocation(String backLocation) {
+		this.backLocation = backLocation;
+	}
+    
 }

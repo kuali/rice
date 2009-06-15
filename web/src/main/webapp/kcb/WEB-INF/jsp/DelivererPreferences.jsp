@@ -72,14 +72,13 @@ channels.</p>
         <td class="thnormal" colspan="3" align="center">
             <input type="image" src="../ken/images/buttonsmall_save.gif" value="save" alt="Save" name="save" />
             <img src="../ken/images/transparent_002.gif" height="1" width="1">
-            <a href="../ken/HomePage.form" target="parent">
+            <a href="${ConfigProperties.application.url}/portal.do">
               <img src="../ken/images/buttonsmall_cancel.gif" alt="Cancel" border="0" />
             </a>
         </td>
     </tr>
 </table>
 </form>
-</div>
 </div>
 </div>
 </body>

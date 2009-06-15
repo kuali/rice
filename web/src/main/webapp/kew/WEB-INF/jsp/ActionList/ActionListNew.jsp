@@ -77,7 +77,7 @@
 	<div style="float:right">
 	  <div style="float:left; width:75px">
 	  <a
-         href='<c:out value="Preferences.do?returnMapping=viewActionList" />'  title="preferences"><img
+         href='<c:out value="Preferences.do?returnMapping=viewActionList&returnLocation=${ConfigProperties.kew.url}/ActionList.do" />'  title="preferences"><img
          src="../kr/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
          border="0" /></a>
       </div>

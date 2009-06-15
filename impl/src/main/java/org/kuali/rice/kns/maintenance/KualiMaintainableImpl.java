@@ -260,7 +260,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	    	fieldName = fieldName.replaceAll("^add\\.", "");
 	    	Map<String, AttributeSecurity> fieldNameToAttributeSecurityMap = MaintenanceUtils.retrievePropertyPathToAttributeSecurityMappings(getDocumentTypeName());
 	    	AttributeSecurity attributeSecurity = fieldNameToAttributeSecurityMap.get(fieldName);
-	    	return attributeSecurity != null && attributeSecurity.hasAnyRestriction();
+	    	return attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI();
     	}
     	else {
     		return false;

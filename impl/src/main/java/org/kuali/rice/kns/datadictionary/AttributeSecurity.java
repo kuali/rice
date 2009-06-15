@@ -154,4 +154,15 @@ public class AttributeSecurity extends DataDictionaryDefinitionBase {
 	public boolean hasAnyRestriction() {
 		return readOnly || mask || partialMask || hide;
 	}
+	
+	
+	/**
+	 * Returns whether any of the restrictions defined in this class indicate that the attribute value potentially needs
+	 * to be not shown to the user (i.e. masked, partial mask, hide).  Note that readonly does not fall in this category.
+	 * 
+	 * @return
+	 */
+	public boolean hasRestrictionThatRemovesValueFromUI() {
+		return mask || partialMask || hide;	
+	}
 }

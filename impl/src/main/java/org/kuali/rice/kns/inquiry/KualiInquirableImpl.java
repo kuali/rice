@@ -327,9 +327,10 @@ public class KualiInquirableImpl implements Inquirable {
                 keyValue = keyValue.toString();
             }
 
-            // Encrypt value if it is a field that has any restriction, because we don't want the browser history to store the restricted attribute's value
+            // Encrypt value if it is a field that has restriction that prevents a value from being shown to user,
+            // because we don't want the browser history to store the restricted attribute's value in the URL
             AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(businessObject.getClass().getName(), keyName);
-            if(attributeSecurity != null && attributeSecurity.hasAnyRestriction()){
+            if(attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI()){
             	try {
                     keyValue = getEncryptionService().encrypt(keyValue);
                 }

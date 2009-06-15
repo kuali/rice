@@ -17,11 +17,9 @@
 package org.kuali.rice.kns.datadictionary;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
@@ -49,6 +47,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentEntry.class);
 	
     protected Class<? extends Document> documentClass;
+    protected Class<? extends Document> baseDocumentClass;
     protected Class<? extends BusinessRule> businessRulesClass;
     protected Class<? extends PromptBeforeValidation> promptBeforeValidationClass;
     protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
@@ -93,6 +92,10 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
         }
+        else if (baseDocumentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
+        	throw new IllegalArgumentException("The documentClass " + documentClass.getName() +
+        			" is not a subclass of the baseDocumentClass " + baseDocumentClass.getName());
+        }
 
         this.documentClass = documentClass;
     }
@@ -101,6 +104,24 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return documentClass;
     }
 
+    /**
+    		The optional baseDocumentClass element is the name of the java superclass
+    		associated with the document. This gives the data dictionary the ability
+    		to index by the superclass in addition to the current class.
+     */
+    public void setBaseDocumentClass(Class<? extends Document> baseDocumentClass) {
+    	if (baseDocumentClass != null && documentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
+    		throw new IllegalArgumentException("The baseDocumentClass " + baseDocumentClass.getName() +
+    				" is not a superclass of the documentClass " + documentClass.getName());
+    	}
+    	
+    	this.baseDocumentClass = baseDocumentClass;
+    }
+
+    public Class<? extends Document> getBaseDocumentClass() {
+    	return baseDocumentClass;
+    }
+    
     /**
             The businessRulesClass element is the full class name of the java
             class which contains the business rules for a document.
@@ -183,6 +204,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getFullClassName()
      */
     public String getFullClassName() {
+    	if ( getBaseDocumentClass() != null) {
+    		return getBaseDocumentClass().getName();
+    	}
     	if ( getDocumentClass() != null ) {
     		return getDocumentClass().getName();
     	}

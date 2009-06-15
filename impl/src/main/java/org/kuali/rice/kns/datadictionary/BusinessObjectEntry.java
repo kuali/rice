@@ -55,6 +55,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     //private static Log LOG = LogFactory.getLog(BusinessObjectEntry.class);
 
     protected Class<? extends BusinessObject> businessObjectClass;
+    protected Class<? extends BusinessObject> baseBusinessObjectClass;
     protected Class<? extends Exporter> exporterClass;
     
     protected boolean boNotesEnabled = false;
@@ -79,13 +80,18 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
             throw new IllegalStateException("cannot generate JSTL key: businessObjectClass is null");
         }
 
-        return businessObjectClass.getSimpleName();
+        return (baseBusinessObjectClass != null) ? baseBusinessObjectClass.getSimpleName() : businessObjectClass.getSimpleName();
     }
 
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
+        else if (baseBusinessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(businessObjectClass)) {
+        	throw new IllegalArgumentException("The businessObjectClass " + businessObjectClass.getName() +
+        			" is not a subclass of the baseBusinessObjectClass " + baseBusinessObjectClass.getName());
+        }
+        
         if ( getRelationships() != null ) {
         	for ( RelationshipDefinition rd : getRelationships() ) {
         		rd.setSourceClass(businessObjectClass);
@@ -97,6 +103,25 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 
     public Class<? extends BusinessObject> getBusinessObjectClass() {
         return businessObjectClass;
+    }
+    
+    /**
+     * The baseBusinessObjectClass is an optional parameter for specifying a superclass
+     * for the businessObjectClass, allowing the data dictionary to index by superclass
+     * in addition to the current class.
+     */
+    
+    public void setBaseBusinessObjectClass(Class<? extends BusinessObject> baseBusinessObjectClass) {
+        if (baseBusinessObjectClass != null && businessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(businessObjectClass)) {
+        	throw new IllegalArgumentException("The baseBusinessObjectClass " + baseBusinessObjectClass.getName() +
+            		" is not a superclass of the businessObjectClass " + businessObjectClass.getName());
+        }
+
+        this.baseBusinessObjectClass = baseBusinessObjectClass;
+    }
+
+    public Class<? extends BusinessObject> getBaseBusinessObjectClass() {
+        return baseBusinessObjectClass;
     }
     
     public Class<? extends Exporter> getExporterClass() {

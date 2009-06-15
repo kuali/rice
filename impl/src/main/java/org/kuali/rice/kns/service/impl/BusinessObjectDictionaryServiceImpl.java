@@ -112,7 +112,7 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupable(java.lang.Class)
      */
     public Boolean isLookupable(Class businessObjectClass) {
-        Boolean isLookupable = null;
+        Boolean isLookupable = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
@@ -126,7 +126,7 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isInquirable(java.lang.Class)
      */
     public Boolean isInquirable(Class businessObjectClass) {
-        Boolean isInquirable = null;
+        Boolean isInquirable = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
@@ -140,7 +140,7 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isMaintainable(java.lang.Class)
      */
     public Boolean isMaintainable(Class businessObjectClass) {
-        Boolean isMaintainable = null;
+        Boolean isMaintainable = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
@@ -156,7 +156,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
 	 */
 	public Boolean isExportable(Class businessObjectClass) {
-		Boolean isExportable = null;
+		Boolean isExportable = Boolean.FALSE;
 		
 		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {

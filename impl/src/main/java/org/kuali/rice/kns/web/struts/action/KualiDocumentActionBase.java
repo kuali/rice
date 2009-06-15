@@ -82,6 +82,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiRuleService;
 import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -117,6 +118,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private DocumentHelperService documentHelperService;
     private DocumentService documentService;
     private KualiConfigurationService kualiConfigurationService;
+    private ParameterService parameterService;
     private PessimisticLockService pessimisticLockService;
     private KualiRuleService kualiRuleService;
     private IdentityManagementService identityManagementService;
@@ -244,7 +246,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
                 setupPessimisticLockMessages(document, request);
                 if (!document.getPessimisticLocks().isEmpty()) {
-                    String warningMinutes = getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
+                    String warningMinutes = getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
                     request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MINUTES, warningMinutes);
                     request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MILLISECONDS, (request.getSession().getMaxInactiveInterval() - (Integer.valueOf(warningMinutes) * 60)) * 1000);
                 }
@@ -1375,7 +1377,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return a value from {@link KEWConstants}
      */
     protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
-        return getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
+        return getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
     }
 
     public ActionForward sendNoteWorkflowNotification(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1634,6 +1636,13 @@ public class KualiDocumentActionBase extends KualiAction {
 		return this.kualiConfigurationService;
 	}
 
+	protected ParameterService getParameterService() {
+        if ( parameterService == null ) {
+            parameterService = KNSServiceLocator.getParameterService();
+        }
+        return this.parameterService;
+    }
+	
 	protected PessimisticLockService getPessimisticLockService() {
 		if ( pessimisticLockService == null ) {
 			pessimisticLockService = KNSServiceLocator.getPessimisticLockService();

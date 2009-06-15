@@ -28,6 +28,8 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.reference.AddressType;
 import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -94,6 +96,7 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	public String getCityName() {
 		return cityName;
 	}
+	
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCountryCode()
@@ -101,6 +104,8 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	public String getCountryCode() {
 		return countryCode;
 	}
+	
+	
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getEntityAddressId()
@@ -248,4 +253,80 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 		return m;
 	}
 
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCityNameUnmasked()
+     */
+    public String getDisplaySafeCityName() {
+        if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.cityName;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCountryCodeUnmasked()
+     */
+    public String getDisplaySafeCountryCode() {
+        if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.countryCode;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine1Unmasked()
+     */
+    public String getDisplaySafeLine1() {
+        if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.line1;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine2Unmasked()
+     */
+    public String getDisplaySafeLine2() {
+        if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.line2;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine3Unmasked()
+     */
+    public String getDisplaySafeLine3() {
+        if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.line3;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getPostalCodeUnmasked()
+     */
+    public String getDisplaySafePostalCode() {
+        if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.postalCode;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getStateCodeUnmasked()
+     */
+    public String getDisplaySafeStateCode() {
+        if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.stateCode;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#isSuppressAddress()
+     */
+    public boolean isSuppressAddress() {
+        return KimCommonUtils.isSuppressAddress(getEntityId());
+    }
 }

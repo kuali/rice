@@ -146,7 +146,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 			if (isProduction()) {
 				KEWServiceLocator.getEmailService().sendEmail(
 						getEmailFrom(documentType),
-						new EmailTo(user.getEmailAddress()), subject, body,
+						new EmailTo(user.getEmailAddressUnmasked()), subject, body,
 						false);
 			} else {
 				KEWServiceLocator

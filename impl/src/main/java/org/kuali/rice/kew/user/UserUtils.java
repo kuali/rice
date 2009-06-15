@@ -38,58 +38,58 @@ public class UserUtils {
 	    return null;
 	  }
 
-	public static String getDisplayableName(UserSession userSession, String principalId) {
-		return getDisplayableName(userSession, KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId));
-	}
+	//public static String getDisplayableName(UserSession userSession, String principalId) {
+	//	return getDisplayableName(userSession, KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId));
+	//}
 	
 	/*
      * @deprecated  Person getEmailName method accounts for privacy.
      */
-    @Deprecated
-	public static String getDisplayableName(UserSession userSession, KimPrincipal principal) {
-		if (userSession != null && !userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
-			return RESTRICTED_DATA_MASK;
-		}
-		Person person = getPersonService().getPerson(principal.getPrincipalId());
-		return person.getName();
-	}
+    //@Deprecated
+	//public static String getDisplayableName(UserSession userSession, KimPrincipal principal) {
+	//	if (userSession != null && !userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityNameRestricted(principal.getEntityId())) {
+	//		return RESTRICTED_DATA_MASK;
+	//	}
+	//	Person person = getPersonService().getPerson(principal.getPrincipalId());
+	//	return person.getName();
+	//}
 	
 	public static String getTransposedName(UserSession userSession, KimPrincipal principal) {
 		Person person = getPersonService().getPerson(principal.getPrincipalId());
-		return contructTransposedName(person);
+		return person.getName(); //contructTransposedName(person);
 	}
 	
-	private static String contructTransposedName(Person person) {
-		return person.getLastName() + (StringUtils.isNotBlank(person.getFirstName())?", " + person.getFirstName():"");
-	}
+	//private static String contructTransposedName(Person person) {
+	//	return person.getLastName() + (StringUtils.isNotBlank(person.getFirstName())?", " + person.getFirstName():"");
+	//}
 
 	/*
 	 * @deprecated  Person getEmailAddress method accounts for privacy.
 	 */
-	@Deprecated
-	public static String getDisplayableEmailAddress(UserSession userSession, KimPrincipal principal) {
-		if (userSession != null && !userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityEmailRestricted(principal.getEntityId())) {
-			return RESTRICTED_DATA_MASK;
-		}
-		Person person = getPersonService().getPerson(principal.getPrincipalId());
-		return person.getEmailAddress();
-	}
+	//@Deprecated
+	//public static String getDisplayableEmailAddress(UserSession userSession, KimPrincipal principal) {
+	//	if (userSession != null && !userSession.getPrincipalId().equals(principal.getPrincipalId()) && isEntityEmailRestricted(principal.getEntityId())) {
+	//		return RESTRICTED_DATA_MASK;
+	//	}
+	//	Person person = getPersonService().getPerson(principal.getPrincipalId());
+	//	return person.getEmailAddress();
+	//}
 	
-	public static boolean isEntityNameRestricted(String entityId) {
-		KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
-		if ( ObjectUtils.isNotNull(privacy) ) {
-			return privacy.isSuppressName();
-		}
-		return false;
-	}
+	//public static boolean isEntityNameRestricted(String entityId) {
+	//	KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+	//	if ( ObjectUtils.isNotNull(privacy) ) {
+	//		return privacy.isSuppressName();
+	//	}
+	//	return false;
+	//}
 
-	public static boolean isEntityEmailRestricted(String entityId) {
-		KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
-		if (ObjectUtils.isNotNull(privacy) ) {
-			return privacy.isSuppressEmail();
-		}
-		return false;
-	}
+	//public static boolean isEntityEmailRestricted(String entityId) {
+	//	KimEntityPrivacyPreferences privacy = getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+	//	if (ObjectUtils.isNotNull(privacy) ) {
+	//		return privacy.isSuppressEmail();
+	//	}
+	//	return false;
+	//}
 
 	/**
 	 * @return the personService

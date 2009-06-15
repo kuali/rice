@@ -53,6 +53,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Base implementation of the identity (entity) service.  This version assumes the KimEntity
@@ -151,13 +152,19 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		for ( KimPrincipalImpl p : entity.getPrincipals() ) {
 			principalInfo.add( new KimPrincipalInfo( p ) );
 		}
+		KimEntityPrivacyPreferencesInfo privacy = null;
+		if ( ObjectUtils.isNotNull( entity.getPrivacyPreferences() ) ) {
+            privacy = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+        }
+
+		info.setPrivacyPreferences(privacy);
 		info.setDefaultName( new KimEntityNameInfo( entity.getDefaultName() ) );
 		ArrayList<KimEntityEntityTypeDefaultInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeDefaultInfo>( entity.getEntityTypes().size() );
 		info.setEntityTypes( entityTypesInfo );
 		for ( KimEntityEntityType entityEntityType : entity.getEntityTypes() ) {
 			KimEntityEntityTypeDefaultInfo typeInfo = new KimEntityEntityTypeDefaultInfo();
 			typeInfo.setEntityTypeCode( entityEntityType.getEntityTypeCode() );
-			typeInfo.setDefaultAddress( new KimEntityAddressInfo( entityEntityType.getDefaultAddress() ) );
+			typeInfo.setDefaultAddress( new KimEntityAddressInfo( entityEntityType.getDefaultAddress()) );
 			typeInfo.setDefaultEmailAddress( new KimEntityEmailInfo( entityEntityType.getDefaultEmailAddress() ) );
 			typeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo( entityEntityType.getDefaultPhoneNumber() ) );
 			entityTypesInfo.add( typeInfo );

@@ -227,7 +227,7 @@ public class LookupUtils {
      *
      */
     private static Integer getApplicationSearchResultsLimit() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        String limitString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -251,7 +251,7 @@ public class LookupUtils {
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
+        String limitString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -416,7 +416,7 @@ public class LookupUtils {
      */
     private static void setFieldDirectInquiry(Field field) {
         if (StringUtils.isNotBlank(field.getFieldConversions())) {
-            boolean directInquiriesEnabled = kualiConfigurationService.getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
+            boolean directInquiriesEnabled = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
             if (directInquiriesEnabled) {
                 if (StringUtils.isNotBlank(field.getFieldConversions())) {
                     String fieldConversions = field.getFieldConversions();

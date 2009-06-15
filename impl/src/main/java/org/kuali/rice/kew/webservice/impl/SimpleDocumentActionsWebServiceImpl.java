@@ -996,7 +996,10 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				errorMessage += "Error: NULL Initiator; ";
 			} else {
 				initiatorPrincipalId = routeHeader.getInitiatorPrincipalId();
-				initiatorName = UserUtils.getDisplayableName(null, initiatorPrincipalId);
+				Person initiator = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+				if (initiator != null) {
+				    initiatorName = initiator.getName();
+				}
 			}
 
             if (routeHeader.getRoutedByPrincipalId() == null) {
@@ -1006,7 +1009,10 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
                 }
             } else {
                 routedByPrincipalId = routeHeader.getRoutedByPrincipalId();
-                routedByUserName = UserUtils.getDisplayableName(null, routedByPrincipalId);
+                Person routedByUser = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+                if (routedByUser != null) {
+                    routedByUserName = routedByUser.getName();
+                }
             }
 
 			if (routeHeader.getAppDocId() != null) {

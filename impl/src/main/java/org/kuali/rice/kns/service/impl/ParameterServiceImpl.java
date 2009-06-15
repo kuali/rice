@@ -47,11 +47,17 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 	
 	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode,
 			String parameterName) {
+	    Parameter parameter = fetchFromCache(namespaceCode, detailTypeCode, parameterName);
+        if (parameter != null) {
+            return parameter;
+        }
 	    HashMap<String, String> crit = new HashMap<String, String>(3);
 	    crit.put("parameterNamespaceCode", namespaceCode);
 	    crit.put("parameterDetailTypeCode", detailTypeCode);
 	    crit.put("parameterName", parameterName);
-	    return (Parameter)getBusinessObjectService().findByPrimaryKey(Parameter.class, crit);
+	    parameter = (Parameter)getBusinessObjectService().findByPrimaryKey(Parameter.class, crit);
+	    insertIntoCache(parameter); 
+	    return parameter;
 	}
     
    /**

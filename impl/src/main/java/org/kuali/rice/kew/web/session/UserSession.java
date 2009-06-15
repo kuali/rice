@@ -315,7 +315,7 @@ public class UserSession implements Serializable {
         this.objectMap = objectMap;
     }
     public String getDisplayName() {
-    	return UserUtils.getDisplayableName(this, getPrincipal());
+        return getPersonService().getPerson(getPrincipalId()).getNameUnmasked();
     }
 
     /**
@@ -332,7 +332,7 @@ public class UserSession implements Serializable {
 
     public void removeAuthentication(Authentication authentication) {
     	getAuthentications().remove(authentication);
-    }
+    } 
 
     public boolean hasRole(String role) {
     	for (Iterator iterator = getAuthentications().iterator(); iterator.hasNext();) {

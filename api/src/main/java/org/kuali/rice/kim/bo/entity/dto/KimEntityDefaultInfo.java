@@ -39,6 +39,7 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 	protected KimEntityAffiliation defaultAffiliation;
 	protected KimEntityEmploymentInformation primaryEmployment;
 	protected List<? extends KimEntityExternalIdentifier> externalIdentifiers;
+	protected KimEntityPrivacyPreferencesInfo privacyPreferences;
 	
 	public String getEntityId() {
 		return this.entityId;
@@ -97,5 +98,12 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 		}
 		return null;
 	}
+    public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
+        return this.privacyPreferences;
+    }
+    public void setPrivacyPreferences(
+            KimEntityPrivacyPreferencesInfo privacyPreferences) {
+        this.privacyPreferences = privacyPreferences;
+    }
 	
 }

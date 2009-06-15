@@ -37,6 +37,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiHelpForm;
@@ -55,6 +56,7 @@ public class KualiHelpAction extends KualiAction {
     
     private static DataDictionaryService dataDictionaryService;
     private static KualiConfigurationService kualiConfigurationService;
+    private static ParameterService parameterService;
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
     private DataDictionaryService getDataDictionaryService() {
@@ -68,6 +70,12 @@ public class KualiHelpAction extends KualiAction {
             kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         }
         return kualiConfigurationService;
+    }
+    private ParameterService getParameterService() {
+        if ( parameterService == null ) {
+            parameterService = KNSServiceLocator.getParameterService();
+        }
+        return parameterService;
     }
 
     private MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
@@ -371,6 +379,6 @@ public class KualiHelpAction extends KualiAction {
     }
 
     private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
-        return getConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_HELP_URL_KEY) + getConfigurationService().getParameterValue(parameterNamespace, parameterDetailTypeCode, parameterName);
-    }
-    }
+        return getConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_HELP_URL_KEY) + getParameterService().getParameterValue(parameterNamespace, parameterDetailTypeCode, parameterName);
+    }    
+}

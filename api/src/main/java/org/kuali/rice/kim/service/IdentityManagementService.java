@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
+//import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
@@ -55,7 +56,7 @@ public interface IdentityManagementService {
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
 	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
 	int getMatchingEntityCount( Map<String,String> searchCriteria );
-	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
+	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
 	AddressTypeInfo getAddressType( String code );
 	AffiliationTypeInfo getAffiliationType( String code );

@@ -136,7 +136,7 @@ public class EmailNode implements SimpleNode {
 	    if ("initiator".equalsIgnoreCase(to))
 	    {	
 	    	Person person = KIMServiceLocator.getPersonService().getPerson(context.getDocument().getInitiatorWorkflowId());
-			to = (person == null ? "" : person.getEmailAddress());
+			to = (person == null ? "" : person.getEmailAddressUnmasked());
 	    }
 	    if (StringUtils.isBlank(to)) {
 	    	throw new WorkflowRuntimeException("Email Address is missing from user's profile.");

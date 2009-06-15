@@ -113,8 +113,7 @@ public class ActionTakenValue implements WorkflowPersistable {
 
     public String getPrincipalDisplayName() {
     	// TODO this stinks to have to have a dependency on UserSession here
-    	UserSession userSession = UserSession.getAuthenticatedUser();
-    	return UserUtils.getDisplayableName(userSession, getPrincipal());
+    	return KEWServiceLocator.getIdentityHelperService().getPerson(getPrincipalId()).getName();
     }
 
     public KimPrincipal getDelegatorPrincipal() {
@@ -148,8 +147,7 @@ public class ActionTakenValue implements WorkflowPersistable {
         }
         if (getDelegatorPrincipalId() != null) {
         	// TODO this stinks to have to have a dependency on UserSession here
-        	UserSession userSession = UserSession.getAuthenticatedUser();
-        	return UserUtils.getDisplayableName(userSession, getDelegatorPrincipal());
+        	return KEWServiceLocator.getIdentityHelperService().getPerson(this.getDelegatorPrincipalId()).getName();
         } else {
             return getDelegatorGroup().getGroupName();
       }

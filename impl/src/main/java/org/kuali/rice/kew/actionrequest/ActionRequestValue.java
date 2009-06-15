@@ -246,8 +246,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     public String getDisplayName() {
     	if (isUserRequest()) {
-    		UserSession userSession = UserSession.getAuthenticatedUser();
-        	return UserUtils.getDisplayableName(userSession, getPrincipal());
+    	    return getPerson().getName();
     	} else if (isGroupRequest()) {
     		return getGroup().getGroupName();
     	} else if (isRoleRequest()) {

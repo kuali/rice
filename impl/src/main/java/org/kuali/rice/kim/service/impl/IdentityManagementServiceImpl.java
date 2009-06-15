@@ -16,7 +16,6 @@ import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
@@ -204,13 +203,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 			return principalRef.get();
 		}
 		return null;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityPrivacyPreferences(java.lang.String)
-	 */
-	public KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId) {
-		return getIdentityService().getEntityPrivacyPreferences( entityId );
 	}
 	
 	protected GroupInfo getGroupByIdCache( String groupId ) {

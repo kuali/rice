@@ -18,43 +18,45 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ParameterEvaluator;
 import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * ParameterServiceProxyImpl is an implementation of ParameterServiceProxy
  * that performs simple proxying of storage/retrieval calls to a remoted
  * ParameterService implementation.
  * 
- * TODO this class still needs caching implemented!!!
+ * TODO this class needs improved caching!!!
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class ParameterServiceProxyImpl implements ParameterService {
-	
-    private ParameterService parameterService;    
+    private ParameterService parameterService;  
 
 	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode,
 			String parameterName) {
-		return getParameterService().retrieveParameter(namespaceCode, detailTypeCode, parameterName);
+	    Parameter parameter = fetchFromCache(namespaceCode, detailTypeCode, parameterName);
+        if (parameter != null) {
+            return parameter;
+        }
+        parameter = getParameterService().retrieveParameter(namespaceCode, detailTypeCode, parameterName);
+        insertIntoCache(parameter); 
+        return parameter; 
 	}
     
 	@SuppressWarnings("unchecked")
 	public void setParameterForTesting(Class componentClass, String parameterName, String parameterText) {
 		getParameterService().setParameterForTesting(componentClass, parameterName, parameterText);
-	}
-	
-	
-
-	public void clearCache() {
-		getParameterService().clearCache();
+		
 	}
 
 	public String getDetailType(Class<? extends Object> documentOrStepClass) {
-		return getParameterService().getDetailType(documentOrStepClass);
+	    return getParameterService().getDetailType(documentOrStepClass);
 	}
 
 	public boolean getIndicatorParameter(
@@ -138,5 +140,50 @@ public class ParameterServiceProxyImpl implements ParameterService {
 			Map<String, String> fieldValues) {
 		return getParameterService().retrieveParametersGivenLookupCriteria(fieldValues);
 	}	
-	
+
+    public String getParameterValue(String namespaceCode, String detailTypeCode, String parameterName) {
+        return getParameterService().getParameterValue(namespaceCode, detailTypeCode, parameterName);
+    }
+
+    public List<String> getParameterValues(String namespaceCode, String detailTypeCode, String parameterName) {
+        return getParameterService().getParameterValues(namespaceCode, detailTypeCode, parameterName);
+        
+    }
+
+    public boolean getIndicatorParameter(String namespaceCode, String detailTypeCode, String parameterName) {
+        return getParameterService().getIndicatorParameter(namespaceCode, detailTypeCode, parameterName);
+    }
+
+    public ParameterEvaluator getParameterEvaluator(String namespaceCode, String detailTypeCode, String parameterName) {
+        return getParameterService().getParameterEvaluator(namespaceCode, detailTypeCode, parameterName);
+    }
+
+    public ParameterEvaluator getParameterEvaluator(String namespaceCode, String detailTypeCode, String parameterName, String constrainedValue) {
+        return getParameterService().getParameterEvaluator(namespaceCode, detailTypeCode, parameterName, constrainedValue);
+    }
+    
+
+    public void clearCache() {
+        getParameterService().clearCache();
+        KEWServiceLocator.getCacheAdministrator().flushGroup(KNSConstants.PARAMETER_CACHE_GROUP_NAME);
+    }
+    
+    protected Parameter fetchFromCache(String namespaceCode, String detailTypeCode, String name) {
+        return (Parameter)KEWServiceLocator.getCacheAdministrator().getFromCache(getParameterCacheKey(namespaceCode, detailTypeCode, name));
+    }
+    
+    protected void insertIntoCache(Parameter parameter) {
+        if (parameter == null) {
+            return;
+        }
+        KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, KNSConstants.PARAMETER_CACHE_GROUP_NAME);
+    }
+    
+    protected void flushParameterFromCache(String namespaceCode, String detailTypeCode, String name) {
+        KEWServiceLocator.getCacheAdministrator().flushEntry(getParameterCacheKey(namespaceCode, detailTypeCode, name));
+    }
+    
+    protected String getParameterCacheKey(String namespaceCode, String detailTypeCode, String name) {
+        return KNSConstants.PARAMETER_CACHE_PREFIX + namespaceCode + "-" + detailTypeCode + "-" + name;
+    }
 }

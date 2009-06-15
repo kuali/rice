@@ -29,6 +29,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -153,9 +155,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "entityPhoneId", entityPhoneId );
-		m.put( "phoneNumber", phoneNumber );
-		m.put( "extensionNumber", extensionNumber );
-		m.put( "countryCode", countryCode );
+		m.put( "phoneNumber", getPhoneNumber() );
+		m.put( "extensionNumber", getExtensionNumber() );
+		m.put( "countryCode", getCountryCode() );
 		return m;
 	}
 
@@ -192,4 +194,61 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 		
 		return sb.toString();
 	}
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCodeUnmasked()
+     */
+    public String getDisplaySafeCountryCode() {
+        if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.countryCode;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumberUnmasked()
+     */
+    public String getDisplaySafeExtensionNumber() {
+        if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.extensionNumber;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getFormattedPhoneNumberUnmasked()
+     */
+    public String getDisplaySafeFormattedPhoneNumber() {
+        if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        StringBuffer sb = new StringBuffer( 30 );
+        
+        // TODO: get extension from country code table
+        // TODO: append "+xxx" if country is not the default country
+        sb.append( this.phoneNumber );
+        if ( StringUtils.isNotBlank( this.extensionNumber ) ) {
+            sb.append( " x" );
+            sb.append( this.extensionNumber );
+        }
+        
+        return sb.toString();
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumberUnmasked()
+     */
+    public String getDisplaySafePhoneNumber() {
+        if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.phoneNumber;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#isSuppressPhone()
+     */
+    public boolean isSuppressPhone() {
+        return KimCommonUtils.isSuppressPhone(getEntityId());
+    }
 }

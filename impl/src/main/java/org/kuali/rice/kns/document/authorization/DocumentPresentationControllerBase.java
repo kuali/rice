@@ -18,10 +18,8 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -139,8 +137,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * @return boolean (true if can perform route report)
      */
     protected boolean canPerformRouteReport(Document document){
-    	KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-        return kualiConfigurationService.getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
+        return KNSServiceLocator.getParameterService().getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
     
    

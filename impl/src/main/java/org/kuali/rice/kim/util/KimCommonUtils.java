@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -209,79 +210,105 @@ public class KimCommonUtils {
 		} else stripped = toStripFrom;
 		return stripped;
 	}
+	
+	public static boolean isSuppressName(String entityId) {
+	    KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = KIMServiceLocator.getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
+	    UserSession userSession = GlobalVariables.getUserSession();
 
-	public static boolean isSuppressName(String principalId, String entityId) {
-        UserSession userSession = GlobalVariables.getUserSession();
-        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
         boolean suppressName = false;
         if (privacy != null) {
             suppressName = privacy.isSuppressName();
-        }
+        } 
         if (userSession != null 
-                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
                 && suppressName) {
             return true;
         }
         return false;
-    }
-    
-    public static boolean isSuppressEmail(String principalId, String entityId) {
+	}
+  
+    public static boolean isSuppressEmail(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = KIMServiceLocator.getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
         UserSession userSession = GlobalVariables.getUserSession();
-        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+
         boolean suppressEmail = false;
         if (privacy != null) {
             suppressEmail = privacy.isSuppressEmail();
-        }
+        } 
         if (userSession != null 
-                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
                 && suppressEmail) {
             return true;
         }
         return false;
     }
-    
-    public static boolean isSuppressAddress(String principalId, String entityId) {
+   
+    public static boolean isSuppressAddress(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = KIMServiceLocator.getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
         UserSession userSession = GlobalVariables.getUserSession();
-        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+
         boolean suppressAddress = false;
         if (privacy != null) {
             suppressAddress = privacy.isSuppressAddress();
-        }
+        } 
         if (userSession != null 
-                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
                 && suppressAddress) {
             return true;
         }
         return false;
     }
-    
-    public static boolean isSuppressPhone(String principalId, String entityId) {
+   
+    public static boolean isSuppressPhone(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = KIMServiceLocator.getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
         UserSession userSession = GlobalVariables.getUserSession();
-        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+
         boolean suppressPhone = false;
         if (privacy != null) {
             suppressPhone = privacy.isSuppressPhone();
-        }
+        } 
         if (userSession != null 
-                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
                 && suppressPhone) {
             return true;
         }
         return false;
     }
     
-    public static boolean isSuppressPersonal(String principalId, String entityId) {
+    public static boolean isSuppressPersonal(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = KIMServiceLocator.getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
         UserSession userSession = GlobalVariables.getUserSession();
-        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityManagementService().getEntityPrivacyPreferences( entityId );
+
         boolean suppressPersonal = false;
         if (privacy != null) {
             suppressPersonal = privacy.isSuppressPersonal();
-        }
+        } 
         if (userSession != null 
-                && !StringUtils.equals(userSession.getPrincipalId(), principalId)
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
                 && suppressPersonal) {
             return true;
         }
         return false;
     }
+
 }

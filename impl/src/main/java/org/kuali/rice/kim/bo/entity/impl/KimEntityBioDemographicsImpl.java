@@ -24,6 +24,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -75,9 +77,9 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put("entityId", entityId);
-		m.put("birthDate", birthDate);
-		m.put("ethnicityCode", ethnicityCode);
-		m.put("genderCode", genderCode);
+		m.put("birthDate", getBirthDate());
+		m.put("ethnicityCode", getEthnicityCode());
+		m.put("genderCode", getGenderCode());
 		return m;
 	}
 
@@ -100,5 +102,38 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	public void setGenderCode(String genderCode) {
 		this.genderCode = genderCode;
 	}
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#isSuppressPersonal()
+     */
+    public boolean isSuppressPersonal() {
+        return KimCommonUtils.isSuppressPersonal(getEntityId());
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getEthnicityCodeUnmasked()
+     */
+    public String getDisplaySafeEthnicityCode() {
+        if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.ethnicityCode;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGenderCodeUnmasked()
+     */
+    public String getDisplaySafeGenderCode() {
+        if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.genderCode;
+    }
 
 }

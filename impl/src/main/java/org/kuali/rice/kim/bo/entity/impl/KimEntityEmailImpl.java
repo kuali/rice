@@ -28,6 +28,8 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.reference.EmailType;
 import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -138,5 +140,22 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 	public void setEmailType(EmailType emailType) {
 		this.emailType = emailType;
 	}
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddressUnmasked()
+     */
+    public String getDisplaySafeEmailAddress() {
+        if (isSuppressEmail()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.emailAddress;
+    }
+
+    /** 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#isSuppressEmail()
+     */
+    public boolean isSuppressEmail() {
+        return KimCommonUtils.isSuppressEmail(entityId);
+    }
 
 }

@@ -80,7 +80,7 @@ public class Utilities {
     }
     
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
         if (parameter == null) {
             return null;
         }
@@ -92,7 +92,7 @@ public class Utilities {
     }
     
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
-        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
         if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
             return defaultValue;
         }

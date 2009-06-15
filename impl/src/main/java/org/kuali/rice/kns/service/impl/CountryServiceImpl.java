@@ -67,7 +67,7 @@ public class CountryServiceImpl implements CountryService {
      * @see org.kuali.kfs.sys.service.CountryService#getDefaultCountry()
      */
     public Country getDefaultCountry() {
-        String postalCountryCode = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE,
+        String postalCountryCode = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE,
 	        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
         return this.getByPrimaryId(postalCountryCode);
     }

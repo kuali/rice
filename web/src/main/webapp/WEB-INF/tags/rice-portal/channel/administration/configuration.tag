@@ -21,12 +21,12 @@
 	<ul class="chan">
 		<li>
 		<portal:portalLink displayTitle="true" title="Parameter"
-            url="${ConfigProperties.kr.url}/maintenance.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.Parameter&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
-		</li>
+		    url="kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.Parameter&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true" />
+        </li>
 		<li>
 		<portal:portalLink displayTitle="true" title="Parameter Component"
-			url="${ConfigProperties.kr.url}/maintenance.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.ParameterDetailType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
-		</li>
+		    url="kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.ParameterDetailType&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true" />
+        </li>
 <!-- I can't figure out what this is supposed to be
 		<li>
 		<portal:portalLink displayTitle="true" title="Parameter Module"
@@ -35,8 +35,8 @@
 -->
 		<li>
 		<portal:portalLink displayTitle="true" title="Parameter Type"
-            url="${ConfigProperties.kr.url}/maintenance.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.ParameterType&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
-		</li>
+		    url="kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.ParameterType&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true" />
+        </li>
 		<li>
 		<portal:portalLink displayTitle="true" title="System Namespace"
             url="${ConfigProperties.kr.url}/maintenance.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.Namespace&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />

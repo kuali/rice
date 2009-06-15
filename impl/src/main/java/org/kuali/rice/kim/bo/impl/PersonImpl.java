@@ -69,6 +69,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String firstName = "";
 	protected String middleName = "";
 	protected String lastName = "";
+	
 	protected String name = "";
 	// address data
 	protected String addressLine1 = "";
@@ -82,6 +83,12 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String emailAddress = "";
 	// phone data
 	protected String phoneNumber = "";
+	// privacy preferences data
+	protected boolean suppressName = false;
+	protected boolean suppressAddress = false;
+	protected boolean suppressPhone = false;
+	protected boolean suppressPersonal = false;
+	protected boolean suppressEmail = false;
 	// affiliation data
 	protected List<? extends KimEntityAffiliation> affiliations;
 	
@@ -151,6 +158,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	
 	protected void populateEntityInfo( KimEntityDefaultInfo entity, KimPrincipal principal, String personEntityTypeCode ) {
 		if(entity!=null){
+		    populatePrivacyInfo (entity );
 			KimEntityEntityTypeDefaultInfo entityEntityType = entity.getEntityType( personEntityTypeCode );  
 			entityTypeCode = personEntityTypeCode;
 			populateNameInfo( personEntityTypeCode, entity, principal );
@@ -187,6 +195,18 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 				}
 			}
 		}
+	}
+	
+	protected void populatePrivacyInfo (KimEntityDefaultInfo entity) {
+	    if(entity!=null) {
+    	    if (entity.getPrivacyPreferences() != null) {
+        	    suppressName = entity.getPrivacyPreferences().isSuppressName();
+        	    suppressAddress = entity.getPrivacyPreferences().isSuppressAddress();
+        	    suppressPhone = entity.getPrivacyPreferences().isSuppressPhone();
+        	    suppressPersonal = entity.getPrivacyPreferences().isSuppressPersonal();
+        	    suppressEmail = entity.getPrivacyPreferences().isSuppressEmail();
+    	    }
+	    }
 	}
 	
 	protected void populateAddressInfo( KimEntityEntityTypeDefaultInfo entityEntityType ) {
@@ -314,9 +334,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getFirstName()
 	 */
 	public String getFirstName() {
-	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+	    if (KimCommonUtils.isSuppressName(getEntityId())){
+	        return KimConstants.RESTRICTED_DATA_MASK;
+	    }
 		return firstName;
 	}
 	
@@ -331,7 +351,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getMiddleName()
 	 */
 	public String getMiddleName() {
-	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressName(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return middleName;
@@ -348,7 +368,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getLastName()
 	 */
 	public String getLastName() {
-	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressName(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return lastName;
@@ -365,23 +385,23 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getName()
 	 */
 	public String getName() {
-	    if (KimCommonUtils.isSuppressName(getPrincipalId(), getEntityId())) {
-		    return KimConstants.RESTRICTED_DATA_MASK;
-		}
+	    if (KimCommonUtils.isSuppressName(getEntityId())){
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 	    return name;
 	}
 	
 	public String getNameUnmasked() {
-	    return this.getName();
+	    return this.name;
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.Person#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
-	    if (KimCommonUtils.isSuppressPhone(getPrincipalId(), getEntityId())) {
-	        return KimConstants.RESTRICTED_DATA_MASK;
-	    }
+	    if (KimCommonUtils.isSuppressPhone(getEntityId())){
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return phoneNumber;
 	}
 	
@@ -396,7 +416,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.bo.Person#getEmailAddress()
 	 */
 	public String getEmailAddress() {
-	    if (KimCommonUtils.isSuppressEmail(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressEmail(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return emailAddress;
@@ -494,7 +514,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	public String getAddressLine1() {
-	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressAddress(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return this.addressLine1;
@@ -505,7 +525,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	public String getAddressLine2() {
-	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressAddress(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return this.addressLine2;
@@ -516,7 +536,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     }
 
 	public String getAddressLine3() {
-	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressAddress(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return this.addressLine3;
@@ -527,7 +547,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     }
 
 	public String getAddressCityName() {
-	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressAddress(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return this.addressCityName;
@@ -538,7 +558,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     }
 
 	public String getAddressStateCode() {
-	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressAddress(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return this.addressStateCode;
@@ -549,7 +569,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     }
 
 	public String getAddressPostalCode() {
-	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressAddress(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return this.addressPostalCode;
@@ -560,7 +580,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     }
 
 	public String getAddressCountryCode() {
-	    if (KimCommonUtils.isSuppressAddress(getPrincipalId(), getEntityId())) {
+	    if (KimCommonUtils.isSuppressAddress(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return this.addressCountryCode;

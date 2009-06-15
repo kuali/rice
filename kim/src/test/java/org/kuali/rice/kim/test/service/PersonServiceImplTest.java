@@ -108,11 +108,11 @@ public class PersonServiceImplTest extends KIMTestCase {
 		Person p = personService.getPerson( "KULUSER" );
 		assertNotNull( "person object must not be null", p );
 		assertEquals( "class must match implementation class defined on service", personService.getPersonImplementationClass(), p.getClass() );
-		assertEquals( "person name does not match", "KULUSER", p.getFirstName() );
+		assertEquals( "person name does not match", "KULUSER", p.getFirstNameUnmasked() );
 		assertEquals( "principal name does not match", "kuluser", p.getPrincipalName() );
-		assertEquals( "KULUSER should have no address record", "", p.getAddressLine1() );
+		assertEquals( "KULUSER should have no address record", "", p.getAddressLine1Unmasked() );
 		assertEquals( "KULUSER should have no campus code", "", p.getCampusCode() );
-		assertEquals( "KULUSER should have no email address", "", p.getEmailAddress() );
+		assertEquals( "KULUSER should have no email address", "", p.getEmailAddressUnmasked() );
 		assertNotNull( "entity ID should be set", p.getEntityId() );
 		assertNotNull( "principal ID should be set", p.getPrincipalId() );
 		

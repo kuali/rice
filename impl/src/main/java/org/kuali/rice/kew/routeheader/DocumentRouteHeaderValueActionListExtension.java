@@ -22,6 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -51,13 +53,14 @@ public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHe
      * Gets the initiator name, masked appropriately if restricted.
      */
     public String getInitiatorName() {
-    	String initiatorName = UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), getActionListInitiatorPrincipal());
-    	if (StringUtils.isBlank(initiatorName)) {
-    		initiatorName = UserUtils.getDisplayableName(UserSession.getAuthenticatedUser(), getActionListInitiatorPrincipal());
-    	}
-    	if (StringUtils.isBlank(initiatorName) && 
-    			!UserUtils.isEntityNameRestricted(getActionListInitiatorPrincipal().getEntityId())) {
-    		initiatorName = getActionListInitiatorPrincipal().getPrincipalName();
+        String initiatorName = null;
+        KimEntityDefaultInfo defaultInfo = KIMServiceLocator.getIdentityManagementService().getEntityDefaultInfo(getActionListInitiatorPrincipal().getEntityId());
+    	if (defaultInfo != null) {
+            initiatorName = defaultInfo.getDefaultName().getFormattedName();
+    	    if (StringUtils.isBlank(initiatorName) && 
+    	            !defaultInfo.getPrivacyPreferences().isSuppressName()) {
+    		    initiatorName = getActionListInitiatorPrincipal().getPrincipalName();
+    	    }
     	}
     	return initiatorName;
     }

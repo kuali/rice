@@ -263,7 +263,7 @@ public class NoteAction extends KewKualiAction {
         }
         if (user != null) {
             note.setNoteAuthorFullName(user.getName());
-            note.setNoteAuthorEmailAddress(user.getEmailAddress());
+            note.setNoteAuthorEmailAddress(user.getEmailAddressUnmasked());
             note.setNoteAuthorNetworkId(user.getPrincipalId());
         } else {
             note.setNoteAuthorFullName(id + " (Name not Available)");

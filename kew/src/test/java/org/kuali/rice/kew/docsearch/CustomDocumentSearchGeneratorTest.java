@@ -86,14 +86,14 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
         // delete the parameter
-        KNSServiceLocator.getBusinessObjectService().delete(KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
+        KNSServiceLocator.getBusinessObjectService().delete(KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
 
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
     }
 
     private void adjustResultSetCapApplicationConstantValue(Integer newValue) {
-        Parameter ps = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        Parameter ps = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         if (ps == null) {
             ps = new Parameter( KEWConstants.DOC_SEARCH_RESULT_CAP, newValue.toString(), "A" );
         }

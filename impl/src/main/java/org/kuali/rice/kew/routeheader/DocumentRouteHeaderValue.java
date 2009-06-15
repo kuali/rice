@@ -238,13 +238,11 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
    	}
 	
     public String getInitiatorDisplayName() {
-    	UserSession userSession = UserSession.getAuthenticatedUser();
-    	return UserUtils.getDisplayableName(userSession, getInitiatorPrincipal());
+        return KEWServiceLocator.getIdentityHelperService().getPerson(getInitiatorWorkflowId()).getName();
     }
 
     public String getRoutedByDisplayName() {
-    	UserSession userSession = UserSession.getAuthenticatedUser();
-    	return UserUtils.getDisplayableName(userSession, getRoutedByPrincipal());
+    	return KEWServiceLocator.getIdentityHelperService().getPerson(getRoutedByUserWorkflowId()).getName();
     }
 	
     public String getDocRouteStatusLabel() {

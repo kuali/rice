@@ -106,7 +106,7 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
             sessionUser=userSession.getPerson();
         }
         if (sessionUser != null) {
-            userEmail=sessionUser.getEmailAddress();
+            userEmail=sessionUser.getEmailAddressUnmasked();
             userName=sessionUser.getName();
             uuid = sessionUser.getPrincipalName();
         }

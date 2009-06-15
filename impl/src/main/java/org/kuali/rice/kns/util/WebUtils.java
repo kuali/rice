@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,8 +58,8 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.ParameterConstants;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -632,8 +631,8 @@ public class WebUtils {
     	if (StringUtils.isBlank(fieldValue)) {
     		return false;
     	}
-    	KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-    	List<String> sensitiveDataPatterns = kualiConfigurationService.getParameterValues(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT, 
+    	ParameterService parameterService = KNSServiceLocator.getParameterService();
+    	List<String> sensitiveDataPatterns = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT, 
     			KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
     	for (String pattern : sensitiveDataPatterns){
     		if (Pattern.compile(pattern).matcher(fieldValue).find()) {

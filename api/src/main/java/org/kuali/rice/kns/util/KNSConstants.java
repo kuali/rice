@@ -35,7 +35,9 @@ public class KNSConstants extends JSTLConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
-
+    public static final String PARAMETER_CACHE_PREFIX = "Parameter:";
+    public static final String PARAMETER_CACHE_GROUP_NAME = "SystemParameter";
+    
     public static final String KNS_NAMESPACE = "KR-NS";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";

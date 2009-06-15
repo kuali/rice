@@ -48,6 +48,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -276,17 +277,30 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         this.kualiInquirable = kualiInquirable;
     }
 
-    private KualiConfigurationService kualiConfigurationService;
+    private KualiConfigurationService configurationService;
 
     public KualiConfigurationService getKualiConfigurationService() {
-	if ( kualiConfigurationService == null ) {
-	    kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-	}
-        return kualiConfigurationService;
+    if ( configurationService == null ) {
+        configurationService = KNSServiceLocator.getKualiConfigurationService();
+    }
+        return configurationService;
     }
 
-    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
-        this.kualiConfigurationService = kualiConfigurationService;
+    public void setParameterService(KualiConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
+    
+    private ParameterService parameterService;
+
+    public ParameterService getParameterService() {
+	if ( parameterService == null ) {
+	    parameterService = KNSServiceLocator.getParameterService();
+	}
+        return parameterService;
+    }
+
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
     }
 
     /**
@@ -639,7 +653,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     	if (fieldDefinedMaxLength == null) {
     		if ( RESULTS_DEFAULT_MAX_COLUMN_LENGTH == null ) {
     			try {
-    				RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf( getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH) );
+    				RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf( getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH) );
     			} catch ( NumberFormatException ex ) {
     				LOG.error("Lookup field max length parameter not found and unable to parse default set in system parameters (RESULTS_DEFAULT_MAX_COLUMN_LENGTH).");
     			}

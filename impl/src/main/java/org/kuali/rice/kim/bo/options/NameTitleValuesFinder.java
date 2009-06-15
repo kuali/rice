@@ -38,7 +38,7 @@ public class NameTitleValuesFinder extends KeyValuesBase {
      */
     public List getKeyValues() {
 
-    	List<String> values = KNSServiceLocator.getKualiConfigurationService().getParameterValues(KimConstants.NAMESPACE_CODE, "EntityNameImpl", "PREFIXES");
+    	List<String> values = KNSServiceLocator.getParameterService().getParameterValues(KimConstants.NAMESPACE_CODE, "EntityNameImpl", "PREFIXES");
         List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
         labels.add(new KeyLabelPair("", ""));
         for (String title : values) {

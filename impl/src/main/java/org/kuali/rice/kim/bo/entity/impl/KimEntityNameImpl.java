@@ -28,6 +28,8 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.reference.EntityNameType;
 import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -157,8 +159,8 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "entityNameId", entityNameId );
-		m.put( "firstName", firstName );
-		m.put( "lastName", lastName );
+		m.put( "firstName", getFirstName() );
+		m.put( "lastName", getLastName() );
 		return m;
 	}
 
@@ -182,4 +184,67 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 		this.entityNameId = entityNameId;
 	}
 
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstNameUnmasked()
+     */
+    public String getDisplaySafeFirstName() {
+        if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.firstName;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedNameUnmasked()
+     */
+    public String getDisplaySafeFormattedName() {
+        if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastNameUnmasked()
+     */
+    public String getDisplaySafeLastName() {
+        if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.lastName;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleNameUnmasked()
+     */
+    public String getDisplaySafeMiddleName() {
+        if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.middleName;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffixUnmasked()
+     */
+    public String getDisplaySafeSuffix() {
+        if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.suffix;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitleUnmasked()
+     */
+    public String getDisplaySafeTitle() {
+        if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+        return this.title;
+    }
+
+    private boolean isSuppressName() {
+        return KimCommonUtils.isSuppressName(getEntityId());
+    }
 }

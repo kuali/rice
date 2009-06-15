@@ -538,9 +538,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
      * Tests the fix to issue http://fms.dfa.cornell.edu:8080/browse/KULWF-366
      */
     @Test public void testIsLastApproverActivation() throws Exception {
-        // first test without the constant set
-        //ApplicationConstant appConstant = KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
-        Parameter lastApproverActivateParameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        // first test without the parameter set
+        Parameter lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
         assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getParameterValue()));
         String originalParameterValue = lastApproverActivateParameter.getParameterValue();
@@ -628,7 +627,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         lastApproverActivateParameter.setParameterValue(parameterValue);
         KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
 
-        lastApproverActivateParameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
         assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getParameterValue());
 

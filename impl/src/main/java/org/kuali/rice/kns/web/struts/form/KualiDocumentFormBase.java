@@ -763,7 +763,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     @Override
     protected void customInitMaxUploadSizes() {
         super.customInitMaxUploadSizes();
-        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
+        addMaxUploadSize(KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
     }
 
     

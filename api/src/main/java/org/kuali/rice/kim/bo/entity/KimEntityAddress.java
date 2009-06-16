@@ -24,6 +24,7 @@ package org.kuali.rice.kim.bo.entity;
 public interface KimEntityAddress extends KimDefaultableEntityTypeData {
 	
 	String getEntityAddressId();
+	String getEntityId();
 	
 	String getAddressTypeCode();
 	
@@ -34,4 +35,11 @@ public interface KimEntityAddress extends KimDefaultableEntityTypeData {
 	String getStateCode();
 	String getPostalCode();
 	String getCountryCode();
+	String getLine1Unmasked();
+    String getLine2Unmasked();
+    String getLine3Unmasked();
+    String getCityNameUnmasked();
+    String getStateCodeUnmasked();
+    String getPostalCodeUnmasked();
+    String getCountryCodeUnmasked();
 }

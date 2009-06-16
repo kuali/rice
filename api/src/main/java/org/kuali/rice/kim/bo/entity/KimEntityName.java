@@ -26,16 +26,23 @@ import org.kuali.rice.kns.bo.DefaultableInactivateable;
 public interface KimEntityName extends DefaultableInactivateable {
 	
 	String getEntityNameId();
+	String getEntityId();
 	
 	String getNameTypeCode();
 	String getFirstName();
+	String getFirstNameUnmasked();
 	String getMiddleName();
+	String getMiddleNameUnmasked();
 	String getLastName();
+	String getLastNameUnmasked();
 	String getTitle();
+	String getTitleUnmasked();
 	String getSuffix();
+	String getSuffixUnmasked();
 	
 	/**
 	 * Return the entire name as the person or system wants it displayed.
 	 */
 	String getFormattedName();
+	String getFormattedNameUnmasked();
 }

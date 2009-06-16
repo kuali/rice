@@ -80,6 +80,9 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstName()
 	 */
 	public String getFirstName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return firstName;
 	}
 
@@ -87,6 +90,9 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastName()
 	 */
 	public String getLastName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return lastName;
 	}
 
@@ -94,6 +100,9 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleName()
 	 */
 	public String getMiddleName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return middleName;
 	}
 
@@ -108,6 +117,9 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffix()
 	 */
 	public String getSuffix() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return suffix;
 	}
 
@@ -115,6 +127,9 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitle()
 	 */
 	public String getTitle() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return title;
 	}
 
@@ -148,6 +163,9 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedName()
 	 */
 	public String getFormattedName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
 	}
 	
@@ -187,60 +205,42 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstNameUnmasked()
      */
-    public String getDisplaySafeFirstName() {
-        if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getFirstNameUnmasked() {
         return this.firstName;
     }
 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedNameUnmasked()
      */
-    public String getDisplaySafeFormattedName() {
-        if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-        return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
+    public String getFormattedNameUnmasked() {
+        return this.lastName + ", " + this.firstName + (this.middleName==null?"":" " + this.middleName);
     }
 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastNameUnmasked()
      */
-    public String getDisplaySafeLastName() {
-        if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getLastNameUnmasked() {
         return this.lastName;
     }
 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleNameUnmasked()
      */
-    public String getDisplaySafeMiddleName() {
-        if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getMiddleNameUnmasked() {
         return this.middleName;
     }
 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffixUnmasked()
      */
-    public String getDisplaySafeSuffix() {
-        if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getSuffixUnmasked() {
         return this.suffix;
     }
 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitleUnmasked()
      */
-    public String getDisplaySafeTitle() {
-        if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getTitleUnmasked() {
         return this.title;
     }
 

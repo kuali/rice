@@ -175,13 +175,13 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if(entity!=null){
 			KimEntityName entityName = entity.getDefaultName();
 			if ( entityName != null ) {
-				firstName = unNullify( entityName.getFirstName() );
-				middleName = unNullify( entityName.getMiddleName() );
-				lastName = unNullify( entityName.getLastName() );
+				firstName = unNullify( entityName.getFirstNameUnmasked() );
+				middleName = unNullify( entityName.getMiddleNameUnmasked() );
+				lastName = unNullify( entityName.getLastNameUnmasked() );
 				if ( entityTypeCode.equals( "SYSTEM" ) ) {
 					name = principal.getPrincipalName().toUpperCase();
 				} else {
-					name = unNullify( entityName.getFormattedName() );
+					name = unNullify( entityName.getFormattedNameUnmasked() );
 				}
 			} else {
 				firstName = "";
@@ -213,13 +213,13 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if(entityEntityType!=null){
 			KimEntityAddress defaultAddress = entityEntityType.getDefaultAddress();
 			if ( defaultAddress != null ) {			
-				addressLine1 = unNullify( defaultAddress.getLine1() );
-				addressLine2 = unNullify( defaultAddress.getLine2() );
-				addressLine3 = unNullify( defaultAddress.getLine3() );
-				addressCityName = unNullify( defaultAddress.getCityName() );
-				addressStateCode = unNullify( defaultAddress.getStateCode() );
-				addressPostalCode = unNullify( defaultAddress.getPostalCode() );
-				addressCountryCode = unNullify( defaultAddress.getCountryCode() );
+				addressLine1 = unNullify( defaultAddress.getLine1Unmasked() );
+				addressLine2 = unNullify( defaultAddress.getLine2Unmasked() );
+				addressLine3 = unNullify( defaultAddress.getLine3Unmasked() );
+				addressCityName = unNullify( defaultAddress.getCityNameUnmasked() );
+				addressStateCode = unNullify( defaultAddress.getStateCodeUnmasked() );
+				addressPostalCode = unNullify( defaultAddress.getPostalCodeUnmasked() );
+				addressCountryCode = unNullify( defaultAddress.getCountryCodeUnmasked() );
 			} else {
 				addressLine1 = "";
 				addressLine2 = "";
@@ -236,7 +236,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if(entityEntityType!=null){
 			KimEntityEmail entityEmail = entityEntityType.getDefaultEmailAddress();
 			if ( entityEmail != null ) {
-				emailAddress = unNullify( entityEmail.getEmailAddress() );
+				emailAddress = unNullify( entityEmail.getEmailAddressUnmasked() );
 			} else {
 				emailAddress = "";
 			}
@@ -247,7 +247,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if(entityEntityType!=null){
 			KimEntityPhone entityPhone = entityEntityType.getDefaultPhoneNumber();
 			if ( entityPhone != null ) {
-				phoneNumber = unNullify( entityPhone.getFormattedPhoneNumber() );
+				phoneNumber = unNullify( entityPhone.getFormattedPhoneNumberUnmasked() );
 			} else {
 				phoneNumber = "";
 			}

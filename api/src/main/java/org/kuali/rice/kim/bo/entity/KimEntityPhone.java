@@ -24,12 +24,18 @@ package org.kuali.rice.kim.bo.entity;
 public interface KimEntityPhone extends KimDefaultableEntityTypeData {
 
 	String getEntityPhoneId();
-
+	String getEntityId();
+	
 	String getPhoneTypeCode();
 	String getPhoneNumber();
 	String getExtensionNumber();
 	String getCountryCode();
 	
-	String getFormattedPhoneNumber();
+	String getPhoneNumberUnmasked();
+    String getExtensionNumberUnmasked();
+    String getCountryCodeUnmasked();
+    
+    String getFormattedPhoneNumber();
+	String getFormattedPhoneNumberUnmasked();
 	
 }

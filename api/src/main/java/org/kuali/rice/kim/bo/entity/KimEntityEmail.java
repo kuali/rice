@@ -24,8 +24,9 @@ package org.kuali.rice.kim.bo.entity;
 public interface KimEntityEmail extends KimDefaultableEntityTypeData {
 
 	String getEntityEmailId();
-	
+	String getEntityId();
 	String getEmailTypeCode();
 	
 	String getEmailAddress();
+	String getEmailAddressUnmasked();
 }

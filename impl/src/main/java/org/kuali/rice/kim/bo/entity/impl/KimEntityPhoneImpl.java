@@ -74,6 +74,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCode()
 	 */
 	public String getCountryCode() {
+	    if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return countryCode;
 	}
 
@@ -88,6 +91,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumber()
 	 */
 	public String getExtensionNumber() {
+	    if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return extensionNumber;
 	}
 
@@ -95,6 +101,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
+	    if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return phoneNumber;
 	}
 
@@ -182,6 +191,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	}
 
 	public String getFormattedPhoneNumber() {
+	    if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		StringBuffer sb = new StringBuffer( 30 );
 		
 		// TODO: get extension from country code table
@@ -195,33 +207,28 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 		return sb.toString();
 	}
 
+    private boolean isSuppressPhone() {
+        return KimCommonUtils.isSuppressPhone(getEntityId());
+    }
+
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCodeUnmasked()
      */
-    public String getDisplaySafeCountryCode() {
-        if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getCountryCodeUnmasked() {
         return this.countryCode;
     }
 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumberUnmasked()
      */
-    public String getDisplaySafeExtensionNumber() {
-        if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getExtensionNumberUnmasked() {
         return this.extensionNumber;
     }
 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getFormattedPhoneNumberUnmasked()
      */
-    public String getDisplaySafeFormattedPhoneNumber() {
-        if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getFormattedPhoneNumberUnmasked() {
         StringBuffer sb = new StringBuffer( 30 );
         
         // TODO: get extension from country code table
@@ -238,17 +245,7 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumberUnmasked()
      */
-    public String getDisplaySafePhoneNumber() {
-        if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getPhoneNumberUnmasked() {
         return this.phoneNumber;
-    }
-
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#isSuppressPhone()
-     */
-    public boolean isSuppressPhone() {
-        return KimCommonUtils.isSuppressPhone(getEntityId());
     }
 }

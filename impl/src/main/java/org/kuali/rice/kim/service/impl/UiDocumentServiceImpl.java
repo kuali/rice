@@ -184,6 +184,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		bos.addAll(personDelegations);
 		// boservice.save(bos) does not handle deleteawarelist
 		getBusinessObjectService().save(bos);
+		
+		KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
+		
 		if (!blankRoleMemberAttrs.isEmpty()) {
 			getBusinessObjectService().delete(blankRoleMemberAttrs);
 		}
@@ -1636,7 +1639,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
 
 		getBusinessObjectService().save(bos);
-
+		
 		KIMServiceLocator.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 		if(!kimRole.isActive()){
 			// when a role is inactivated, inactivate the memberships of principals, groups, and roles in 

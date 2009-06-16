@@ -27,5 +27,7 @@ public interface KimEntityBioDemographics {
 
 	Date getBirthDate();
 	String getEthnicityCode();
+	String getEthnicityCodeUnmasked();
 	String getGenderCode();
+	String getGenderCodeUnmasked();
 }

@@ -64,6 +64,9 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
 	 */
 	public String getEmailAddress() {
+	    if (isSuppressEmail()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return emailAddress;
 	}
 
@@ -141,21 +144,15 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 		this.emailType = emailType;
 	}
 
+    private boolean isSuppressEmail() {
+        return KimCommonUtils.isSuppressEmail(entityId);
+    }
+
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddressUnmasked()
      */
-    public String getDisplaySafeEmailAddress() {
-        if (isSuppressEmail()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getEmailAddressUnmasked() {
         return this.emailAddress;
-    }
-
-    /** 
-     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#isSuppressEmail()
-     */
-    public boolean isSuppressEmail() {
-        return KimCommonUtils.isSuppressEmail(entityId);
     }
 
 }

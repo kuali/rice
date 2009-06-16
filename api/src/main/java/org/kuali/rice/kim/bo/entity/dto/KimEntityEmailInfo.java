@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.bo.entity.dto;
 
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -25,6 +27,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	private static final long serialVersionUID = 1L;
 
 	protected String entityEmailId = "";
+	protected String entityId = "";
 	protected String entityTypeCode = "";
 	protected String emailTypeCode = "";
 	protected String emailAddress = "";
@@ -44,7 +47,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 			entityEmailId = unNullify( email.getEntityEmailId() );
 			entityTypeCode = unNullify( email.getEntityTypeCode() );
 			emailTypeCode = unNullify( email.getEmailTypeCode() );
-			emailAddress = unNullify( email.getEmailAddress() );
+			emailAddress = unNullify( email.getEmailAddressUnmasked() );
 			dflt = email.isDefault();
 			active = email.isActive();
 		}
@@ -54,6 +57,9 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
 	 */
 	public String getEmailAddress() {
+	    if (isSuppressEmail()) {
+	        return KimConstants.RESTRICTED_DATA_MASK;
+	    }
 		return emailAddress;
 	}
 
@@ -93,5 +99,27 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	public void setEntityEmailId(String entityEmailId) {
 		this.entityEmailId = entityEmailId;
 	}
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddressUnmasked()
+     */
+    public String getEmailAddressUnmasked() {
+        return this.emailAddress;
+    }
+
+    private boolean isSuppressEmail() {
+        return KimCommonUtils.isSuppressEmail(entityId);
+    }
+    
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityId()
+     */
+    public String getEntityId() {
+        return this.entityId;
+    }
+	
+	
 
 }

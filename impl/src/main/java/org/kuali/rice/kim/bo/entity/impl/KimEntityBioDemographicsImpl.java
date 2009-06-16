@@ -60,6 +60,9 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getEthnicityCode()
 	 */
 	public String getEthnicityCode() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return ethnicityCode;
 	}
 
@@ -67,6 +70,9 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGenderCode()
 	 */
 	public String getGenderCode() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return genderCode;
 	}
 
@@ -103,36 +109,21 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 		this.genderCode = genderCode;
 	}
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#isSuppressPersonal()
-     */
-    public boolean isSuppressPersonal() {
+    private boolean isSuppressPersonal() {
         return KimCommonUtils.isSuppressPersonal(getEntityId());
     }
 
     /**
-     * This overridden method ...
-     * 
      * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getEthnicityCodeUnmasked()
      */
-    public String getDisplaySafeEthnicityCode() {
-        if (isSuppressPersonal()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getEthnicityCodeUnmasked() {
         return this.ethnicityCode;
     }
 
     /**
-     * This overridden method ...
-     * 
      * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGenderCodeUnmasked()
      */
-    public String getDisplaySafeGenderCode() {
-        if (isSuppressPersonal()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
+    public String getGenderCodeUnmasked() {
         return this.genderCode;
     }
 

@@ -68,7 +68,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		if ( roleIds != null ) {
 			c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
 		}
-		c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
+		if(principalId!=null)
+			c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
 		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
 		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -147,7 +148,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		Criteria c = new Criteria();
 		if(roleIds!=null && !roleIds.isEmpty())
 			c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
-		c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
+		if(groupIds!=null && !groupIds.isEmpty())
+			c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
 		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
 		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -219,9 +221,11 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 			Collection<String> delegationIds, String principalId) {
 		Criteria c = new Criteria();
 		
-		c.addEqualTo(KIMPropertyConstants.DelegationMember.MEMBER_ID, principalId);
+		if(principalId!=null)
+			c.addEqualTo(KIMPropertyConstants.DelegationMember.MEMBER_ID, principalId);
 		c.addEqualTo( KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
-		c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
+		if(delegationIds!=null && !delegationIds.isEmpty())
+			c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
 		Query query = QueryFactory.newQuery(KimDelegationMemberImpl.class, c);
 		Collection<KimDelegationMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		ArrayList<KimDelegationMemberImpl> results = new ArrayList<KimDelegationMemberImpl>( coll.size() );
@@ -243,8 +247,10 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public List<KimDelegationMemberImpl> getDelegationGroupsForGroupIdsAndDelegationIds(
 			Collection<String> delegationIds, List<String> groupIds) {
 		Criteria c = new Criteria();
-		c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
-		c.addIn(KIMPropertyConstants.DelegationMember.MEMBER_ID, groupIds);
+		if(delegationIds!=null && !delegationIds.isEmpty())
+			c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
+		if(groupIds!=null && !groupIds.isEmpty())
+			c.addIn(KIMPropertyConstants.DelegationMember.MEMBER_ID, groupIds);
 		c.addEqualTo( KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
 		Query query = QueryFactory.newQuery(KimDelegationMemberImpl.class, c);
 		Collection<KimDelegationMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -264,7 +270,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds, String memberTypeCode ) {	
 		Criteria c = new Criteria();
 		
-		c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
 		if ( memberTypeCode != null ) {
 			c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, memberTypeCode );
 		}
@@ -286,7 +293,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers( Collection<String> roleIds) {	
 		Criteria c = new Criteria();
 		
-		c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds);
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds);
 		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
 
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
@@ -304,15 +312,18 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters( Collection<String> roleIds, String principalId, List<String> groupIds ) {	
 		Criteria c = new Criteria();
 		
-		c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
 		Criteria orSet = new Criteria();
 		orSet.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.ROLE_MEMBER_TYPE );
 		Criteria principalCheck = new Criteria();
-		principalCheck.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
+		if(principalId!=null)
+			principalCheck.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
 		principalCheck.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
 		orSet.addOrCriteria( principalCheck );
 		Criteria groupCheck = new Criteria();
-		groupCheck.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
+		if(groupIds!=null && !groupIds.isEmpty())
+			groupCheck.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
 		groupCheck.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
 		c.addAndCriteria( orSet );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
@@ -333,8 +344,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	public Map<String,List<KimDelegationMemberImpl>> getDelegationMembersForDelegationIds(
 			List<String> delegationIds) {
 		Criteria c = new Criteria();
-		
-		c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
+		if(delegationIds!=null && !delegationIds.isEmpty())
+			c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
 		Query query = QueryFactory.newQuery(KimDelegationMemberImpl.class, c);
 		Collection<KimDelegationMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
 		HashMap<String,List<KimDelegationMemberImpl>> result = new HashMap<String,List<KimDelegationMemberImpl>>();
@@ -362,7 +373,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         				addLikeToCriteria(crit, entry.getKey(), entry.getValue());
         			} else {
         					List roleIds = getRoleIdsForPrincipalName(entry.getValue());
-                			if (!roleIds.isEmpty()) {
+                			if (roleIds!=null && !roleIds.isEmpty()) {
                 				crit.addIn(KIMPropertyConstants.Role.ROLE_ID, roleIds);
                 			} else {
                 			// TODO : if no role id found that means principalname not matched, need to do something to force to return empty list
@@ -439,7 +450,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		
         Criteria grpRoleCrit = new Criteria();
         grpRoleCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE);
-        grpRoleCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
+        if(groupIds!=null && !groupIds.isEmpty())
+        	grpRoleCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
         memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, grpRoleCrit);
 
 		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
@@ -584,12 +596,12 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     private void addLikeToCriteria(Criteria criteria, String propertyName, String propertyValue){
     	String[] keyValues = getCaseInsensitiveValues(propertyName, propertyValue);
-    	criteria.addLike(keyValues[0], keyValues[1]);
+   		criteria.addLike(keyValues[0], keyValues[1]);
     }
 
     private void addEqualToCriteria(Criteria criteria, String propertyName, String propertyValue){
     	String[] keyValues = getCaseInsensitiveValues(propertyName, propertyValue);
-    	criteria.addEqualTo(keyValues[0], keyValues[1]);
+   		criteria.addEqualTo(keyValues[0], keyValues[1]);
     }
 
     private String[] getCaseInsensitiveValues(String propertyName, String propertyValue){

@@ -18,7 +18,6 @@ package org.kuali.rice.kim.bo.entity.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -217,6 +216,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
     }
 	
     private boolean isSuppressName() {
-        return KimCommonUtils.isSuppressName(getEntityId());
+        return false;
+        //return KimCommonUtils.isSuppressName(getEntityId());
     }
 }

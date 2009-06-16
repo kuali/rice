@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo.entity.dto;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -151,7 +150,8 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 	
     private boolean isSuppressPhone() {
-        return KimCommonUtils.isSuppressPhone(getEntityId());
+        return false;
+        //return KimCommonUtils.isSuppressPhone(getEntityId());
     }
 
     /**

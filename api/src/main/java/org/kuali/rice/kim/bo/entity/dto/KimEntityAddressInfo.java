@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.bo.entity.dto;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -191,7 +190,8 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	}
 	
     private boolean isSuppressAddress() {
-        return KimCommonUtils.isSuppressAddress(getEntityId());
+        return false;
+        //return KimCommonUtils.isSuppressAddress(getEntityId());
     }
 
     /**

@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.bo.entity.dto;
 
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -110,7 +109,8 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
     }
 
     private boolean isSuppressEmail() {
-        return KimCommonUtils.isSuppressEmail(entityId);
+        return false;
+        //return KimCommonUtils.isSuppressEmail(entityId);
     }
     
     /**

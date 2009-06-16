@@ -8,7 +8,7 @@ CREATE TABLE krim_person_document_t
     prncpl_id 		  VARCHAR2(40)  CONSTRAINT krim_person_document_tn5 NOT NULL,
     prncpl_nm         VARCHAR2(100)  CONSTRAINT krim_person_document_tn6 NOT NULL,
     prncpl_pswd       VARCHAR2(400),
-    tax_id 		  VARCHAR2(40),
+    tax_id 		  	  VARCHAR2(100),
     univ_id 		  VARCHAR2(40),
     actv_ind          VARCHAR2(1) DEFAULT 'Y',
     CONSTRAINT krim_person_document_tp1 PRIMARY KEY ( FDOC_NBR )

@@ -26,6 +26,7 @@ import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.reference.KimCode;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
@@ -67,10 +68,10 @@ public class KimModuleService extends ModuleServiceBase {
 			}
 			// otherwise, fall through since critieria is not known
 		} else if(Role.class.isAssignableFrom(businessObjectClass)){
-			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID)) {
-				//KimRoleInfo roleInfo = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
+			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID)){
+				KimRoleInfo roleInfo = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
 				//RoleImpl roleImpl
-				return null;
+				return (T) roleInfo;
 			}
 		} else if(Group.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID)) {

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -26,8 +27,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
@@ -197,5 +203,29 @@ public interface RoleService {
 	 * key and the values to search on as the value.
 	 */
 	List<RoleMembershipInfo> findRoleMembers(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
+
+	List<RoleMemberCompleteInfo> findRoleMembersCompleteInfo(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
+
+	List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
+	
+	/**
+	 * Gets delegation member information based on the given search criteria.  The
+	 * map of criteria contains attributes of DelegateInfo as it's
+	 * key and the values to search on as the value.
+	 */
+	List<DelegateMemberCompleteInfo> getDelegationMembersByDelegationId(@WebParam(name="delegationId") String delegationId);
+		
+	DelegateMemberCompleteInfo getDelegationMemberByDelegationAndMemberId(@WebParam(name="delegationId") String delegationId, @WebParam(name="memberId") String memberId);
+	
+	DelegateMemberCompleteInfo getDelegationMemberById(@WebParam(name="delegationMemberId") String delegationMemberId);
+
+	List<RoleResponsibilityInfo> getRoleResponsibilities(String roleId);
+	
+	List<RoleResponsibilityActionInfo> getRoleMemberResponsibilityActionInfo(String roleMemberId);
+
+	DelegateTypeInfo getDelegateTypeInfo(String roleId, String delegationTypeCode);
+
+	DelegateTypeInfo getDelegateTypeInfoById(String delegationId);
+	
 	
 }

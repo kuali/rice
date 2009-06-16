@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.util;
 
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +27,8 @@ import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -311,4 +314,38 @@ public class KimCommonUtils {
         return false;
     }
 
+	public static String encryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
+		Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierTypeObject.isEncryptionRequired()){
+			if(externalIdentifier != null){
+				try{
+					return KNSServiceLocator.getEncryptionService().encrypt(externalIdentifier);
+				}catch (GeneralSecurityException e) {
+		            LOG.error("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
+		            return externalIdentifier;
+		        }
+			}
+		}
+		return externalIdentifier;
+    }
+    
+    public static String decryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
+        Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, KimConstants.PersonExternalIdentifierTypes.TAX);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierType!= null && externalIdentifierTypeObject.isEncryptionRequired()){
+			if(externalIdentifier != null){
+				try{
+					return KNSServiceLocator.getEncryptionService().decrypt(externalIdentifier);
+				}catch (GeneralSecurityException e) {
+		            LOG.error("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
+		            return externalIdentifier;
+		        }
+			}
+		}
+		return externalIdentifier;
+    }
+    
 }

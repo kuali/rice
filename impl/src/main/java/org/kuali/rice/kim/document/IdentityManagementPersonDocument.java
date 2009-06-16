@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -42,6 +43,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -220,7 +222,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     public String getTaxId() {
-        return this.taxId;
+        return taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
     }
 
     public void setTaxId(String taxId) {
@@ -340,4 +342,38 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         //addDelegationRoleKimTypeAttributeHelper(roleId, helper);
     }
 
+    @Override
+	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+		super.beforeInsert(persistenceBroker);
+        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
+	}
+	
+	@Override
+	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+		super.beforeUpdate(persistenceBroker);
+        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
+	}
+	
+	@Override
+	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+        super.afterLookup(persistenceBroker);
+        taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
+	}
+	
+	@Override
+	public void beforeInsert() {
+		super.beforeInsert();
+		taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
+    }
+
+	@Override
+	public void beforeUpdate() {
+		super.beforeUpdate();
+        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
+	}
+	
+	@javax.persistence.PostLoad 
+	public void afterLookup(){
+        taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
+	}
 }

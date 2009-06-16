@@ -604,7 +604,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if (isFormRepresentingLockObject(kualiDocumentFormBase)) {
             String idValue = request.getParameter(KNSPropertyConstants.ID);
             getPessimisticLockService().delete(idValue);
-            return returnToSender(mapping, kualiDocumentFormBase);
+            return returnToSender(request, mapping, kualiDocumentFormBase);
         }
         throw buildAuthorizationException(KNSConstants.DELETE_METHOD, kualiDocumentFormBase.getDocument());
     }
@@ -728,7 +728,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().blanketApproveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -754,7 +754,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().approveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -820,7 +820,7 @@ public class KualiDocumentActionBase extends KualiAction {
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
         kualiDocumentFormBase.setAnnotation("");
 
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -854,7 +854,7 @@ public class KualiDocumentActionBase extends KualiAction {
         doProcessingAfterPost( kualiDocumentFormBase, request );
         getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
 
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -890,7 +890,7 @@ public class KualiDocumentActionBase extends KualiAction {
             }
         }
 
-        return returnToSender(mapping, docForm);
+        return returnToSender(request, mapping, docForm);
     }
 
     protected boolean canSave(ActionForm form){
@@ -918,7 +918,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().clearDocumentFyi(kualiDocumentFormBase.getDocument(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_FYIED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -937,7 +937,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().acknowledgeDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_ACKNOWLEDGED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -1538,7 +1538,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @param form
      * @return
      */
-    protected ActionForward returnToSender(ActionMapping mapping, KualiDocumentFormBase form) {
+    protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
         ActionForward dest = null;
         if (form.isReturnToActionList()) {
             String workflowBase = getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);

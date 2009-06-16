@@ -16,8 +16,7 @@
 package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
-
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -25,31 +24,57 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DelegateInfo extends InactiveableInfo implements Serializable {
+public class DelegateTypeInfo implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	protected String roleId;
 	protected String delegationId;
 	protected String delegationTypeCode;
-	protected String memberId;
-	protected String memberTypeCode;
-	protected AttributeSet qualifier;
-	protected String roleMemberId;
-		
+	protected String kimTypeId;
+	protected List<DelegateMemberCompleteInfo> members;
+	protected Boolean active;
+	//protected KimTypeInfo kimType;
+	
+	/**
+	 * @return the kimTypeId
+	 */
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+
+	/**
+	 * @param kimTypeId the kimTypeId to set
+	 */
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public Boolean getActive() {
+		return this.active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	/**
 	 * 
 	 */
-	public DelegateInfo() {
+	public DelegateTypeInfo() {
 	}
 	
-	public DelegateInfo(String delegationId, String delegationTypeCode, String memberId,
-			String memberTypeCode, String roleMemberId, AttributeSet qualifier) {
+	public DelegateTypeInfo(String roleId, String delegationId, String delegationTypeCode, List<DelegateMemberCompleteInfo> members) {
+		this.roleId = roleId;
 		this.delegationId = delegationId;
 		this.delegationTypeCode = delegationTypeCode;
-		this.memberId = memberId;
-		this.memberTypeCode = memberTypeCode;
-		this.qualifier = qualifier;
-		this.roleMemberId = roleMemberId;
+		this.members = members;
 	}
 	
 	public String getDelegationTypeCode() {
@@ -58,29 +83,6 @@ public class DelegateInfo extends InactiveableInfo implements Serializable {
 	public void setDelegationTypeCode(String delegationTypeCode) {
 		this.delegationTypeCode = delegationTypeCode;
 	}
-	public String getMemberId() {
-		return this.memberId;
-	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-
-	public String getMemberTypeCode() {
-		return this.memberTypeCode;
-	}
-
-	public void setMemberTypeCode(String memberTypeCode) {
-		this.memberTypeCode = memberTypeCode;
-	}
-
-	public AttributeSet getQualifier() {
-		return this.qualifier;
-	}
-	public void setQualifier(AttributeSet qualifier) {
-		this.qualifier = qualifier;
-	}
-
 	public String getDelegationId() {
 		return this.delegationId;
 	}
@@ -90,17 +92,32 @@ public class DelegateInfo extends InactiveableInfo implements Serializable {
 	}
 
 	/**
-	 * @return the roleMemberId
+	 * @return the roleId
 	 */
-	public String getRoleMemberId() {
-		return this.roleMemberId;
+	public String getRoleId() {
+		return this.roleId;
 	}
 
 	/**
-	 * @param roleMemberId the roleMemberId to set
+	 * @param roleId the roleId to set
 	 */
-	public void setRoleMemberId(String roleMemberId) {
-		this.roleMemberId = roleMemberId;
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
+
+	/**
+	 * @return the members
+	 */
+	public List<DelegateMemberCompleteInfo> getMembers() {
+		return this.members;
+	}
+
+	/**
+	 * @param members the members to set
+	 */
+	public void setMembers(List<DelegateMemberCompleteInfo> members) {
+		this.members = members;
+	}
+	
 	
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -25,6 +26,8 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -145,5 +148,23 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 		}
 		return roleService;
 	}
-	
+
+	public RoleMemberCompleteInfo toSimpleInfo(){
+		RoleMemberCompleteInfo roleMemberCompleteInfo = new RoleMemberCompleteInfo();
+		roleMemberCompleteInfo.setRoleId(roleId);
+		roleMemberCompleteInfo.setRoleMemberId(roleMemberId);
+		roleMemberCompleteInfo.setActiveFromDate(activeFromDate);
+		roleMemberCompleteInfo.setActiveToDate(activeToDate);
+		roleMemberCompleteInfo.setMemberId(memberId);
+		roleMemberCompleteInfo.setMemberTypeCode(memberTypeCode);
+		roleMemberCompleteInfo.setQualifier(getQualifier());
+		roleMemberCompleteInfo.setRoleRspActions(new ArrayList<RoleResponsibilityActionInfo>());
+		if(roleRspActions!=null){
+			for(RoleResponsibilityActionImpl roleResponsibilityActionImpl: roleRspActions){
+				roleMemberCompleteInfo.getRoleRspActions().add(roleResponsibilityActionImpl.toSimpleInfo());
+			}
+		}
+		return roleMemberCompleteInfo;
+	}
+
 }

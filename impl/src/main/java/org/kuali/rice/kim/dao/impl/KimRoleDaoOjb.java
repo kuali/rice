@@ -35,6 +35,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
@@ -610,8 +611,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     	keyValues[1] = propertyValue==null?"":propertyValue.toUpperCase();
     	return keyValues;
     }
-    
-    public List<RoleMembershipInfo> getRoleMembers(Map<String,String> fieldValues) {
+
+    protected List<RoleMemberImpl> getRoleMemberImpls(Map<String, String> fieldValues){
 		Criteria queryCriteria = new Criteria();
 		List<String> memberIds = new ArrayList<String>();
 		if(hasExtraRoleMemberCriteria(fieldValues)){
@@ -659,15 +660,34 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 				queryCriteria.addLessOrEqualThan(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE, activeToDate);
 		}
         Query q = QueryFactory.newQuery(RoleMemberImpl.class, queryCriteria);
-        List<RoleMemberImpl> roleMembers = (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(q);
+        return (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(q);
+    }
+    
+    public List<RoleMembershipInfo> getRoleMembers(Map<String,String> fieldValues) {
+    	List<RoleMemberImpl> roleMembers = getRoleMemberImpls(fieldValues);
         List<RoleMembershipInfo> roleMemberships = new ArrayList<RoleMembershipInfo>();
+        RoleMembershipInfo roleMembership;
         for(RoleMemberImpl roleMember: roleMembers){
-        	RoleMembershipInfo roleMembership = new RoleMembershipInfo(roleMember.getRoleId(), roleMember.getRoleMemberId(), roleMember.getMemberId(), roleMember.getMemberTypeCode(), roleMember.getQualifier() );
+        	roleMembership = new RoleMembershipInfo(roleMember.getRoleId(), roleMember.getRoleMemberId(), roleMember.getMemberId(), roleMember.getMemberTypeCode(), roleMember.getQualifier() );
         	roleMemberships.add(roleMembership);
         }
         return roleMemberships;
     }
 
+    public List<RoleMemberCompleteInfo> getRoleMembersCompleteInfo(Map<String,String> fieldValues) {
+    	List<RoleMemberImpl> roleMembers = getRoleMemberImpls(fieldValues);
+        List<RoleMemberCompleteInfo> roleMembersCompleteInfo = new ArrayList<RoleMemberCompleteInfo>();
+        RoleMemberCompleteInfo roleMemberCompleteInfo;
+        for(RoleMemberImpl roleMember: roleMembers){
+        	roleMemberCompleteInfo = new RoleMemberCompleteInfo(
+        			roleMember.getRoleId(), roleMember.getRoleMemberId(), roleMember.getMemberId(), 
+        			roleMember.getMemberTypeCode(), roleMember.getActiveFromDate(), roleMember.getActiveToDate(),
+        			roleMember.getQualifier() );
+        	roleMembersCompleteInfo.add(roleMemberCompleteInfo);
+        }
+        return roleMembersCompleteInfo;
+    }
+    
     private boolean hasCoreRoleMemberCriteria(Map<String, String> fieldValues){
 		return StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)) ||
 				StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID)) ||

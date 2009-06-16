@@ -27,6 +27,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.RoleResponsibility;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -112,6 +113,15 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 
 	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
 		this.kimResponsibility = kimResponsibility;
+	}
+
+	public RoleResponsibilityInfo toSimpleInfo() {
+		RoleResponsibilityInfo roleResponsibilityInfo = new RoleResponsibilityInfo();
+		roleResponsibilityInfo.setRoleId(getRoleId());
+		roleResponsibilityInfo.setResponsibilityId(getResponsibilityId());
+		roleResponsibilityInfo.setRoleResponsibilityId(getRoleResponsibilityId());
+		roleResponsibilityInfo.setKimResponsibilityInfo(getKimResponsibility().toSimpleInfo());
+		return roleResponsibilityInfo;
 	}
 
 }

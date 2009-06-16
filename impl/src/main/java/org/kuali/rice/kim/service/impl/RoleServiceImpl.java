@@ -27,22 +27,34 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
@@ -57,8 +69,10 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -73,13 +87,11 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 
-	protected static final String ROLE_MEMBER_SEQUENCE = "KRIM_ROLE_MBR_ID_S";
-	protected static final String ROLE_MEMBER_DATA_SEQUENCE = "KRIM_ATTR_DATA_ID_S";
-
 	private BusinessObjectService businessObjectService;
 	private SequenceAccessorService sequenceAccessorService;
 	private IdentityManagementService identityManagementService;
 	private KimRoleDao roleDao;
+	private LookupService lookupService;
 
     private static final long CACHE_MAX_AGE_SECONDS = 60L;
 
@@ -1027,17 +1039,36 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			a.setRoleMemberId( roleMember.getRoleMemberId() );
 			// look up the attribute ID
 			a.setKimAttributeId( getKimAttributeId( attributeName ) );
-			// pull the next sequence number for the data ID
-			SequenceAccessorService sas = getSequenceAccessorService();		
-			Long nextSeq = sas.getNextAvailableSequenceNumber(
-					ROLE_MEMBER_DATA_SEQUENCE, 
-					RoleMemberAttributeDataImpl.class );
-			a.setAttributeDataId( nextSeq.toString() );
+			
+	    	Map<String, String> criteria = new HashMap<String, String>();
+	    	criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, a.getKimAttributeId());
+	    	criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMember.getRoleMemberId());
+			List<RoleMemberAttributeDataImpl> origRoleMemberAttributes = 
+	    		(List<RoleMemberAttributeDataImpl>)getBusinessObjectService().findMatching(RoleMemberAttributeDataImpl.class, criteria);
+			RoleMemberAttributeDataImpl origRoleMemberAttribute = 
+	    		(origRoleMemberAttributes!=null && origRoleMemberAttributes.size()>0) ? origRoleMemberAttributes.get(0) : null;
+	    	if(origRoleMemberAttribute!=null){
+	    		a.setAttributeDataId(origRoleMemberAttribute.getAttributeDataId());
+	    		a.setVersionNumber(origRoleMemberAttribute.getVersionNumber());
+	    	} else{
+				// pull the next sequence number for the data ID
+				a.setAttributeDataId(getNewAttributeDataId());
+	    	}
 			attributes.add( a );
 		}
 		roleMember.setAttributes( attributes );
 	}
 
+	private void deleteNullMemberAttributeData(List<RoleMemberAttributeDataImpl> attributes) {
+		List<RoleMemberAttributeDataImpl> attributesToDelete = new ArrayList<RoleMemberAttributeDataImpl>();
+		for(RoleMemberAttributeDataImpl attribute: attributes){
+			if(attribute.getAttributeValue()==null){
+				attributesToDelete.add(attribute);
+			}
+		}
+		getBusinessObjectService().delete(attributesToDelete);
+	}
+	
 	protected boolean doesMemberMatch( RoleMemberImpl roleMember, String memberId, String memberTypeCode, AttributeSet qualifier ) {
 		if ( roleMember.getMemberId().equals( memberId ) && roleMember.getMemberTypeCode().equals( memberTypeCode ) ) {
 			// member ID/type match
@@ -1075,7 +1106,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// get a new ID from the sequence
     	SequenceAccessorService sas = getSequenceAccessorService();
     	Long nextSeq = sas.getNextAvailableSequenceNumber( 
-    			ROLE_MEMBER_SEQUENCE, RoleMemberImpl.class );    	
+    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class );    	
     	newRoleMember.setRoleMemberId( nextSeq.toString() );
 
     	newRoleMember.setRoleId( role.getRoleId() );
@@ -1102,7 +1133,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// get a new ID from the sequence
     	SequenceAccessorService sas = getSequenceAccessorService();
     	Long nextSeq = sas.getNextAvailableSequenceNumber(
-    			ROLE_MEMBER_SEQUENCE, RoleMemberImpl.class);
+    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class);
     	newRoleMember.setRoleMemberId( nextSeq.toString() );
 
     	newRoleMember.setRoleId( role.getRoleId() );
@@ -1343,4 +1374,504 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	return roleDao.getRoleMembers(fieldValues);
     }
 
+	protected RoleMemberImpl matchingMemberRecord( List<RoleMemberImpl> roleMembers, String memberId, String memberTypeCode, AttributeSet qualifier ) {
+		for ( RoleMemberImpl rm : roleMembers ) {
+			if ( doesMemberMatch( rm, memberId, memberTypeCode, qualifier ) ) {
+				return rm;
+			}
+		}
+		return null;
+	}
+	
+
+
+    public void assignRoleToRole(String roleId, String namespaceCode, String roleName, AttributeSet qualifier) {
+    	// look up the role
+    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	// check that identical member does not already exist
+    	if ( doAnyMemberRecordsMatch( role.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
+    		return;
+    	}
+    	// create the new role member object
+    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
+    	// get a new ID from the sequence
+    	SequenceAccessorService sas = getSequenceAccessorService();
+    	Long nextSeq = sas.getNextAvailableSequenceNumber(
+    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class);
+    	newRoleMember.setRoleMemberId( nextSeq.toString() );
+
+    	newRoleMember.setRoleId( role.getRoleId() );
+    	newRoleMember.setMemberId( roleId );
+    	newRoleMember.setMemberTypeCode( Role.ROLE_MEMBER_TYPE );
+    	// build role member attribute objects from the given AttributeSet
+    	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
+
+    	// When members are added to roles, clients must be notified.
+    	KIMServiceLocator.getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    }
+    
+    public RoleMemberCompleteInfo saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, String roleId, 
+    		AttributeSet qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
+    	if(StringUtils.isEmpty(roleMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
+    		throw new IllegalArgumentException("Either Role member ID or a combination of member ID and role ID must be passed in.");
+    	}
+    	RoleMemberImpl origRoleMember = null;
+    	RoleImpl role;
+    	// create the new role member object
+    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
+    	if(StringUtils.isEmpty(roleMemberId)){
+	    	// look up the role
+	    	role = getRoleImpl(roleId);
+	    	// check that identical member does not already exist
+	    	origRoleMember = matchingMemberRecord( role.getMembers(), memberId, memberTypeCode, qualifications );
+    	} else{
+    		origRoleMember = getRoleMemberImpl(roleMemberId);
+    		role = getRoleImpl(origRoleMember.getRoleId());
+    	}
+    	
+    	if(origRoleMember !=null){
+    		newRoleMember.setRoleMemberId(origRoleMember.getRoleMemberId());
+    		newRoleMember.setVersionNumber(origRoleMember.getVersionNumber());
+    	} else {
+	    	// get a new ID from the sequence
+	    	SequenceAccessorService sas = getSequenceAccessorService();
+	    	Long nextSeq = sas.getNextAvailableSequenceNumber(
+	    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class);
+	    	newRoleMember.setRoleMemberId( nextSeq.toString() );
+    	}
+    	newRoleMember.setRoleId(role.getRoleId());
+    	newRoleMember.setMemberId( memberId );
+    	newRoleMember.setMemberTypeCode( memberTypeCode );
+    	newRoleMember.setActiveFromDate(activeFromDate);
+    	newRoleMember.setActiveToDate(activeToDate);
+    	// build role member attribute objects from the given AttributeSet
+    	addMemberAttributeData( newRoleMember, qualifications, role.getKimTypeId() );
+
+    	// When members are added to roles, clients must be notified.
+    	KIMServiceLocator.getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	deleteNullMemberAttributeData(newRoleMember.getAttributes());    	
+    	
+    	return findRoleMemberCompleteInfo(newRoleMember.getRoleMemberId());
+    }
+
+
+
+    public void removeRoleFromRole(String roleId, String namespaceCode, String roleName, AttributeSet qualifier) {
+    	// look up the role
+    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	// pull all the group role members
+    	// look for an exact qualifier match
+		for ( RoleMemberImpl rm : role.getMembers() ) {
+			if ( doesMemberMatch( rm, roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
+		    	// if found, remove
+				// When members are removed from roles, clients must be notified.
+		    	KIMServiceLocator.getResponsibilityInternalService().removeRoleMember(rm);
+			}
+		}
+    }
+    
+    public RoleMemberCompleteInfo findRoleMemberCompleteInfo(String roleMemberId){
+    	Map<String, String> fieldValues = new HashMap<String, String>();
+    	fieldValues.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+    	List<RoleMemberCompleteInfo> roleMemberInfos = findRoleMembersCompleteInfo(fieldValues);
+    	if(roleMemberInfos!=null && roleMemberInfos.size()>0)
+    		return roleMemberInfos.get(0);
+    	return null;
+    }
+
+    public List<RoleMemberCompleteInfo> findRoleMembersCompleteInfo(Map<String, String> fieldValues){
+    	List<RoleMemberCompleteInfo> roleMembersCompleteInfos = new ArrayList<RoleMemberCompleteInfo>();
+    	RoleMemberCompleteInfo roleMembersCompleteInfo;
+    	List<RoleMemberImpl> roleMembers = (List<RoleMemberImpl>)getLookupService().findCollectionBySearchHelper(
+				RoleMemberImpl.class, fieldValues, true);
+    	for(RoleMemberImpl roleMember: roleMembers){
+    		roleMembersCompleteInfo = roleMember.toSimpleInfo();
+			BusinessObject member = getMember(roleMembersCompleteInfo.getMemberTypeCode(), roleMembersCompleteInfo.getMemberId());
+			roleMembersCompleteInfo.setMemberName(getMemberName(roleMembersCompleteInfo.getMemberTypeCode(), member));
+			roleMembersCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(roleMembersCompleteInfo.getMemberTypeCode(), member));
+			roleMembersCompleteInfo.setRoleRspActions(getRoleMemberResponsibilityActionInfo(roleMember.getRoleMemberId()));
+			roleMembersCompleteInfos.add(roleMembersCompleteInfo);
+    	}
+    	return roleMembersCompleteInfos;
+    }
+    
+    public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(Map<String, String> fieldValues){
+    	List<DelegateMemberCompleteInfo> delegateMembersCompleteInfo = new ArrayList<DelegateMemberCompleteInfo>();
+    	DelegateMemberCompleteInfo delegateMemberCompleteInfo;
+    	List<KimDelegationImpl> delegations = (List<KimDelegationImpl>)getLookupService().findCollectionBySearchHelper(
+				KimDelegationImpl.class, fieldValues, true);
+    	for(KimDelegationImpl delegation: delegations){
+	    	for(KimDelegationMemberImpl delegateMember: delegation.getMembers()){
+	    		delegateMemberCompleteInfo = delegateMember.toSimpleInfo();
+	    		delegateMemberCompleteInfo.setRoleId(delegation.getRoleId());
+	    		delegateMemberCompleteInfo.setDelegationTypeCode(delegation.getDelegationTypeCode());
+				BusinessObject member = getMember(delegateMemberCompleteInfo.getMemberTypeCode(), delegateMemberCompleteInfo.getMemberId());
+				delegateMemberCompleteInfo.setMemberName(getMemberName(delegateMemberCompleteInfo.getMemberTypeCode(), member));
+				delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(delegateMemberCompleteInfo.getMemberTypeCode(), member));
+				delegateMembersCompleteInfo.add(delegateMemberCompleteInfo);
+	    	}
+    	}
+    	return delegateMembersCompleteInfo;
+    }
+    
+    /**
+     * 
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+    public void saveDelegationMemberForRole(String delegationMemberId,
+    			String roleMemberId, String memberId, String memberTypeCode, String delegationTypeCode, 
+    			String roleId, AttributeSet qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
+    	if(StringUtils.isEmpty(delegationMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
+    		throw new IllegalArgumentException("Either Delegation member ID or a combination of member ID and role ID must be passed in.");
+    	}
+    	// look up the role
+    	RoleImpl role = getRoleImpl(roleId);
+    	KimDelegationImpl delegation = getDelegationOfType(role.getRoleId(), delegationTypeCode);
+    	// create the new role member object
+    	KimDelegationMemberImpl newDelegationMember = new KimDelegationMemberImpl();
+
+    	Map<String, String> criteria = new HashMap<String, String>();
+    	KimDelegationMemberImpl origDelegationMember = null;
+    	if(StringUtils.isNotEmpty(delegationMemberId)){
+    		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
+	    	origDelegationMember = (KimDelegationMemberImpl)getBusinessObjectService().findByPrimaryKey(KimDelegationMemberImpl.class, criteria);
+    	} else{
+	    	criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
+	    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegation.getDelegationId());
+	    	List<KimDelegationMemberImpl> origDelegationMembers = (List<KimDelegationMemberImpl>)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
+	    	origDelegationMember = 
+	    		(origDelegationMembers!=null && origDelegationMembers.size()>0) ? origDelegationMembers.get(0) : null;
+    	}
+    	if(origDelegationMember!=null){
+    		newDelegationMember.setDelegationMemberId(origDelegationMember.getDelegationMemberId());
+    		newDelegationMember.setVersionNumber(origDelegationMember.getVersionNumber());
+    	} else{
+    		newDelegationMember.setDelegationMemberId(getNewDelegationMemberId());
+    	}
+    	newDelegationMember.setMemberId(memberId);
+    	newDelegationMember.setDelegationId(delegation.getDelegationId());
+    	newDelegationMember.setRoleMemberId(roleMemberId);
+    	newDelegationMember.setMemberTypeCode(memberTypeCode);
+    	newDelegationMember.setActiveFromDate(activeFromDate);
+    	newDelegationMember.setActiveToDate(activeToDate);
+
+    	// build role member attribute objects from the given AttributeSet
+    	addDelegationMemberAttributeData( newDelegationMember, qualifications, role.getKimTypeId() );
+
+    	List<KimDelegationMemberImpl> delegationMembers = new ArrayList<KimDelegationMemberImpl>();
+    	delegationMembers.add(newDelegationMember);
+    	delegation.setMembers(delegationMembers);
+
+    	getBusinessObjectService().save(delegation);
+    	for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
+    		deleteNullDelegationMemberAttributeData(delegationMember.getAttributes());
+    	}
+    }
+
+	protected void addDelegationMemberAttributeData( KimDelegationMemberImpl delegationMember, AttributeSet qualifier, String kimTypeId ) {
+		List<KimDelegationMemberAttributeDataImpl> attributes = new ArrayList<KimDelegationMemberAttributeDataImpl>();
+		for ( String attributeName : qualifier.keySet() ) {
+			KimDelegationMemberAttributeDataImpl a = new KimDelegationMemberAttributeDataImpl();
+			a.setAttributeValue( qualifier.get( attributeName ) );
+			a.setKimTypeId( kimTypeId );
+			a.setDelegationMemberId( delegationMember.getDelegationMemberId() );
+			// look up the attribute ID
+			a.setKimAttributeId( getKimAttributeId( attributeName ) );
+	    	Map<String, String> criteria = new HashMap<String, String>();
+	    	criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, a.getKimAttributeId());
+	    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMember.getDelegationMemberId());
+			List<KimDelegationMemberAttributeDataImpl> origDelegationMemberAttributes = 
+	    		(List<KimDelegationMemberAttributeDataImpl>)getBusinessObjectService().findMatching(KimDelegationMemberAttributeDataImpl.class, criteria);
+			KimDelegationMemberAttributeDataImpl origDelegationMemberAttribute = 
+	    		(origDelegationMemberAttributes!=null && origDelegationMemberAttributes.size()>0) ? origDelegationMemberAttributes.get(0) : null;
+	    	if(origDelegationMemberAttribute!=null){
+	    		a.setAttributeDataId(origDelegationMemberAttribute.getAttributeDataId());
+	    		a.setVersionNumber(origDelegationMemberAttribute.getVersionNumber());
+	    	} else{
+				// pull the next sequence number for the data ID
+				a.setAttributeDataId(getNewAttributeDataId());
+	    	}
+			attributes.add( a );
+		}
+		delegationMember.setAttributes( attributes );
+	}
+
+	private void deleteNullDelegationMemberAttributeData(List<KimDelegationMemberAttributeDataImpl> attributes) {
+		List<KimDelegationMemberAttributeDataImpl> attributesToDelete = new ArrayList<KimDelegationMemberAttributeDataImpl>();
+		for(KimDelegationMemberAttributeDataImpl attribute: attributes){
+			if(attribute.getAttributeValue()==null){
+				attributesToDelete.add(attribute);
+			}
+		}
+		getBusinessObjectService().delete(attributesToDelete);
+	}
+
+	private List<KimDelegationImpl> getRoleDelegations(String roleId){
+		if(roleId==null)
+			return new ArrayList<KimDelegationImpl>();
+		Map<String,String> criteria = new HashMap<String,String>(1);
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+		return (List<KimDelegationImpl>)getBusinessObjectService().findMatching(KimDelegationImpl.class, criteria);
+	}
+
+    private KimDelegationImpl getDelegationOfType(String roleId, String delegationTypeCode){
+    	List<KimDelegationImpl> roleDelegations = getRoleDelegations(roleId);
+        if(isDelegationPrimary(delegationTypeCode))
+            return getPrimaryDelegation(roleId, roleDelegations);
+        else
+            return getSecondaryDelegation(roleId, roleDelegations);
+    }
+
+    public DelegateTypeInfo getDelegateTypeInfo(String roleId, String delegationTypeCode){
+    	KimDelegationImpl delegation = getDelegationOfType(roleId, delegationTypeCode);
+    	if(delegation==null) return null;
+    	return delegation.toSimpleInfo();
+    }
+
+    public DelegateTypeInfo getDelegateTypeInfoById(String delegationId){
+		if(delegationId==null) return null;
+		Map<String,String> criteria = new HashMap<String,String>(1);
+		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
+		KimDelegationImpl delegation = (KimDelegationImpl)getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+    	if(delegation==null) return null;
+        return delegation.toSimpleInfo();
+    }
+    
+    private KimDelegationImpl getPrimaryDelegation(String roleId, List<KimDelegationImpl> roleDelegations){
+        KimDelegationImpl primaryDelegation = null;
+        RoleImpl roleImpl = getRoleImpl(roleId);
+        for(KimDelegationImpl delegation: roleDelegations){
+            if(isDelegationPrimary(delegation.getDelegationTypeCode()))
+                primaryDelegation = delegation;
+        }
+        if(primaryDelegation==null){
+            primaryDelegation = new KimDelegationImpl();
+            primaryDelegation.setRoleId(roleId);
+            primaryDelegation.setDelegationId(getNewDelegationId());
+            primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
+            primaryDelegation.setKimTypeId(roleImpl.getKimTypeId());
+        }
+        return primaryDelegation;
+    }
+
+    private String getNewDelegationId(){
+    	SequenceAccessorService sas = getSequenceAccessorService();
+    	Long nextSeq = sas.getNextAvailableSequenceNumber(
+                KimConstants.SequenceNames.KRIM_DLGN_ID_S,
+                KimDelegationImpl.class);
+        return nextSeq.toString();
+    }
+
+    private String getNewAttributeDataId(){
+		SequenceAccessorService sas = getSequenceAccessorService();		
+		Long nextSeq = sas.getNextAvailableSequenceNumber(
+				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
+				RoleMemberAttributeDataImpl.class );
+		return nextSeq.toString();
+    }
+    
+    private String getNewDelegationMemberId(){
+    	SequenceAccessorService sas = getSequenceAccessorService();
+    	Long nextSeq = sas.getNextAvailableSequenceNumber(
+                KimConstants.SequenceNames.KRIM_DLGN_MBR_ID_S,
+                KimDelegationImpl.class);
+        return nextSeq.toString();
+    }
+    
+    private boolean isDelegationPrimary(String delegationTypeCode){
+        return KEWConstants.DELEGATION_PRIMARY.equals(delegationTypeCode);
+    }
+
+    private boolean isDelegationSecondary(String delegationTypeCode){
+        return KEWConstants.DELEGATION_SECONDARY.equals(delegationTypeCode);
+    }
+
+    private KimDelegationImpl getSecondaryDelegation(String roleId, List<KimDelegationImpl> roleDelegations){
+        KimDelegationImpl secondaryDelegation = null;
+        RoleImpl roleImpl = getRoleImpl(roleId);
+        for(KimDelegationImpl delegation: roleDelegations){
+            if(isDelegationSecondary(delegation.getDelegationTypeCode()))
+                secondaryDelegation = delegation;
+        }
+        if(secondaryDelegation==null){
+            secondaryDelegation = new KimDelegationImpl();
+            secondaryDelegation.setRoleId(roleId);
+            secondaryDelegation.setDelegationId(getNewDelegationId());
+            secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
+            secondaryDelegation.setKimTypeId(roleImpl.getKimTypeId());
+        }
+        return secondaryDelegation;
+    }
+
+	public List<DelegateMemberCompleteInfo> getDelegationMembersByDelegationId(String delegationId){
+		Map<String, String> criteria = new HashMap<String, String>();
+		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
+        KimDelegationImpl delegation = (KimDelegationImpl)
+        	KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+        if(delegation==null) return null;
+        
+        return getDelegationInfoForDelegation(delegation);
+	}
+	
+	public DelegateMemberCompleteInfo getDelegationMemberByDelegationAndMemberId(String delegationId, String delegationMemberId){
+		Map<String, String> criteria = new HashMap<String, String>();
+		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
+        KimDelegationImpl delegation = (KimDelegationImpl)
+        	KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+
+        criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
+        List<KimDelegationMemberImpl> delegationMembers = (List<KimDelegationMemberImpl>)
+        	KNSServiceLocator.getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
+        if(delegationMembers==null || delegationMembers.isEmpty()) return null;
+        
+        return getDelegateCompleteInfo(delegation, delegationMembers.get(0));
+	}
+	
+	public DelegateMemberCompleteInfo getDelegationMemberById(@WebParam(name="delegationMemberId") String delegationMemberId){
+		Map<String, String> criteria = new HashMap<String, String>();
+		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
+        KimDelegationMemberImpl delegationMember = (KimDelegationMemberImpl)
+        	KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationMemberImpl.class, criteria);
+        if(delegationMember==null) return null;
+        
+        criteria = new HashMap<String, String>();
+        criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationMember.getDelegationId());
+        KimDelegationImpl delegation = (KimDelegationImpl)
+    		KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+
+        return getDelegateCompleteInfo(delegation, delegationMember);
+	}
+
+	private List<DelegateMemberCompleteInfo> getDelegationInfoForDelegation(KimDelegationImpl delegation){
+		if(delegation==null || delegation.getMembers()==null) return null;
+        List<DelegateMemberCompleteInfo> delegateInfoList = new ArrayList<DelegateMemberCompleteInfo>();
+		for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
+        	delegateInfoList.add(getDelegateCompleteInfo(delegation, delegationMember));
+        }
+        return delegateInfoList;
+	}
+
+	private DelegateMemberCompleteInfo getDelegateCompleteInfo(KimDelegationImpl delegation, KimDelegationMemberImpl delegationMember){
+		if(delegation==null || delegationMember==null) return null;
+		DelegateMemberCompleteInfo delegateMemberCompleteInfo = delegationMember.toSimpleInfo();
+		delegateMemberCompleteInfo.setDelegationTypeCode(delegation.getDelegationTypeCode());
+		BusinessObject member = getMember(delegationMember.getMemberTypeCode(), delegationMember.getMemberId());
+		delegateMemberCompleteInfo.setMemberName(getMemberName(delegationMember.getMemberTypeCode(), member));
+		delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(delegationMember.getMemberTypeCode(), member));
+		return delegateMemberCompleteInfo;
+	}
+
+	public List<RoleResponsibilityActionInfo> getRoleMemberResponsibilityActionInfo(String roleMemberId){
+		Map<String, String> criteria = new HashMap<String, String>(1);		
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+		List<RoleResponsibilityActionImpl> responsibilityImpls = (List<RoleResponsibilityActionImpl>)
+			getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
+		List<RoleResponsibilityActionInfo> roleResponsibilityActionInfos = new ArrayList<RoleResponsibilityActionInfo>();
+		RoleResponsibilityActionInfo roleResponsibilityActionInfo;
+		for(RoleResponsibilityActionImpl responsibilityActionImpl: responsibilityImpls){
+			roleResponsibilityActionInfo = new RoleResponsibilityActionInfo();
+			KimCommonUtils.copyProperties(roleResponsibilityActionInfo, responsibilityActionImpl);
+			roleResponsibilityActionInfos.add(roleResponsibilityActionInfo);
+		}
+		return roleResponsibilityActionInfos;
+	}
+
+	public List<RoleResponsibilityInfo> getRoleResponsibilities(String roleId){
+		Map<String, String> criteria = new HashMap<String, String>(1);		
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
+		List<RoleResponsibilityImpl> responsibilityImpls = (List<RoleResponsibilityImpl>)
+			getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
+		List<RoleResponsibilityInfo> roleResponsibilities = new ArrayList<RoleResponsibilityInfo>();
+		RoleResponsibilityInfo roleResponsibilityInfo;
+		for(RoleResponsibilityImpl roleResponsibilityImpl: responsibilityImpls){
+			roleResponsibilityInfo = new RoleResponsibilityInfo();
+			KimCommonUtils.copyProperties(roleResponsibilityInfo, roleResponsibilityImpl);
+			roleResponsibilities.add(roleResponsibilityInfo);
+		}
+		return roleResponsibilities;
+	}
+
+	public void saveRoleRspActions(String roleId, String roleResponsibilityId, String roleMemberId, 
+			String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction){
+		RoleResponsibilityActionImpl newRoleRspAction = new RoleResponsibilityActionImpl();
+		newRoleRspAction.setActionPolicyCode(actionPolicyCode);
+		newRoleRspAction.setActionTypeCode(actionTypeCode);
+		newRoleRspAction.setPriorityNumber(priorityNumber);
+		newRoleRspAction.setForceAction(forceAction);
+		newRoleRspAction.setRoleMemberId(roleMemberId);
+		newRoleRspAction.setRoleResponsibilityId(roleResponsibilityId);
+		//If there is an existing one
+		Map<String, String> criteria = new HashMap<String, String>(1);		
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId);
+		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+		List<RoleResponsibilityActionImpl> roleResponsibilityActionImpls = (List<RoleResponsibilityActionImpl>)
+			getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
+		if(roleResponsibilityActionImpls!=null && roleResponsibilityActionImpls.size()>0){
+			newRoleRspAction.setRoleResponsibilityActionId(roleResponsibilityActionImpls.get(0).getRoleResponsibilityActionId());
+			newRoleRspAction.setVersionNumber(roleResponsibilityActionImpls.get(0).getVersionNumber());
+		} else{
+//			 get a new ID from the sequence
+	    	SequenceAccessorService sas = getSequenceAccessorService();
+	    	Long nextSeq = sas.getNextAvailableSequenceNumber(
+	    			KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S, RoleResponsibilityActionImpl.class);
+	    	newRoleRspAction.setRoleResponsibilityActionId(nextSeq.toString());
+		}
+		getBusinessObjectService().save(newRoleRspAction);
+	}
+	
+    private BusinessObject getMember(String memberTypeCode, String memberId){
+        Class<? extends BusinessObject> roleMemberTypeClass = null;
+        String roleMemberIdName = "";
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+            roleMemberTypeClass = KimPrincipalImpl.class;
+            roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+            roleMemberTypeClass = GroupImpl.class;
+            roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+            roleMemberTypeClass = RoleImpl.class;
+            roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
+        }
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(roleMemberIdName, memberId);
+        return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
+    }
+
+    private String getMemberName(String memberTypeCode, BusinessObject member){
+        String roleMemberName = "";
+        if(member==null) return roleMemberName;
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+            roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+            roleMemberName = ((GroupImpl)member).getGroupName();
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+            roleMemberName = ((RoleImpl)member).getRoleName();
+        }
+        return roleMemberName;
+    }
+
+    private String getMemberNamespaceCode(String memberTypeCode, BusinessObject member){
+        String roleMemberNamespaceCode = "";
+        if(member==null) return roleMemberNamespaceCode;
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+            roleMemberNamespaceCode = "";
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+            roleMemberNamespaceCode = ((GroupImpl)member).getNamespaceCode();
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+            roleMemberNamespaceCode = ((RoleImpl)member).getNamespaceCode();
+        }
+        return roleMemberNamespaceCode;
+    }
+
+	/**
+	 * @return the lookupService
+	 */
+	public LookupService getLookupService() {
+		if(lookupService == null) {
+			lookupService = KNSServiceLocator.getLookupService();
+		}
+		return lookupService;
+	}
 }

@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.impl;
+package org.kuali.rice.kim.bo.role.dto;
 
-import java.util.LinkedHashMap;
-
-import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import java.io.Serializable;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
-public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase {
+public class RoleResponsibilityActionInfo implements Serializable {
 
-	private static final long serialVersionUID = -2840071737863303404L;
-	
 	protected String roleResponsibilityActionId;
 	protected String roleResponsibilityId;
 	protected String roleMemberId;
@@ -38,7 +30,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	protected boolean forceAction;
 	protected Integer priorityNumber;
 	
-	protected RoleResponsibilityImpl roleResponsibility;
+	protected RoleResponsibilityInfo roleResponsibilityInfo;
 	
 	public String getRoleResponsibilityActionId() {
 		return this.roleResponsibilityActionId;
@@ -65,20 +57,6 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 		this.priorityNumber = priorityNumber;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap lhm = new LinkedHashMap();
-		lhm.put( "roleResponsibilityActionId", roleResponsibilityActionId );
-		lhm.put( "versionNumber", versionNumber);
-		lhm.put( "roleResponsibilityId", roleResponsibilityId );
-		lhm.put( "roleMemberId", roleMemberId );
-		lhm.put( "actionTypeCode", actionTypeCode );
-		return lhm;
-	}
 	public String getActionPolicyCode() {
 		return this.actionPolicyCode;
 	}
@@ -91,11 +69,11 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	public void setRoleMemberId(String roleMemberId) {
 		this.roleMemberId = roleMemberId;
 	}
-	public RoleResponsibilityImpl getRoleResponsibility() {
-		return this.roleResponsibility;
+	public RoleResponsibilityInfo getRoleResponsibilityInfo() {
+		return this.roleResponsibilityInfo;
 	}
-	public void setRoleResponsibility(RoleResponsibilityImpl roleResponsibility) {
-		this.roleResponsibility = roleResponsibility;
+	public void setRoleResponsibilityInfo(RoleResponsibilityInfo roleResponsibilityInfo) {
+		this.roleResponsibilityInfo = roleResponsibilityInfo;
 	}
 	/**
 	 * @return the forceAction
@@ -108,18 +86,5 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	 */
 	public void setForceAction(boolean forceAction) {
 		this.forceAction = forceAction;
-	}
-	
-	public RoleResponsibilityActionInfo toSimpleInfo(){
-		RoleResponsibilityActionInfo roleResponsibilityActionInfo = new RoleResponsibilityActionInfo();
-		roleResponsibilityActionInfo.setActionPolicyCode(actionPolicyCode);
-		roleResponsibilityActionInfo.setActionTypeCode(actionTypeCode);
-		roleResponsibilityActionInfo.setForceAction(forceAction);
-		roleResponsibilityActionInfo.setPriorityNumber(priorityNumber);
-		roleResponsibilityActionInfo.setRoleMemberId(roleMemberId);
-		roleResponsibilityActionInfo.setRoleResponsibilityInfo(roleResponsibility.toSimpleInfo());
-		roleResponsibilityActionInfo.setRoleResponsibilityActionId(roleResponsibilityActionId);
-		roleResponsibilityActionInfo.setRoleResponsibilityId(roleResponsibilityId);
-		return roleResponsibilityActionInfo;
 	}
 }

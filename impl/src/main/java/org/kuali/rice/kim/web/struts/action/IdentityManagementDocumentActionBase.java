@@ -35,6 +35,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
@@ -97,6 +98,27 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     	return KimCommonUtils.getPathWithKimContext(returnLocation, getActionName());
     }
 
+    protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
+        ActionForward dest = null;
+        if (form.isReturnToActionList()) {
+            String workflowBase = getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
+            String actionListUrl = workflowBase + "/ActionList.do";
+
+            dest = new ActionForward(actionListUrl, true);
+        }
+        else {
+        	dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
+            ActionForward newDest = new ActionForward();
+            KimCommonUtils.copyProperties(newDest, dest);
+            newDest.setPath(getBasePath(request));
+            return newDest;
+        }
+
+        setupDocumentExit();
+        return dest;
+    }
+    
+	
 	@Override
 	public ActionForward close(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionForward dest = super.close(mapping, form, request, response);

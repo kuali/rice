@@ -111,8 +111,6 @@ public interface UiDocumentService {
 	
 	public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId);
 	
-	public RoleDocumentDelegationMember getRoleDocumentDelegationMember(String memberTypeCode, String memberId, String roleId, String delegationTypeCode);
-
 	public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName);
 
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);

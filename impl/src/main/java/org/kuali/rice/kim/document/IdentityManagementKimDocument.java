@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
@@ -37,6 +38,8 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 
+	protected static final Logger LOG = Logger.getLogger(IdentityManagementKimDocument.class);
+	
 	protected List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
 	protected List<RoleDocumentDelegationMember> delegationMembers = new TypedArrayList(RoleDocumentDelegationMember.class);
 

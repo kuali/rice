@@ -30,6 +30,7 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.KimDelegationMember;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -139,4 +140,16 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 		this.roleMemberId = roleMemberId;
 	}
 
+	public DelegateMemberCompleteInfo toSimpleInfo(){
+		DelegateMemberCompleteInfo delegateMemberCompleteInfo = new DelegateMemberCompleteInfo();
+		delegateMemberCompleteInfo.setDelegationMemberId(delegationMemberId);
+		delegateMemberCompleteInfo.setActiveFromDate(activeFromDate);
+		delegateMemberCompleteInfo.setActiveToDate(activeToDate);
+		delegateMemberCompleteInfo.setDelegationId(delegationId);
+		delegateMemberCompleteInfo.setMemberId(memberId);
+		delegateMemberCompleteInfo.setMemberTypeCode(memberTypeCode);
+		delegateMemberCompleteInfo.setQualifier(getQualifier());
+		delegateMemberCompleteInfo.setRoleMemberId(roleMemberId);
+		return delegateMemberCompleteInfo;
+	}
 }

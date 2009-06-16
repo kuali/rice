@@ -257,6 +257,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
         KimPrincipalImpl principal = ((IdentityServiceImpl)getIdentityService()).getPrincipalImpl(principalId);
+        if(principal==null)
+        	throw new RuntimeException("Principal does not exist for principal id:"+principalId);
+
         identityManagementPersonDocument.setPrincipalId(principal.getPrincipalId());
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         identityManagementPersonDocument.setPassword(principal.getPassword());
@@ -2191,45 +2194,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				return delegation;
 		}
 		return null;
-    }
-
-    @SuppressWarnings("unchecked")
-	public RoleDocumentDelegationMember getRoleDocumentDelegationMember(
-    		String memberTypeCode, String memberId, String roleId, String delegationTypeCode){
-    	if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId) || StringUtils.isEmpty(roleId) || StringUtils.isEmpty(delegationTypeCode))
-    		return null;
-    	KimDelegationImpl delegation = getDelegationOfType(getRoleDelegations(roleId), delegationTypeCode);
-    	if(delegation==null)
-    		return null;
-    	RoleDocumentDelegationMember delegationMember = new RoleDocumentDelegationMember();
-    	delegationMember.setDelegationId(delegation.getDelegationId());
-
-    	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegation.getDelegationId());
-    	criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
-    	List<KimDelegationMemberImpl> matchingDelegationMembers = (List<KimDelegationMemberImpl>)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
-    	if(matchingDelegationMembers==null || matchingDelegationMembers.size()<1) return null;
-
-    	KimDelegationMemberImpl delegationMemberImpl = matchingDelegationMembers.get(0);
-    	delegationMember.setDelegationMemberId(delegationMemberImpl.getRoleMemberId());
-    	BusinessObject member = getMember(memberTypeCode, memberId);
-    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-    		delegationMember.setMemberId(((KimPrincipalImpl)member).getPrincipalId());
-    		delegationMember.setMemberName(((KimPrincipalImpl)member).getPrincipalName());
-    		delegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	delegationMember.setMemberNamespaceCode(((RoleImpl)member).getNamespaceCode());
-    		delegationMember.setMemberId(((RoleImpl)member).getRoleId());
-    		delegationMember.setMemberName(((RoleImpl)member).getRoleName());
-    		delegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	delegationMember.setMemberNamespaceCode(((GroupImpl)member).getNamespaceCode());
-    		delegationMember.setMemberId(((GroupImpl)member).getGroupId());
-    		delegationMember.setMemberName(((GroupImpl)member).getGroupName());
-    		delegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
-        }
-    	return delegationMember;
-
     }
 
     protected Set<String> getChangedRoleResponsibilityIds(

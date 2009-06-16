@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.sql.Date;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.jws.WebParam;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
@@ -27,8 +30,13 @@ import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
@@ -445,37 +453,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		removeCacheEntries( role.getRoleId(), principalId );
 	}
 
-	// Spring and injection methods
-	
-	public RoleService getRoleService() {
-		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
-		}
-		return roleService;
-	}
-
-	public RoleUpdateService getRoleUpdateService() {
-		try {
-			if ( roleUpdateService == null ) {
-				roleUpdateService = KIMServiceLocator.getRoleUpdateService();
-				if ( roleUpdateService == null ) {
-					throw new UnsupportedOperationException( "null returned for RoleUpdateService, unable to update role data");
-				}
-			}
-		} catch ( Exception ex ) {
-			throw new UnsupportedOperationException( "unable to obtain a RoleUpdateService, unable to update role data", ex);
-		}
-		return roleUpdateService;
-	}
-	
-	public void setRoleCacheMaxSize(int roleCacheMaxSize) {
-		this.roleCacheMaxSize = roleCacheMaxSize;
-	}
-
-	public void setRoleCacheMaxAgeSeconds(int roleCacheMaxAge) {
-		this.roleCacheMaxAgeSeconds = roleCacheMaxAge;
-	}
-
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRolesSearchResults(java.util.Map)
 	 */
@@ -546,4 +523,111 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	return getRoleService().findRoleMembers(fieldValues);
     }
 
+	public void assignRoleToRole(String roleId, String namespaceCode, String roleName,
+			AttributeSet qualifications) {
+		getRoleUpdateService().assignRoleToRole( 
+				roleId, namespaceCode, roleName, qualifications);
+		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
+		removeCacheEntries( role.getRoleId(), null );
+	}
+
+    /**
+     * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     */
+	public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode, 
+			String delegationTypeCode, String roleId, AttributeSet qualifications, 
+			Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
+    	getRoleUpdateService().saveDelegationMemberForRole(delegationMemberId, roleMemberId, memberId, memberTypeCode, delegationTypeCode, roleId, qualifications, activeFromDate, activeToDate);
+		KimRoleInfo role = getRole( roleId );
+		removeCacheEntries( role.getRoleId(), null );
+    }
+
+    public RoleMemberCompleteInfo saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, 
+    		String roleId, AttributeSet qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
+		KimRoleInfo role = getRole( roleId );
+		RoleMemberCompleteInfo roleMemberCompleteInfo = getRoleUpdateService().saveRoleMemberForRole(roleMemberId, memberId, memberTypeCode, roleId, qualifications, activeFromDate, activeToDate);
+		removeCacheEntries( role.getRoleId(), memberId );
+		return roleMemberCompleteInfo;
+    }
+    
+	public void removeRoleFromRole(String roleId, String namespaceCode, String roleName,
+			AttributeSet qualifications) {
+		getRoleUpdateService().removeRoleFromRole( roleId, namespaceCode, roleName, qualifications );
+		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
+		removeCacheEntries( role.getRoleId(), null );
+	}
+
+    public List<RoleMemberCompleteInfo> findRoleMembersCompleteInfo(Map<String, String> fieldValues){
+    	return getRoleService().findRoleMembersCompleteInfo(fieldValues);
+    }
+    
+    public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(Map<String, String> fieldValues){
+    	return getRoleService().findDelegateMembersCompleteInfo(fieldValues);
+    }
+	
+    public List<DelegateMemberCompleteInfo> getDelegationMembersByDelegationId(@WebParam(name="delegationId") String delegationId){
+		return getRoleService().getDelegationMembersByDelegationId(delegationId);
+	}
+	
+	public DelegateMemberCompleteInfo getDelegationMemberByDelegationAndMemberId(@WebParam(name="delegationId") String delegationId, @WebParam(name="memberId") String memberId){
+		return getRoleService().getDelegationMemberByDelegationAndMemberId(delegationId, memberId);
+	}
+	
+	public DelegateMemberCompleteInfo getDelegationMemberById(@WebParam(name="delegationMemberId") String delegationMemberId){
+		return getRoleService().getDelegationMemberById(delegationMemberId);	
+	}
+
+	public List<RoleResponsibilityActionInfo> getRoleMemberResponsibilityActionInfo(String roleMemberId){
+		return getRoleService().getRoleMemberResponsibilityActionInfo(roleMemberId);
+	}
+	
+	public DelegateTypeInfo getDelegateTypeInfo(String roleId, String delegationTypeCode){
+		return getRoleService().getDelegateTypeInfo(roleId, delegationTypeCode);
+	}
+
+	public DelegateTypeInfo getDelegateTypeInfoById(String delegationId){
+		return getRoleService().getDelegateTypeInfoById(delegationId);
+	}
+	
+	public void saveRoleRspActions(String roleId, String roleResponsibilityId, String roleMemberId, 
+			String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction){
+    	getRoleUpdateService().saveRoleRspActions(roleId, roleResponsibilityId, roleMemberId, actionTypeCode, actionPolicyCode, priorityNumber, forceAction);
+		removeCacheEntries(roleId, null);
+	}
+
+	public List<RoleResponsibilityInfo> getRoleResponsibilities(String roleId){
+		return getRoleService().getRoleResponsibilities(roleId);
+	}
+	
+	// Spring and injection methods
+	
+	public RoleService getRoleService() {
+		if ( roleService == null ) {
+			roleService = KIMServiceLocator.getRoleService();
+		}
+		return roleService;
+	}
+
+	public RoleUpdateService getRoleUpdateService() {
+		try {
+			if ( roleUpdateService == null ) {
+				roleUpdateService = KIMServiceLocator.getRoleUpdateService();
+				if ( roleUpdateService == null ) {
+					throw new UnsupportedOperationException( "null returned for RoleUpdateService, unable to update role data");
+				}
+			}
+		} catch ( Exception ex ) {
+			throw new UnsupportedOperationException( "unable to obtain a RoleUpdateService, unable to update role data", ex);
+		}
+		return roleUpdateService;
+	}
+	
+	public void setRoleCacheMaxSize(int roleCacheMaxSize) {
+		this.roleCacheMaxSize = roleCacheMaxSize;
+	}
+
+	public void setRoleCacheMaxAgeSeconds(int roleCacheMaxAge) {
+		this.roleCacheMaxAgeSeconds = roleCacheMaxAge;
+	}
+	
 }

@@ -30,6 +30,8 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.KimDelegation;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -158,4 +160,20 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		this.members = members;
 	}
 	
+	public DelegateTypeInfo toSimpleInfo(){
+		DelegateTypeInfo delegateTypeInfo = new DelegateTypeInfo();
+		delegateTypeInfo.setActive(active);
+		delegateTypeInfo.setDelegationId(delegationId);
+		delegateTypeInfo.setDelegationTypeCode(delegationTypeCode);
+		//delegateTypeInfo.setKimType(kimType);
+		delegateTypeInfo.setKimTypeId(kimTypeId);
+		delegateTypeInfo.setRoleId(roleId);
+		delegateTypeInfo.setMembers(new ArrayList<DelegateMemberCompleteInfo>());
+		if(members!=null){
+			for(KimDelegationMemberImpl member: members)
+				delegateTypeInfo.getMembers().add(member.toSimpleInfo());
+		}
+		return delegateTypeInfo;
+	}
+
 }

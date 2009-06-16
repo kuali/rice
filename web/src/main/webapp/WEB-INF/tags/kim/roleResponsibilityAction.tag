@@ -23,7 +23,7 @@
         		</td>
 				<td>
 					<div align="center">
-		            	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${roleRspAction.actionTypeDescription}"/>
+		            	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionTypeDescription)}"/>
 		            </div>
         		</td>
         		<td>
@@ -33,7 +33,7 @@
         		</td>
         		<td>
 	        		<div align="center">
-		            	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${roleRspAction.actionPolicyDescription}"/>
+		            	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionPolicyDescription)}"/>
 	        		</div>
         		</td>
 	       		<td>

@@ -65,7 +65,7 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${phone.phoneType.phoneTypeName}" readOnly="${readOnlyEntity}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(phone.phoneType.phoneTypeName)}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
                 <td>

@@ -52,7 +52,7 @@
 						<c:out value="${status.index+1}" />
 					</th>
 	                <td align="left" valign="middle">
-	                <div align="center"><kul:htmlControlAttribute property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${affln.affiliationType.affiliationTypeName}" disabled="true" readOnly="false" /></div>
+	                <div align="center"><kul:htmlControlAttribute property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(affln.affiliationType.affiliationTypeName)}" disabled="true" readOnly="false" /></div>
 	                </td>
 	                <td>     
 	                <div align="center">           	

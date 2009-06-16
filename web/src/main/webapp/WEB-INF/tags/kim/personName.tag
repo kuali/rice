@@ -67,7 +67,7 @@
 					<c:out value="${status.index+1}" />
 				</th>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.names[${status.index}].nameTypeCode"  attributeEntry="${docNameAttributes.nameTypeCode}"  readOnlyAlternateDisplay="${name.entityNameType.entityNameTypeName}" readOnly="${readOnlyEntity}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.names[${status.index}].nameTypeCode"  attributeEntry="${docNameAttributes.nameTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(name.entityNameType.entityNameTypeName)}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
                 <td>

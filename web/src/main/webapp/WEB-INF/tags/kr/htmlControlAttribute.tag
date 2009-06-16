@@ -31,7 +31,8 @@
 			  the main property.  The readOnlyBody attribute takes precedence." %>
 <%@ attribute name="readOnlyAlternateDisplay" required="false"
               description="when readOnly, you can specify a String value to display instead of
-              the main property.  The readOnlyBody and extraReadOnlyProperty attributes take precedence." %>
+              the main property.  The readOnlyBody and extraReadOnlyProperty attributes take precedence.
+              THIS VALUE WILL BE DISPLAYED WITHOUT ANY XML FILTERING/ESCAPING, AND NEEDS TO BE PROPERLY ESCAPED TO PREVENT CROSS-SITE SCRIPTING VULNERABILITIES" %>
 <%@ attribute name="encryptValue" required="false"
 			  description="when readOnly or hidden field, boolean to indicate whether the value should
 			  be encrypted and display masked. Defaults to false." %>

@@ -69,11 +69,11 @@
                 </div>
                 </td>	                 
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}"  readOnlyAlternateDisplay="${empInfo.employmentStatus.employmentStatusName}" readOnly="${readOnlyEntity}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}"  readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentStatus.employmentStatusName)}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnlyAlternateDisplay="${empInfo.employmentType.employmentTypeName}" readOnly="${readOnlyEntity}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentType.employmentTypeName)}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">

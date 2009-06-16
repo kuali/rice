@@ -56,7 +56,7 @@
 					</div>
 				</td>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  readOnlyAlternateDisplay="${email.emailType.name}" readOnly="${readOnlyEntity}" />
+                	<div align="center"> <kul:htmlControlAttribute property="document.emails[${status.index}].emailTypeCode"  attributeEntry="${docEmailAttributes.emailTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(email.emailType.name)}" readOnly="${readOnlyEntity}" />
 					</div>
 				</td>
 				<td>

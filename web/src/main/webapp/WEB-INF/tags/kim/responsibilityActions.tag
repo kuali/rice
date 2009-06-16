@@ -27,7 +27,7 @@
         		</td>
 				<td>
 					<div align="center">
-		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${roleRspAction.actionTypeDescription}" readOnly="${readOnly}" />
+		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].actionTypeCode"  attributeEntry="${docRoleRspActionAttributes.actionTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionTypeDescription)}" readOnly="${readOnly}" />
 		            </div>
         		</td>
         		<td>
@@ -37,7 +37,7 @@
         		</td>
         		<td>
 	        		<div align="center">
-		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${roleRspAction.actionPolicyDescription}" readOnly="${readOnly}" />
+		            	<kul:htmlControlAttribute property="document.members[${mbrIdx}].roleRspActions[${actionStatus.index}].actionPolicyCode"  attributeEntry="${docRoleRspActionAttributes.actionPolicyCode}" readOnlyAlternateDisplay="${fn:escapeXml(roleRspAction.actionPolicyDescription)}" readOnly="${readOnly}" />
 	        		</div>
         		</td>
 	       		<td>

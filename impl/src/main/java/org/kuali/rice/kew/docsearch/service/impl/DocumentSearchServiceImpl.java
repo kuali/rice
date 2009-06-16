@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.docsearch.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -658,7 +659,36 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 //		return searchableAttributes;
 //	}
 
-	private DocumentType getValidDocumentType(String documentTypeFullName) {
+	/**
+	 *
+	 * retrieve a document type. This is not a case sensitive search so "TravelRequest" == "Travelrequest"
+	 *
+	 * @param docTypeName
+	 * @return
+	 */
+   private static DocumentType getValidDocumentType(String docTypeName) {
+
+	   if (Utilities.isEmpty(docTypeName)) {
+			return null;
+		}
+   		DocumentType dTypeCriteria = new DocumentType();
+		dTypeCriteria.setName(docTypeName.trim());
+		dTypeCriteria.setActive(true);
+		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, true);
+
+		// Return the first valid doc type.
+		if(docTypeList != null && !docTypeList.isEmpty()){
+			for(DocumentType dType: docTypeList){
+				return dType;
+			}
+		}else{
+			throw new RuntimeException("No Valid Document Type Found for document type name '" + docTypeName + "'");
+		}
+
+   	return null;
+   }
+
+	private DocumentType getValidDocumentTypeOld(String documentTypeFullName) {
 		if (Utilities.isEmpty(documentTypeFullName)) {
 			return null;
 		}

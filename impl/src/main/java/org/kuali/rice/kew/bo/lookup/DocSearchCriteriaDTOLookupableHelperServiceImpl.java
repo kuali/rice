@@ -510,7 +510,7 @@ KualiLookupableHelperServiceImpl {
 		super.getRows().addAll(rows);
 
 	}
-	
+
 	   private void setRowsAfterClear(DocSearchCriteriaDTO searchCriteria, Map<String,String[]> fieldValues) {
 	        // TODO chris - this method should call the criteria processor adapter which will
 	        //call the criteria processor (either standard or custom) and massage the data into the proper format
@@ -519,12 +519,12 @@ KualiLookupableHelperServiceImpl {
 	        //TODO: move over code that checks for doctype (actually should that be in the refresh, since that's where the doc type will be coming back to?)
 	       if (getRows() == null) {
 	            super.setRows();
-	        } 
+	        }
 	       List<Row> lookupRows = new ArrayList<Row>();
 	        //copy the current rows
 	        for (Row row : getRows()) {
 	            lookupRows.add(row);
-	        } 
+	        }
 	        super.getRows().clear();
 
 	        processor = new DocumentLookupCriteriaProcessorKEWAdapter();
@@ -570,7 +570,7 @@ KualiLookupableHelperServiceImpl {
 	        List<Row> rows = documentLookupCriteriaProcessorKEWAdapter.getRows(docType, super.getRows(), detailed, superSearch);
 
 	        super.getRows().addAll(rows);
-	        
+
 	        //Set field values from DocSearchCriteria
 	        if(StringUtils.isNotEmpty(docTypeName)) {
     	        for (Row row : super.getRows()) {
@@ -604,7 +604,7 @@ KualiLookupableHelperServiceImpl {
 	@Override
 	public void performClear(LookupForm lookupForm) {
 		//Map<String,String[]> fieldsToClear = new HashMap<String,String[]>();
-	
+
 		//for (Row row : this.getRows()) {
 		//	for (Field field : row.getFields()) {
 		//		String[] propertyValue = {};
@@ -616,7 +616,7 @@ KualiLookupableHelperServiceImpl {
 		//		fieldsToClear.put(field.getPropertyName(), propertyValue);
 		//	}
 		//}
-	    
+
 	    Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
         Map<String,String> changedDateFields = preprocessDateFields(lookupForm.getFieldsForLookup());
         fixedParameters.putAll(this.getParameters());
@@ -626,7 +626,7 @@ KualiLookupableHelperServiceImpl {
         }
 		//TODO: also check if standard here (maybe from object if use criteria)
 		String docTypeName = fixedParameters.get("docTypeFullName")[0];
-	
+
 		DocumentType docType = getValidDocumentType(docTypeName);
 
 		if(docType == null) {
@@ -637,20 +637,32 @@ KualiLookupableHelperServiceImpl {
             if (docCriteria == null) {
                 docCriteria = new DocSearchCriteriaDTO();
             }
-    
+
             this.setRowsAfterClear(docCriteria, fixedParameters);
 		}
-		
+
 	}
 	/**
 	 *
-	 * retrieve a document type
+	 * retrieve a document type. This is not a case sensitive search so "TravelRequest" == "Travelrequest"
 	 *
 	 * @param docTypeName
 	 * @return
 	 */
     private static DocumentType getValidDocumentType(String docTypeName) {
-    	return KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
+    	DocumentType dTypeCriteria = new DocumentType();
+		dTypeCriteria.setName(docTypeName.trim());
+		dTypeCriteria.setActive(true);
+		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, true);
+
+		// Return the first valid doc type.
+		if(docTypeList != null){
+			for(DocumentType dType: docTypeList){
+				return dType;
+			}
+		}
+
+    	return null;
     }
 
 
@@ -781,14 +793,23 @@ KualiLookupableHelperServiceImpl {
 			docTypeName = (String)fieldValues.get("docTypeFullName");
 		}
 		if(!StringUtils.isEmpty(docTypeName)) {
+			DocumentType dTypeCriteria = new DocumentType();
+			dTypeCriteria.setName(docTypeName.trim());
+			dTypeCriteria.setActive(true);
+			Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, true);
+
             DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
-            MessageMap messages = getValidDocumentType(docTypeName).getDocumentSearchGenerator().getMessageMap(criteria);
-            if (messages != null 
-                    && messages.hasMessages()) {
-                GlobalVariables.mergeErrorMap(messages);
+            for(DocumentType dType:docTypeList){
+
+	            MessageMap messages = getValidDocumentType(dType.getName()).getDocumentSearchGenerator().getMessageMap(criteria);
+	            if (messages != null
+	                    && messages.hasMessages()) {
+	                GlobalVariables.mergeErrorMap(messages);
+	            }
+	            setRows(fieldValues,dType.getName());
             }
         }
-		setRows(fieldValues,docTypeName);
+
 		return true;
 	}
 
@@ -952,17 +973,17 @@ KualiLookupableHelperServiceImpl {
 		return savedSearch;
 
 	}
-	
+
 	private Object getDocSearchCriteriaDTOFieldValue (DocSearchCriteriaDTO searchCriteria, String fieldName) {
         Class<?> clazz = searchCriteria.getClass();
         String propertyName = fieldName;
         if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
             propertyName = StringUtils.remove(fieldName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
-        } 
+        }
         try {
             String methodName = new StringBuffer("get").append(propertyName.toUpperCase().charAt(0)).append(propertyName.substring(1)).toString();
             java.lang.reflect.Method method = clazz.getMethod(methodName);
-            return method.invoke(searchCriteria);  
+            return method.invoke(searchCriteria);
         } catch (SecurityException e) {
             return null;
         } catch (IllegalArgumentException e) {
@@ -975,14 +996,14 @@ KualiLookupableHelperServiceImpl {
             return getSearchableAttributeFieldValue(searchCriteria, fieldName);
         }
     }
-	
+
 	private Object getSearchableAttributeFieldValue(DocSearchCriteriaDTO searchCriteria, String fieldName) {
 	    Object valueToReturn = null;
 	    String propertyName = fieldName;
 	    boolean isDateTime = false;
         if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
             propertyName = StringUtils.remove(fieldName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
-        } 
+        }
 	    if (searchCriteria.getSearchableAttributes() != null) {
     	    for (SearchAttributeCriteriaComponent sa : searchCriteria.getSearchableAttributes()) {
     	        if (StringUtils.equals(propertyName, sa.getFormKey())) {
@@ -998,15 +1019,15 @@ KualiLookupableHelperServiceImpl {
     	        }
     	    }
 	    }
-	    
-	    if (valueToReturn != null 
+
+	    if (valueToReturn != null
 	            && valueToReturn instanceof String
 	            && isDateTime) {
 	        if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
     	        if (StringUtils.contains((String)valueToReturn, "..")) {
     	            valueToReturn = StringUtils.split((String)valueToReturn, "..")[0];
     	        } else if (StringUtils.contains((String)valueToReturn, ">=")) {
-    	            valueToReturn = StringUtils.split((String)valueToReturn, ">=")[0];  
+    	            valueToReturn = StringUtils.split((String)valueToReturn, ">=")[0];
     	        } else {
     	            valueToReturn = null;
     	        }
@@ -1016,15 +1037,15 @@ KualiLookupableHelperServiceImpl {
                 } else if (StringUtils.contains((String)valueToReturn, ">=")) {
                     valueToReturn = null;
                 } else if (StringUtils.contains((String)valueToReturn, "<=")) {
-                    valueToReturn = StringUtils.split((String)valueToReturn, "<=")[0];  
-                } 
-	            
+                    valueToReturn = StringUtils.split((String)valueToReturn, "<=")[0];
+                }
+
 	        }
 	    }
-	    
+
 	    return valueToReturn;
 	}
-	
+
 	/*
     @Override
     public List<Row> getRows() {

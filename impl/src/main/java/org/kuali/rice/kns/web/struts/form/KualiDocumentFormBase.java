@@ -31,6 +31,7 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
@@ -196,16 +197,20 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         
         if(user != null && StringUtils.isNotEmpty(linkBody) ) {
             AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KimAttributes.PRINCIPAL_ID, false);
-            String inquiryUrlSection = inquiryHref.getHref();
-            urlBuffer.append("<a href='");
-            urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
-            urlBuffer.append("/kr/");
-            urlBuffer.append(inquiryUrlSection);
-            urlBuffer.append("' ");
-            urlBuffer.append("target='_blank'");
-            urlBuffer.append("title='" + inquiryHref.getTitle() + "'>");
-            urlBuffer.append(linkBody);
-            urlBuffer.append("</a>");
+            if(!StringUtils.equals(KimConstants.EntityTypes.SYSTEM, user.getEntityTypeCode())){
+	            String inquiryUrlSection = inquiryHref.getHref();
+	            urlBuffer.append("<a href='");
+	            urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
+	            urlBuffer.append("/kr/");
+	            urlBuffer.append(inquiryUrlSection);
+	            urlBuffer.append("' ");
+	            urlBuffer.append("target='_blank'");
+	            urlBuffer.append("title='" + inquiryHref.getTitle() + "'>");
+	            urlBuffer.append(linkBody);
+	            urlBuffer.append("</a>");
+            } else{
+            	urlBuffer.append(linkBody);
+            }
         }
         
         return urlBuffer.toString();

@@ -71,6 +71,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String propertyName;
 	protected boolean existingRecordsOnly;
 	protected boolean createdBySelfOnly;
+	protected String attachmentTypeCode;
 	protected String collectionItemTypeCode;
 	protected String editMode;
 	protected String parameterName;
@@ -510,6 +511,20 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
 	public void setQualifierResolverProvidedIdentifier(String qualifierResolverProvidedIdentifier) {
 		this.qualifierResolverProvidedIdentifier = qualifierResolverProvidedIdentifier;
+	}
+
+	/**
+	 * @return the attachmentTypeCode
+	 */
+	public String getAttachmentTypeCode() {
+		return this.attachmentTypeCode;
+	}
+
+	/**
+	 * @param attachmentTypeCode the attachmentTypeCode to set
+	 */
+	public void setAttachmentTypeCode(String attachmentTypeCode) {
+		this.attachmentTypeCode = attachmentTypeCode;
 	}
 	
 }

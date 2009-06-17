@@ -19,6 +19,7 @@
         <ref bean="KimAttributes-propertyName" />
         <ref bean="KimAttributes-existingRecordsOnly" />
         <ref bean="KimAttributes-createdBySelfOnly" />
+        <ref bean="KimAttributes-attachmentTypeCode" />
         <ref bean="KimAttributes-collectionItemTypeCode" />
         <ref bean="KimAttributes-editMode" />
         <ref bean="KimAttributes-parameterName" />
@@ -110,6 +111,9 @@
     p:name="createdBySelfOnly"
     p:label="Created By Self Only"
     p:shortLabel="Created By Self Only" />
+
+  <bean id="KimAttributes-attachmentTypeCode" parent="KimAttributes-attachmentTypeCode-parentBean" />
+  <bean id="KimAttributes-attachmentTypeCode-parentBean" parent="Attachment-attachmentTypeCode" />
 
   <bean id="KimAttributes-required" parent="KimAttributes-required-parentBean" />
   <bean id="KimAttributes-required-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean"

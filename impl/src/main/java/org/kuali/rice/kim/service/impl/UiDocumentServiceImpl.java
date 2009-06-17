@@ -1312,6 +1312,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				rolePermissionCopy.setRolePermissionId(rolePermission.getRolePermissionId());
 				rolePermissionCopy.setRoleId(rolePermission.getRoleId());
 				rolePermissionCopy.setPermissionId(rolePermission.getPermissionId());
+				rolePermissionCopy.setKimPermission(rolePermission.getKimPermission().toSimpleInfo());
 				rolePermissionCopy.setEdit(true);
 				documentRolePermissions.add(rolePermissionCopy);
 			}

@@ -650,17 +650,19 @@ KualiLookupableHelperServiceImpl {
 	 * @return
 	 */
     private static DocumentType getValidDocumentType(String docTypeName) {
-    	DocumentType dTypeCriteria = new DocumentType();
-		dTypeCriteria.setName(docTypeName.trim());
-		dTypeCriteria.setActive(true);
-		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, true);
-
-		// Return the first valid doc type.
-		if(docTypeList != null){
-			for(DocumentType dType: docTypeList){
-				return dType;
-			}
-		}
+    	if (StringUtils.isNotEmpty(docTypeName)) {
+            DocumentType dTypeCriteria = new DocumentType();
+    		dTypeCriteria.setName(docTypeName.trim());
+    		dTypeCriteria.setActive(true);
+    		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
+    
+    		// Return the first valid doc type.
+    		if(docTypeList != null){
+    			for(DocumentType dType: docTypeList){
+    				return dType;
+    			}
+    		}
+    	}
 
     	return null;
     }
@@ -788,27 +790,26 @@ KualiLookupableHelperServiceImpl {
 		String docTypeName = null;
 		if(this.getParameters().get("docTypeFullName")!=null) {
 			docTypeName = ((String[])this.getParameters().get("docTypeFullName"))[0];
-		}
+		} 
 		else if(fieldValues.get("docTypeFullName")!=null) {
 			docTypeName = (String)fieldValues.get("docTypeFullName");
 		}
 		if(!StringUtils.isEmpty(docTypeName)) {
-			DocumentType dTypeCriteria = new DocumentType();
-			dTypeCriteria.setName(docTypeName.trim());
-			dTypeCriteria.setActive(true);
-			Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, true);
+		    DocumentType dType = getValidDocumentType(docTypeName);
 
             DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
-            for(DocumentType dType:docTypeList){
-
+            if (dType != null) {
 	            MessageMap messages = getValidDocumentType(dType.getName()).getDocumentSearchGenerator().getMessageMap(criteria);
 	            if (messages != null
 	                    && messages.hasMessages()) {
 	                GlobalVariables.mergeErrorMap(messages);
 	            }
 	            setRows(fieldValues,dType.getName());
+	            return true;
             }
-        }
+        } 
+            
+		setRows(fieldValues, docTypeName);
 
 		return true;
 	}

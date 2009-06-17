@@ -674,7 +674,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
    		DocumentType dTypeCriteria = new DocumentType();
 		dTypeCriteria.setName(docTypeName.trim());
 		dTypeCriteria.setActive(true);
-		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, true);
+		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
 
 		// Return the first valid doc type.
 		if(docTypeList != null && !docTypeList.isEmpty()){

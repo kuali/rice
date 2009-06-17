@@ -30,6 +30,7 @@
     var kualiForm = document.forms['KualiForm'];
     var kualiElements = kualiForm.elements;
   </SCRIPT>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/DocumentTypeService.js"></script>
 
 	<div class="headerarea-small" id="headerarea-small">
 		<h1><c:out value="${KualiForm.lookupable.title}" /><kul:help

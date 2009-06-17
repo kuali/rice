@@ -38,7 +38,7 @@
     <param name="kr.url" override="false">${application.url}/kr</param>
     <param name="kim.url" override="false">${application.url}/kim</param>
     <param name="kew.url" override="false">${application.url}/kew</param>
-    
+
     <!-- TODO: doc this param -->
     <param name="production.environment.code" override="false">PRD</param>
      <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->
@@ -51,14 +51,14 @@
     <param name="mail.relay.server" override="false">mail.relay.server</param>
     <param name="mailing.list.batch" override="false">mailing.list.batch</param>
 
-    <param name="javascript.files" override="false">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js,dwr/interface/DocumentTypeService.js</param>
+    <param name="javascript.files" override="false">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
     <param name="css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
 
     <param name="portal.css.files" override="false">rice-portal/css/portal.css</param>
     <param name="portal.javascript.files" override="false">kr/scripts/my_common.js</param>
 
 
-    
+
 
     <!--
         DATASOURCE RELATED PROPERTIES
@@ -119,25 +119,25 @@
 	<param name="rice.kew.enableKENNotification" override="false">true</param>
 
     <!-- KNS -->
-    
+
     <param name="rice.kns.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
 
     <param name="kr.incident.mailing.list" override="false"></param>
-    
+
     <param name="session.document.cache.size" override="false">100</param>
-    
+
 
     <param name="kns.cache.parameter.max.size" override="false">200</param>
     <param name="kns.cache.parameter.max.age.seconds" override="false">3600</param>
     <param name="kns.cache.nonDatabaseComponent.max.size" override="false">50</param>
     <param name="kns.cache.nonDatabaseComponent.max.age.seconds" override="false">3600</param>
-    
+
     <param name="attachments.pending.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
-    
+
     <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck">true</param>
-    
+
     <!-- KSB -->
-    
+
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>
 	<param name="ksb.mode" override="false">local</param>
     <param name="ksb.url" override="false">${application.url}/ksb</param>
@@ -153,15 +153,15 @@
 	<param name="Routing.ImmediateExceptionRouting" override="false">false</param>
     <param name="RouteQueue.maxRetryAttempts" override="false">5</param>
     <param name="RouteQueue.timeIncrement" override="false">5000</param>
-    
+
     <param name="useQuartzDatabase" override="false">true</param>
 	<param name="ksb.org.quartz.scheduler.instanceId" override="false">AUTO</param>
     <param name="ksb.org.quartz.scheduler.instanceName" override="false">KSBScheduler</param>
     <param name="ksb.org.quartz.jobStore.isClustered" override="false">true</param>
     <param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_</param>
-	
+
 	<!-- KIM -->
-	
+
 	<!-- what mode should KIM be run in?
         local - use the master data source
         embedded - run locally, but may have separate data source from rest of application
@@ -169,7 +169,7 @@
      -->
     <param name="kim.mode" override="false">local</param>
     <param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
-    
+
 	<param name="kim.cache.entity.max.size" override="false">3000</param>
     <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
     <param name="kim.cache.group.max.size" override="false">3000</param>

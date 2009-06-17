@@ -1569,27 +1569,29 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		AttributeDefinitionMap origAttributes = identityManagementRoleDocument.getDefinitions();
 		boolean attributePresent = false;
 		String origAttributeId;
-		for(String key: origAttributes.keySet()) {
-			origAttributeId = identityManagementRoleDocument.getKimAttributeDefnId(origAttributes.get(key));
-			for(KimDelegationMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
-				if(origAttributeId.equals(memberRoleQualifier.getKimAttribute().getKimAttributeId())){
-					pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
-					pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
-					pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-					pndMemberRoleQualifier.setDelegationMemberId(memberRoleQualifier.getDelegationMemberId());
-					pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
-					pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
-					pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
-					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
-					attributePresent = true;
+		if(origAttributes!=null){
+			for(String key: origAttributes.keySet()) {
+				origAttributeId = identityManagementRoleDocument.getKimAttributeDefnId(origAttributes.get(key));
+				for(KimDelegationMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
+					if(origAttributeId.equals(memberRoleQualifier.getKimAttribute().getKimAttributeId())){
+						pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
+						pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
+						pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
+						pndMemberRoleQualifier.setDelegationMemberId(memberRoleQualifier.getDelegationMemberId());
+						pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
+						pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
+						pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
+						pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
+						attributePresent = true;
+					}
 				}
+				if(!attributePresent){
+					pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
+					pndMemberRoleQualifier.setKimAttrDefnId(origAttributeId);
+					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
+				}
+				attributePresent = false;
 			}
-			if(!attributePresent){
-				pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
-				pndMemberRoleQualifier.setKimAttrDefnId(origAttributeId);
-				pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
-			}
-			attributePresent = false;
 		}
 		return pndMemberRoleQualifiers;
 	}
@@ -2024,27 +2026,29 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		AttributeDefinitionMap origAttributes = IdentityManagementGroupDocument.getDefinitions();
 		boolean attributePresent = false;
 		String origAttributeId;
-		for(String key: origAttributes.keySet()) {
-			origAttributeId = IdentityManagementGroupDocument.getKimAttributeDefnId(origAttributes.get(key));
-			for(GroupAttributeDataImpl groupQualifier: attributeDataList){
-				if(origAttributeId.equals(groupQualifier.getKimAttribute().getKimAttributeId())){
-					pndGroupQualifier = new GroupDocumentQualifier();
-					KimCommonUtils.copyProperties(pndGroupQualifier, groupQualifier);
-					pndGroupQualifier.setAttrDataId(groupQualifier.getAttributeDataId());
-					pndGroupQualifier.setAttrVal(groupQualifier.getAttributeValue());
-					pndGroupQualifier.setKimAttrDefnId(groupQualifier.getKimAttributeId());
-					pndGroupQualifier.setKimTypId(groupQualifier.getKimTypeId());
-					pndGroupQualifier.setGroupId(groupQualifier.getGroupId());
-					pndGroupQualifiers.add(pndGroupQualifier);
-					attributePresent = true;
+		if(origAttributes!=null){
+			for(String key: origAttributes.keySet()) {
+				origAttributeId = IdentityManagementGroupDocument.getKimAttributeDefnId(origAttributes.get(key));
+				for(GroupAttributeDataImpl groupQualifier: attributeDataList){
+					if(origAttributeId.equals(groupQualifier.getKimAttribute().getKimAttributeId())){
+						pndGroupQualifier = new GroupDocumentQualifier();
+						KimCommonUtils.copyProperties(pndGroupQualifier, groupQualifier);
+						pndGroupQualifier.setAttrDataId(groupQualifier.getAttributeDataId());
+						pndGroupQualifier.setAttrVal(groupQualifier.getAttributeValue());
+						pndGroupQualifier.setKimAttrDefnId(groupQualifier.getKimAttributeId());
+						pndGroupQualifier.setKimTypId(groupQualifier.getKimTypeId());
+						pndGroupQualifier.setGroupId(groupQualifier.getGroupId());
+						pndGroupQualifiers.add(pndGroupQualifier);
+						attributePresent = true;
+					}
 				}
+				if(!attributePresent){
+					pndGroupQualifier = new GroupDocumentQualifier();
+					pndGroupQualifier.setKimAttrDefnId(origAttributeId);
+					pndGroupQualifiers.add(pndGroupQualifier);
+				}
+				attributePresent = false;
 			}
-			if(!attributePresent){
-				pndGroupQualifier = new GroupDocumentQualifier();
-				pndGroupQualifier.setKimAttrDefnId(origAttributeId);
-				pndGroupQualifiers.add(pndGroupQualifier);
-			}
-			attributePresent = false;
 		}
 		return pndGroupQualifiers;
 	}

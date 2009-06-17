@@ -268,11 +268,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public KimDocumentRoleMember getBlankMember() {
 		KimDocumentRoleMember member = new KimDocumentRoleMember();
 		KimDocumentRoleQualifier qualifier;
-		for(String key : getDefinitions().keySet()) {
-        	qualifier = new KimDocumentRoleQualifier();
-        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-        	member.getQualifiers().add(qualifier);
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+	        	qualifier = new KimDocumentRoleQualifier();
+	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+	        	member.getQualifiers().add(qualifier);
+	        }
+		}
        	setupMemberRspActions(member);
        	return member;
 	}
@@ -283,11 +285,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public RoleDocumentDelegationMember getBlankDelegationMember() {
 		RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 		RoleDocumentDelegationMemberQualifier qualifier;
-		for(String key : getDefinitions().keySet()) {
-			qualifier = new RoleDocumentDelegationMemberQualifier();
-			setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
-        	member.getQualifiers().add(qualifier);
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+				qualifier = new RoleDocumentDelegationMemberQualifier();
+				setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
+	        	member.getQualifiers().add(qualifier);
+	        }
+		}
        	return member;
 	}
 

@@ -139,15 +139,17 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		}
 		int index = 0;
 		// this needs to be checked - are all qualifiers present?
-		for(String key : getDefinitions().keySet()) {
-			if ( getQualifiers().size() > index ) {
-				GroupDocumentQualifier qualifier = getQualifiers().get(index);
-				qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-				qualifier.setKimTypId(getKimType().getKimTypeId());
-				qualifier.setGroupId(groupId);
-			}
-			index++;
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+				if ( getQualifiers().size() > index ) {
+					GroupDocumentQualifier qualifier = getQualifiers().get(index);
+					qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+					qualifier.setKimTypId(getKimType().getKimTypeId());
+					qualifier.setGroupId(groupId);
+				}
+				index++;
+	        }
+		}
 	}
 
 	public void initializeDocumentForNewGroup() {
@@ -286,11 +288,13 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		if(getQualifiers()==null || getQualifiers().size()<1){
 			GroupDocumentQualifier qualifier;
 			setQualifiers(new ArrayList<GroupDocumentQualifier>());
-			for(String key : getDefinitions().keySet()) {
-				qualifier = new GroupDocumentQualifier();
-	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-	        	getQualifiers().add(qualifier);
-	        }
+			if(getDefinitions()!=null){
+				for(String key : getDefinitions().keySet()) {
+					qualifier = new GroupDocumentQualifier();
+		        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+		        	getQualifiers().add(qualifier);
+		        }
+			}
 		}
 	}
 

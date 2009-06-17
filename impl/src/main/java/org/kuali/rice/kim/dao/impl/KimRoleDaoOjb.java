@@ -428,17 +428,18 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
                 principalIds.add(principal.getPrincipalId());
             }
         }
-
-        memberSubCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE);
-        memberSubCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, principalIds);
-        
-		ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
-		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
-			if (!roleIds.contains(roleMbr.getRoleId())) {
-				roleIds.add(roleMbr.getRoleId());
+        if(principalIds!=null && !principalIds.isEmpty()){
+        	memberSubCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE);
+        	memberSubCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, principalIds);
+	     
+			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
+			for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
+				if (!roleIds.contains(roleMbr.getRoleId())) {
+					roleIds.add(roleMbr.getRoleId());
+				}
 			}
-		}
-		
+        }
+        
 		List<String> groupIds = new ArrayList<String>();
 		for (String principalId : principalIds) {
 		    List<String> principalGroupIds = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
@@ -448,19 +449,21 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		        }
 		    }
 		}
-		
-        Criteria grpRoleCrit = new Criteria();
-        grpRoleCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE);
-        if(groupIds!=null && !groupIds.isEmpty())
-        	grpRoleCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
-        memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, grpRoleCrit);
 
-		for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
-			if (!roleIds.contains(roleMbr.getRoleId())) {
-				roleIds.add(roleMbr.getRoleId());
+        if(groupIds!=null && !groupIds.isEmpty()){
+        	Criteria grpRoleCrit = new Criteria();
+        	grpRoleCrit.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE);
+        	grpRoleCrit.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
+	        	
+        	ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, grpRoleCrit);
+	
+			for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
+				if (!roleIds.contains(roleMbr.getRoleId())) {
+					roleIds.add(roleMbr.getRoleId());
+				}
 			}
-		}
-		
+        }
+        
     	return roleIds;
     }
     

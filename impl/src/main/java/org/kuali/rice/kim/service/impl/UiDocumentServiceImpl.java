@@ -202,49 +202,51 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 */
 	public Map<String,Object> getAttributeEntries( AttributeDefinitionMap definitions ) {
 		Map<String,Object> attributeEntries = new HashMap<String,Object>();
-        for (String key : definitions.keySet()) {
-			AttributeDefinition definition = definitions.get(key);
-			Map<String,Object> attribute = new HashMap<String,Object>();
-			if (definition instanceof KimDataDictionaryAttributeDefinition) {
-//				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
-//						.getDataDictionaryAttributeDefinition();
-				ControlDefinition control = definition.getControl();
-				if (control.isSelect()) {
-					Map<String,Object> controlMap = new HashMap<String,Object>();
-		            controlMap.put("select", "true");
-		            controlMap.put("valuesFinder", control.getValuesFinderClass().getName());
-		            if (control.getBusinessObjectClass() != null) {
-		                controlMap.put("businessObject", control.getBusinessObjectClass().getName());
-		            }
-		            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
-		                controlMap.put("keyAttribute", control.getKeyAttribute());
-		            }
-		            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
-		                controlMap.put("labelAttribute", control.getLabelAttribute());
-		            }
-		            if (control.getIncludeKeyInLabel() != null) {
-		                controlMap.put("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
-		            }
-					attribute.put("control", controlMap);
-		        } else {
-		        	// FIXME: Huh!?!?, control is a Map in the above code but a ControlDefinition here?!?!?
-		        	// Maybe this should use the AttributesMapBuilder code to create this
-		        	attribute.put("control", definition.getControl());
-		        }
-				attribute.put("label", definition.getLabel());
-				attribute.put("shortLabel", definition.getShortLabel());
-				attribute.put("maxLength", definition.getMaxLength());
-				attribute.put("required", definition.isRequired());
-				attributeEntries.put(definition.getName(),attribute);
-			} else {
-				TextControlDefinition control = new TextControlDefinition();
-				control.setSize(10);
-				attribute.put("control", control);
-				attribute.put("label", definition.getLabel());
-				attribute.put("maxLength", 20);
-				attribute.put("required", true);
-				attribute.put("shortLabel", definition.getLabel());
-				attributeEntries.put(definition.getName(),attribute);
+		if(definitions!=null){
+	        for (String key : definitions.keySet()) {
+				AttributeDefinition definition = definitions.get(key);
+				Map<String,Object> attribute = new HashMap<String,Object>();
+				if (definition instanceof KimDataDictionaryAttributeDefinition) {
+	//				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
+	//						.getDataDictionaryAttributeDefinition();
+					ControlDefinition control = definition.getControl();
+					if (control.isSelect()) {
+						Map<String,Object> controlMap = new HashMap<String,Object>();
+			            controlMap.put("select", "true");
+			            controlMap.put("valuesFinder", control.getValuesFinderClass().getName());
+			            if (control.getBusinessObjectClass() != null) {
+			                controlMap.put("businessObject", control.getBusinessObjectClass().getName());
+			            }
+			            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
+			                controlMap.put("keyAttribute", control.getKeyAttribute());
+			            }
+			            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
+			                controlMap.put("labelAttribute", control.getLabelAttribute());
+			            }
+			            if (control.getIncludeKeyInLabel() != null) {
+			                controlMap.put("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
+			            }
+						attribute.put("control", controlMap);
+			        } else {
+			        	// FIXME: Huh!?!?, control is a Map in the above code but a ControlDefinition here?!?!?
+			        	// Maybe this should use the AttributesMapBuilder code to create this
+			        	attribute.put("control", definition.getControl());
+			        }
+					attribute.put("label", definition.getLabel());
+					attribute.put("shortLabel", definition.getShortLabel());
+					attribute.put("maxLength", definition.getMaxLength());
+					attribute.put("required", definition.isRequired());
+					attributeEntries.put(definition.getName(),attribute);
+				} else {
+					TextControlDefinition control = new TextControlDefinition();
+					control.setSize(10);
+					attribute.put("control", control);
+					attribute.put("label", definition.getLabel());
+					attribute.put("maxLength", 20);
+					attribute.put("required", true);
+					attribute.put("shortLabel", definition.getLabel());
+					attributeEntries.put(definition.getName(),attribute);
+				}
 			}
 		}
         return attributeEntries;

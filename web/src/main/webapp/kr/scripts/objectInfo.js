@@ -100,10 +100,17 @@ function validateDocTypeAndRefresh(docTypeNameField){
 		var dwrReply = {
 				callback:function(data) {
 					if ( data != null && typeof data == 'object' ) {
-						document.forms[0].methodToCall='post';
-						document.forms[0].refreshCaller = 'docTypeLookupable';
-						document.forms[0].docTypeFullName = docTypeName;
-						document.forms[0].submit();
+						newField = document.createElement("input");
+						newField.type = "hidden";
+						newField.name = "docTypeFullName";
+						newField.value = data.name;
+
+
+						var frm = document.forms[0];
+						frm.methodToCall='post';
+						frm.refreshCaller = 'docTypeLookupable';
+
+						frm.submit();
 					}
 				},
 				errorHandler:function( errorMessage ) {

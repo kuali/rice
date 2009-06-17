@@ -283,9 +283,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				identityManagementPersonDocument.setTaxId(extId.getExternalId());
 			}
 		}
-		identityManagementPersonDocument.setEmails(loadEmails(entityType.getEmailAddresses()));
-		identityManagementPersonDocument.setPhones(loadPhones(entityType.getPhoneNumbers()));
-		identityManagementPersonDocument.setAddrs(loadAddresses(entityType.getAddresses()));
+		if(entityType!=null){
+			identityManagementPersonDocument.setEmails(loadEmails(entityType.getEmailAddresses()));
+			identityManagementPersonDocument.setPhones(loadPhones(entityType.getPhoneNumbers()));
+			identityManagementPersonDocument.setAddrs(loadAddresses(entityType.getAddresses()));
+		}
 		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
 		}

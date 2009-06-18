@@ -850,9 +850,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     		//employmentRecordId
     		//entityId
     		//These should be unique - add a business rule
-    	return (origEmpInfo!=null && entityEmpInfo!=null) && (StringUtils.isNotEmpty(origEmpInfo.getEmploymentRecordId()) && origEmpInfo.getEmploymentRecordId().equals(entityEmpInfo.getEmploymentRecordId()))
-    			&& 
-    			(StringUtils.isNotEmpty(origEmpInfo.getEntityId()) && StringUtils.isNotEmpty(entityEmpInfo.getEntityId())) && origEmpInfo.getEntityId().equals(entityEmpInfo.getEntityId());
+    	return (origEmpInfo!=null && entityEmpInfo!=null) 
+    			&& (StringUtils.isNotEmpty(origEmpInfo.getEmploymentRecordId()) 
+    					&& StringUtils.equals(origEmpInfo.getEmploymentRecordId(), entityEmpInfo.getEmploymentRecordId() )
+    				)
+    			&& StringUtils.equals( origEmpInfo.getEntityId(),entityEmpInfo.getEntityId());
     }
     
     protected void setupPhone(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityEntityTypeImpl entityType, List<KimEntityPhone> origPhones) {

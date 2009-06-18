@@ -66,44 +66,6 @@ public class LookupDaoJpa implements LookupDao {
 	public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
 		this.persistenceStructureService = persistenceStructureService;
 	}
-
-	// TODO: Add the JPA implementation
-	// TODO WARNING: this does not support nested joins, because i don't have a
-	// test case
-	public Collection findCollectionBySearchHelperWithPersonJoin(Class businessObjectClass, Map nonPersonSearchCriteria, Map personSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
-		Criteria criteria = null;
-		/*
-		if (usePrimaryKeyValuesOnly) {
-			criteria = getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, nonPersonSearchCriteria);
-		} else {
-			criteria = getCollectionCriteriaFromMap(businessObject, nonPersonSearchCriteria);
-			Iterator personReferenceItr = personSearchCriteria.keySet().iterator();
-			Person personExample = new org.kuali.rice.kim.bo.impl.PersonImpl();
-			while (personReferenceItr.hasNext()) {
-				String institutionalIdSourcePrimitivePropertyName = (String) personReferenceItr.next();
-				Map personReferenceSearchCriteria = (Map) personSearchCriteria.get(institutionalIdSourcePrimitivePropertyName);
-				Iterator personReferenceSearchCriterionItr = personReferenceSearchCriteria.keySet().iterator();
-				Criteria personSubCriteria = new Criteria();
-				while (personReferenceSearchCriterionItr.hasNext()) {
-					String personSearchFieldName = (String) personReferenceSearchCriterionItr.next();
-					Boolean caseInsensitive = Boolean.FALSE;
-					if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(businessObjectClass, personSearchFieldName)) {
-						caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(Person.class, personSearchFieldName);
-					}
-					if (caseInsensitive == null) {
-						caseInsensitive = Boolean.FALSE;
-					}
-					createCriteria(personExample, (String) personReferenceSearchCriteria.get(personSearchFieldName), personSearchFieldName, caseInsensitive, personSubCriteria);
-				}
-				ReportQueryByCriteria personSubQuery = QueryFactory.newReportQuery(Person.class, personSubCriteria);
-				personSubQuery.setAttributes(new String[] { "principalId" });
-				criteria.addIn(institutionalIdSourcePrimitivePropertyName, personSubQuery);
-			}
-		}
-		*/
-		return executeSearch(businessObjectClass, criteria, unbounded);
-	}
 	
     public Long findCountByMap(Object example, Map formProps) {
 		Criteria criteria = new Criteria(example.getClass().getName());

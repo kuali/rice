@@ -28,9 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -55,39 +53,6 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
-    }
-    
-    // TODO WARNING: this does not support nested joins, because i don't have a test case
-    public Collection findCollectionBySearchHelperWithPersonJoin(Class businessObjectClass, Map nonPersonSearchCriteria, Map personSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-        BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
-        Criteria criteria;
-        if (usePrimaryKeyValuesOnly) {
-            criteria = getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, nonPersonSearchCriteria);
-        }
-        else {
-            criteria = getCollectionCriteriaFromMap(businessObject, nonPersonSearchCriteria);
-            Iterator personReferenceItr = personSearchCriteria.keySet().iterator();
-            Person personExample = new org.kuali.rice.kim.bo.impl.PersonImpl();
-            while (personReferenceItr.hasNext()) {
-                String institutionalIdSourcePrimitivePropertyName = (String)personReferenceItr.next();
-                Map personReferenceSearchCriteria = (Map)personSearchCriteria.get(institutionalIdSourcePrimitivePropertyName);
-                Iterator personReferenceSearchCriterionItr = personReferenceSearchCriteria.keySet().iterator();
-                Criteria personSubCriteria = new Criteria();
-                while (personReferenceSearchCriterionItr.hasNext()) {
-                    String personSearchFieldName = (String)personReferenceSearchCriterionItr.next();
-                	Boolean caseInsensitive = Boolean.FALSE;
-                	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( businessObjectClass, personSearchFieldName )) {
-                		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( Person.class, personSearchFieldName );
-                }
-                	if ( caseInsensitive == null ) { caseInsensitive = Boolean.FALSE; }
-                    createCriteria(personExample, (String)personReferenceSearchCriteria.get(personSearchFieldName), personSearchFieldName, caseInsensitive, personSubCriteria);
-                }
-                ReportQueryByCriteria personSubQuery = QueryFactory.newReportQuery(Person.class, personSubCriteria);
-                personSubQuery.setAttributes(new String[] { "principalId" });
-                criteria.addIn(institutionalIdSourcePrimitivePropertyName, personSubQuery);
-            }
-        }
-        return executeSearch(businessObjectClass, criteria, unbounded);
     }
 
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {

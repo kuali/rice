@@ -28,8 +28,6 @@ public interface LookupDao {
 
     public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly, Object additionalCriteria );
     
-    public Collection findCollectionBySearchHelperWithPersonJoin(Class example, Map nonPersonSearchCriteria, Map personSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly);
-    
     /**
      * Retrieves a Object based on the search criteria, which should uniquely identify a record.
      * 

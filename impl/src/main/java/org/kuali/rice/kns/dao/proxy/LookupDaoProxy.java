@@ -25,10 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
-import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.LookupDao;
-import org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa;
-import org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb;
 import org.kuali.rice.kns.dao.impl.LookupDaoJpa;
 import org.kuali.rice.kns.dao.impl.LookupDaoOjb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -38,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class LookupDaoProxy implements LookupDao {
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoProxy.class);
+//	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoProxy.class);
     
 	private LookupDao lookupDaoJpa;
 	private LookupDao lookupDaoOjb;
@@ -122,13 +119,6 @@ public class LookupDaoProxy implements LookupDao {
 	 */
 	public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly, Object additionalCriteria) {
 		return getDao(example).findCollectionBySearchHelper(example, formProps, unbounded, usePrimaryKeyValuesOnly, additionalCriteria);
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.dao.LookupDao#findCollectionBySearchHelperWithPersonJoin(java.lang.Class, java.util.Map, java.util.Map, boolean, boolean)
-	 */
-	public Collection findCollectionBySearchHelperWithPersonJoin(Class example, Map nonPersonSearchCriteria, Map personSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		return getDao(example).findCollectionBySearchHelperWithPersonJoin(example, nonPersonSearchCriteria, personSearchCriteria, unbounded, usePrimaryKeyValuesOnly);
 	}
 
 	/**

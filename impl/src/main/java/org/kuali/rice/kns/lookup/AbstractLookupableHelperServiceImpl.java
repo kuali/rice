@@ -98,7 +98,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     private String docFormKey;
     private Map fieldConversions;
     private LookupService lookupService;
-    private org.kuali.rice.kim.service.PersonService personService;
     private List<Row> rows;
     private String referencesToRefresh;
     private SequenceAccessorService sequenceAccessorService;
@@ -930,17 +929,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             }
         }
 
-        if (!GlobalVariables.getMessageMap().isEmpty()) {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("errors in search criteria");
         }
-    }
-
-    protected org.kuali.rice.kim.service.PersonService getPersonService() {
-        return personService != null ? personService : org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
-    }
-
-    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
-        this.personService = personService;
     }
 
     /**

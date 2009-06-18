@@ -905,11 +905,11 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     public Boolean areNotesSupported(Class businessObjectClass) {
-        Boolean hasNotesSupport = null;
+        Boolean hasNotesSupport = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
-            hasNotesSupport = Boolean.valueOf(entry.isBoNotesEnabled());
+            hasNotesSupport = entry.isBoNotesEnabled();
         }
 
         return hasNotesSupport;

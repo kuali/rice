@@ -19,10 +19,9 @@ package org.kuali.rice.kns.datadictionary;
 import java.math.BigDecimal;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.springframework.beans.factory.InitializingBean;
@@ -412,7 +411,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
             	validationPattern.completeValidation();
             }
         } catch ( RuntimeException ex ) {
-            LogFactory.getLog(getClass()).error("Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex );
+            Logger.getLogger(getClass()).error("Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex );
             throw ex;
         }
     }

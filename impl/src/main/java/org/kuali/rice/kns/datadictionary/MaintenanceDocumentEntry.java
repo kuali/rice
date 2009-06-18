@@ -76,7 +76,8 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     /**
      * @see org.kuali.rice.kns.datadictionary.DocumentEntry#getEntryClass()
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Class getEntryClass() {
     	return businessObjectClass;
     }

@@ -16,6 +16,8 @@
 
 package org.kuali.rice.kns.datadictionary;
 
+import org.springframework.beans.factory.InitializingBean;
+
 
 
 /**
@@ -23,7 +25,7 @@ package org.kuali.rice.kns.datadictionary;
  * 
  * 
  */
-abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefinition {
+abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefinition, InitializingBean {
     private static final long serialVersionUID = -2003626577498716712L;
     
 	protected String id;
@@ -41,4 +43,9 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
     public void setId(String id) {
         this.id = id;
     }
+    
+    /**
+     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+     */
+    public void afterPropertiesSet() throws Exception {}
 }

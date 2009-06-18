@@ -92,10 +92,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
         }
-        else if (baseDocumentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
-        	throw new IllegalArgumentException("The documentClass " + documentClass.getName() +
-        			" is not a subclass of the baseDocumentClass " + baseDocumentClass.getName());
-        }
 
         this.documentClass = documentClass;
     }
@@ -109,12 +105,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     		associated with the document. This gives the data dictionary the ability
     		to index by the superclass in addition to the current class.
      */
-    public void setBaseDocumentClass(Class<? extends Document> baseDocumentClass) {
-    	if (baseDocumentClass != null && documentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
-    		throw new IllegalArgumentException("The baseDocumentClass " + baseDocumentClass.getName() +
-    				" is not a superclass of the documentClass " + documentClass.getName());
-    	}
-    	
+    public void setBaseDocumentClass(Class<? extends Document> baseDocumentClass) {  	
     	this.baseDocumentClass = baseDocumentClass;
     }
 
@@ -195,6 +186,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     public void completeValidation() {
         super.completeValidation();
 
+    	if (baseDocumentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
+    		throw new IllegalArgumentException("The baseDocumentClass " + baseDocumentClass.getName() +
+    				" is not a superclass of the documentClass " + documentClass.getName());
+    	}
+        
         if (workflowProperties != null && workflowAttributes != null) {
         	throw new DataDictionaryException(documentTypeName + ": workflowProperties and workflowAttributes cannot both be defined for a document");
         }
@@ -410,19 +406,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             whose entries are keyed by attributeName
      */
     public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
-        defaultExistenceCheckMap.clear();
-        for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
-            if (reference == null) {
-                throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
-            }
-    
-            String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
-            if (defaultExistenceCheckMap.containsKey(keyName)) {
-                throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
-            }
-            reference.setBusinessObjectClass(getEntryClass());
-            defaultExistenceCheckMap.put(keyName, reference);
-        }
         this.defaultExistenceChecks = defaultExistenceChecks;
     }
     /**
@@ -499,5 +482,29 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             Class<? extends DocumentSearchGenerator> documentSearchGeneratorClass) {
         this.documentSearchGeneratorClass = documentSearchGeneratorClass;
     }
-	
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+    	super.afterPropertiesSet();
+    	if ( defaultExistenceChecks != null) {
+            defaultExistenceCheckMap.clear();
+            for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
+                if (reference == null) {
+                    throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
+                }
+        
+                String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
+                if (defaultExistenceCheckMap.containsKey(keyName)) {
+                    throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
+                }
+                reference.setBusinessObjectClass(getEntryClass());
+                defaultExistenceCheckMap.put(keyName, reference);
+            }
+    	}
+    }
 }

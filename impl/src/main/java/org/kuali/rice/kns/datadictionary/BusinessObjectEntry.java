@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation, and general
@@ -87,10 +88,6 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
-        else if (baseBusinessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(businessObjectClass)) {
-        	throw new IllegalArgumentException("The businessObjectClass " + businessObjectClass.getName() +
-        			" is not a subclass of the baseBusinessObjectClass " + baseBusinessObjectClass.getName());
-        }
         
         if ( getRelationships() != null ) {
         	for ( RelationshipDefinition rd : getRelationships() ) {
@@ -112,10 +109,6 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      */
     
     public void setBaseBusinessObjectClass(Class<? extends BusinessObject> baseBusinessObjectClass) {
-        if (baseBusinessObjectClass != null && businessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(businessObjectClass)) {
-        	throw new IllegalArgumentException("The baseBusinessObjectClass " + baseBusinessObjectClass.getName() +
-            		" is not a superclass of the businessObjectClass " + businessObjectClass.getName());
-        }
 
         this.baseBusinessObjectClass = baseBusinessObjectClass;
     }
@@ -244,26 +237,31 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
      */
     public void completeValidation() {
         try {
-    	//KFSMI-1340 - Object label should never be blank
-        if (StringUtils.isBlank(getObjectLabel())) {
-            throw new AttributeValidationException("Object label cannot be blank for class " + businessObjectClass.getName());
-        }
-
-        super.completeValidation();
-
-        if (hasInquiryDefinition()) {
-            inquiryDefinition.completeValidation(businessObjectClass, null);
-        }
-
-        if (hasLookupDefinition()) {
-            lookupDefinition.completeValidation(businessObjectClass, null);
-        }
-
-        if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
-            for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
-                inactivationBlockingDefinition.completeValidation(businessObjectClass, null);
-            }
-        }
+	    	//KFSMI-1340 - Object label should never be blank
+	        if (StringUtils.isBlank(getObjectLabel())) {
+	            throw new AttributeValidationException("Object label cannot be blank for class " + businessObjectClass.getName());
+	        }
+	
+	        if (baseBusinessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(businessObjectClass)) {
+	        	throw new ClassValidationException("The baseBusinessObjectClass " + baseBusinessObjectClass.getName() +
+	            		" is not a superclass of the businessObjectClass " + businessObjectClass.getName());
+	        }
+	        
+	        super.completeValidation();
+	
+	        if (hasInquiryDefinition()) {
+	            inquiryDefinition.completeValidation(businessObjectClass, null);
+	        }
+	
+	        if (hasLookupDefinition()) {
+	            lookupDefinition.completeValidation(businessObjectClass, null);
+	        }
+	
+	        if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
+	            for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
+	                inactivationBlockingDefinition.completeValidation(businessObjectClass, null);
+	            }
+	        }
         } catch ( DataDictionaryException ex ) {
         	// just rethrow
         	throw ex;
@@ -275,7 +273,8 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     /**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#getEntryClass()
      */
-    public Class getEntryClass() {
+    @SuppressWarnings("unchecked")
+	public Class getEntryClass() {
         return businessObjectClass;
     }
 
@@ -358,9 +357,26 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     }
 
     public void setInactivationBlockingDefinitions(List<InactivationBlockingDefinition> inactivationBlockingDefinitions) {
-    	for ( InactivationBlockingDefinition ibd : inactivationBlockingDefinitions ) {
-    		ibd.setBusinessObjectClass( getBusinessObjectClass() );
-    	}
         this.inactivationBlockingDefinitions = inactivationBlockingDefinitions;
+    }
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
+     */
+    @SuppressWarnings("unchecked")
+	@Override
+    public void afterPropertiesSet() throws Exception {
+    	super.afterPropertiesSet();
+    	if ( inactivationBlockingDefinitions != null ) {
+	    	for ( InactivationBlockingDefinition ibd : inactivationBlockingDefinitions ) {
+	    		ibd.setBusinessObjectClass( getBusinessObjectClass() );
+	            if (StringUtils.isNotBlank(ibd.getBlockedReferencePropertyName()) && ibd.getBlockedBusinessObjectClass() == null) {
+	                // if the user didn't specify a class name for the blocked reference, determine it here
+	            	ibd.setBlockedBusinessObjectClass( DataDictionary.getAttributeClass(businessObjectClass, ibd.getBlockedReferencePropertyName()) );
+	            }
+	    		ibd.setBlockingReferenceBusinessObjectClass(getBusinessObjectClass());
+	    	}
+    	}
     }
 }

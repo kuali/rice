@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 

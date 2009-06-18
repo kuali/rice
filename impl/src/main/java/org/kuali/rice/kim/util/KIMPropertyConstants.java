@@ -72,9 +72,14 @@ public class KIMPropertyConstants extends JSTLConstants {
 	    public static final String GROUP_ID = "groupId";
 	}
 	
+	public static class KimType {
+	    public static final String KIM_TYPE_ID = "kimTypeId";
+	}
+	
 	public static class Role {
 		public static final String ROLE_ID = "roleId";
 		public static final String ROLE_NAME = "roleName";
+	    public static final String KIM_TYPE_ID = KimType.KIM_TYPE_ID;
 		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
 	}
 

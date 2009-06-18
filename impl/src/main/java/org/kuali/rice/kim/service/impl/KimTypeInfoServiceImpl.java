@@ -48,9 +48,11 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 			Collection<KimTypeImpl> types = getBusinessObjectService().findAll(KimTypeImpl.class);
 			synchronized ( this ) {
 				for ( KimTypeImpl typ : types ) {
-					KimTypeInfo info = typ.toInfo();
-					infoCache.put(typ.getKimTypeId(), info);
-					infoCacheByName.put(typ.getNamespaceCode()+typ.getName(), info);
+					if ( typ.isActive() ) {
+						KimTypeInfo info = typ.toInfo();
+						infoCache.put(typ.getKimTypeId(), info);
+						infoCacheByName.put(typ.getNamespaceCode()+typ.getName(), info);
+					}
 				}
 			}
 			allLoaded = true;

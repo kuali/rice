@@ -61,6 +61,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
@@ -90,6 +91,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	private BusinessObjectService businessObjectService;
 	private SequenceAccessorService sequenceAccessorService;
 	private IdentityManagementService identityManagementService;
+	private ResponsibilityInternalService responsibilityInternalService;
 	private KimRoleDao roleDao;
 	private LookupService lookupService;
 
@@ -592,19 +594,29 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		RoleImpl role = getRoleImpl( roleId );
     		KimTypeInfo roleType = role.getKimRoleType();
     		if ( roleType != null ) {
-	    		String serviceName = roleType.getKimTypeServiceName();
-	    		if ( serviceName != null ) {
-	    			try {
-	    				service = (KimRoleTypeService)KIMServiceLocator.getService( serviceName );
-	    			} catch ( Exception ex ) {
-	    				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
-	    				service = (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
-	    			}
-	    		}
+        		service = getRoleTypeService(roleType);
     		}
 			roleTypeServiceCache.put(roleId, service);
     	}
     	return service;
+    }
+    
+    protected KimRoleTypeService getRoleTypeService( KimTypeInfo typeInfo ) {
+		String serviceName = typeInfo.getKimTypeServiceName();
+		if ( serviceName != null ) {
+			try {
+				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+				if ( service != null && service instanceof KimRoleTypeService ) {
+					return (KimRoleTypeService)service;
+				} else {
+					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+				}
+			} catch ( Exception ex ) {
+				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
+				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+			}
+		}
+		return null;
     }
 
     protected KimDelegationTypeService getDelegationTypeService( String delegationId ) {
@@ -1118,7 +1130,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// add row to member table
     	// When members are added to roles, clients must be notified.
-    	KIMServiceLocator.getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
     }
 
     public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
@@ -1144,7 +1156,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
 
     	// When members are added to roles, clients must be notified.
-    	KIMServiceLocator.getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
     }
 
     public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier ) {
@@ -1156,7 +1168,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			if ( doesMemberMatch( rm, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
 		    	// if found, remove
 				// When members are removed from roles, clients must be notified.
-		    	KIMServiceLocator.getResponsibilityInternalService().removeRoleMember(rm);
+		    	getResponsibilityInternalService().removeRoleMember(rm);
 			}
 		}
     }
@@ -1170,7 +1182,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			if ( doesMemberMatch( rm, groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
 		    	// if found, remove
 				// When members are removed from roles, clients must be notified.
-		    	KIMServiceLocator.getResponsibilityInternalService().removeRoleMember(rm);
+		    	getResponsibilityInternalService().removeRoleMember(rm);
 			}
 		}
     }
@@ -1263,13 +1275,44 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
      * @see org.kuali.rice.kim.service.RoleService#principalInactivated(java.lang.String)
      */
     public void principalInactivated(String principalId) {
-    	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
+    	Timestamp yesterday = new Timestamp( System.currentTimeMillis() - (24*60*60*1000) );
     	inactivatePrincipalRoleMemberships(principalId, yesterday);
     	inactivatePrincipalGroupMemberships(principalId, yesterday);
     	inactivatePrincipalDelegations(principalId, yesterday);
+    	inactivateApplicationRoleMemberships( principalId, yesterday );
     }
 
-    private void inactivatePrincipalRoleMemberships(String principalId, Timestamp yesterday){
+    @SuppressWarnings("unchecked")
+	protected void inactivateApplicationRoleMemberships( String principalId, Timestamp yesterday){
+    	// get all role type services
+    	Collection<KimTypeInfo> types = KIMServiceLocator.getTypeInfoService().getAllTypes();
+    	// create sub list of only application role types
+    	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
+    	for ( KimTypeInfo typeInfo : types ) {
+    		KimRoleTypeService service = getRoleTypeService(typeInfo);
+    		if ( service != null ) {
+    			if ( service.isApplicationRoleType() ) {
+    				applicationRoleTypes.add(typeInfo);
+    			}
+    		}
+    	}
+    	Map<String,Object> roleLookupMap = new HashMap<String, Object>(2);
+    	roleLookupMap.put( KIMPropertyConstants.Role.ACTIVE, "Y");
+    	// loop over application types
+    	for ( KimTypeInfo typeInfo : applicationRoleTypes ) {
+    		KimRoleTypeService service = getRoleTypeService(typeInfo);
+    		// get all roles for that type
+        	roleLookupMap.put( KIMPropertyConstants.Role.KIM_TYPE_ID, typeInfo.getKimTypeId());
+    		Collection<RoleImpl> roles = getBusinessObjectService().findMatching( RoleImpl.class, roleLookupMap);
+        	// loop over all roles in those types
+    		for ( RoleImpl role : roles ) {
+    	    	// call the principalInactivated() on the role type service for each role
+    			service.principalInactivated(principalId, role.getNamespaceCode(), role.getRoleName());
+    		}
+    	}
+    }
+    
+    protected void inactivatePrincipalRoleMemberships(String principalId, Timestamp yesterday){
     	// go through all roles and post-date them
     	List<RoleMemberImpl> roleMembers = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(null, principalId);
     	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
@@ -1292,7 +1335,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
     }
     
-    private void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday){
+    protected void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday){
         List<GroupMembershipInfo> groupMemberInfos = roleDao.getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
         List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
         for ( GroupMembershipInfo rm : groupMemberInfos ) {
@@ -1303,7 +1346,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	getBusinessObjectService().save(groupMembers);
     }
 
-    private void inactivatePrincipalDelegations(String principalId, Timestamp yesterday){
+    protected void inactivatePrincipalDelegations(String principalId, Timestamp yesterday){
     	List<KimDelegationMemberImpl> delegationMembers = roleDao.getDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
     	for ( KimDelegationMemberImpl rm : delegationMembers ) {
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
@@ -1328,14 +1371,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
      * @see org.kuali.rice.kim.service.GroupUpdateService#groupInactivated(java.lang.String)
      */
     public void groupInactivated(String groupId) {
-    	Timestamp yesterday = new Timestamp( new java.util.Date().getTime() - (24*60*60*1000) );
+    	Timestamp yesterday = new Timestamp( System.currentTimeMillis() - (24*60*60*1000) );
     	List<String> groupIds = new ArrayList<String>();
     	groupIds.add(groupId);
     	inactivatePrincipalGroupMemberships(groupIds, yesterday);
     	inactivateGroupRoleMemberships(groupIds, yesterday);
     }
     
-    private void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday){
+    protected void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday){
         List<GroupMembershipInfo> groupMemberInfos = roleDao.getGroupMembers(groupIds);
         List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
         for ( GroupMembershipInfo rm : groupMemberInfos ) {
@@ -1345,7 +1388,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	getBusinessObjectService().save(groupMembers);
     }
 
-    private void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday){
+    protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday){
     	List<RoleMemberImpl> roleMembersOfGroupType = roleDao.getRoleGroupsForGroupIdsAndRoleIds(null, groupIds);
     	for(RoleMemberImpl rm: roleMembersOfGroupType){
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
@@ -1407,7 +1450,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
 
     	// When members are added to roles, clients must be notified.
-    	KIMServiceLocator.getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
     }
     
     public RoleMemberCompleteInfo saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, String roleId, 
@@ -1448,7 +1491,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	addMemberAttributeData( newRoleMember, qualifications, role.getKimTypeId() );
 
     	// When members are added to roles, clients must be notified.
-    	KIMServiceLocator.getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
     	deleteNullMemberAttributeData(newRoleMember.getAttributes());    	
     	
     	return findRoleMemberCompleteInfo(newRoleMember.getRoleMemberId());
@@ -1465,7 +1508,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			if ( doesMemberMatch( rm, roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
 		    	// if found, remove
 				// When members are removed from roles, clients must be notified.
-		    	KIMServiceLocator.getResponsibilityInternalService().removeRoleMember(rm);
+		    	getResponsibilityInternalService().removeRoleMember(rm);
 			}
 		}
     }
@@ -1639,7 +1682,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         return delegation.toSimpleInfo();
     }
     
-    private KimDelegationImpl getPrimaryDelegation(String roleId, List<KimDelegationImpl> roleDelegations){
+    protected KimDelegationImpl getPrimaryDelegation(String roleId, List<KimDelegationImpl> roleDelegations){
         KimDelegationImpl primaryDelegation = null;
         RoleImpl roleImpl = getRoleImpl(roleId);
         for(KimDelegationImpl delegation: roleDelegations){
@@ -1656,7 +1699,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         return primaryDelegation;
     }
 
-    private String getNewDelegationId(){
+    protected String getNewDelegationId(){
     	SequenceAccessorService sas = getSequenceAccessorService();
     	Long nextSeq = sas.getNextAvailableSequenceNumber(
                 KimConstants.SequenceNames.KRIM_DLGN_ID_S,
@@ -1664,7 +1707,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         return nextSeq.toString();
     }
 
-    private String getNewAttributeDataId(){
+    protected String getNewAttributeDataId(){
 		SequenceAccessorService sas = getSequenceAccessorService();		
 		Long nextSeq = sas.getNextAvailableSequenceNumber(
 				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
@@ -1672,7 +1715,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		return nextSeq.toString();
     }
     
-    private String getNewDelegationMemberId(){
+    protected String getNewDelegationMemberId(){
     	SequenceAccessorService sas = getSequenceAccessorService();
     	Long nextSeq = sas.getNextAvailableSequenceNumber(
                 KimConstants.SequenceNames.KRIM_DLGN_MBR_ID_S,
@@ -1680,11 +1723,11 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         return nextSeq.toString();
     }
     
-    private boolean isDelegationPrimary(String delegationTypeCode){
+    protected boolean isDelegationPrimary(String delegationTypeCode){
         return KEWConstants.DELEGATION_PRIMARY.equals(delegationTypeCode);
     }
 
-    private boolean isDelegationSecondary(String delegationTypeCode){
+    protected boolean isDelegationSecondary(String delegationTypeCode){
         return KEWConstants.DELEGATION_SECONDARY.equals(delegationTypeCode);
     }
 
@@ -1868,10 +1911,17 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	/**
 	 * @return the lookupService
 	 */
-	public LookupService getLookupService() {
+    protected LookupService getLookupService() {
 		if(lookupService == null) {
 			lookupService = KNSServiceLocator.getLookupService();
 		}
 		return lookupService;
+	}
+
+	protected ResponsibilityInternalService getResponsibilityInternalService() {
+		if ( responsibilityInternalService == null ) {
+			responsibilityInternalService = KIMServiceLocator.getResponsibilityInternalService();
+		}
+		return responsibilityInternalService;
 	}
 }

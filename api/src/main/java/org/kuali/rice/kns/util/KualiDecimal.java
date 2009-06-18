@@ -30,7 +30,7 @@ public class KualiDecimal extends AbstractKualiDecimal<KualiDecimal> {
 
     private static final long serialVersionUID = 899528391396696786L;
 
-    public static final KualiDecimal ZERO = new KualiDecimal(new BigDecimal(0));
+    public static final KualiDecimal ZERO = new KualiDecimal(BigDecimal.ZERO);
     
     public static final int SCALE = 2;
     

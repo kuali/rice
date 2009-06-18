@@ -36,7 +36,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	// private static final org.apache.log4j.Logger LOG =
 	// org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
 
-	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	transient private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	@SuppressWarnings("unchecked")
 	public final boolean canCreate(Class boClass, Person user) {
@@ -95,32 +95,28 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		return new HashSet<String>();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void addRoleQualification(BusinessObject businessObject,
-			Map<String, String> attributes) {
+	protected void addRoleQualification(BusinessObject businessObject, Map<String, String> attributes) {
 		super.addRoleQualification(businessObject, attributes);
 		if (businessObject instanceof MaintenanceDocument) {
-			attributes
-					.putAll(KimCommonUtils
-							.getNamespaceAndComponentSimpleName(((MaintenanceDocument) businessObject)
-									.getNewMaintainableObject()
-									.getBusinessObject().getClass()));
+			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
+			if ( maintDoc.getNewMaintainableObject() != null ) {			
+				attributes.putAll(KimCommonUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void addPermissionDetails(BusinessObject businessObject,
-			Map<String, String> attributes) {
+	protected void addPermissionDetails(BusinessObject businessObject, Map<String, String> attributes) {
 		super.addPermissionDetails(businessObject, attributes);
 		if (businessObject instanceof MaintenanceDocument) {
-			attributes
-					.putAll(KimCommonUtils
-							.getNamespaceAndComponentSimpleName(((MaintenanceDocument) businessObject)
-									.getNewMaintainableObject()
-									.getBusinessObject().getClass()));
-			attributes.put(KNSConstants.MAINTENANCE_ACTN,
-					((MaintenanceDocument) businessObject)
-							.getNewMaintainableObject().getMaintenanceAction());
+			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
+			if ( maintDoc.getNewMaintainableObject() != null ) {			
+				attributes.putAll(KimCommonUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+				attributes.put(KNSConstants.MAINTENANCE_ACTN,maintDoc.getNewMaintainableObject().getMaintenanceAction());
+			}
 		}
 	}
 

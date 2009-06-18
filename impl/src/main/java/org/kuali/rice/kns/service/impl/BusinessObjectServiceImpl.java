@@ -30,6 +30,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
@@ -57,7 +59,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     private PersistenceService persistenceService;
     private PersistenceStructureService persistenceStructureService;
     private BusinessObjectDao businessObjectDao;
-    private org.kuali.rice.kim.service.PersonService personService;
+    private PersonService personService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
 
     private boolean illegalBusinessObjectsForSaveInitialized = false;
@@ -368,9 +370,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
 
         bo.linkEditableUserFields();
        
-        List bos = new ArrayList();
-        bos.add(bo);
-        linkUserFields(bos);
+        linkUserFields( Collections.singletonList( bo ) );
     }
 
     /**
@@ -409,16 +409,13 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             
             Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(bo);
 
-            // walk through the ref objects, only doing work if they are KualiUser or Person
-            for (Iterator<String> iter = references.keySet().iterator(); iter.hasNext();) {
-                String refField = "";
-                Class refClass = null;
-                refField = iter.next();
-                refClass = references.get(refField);
+            // walk through the ref objects, only doing work if they are Person objects
+            for ( String refField : references.keySet() ) {
+                Class<?> refClass = references.get(refField);
                 if (Person.class.isAssignableFrom(refClass)) {
-                    String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "principalId");
                     person = (Person) ObjectUtils.getPropertyValue(bo, refField);
                     if (person != null) {
+                        String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "principalId");
                         linkUserReference(bo, person, refField, fkFieldName);
                     }
                 }
@@ -465,7 +462,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * 
      * @return Returns the businessObjectDao.
      */
-    public BusinessObjectDao getBusinessObjectDao() {
+    protected BusinessObjectDao getBusinessObjectDao() {
         return businessObjectDao;
     }
 
@@ -490,12 +487,14 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * Sets the kualiUserService attribute value.
      */
-    public final void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+    @SuppressWarnings("unchecked")
+	public final void setPersonService(PersonService personService) {
         this.personService = personService;
     }
 
-    protected org.kuali.rice.kim.service.PersonService getPersonService() {
-        return personService != null ? personService : org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
+    @SuppressWarnings("unchecked")
+	protected PersonService getPersonService() {
+        return personService != null ? personService : (personService = KIMServiceLocator.getPersonService());
     }
 
     /**
@@ -507,7 +506,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         this.persistenceService = persistenceService;
     }
 
-    public BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+    protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
         return businessObjectMetaDataService;
     }
 

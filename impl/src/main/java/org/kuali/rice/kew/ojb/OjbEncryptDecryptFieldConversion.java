@@ -30,7 +30,10 @@ public class OjbEncryptDecryptFieldConversion implements FieldConversion {
      * @see FieldConversion#javaToSql(Object)
      */
     public Object javaToSql(Object source) {
-        String converted = source.toString();
+    	String converted = "";
+    	if ( source != null ) {
+    		converted = source.toString();
+    	}
 
         try {
             if (KEWServiceLocator.getEncryptionService().isEnabled()) {

@@ -148,7 +148,6 @@ KualiLookupableHelperServiceImpl {
     		};
     	}
 
-    	//FIXME: for now if not set set the create date back from the criteria, however eventually we should convert all
     	for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
 				if(StringUtils.equals(field.getPropertyName(),"fromDateCreated") && StringUtils.isEmpty(field.getPropertyValue())) {
@@ -657,10 +656,17 @@ KualiLookupableHelperServiceImpl {
     		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
     
     		// Return the first valid doc type.
+    		DocumentType firstDocumentType = null;
     		if(docTypeList != null){
     			for(DocumentType dType: docTypeList){
-    				return dType;
+    			    if (firstDocumentType == null) {
+    			        firstDocumentType = dType;
+    			    }
+    			    if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
+    			        return dType;
+    			    }
     			}
+    			return firstDocumentType;
     		}
     	}
 

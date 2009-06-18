@@ -677,15 +677,20 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
 
 		// Return the first valid doc type.
+		DocumentType firstDocumentType = null;
 		if(docTypeList != null && !docTypeList.isEmpty()){
 			for(DocumentType dType: docTypeList){
-				return dType;
-			}
+			    if (firstDocumentType == null) {
+                    firstDocumentType = dType;
+                }
+                if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
+                    return dType;
+                }
+            }
+            return firstDocumentType;
 		}else{
 			throw new RuntimeException("No Valid Document Type Found for document type name '" + docTypeName + "'");
 		}
-
-   	return null;
    }
 
 	private DocumentType getValidDocumentTypeOld(String documentTypeFullName) {

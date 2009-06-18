@@ -318,7 +318,7 @@ public class KimCommonUtils {
 		Map<String, String> criteria = new HashMap<String, String>();
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
 	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierTypeObject.isEncryptionRequired()){
+		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
 			if(externalIdentifier != null){
 				try{
 					return KNSServiceLocator.getEncryptionService().encrypt(externalIdentifier);
@@ -333,9 +333,9 @@ public class KimCommonUtils {
     
     public static String decryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
         Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, KimConstants.PersonExternalIdentifierTypes.TAX);
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
 	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierTypeObject.isEncryptionRequired()){
+		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
 			if(externalIdentifier != null){
 				try{
 					return KNSServiceLocator.getEncryptionService().decrypt(externalIdentifier);

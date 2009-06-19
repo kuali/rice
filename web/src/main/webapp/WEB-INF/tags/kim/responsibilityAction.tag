@@ -17,14 +17,7 @@
       	<tr>	
 			<td>
 				<div align="center">
-				    <c:choose>
-				    <c:when test="${roleRspAction.kimResponsibility != null}">
-					   ${roleRspAction.kimResponsibility.namespaceCode}&nbsp;${roleRspAction.kimResponsibility.name}
-					</c:when>
-					<c:otherwise>
 					   All
-					</c:otherwise>
-				    </c:choose>
 	            </div>
        		</td>
 			<td>

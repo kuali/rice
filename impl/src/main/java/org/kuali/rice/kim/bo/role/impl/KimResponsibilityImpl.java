@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -104,6 +105,17 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getName()
+	 */
+	public String getNameToDisplay() {
+		if(template!=null && StringUtils.equals(template.getName(), name)){
+			return name;
+		} else{
+			return template.getName()+" "+name;
+		}
 	}
 
 	public void setDescription(String responsibilityDescription) {

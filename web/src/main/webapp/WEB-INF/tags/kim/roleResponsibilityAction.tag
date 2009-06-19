@@ -17,8 +17,7 @@
            	<tr>	
 				<td>
 					<div align="center">
-					${roleRspAction.roleResponsibility.kimResponsibility.template.name}
-					${roleRspAction.roleResponsibility.kimResponsibility.name}
+					All
 		            </div>
         		</td>
 				<td>

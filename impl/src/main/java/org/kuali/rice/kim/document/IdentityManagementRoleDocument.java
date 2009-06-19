@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -316,10 +317,12 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     }
     
     public void setupMemberRspActions(KimDocumentRoleResponsibility roleResp, KimDocumentRoleMember member) {
-    	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+    	if ((member.getRoleRspActions()==null || member.getRoleRspActions().size()<1) && getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
     		KimDocumentRoleResponsibilityAction action = new KimDocumentRoleResponsibilityAction();
     		action.setRoleResponsibilityId("*");
     		action.setRoleMemberId(member.getRoleMemberId());
+    		if(member.getRoleRspActions()==null)
+    			member.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());
     		member.getRoleRspActions().add(action);
     	}        	
     }

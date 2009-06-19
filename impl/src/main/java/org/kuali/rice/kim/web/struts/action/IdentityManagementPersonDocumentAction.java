@@ -347,10 +347,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
         	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
         		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
-        		roleRspAction.setRoleResponsibilityId(roleResp.getRoleResponsibilityId());        		
+        		roleRspAction.setRoleResponsibilityId("*");        		
         		roleRspAction.refreshReferenceObject("roleResponsibility");
-        		if(isUniqueRoleRspAction(rolePrncpl.getRoleRspActions(), roleRspAction))
+        		if(rolePrncpl.getRoleRspActions()==null || rolePrncpl.getRoleRspActions().size()<1){
+        			if(rolePrncpl.getRoleRspActions()==null)
+        				rolePrncpl.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());
         			 rolePrncpl.getRoleRspActions().add(roleRspAction);
+        		}
         	}        	
         }
     }

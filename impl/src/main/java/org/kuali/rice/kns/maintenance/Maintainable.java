@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -282,5 +283,22 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      */
     public List<Long> getWorkflowEngineDocumentIdsToLock();
 
-
+    /**
+     * This method returns whether or not this maintainable supports custom lock descriptors for pessimistic locking.
+     * 
+     * @return True if the maintainable can generate custom lock descriptors, false otherwise.
+     * @see #getCustomLockDescriptor(Map, Person)
+     */
+    public boolean useCustomLockDescriptors();
+    
+    /**
+     * Generates a custom lock descriptor for pessimistic locking. This method should not be called unless {@link #useCustomLockDescriptors()} returns true.
+     * 
+     * @param user The user trying to establish the lock.
+     * @return A String representing the lock descriptor.
+     * @see #useCustomLockDescriptors()
+     * @see org.kuali.rice.kns.service.PessimisticLockService
+     * @see org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl
+     */
+    public String getCustomLockDescriptor(Person user);
 }

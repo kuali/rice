@@ -10,6 +10,8 @@
     <property name="businessRulesClass" value="org.kuali.rice.kns.test.document.AccountRequestDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.test.document.AccountRequestDocumentAuthorizer"/>
     
+    <property name="usePessimisticLocking" value="true" />
+    
     <property name="attributes">
       <list>
         <ref bean="AccountRequest-requester"/>

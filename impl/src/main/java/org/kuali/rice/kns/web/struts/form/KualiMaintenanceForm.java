@@ -554,7 +554,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 		if (StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.DELETE_METHOD)) {
 			return true;
 		}
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);

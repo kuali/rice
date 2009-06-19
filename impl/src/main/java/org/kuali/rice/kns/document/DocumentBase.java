@@ -50,6 +50,7 @@ import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
+import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.service.DocumentSerializerService;
@@ -696,4 +697,24 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         return methodToCalls;
     }
 
+    /**
+     * This default implementation simply returns false to indicate that custom lock descriptors are not supported by DocumentBase. If custom lock
+     * descriptors are needed, the appropriate subclasses should override this method.
+     * 
+     * @see org.kuali.rice.kns.document.Document#useCustomLockDescriptors()
+     */
+    public boolean useCustomLockDescriptors() {
+    	return false;
+    }
+
+    /**
+     * This default implementation just throws a PessimisticLockingException. Subclasses of DocumentBase that need support for custom lock descriptors
+     * should override this method.
+     * 
+     * @see org.kuali.rice.kns.document.Document#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+     */
+    public String getCustomLockDescriptor(Person user) {
+    	throw new PessimisticLockingException("Document " + getDocumentNumber() +
+    			" is using pessimistic locking with custom lock descriptors, but the document class has not overriden the getCustomLockDescriptor method");
+    }
 }

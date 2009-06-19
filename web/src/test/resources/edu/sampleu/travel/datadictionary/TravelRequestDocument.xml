@@ -12,6 +12,7 @@
     <property name="documentPresentationControllerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentPresentationController"/>
     
     <property name="allowsNoteFYI" value="true" />
+    <property name="usePessimisticLocking" value="true" />
     
     <property name="attributes">
       <list>

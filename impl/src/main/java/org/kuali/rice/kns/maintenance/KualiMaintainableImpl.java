@@ -31,6 +31,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -44,6 +45,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
+import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
@@ -1436,4 +1438,24 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		return getMaintenanceDocumentService().getLockingDocumentId(this, documentNumber);
 	}
 	
+	/**
+     * This default implementation simply returns false to indicate that custom lock descriptors are not supported by KualiMaintainableImpl.
+     * If custom lock descriptors are needed, the appropriate subclasses should override this method.
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#useCustomLockDescriptors()
+	 */
+	public boolean useCustomLockDescriptors() {
+		return false;
+	}
+
+	/**
+     * This default implementation just throws a PessimisticLockingException. Subclasses of KualiMaintainableImpl that need support for
+     * custom lock descriptors should override this method.
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+	 */
+	public String getCustomLockDescriptor(Person user) {
+    	throw new PessimisticLockingException("The Maintainable for document " + documentNumber +
+    			" is using pessimistic locking with custom lock descriptors, but the Maintainable has not overriden the getCustomLockDescriptor method");
+    }
 }

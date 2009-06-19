@@ -109,7 +109,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 
 			if (WebUtils.isDocumentSession(document, docForm)) {
-				getSessionDocumentService().setDocumentForm(docForm, userSession, request);
+				getSessionDocumentService().setDocumentForm(docForm, userSession, request.getRemoteAddr());
 			}
 
 			Boolean exitingDocument = (Boolean) request.getAttribute(KNSConstants.EXITING_DOCUMENT);
@@ -117,7 +117,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (exitingDocument != null && exitingDocument.booleanValue()) {
 				// remove KualiDocumentFormBase object from session and
 				// table.
-				getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession, request);
+				getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession, request.getRemoteAddr());
 			}
 		}
 
@@ -341,7 +341,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				LOG.debug("getDecomentForm KualiDocumentFormBase from session");
 				form = (ActionForm) userSession.retrieveObject(docFormKey);
 			} else {
-				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request);
+				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
 			}
 			request.setAttribute(mapping.getAttribute(), form);
 			if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
@@ -407,7 +407,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 					LOG.debug("getDocumentForm KualiDocumentFormBase from session");
 					form = (ActionForm) userSessionObject;
 				} else {
-					ActionForm tempForm = (ActionForm)getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request);
+					ActionForm tempForm = (ActionForm)getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
 					if ( tempForm != null ) {
 						form = tempForm;
 					}

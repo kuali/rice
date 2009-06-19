@@ -16,44 +16,42 @@
 package org.kuali.rice.kns.util;
 
 import org.apache.commons.collections.map.LRUMap;
-import org.kuali.rice.kns.UserSession;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.impl.SessionDocumentServiceImpl;
 
 /**
  * Override LRUMap removeEntity method
- *
- *
+ * 
+ * 
  */
 public class KualiLRUMap extends LRUMap {
-	
+
 	/** Serialization version */
-    private static final long serialVersionUID = 1L;
-    
-    public KualiLRUMap() {
-    	super();
-    }
-    
-    public KualiLRUMap(int maxSize) {
-        super(maxSize);
-    }
-    
-    protected void removeEntry(HashEntry entry, int hashIndex, HashEntry previous) {
-       
-       //It is for session document cache enhancement. 
-       //To control the size of cache. When the LRUMap reach the maxsize. 
-       //It will remove session document entries from the in-memory user session objects.
-    	try{
-           SessionDocumentServiceImpl.CachedObject cachedObject = (SessionDocumentServiceImpl.CachedObject) this.entryValue(entry);
-           UserSession userSession = cachedObject.getUserSession();
-           String formKey = (String) cachedObject.getFormKey();
-           
-           //userSession.retrieveObject(formKey);
-           userSession.removeObject(formKey);
-       }catch(Exception e){}
-       
-        super.removeEntry(entry, hashIndex, previous);
-    }
-    
-  
-  
+	private static final long serialVersionUID = 1L;
+
+	public KualiLRUMap() {
+		super();
+	}
+
+	public KualiLRUMap(int maxSize) {
+		super(maxSize);
+	}
+
+	protected void removeEntry(HashEntry entry, int hashIndex, HashEntry previous) {
+
+		// It is for session document cache enhancement.
+		// To control the size of cache. When the LRUMap reach the maxsize.
+		// It will remove session document entries from the in-memory user
+		// session objects.
+		try {
+			SessionDocumentServiceImpl.CachedObject cachedObject 
+					= (SessionDocumentServiceImpl.CachedObject)this.entryValue(entry);
+			cachedObject.getUserSession().removeObject(cachedObject.getFormKey());
+		} catch (Exception ex) {
+			Logger.getLogger(getClass()).warn( "Problem purging old entry from the user session when removing from the map: ", ex);
+		}
+
+		super.removeEntry(entry, hashIndex, previous);
+	}
+
 }

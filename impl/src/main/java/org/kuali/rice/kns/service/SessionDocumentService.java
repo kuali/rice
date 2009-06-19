@@ -17,9 +17,6 @@ package org.kuali.rice.kns.service;
 
 import java.sql.Timestamp;
 
-import javax.servlet.http.HttpServletRequest;
-
-
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
@@ -43,7 +40,7 @@ public interface SessionDocumentService {
      * @throws
      */
 	
-	public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, HttpServletRequest request);
+	public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
 	
 	/**
      * Delete KualiDocumentFormBase from session and database.
@@ -53,7 +50,7 @@ public interface SessionDocumentService {
      * @param userSession
      * @throws
      */
-	public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, HttpServletRequest request); 
+	public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress); 
 	
 	/**
      * Store KualiDocumentFormBase into session and database.
@@ -62,7 +59,7 @@ public interface SessionDocumentService {
      * @param userSession
      * @throws
      */
-	public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, HttpServletRequest request);
+	public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, String ipAddress);
 	
 	
 	//public void purgeAllSessionDocumentsFromMemory(); 

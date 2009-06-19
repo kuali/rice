@@ -174,13 +174,17 @@ public class KimTypeServiceBase implements KimTypeService {
 					// create an object of the proper type per the component
 		            Object componentObject = Class.forName( attr.getComponentName() ).newInstance();
 		            // get the bean utils descriptor for accessing the attribute on that object
-					PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attr.getAttributeName());
-					if ( propertyDescriptor != null ) {
-						// set the value on the object so that it can be checked
-						propertyDescriptor.getWriteMethod().invoke( componentObject, attributes.get( attributeName ) );
-						attributeErrors = validateDataDictionaryAttribute(kimTypeId, attr.getComponentName(), componentObject, propertyDescriptor);
-					} else {
-						LOG.warn( "Unable to obtain property descriptor for: " + attr.getClass().getName() + "/" + attr.getAttributeName() );
+		            PropertyDescriptor propertyDescriptor = null;
+		            if ( attr.getAttributeName() != null ) {
+		            	propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attr.getAttributeName());
+						if ( propertyDescriptor != null ) {
+							// set the value on the object so that it can be checked
+							propertyDescriptor.getWriteMethod().invoke( componentObject, attributes.get( attributeName ) );
+							attributeErrors = validateDataDictionaryAttribute(kimTypeId, attr.getComponentName(), componentObject, propertyDescriptor);
+						}
+		            }
+					if ( propertyDescriptor == null ) {
+						LOG.warn( "Unable to obtain property descriptor for: " + attr.getComponentName() + "/" + attr.getAttributeName() );
 					}
 				}
 			} catch (Exception e) {

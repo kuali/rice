@@ -117,7 +117,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
     public static final String APP_CODE = "en";
-    public static final String PROD_DEPLOYMENT_CODE = "prd";
+    public static final String PROD_DEPLOYMENT_CODE = "production.environment.code";
 
     public static final String YES_LABEL = "Yes";
     public static final String NO_LABEL = "No";

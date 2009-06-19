@@ -34,7 +34,6 @@ import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -288,6 +287,6 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
     }
 
     private boolean isProduction() {
-        return KEWConstants.PROD_DEPLOYMENT_CODE.equals(getDeploymentEnvironment());
+        return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(getDeploymentEnvironment());
     }
 }

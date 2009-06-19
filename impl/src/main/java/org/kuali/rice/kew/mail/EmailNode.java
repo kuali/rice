@@ -115,7 +115,8 @@ public class EmailNode implements SimpleNode {
     }
 
     protected boolean isProduction() {
-	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
+	return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
+			ConfigContext.getCurrentContextConfig().getEnvironment());
     }
 
     protected void loadConfiguration(RouteContext context) throws Exception {

@@ -274,7 +274,8 @@ public class UserSession implements Serializable {
     }
 
     protected boolean isProductionEnvironment() {
-    	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
+    	return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
+    			ConfigContext.getCurrentContextConfig().getEnvironment());
     }
 
     public String addObject(Object object) {

@@ -801,11 +801,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             fromSQL.append(", KREW_ACTN_TKN_T ");
         }
 
-        String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
-        if (!("".equals(docTypeFullNameSql))) {
-            possibleSearchableAttributesExist |= true;
-            whereSQL.append(docTypeFullNameSql);
-        }
+        
 
         String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocTypeFullName(), criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!"".equals(docRouteNodeSql)) {
@@ -844,6 +840,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	calendar.add(Calendar.DATE, defaultCreateDateDaysAgoValue.intValue());
         	criteria.setFromDateCreated(RiceConstants.getDefaultDateFormat().format(calendar.getTime()));
             whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
+        }
+        
+        String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
+        if (!("".equals(docTypeFullNameSql))) {
+            possibleSearchableAttributesExist |= true;
+            whereSQL.append(docTypeFullNameSql);
         }
         whereSQL.append(getDocRouteStatusSql(criteria.getDocRouteStatus(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getGeneratedPredicatePrefix(whereSQL.length())).append(" DOC_HDR.DOC_TYP_ID = DOC1.DOC_TYP_ID ");

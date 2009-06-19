@@ -446,13 +446,18 @@ public class WebUtils {
     
     public static boolean isPropertyEditable(Set<String> editableProperties, String propertyName){
     	if (LOG.isDebugEnabled()) {
-    		LOG.debug("editableProperties: "+editableProperties);
+    		LOG.debug("isPropertyEditable("+ propertyName+")");
     	}
     	
     	boolean returnVal =  editableProperties.contains(propertyName) ||
     			(getIndexOfCoordinateExtension(propertyName)==-1?false:
     				editableProperties.contains(
     						propertyName.substring(0, getIndexOfCoordinateExtension(propertyName))));
+    	if ( !returnVal ) {
+        	if (LOG.isDebugEnabled()) {
+        		LOG.debug("isPropertyEditable("+propertyName+") == false / editableProperties: "+editableProperties);
+        	}
+    	}
     	return returnVal;
     }
     

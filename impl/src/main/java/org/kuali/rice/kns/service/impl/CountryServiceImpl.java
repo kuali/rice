@@ -40,7 +40,7 @@ public class CountryServiceImpl implements CountryService {
      */
     public Country getByPrimaryId(String postalCountryCode) {
         if (StringUtils.isBlank(postalCountryCode)) {
-            LOG.info("The postalCountryCode cannot be empty String.");
+            LOG.debug("The postalCountryCode cannot be empty String.");
             return null;
         }
 

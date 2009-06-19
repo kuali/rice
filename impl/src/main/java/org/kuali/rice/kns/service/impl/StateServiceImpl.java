@@ -47,7 +47,7 @@ public class StateServiceImpl implements StateService {
      */
     public State getByPrimaryId(String postalCountryCode, String postalStateCode) {
         if (StringUtils.isBlank(postalCountryCode) || StringUtils.isBlank(postalStateCode)) {
-            LOG.info("neither postalCountryCode nor postalStateCode can be empty String.");
+            LOG.debug("neither postalCountryCode nor postalStateCode can be empty String.");
             return null;
         }
 

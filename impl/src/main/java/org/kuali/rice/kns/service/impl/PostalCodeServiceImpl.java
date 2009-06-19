@@ -47,7 +47,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
      */
     public PostalCode getByPrimaryId(String postalCountryCode, String postalCode) {
         if (StringUtils.isBlank(postalCountryCode) || StringUtils.isBlank(postalCode)) {
-            LOG.info("neither postalCountryCode nor postalCode can be empty String.");
+            LOG.debug("neither postalCountryCode nor postalCode can be empty String.");
             return null;
         }
 

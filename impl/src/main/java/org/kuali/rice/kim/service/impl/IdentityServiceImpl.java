@@ -244,13 +244,16 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 */
 	@SuppressWarnings("unchecked")
 	public KimPrincipalInfo getPrincipalByPrincipalName(String principalName) {
-		 Map<String,Object> criteria = new HashMap<String,Object>(1);
-         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
-         Collection<KimPrincipalImpl> principals = (Collection<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
-         if (!principals.isEmpty() && principals.size() == 1) {
-             return new KimPrincipalInfo( principals.iterator().next() );
-         }
-         return null;
+		if ( StringUtils.isBlank(principalName) ) {
+			return null;
+		}
+		Map<String,Object> criteria = new HashMap<String,Object>(1);
+        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
+        Collection<KimPrincipalImpl> principals = (Collection<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
+        if (!principals.isEmpty() && principals.size() == 1) {
+            return new KimPrincipalInfo( principals.iterator().next() );
+        }
+        return null;
     }
 
 	/**

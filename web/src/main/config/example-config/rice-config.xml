@@ -1,7 +1,8 @@
 <config>
 
 	<!-- Please fill in a value for this parameter! -->
-	<param name="application.url">http://yourserver:yourport/webapp-context-root</param>
+	<param name="app.context.name">kr-${environment}</param>
+	<param name="application.url">http://yourserver:yourport/${app.context.name}</param>
 
 	<param name="workflow.url">${application.url}/kew</param>
 

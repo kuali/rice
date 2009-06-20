@@ -67,7 +67,7 @@ public class PluginEnvironment implements Reloadable {
 	 * This will return false if the Plugin represents a plugin which can not be reloaded.
 	 */
 	public boolean isReloadable() {
-	    return plugin == null;
+	    return true;
 	}
 
 	/**

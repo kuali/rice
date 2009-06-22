@@ -272,4 +272,7 @@ public interface MaintenanceDocumentDictionaryService {
     public void validateMaintainableCollectionsAddLineRequiredFields(MaintenanceDocument document, PersistableBusinessObject businessObject, String collectionName );
     
     public MaintenanceDocumentEntry getMaintenanceDocumentEntry(String docTypeName);
+    
+    //for issue KULRice 3072, checking PK copy prop
+    public boolean getPreserveLockingKeysOnCopy(Class businessObjectClass);
 }

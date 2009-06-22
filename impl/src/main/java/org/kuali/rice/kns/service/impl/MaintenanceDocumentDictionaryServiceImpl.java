@@ -758,5 +758,23 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
             }
         }
     }
+    
+	/**
+	 * for issue KULRice 3072
+	 * 
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getgetPreserveLockingKeysOnCopy(java.lang.Class)
+	 */
+	public boolean getPreserveLockingKeysOnCopy(Class businessObjectClass) {
+
+		boolean preserveLockingKeysOnCopy = false;
+
+		MaintenanceDocumentEntry docEntry = getMaintenanceDocumentEntry(businessObjectClass);
+		
+		if (docEntry != null) {
+			preserveLockingKeysOnCopy = docEntry.getPreserveLockingKeysOnCopy();
+		}
+		
+		return preserveLockingKeysOnCopy;
+	}
 
 }

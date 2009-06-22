@@ -47,8 +47,12 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     
     protected boolean allowsNewOrCopy = true;
     protected String additionalSectionsFile;
+    
+    //for issue KULRice3072, to enable PK field copy
 
-    public MaintenanceDocumentEntry() {
+    protected boolean preserveLockingKeysOnCopy = false;
+
+	public MaintenanceDocumentEntry() {
         super();
         setDocumentClass(getStandardDocumentBaseClass());
     }
@@ -291,5 +295,19 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         }
         this.apcRules = apcRules;
     }
+    
+    /**
+	 * @return the preserveLockingKeysOnCopy
+	 */
+	public boolean getPreserveLockingKeysOnCopy() {
+		return this.preserveLockingKeysOnCopy;
+	}
+
+	/**
+	 * @param preserveLockingKeysOnCopy the preserveLockingKeysOnCopy to set
+	 */
+	public void setPreserveLockingKeysOnCopy(boolean preserveLockingKeysOnCopy) {
+		this.preserveLockingKeysOnCopy = preserveLockingKeysOnCopy;
+	}
 
 }

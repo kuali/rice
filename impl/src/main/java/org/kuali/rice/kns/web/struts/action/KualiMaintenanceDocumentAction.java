@@ -233,7 +233,11 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             // clear the primary key fields
             if (KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                 if (!document.isFieldsClearedOnCopy()) {
-                	clearPrimaryKeyFields(document);
+                	//for issue KULRice 3072
+                	Class boClass = maintenanceDocumentDictionaryService.getBusinessObjectClass(maintenanceForm.getDocTypeName());
+                	if(!maintenanceDocumentDictionaryService.getPreserveLockingKeysOnCopy(boClass))
+                		clearPrimaryKeyFields(document);
+                	
                     clearUnauthorizedNewFields(document);
 
                     Maintainable maintainable = document.getNewMaintainableObject();

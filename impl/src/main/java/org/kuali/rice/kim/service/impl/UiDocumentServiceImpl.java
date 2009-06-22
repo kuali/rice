@@ -790,6 +790,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityAffiliation.setCampusCode(affiliation.getCampusCode());
 			entityAffiliation.setActive(affiliation.isActive());
 			entityAffiliation.setDefault(affiliation.isDflt());
+			entityAffiliation.setEntityId(identityManagementPersonDocument.getEntityId());
 			entityAffiliation.setEntityAffiliationId(affiliation.getEntityAffiliationId());
 			// EntityAffiliationImpl does not define empinfos as collection
 			for (KimEntityAffiliationImpl origAffiliation : origAffiliations) {
@@ -806,6 +807,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				KimEntityEmploymentInformationImpl entityEmpInfo = new KimEntityEmploymentInformationImpl();
 				entityEmpInfo.setEntityEmploymentId(empInfo.getEntityEmploymentId());
 				entityEmpInfo.setEmployeeId(empInfo.getEmployeeId());
+				entityEmpInfo.setEmploymentRecordId(empInfo.getEmploymentRecordId());
 				entityEmpInfo.setBaseSalaryAmount(empInfo.getBaseSalaryAmount());
 				entityEmpInfo.setPrimaryDepartmentCode(empInfo.getPrimaryDepartmentCode());
 				entityEmpInfo.setEmployeeStatusCode(empInfo.getEmployeeStatusCode());

@@ -106,6 +106,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkMultipleDefault (personDoc.getPhones(), "phones");
         valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
         valid &= checkPrimaryEmploymentInfo (personDoc.getAffiliations());
+        valid &= validEmployeeIDForAffiliation(personDoc.getAffiliations());
         valid &= checkAffiliationTypeChange (personDoc.getAffiliations());
         valid &= checkUniqueAffiliationTypePerCampus(personDoc.getAffiliations());
         // kimtypeservice.validateAttributes is not working yet.
@@ -240,6 +241,28 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     			if (!copiedAffiliation.getAffiliationType().isEmploymentAffiliationType() && affiliation.getAffiliationType().isEmploymentAffiliationType() && !copiedAffiliation.getEmpInfos().isEmpty()) {
 		     		GlobalVariables.getMessageMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {affiliation.getAffiliationType().getAffiliationTypeName(), copiedAffiliation.getAffiliationType().getAffiliationTypeName()});
 		     		valid = false;
+	    		}
+    		}
+        	i++;
+    	}
+    	return valid;
+    }
+
+    private boolean validEmployeeIDForAffiliation(List <PersonDocumentAffiliation> affiliations) {
+    	boolean valid = true;
+    	int i = 0;
+    	int j = 0;
+    	for(PersonDocumentAffiliation affiliation : affiliations) {
+    		if(affiliation.getAffiliationType() != null && affiliation.getAffiliationType().isEmploymentAffiliationType()){
+    			if(affiliation.getEmpInfos()!=null){
+    	    		j = 0;
+    	    		for (PersonDocumentEmploymentInfo empInfo : affiliation.getEmpInfos()) {
+    	    			if (StringUtils.isEmpty(empInfo.getEmployeeId())) {
+   		     				GlobalVariables.getMessageMap().putError("affiliations[" + i + "].empInfos["+ j +"].employeeId", RiceKeyConstants.ERROR_REQUIRED_CONDITIONALLY, new String[] {"Employee ID", "an employee"});
+   		     				valid = false;
+    		     			j++;
+    		     		}
+    	    		}
 	    		}
     		}
         	i++;

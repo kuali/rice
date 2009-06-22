@@ -380,7 +380,7 @@ public class MessageMap implements Serializable {
      * Clears the errorPath.
      */
     public void clearErrorPath() {
-        errorPath = new ArrayList<String>();
+        errorPath.clear();
     }
 
     /**

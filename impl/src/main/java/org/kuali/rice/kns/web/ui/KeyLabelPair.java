@@ -17,6 +17,8 @@ package org.kuali.rice.kns.web.ui;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * 
  */
@@ -24,8 +26,10 @@ public class KeyLabelPair implements Serializable {
     private static final long serialVersionUID = 6167007653464395634L;
     public Object key;
     public String label;
-
+    public int numPaddedSpaces;
+    
     public KeyLabelPair() {
+    	numPaddedSpaces = 0;
     }
 
     public KeyLabelPair(Object key, String label) {
@@ -47,5 +51,13 @@ public class KeyLabelPair implements Serializable {
 
     public void setKey(Object key) {
         this.key = key;
+    }
+    
+    public void setNumPaddedSpaces(int numPaddedSpaces) {
+    	this.numPaddedSpaces = numPaddedSpaces;
+    }
+ 
+    public String getHtmlSpacePadding() {
+    	return StringUtils.repeat("&nbsp;", numPaddedSpaces);
     }
 }

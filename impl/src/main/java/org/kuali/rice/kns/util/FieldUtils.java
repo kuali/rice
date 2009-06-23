@@ -1158,8 +1158,10 @@ public class FieldUtils {
             field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
             field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field);
 
-            // overwrite maxLength to allow for wildcards and ranges in the select
-            field.setMaxLength(100);
+            // overwrite maxLength to allow for wildcards and ranges in the select, but only if it's not a mulitselect box, because maxLength determines the # of entries
+            if (!Field.MULTISELECT.equals(field.getFieldType())) {
+            	field.setMaxLength(100);
+            }
             fields.add(field);
 
             // if the attrib name is "active", and BO is Inactivatable, then set the default value to Y

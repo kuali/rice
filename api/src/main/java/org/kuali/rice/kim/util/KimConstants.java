@@ -91,6 +91,7 @@ public class KimConstants {
     	public static final String USE_SCREEN = "Use Screen";
 
     	public static final String UPLOAD_BATCH_INPUT_FILES = "Upload Batch Input File(s)";
+    	public static final String VIEW_BATCH_FILES = "View Batch File(s)";
     	public static final String MODIFY_BATCH_JOB = "Modify Batch Job";
     	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
     	public static final String MAINTAIN_SYSTEM_PARAMETER = "Maintain System Parameter";

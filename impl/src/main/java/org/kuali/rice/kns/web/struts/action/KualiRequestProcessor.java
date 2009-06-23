@@ -337,13 +337,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 			// We put different type of forms such as document form, lookup form
 			// in session but we only store document form in
 			// database.
-			if ( StringUtils.isNotBlank(docFormKey) ) {
-				form = (ActionForm)userSession.retrieveObject(docFormKey);
-				// if the form is missing from the session or the form retrieved is not a document form
-				// attempt to re-retrieve from the database
-				if ( form == null || !(form instanceof KualiDocumentFormBase) ) {
-					form = getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
-				}
+			if (userSession.retrieveObject(docFormKey) != null) {
+				LOG.debug("getDecomentForm KualiDocumentFormBase from session");
+				form = (ActionForm) userSession.retrieveObject(docFormKey);
+			} else {
+				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
 			}
 			request.setAttribute(mapping.getAttribute(), form);
 			if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {

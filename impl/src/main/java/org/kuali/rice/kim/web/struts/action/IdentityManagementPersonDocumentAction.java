@@ -72,6 +72,7 @@ import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
@@ -315,7 +316,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        newRole.setRoleName(roleImpl.getRoleName());
 	        newRole.setNamespaceCode(roleImpl.getNamespaceCode());
 	        newRole.setKimTypeId(roleImpl.getKimTypeId());
-        	KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(newRole.getKimRoleType()));
+	        if(!validAssignRole(personDocumentForm.getPersonDocument(), newRole)){
+	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+	        }
+	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(newRole.getKimRoleType()));
 	        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
 	        // role type populated from form is not a complete record
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
@@ -343,6 +347,24 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
+	private boolean validAssignRole(IdentityManagementPersonDocument document, PersonDocumentRole newRole){
+        boolean rulePassed = true;
+        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
+        if(StringUtils.isNotEmpty(newRole.getNamespaceCode())){
+	        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, newRole.getNamespaceCode());
+	        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, newRole.getRoleName());
+			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
+	    		GlobalVariables.getMessageMap().putError("document.newRole.roleId", 
+	    				RiceKeyConstants.ERROR_ASSIGN_ROLE, 
+	    				new String[] {newRole.getNamespaceCode(), newRole.getRoleName()});
+	            rulePassed = false;
+			}
+        }
+		return rulePassed;
+	}
+
     private void setupRoleRspActions(PersonDocumentRole role, KimDocumentRoleMember rolePrncpl) {
         for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
         	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {

@@ -45,7 +45,6 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 		boolean rulePassed = true;
 //    	List<String> roleIds = KIMServiceLocator.getUiDocumentService().getAssignableRoleIds();
 
-	    rulePassed = validAssignRole(document, newRole);
         if (newRole == null || StringUtils.isBlank(newRole.getRoleId())) {
             rulePassed = false;
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role"});
@@ -65,20 +64,4 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 		return rulePassed;
 	} 
 
-	private boolean validAssignRole(IdentityManagementPersonDocument document, PersonDocumentRole newRole){
-        boolean rulePassed = true;
-        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, newRole.getNamespaceCode());
-        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, newRole.getRoleName());
-		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
-				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-    		GlobalVariables.getMessageMap().putError("document.newRole", 
-    				RiceKeyConstants.ERROR_ASSIGN_ROLE, 
-    				new String[] {newRole.getNamespaceCode(), newRole.getRoleName()});
-            rulePassed = false;
-		}
-		return rulePassed;
-	}
-	
 }

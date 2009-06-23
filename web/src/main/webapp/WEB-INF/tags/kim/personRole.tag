@@ -75,7 +75,7 @@
 	          	</c:if>	
           	</tr>             	
        	    <c:set var="rows" value="2"/>
-       		<c:if test="${empty role.definitions and fn:length(role.rolePrncpls[0].roleRspActions) < 1}">	
+       		<c:if test="${empty role.definitions and (empty role.rolePrncpls or fn:length(role.rolePrncpls) < 1 or fn:length(role.rolePrncpls[0].roleRspActions) < 1)}">	
         	       <c:set var="rows" value="1"/>       		
        		</c:if>        	
 	        <tr>
@@ -102,12 +102,16 @@
 				</td>
 				<c:set var="roleMemberActiveDatesReadOnly" value="${(!empty role.definitions and fn:length(role.definitions) > 0) || readOnly}" />
                 <td align="left" valign="middle">
-               		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${roleMemberActiveDatesReadOnly}" />
-					</div>
+                	<c:if test="${fn:length(role.rolePrncpls) > 0}">
+                		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${roleMemberActiveDatesReadOnly}" />
+						</div>
+					</c:if>
 				</td>
                 <td align="left" valign="middle">
-               		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true" readOnly="${roleMemberActiveDatesReadOnly}" />
-					</div>
+                	<c:if test="${fn:length(role.rolePrncpls) > 0}">
+	               		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}"  datePicker="true" readOnly="${roleMemberActiveDatesReadOnly}" />
+						</div>
+					</c:if>
 				</td>
            		<c:if test="${!readOnly}">						
 					<td>

@@ -164,6 +164,8 @@ public interface XmlConstants {
     public static final String CLASS_NAME = "className";
     public static final String ROUTING_CONFIG = "routingConfig";
     public static final String SEARCHING_CONFIG = "searchingConfig";
+	public static final String SEARCH_RESULT_CONFIG = "searchResultConfig";
+    public static final String RESOLVER_CONFIG = "resolverConfig";
 
     // help
     public static final String HELP_ENTRIES = "helpEntries";

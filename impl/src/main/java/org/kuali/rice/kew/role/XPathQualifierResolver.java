@@ -57,7 +57,7 @@ import org.xml.sax.InputSource;
  * 
  * <p>There are 2 different types of qualifier resolvers, those that resolve compound
  * attribute sets and those that resolve simple attribute sets.  A simple attribute
- * set is one which includes only a single "qualifer" specification.  The example above
+ * set is one which includes only a single "qualifier" specification.  The example above
  * is compound because it includes both chart and org.
  * 
  * <p>When dealing with compound attribute sets, the baseXPathExpression is used to

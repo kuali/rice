@@ -54,7 +54,8 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
     protected RoleDocumentDelegationMember newDelegationMember = new RoleDocumentDelegationMember();
     protected String newDelegationMemberRoleId = null;
     protected boolean delegationMemberLookup = false;
-    protected boolean canModifyEntity;
+    protected boolean canModifyEntity = false;
+    protected boolean canOverrideEntityPrivacyPreferences = false;
     
 	/**
 	 * @return the canModifyEntity
@@ -211,6 +212,21 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 		if(StringUtils.isNotEmpty(newDelegationMemberRoleId)){
 			newDelegationMember.getRoleImpl().setRoleId(newDelegationMemberRoleId);
 		}
+	}
+
+	/**
+	 * @return the canOverrideEntityPrivacyPreferences
+	 */
+	public boolean isCanOverrideEntityPrivacyPreferences() {
+		return this.canOverrideEntityPrivacyPreferences;
+	}
+
+	/**
+	 * @param canOverrideEntityPrivacyPreferences the canOverrideEntityPrivacyPreferences to set
+	 */
+	public void setCanOverrideEntityPrivacyPreferences(
+			boolean canOverrideEntityPrivacyPreferences) {
+		this.canOverrideEntityPrivacyPreferences = canOverrideEntityPrivacyPreferences;
 	}
 
 }

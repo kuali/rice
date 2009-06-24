@@ -982,7 +982,31 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
             Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
             String principalId = person.getPrincipalId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + principalId + "'";
+            returnSql = whereClausePredicatePrefix + "( (DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + principalId + "' )";
+
+        	List<String> viewerGroupIds = null;
+
+        	if(viewer != null)
+        		viewerGroupIds = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+        	
+        	// Documents routed to users as part of a workgoup should be returned.
+            if (viewerGroupIds != null && !viewerGroupIds.isEmpty()) {
+
+            	returnSql += " or ( " +
+            		"DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +            		
+            		"and KREW_ACTN_RQST_T.GRP_ID in (";
+
+            	boolean first = true;
+            	for(String groupId: viewerGroupIds){
+            		if(!first){
+            			returnSql += ",";
+            		}
+            		returnSql += "'" + groupId + "'";
+            		first = false;
+            	}
+            	returnSql += "))";
+            }
+            returnSql += ")";
         }
         return returnSql;
     }

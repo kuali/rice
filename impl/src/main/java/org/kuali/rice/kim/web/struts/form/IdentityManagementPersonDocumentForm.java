@@ -27,6 +27,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -56,6 +57,7 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
     protected boolean delegationMemberLookup = false;
     protected boolean canModifyEntity = false;
     protected boolean canOverrideEntityPrivacyPreferences = false;
+    protected boolean userSameAsPersonEdited = false;
     
 	/**
 	 * @return the canModifyEntity
@@ -218,7 +220,7 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 	 * @return the canOverrideEntityPrivacyPreferences
 	 */
 	public boolean isCanOverrideEntityPrivacyPreferences() {
-		return this.canOverrideEntityPrivacyPreferences;
+		return this.canOverrideEntityPrivacyPreferences || isUserSameAsPersonEdited();
 	}
 
 	/**
@@ -227,6 +229,23 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 	public void setCanOverrideEntityPrivacyPreferences(
 			boolean canOverrideEntityPrivacyPreferences) {
 		this.canOverrideEntityPrivacyPreferences = canOverrideEntityPrivacyPreferences;
+	}
+
+	/**
+	 * @return the userSameAsPersonEdited
+	 */
+	public boolean isUserSameAsPersonEdited() {
+		if(StringUtils.isNotEmpty(getPrincipalId())){
+			userSameAsPersonEdited = StringUtils.equals(GlobalVariables.getUserSession().getPrincipalId(), getPrincipalId());
+		}
+		return this.userSameAsPersonEdited;
+	}
+
+	/**
+	 * @param userSameAsPersonEdited the userSameAsPersonEdited to set
+	 */
+	public void setUserSameAsPersonEdited(boolean userSameAsPersonEdited) {
+		this.userSameAsPersonEdited = userSameAsPersonEdited;
 	}
 
 }

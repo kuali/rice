@@ -216,7 +216,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	public KimEntityImpl getEntityImpl(String entityId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-		return (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, criteria);
+        KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, criteria);
+        if(entityImpl!=null)
+        	entityImpl.refresh();
+        return entityImpl;
 	}
 	
 	/**

@@ -135,7 +135,6 @@ public class PersistenceServiceStructureImplBase {
 	 *             if the given Class is unknown to OJB
 	 */
 	// Legacy OJB - no need for JPA equivalent
-	@CacheNoCopy
 	protected ClassDescriptor getClassDescriptor(Class persistableClass) {
 		if (persistableClass == null) {
 			throw new IllegalArgumentException("invalid (null) object");

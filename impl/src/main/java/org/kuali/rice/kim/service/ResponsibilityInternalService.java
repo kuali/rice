@@ -28,8 +28,9 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
  */
 public interface ResponsibilityInternalService {
 
-	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
-	public void saveRoleMember(RoleMemberImpl roleMember);
-	public void removeRoleMember(RoleMemberImpl roleMember);
-
+	void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
+	void saveRoleMember(RoleMemberImpl roleMember);
+	void removeRoleMember(RoleMemberImpl roleMember);
+	void updateActionRequestsForRoleChange(String roleId);
+	
 }

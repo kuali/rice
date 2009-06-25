@@ -1908,6 +1908,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         return roleMemberNamespaceCode;
     }
 
+    public void applicationRoleMembershipChanged( String roleId ) {
+    	getResponsibilityInternalService().updateActionRequestsForRoleChange(roleId);
+    }
+    
 	/**
 	 * @return the lookupService
 	 */

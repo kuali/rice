@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -219,13 +218,14 @@ public interface RoleService {
 	
 	DelegateMemberCompleteInfo getDelegationMemberById(@WebParam(name="delegationMemberId") String delegationMemberId);
 
-	List<RoleResponsibilityInfo> getRoleResponsibilities(String roleId);
+	List<RoleResponsibilityInfo> getRoleResponsibilities(@WebParam(name="roleId") String roleId);
 	
-	List<RoleResponsibilityActionInfo> getRoleMemberResponsibilityActionInfo(String roleMemberId);
+	List<RoleResponsibilityActionInfo> getRoleMemberResponsibilityActionInfo( @WebParam(name="roleMemberId") String roleMemberId);
 
-	DelegateTypeInfo getDelegateTypeInfo(String roleId, String delegationTypeCode);
+	DelegateTypeInfo getDelegateTypeInfo( @WebParam(name="roleId") String roleId, @WebParam(name="delegationTypeCode") String delegationTypeCode);
 
-	DelegateTypeInfo getDelegateTypeInfoById(String delegationId);
+	DelegateTypeInfo getDelegateTypeInfoById( @WebParam(name="delegationId") String delegationId);
 	
+	void applicationRoleMembershipChanged( @WebParam(name="roleId") String roleId );
 	
 }

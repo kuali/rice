@@ -599,6 +599,10 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return getRoleService().getRoleResponsibilities(roleId);
 	}
 	
+	public void applicationRoleMembershipChanged(String roleId) {
+		getRoleService().applicationRoleMembershipChanged(roleId);		
+	}
+	
 	// Spring and injection methods
 	
 	public RoleService getRoleService() {

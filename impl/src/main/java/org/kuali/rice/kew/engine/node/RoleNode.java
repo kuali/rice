@@ -122,7 +122,7 @@ public class RoleNode extends RequestsNode {
 		searchCriteria.put("active", "Y");
 		DocumentType docType = document.getDocumentType();
 		while ( docType != null ) {
-			searchCriteria.put("detailCriteria", getDetailCriteriaString( document.getDocumentType().getName(), node.getRouteNodeName() ) );
+			searchCriteria.put("detailCriteria", getDetailCriteriaString( docType.getName(), node.getRouteNodeName() ) );
 			try {
 				List<? extends KimResponsibilityInfo> responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
 				// once we find a responsibility, stop, since this overrides any parent 

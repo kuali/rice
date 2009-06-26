@@ -36,7 +36,6 @@ import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
-import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -192,7 +191,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	return false;
 		}
     	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) && !validateRole((RoleImpl)member, "document.member.memberId", "Role")){
+        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
+        		&& !validateRole(newMember.getMemberId(), (RoleImpl)member, "document.member.memberId", "Role")){
         	return false;
         }
 

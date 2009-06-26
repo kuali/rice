@@ -165,6 +165,7 @@ public class RiceKeyConstants {
     public static final String ERROR_MEMBERID_MEMBERTYPE_MISMATCH = "error.memberid.membertype.mismatch";
     public static final String ERROR_PRIORITY_NUMBER_RANGE = "error.prioritynumber.range";
     public static final String ERROR_CANT_ADD_DERIVED_ROLE = "error.cant.add.derived.role";
+    public static final String ERROR_INVALID_ROLE = "error.invalid.role";
     public static final String ERROR_REQUIRED_CONDITIONALLY = "error.required.conditionally";
     public static final String ERROR_CANT_BE_MODIFIED = "error.unmodifiable.attribute";
     public static final String ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION = "error.delegation.notassociatedwith.rolemember";

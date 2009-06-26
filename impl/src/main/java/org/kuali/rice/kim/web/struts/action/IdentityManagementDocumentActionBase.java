@@ -173,13 +173,16 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), idmForm.getMemberRows().size(), idmForm.getRecordsPerPage());
     }
 
-    protected boolean validateRole(RoleImpl roleImpl, String propertyName, String message){
-    	boolean valid = true;
+    protected boolean validateRole( String roleId, RoleImpl roleImpl, String propertyName, String message){
+    	if ( roleImpl == null ) {
+        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
+    		return false;
+    	}
     	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
-        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, new String[] {message});
-        	valid = false;
+        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, message);
+        	return false;
         }
-    	return valid;
+    	return true;
     }
  
     public ActionForward changeNamespace(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -311,7 +311,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         PersonDocumentRole newRole = personDocumentForm.getNewRole();
         if (getKualiRuleService().applyRules(new AddRoleEvent("",personDocumentForm.getPersonDocument(), newRole))) {
 	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newRole.getRoleId());
-	        if(!validateRole(roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        if(!validateRole(newRole.getRoleId(), roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
 	        newRole.setRoleName(roleImpl.getRoleName());
@@ -381,15 +381,15 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         }
     }
     
-	private boolean isUniqueRoleRspAction(List<KimDocumentRoleResponsibilityAction> roleRspActions, KimDocumentRoleResponsibilityAction roleRspAction){
-    	if(roleRspActions==null || roleRspAction==null) return false;
-    	for(KimDocumentRoleResponsibilityAction roleRspActionTemp: roleRspActions){
-    		if((StringUtils.isNotEmpty(roleRspActionTemp.getRoleMemberId()) && roleRspActionTemp.getRoleMemberId().equals(roleRspAction.getRoleMemberId())) && 
-    			(StringUtils.isNotEmpty(roleRspActionTemp.getRoleResponsibilityId())	&& roleRspActionTemp.getRoleResponsibilityId().equals(roleRspAction.getRoleResponsibilityId())))
-    			return false;
-    	}
-    	return true;
-    }
+//	private boolean isUniqueRoleRspAction(List<KimDocumentRoleResponsibilityAction> roleRspActions, KimDocumentRoleResponsibilityAction roleRspAction){
+//    	if(roleRspActions==null || roleRspAction==null) return false;
+//    	for(KimDocumentRoleResponsibilityAction roleRspActionTemp: roleRspActions){
+//    		if((StringUtils.isNotEmpty(roleRspActionTemp.getRoleMemberId()) && roleRspActionTemp.getRoleMemberId().equals(roleRspAction.getRoleMemberId())) && 
+//    			(StringUtils.isNotEmpty(roleRspActionTemp.getRoleResponsibilityId())	&& roleRspActionTemp.getRoleResponsibilityId().equals(roleRspAction.getRoleResponsibilityId())))
+//    			return false;
+//    	}
+//    	return true;
+//    }
 	    
 
     private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
@@ -450,7 +450,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         KimTypeAttributesHelper attrHelper = newDelegationMember.getAttributesHelper();
         if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
 	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleImpl().getRoleId());
-	        if(!validateRole(roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        if(!validateRole(newDelegationMember.getRoleImpl().getRoleId(),roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
 	        newDelegationMember.setRoleImpl(roleImpl);
@@ -569,7 +569,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
             impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
 	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
-	        if(!validateRole(roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        if(!validateRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId(), roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
 	        impdForm.getNewDelegationMember().setRoleImpl(roleImpl);

@@ -49,10 +49,13 @@ import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -165,8 +168,8 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 			KimEntityEntityTypeDefaultInfo typeInfo = new KimEntityEntityTypeDefaultInfo();
 			typeInfo.setEntityTypeCode( entityEntityType.getEntityTypeCode() );
 			typeInfo.setDefaultAddress( new KimEntityAddressInfo( entityEntityType.getDefaultAddress()) );
-			typeInfo.setDefaultEmailAddress( new KimEntityEmailInfo( entityEntityType.getDefaultEmailAddress() ) );
-			typeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo( entityEntityType.getDefaultPhoneNumber() ) );
+			typeInfo.setDefaultEmailAddress( new KimEntityEmailInfo( entityEntityType.getDefaultEmailAddress()) );
+			typeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo( entityEntityType.getDefaultPhoneNumber()) );
 			entityTypesInfo.add( typeInfo );
 		}
 		
@@ -462,7 +465,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		}
 		return impl.toInfo();
 	}
-
+	
 //	protected static Map<String,ExternalIdentifierTypeInfo> externalIdentifierTypeInfoCache = new HashMap<String, ExternalIdentifierTypeInfo>();
 //	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
 //		if ( !externalIdentifierTypeInfoCache.containsKey(code) ) {

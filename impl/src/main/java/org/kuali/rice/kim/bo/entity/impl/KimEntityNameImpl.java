@@ -24,10 +24,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.entity.KimEntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.reference.EntityNameType;
 import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -68,6 +72,10 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
 	@ManyToOne(targetEntity=EntityNameTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
 	protected EntityNameType entityNameType;
+	
+	@Transient
+	protected Boolean suppressName;
+	
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getEntityNameId()
@@ -244,7 +252,16 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
         return this.title;
     }
 
-    private boolean isSuppressName() {
-        return KimCommonUtils.isSuppressName(getEntityId());
+    public boolean isSuppressName() {
+        if (suppressName != null) {
+            return suppressName.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressName = false;
+        if (privacy != null) {
+            suppressName = privacy.isSuppressName();
+        } 
+        return suppressName.booleanValue();
     }
 }

@@ -70,7 +70,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
 		KimEntityEntityType eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityEntityType Must not be null", eet );
 		assertEquals( "there should be 1 email address", 1, eet.getEmailAddresses().size() );
-		assertEquals( "email address does not match", "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddress() );
+		assertEquals( "email address does not match", "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
 	}
 
 }

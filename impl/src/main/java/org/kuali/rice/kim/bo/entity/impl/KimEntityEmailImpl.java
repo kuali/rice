@@ -24,10 +24,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.EmailType;
 import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -59,6 +62,9 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
 	protected EmailType emailType;
+	
+	@Transient
+	protected Boolean suppressEmail;
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
@@ -144,8 +150,17 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 		this.emailType = emailType;
 	}
 
-    private boolean isSuppressEmail() {
-        return KimCommonUtils.isSuppressEmail(entityId);
+    public boolean isSuppressEmail() {
+        if (suppressEmail != null) {
+            return suppressEmail.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressEmail = false;
+        if (privacy != null) {
+            suppressEmail = privacy.isSuppressEmail();
+        } 
+        return suppressEmail.booleanValue();
     }
 
     /**

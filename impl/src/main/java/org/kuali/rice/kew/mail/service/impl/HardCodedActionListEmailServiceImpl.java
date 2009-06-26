@@ -126,7 +126,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 				} catch (Exception e) {
 					LOG.error(
 							"Error sending daily action list reminder to user: "
-									+ user.getEmailAddress(), e);
+									+ user.getEmailAddressUnmasked(), e);
 				}
 			}
 		}
@@ -148,7 +148,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 				} catch (Exception e) {
 					LOG.error(
 							"Error sending weekly action list reminder to user: "
-									+ user.getEmailAddress(), e);
+									+ user.getEmailAddressUnmasked(), e);
 				}
 			}
 		}

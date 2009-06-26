@@ -17,6 +17,8 @@ package org.kuali.rice.kim.bo.entity.dto;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -27,13 +29,14 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	private static final long serialVersionUID = 1L;
 
 	protected String entityPhoneId = "";
-	protected String entityId = "";
 	protected String entityTypeCode = "";
 	protected String phoneTypeCode = "";
 	protected String phoneNumber = "";
 	protected String extensionNumber = "";
 	protected String countryCode = "";
 
+	protected boolean suppressPhone = false;
+	
 	/**
 	 * 
 	 */
@@ -45,18 +48,19 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 */
 	public KimEntityPhoneInfo( KimEntityPhone phone ) {
 		if ( phone != null ) {
-		    entityId = unNullify (phone.getEntityId() );
-			entityPhoneId = unNullify( phone.getEntityPhoneId() );
-			entityTypeCode = unNullify( phone.getEntityTypeCode() );
-			phoneTypeCode = unNullify( phone.getPhoneTypeCode() );
-			phoneNumber = unNullify( phone.getPhoneNumberUnmasked() );
-			extensionNumber = unNullify( phone.getExtensionNumberUnmasked() );
-			countryCode = unNullify( phone.getCountryCodeUnmasked() );
-			dflt = phone.isDefault();
-			active = phone.isActive();
+		    this.entityPhoneId = unNullify( phone.getEntityPhoneId() );
+		    this.entityTypeCode = unNullify( phone.getEntityTypeCode() );
+		    this.phoneTypeCode = unNullify( phone.getPhoneTypeCode() );
+		    this.phoneNumber = unNullify( phone.getPhoneNumberUnmasked() );
+		    this.extensionNumber = unNullify( phone.getExtensionNumberUnmasked() );
+		    this.countryCode = unNullify( phone.getCountryCodeUnmasked() );
+		    this.dflt = phone.isDefault();
+		    this.active = phone.isActive();
+		    this.suppressPhone = phone.isSuppressPhone();
 		}
 	}
 	
+
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCode()
 	 */
@@ -149,9 +153,8 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 		return sb.toString();
 	}
 	
-    private boolean isSuppressPhone() {
-        return false;
-        //return KimCommonUtils.isSuppressPhone(getEntityId());
+    public boolean isSuppressPhone() {
+        return this.suppressPhone;
     }
 
     /**
@@ -190,9 +193,5 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
      */
     public String getPhoneNumberUnmasked() {
         return this.phoneNumber;
-    }
-    
-    public String getEntityId() {
-        return this.entityId;
     }
 }

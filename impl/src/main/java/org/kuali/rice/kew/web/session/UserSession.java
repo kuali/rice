@@ -297,7 +297,7 @@ public class UserSession implements Serializable {
     }
 
     public String getEmailAddress() {
-    	return getPerson().getEmailAddress();
+    	return getPerson().getEmailAddressUnmasked();
     }
 
     public int getNextObjectKey() {

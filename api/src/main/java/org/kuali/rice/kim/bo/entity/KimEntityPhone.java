@@ -24,7 +24,6 @@ package org.kuali.rice.kim.bo.entity;
 public interface KimEntityPhone extends KimDefaultableEntityTypeData {
 
 	String getEntityPhoneId();
-	String getEntityId();
 	
 	String getPhoneTypeCode();
 	String getPhoneNumber();
@@ -37,5 +36,6 @@ public interface KimEntityPhone extends KimDefaultableEntityTypeData {
     
     String getFormattedPhoneNumber();
 	String getFormattedPhoneNumberUnmasked();
-	
+
+	boolean isSuppressPhone();
 }

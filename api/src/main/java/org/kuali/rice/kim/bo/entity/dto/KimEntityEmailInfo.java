@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -26,11 +31,11 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	private static final long serialVersionUID = 1L;
 
 	protected String entityEmailId = "";
-	protected String entityId = "";
 	protected String entityTypeCode = "";
 	protected String emailTypeCode = "";
 	protected String emailAddress = "";
-
+	
+	protected boolean suppressEmail = false;
 	
 	/**
 	 * 
@@ -43,12 +48,13 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 */
 	public KimEntityEmailInfo( KimEntityEmail email ) {
 		if ( email != null ) {
-			entityEmailId = unNullify( email.getEntityEmailId() );
-			entityTypeCode = unNullify( email.getEntityTypeCode() );
-			emailTypeCode = unNullify( email.getEmailTypeCode() );
-			emailAddress = unNullify( email.getEmailAddressUnmasked() );
-			dflt = email.isDefault();
-			active = email.isActive();
+			this.entityEmailId = unNullify( email.getEntityEmailId() );
+			this.entityTypeCode = unNullify( email.getEntityTypeCode() );
+			this.emailTypeCode = unNullify( email.getEmailTypeCode() );
+			this.emailAddress = unNullify( email.getEmailAddressUnmasked() );
+			this.dflt = email.isDefault();
+			this.active = email.isActive();
+			this.suppressEmail = email.isSuppressEmail();
 		}
 	}
 	
@@ -108,18 +114,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
         return this.emailAddress;
     }
 
-    private boolean isSuppressEmail() {
-        return false;
-        //return KimCommonUtils.isSuppressEmail(entityId);
+    public boolean isSuppressEmail() {
+        return this.suppressEmail;
     }
-    
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityId()
-     */
-    public String getEntityId() {
-        return this.entityId;
-    }
-	
-	
-
 }

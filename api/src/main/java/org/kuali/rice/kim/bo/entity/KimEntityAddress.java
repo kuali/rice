@@ -24,7 +24,6 @@ package org.kuali.rice.kim.bo.entity;
 public interface KimEntityAddress extends KimDefaultableEntityTypeData {
 	
 	String getEntityAddressId();
-	String getEntityId();
 	
 	String getAddressTypeCode();
 	
@@ -42,4 +41,6 @@ public interface KimEntityAddress extends KimDefaultableEntityTypeData {
     String getStateCodeUnmasked();
     String getPostalCodeUnmasked();
     String getCountryCodeUnmasked();
+    
+    boolean isSuppressAddress();
 }

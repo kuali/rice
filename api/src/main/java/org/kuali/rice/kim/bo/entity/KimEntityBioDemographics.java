@@ -30,4 +30,6 @@ public interface KimEntityBioDemographics {
 	String getEthnicityCodeUnmasked();
 	String getGenderCode();
 	String getGenderCodeUnmasked();
+	
+	boolean isSuppressPersonal();
 }

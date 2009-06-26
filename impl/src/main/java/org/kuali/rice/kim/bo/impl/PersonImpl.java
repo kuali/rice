@@ -178,7 +178,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 				firstName = unNullify( entityName.getFirstNameUnmasked() );
 				middleName = unNullify( entityName.getMiddleNameUnmasked() );
 				lastName = unNullify( entityName.getLastNameUnmasked() );
-				if ( entityTypeCode.equals( "SYSTEM" ) ) {
+				if ( entityTypeCode.equals( KimConstants.EntityTypes.SYSTEM ) ) {
 					name = principal.getPrincipalName().toUpperCase();
 				} else {
 					name = unNullify( entityName.getFormattedNameUnmasked() );
@@ -186,7 +186,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 			} else {
 				firstName = "";
 				middleName = "";
-				if ( entityTypeCode.equals( "SYSTEM" ) ) {
+				if ( entityTypeCode.equals( KimConstants.EntityTypes.SYSTEM ) ) {
 					name = principal.getPrincipalName().toUpperCase();
 					lastName = principal.getPrincipalName().toUpperCase();
 				} else {

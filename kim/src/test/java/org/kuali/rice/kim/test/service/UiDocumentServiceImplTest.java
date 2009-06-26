@@ -333,7 +333,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	private void assertEmailTrue(PersonDocumentEmail docEmail, KimEntityEmailImpl entityEmail) {
 		assertEquals(docEmail.getEntityEmailId(), entityEmail.getEntityEmailId());
-		assertEquals(docEmail.getEmailAddress(), entityEmail.getEmailAddress());
+		assertEquals(docEmail.getEmailAddress(), entityEmail.getEmailAddressUnmasked());
 		assertEquals(docEmail.getEmailTypeCode(), entityEmail.getEmailTypeCode());
 	}
 

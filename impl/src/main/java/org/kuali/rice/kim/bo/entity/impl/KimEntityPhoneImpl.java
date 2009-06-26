@@ -24,11 +24,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -66,6 +69,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	@ManyToOne(targetEntity=PhoneTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
 	protected PhoneType phoneType;
+	
+	@Transient
+    protected Boolean suppressPhone;
 
 	// Waiting until we pull in from KFS
 	// protected Country country;
@@ -207,8 +213,17 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 		return sb.toString();
 	}
 
-    private boolean isSuppressPhone() {
-        return KimCommonUtils.isSuppressPhone(getEntityId());
+    public boolean isSuppressPhone() {
+        if (suppressPhone != null) {
+            return suppressPhone.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressPhone = false;
+        if (privacy != null) {
+            suppressPhone = privacy.isSuppressPhone();
+        } 
+        return suppressPhone.booleanValue();
     }
 
     /**

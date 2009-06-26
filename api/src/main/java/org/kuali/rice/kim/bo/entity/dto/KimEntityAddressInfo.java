@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.bo.entity.dto;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -26,7 +28,6 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	private static final long serialVersionUID = 1L;
 
 	protected String entityAddressId = "";
-	protected String entityId = "";
 	protected String addressTypeCode = "";
 	protected String entityTypeCode = "";
 	protected String cityName = "";
@@ -37,6 +38,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	protected String line2 = "";
 	protected String line3 = "";
 
+	protected boolean suppressAddress = false;
 	/**
 	 * 
 	 */
@@ -47,22 +49,22 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 */
 	public KimEntityAddressInfo( KimEntityAddress addr ) {
 		if ( addr != null ) {
-		    entityId = unNullify( addr.getEntityId() );
-			entityAddressId = unNullify( addr.getEntityAddressId() );
-			entityTypeCode = unNullify( addr.getEntityTypeCode() );
-			addressTypeCode = unNullify( addr.getAddressTypeCode() );
-			cityName = unNullify( addr.getCityNameUnmasked() );
-			stateCode = unNullify( addr.getStateCodeUnmasked() );
-			postalCode = unNullify( addr.getPostalCodeUnmasked() );
-			countryCode = unNullify( addr.getCountryCodeUnmasked() );
-			line1 = unNullify( addr.getLine1Unmasked() );
-			line2 = unNullify( addr.getLine2Unmasked() );
-			line3 = unNullify( addr.getLine3Unmasked() );
-			dflt = addr.isDefault();
-			active = addr.isActive();
+		    this.entityAddressId = unNullify( addr.getEntityAddressId() );
+			this.entityTypeCode = unNullify( addr.getEntityTypeCode() );
+			this.addressTypeCode = unNullify( addr.getAddressTypeCode() );
+			this.cityName = unNullify( addr.getCityNameUnmasked() );
+			this.stateCode = unNullify( addr.getStateCodeUnmasked() );
+			this.postalCode = unNullify( addr.getPostalCodeUnmasked() );
+			this.countryCode = unNullify( addr.getCountryCodeUnmasked() );
+			this.line1 = unNullify( addr.getLine1Unmasked() );
+			this.line2 = unNullify( addr.getLine2Unmasked() );
+			this.line3 = unNullify( addr.getLine3Unmasked() );
+			this.dflt = addr.isDefault();
+			this.active = addr.isActive();
+			this.suppressAddress = addr.isSuppressAddress();
 		}
 	}
-	
+	   
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getAddressTypeCode()
 	 */
@@ -189,9 +191,8 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 		this.entityTypeCode = entityTypeCode;
 	}
 	
-    private boolean isSuppressAddress() {
-        return false;
-        //return KimCommonUtils.isSuppressAddress(getEntityId());
+    public boolean isSuppressAddress() {
+        return this.suppressAddress;
     }
 
     /**
@@ -241,9 +242,5 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
      */
     public String getStateCodeUnmasked() {
         return this.stateCode;
-    }
-    
-    public String getEntityId() {
-        return this.entityId;
     }
 }

@@ -22,8 +22,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -49,6 +52,9 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	@Column(name = "GNDR_CD")
 	protected String genderCode;
 
+	@Transient
+    protected Boolean suppressPersonal;
+	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthDate()
 	 */
@@ -109,8 +115,17 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 		this.genderCode = genderCode;
 	}
 
-    private boolean isSuppressPersonal() {
-        return KimCommonUtils.isSuppressPersonal(getEntityId());
+    public boolean isSuppressPersonal() {
+        if (suppressPersonal != null) {
+            return suppressPersonal.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressPersonal = false;
+        if (privacy != null) {
+            suppressPersonal = privacy.isSuppressPersonal();
+        } 
+        return suppressPersonal.booleanValue();
     }
 
     /**

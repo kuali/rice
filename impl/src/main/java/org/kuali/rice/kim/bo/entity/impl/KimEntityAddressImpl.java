@@ -24,10 +24,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.AddressType;
 import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -77,6 +80,9 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	@ManyToOne(targetEntity=AddressTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
 	protected AddressType addressType;
+	
+	@Transient
+    protected Boolean suppressAddress;
 
 	// Waiting until we pull in from KFS
 	// protected State state;
@@ -276,7 +282,16 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
      * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#isSuppressAddress()
      */
     public boolean isSuppressAddress() {
-        return KimCommonUtils.isSuppressAddress(getEntityId());
+        if (suppressAddress != null) {
+            return suppressAddress.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressAddress = false;
+        if (privacy != null) {
+            suppressAddress = privacy.isSuppressAddress();
+        } 
+        return suppressAddress.booleanValue();
     }
 
     /**

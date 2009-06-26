@@ -26,7 +26,6 @@ import org.kuali.rice.kns.bo.DefaultableInactivateable;
 public interface KimEntityName extends DefaultableInactivateable {
 	
 	String getEntityNameId();
-	String getEntityId();
 	
 	String getNameTypeCode();
 	String getFirstName();
@@ -45,4 +44,6 @@ public interface KimEntityName extends DefaultableInactivateable {
 	 */
 	String getFormattedName();
 	String getFormattedNameUnmasked();
+	
+	boolean isSuppressName();
 }

@@ -97,8 +97,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         return (DocumentRouteHeaderValueContent)query.getSingleResult();
     }
 
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader) {
-    	Long routeHeaderId = routeHeader.getRouteHeaderId();
+    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
     	List<SearchableAttributeValue> searchableAttributeValues = findSearchableAttributeValues(routeHeaderId);
     	for (SearchableAttributeValue searchableAttributeValue:searchableAttributeValues){
     		entityManager.remove(searchableAttributeValue);
@@ -261,5 +260,14 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
 		return document.getDocRouteStatus();
     }
+    
+    public void save(SearchableAttributeValue searchableAttributeValue) {   	
+    	if (searchableAttributeValue.getSearchableAttributeValueId() == null){
+    		entityManager.persist(searchableAttributeValue);
+    	} else {
+    		entityManager.merge(searchableAttributeValue);
+    	}
+    }
+
 
 }

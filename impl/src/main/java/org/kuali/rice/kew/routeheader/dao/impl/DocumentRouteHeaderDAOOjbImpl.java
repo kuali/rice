@@ -90,9 +90,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return (DocumentRouteHeaderValueContent)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentRouteHeaderValueContent.class, crit));
     }
 
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader) {
+    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeader.getRouteHeaderId());
+        crit.addEqualTo("routeHeaderId", routeHeaderId);
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(SearchableAttributeValue.class, crit));
     }
 
@@ -291,6 +291,10 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	    status = (String)row[0];
     	}
     	return status;
+    }
+    
+    public void save(SearchableAttributeValue searchableAttributeValue) {
+    	getPersistenceBrokerTemplate().store(searchableAttributeValue);
     }
 
 }

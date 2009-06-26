@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
@@ -49,8 +50,14 @@ public interface RouteHeaderService {
      * Removes all SearchableAttributeValues associated with the RouteHeader.
      * @param routeHeader
      */
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader);
+    public void clearRouteHeaderSearchValues(Long routeHeaderId);
 
+    /**
+     * Updates the searchable attribute values for the document with the given id to the given values.
+     * This method will clear existing search attribute values and replace with the ones given.
+     */
+    public void updateRouteHeaderSearchValues(Long routeHeaderId, List<SearchableAttributeValue> searchAttributes);
+    
     /**
      * Returns the Service Namespace of the {@link DocumentType} for the Document with the given ID.
      */

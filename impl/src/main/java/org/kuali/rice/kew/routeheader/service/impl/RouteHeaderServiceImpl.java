@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -74,8 +75,15 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         return getRouteHeaderDAO().findPendingByResponsibilityIds(responsibilityIds);
     }
 
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader) {
-        getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeader);
+    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
+        getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeaderId);
+    }
+    
+    public void updateRouteHeaderSearchValues(Long routeHeaderId, List<SearchableAttributeValue> searchAttributes) {
+    	getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeaderId);
+    	for (SearchableAttributeValue searchAttribute : searchAttributes) {
+    		getRouteHeaderDAO().save(searchAttribute);
+    	}
     }
 
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader){

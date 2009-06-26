@@ -19,6 +19,7 @@ package org.kuali.rice.kew.routeheader.dao;
 import java.util.Collection;
 import java.util.Set;
 
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 
@@ -39,10 +40,11 @@ public interface DocumentRouteHeaderDAO {
   public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
   public Long getNextRouteHeaderId();
   public Collection findPendingByResponsibilityIds(Set responsibilityIds);
-  public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader);
+  public void clearRouteHeaderSearchValues(Long routeHeader);
   public String getServiceNamespaceByDocumentId(Long documentId);
   public DocumentRouteHeaderValueContent getContent(Long routeHeaderId);
   public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue);
   public String getDocumentStatus(Long documentId);
+  public void save(SearchableAttributeValue searchableAttribute);
 
 }

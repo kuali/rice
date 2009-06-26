@@ -502,7 +502,7 @@ public class KNSConstants extends JSTLConstants {
 //        public static final String MULTIPLE_VALUE_LOOKUP_RESULTS_EXPIRATION_AGE = "MULTIPLE_VALUE_RESULTS_EXPIRATION_SECONDS";
 
         public static final String DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND = "DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND";
-
+        public static final String ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND = "ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND";
         /**
          * Used to indicate whether field level help is enabled. Depending on the namespace this parameter is in, it may
          * affect either lookups (i.e. the search criteria fields) or maintenance documents.

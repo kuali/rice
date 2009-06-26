@@ -18,7 +18,6 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.State;
-import org.kuali.rice.kns.bo.BusinessObject;
 
 public interface StateService {
 
@@ -44,23 +43,21 @@ public interface StateService {
      * the system. If the given postal state code is same as that of the given existing postal code, return the existing postal code;
      * otherwise, retrieve a state object.
      * 
-     * @param businessObject the business object that references to a country object
      * @param postalStateCode the given state code
      * @return a state object based on the given state code and default country code
      */
-    public State getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalStateCode, State existingState);
+    public State getByPrimaryIdIfNecessary(String postalStateCode, State existingState);
 
     /**
      * get a state object based on the given state code and country code. If the given postal state code and country code
      * are same as those of the given existing postal code, return the existing State; otherwise, retrieve a State
      * object.
      * 
-     * @param businessObject the business object that references to a country object 
      * @param postalCountryCode the given country code
      * @param postalStateCode the given state code
      * @return a state object based on the given state code and country code
      */
-    public State getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, String postalStateCode, State existingState);
+    public State getByPrimaryIdIfNecessary(String postalCountryCode, String postalStateCode, State existingState);
     
     /**
      * get all states in the system-default country 

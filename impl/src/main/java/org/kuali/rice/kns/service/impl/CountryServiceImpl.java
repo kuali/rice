@@ -22,13 +22,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class CountryServiceImpl implements CountryService {
     private static Logger LOG = Logger.getLogger(CountryServiceImpl.class);
@@ -50,10 +49,7 @@ public class CountryServiceImpl implements CountryService {
         return kualiModuleService.getResponsibleModuleService(Country.class).getExternalizableBusinessObject(Country.class, postalCountryMap);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.CountryService#getByPrimaryIdIfNecessary(org.kuali.rice.kns.bo.BusinessObject, java.lang.String, org.kuali.kfs.sys.businessobject.Country)
-     */
-    public Country getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, Country existingCountry) {
+    public Country getByPrimaryIdIfNecessary(String postalCountryCode, Country existingCountry) {
         if (existingCountry != null) {
             if (StringUtils.equals(postalCountryCode, existingCountry.getPostalCountryCode())) {
                 return existingCountry;

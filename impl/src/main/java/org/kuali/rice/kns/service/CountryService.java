@@ -18,7 +18,6 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.Country;
-import org.kuali.rice.kns.bo.BusinessObject;
 
 public interface CountryService {
 
@@ -34,12 +33,11 @@ public interface CountryService {
      * get a country object based on the given country code. If the postal country code of the existing country is same as the given
      * country code, return the existing country; otherwise, retrieve a new country object.
      * 
-     * @param businessObject the business object that references to a country object
      * @param postalCountryCode the given country code
      * @param existingCountry the given existing ccountry
      * @return a country object with the given country code if necessary
      */
-    Country getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, Country existingCountry);
+    Country getByPrimaryIdIfNecessary(String postalCountryCode, Country existingCountry);
     
     /**
      * get the system default country, which is configured as a system parameter

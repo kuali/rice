@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.kns.bo.PostalCode;
-import org.kuali.rice.kns.bo.BusinessObject;
 
 public interface PostalCodeService {
 
@@ -43,23 +42,21 @@ public interface PostalCodeService {
      * the system. If the given postal postale is same as that of the given existing postal code, return the existing postal code;
      * otherwise, retrieve a postal code object.
      * 
-     * @param businessObject the business object that references to a country object 
      * @param postalCode the given postal code
      * @param existingPostalCode the given existing postal code
      * @return the postal code object with the given postal code and default country code if necessary
      */
-    public PostalCode getByPostalCodeInDefaultCountryIfNecessary(BusinessObject businessObject, String postalCode, PostalCode existingPostalCode);
+    public PostalCode getByPostalCodeInDefaultCountryIfNecessary(String postalCode, PostalCode existingPostalCode);
 
     /**
      * get the postal code object based on the given postal code and country code. If the given postal code and country code
      * are same as those of the given existing postal code, return the existing postal code; otherwise, retrieve a postal code
      * object.
      * 
-     * @param businessObject the business object that references to a country object
      * @param postalCountryCode the given country code
      * @param postalCode the given postal code
      * @param existingPostalCode the given existing postal code
      * @return the postal code object with the given postal code and country code if necessary
      */
-    public PostalCode getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, String postalCode, PostalCode existingPostalCode);
+    public PostalCode getByPrimaryIdIfNecessary(String postalCountryCode, String postalCode, PostalCode existingPostalCode);
 }

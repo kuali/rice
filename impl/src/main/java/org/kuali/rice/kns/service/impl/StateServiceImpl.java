@@ -21,12 +21,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.service.CountryService;
-import org.kuali.rice.kns.service.StateService;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.StateService;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class StateServiceImpl implements StateService {
     private static Logger LOG = Logger.getLogger(StateServiceImpl.class);
@@ -58,21 +57,13 @@ public class StateServiceImpl implements StateService {
         return kualiModuleService.getResponsibleModuleService(State.class).getExternalizableBusinessObject(State.class, postalStateMap);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.StateService#getByPrimaryIdIfNecessary(org.kuali.rice.kns.bo.BusinessObject, java.lang.String,
-     *      org.kuali.kfs.sys.businessobject.State)
-     */
-    public State getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalStateCode, State existingState) {
+    public State getByPrimaryIdIfNecessary(String postalStateCode, State existingState) {
         String postalCountryCode = countryService.getDefaultCountry().getPostalCountryCode();
 
-        return this.getByPrimaryIdIfNecessary(businessObject, postalCountryCode, postalStateCode, existingState);
+        return this.getByPrimaryIdIfNecessary(postalCountryCode, postalStateCode, existingState);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.StateService#getByPrimaryIdIfNecessary(org.kuali.rice.kns.bo.BusinessObject, java.lang.String,
-     *      java.lang.String, org.kuali.kfs.sys.businessobject.State)
-     */
-    public State getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, String postalStateCode, State existingState) {
+    public State getByPrimaryIdIfNecessary(String postalCountryCode, String postalStateCode, State existingState) {
         if (existingState != null) {
             String existingCountryCode = existingState.getPostalCountryCode();
             String existingPostalStateCode = existingState.getPostalStateCode();

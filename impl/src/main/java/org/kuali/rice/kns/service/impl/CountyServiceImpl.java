@@ -20,12 +20,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.bo.County;
 import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.service.CountyService;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
  * This class...
@@ -62,21 +61,13 @@ public class CountyServiceImpl implements CountyService {
         return kualiModuleService.getResponsibleModuleService(County.class).getExternalizableBusinessObject(County.class, countyMap);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.CountyService#getByPrimaryIdIfNecessary(java.lang.String, java.lang.String,
-     *      org.kuali.kfs.sys.businessobject.County)
-     */
-    public County getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalStateCode, String countyCode, County existingCounty) {
+    public County getByPrimaryIdIfNecessary(String postalStateCode, String countyCode, County existingCounty) {
         String postalCountryCode = countryService.getDefaultCountry().getPostalCountryCode();
 
-        return this.getByPrimaryIdIfNecessary(businessObject, postalCountryCode, postalStateCode, countyCode, existingCounty);
+        return this.getByPrimaryIdIfNecessary(postalCountryCode, postalStateCode, countyCode, existingCounty);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.CountyService#getByPrimaryIdIfNecessary(java.lang.String, java.lang.String, java.lang.String,
-     *      org.kuali.kfs.sys.businessobject.County)
-     */
-    public County getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, String postalStateCode, String countyCode, County existingCounty) {
+    public County getByPrimaryIdIfNecessary(String postalCountryCode, String postalStateCode, String countyCode, County existingCounty) {
         if (existingCounty != null) {
             String existingCountryCode = existingCounty.getPostalCountryCode();
             String existingStateCode = existingCounty.getStateCode();

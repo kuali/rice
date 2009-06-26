@@ -626,14 +626,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected String getActionListUrl() {
-		return ConfigContext.getCurrentContextConfig().getBaseUrl()
-				+ Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
+		return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY)
 				+ "/" + "ActionList.do";
 	}
 
 	protected String getPreferencesUrl() {
-		return ConfigContext.getCurrentContextConfig().getBaseUrl()
-				+ Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
+		return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY)
 				+ "/" + "Preferences.do";
 	}
 }

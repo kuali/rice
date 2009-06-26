@@ -70,8 +70,6 @@ public interface Config {
 
 	public static final String EMAIL_SECURITY_PATH = "email.security.path";
 
-	public static final String BASE_URL = "base.url";
-
 	public static final String ENVIRONMENT = "environment";
 
 	public static final String PLUGIN_DIR = "plugin.dir";
@@ -188,8 +186,6 @@ public interface Config {
 	public String getTransactionTimeout();
 
 	public String getEmailConfigurationPath();
-
-	public String getBaseUrl();
 
 	public String getEnvironment();
 

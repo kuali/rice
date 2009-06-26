@@ -311,10 +311,6 @@ public abstract class BaseConfig implements Config {
         return getProperty(EMAIL_SECURITY_PATH);
     }
 
-    public String getBaseUrl() {
-        return getProperty(BASE_URL);
-    }
-
     public String getEnvironment() {
         return getProperty(ENVIRONMENT);
     }

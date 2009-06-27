@@ -18,8 +18,6 @@ package org.kuali.rice.kim.bo.entity.dto;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**

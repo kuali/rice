@@ -15,13 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

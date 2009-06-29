@@ -1,11 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<link href="<c:out value="../kr/css/${ActionListFormNew.cssFile}"/>"
-	rel="stylesheet" type="text/css">
-<script language="JavaScript" src="scripts/en-common.js"></script>
-<script language="JavaScript" src="scripts/actionlist-common.js"></script>
-
-
 <%-- Setup column labels based on ApplicationsResources --%>
 <bean:define id="documentIdLabel">
 	<bean-el:message key="actionList.ActionList.results.label.documentId" />
@@ -63,10 +57,16 @@
 	headerMenuBar="${ActionListFormNew.menuBar}"
 	transactionalDocument="false" showDocumentInfo="false"
 	htmlFormAction="ActionList" docTitle="Action List">
+  <script language="JavaScript" src="scripts/en-common.js"></script>
+  <script language="JavaScript" src="scripts/actionlist-common.js"></script>
   <style type="text/css">
   <!--
-    #row tr.odd { background-color: transparent; }
-    #row tr.even { background-color: transparent; }
+    tr.over { background-color:#CCFFFF; }
+    tr.actionlist_anyRow:hover { background-color:#CCFFFF; }
+    tr.actionlist_anyRow { visibility:visible; }
+    <logic-el:iterate name="KEWConstants" id="colorEntry" property="ACTION_LIST_COLOR_PALETTE">
+    tr.actionlist_${colorEntry.key} { background-color:${colorEntry.value}; }
+    </logic-el:iterate>
   -->
   </style>
 	<%-- Since we are using the external paging and sorting features of the display tag now, if a new sortable column is added, remember to add it to the
@@ -234,6 +234,8 @@
 					decorator="org.kuali.rice.kew.actionlist.web.ActionListDecorator"
 					excludedParams="*" requestURI="${actionListURI}">
 					<display-el:setProperty name="export.banner" value="" />
+					<display-el:setProperty name="css.tr.even" value="actionlist_anyRow" />
+					<display-el:setProperty name="css.tr.odd" value="actionlist_anyRow" />
                     <c:if test="${kewUserSession.helpDeskActionListPerson == null && result.displayParameters != null}">
   					  <display-el:column title="&nbsp;">
 

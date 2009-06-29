@@ -16,3 +16,19 @@ function setActions() {
     }
   }
 }
+
+function setRowMouseListeners() {
+	var rowCounter = 0;
+	var idPrefix = "actionlist_tr_";
+	var rowClassNames = new Object();
+	var currentRow = document.getElementById(idPrefix + rowCounter);
+	while (currentRow != null) {
+		rowClassNames[idPrefix + rowCounter] = currentRow.className;
+		currentRow.onmouseover = function() { this.className = "over"; };
+		currentRow.onmouseout = function () { this.className = rowClassNames[this.id]; };
+		rowCounter++;
+		currentRow = document.getElementById(idPrefix + rowCounter);
+	}
+}
+
+setTimeout(setRowMouseListeners, 0);

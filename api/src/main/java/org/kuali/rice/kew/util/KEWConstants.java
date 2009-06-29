@@ -3,6 +3,7 @@ package org.kuali.rice.kew.util;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -247,6 +248,17 @@ public class KEWConstants extends JSTLConstants {
         ACTION_LIST_COLOR_PALETTE.put("tan", "#E5E5B7");
     }
 
+    // This is just the above map, but with the keys in the place of the values and vice versa. This assumes the map above
+    // is a one-to-one correspondence; if it's not, then the static{} block below will need modification.
+    public static final Map<String, String> ACTION_LIST_COLOR_NAMES;
+    static {
+    	ACTION_LIST_COLOR_NAMES = new HashMap<String,String>();
+    	for (Iterator<Map.Entry<String,String>> iterator = ACTION_LIST_COLOR_PALETTE.entrySet().iterator(); iterator.hasNext();) {
+    		Map.Entry<String,String> colorEntry = iterator.next();
+    		ACTION_LIST_COLOR_NAMES.put(colorEntry.getValue(), colorEntry.getKey());
+    	}
+    }
+    
     public static final String HEADER_TAG = "ROUTE_HEADER";
     public static final String DOCTYPE_TAG = "DOCTYPE";
 

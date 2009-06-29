@@ -554,7 +554,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     	} else {
-    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
+    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     	}
     }
 

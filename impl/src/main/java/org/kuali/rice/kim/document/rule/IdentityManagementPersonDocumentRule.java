@@ -155,7 +155,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         	for (String groupName : unpopulatableGroups.get(namespaceCode)) {
         		int i = 0;
         		for (PersonDocumentGroup group : document.getGroups()) {
-        			if (namespaceCode.endsWith(group.getNamespaceCode()) && groupName.equals(group.getGroupName())) {
+        			if ( (group.getNamespaceCode() != null && namespaceCode.endsWith(group.getNamespaceCode())) && (group.getGroupName() != null && groupName.equals(group.getGroupName()))) {
         				GlobalVariables.getMessageMap().putError("groups["+i+"].groupId", RiceKeyConstants.ERROR_POPULATE_GROUP, new String[] {namespaceCode, groupName});
         			}
         			i++;

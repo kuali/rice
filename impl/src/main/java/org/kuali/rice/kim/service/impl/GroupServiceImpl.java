@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebService;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -21,6 +22,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
+import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -28,6 +30,7 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 @WebService(endpointInterface = "org.kuali.rice.kim.service.GroupService", serviceName = "GroupService", portName = "GroupService", targetNamespace = "http://org.kuali.rice/kim/group")
 public class GroupServiceImpl implements GroupService, GroupUpdateService {
@@ -557,8 +560,10 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         criteria.put(KIMPropertyConstants.Group.GROUP_ID, group.getGroupId());
         getBusinessObjectService().deleteMatching(GroupAttributeDataImpl.class, criteria);
 
+        
         saveGroup(group);
-
+        getIdentityManagementNotificationService().groupUpdated();
+        
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes = copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
@@ -579,7 +584,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         getBusinessObjectService().save(groupMember);
         KIMServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
-
+        getIdentityManagementNotificationService().groupUpdated();
         return true;
     }
 
@@ -598,7 +603,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         	GroupMemberImpl member = groupMemberList.iterator().next();
             getBusinessObjectService().delete(member);
             KIMServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
-
+            getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
 
@@ -623,6 +628,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         groupMember.setMemberId(childId);
 
         getBusinessObjectService().save(groupMember);
+        getIdentityManagementNotificationService().groupUpdated();
 
         return true;
     }
@@ -638,7 +644,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         if(getBusinessObjectService().countMatching(GroupMemberImpl.class, criteria) == 1) {
             getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
-
+            getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
 
@@ -655,6 +661,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
         getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
+        getIdentityManagementNotificationService().groupUpdated();
     }
 
     protected GroupInfo toGroupInfo(GroupImpl kimGroup) {
@@ -753,5 +760,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return groupMemberinfo;
     }
 
-
+    protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
+        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+    }
 }

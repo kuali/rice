@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -86,6 +88,7 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
@@ -108,6 +111,7 @@ import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -185,7 +189,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		// boservice.save(bos) does not handle deleteawarelist
 		getBusinessObjectService().save(bos);
 		
-		KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
+		//KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+		service.principalUpdated();
 		
 		if (!blankRoleMemberAttrs.isEmpty()) {
 			getBusinessObjectService().delete(blankRoleMemberAttrs);
@@ -1010,7 +1016,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docEmail.setEntityTypeCode(email.getEntityTypeCode());
 					docEmail.setEmailTypeCode(email.getEmailTypeCode());
 					docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
-					docEmail.setEmailAddress(email.getEmailAddress());
+					docEmail.setEmailAddress(email.getEmailAddressUnmasked());
 					docEmail.setActive(email.isActive());
 					docEmail.setDflt(email.isDefault());
 					docEmail.setEntityEmailId(email.getEntityEmailId());
@@ -1782,7 +1788,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
 
 		getBusinessObjectService().save(bos);
-		
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+        service.roleUpdated();
 		KIMServiceLocator.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 		if(!kimRole.isActive()){
 			// when a role is inactivated, inactivate the memberships of principals, groups, and roles in 
@@ -2281,7 +2288,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		// Do an async update of the action list for the updated groups
 		KIMServiceLocator.getGroupInternalService().updateForWorkgroupChange(kimGroup.getGroupId(), oldIds, newIds);
-		
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+        service.groupUpdated();
 		if(!kimGroup.isActive()){
 			// when a group is inactivated, inactivate the memberships of principals in that group 
 			// and the memberships of that group in roles 

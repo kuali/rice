@@ -221,6 +221,9 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		}
 	}
 	
+	public void flushPersonCaches() {
+	    personCache.clear();
+	}
 	
 	
 	/**

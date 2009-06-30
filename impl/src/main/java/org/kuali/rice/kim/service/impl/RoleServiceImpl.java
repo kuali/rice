@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -59,6 +60,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityInternalService;
@@ -76,6 +78,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -1131,6 +1134,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// add row to member table
     	// When members are added to roles, clients must be notified.
     	getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	getIdentityManagementNotificationService().roleUpdated();
     }
 
     public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
@@ -1157,6 +1161,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// When members are added to roles, clients must be notified.
     	getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	getIdentityManagementNotificationService().roleUpdated();
     }
 
     public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier ) {
@@ -1171,6 +1176,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		    	getResponsibilityInternalService().removeRoleMember(rm);
 			}
 		}
+		getIdentityManagementNotificationService().roleUpdated();
     }
 
     public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
@@ -1185,6 +1191,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		    	getResponsibilityInternalService().removeRoleMember(rm);
 			}
 		}
+		getIdentityManagementNotificationService().roleUpdated();
     }
 
     // --------------------
@@ -1451,6 +1458,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// When members are added to roles, clients must be notified.
     	getResponsibilityInternalService().saveRoleMember(newRoleMember);
+    	getIdentityManagementNotificationService().roleUpdated();
     }
     
     public RoleMemberCompleteInfo saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, String roleId, 
@@ -1492,7 +1500,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// When members are added to roles, clients must be notified.
     	getResponsibilityInternalService().saveRoleMember(newRoleMember);
-    	deleteNullMemberAttributeData(newRoleMember.getAttributes());    	
+    	deleteNullMemberAttributeData(newRoleMember.getAttributes());    
+    	getIdentityManagementNotificationService().roleUpdated();
     	
     	return findRoleMemberCompleteInfo(newRoleMember.getRoleMemberId());
     }
@@ -1511,6 +1520,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		    	getResponsibilityInternalService().removeRoleMember(rm);
 			}
 		}
+		getIdentityManagementNotificationService().roleUpdated();
     }
     
     public RoleMemberCompleteInfo findRoleMemberCompleteInfo(String roleMemberId){
@@ -1611,6 +1621,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
     		deleteNullDelegationMemberAttributeData(delegationMember.getAttributes());
     	}
+    	getIdentityManagementNotificationService().roleUpdated();
     }
 
 	protected void addDelegationMemberAttributeData( KimDelegationMemberImpl delegationMember, AttributeSet qualifier, String kimTypeId ) {
@@ -1862,6 +1873,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	    	newRoleRspAction.setRoleResponsibilityActionId(nextSeq.toString());
 		}
 		getBusinessObjectService().save(newRoleRspAction);
+		getIdentityManagementNotificationService().roleUpdated();
 	}
 	
     private BusinessObject getMember(String memberTypeCode, String memberId){
@@ -1928,4 +1940,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		}
 		return responsibilityInternalService;
 	}
+	
+	protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
+        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+    }
 }

@@ -145,6 +145,24 @@
     p:responsibilityCacheMaxSize="${kim.cache.responsibility.max.size}"
     p:responsibilityCacheMaxAgeSeconds="${kim.cache.responsibility.max.age.seconds}" />
 
+
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+	<property name="serviceDefinition">
+	        <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+	          <property name="service">
+	            <bean class="org.kuali.rice.kim.service.impl.IdentityManagementNotificationServiceImpl" />
+	          </property>
+	          <property name="serviceNameSpaceURI" value="KR-IDM"/>
+	          <property name="localServiceName" value="IdentityManagementNotificationService" />
+	          <property name="priority" value="3"/>
+	          <property name="queue" value="false"/>
+	          <property name="retryAttempts" value="1" />
+	          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+	        </bean>
+	</property>
+  </bean> 
+  
 <!-- this service is intended to be run locally, should not be exported
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>

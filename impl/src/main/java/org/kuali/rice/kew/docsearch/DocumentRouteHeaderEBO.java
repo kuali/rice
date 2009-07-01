@@ -30,6 +30,8 @@ public interface DocumentRouteHeaderEBO extends ExternalizableBusinessObject {
 
 	public String getDocRouteStatus();
 
+	public String getAppDocStatus();
+	
 	public String getDocTitle();
 
 	public String getDocTypeFullName();

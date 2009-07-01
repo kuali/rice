@@ -154,6 +154,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		extension.setDocVersion(routeHeader.getDocVersion());
 		extension.setInitiatorWorkflowId(routeHeader.getInitiatorWorkflowId());
 		extension.setVersionNumber(routeHeader.getVersionNumber());
+		extension.setAppDocStatus(routeHeader.getAppDocStatus());
+		extension.setAppDocStatusDate(routeHeader.getAppDocStatusDate());
 
 		return extension;
 	}

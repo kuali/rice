@@ -22,12 +22,14 @@
     <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="docRouteStatus" column="DOC_HDR_STAT_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteLevel" column="RTE_LVL" jdbc-type="INTEGER" />
+    <field-descriptor name="appDocStatus" column="APP_DOC_STATUS" jdbc-type="VARCHAR" />
     <field-descriptor name="statusModDate" column="STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="createDate" column="CRTE_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="approvedDate" column="APRV_DT"  jdbc-type="TIMESTAMP" />
     <field-descriptor name="finalizedDate" column="FNL_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="routeStatusDate"  column="RTE_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="routeLevelDate" column="RTE_LVL_MDFN_DT"  jdbc-type="TIMESTAMP" />
+    <field-descriptor name="appDocStatusDate" column="APP_DOC_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="docTitle" column="TTL" jdbc-type="VARCHAR" />
     <field-descriptor name="appDocId" column="APP_DOC_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="docVersion"  column="DOC_VER_NBR"  jdbc-type="INTEGER" />
@@ -110,12 +112,14 @@
     <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="BIGINT" />
     <field-descriptor name="docRouteStatus" column="DOC_HDR_STAT_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteLevel" column="RTE_LVL" jdbc-type="INTEGER" />
+    <field-descriptor name="appDocStatus" column="APP_DOC_STATUS" jdbc-type="VARCHAR" />
     <field-descriptor name="statusModDate" column="STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="createDate" column="CRTE_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="approvedDate" column="APRV_DT"  jdbc-type="TIMESTAMP" />
     <field-descriptor name="finalizedDate" column="FNL_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="routeStatusDate"  column="RTE_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="routeLevelDate" column="RTE_LVL_MDFN_DT"  jdbc-type="TIMESTAMP" />
+    <field-descriptor name="appDocStatusDate" column="APP_DOC_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="docTitle" column="TTL" jdbc-type="VARCHAR" />
     <field-descriptor name="appDocId" column="APP_DOC_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="docVersion"  column="DOC_VER_NBR"  jdbc-type="INTEGER" />
@@ -383,6 +387,7 @@
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor column="DOC_PLCY_NM" name="policyName" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="PLCY_NM" name="policyValue" jdbc-type="BIT"/>
+    <field-descriptor column="PLCY_DESC" name="policyStringValue" jdbc-type="VARCHAR"/>    
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
 <!--

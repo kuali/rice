@@ -131,6 +131,11 @@
           <th ><div align="right">Document Route Status</div></th>
           <td class="datacell"> <html-el:checkbox styleClass="nobord" property="preferences.showDocumentStatus" value="${Constants.PREFERENCES_YES_VAL }"/>          </td>
         </tr>
+        <tr>
+          <th ><div align="right">Application Document Status</div></th>
+          <td class="datacell"> <html-el:checkbox styleClass="nobord" property="preferences.showAppDocStatus" value="${Constants.PREFERENCES_YES_VAL }"/>          </td>
+        </tr>
+
 
         <tr>
           <th ><div align="right">Clear FYI</div></th>

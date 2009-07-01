@@ -122,6 +122,11 @@ public class KEWModuleService extends ModuleServiceBase {
 				return routeHeaderValue.getDocRouteStatus();
 			}
 
+			public String getAppDocStatus() {
+
+				return routeHeaderValue.getAppDocStatus();
+			}
+
 			public String getDocTitle() {
 				return routeHeaderValue.getDocTitle();
 			}

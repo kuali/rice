@@ -52,6 +52,8 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 	private String policyName;
     @Column(name="PLCY_NM")
 	private Boolean policyValue;
+    @Column(name="PLCY_DESC")
+    private String policyStringValue;
     @Transient
     private Boolean inheritedFlag;
 
@@ -131,6 +133,14 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
         this.policyValue = policyValue;
     }
 
+    public String getPolicyStringValue() {
+        return policyStringValue;
+    }
+
+    public void setPolicyStringValue(String policyStringValue) {
+        this.policyStringValue = policyStringValue;
+    }
+
     public Object copy(boolean preserveKeys) {
         DocumentTypePolicy clone = new DocumentTypePolicy();
 
@@ -143,6 +153,10 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 
         if(policyValue != null){
             clone.setPolicyValue(new Boolean(policyValue.booleanValue()));
+        }
+        
+        if(policyStringValue != null){
+            clone.setPolicyStringValue(new String(policyStringValue));
         }
 
         return clone;
@@ -165,6 +179,7 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
         m.put("documentTypeId", this.documentTypeId);
         m.put("policyName", this.policyName);
         m.put("policyValue", this.policyValue);
+        m.put("policyStringValue", this.policyStringValue);
         return m;
     }
 }

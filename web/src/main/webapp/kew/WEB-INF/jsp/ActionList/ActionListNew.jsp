@@ -19,6 +19,9 @@
 <bean:define id="routeStatusLabel">
 	<bean-el:message key="actionList.ActionList.results.label.routeStatus" />
 </bean:define>
+<bean:define id="appDocStatusLabel">
+	<bean-el:message key="actionList.ActionList.results.label.appDocStatus" />
+</bean:define>
 <bean:define id="actionRequestedLabel">
 	<bean-el:message
 		key="actionList.ActionList.results.label.actionRequested" />
@@ -291,6 +294,10 @@
 						<display-el:column property="routeHeader.docRouteStatusLabel"
 							sortable="true" title="${routeStatusLabel}" class="infocell" />
 					</c:if>
+					<c:if test="${preferences.showAppDocStatus == Constants.PREFERENCES_YES_VAL}">
+						<display-el:column property="routeHeader.appDocStatus"
+							sortable="true" title="${appDocStatusLabel}" class="infocell" />
+					</c:if>					
 					<c:if test="${preferences.showActionRequested == Constants.PREFERENCES_YES_VAL}">
 						<display-el:column property="actionRequestLabel" sortable="true"
 							title="${actionRequestedLabel}" class="infocell" />

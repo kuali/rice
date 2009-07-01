@@ -52,8 +52,9 @@
             <tr>
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.routeStatus" /></kul:htmlAttributeHeaderCell>
-                <td class="datacell" width="25%"><b><c:out
-                    value="${routeHeader.routeStatusLabel}" /></b>&nbsp;</td>
+                <td class="datacell" width="25%"><b>
+                  	<c:out value="${routeHeader.routeStatusLabel}" />
+                	</b>&nbsp;</td>
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.lastApproved" /></kul:htmlAttributeHeaderCell>
                 <td  class="datacell" width="25%"><fmt:formatDate
@@ -61,6 +62,20 @@
                     pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 
             </tr>
+          <c:if test="${routeHeader.docStatusPolicy == 'app' || routeHeader.docStatusPolicy == 'both'}">
+            <tr>
+                <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
+                    key="routeLog.RouteLog.header.label.appDocStatus" /></kul:htmlAttributeHeaderCell>
+                <td class="datacell" width="25%"><b>
+                  	<c:out value="${routeHeader.appDocStatus}" />
+                	</b>&nbsp;</td>
+                <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
+                    key="routeLog.RouteLog.header.label.appStatusModified" /></kul:htmlAttributeHeaderCell>
+                <td  class="datacell" width="25%"><fmt:formatDate
+                    value="${routeHeader.appDocStatusDate}"
+                    pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
+            </tr>
+          </c:if>
             <tr>
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.routeNodes" /></kul:htmlAttributeHeaderCell>

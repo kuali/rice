@@ -170,7 +170,7 @@ public class StandardDocumentSearchResultProcessor implements
 			DocSearchCriteriaDTO criteria, String principalId) {
 		this.setSearchCriteria(criteria);
 		this.setSearchingUser(principalId);
-		List columns = constructColumnList(criteria);
+		List columns = constructColumnList(criteria, docSearchResultRows);
 
 		List<DocumentSearchResult> documentSearchResults = new ArrayList<DocumentSearchResult>();
 		for (Iterator iter = docSearchResultRows.iterator(); iter.hasNext();) {
@@ -193,7 +193,7 @@ public class StandardDocumentSearchResultProcessor implements
 	 *         generate the final search results
 	 */
 	public List<Column> constructColumnList(
-			DocSearchCriteriaDTO criteria) {
+			DocSearchCriteriaDTO criteria, List<DocSearchDTO> docSearchResultRows) {
 		List<Column> tempColumns = new ArrayList<Column>();
 		List<Column> customDisplayColumnNames = getAndSetUpCustomDisplayColumns(criteria);
 		if ((!getShowAllStandardFields())
@@ -205,7 +205,7 @@ public class StandardDocumentSearchResultProcessor implements
 				&& (getOverrideSearchableAttributes())) {
 			// do standard fields and use displayColumns for searchable
 			// attributes
-			this.addStandardSearchColumns(tempColumns);
+			this.addStandardSearchColumns(tempColumns, docSearchResultRows);
 			this.addAllCustomColumns(tempColumns, criteria,
 					customDisplayColumnNames);
 		} else if ((!getShowAllStandardFields())
@@ -219,7 +219,7 @@ public class StandardDocumentSearchResultProcessor implements
 		}
 		if (tempColumns.isEmpty()) {
 			// do default
-			this.addStandardSearchColumns(tempColumns);
+			this.addStandardSearchColumns(tempColumns, docSearchResultRows);
 			this.addSearchableAttributeColumnsNoOverrides(tempColumns,
 							criteria);
 		}
@@ -231,7 +231,7 @@ public class StandardDocumentSearchResultProcessor implements
 		return columns;
 	}
 
-	public void addStandardSearchColumns(List<Column> columns) {
+	public void addStandardSearchColumns(List<Column> columns, List<DocSearchDTO> docSearchResultRows) {
 		this.addColumnUsingKey(
 						columns,
 						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL);
@@ -241,6 +241,7 @@ public class StandardDocumentSearchResultProcessor implements
 		this.addColumnUsingKey(
 						columns,
 						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC);
+		addDocStatusColumn(columns, docSearchResultRows);
 		this.addColumnUsingKey(columns,
 				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR);
 		this.addColumnUsingKey(
@@ -258,6 +259,19 @@ public class StandardDocumentSearchResultProcessor implements
 	public void addRouteLogColumn(List<Column> columns) {
 		this.addColumnUsingKey(columns,
 				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG);
+	}
+
+	public void addDocStatusColumn(List<Column> columns, List<DocSearchDTO> docSearchResultRows) {
+		// add this column if document status policy is defined as "both".
+		for (DocSearchDTO myDTO : docSearchResultRows) {
+	    	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(myDTO.getDocTypeName());
+	    	if (docType.isAppDocStatusInUse()){
+	    		this.addColumnUsingKey(columns,
+	    				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS);
+	    		break;
+	    	}
+		}
+		return;
 	}
 
 	public void addSearchableAttributeColumnsNoOverrides(
@@ -459,6 +473,11 @@ public class StandardDocumentSearchResultProcessor implements
 			fieldValue = new DisplayValues();
 			fieldValue.htmlValue = docCriteriaDTO.getDocRouteStatusCodeDesc();
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
+		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS
+				.equals(columnKeyName)) {
+			fieldValue = new DisplayValues();
+			fieldValue.htmlValue = docCriteriaDTO.getAppDocStatus();
+			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else {
 			// check searchable attributes
 			for (Iterator iter = docCriteriaDTO.getSearchableAttributes()
@@ -602,6 +621,10 @@ public class StandardDocumentSearchResultProcessor implements
 				.put(
 						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
 						Boolean.TRUE);
+		sortable
+			.put(
+				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS,
+				Boolean.TRUE);
 		sortable.put(
 				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
 				Boolean.TRUE);
@@ -640,6 +663,9 @@ public class StandardDocumentSearchResultProcessor implements
 				.put(
 						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
 						Boolean.TRUE);
+		sortable.put(
+				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS,
+				Boolean.TRUE);
 		sortable.put(
 				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
 				Boolean.TRUE);

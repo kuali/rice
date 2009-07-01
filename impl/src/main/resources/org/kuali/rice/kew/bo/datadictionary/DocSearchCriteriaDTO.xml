@@ -88,6 +88,7 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 		<ref bean="DocSearchCriteriaDTO-docRouteStatus"/>
 		<ref bean="DocSearchCriteriaDTO-docRouteNodeId"/>
 		<ref bean="DocSearchCriteriaDTO-dateCreated"/>
+		<ref bean="DocSearchCriteriaDTO-appDocStatus"/>
       </list>
     </property>
   </bean>
@@ -361,7 +362,20 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
   <bean id="DocSearchCriteriaDTO-docRouteStatus-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="docRouteStatus" />
     <property name="forceUppercase" value="false" />
-    <property name="label" value="Status" />
+    <property name="label" value="Route Status" />
+    <property name="shortLabel" value="Status" />
+    <property name="maxLength" value="20" />
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+  </bean>
+   
+  <bean id="DocSearchCriteriaDTO-appDocStatus" parent="DocSearchCriteriaDTO-appDocStatus-parentBean" />
+
+  <bean id="DocSearchCriteriaDTO-appDocStatus-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="appDocStatus" />
+    <property name="forceUppercase" value="false" />
+    <property name="label" value="Document Status" />
     <property name="shortLabel" value="Status" />
     <property name="maxLength" value="20" />
     <property name="control" >

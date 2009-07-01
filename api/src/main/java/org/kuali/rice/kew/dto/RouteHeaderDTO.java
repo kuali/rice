@@ -46,6 +46,8 @@ public class RouteHeaderDTO implements Serializable {
     private Integer docVersion;
     private String docTypeName;
     private String documentUrl;
+    private String appDocStatus;
+    private Calendar appDocStatusDate;
     private boolean fyiRequested;
     private boolean ackRequested;
     private boolean approveRequested;
@@ -56,6 +58,8 @@ public class RouteHeaderDTO implements Serializable {
 
     private NoteDTO[] notes = null;
     private NoteDTO[] notesToDelete = null;
+    
+//    private String docStatusPolicy;
 
     /**
      * Probably needs to be an array for web services
@@ -127,6 +131,30 @@ public class RouteHeaderDTO implements Serializable {
     public void setDocRouteStatus(String docRouteStatus) {
         this.docRouteStatus = docRouteStatus;
     }
+
+    public String getAppDocStatus() {
+        return appDocStatus;
+    }
+
+    public void setAppDocStatus(String appDocStatus) {
+        this.appDocStatus = appDocStatus;
+    }
+
+    public Calendar getAppDocStatusDate() {
+        return appDocStatusDate;
+    }
+
+    public void setAppDocStatusDate(Calendar date) {
+        this.appDocStatusDate = date;
+    }
+    
+//    public String getDocStatusPolicy() {
+//        return docStatusPolicy;
+//    }
+//
+//    public void setDocStatusPolicy(String policy) {
+//        this.docStatusPolicy = policy;
+//    }
 
     public String getDocTitle() {
         return docTitle;

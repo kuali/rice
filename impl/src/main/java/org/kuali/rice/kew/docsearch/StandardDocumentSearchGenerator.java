@@ -683,6 +683,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docCriteriaDTO.setDocumentTitle(rs.getString("TTL"));
         docCriteriaDTO.setDocTypeName(rs.getString("DOC_TYP_NM"));
         docCriteriaDTO.setDocTypeLabel(docTypeLabel);
+        docCriteriaDTO.setAppDocStatus(rs.getString("APP_DOC_STATUS"));
 
         if ((activeIndicatorCode == null) || (activeIndicatorCode.trim().length() == 0)) {
             docCriteriaDTO.setActiveIndicatorCode(KEWConstants.ACTIVE_CD);
@@ -777,7 +778,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
     	boolean possibleSearchableAttributesExist = false;
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
-        StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.INITR_PRNCPL_ID, DOC_HDR.DOC_HDR_STAT_CD, DOC_HDR.CRTE_DT, DOC_HDR.TTL, DOC1.DOC_TYP_NM, DOC1.LBL, DOC1.DOC_HDLR_URL, DOC1.ACTV_IND");
+        StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.INITR_PRNCPL_ID, DOC_HDR.DOC_HDR_STAT_CD, DOC_HDR.CRTE_DT, DOC_HDR.TTL, DOC_HDR.APP_DOC_STATUS, DOC1.DOC_TYP_NM, DOC1.LBL, DOC1.DOC_HDLR_URL, DOC1.ACTV_IND");
         StringBuffer fromSQL = new StringBuffer(" from KREW_DOC_TYP_T DOC1 ");
         String docHeaderTableAlias = "DOC_HDR";
         StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");

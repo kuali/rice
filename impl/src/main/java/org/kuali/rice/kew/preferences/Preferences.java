@@ -41,7 +41,8 @@ public class Preferences implements Serializable {
     private String showActionRequested;
     private String showDateCreated;
     private String showDocumentStatus;
-    private String showDocType;
+    private String showAppDocStatus;
+	private String showDocType;
     private String showInitiator;
     private String showDocTitle;
     private String showWorkgroupRequest;
@@ -298,6 +299,19 @@ public class Preferences implements Serializable {
     public void setShowDocumentStatus(String showDocumentStatus) {
         this.showDocumentStatus = showDocumentStatus;
     }
+    /**
+     * @return Returns the showAppDocumentStatus.
+     */
+    public String getShowAppDocStatus() {
+		return this.showAppDocStatus;
+	}
+    /**
+     * @param showAppDocStatus The showAppDocStatus to set.
+     */
+	public void setShowAppDocStatus(String showAppDocStatus) {
+		this.showAppDocStatus = showAppDocStatus;
+	}
+
     /**
      * @return Returns the showInitiator.
      */

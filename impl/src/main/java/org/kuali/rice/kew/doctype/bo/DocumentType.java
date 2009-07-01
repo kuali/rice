@@ -281,6 +281,40 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     	return getPolicyByName(DocumentTypePolicyEnum.NOTIFY_ON_SAVE.getName(), Boolean.FALSE);
     }
 
+    public DocumentTypePolicy getDocumentStatusPolicy() {
+    	return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
+    }
+    
+    public Boolean isKEWStatusInUse() {
+    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
+    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+    		return (policyValue == null || "".equals(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equals(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equals(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    	} else {
+    		return Boolean.TRUE;
+    	}
+    }
+    
+    public Boolean isAppDocStatusInUse() {
+    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
+    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+    		return (KEWConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equals(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equals(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    	} else {
+    		return Boolean.FALSE;
+    	}
+    }
+    
+    public Boolean areBothStatusesInUse() {
+    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
+    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+    		return (KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equals(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    	} else {
+    		return Boolean.FALSE;
+    	}
+    }
+    
     public String getUseWorkflowSuperUserDocHandlerUrlValue() {
         if (getUseWorkflowSuperUserDocHandlerUrl() != null) {
             return getUseWorkflowSuperUserDocHandlerUrl().getPolicyDisplayValue();
@@ -777,6 +811,33 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return policy;
     }
 
+    private DocumentTypePolicy getPolicyByName(String policyName, String defaultValue) {
+
+        Iterator policyIter = getPolicies().iterator();
+        while (policyIter.hasNext()) {
+            DocumentTypePolicy policy = (DocumentTypePolicy) policyIter.next();
+            if (policyName.equals(policy.getPolicyName())) {
+                policy.setInheritedFlag(Boolean.FALSE);
+                return policy;
+            }
+        }
+
+        if (getParentDocType() != null) {
+            DocumentTypePolicy policy = getParentDocType().getPolicyByName(policyName, defaultValue);
+            policy.setInheritedFlag(Boolean.TRUE);
+            if (policy.getPolicyValue() == null) {
+                policy.setPolicyValue(Boolean.TRUE);
+            }
+            return policy;
+        }
+        DocumentTypePolicy policy = new DocumentTypePolicy();
+        policy.setPolicyName(policyName);
+        policy.setInheritedFlag(Boolean.FALSE);
+        policy.setPolicyValue(Boolean.TRUE);
+        policy.setPolicyStringValue(defaultValue);
+        return policy;
+    }
+    
     private DocumentTypeService getDocumentTypeService() {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }

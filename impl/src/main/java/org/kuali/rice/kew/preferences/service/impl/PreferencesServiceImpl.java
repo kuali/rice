@@ -58,6 +58,7 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String COLUMN_DELEGATOR_KEY = "DELEGATOR_COL_SHOW_NEW";
     private static final String COLUMN_DATE_CREATE_KEY = "DATE_CREATED_COL_SHOW_NEW";
     private static final String COLUMN_DOCUMENT_STATUS_KEY = "DOCUMENT_STATUS_COL_SHOW_NEW";
+    private static final String COLUMN_APP_DOC_STATUS_KEY = "APP_DOC_STATUS_COL_SHOW_NEW";
     private static final String COLUMN_WORKGROUP_REQUEST_KEY = "WORKGROUP_REQUEST_COL_SHOW_NEW";
     private static final String COLUMN_CLEAR_FYI_KEY = "CLEAR_FYI_COL_SHOW_NEW";
     private static final String ACTION_LIST_SIZE_KEY = "ACTION_LIST_SIZE_NEW";
@@ -98,6 +99,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setShowDateCreated(getOption(COLUMN_DATE_CREATE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         preferences.setShowDocType(getOption(COLUMN_DOC_TYPE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         preferences.setShowDocumentStatus(getOption(COLUMN_DOCUMENT_STATUS_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowAppDocStatus(getOption(COLUMN_APP_DOC_STATUS_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         preferences.setShowInitiator(getOption(COLUMN_INITIATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         preferences.setShowDelegator(getOption(COLUMN_DELEGATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         preferences.setShowDocTitle(getOption(COLUMN_TITLE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
@@ -161,6 +163,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionSrv.save(principalId, COLUMN_DELEGATOR_KEY, preferences.getShowDelegator());
         optionSrv.save(principalId, COLUMN_DATE_CREATE_KEY, preferences.getShowDateCreated());
         optionSrv.save(principalId, COLUMN_DOCUMENT_STATUS_KEY, preferences.getShowDocumentStatus());
+        optionSrv.save(principalId, COLUMN_APP_DOC_STATUS_KEY, preferences.getShowAppDocStatus());
         optionSrv.save(principalId, COLUMN_WORKGROUP_REQUEST_KEY, preferences.getShowWorkgroupRequest());
         optionSrv.save(principalId, COLUMN_CLEAR_FYI_KEY, preferences.getShowClearFyi());
         optionSrv.save(principalId, ACTION_LIST_SIZE_KEY, preferences.getPageSize().trim());

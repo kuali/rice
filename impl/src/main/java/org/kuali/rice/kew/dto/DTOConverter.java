@@ -170,7 +170,9 @@ public class DTOConverter {
         routeHeaderVO.setDateCreated(Utilities.convertTimestamp(routeHeader.getCreateDate()));
         routeHeaderVO.setDateFinalized(Utilities.convertTimestamp(routeHeader.getFinalizedDate()));
         routeHeaderVO.setDateLastModified(Utilities.convertTimestamp(routeHeader.getStatusModDate()));
-
+        routeHeaderVO.setAppDocStatus(routeHeader.getAppDocStatus());
+        routeHeaderVO.setAppDocStatusDate(Utilities.convertTimestamp(routeHeader.getAppDocStatusDate()));
+        
         /**
          * This is the original code which set everything up for lazy loading of document content
          */
@@ -247,6 +249,8 @@ public class DTOConverter {
         routeHeader.setRoutedByUserWorkflowId(routeHeaderVO.getRoutedByPrincipalId());
         routeHeader.setRouteHeaderId(routeHeaderVO.getRouteHeaderId());
         routeHeader.setStatusModDate(Utilities.convertCalendar(routeHeaderVO.getDateLastModified()));
+        routeHeader.setAppDocStatus(routeHeaderVO.getAppDocStatus());
+        routeHeader.setAppDocStatusDate(Utilities.convertCalendar(routeHeaderVO.getAppDocStatusDate()));
 
         return routeHeader;
     }

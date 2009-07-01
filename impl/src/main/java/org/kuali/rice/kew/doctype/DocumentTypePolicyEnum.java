@@ -82,6 +82,8 @@ public final class DocumentTypePolicyEnum {
     public static final DocumentTypePolicyEnum SUPPORTS_QUICK_INITIATE = new DocumentTypePolicyEnum(KEWConstants.SUPPORTS_QUICK_INITIATE_POLICY);
 
     public static final DocumentTypePolicyEnum NOTIFY_ON_SAVE = new DocumentTypePolicyEnum(KEWConstants.NOTIFY_ON_SAVE_POLICY);
+    
+    public static final DocumentTypePolicyEnum DOCUMENT_STATUS_POLICY = new DocumentTypePolicyEnum(KEWConstants.DOCUMENT_STATUS_POLICY);
 
     private final String name;
 
@@ -125,6 +127,8 @@ public final class DocumentTypePolicyEnum {
         	return NOTIFY_ON_SAVE;
         } else if (USE_KEW_SUPERUSER_DOCHANDLER.name.equalsIgnoreCase(name)) {
             return USE_KEW_SUPERUSER_DOCHANDLER;
+        } else if (DOCUMENT_STATUS_POLICY.name.equalsIgnoreCase(name)) {
+        	return DOCUMENT_STATUS_POLICY;
         } else {
             throw new IllegalArgumentException("Invalid Document type policy: '" + name + "'");
         }

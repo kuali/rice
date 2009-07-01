@@ -155,6 +155,10 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 	private java.sql.Timestamp routeStatusDate;
 	@Column(name="RTE_LVL_MDFN_DT")
 	private java.sql.Timestamp routeLevelDate;
+    @Column(name="APP_DOC_STATUS")
+	private java.lang.String appDocStatus;
+	@Column(name="APP_DOC_STAT_MDFN_DT")
+	private java.sql.Timestamp appDocStatusDate;
     @Id
 	@Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
@@ -247,10 +251,6 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     	return UserUtils.getDisplayableName(userSession, getRoutedByPrincipal());
     }
 	
-    public String getDocRouteStatusLabel() {
-        return CodeTranslator.getRouteStatusLabel(getDocRouteStatus());
-    }
-
     public String getCurrentRouteLevelName() {
         String name = "Not Found";
         // TODO the isRouteLevelDocument junk can be ripped out
@@ -291,6 +291,14 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
         return CodeTranslator.getRouteStatusLabel(getDocRouteStatus());
     }
 
+    public String getDocRouteStatusLabel() {
+        return CodeTranslator.getRouteStatusLabel(getDocRouteStatus());
+    }
+
+    public String getDocStatusPolicy() {
+    	return getDocumentType().getDocumentStatusPolicy().getPolicyStringValue();
+    }
+    
     public Collection getQueueItems() {
         return queueItems;
     }
@@ -457,6 +465,26 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 
     public void setStatusModDate(java.sql.Timestamp statusModDate) {
         this.statusModDate = statusModDate;
+    }
+
+    public java.lang.String getAppDocStatus() {
+    	if (appDocStatus == null || "".equals(appDocStatus)){
+    		return KEWConstants.UNKNOWN_STATUS;
+    	}
+        return appDocStatus;
+    }
+
+    public void setAppDocStatus(java.lang.String appDocStatus) {
+    	//TODO: verify against valid statuses if specified for doctype
+        this.appDocStatus = appDocStatus;
+    }
+
+    public java.sql.Timestamp getAppDocStatusDate() {
+        return appDocStatusDate;
+    }
+
+    public void setAppDocStatusDate(java.sql.Timestamp appDocStatusDate) {
+        this.appDocStatusDate = appDocStatusDate;
     }
 
     public Object copy(boolean preserveKeys) {

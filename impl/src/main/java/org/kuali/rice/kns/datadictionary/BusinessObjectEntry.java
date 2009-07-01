@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation.
- * 
+ *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,11 +24,13 @@ import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation, and general
  * maintenance of a BusinessObject and its attributes.
- * 
- * 
+ *
+ *
     DD: See BusinessObjectEntry.java
 
     JSTL: each businessObject is exposed as a Map which is accessed
@@ -58,9 +60,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     protected Class<? extends BusinessObject> businessObjectClass;
     protected Class<? extends BusinessObject> baseBusinessObjectClass;
     protected Class<? extends Exporter> exporterClass;
-    
+
     protected boolean boNotesEnabled = false;
-    
+
     protected InquiryDefinition inquiryDefinition;
     protected LookupDefinition lookupDefinition;
     protected HelpDefinition helpDefinition;
@@ -70,7 +72,9 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     protected String objectDescription;
 
     protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
-    
+
+    protected List<String> primaryKeys;
+
     public BusinessObjectEntry() {}
 
     /**
@@ -88,7 +92,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
-        
+
         if ( getRelationships() != null ) {
         	for ( RelationshipDefinition rd : getRelationships() ) {
         		rd.setSourceClass(businessObjectClass);
@@ -101,13 +105,13 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     public Class<? extends BusinessObject> getBusinessObjectClass() {
         return businessObjectClass;
     }
-    
+
     /**
      * The baseBusinessObjectClass is an optional parameter for specifying a superclass
      * for the businessObjectClass, allowing the data dictionary to index by superclass
      * in addition to the current class.
      */
-    
+
     public void setBaseBusinessObjectClass(Class<? extends BusinessObject> baseBusinessObjectClass) {
 
         this.baseBusinessObjectClass = baseBusinessObjectClass;
@@ -116,7 +120,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     public Class<? extends BusinessObject> getBaseBusinessObjectClass() {
         return baseBusinessObjectClass;
     }
-    
+
     public Class<? extends Exporter> getExporterClass() {
 		return this.exporterClass;
 	}
@@ -241,22 +245,22 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 	        if (StringUtils.isBlank(getObjectLabel())) {
 	            throw new AttributeValidationException("Object label cannot be blank for class " + businessObjectClass.getName());
 	        }
-	
+
 	        if (baseBusinessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(businessObjectClass)) {
 	        	throw new ClassValidationException("The baseBusinessObjectClass " + baseBusinessObjectClass.getName() +
 	            		" is not a superclass of the businessObjectClass " + businessObjectClass.getName());
 	        }
-	        
+
 	        super.completeValidation();
-	
+
 	        if (hasInquiryDefinition()) {
 	            inquiryDefinition.completeValidation(businessObjectClass, null);
 	        }
-	
+
 	        if (hasLookupDefinition()) {
 	            lookupDefinition.completeValidation(businessObjectClass, null);
 	        }
-	
+
 	        if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
 	            for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
 	                inactivationBlockingDefinition.completeValidation(businessObjectClass, null);
@@ -296,7 +300,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     /**
            The objectLabel provides a short name of the business
            object for use on help screens.
-     * 
+     *
      * @param objectLabel The objectLabel to set.
      */
     public void setObjectLabel(String objectLabel) {
@@ -313,7 +317,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     /**
            The objectDescription provides a brief description
            of the business object for use on help screens.
-     * 
+     *
      * @param description The description to set.
      */
     public void setObjectDescription(String objectDescription) {
@@ -322,7 +326,7 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 
     /**
      * Gets the helpDefinition attribute.
-     * 
+     *
      * @return Returns the helpDefinition.
      */
     public HelpDefinition getHelpDefinition() {
@@ -331,14 +335,14 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 
     /**
      * Sets the helpDefinition attribute value.
-     * 
+     *
            The objectHelp element provides the keys to
            obtain a help description from the system parameters table.
 
            parameterNamespace the namespace of the parameter containing help information
            parameterName the name of the parameter containing help information
            parameterDetailType the detail type of the parameter containing help information
-     * 
+     *
      * @param helpDefinition The helpDefinition to set.
      */
     public void setHelpDefinition(HelpDefinition helpDefinition) {
@@ -359,9 +363,24 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     public void setInactivationBlockingDefinitions(List<InactivationBlockingDefinition> inactivationBlockingDefinitions) {
         this.inactivationBlockingDefinitions = inactivationBlockingDefinitions;
     }
+
     /**
+	 * @return the primaryKeys
+	 */
+	public List<String> getPrimaryKeys() {
+		return this.primaryKeys;
+	}
+
+	/**
+	 * @param primaryKeys the primaryKeys to set
+	 */
+	public void setPrimaryKeys(List<String> primaryKeys) {
+		this.primaryKeys = primaryKeys;
+	}
+
+	/**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
      */
     @SuppressWarnings("unchecked")

@@ -297,7 +297,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		// so that the logic for finding the relationships is similar to
 		// primitiveReference
 		if (ddReference != null
-				&& isLookupable(ddReference.getTargetClass()) 
+				&& isLookupable(ddReference.getTargetClass())
 				&& bo != null
 				&& ddReference.getPrimitiveAttributes().size() < maxSize ) {
 			relationship = new BusinessObjectRelationship(boClass,
@@ -578,7 +578,19 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		if (responsibleModuleService != null
 				&& responsibleModuleService.isExternalizable(clazz))
 			return responsibleModuleService.listPrimaryKeyFieldNames(clazz);
+
+		// give the option to declare primary keys in the dd.
+		// this is primarly used for transient objects that lack db persistence.
+		List<String> pks = dataDictionaryService.getDataDictionary()
+			.getBusinessObjectEntry(clazz.getName()).getPrimaryKeys();
+		if(pks != null && !pks.isEmpty())
+			return pks;
+
 		return new ArrayList();
+
+
+
+
 	}
 
 	public KualiModuleService getKualiModuleService() {
@@ -615,7 +627,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 	public String getForeignKeyFieldName(Class businessObjectClass, String attributeName, String targetName) {
 
 		String fkName = "";
-		
+
 		// first try DD-based relationships
 		RelationshipDefinition relationshipDefinition = getDDRelationship(businessObjectClass, attributeName);
 
@@ -628,7 +640,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 				}
 			}
 		}
-		
+
 		// if we can't find anything in the DD, then try the persistence service
 		if(StringUtils.isBlank(fkName) && PersistableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
 			fkName =

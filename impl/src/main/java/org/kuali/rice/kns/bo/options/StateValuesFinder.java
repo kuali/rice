@@ -36,21 +36,22 @@ public class StateValuesFinder extends KeyValuesBase {
      */
     public List<KeyLabelPair> getKeyValues() {
     	if ( labels == null ) {
-    		List<State> codes = KNSServiceLocator.getStateService().findAllStates();
-
+    		List<State> baseCodes = KNSServiceLocator.getStateService().findAllStates();
+    		List<State> codes = new ArrayList<State>( baseCodes );
     		Collections.sort(codes, new Comparator<State> () {
 				public int compare(State o1, State o2) {
 					return o1.getPostalStateName().compareTo(o2.getPostalStateName());
 				}
     		});
     		
-	        labels = new ArrayList<KeyLabelPair>();
-	        labels.add(new KeyLabelPair("", ""));
+    		List<KeyLabelPair> newLabels = new ArrayList<KeyLabelPair>();
+	        newLabels.add(new KeyLabelPair("", ""));
 	        for (State state : codes) {
 	            if(state.isActive()) {
-	                labels.add(new KeyLabelPair(state.getPostalStateCode(), state.getPostalStateName()));
+	                newLabels.add(new KeyLabelPair(state.getPostalStateCode(), state.getPostalStateName()));
 	            }
 	        }
+	        labels = newLabels;
     	}
 
         return labels;

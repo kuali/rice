@@ -103,8 +103,8 @@ public class LookupDaoProxy implements LookupDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.LookupDao#createCriteria(java.lang.Object, java.lang.String, java.lang.String, boolean, java.lang.Object)
 	 */
-	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Object criteria) {
-		return getDao(example.getClass()).createCriteria(example, searchValue, propertyName, caseInsensitive, criteria);
+	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria) {
+		return getDao(example.getClass()).createCriteria(example, searchValue, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria);
 	}
 
 	/**

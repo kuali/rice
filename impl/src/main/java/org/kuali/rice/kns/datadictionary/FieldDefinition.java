@@ -50,6 +50,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 	protected boolean hidden 	= false;
 	protected boolean readOnly 	= false;
 
+	protected boolean treatWildcardsAndOperatorsAsLiteral = false;
+	
     public FieldDefinition() {
     }
 
@@ -351,5 +353,22 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
+	}
+
+
+	/**
+	 * @return the treatWildcardsAndOperatorsAsLiteralOnLookups
+	 */
+	public boolean isTreatWildcardsAndOperatorsAsLiteral() {
+		return this.treatWildcardsAndOperatorsAsLiteral;
+	}
+
+
+	/**
+	 * @param treatWildcardsAndOperatorsAsLiteralOnLookups the treatWildcardsAndOperatorsAsLiteralOnLookups to set
+	 */
+	public void setTreatWildcardsAndOperatorsAsLiteral(
+			boolean treatWildcardsAndOperatorsAsLiteralOnLookups) {
+		this.treatWildcardsAndOperatorsAsLiteral = treatWildcardsAndOperatorsAsLiteralOnLookups;
 	}
 }

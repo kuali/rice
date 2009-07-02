@@ -54,5 +54,5 @@ public interface LookupDao {
      * 
      * @return true if the criteria is created successfully; otherwise, return false
      */
-    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Object criteria);
+    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria);
 }

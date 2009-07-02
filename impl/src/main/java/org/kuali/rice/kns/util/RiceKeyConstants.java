@@ -175,5 +175,8 @@ public class RiceKeyConstants {
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
     
     public static final String ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA = "error.document.fieldContainsPossibleSensitiveData";
+    
+    public static final String ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD = "error.wildcards.and.operators.not.allowed.on.field";
+    public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
 }
 

@@ -242,4 +242,12 @@ public interface BusinessObjectDictionaryService {
 
     public Boolean areNotesSupported(Class businessObjectClass);
 
+    /**
+     * returns whether on a lookup, field/attribute values with wildcards and operators should treat them as literal characters
+     * 
+     * @param businessObjectClass
+     * @param attributeName
+     * @return
+     */
+    public boolean isLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class businessObjectClass, String attributeName);
 }

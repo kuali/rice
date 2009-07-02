@@ -460,10 +460,11 @@ public class KNSConstants extends JSTLConstants {
     public static final String AND_LOGICAL_OPERATOR = "&&";
     public static final String OR_LOGICAL_OPERATOR = "|";
     public static final String NOT_LOGICAL_OPERATOR = "!";
+    public static final String BETWEEN_OPERATOR = "..";
 //    // add AND operator to thest if it is uncommented below
 //    public static final String[] LOGICAL_OPERATORS = {OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR};
-    public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", "..", OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
-    public static final String[] RANGE_CHARACTERS = {">=","<=",">","<",".."};
+    public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", BETWEEN_OPERATOR, OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
+    public static final String[] RANGE_CHARACTERS = {">=","<=",">","<",BETWEEN_OPERATOR};
     public static final String AUDIT_ERRORS = "AuditErrors";
 
     // Header Tab navigation constant values

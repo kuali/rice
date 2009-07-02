@@ -56,6 +56,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
@@ -908,24 +909,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                         GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
                     }
                 }
-                else if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
-                	if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-                		// encrypted values usually come from the DB, so we don't need to filter for wildcards
-                		
-                		// wildcards are not allowed on restricted fields, because they are typically encrypted, and wildcard searches cannot be performed without
-                		// decrypting every row, which is currently not supported by KNS
-                		
-	                    // following loop would be trivial if Constants.QUERY_CHARACTERS would implement CharSequence but not so
-	                    // sure if that makes sense...
-	                    for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
-	                        String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
-	
-	                        if (attributeValue.contains(queryCharacter)) {
-	                            GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
-	                        }
-	                    }
-                	}
-                }
+                validateSearchParameterWildcardAndOperators(attributeName, attributeValue);
             }
         }
 
@@ -934,6 +918,54 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         }
     }
 
+    protected void validateSearchParameterWildcardAndOperators(String attributeName, String attributeValue) {
+    	if (StringUtils.isBlank(attributeValue))
+    		return;
+
+    	// make sure a wildcard/operator is in the value
+    	boolean found = false;
+        for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
+            String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
+            if (attributeValue.contains(queryCharacter)) {
+                found = true;
+            }
+        }
+        if (!found)
+        	return;
+
+    	String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), attributeName);
+    	if (getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, attributeName)) {
+    		BusinessObject example = null;
+    		try {
+    			example = (BusinessObject) businessObjectClass.newInstance();
+    		}
+    		catch (Exception e) {
+    			LOG.error("Exception caught instantiating " + businessObjectClass.getName(), e);
+    			throw new RuntimeException("Cannot instantiate " + businessObjectClass.getName(), e);
+    		}
+    		
+    		Class propertyType = ObjectUtils.getPropertyType(example, attributeName, getPersistenceStructureService());
+    		if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+    			GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, attributeLabel);
+    		}
+    		if (TypeUtils.isStringClass(propertyType)) {
+    			GlobalVariables.getMessageMap().putInfo(attributeName, RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, attributeLabel);
+    		}
+    	}
+    	else {
+    		if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
+	        	if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+	        		// encrypted values usually come from the DB, so we don't need to filter for wildcards
+	        		
+	        		// wildcards are not allowed on restricted fields, because they are typically encrypted, and wildcard searches cannot be performed without
+	        		// decrypting every row, which is currently not supported by KNS
+        		
+                    GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
+	        	}
+    		}
+        }
+    }
+    
     /**
      * Constructs the list of rows for the search fields. All properties for the field objects come from the DataDictionary.
      * To be called by setBusinessObject
@@ -1136,7 +1168,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				String dateValue = (String)lookupFormFields.get(dateFieldName);
 				String newPropValue = dateValue;//maybe clean above with ObjectUtils.clean(propertyValue)
 				if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(dateValue)) {
-					newPropValue = fromDateValue + ".." + dateValue;
+					newPropValue = fromDateValue + KNSConstants.BETWEEN_OPERATOR + dateValue;
 				} else if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(dateValue)) {
 					newPropValue = ">="+fromDateValue;
 				} else if(StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {

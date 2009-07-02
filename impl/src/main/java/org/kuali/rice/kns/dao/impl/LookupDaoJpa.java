@@ -124,29 +124,24 @@ public class LookupDaoJpa implements LookupDao {
 		Iterator propsIter = formProps.keySet().iterator();
 		while (propsIter.hasNext()) {
 			String propertyName = (String) propsIter.next();
+			Boolean caseInsensitive = Boolean.TRUE;
+			if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
+				caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
+			}
+			if (caseInsensitive == null) {
+				caseInsensitive = Boolean.TRUE;
+			}
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+    				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
 			if (formProps.get(propertyName) instanceof Collection) {
 				Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
 				while (iter.hasNext()) {
-					Boolean caseInsensitive = Boolean.TRUE;
-					if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
-						caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
-					}
-					if (caseInsensitive == null) {
-						caseInsensitive = Boolean.TRUE;
-					}
-					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, criteria)) {
+					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria)) {
 						throw new RuntimeException("Invalid value in Collection");
 					}
 				}
 			} else {
-				Boolean caseInsensitive = Boolean.TRUE;
-				if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
-					caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
-				}
-				if (caseInsensitive == null) {
-					caseInsensitive = Boolean.TRUE;
-				}
-				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, criteria)) {
+				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria)) {
 					continue;
 				}
 			}
@@ -168,7 +163,9 @@ public class LookupDaoJpa implements LookupDao {
 			} else if (StringUtils.indexOfAny(pkValue, KNSConstants.QUERY_CHARACTERS) != -1) {
 				throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
 			}
-			createCriteria(businessObject, pkValue, pkFieldName, false, criteria);
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+    				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, pkFieldName);
+			createCriteria(businessObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
 		}
 		return criteria;
 	}
@@ -297,10 +294,10 @@ public class LookupDaoJpa implements LookupDao {
 	}
 
 	public boolean createCriteria(Object example, String searchValue, String propertyName, Object criteria) {
-		return createCriteria(example, searchValue, propertyName, false, criteria);
+		return createCriteria(example, searchValue, propertyName, false, false, criteria);
 	}
 
-	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Object criteria) {
+	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria) {
 		// if searchValue is empty and the key is not a valid property ignore
 		if (!(criteria instanceof Criteria) || StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
 			return false;
@@ -377,7 +374,7 @@ public class LookupDaoJpa implements LookupDao {
 						caseInsensitive, criteria);
             } else if (
             		propertyValue != null && (
-            				StringUtils.contains(propertyValue, "..") 
+            				StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR) 
             				|| propertyValue.startsWith(">")
             				|| propertyValue.startsWith("<") ) ) {
 				addStringRangeCriteria(propertyName, propertyValue, criteria);
@@ -448,8 +445,8 @@ public class LookupDaoJpa implements LookupDao {
 
 	private void addDateRangeCriteria(String propertyName, String propertyValue, Criteria criteria) {
 
-		if (StringUtils.contains(propertyValue, "..")) {
-			String[] rangeValues = StringUtils.split(propertyValue, "..");
+		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+			String[] rangeValues = StringUtils.split(propertyValue, KNSConstants.BETWEEN_OPERATOR);
 			criteria.between(propertyName, parseDate(ObjectUtils.clean(rangeValues[0])), parseDate(ObjectUtils.clean(rangeValues[1])));
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
@@ -489,8 +486,8 @@ public class LookupDaoJpa implements LookupDao {
 
 	private void addNumericRangeCriteria(String propertyName, String propertyValue, Criteria criteria) {
 
-		if (StringUtils.contains(propertyValue, "..")) {
-			String[] rangeValues = StringUtils.split(propertyValue, "..");
+		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+			String[] rangeValues = StringUtils.split(propertyValue, KNSConstants.BETWEEN_OPERATOR);
 			criteria.between(propertyName, cleanNumeric(rangeValues[0]), cleanNumeric(rangeValues[1]));
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, cleanNumeric(propertyValue));
@@ -507,8 +504,8 @@ public class LookupDaoJpa implements LookupDao {
 
 	private void addStringRangeCriteria(String propertyName, String propertyValue, Criteria criteria) {
 
-		if (StringUtils.contains(propertyValue, "..")) {
-			String[] rangeValues = StringUtils.split(propertyValue, "..");
+		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+			String[] rangeValues = StringUtils.split(propertyValue, KNSConstants.BETWEEN_OPERATOR);
 			criteria.between(propertyName, rangeValues[0], rangeValues[1]);
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, ObjectUtils.clean(propertyValue));

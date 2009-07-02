@@ -915,5 +915,11 @@ public class BusinessObjectDictionaryServiceImpl implements
         return hasNotesSupport;
     }
 
-
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupFieldTreatWildcardsAndOperatorsAsLiteral(java.lang.Class, java.lang.String)
+	 */
+	public boolean isLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class businessObjectClass, String attributeName) {
+		FieldDefinition lookupFieldDefinition = getLookupFieldDefinition(businessObjectClass, attributeName);
+		return lookupFieldDefinition != null && lookupFieldDefinition.isTreatWildcardsAndOperatorsAsLiteral();
+	}
 }

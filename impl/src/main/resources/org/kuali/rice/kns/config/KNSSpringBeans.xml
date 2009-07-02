@@ -801,8 +801,9 @@
 
   <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.LookupDaoOjb">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
-		<property name="dateTimeService" ref="dateTimeService" />
-	</bean>
+    <property name="dateTimeService" ref="dateTimeService" />
+    <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
+  </bean>
 
   <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
     <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />

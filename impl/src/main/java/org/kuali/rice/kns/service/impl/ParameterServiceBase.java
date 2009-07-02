@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -47,6 +48,8 @@ import org.kuali.rice.kns.util.KNSUtils;
 public abstract class ParameterServiceBase implements ParameterService {
 	protected DataDictionaryService dataDictionaryService;
 	protected KualiModuleService kualiModuleService;
+	protected static final String PARAMETER_CACHE_PREFIX = "Parameter:";
+    protected static final String PARAMETER_CACHE_GROUP_NAME = "SystemParameter";
 
 	/**
 	 * This constructs a ...
@@ -415,7 +418,7 @@ public abstract class ParameterServiceBase implements ParameterService {
      */
     public void clearCache() {
         //parameterCache = new ThreadLocal<Map<String,Parameter>>();
-        KEWServiceLocator.getCacheAdministrator().flushGroup(KNSConstants.PARAMETER_CACHE_GROUP_NAME);
+        KEWServiceLocator.getCacheAdministrator().flushGroup(PARAMETER_CACHE_GROUP_NAME);
     }
  
     @SuppressWarnings("unchecked")
@@ -463,7 +466,7 @@ public abstract class ParameterServiceBase implements ParameterService {
         if (parameter == null) {
             return;
         }
-        KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, KNSConstants.PARAMETER_CACHE_GROUP_NAME);
+        KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, PARAMETER_CACHE_GROUP_NAME);
     }
     
     protected void flushParameterFromCache(String namespaceCode, String detailTypeCode, String name) {
@@ -473,7 +476,7 @@ public abstract class ParameterServiceBase implements ParameterService {
      * Returns the cache key for the given parameter.
      */
     protected String getParameterCacheKey(String namespaceCode, String detailTypeCode, String name) {
-        return KNSConstants.PARAMETER_CACHE_PREFIX + namespaceCode + "-" + detailTypeCode + "-" + name;
+        return PARAMETER_CACHE_PREFIX + namespaceCode + "-" + detailTypeCode + "-" + name;
     }
     
 	private boolean constraintIsAllow(Parameter parameter) {

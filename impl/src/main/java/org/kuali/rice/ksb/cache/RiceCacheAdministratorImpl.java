@@ -19,7 +19,9 @@ package org.kuali.rice.ksb.cache;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.kns.service.impl.ParameterServiceBase;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 
 import com.opensymphony.oscache.base.AbstractCacheAdministrator;
@@ -41,6 +43,7 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 	private boolean forceRegistryRefresh;
 	private String serviceName;
 	protected RemotedServiceRegistry remotedServiceRegistry;
+	private static final Logger LOG = Logger.getLogger(RiceCacheAdministratorImpl.class);
 	
 	/**
 	 * @return the remotedServiceRegistry
@@ -71,11 +74,19 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 	}
 
 	public void putInCache(String key, Object content, String[] groups) {
-		getCacheAdministrator().putInCache(key, content, groups);
+	    try {
+	        getCacheAdministrator().putInCache(key, content, groups);
+	    } catch (IllegalStateException e) {
+	        LOG.warn("Failed to insert object into cache with key: " + key);
+	    }
 	}
 
 	public void putInCache(String key, Object content) {
-		getCacheAdministrator().putInCache(key, content);
+	    try {
+	        getCacheAdministrator().putInCache(key, content);
+	    } catch (IllegalStateException e) {
+            LOG.warn("Failed to insert object into cache with key: " + key);
+        }
 	}
 
 

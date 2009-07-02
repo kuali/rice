@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.service.BusinessObjectService;

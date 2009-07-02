@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -36,8 +37,10 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  */
 public class ParameterServiceProxyImpl implements ParameterService {
-    private ParameterService parameterService;  
-
+    private ParameterService parameterService;
+    public static final String PARAMETER_CACHE_PREFIX = "ParameterProxy:";
+    public static final String PARAMETER_CACHE_GROUP_NAME = "SystemParameterProxy";
+    
 	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode,
 			String parameterName) {
 	    Parameter parameter = fetchFromCache(namespaceCode, detailTypeCode, parameterName);
@@ -165,7 +168,7 @@ public class ParameterServiceProxyImpl implements ParameterService {
 
     public void clearCache() {
         getParameterService().clearCache();
-        KEWServiceLocator.getCacheAdministrator().flushGroup(KNSConstants.PARAMETER_CACHE_GROUP_NAME);
+        KEWServiceLocator.getCacheAdministrator().flushGroup(PARAMETER_CACHE_GROUP_NAME);
     }
     
     protected Parameter fetchFromCache(String namespaceCode, String detailTypeCode, String name) {
@@ -176,7 +179,7 @@ public class ParameterServiceProxyImpl implements ParameterService {
         if (parameter == null) {
             return;
         }
-        KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, KNSConstants.PARAMETER_CACHE_GROUP_NAME);
+        KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, PARAMETER_CACHE_GROUP_NAME);
     }
     
     protected void flushParameterFromCache(String namespaceCode, String detailTypeCode, String name) {
@@ -184,6 +187,6 @@ public class ParameterServiceProxyImpl implements ParameterService {
     }
     
     protected String getParameterCacheKey(String namespaceCode, String detailTypeCode, String name) {
-        return KNSConstants.PARAMETER_CACHE_PREFIX + namespaceCode + "-" + detailTypeCode + "-" + name;
+        return PARAMETER_CACHE_PREFIX + namespaceCode + "-" + detailTypeCode + "-" + name;
     }
 }

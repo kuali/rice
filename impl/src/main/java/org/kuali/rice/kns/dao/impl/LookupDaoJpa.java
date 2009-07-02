@@ -94,8 +94,10 @@ public class LookupDaoJpa implements LookupDao {
 				caseInsensitive = Boolean.TRUE;
 			}
 
+			boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+					getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName); 
 			// build criteria
-			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, criteria);
+			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria);
 		}
 
 		// execute query and return result list
@@ -310,7 +312,7 @@ public class LookupDaoJpa implements LookupDao {
 		}
 
 		// build criteria
-		addCriteria(propertyName, searchValue, propertyType, caseInsensitive, (Criteria)criteria);
+		addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, (Criteria)criteria);
 		return true;
 	}
 
@@ -348,13 +350,13 @@ public class LookupDaoJpa implements LookupDao {
 		return new QueryByCriteria(entityManager, jpaCriteria).toQuery().getSingleResult();
 	}
 
-	private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-		if (StringUtils.contains(propertyValue, KNSConstants.OR_LOGICAL_OPERATOR)) {
+	private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Criteria criteria) {
+		if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KNSConstants.OR_LOGICAL_OPERATOR)) {
 			addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
 			return;
 		}
 
-		if (StringUtils.contains(propertyValue, KNSConstants.AND_LOGICAL_OPERATOR)) {
+		if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KNSConstants.AND_LOGICAL_OPERATOR)) {
 			addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
 			return;
 		}
@@ -368,17 +370,20 @@ public class LookupDaoJpa implements LookupDao {
 				propertyName = "UPPER(__JPA_ALIAS__." + propertyName + ")";
 				propertyValue = propertyValue.toUpperCase();
 			}
-			if (StringUtils.contains(propertyValue,
+			if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue,
 					KNSConstants.NOT_LOGICAL_OPERATOR)) {
 				addNotCriteria(propertyName, propertyValue, propertyType,
 						caseInsensitive, criteria);
             } else if (
-            		propertyValue != null && (
+            		!treatWildcardsAndOperatorsAsLiteral && propertyValue != null && (
             				StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR) 
             				|| propertyValue.startsWith(">")
             				|| propertyValue.startsWith("<") ) ) {
 				addStringRangeCriteria(propertyName, propertyValue, criteria);
 			} else {
+				if (treatWildcardsAndOperatorsAsLiteral) {
+					propertyValue = StringUtils.replace(propertyValue, "*", "\\*");
+				}
 				criteria.like(propertyName, propertyValue);
 			}
 		} else if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType)) {
@@ -408,7 +413,8 @@ public class LookupDaoJpa implements LookupDao {
 		// if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
 		if (strLength > 1) {
 			String expandedNot = "!" + StringUtils.join(splitPropVal, KNSConstants.AND_LOGICAL_OPERATOR + KNSConstants.NOT_LOGICAL_OPERATOR);
-			addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, criteria);
+			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
+			addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, false, criteria);
 		} else {
 			// only one so add a not like
 			criteria.notLike(propertyName, splitPropVal[0]);
@@ -421,8 +427,8 @@ public class LookupDaoJpa implements LookupDao {
 		Criteria subCriteria = new Criteria("N/A");
 		for (int i = 0; i < splitPropVal.length; i++) {
 			Criteria predicate = new Criteria("N/A");
-
-			addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, predicate);
+			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
+			addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, false, predicate);
 			if (splitValue == KNSConstants.OR_LOGICAL_OPERATOR) {
 				subCriteria.or(predicate);
 			}

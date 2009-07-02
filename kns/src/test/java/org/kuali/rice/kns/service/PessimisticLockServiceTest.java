@@ -392,7 +392,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
     public void testPessimisticLockingWithCustomMaintainableLockDescriptors() throws Exception {
     	MaintenanceDocument maintDoc = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountType2MaintenanceDocument");
     	assertTrue("The AccountType2MaintenanceDocument should be using pessimistic locking", KNSServiceLocator.getDataDictionaryService().getDataDictionary(
-			).getDocumentEntry(maintDoc.getClass().getName()).getUsePessimisticLocking());
+			).getDocumentEntry(maintDoc.getNewMaintainableObject().getBoClass().getSimpleName() + "MaintenanceDocument").getUsePessimisticLocking());
     	assertTrue("The AccountType2MaintenanceDocument should be using custom lock descriptors", maintDoc.useCustomLockDescriptors());
     	assertTrue("The AccountType2MaintenanceDocument's new maintainable uses the wrong class",
     			maintDoc.getNewMaintainableObject() instanceof AccountType2MaintainableImpl);

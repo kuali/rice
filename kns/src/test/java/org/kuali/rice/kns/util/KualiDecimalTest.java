@@ -54,17 +54,8 @@ public class KualiDecimalTest extends BaseRiceTestCase {
     }
 
     @Test public void testStringConstructor_nullString() throws Exception {
-        boolean failedAsExpected = false;
-
-        try {
-            String s = null;
-            new KualiDecimal(s);
-        }
-        catch (IllegalArgumentException e) {
-            failedAsExpected = true;
-        }
-
-        assertTrue(failedAsExpected);
+    	KualiDecimal k = new KualiDecimal((String)null);
+    	assertEquals("When KualiDecimal passed null, it should be constructed as zero", 0, k.intValue());
     }
 
     @Test public void testStringConstructor_nonnumericString() throws Exception {

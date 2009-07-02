@@ -18,6 +18,7 @@
     <param name="keystore.location">${basedir}/src/test/resources/keystore/ricekeystore</param>
     
     <param name="useQuartzDatabase">false</param>
+    <param name="notification.quartz.autostartup">false</param>
 
     <param name="unittest.jetty.server1.port" override="false" random="true">10000-10999</param>
     <param name="unittest.jetty.server2.port" override="false" random="true">11000-11999</param>

@@ -62,7 +62,7 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         } 
     	else {
     		PBKey key = new PBKey(dataSourceName);
-    		PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, true);
+    		PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, false);
     		if ( broker != null )
     			return getDbPlatform().getNextValSQL(sequenceName, broker);
     		else

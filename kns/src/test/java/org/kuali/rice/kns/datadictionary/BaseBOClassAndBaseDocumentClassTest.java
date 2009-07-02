@@ -25,6 +25,7 @@ import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.DocumentBase;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
@@ -82,30 +83,26 @@ public class BaseBOClassAndBaseDocumentClassTest extends KNSTestCase {
 	 */
 	@Test
 	public void testValidAndInvalidDDEntries() throws Exception {
-		// Ensure that we cannot specify a base class that is not the superclass of the currently-defined document/businessObject class.
-		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, DocumentBase.class, true, false);
-		assertExpectedOutcomeOfDocEntryConstruction(TransactionalDocumentBase.class, MaintenanceDocumentBase.class, true, false);
+		// Ensure that we cannot specify a base class that is not the superclass of the document/businessObject class.
+		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, DocumentBase.class, false);
+		assertExpectedOutcomeOfDocEntryConstruction(TransactionalDocumentBase.class, MaintenanceDocumentBase.class, false);
+		assertExpectedOutcomeOfBOEntryConstruction(TransactionalDocumentBase.class, AdHocRouteRecipient.class, false);
+		assertExpectedOutcomeOfDocEntryConstruction(AccountRequestDocument.class, IdentityManagementKimDocument.class, false);
 		
-		// Ensure that we cannot specify a document/businessObject class that is not the subclass of the currently-defined base class.
-		assertExpectedOutcomeOfBOEntryConstruction(TransactionalDocumentBase.class, AdHocRouteRecipient.class, false, false);
-		assertExpectedOutcomeOfDocEntryConstruction(AccountRequestDocument.class, IdentityManagementKimDocument.class, false, false);
-		
-		// Ensure that we can specify a valid base class after the document/businessObject class has been set.
-		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, AdHocRouteRecipient.class, true, true);
-		assertExpectedOutcomeOfDocEntryConstruction(TransactionalDocumentBase.class, DocumentBase.class, true, true);
-		
-		// Ensure that we can specify a valid document/businessObject class after the base class has been set.
-		assertExpectedOutcomeOfBOEntryConstruction(AdHocRouteWorkgroup.class, AdHocRouteRecipient.class, false, true);
-		assertExpectedOutcomeOfDocEntryConstruction(IdentityManagementPersonDocument.class, IdentityManagementKimDocument.class, false, true);
+		// Ensure that we can specify a base class that is the superclass of the document/businessObject class.
+		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, AdHocRouteRecipient.class, true);
+		assertExpectedOutcomeOfDocEntryConstruction(TransactionalDocumentBase.class, DocumentBase.class, true);
+		assertExpectedOutcomeOfBOEntryConstruction(AdHocRouteWorkgroup.class, AdHocRouteRecipient.class, true);
+		assertExpectedOutcomeOfDocEntryConstruction(IdentityManagementPersonDocument.class, IdentityManagementKimDocument.class, true);
 		
 		// Ensure that we cannot specify a document/businessObject class that is a superclass of the base class.
-		assertExpectedOutcomeOfBOEntryConstruction(AdHocRouteRecipient.class, AdHocRoutePerson.class, true, false);
-		assertExpectedOutcomeOfDocEntryConstruction(IdentityManagementKimDocument.class, IdentityManagementGroupDocument.class, true, false);
+		assertExpectedOutcomeOfBOEntryConstruction(AdHocRouteRecipient.class, AdHocRoutePerson.class, false);
+		assertExpectedOutcomeOfDocEntryConstruction(IdentityManagementKimDocument.class, IdentityManagementGroupDocument.class, false);
 		
 		// Ensure that we can specify the same class for both the document/businessObject class and the base class
 		// (as permitted by the use of Class.isAssignableFrom in the BO and doc entry validations).
-		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, AdHocRoutePerson.class, true, true);
-		assertExpectedOutcomeOfDocEntryConstruction(MaintenanceDocumentBase.class, MaintenanceDocumentBase.class, true, true);
+		assertExpectedOutcomeOfBOEntryConstruction(AdHocRoutePerson.class, AdHocRoutePerson.class, true);
+		assertExpectedOutcomeOfDocEntryConstruction(MaintenanceDocumentBase.class, MaintenanceDocumentBase.class, true);
 	}
 	
 	/**
@@ -149,27 +146,28 @@ public class BaseBOClassAndBaseDocumentClassTest extends KNSTestCase {
 	 * 
 	 * @param boClass The businessObjectClass of the entry.
 	 * @param boBaseClass The "base" class of the entry.
-	 * @param boClassFirst Indicates if either the BO class or the "base" class should be set first.
 	 * @param shouldSucceed Indicates whether the construction task should succeed or fail.
 	 * @throws Exception
 	 */
 	private void assertExpectedOutcomeOfBOEntryConstruction(Class<? extends BusinessObject> boClass,
-			Class<? extends BusinessObject> boBaseClass, boolean boClassFirst, boolean shouldSucceed) throws Exception {
-		// Construct the entry and set one of the BO class properties.
+			Class<? extends BusinessObject> boBaseClass, boolean shouldSucceed) throws Exception {
+		// Construct the entry and set the necessary properties.
 		BusinessObjectEntry boEntry = new BusinessObjectEntry();
-		if (boClassFirst) { boEntry.setBusinessObjectClass(boClass); } else { boEntry.setBaseBusinessObjectClass(boBaseClass); }
-		// Now set the other BO class property.
+		boEntry.setBusinessObjectClass(boClass);
+		boEntry.setBaseBusinessObjectClass(boBaseClass);
+		boEntry.setObjectLabel(boClass.getSimpleName());
+		// Now attempt to validate these properties.
 		try {
-			if (!boClassFirst) { boEntry.setBusinessObjectClass(boClass); } else { boEntry.setBaseBusinessObjectClass(boBaseClass); }
+			boEntry.completeValidation();
 			// If the above operation succeeds, check whether or not the operation was meant to succeed.
 			if (!shouldSucceed) {
-				fail("The BO entry should have thrown an IllegalArgumentException when setting the " + ((!boClassFirst) ? "subclass" : "superclass"));
+				fail("The BO entry should have thrown a ClassValidationException during the validation process");
 			}
 		}
-		catch (IllegalArgumentException e) {
+		catch (ClassValidationException e) {
 			// If the above operation fails, check whether or not the operation was meant to fail.
 			if (shouldSucceed) {
-				fail("The BO entry should not have thrown an IllegalArgumentException when setting the " + ((!boClassFirst) ? "subclass" : "superclass"));
+				fail("The BO entry should not have thrown a ClassValidationException during the validation process");
 			}
 		}
 	}
@@ -184,22 +182,23 @@ public class BaseBOClassAndBaseDocumentClassTest extends KNSTestCase {
 	 * @throws Exception
 	 */
 	private void assertExpectedOutcomeOfDocEntryConstruction(Class<? extends Document> docClass,
-			Class<? extends Document> docBaseClass, boolean docClassFirst, boolean shouldSucceed) throws Exception {
-		// Construct the entry and set one of the doc class properties.
+			Class<? extends Document> docBaseClass, boolean shouldSucceed) throws Exception {
+		// Construct the entry and set the necessary properties.
 		DocumentEntry docEntry = new TransactionalDocumentEntry();
-		if (docClassFirst) { docEntry.setDocumentClass(docClass); } else { docEntry.setBaseDocumentClass(docBaseClass); }
-		// Now set the other doc class property.
+		docEntry.setDocumentClass(docClass);
+		docEntry.setBaseDocumentClass(docBaseClass);
+		// Now attempt to validate these properties.
 		try {
-			if (!docClassFirst) { docEntry.setDocumentClass(docClass); } else { docEntry.setBaseDocumentClass(docBaseClass); }
+			docEntry.completeValidation();
 			// If the above operation succeeds, check whether or not the operation was meant to succeed.
 			if (!shouldSucceed) {
-				fail("The doc entry should have thrown an IllegalArgumentException when setting the " + ((!docClassFirst) ? "subclass" : "superclass"));
+				fail("The doc entry should have thrown a ClassValidationException during the validation process");
 			}
 		}
-		catch (IllegalArgumentException e) {
+		catch (ClassValidationException e) {
 			// If the above operation fails, check whether or not the operation was meant to fail.
 			if (shouldSucceed) {
-				fail("The doc entry should not have thrown an IllegalArgumentException when setting the " + ((!docClassFirst) ? "subclass" : "superclass"));
+				fail("The doc entry should not have thrown a ClassValidationException during the validation process");
 			}
 		}
 	}

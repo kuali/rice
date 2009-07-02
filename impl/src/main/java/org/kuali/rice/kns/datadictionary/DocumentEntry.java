@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -187,7 +188,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         super.completeValidation();
 
     	if (baseDocumentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
-    		throw new IllegalArgumentException("The baseDocumentClass " + baseDocumentClass.getName() +
+    		throw new ClassValidationException("The baseDocumentClass " + baseDocumentClass.getName() +
     				" is not a superclass of the documentClass " + documentClass.getName());
     	}
         

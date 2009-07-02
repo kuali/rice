@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.dao.proxy;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public class LookupDaoProxy implements LookupDao {
 	private LookupDao lookupDaoJpa;
 	private LookupDao lookupDaoOjb;
     private static KualiModuleService kualiModuleService;
-    private static HashMap<String, LookupDao> lookupDaoValues = new HashMap<String, LookupDao>();
+    private static Map<String, LookupDao> lookupDaoValues = Collections.synchronizedMap(new HashMap<String, LookupDao>());
 	
     public void setLookupDaoJpa(LookupDao lookupDaoJpa) {
 		this.lookupDaoJpa = lookupDaoJpa;

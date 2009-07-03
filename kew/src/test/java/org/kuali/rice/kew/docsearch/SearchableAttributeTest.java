@@ -179,7 +179,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
             } else if (attributeValue instanceof SearchableAttributeFloatValue) {
                 SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
                 assertEquals("The only Float attribute that should have been added has key '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
-                assertEquals("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE, realValue.getSearchableAttributeValue());
+                assertEquals("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE + "'", 0, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.compareTo(realValue.getSearchableAttributeValue()));
             } else if (attributeValue instanceof SearchableAttributeDateTimeValue) {
                 SearchableAttributeDateTimeValue realValue = (SearchableAttributeDateTimeValue) attributeValue;
                 assertEquals("The only DateTime attribute that should have been added has key '" + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());

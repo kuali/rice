@@ -88,7 +88,8 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         // delete the parameter
         KNSServiceLocator.getBusinessObjectService().delete(KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
 
-        adjustResultSetCapApplicationConstantValue(CustomDocumentSearchGenerator.RESULT_SET_LIMIT);
+        // old parameter value will still be cached, let's flush the cache
+        KNSServiceLocator.getParameterService().clearCache();
         
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());

@@ -75,6 +75,7 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 					SearchableAttributeValue searchableAttributeValue = (SearchableAttributeValue) iterator2.next();
 					searchableAttributeValue.setRouteHeaderId(documentId);
 					searchableAttributeValues.add(searchableAttributeValue);
+					searchableAttributeValue.setRouteHeader(null); // let the routeHeaderId we set represent this reference
 				}
 			}
 		}

@@ -59,6 +59,7 @@ public class BAMServiceImpl implements BAMService {
 				LOG.debug("A call was received... for service: " + target.getClass().getName() + " method: " + method.getName());
 				BAMTargetEntry bamTargetEntry = getBAMTargetEntry(Boolean.TRUE, entry, target, method, params);
 				this.dao.save(bamTargetEntry);
+				return bamTargetEntry;
 			} catch (Throwable t) {
 				LOG.error("BAM Failed to record server invocation", t);
 			}

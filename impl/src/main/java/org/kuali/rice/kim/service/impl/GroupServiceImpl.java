@@ -13,6 +13,7 @@ import javax.jws.WebService;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
@@ -29,6 +30,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -36,6 +38,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
 	private BusinessObjectService businessObjectService;
+	private LookupService lookupService;
 
 	/**
      * @see org.kuali.rice.kim.service.GroupService#getGroupInfo(java.lang.String)
@@ -107,7 +110,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      */
     public List<String> getGroupIdsForPrincipalByNamespace(String principalId, String namespaceCode) {
         List<String> result = new ArrayList<String>();
-        
+
         if (principalId != null) {
             List<GroupInfo> groupList = getGroupsForPrincipalByNamespace(principalId, namespaceCode);
 
@@ -226,19 +229,22 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      * @see org.kuali.rice.kim.service.GroupService#lookupGroupIds(java.util.Map)
      */
     public List<String> lookupGroupIds(Map<String, String> searchCriteria) {
-        List<GroupImpl> groupList = lookupGroups(searchCriteria);
+        List<? extends Group> groupList = this.lookupGroups(searchCriteria);
         List<String> result = new ArrayList<String>();
 
-        for (GroupImpl group : groupList) {
+        for (Group group : groupList) {
             result.add(group.getGroupId());
         }
 
         return result;
     }
 
-	@SuppressWarnings("unchecked")
-	protected List<GroupImpl> lookupGroups(Map<String, String> searchCriteria) {
-		return (List<GroupImpl>) getBusinessObjectService().findMatching(GroupImpl.class, searchCriteria);
+    /**
+	 * @see org.kuali.rice.kim.service.GroupService#lookupGroups(java.util.Map)
+	 */
+    @SuppressWarnings("unchecked")
+	public List<? extends Group> lookupGroups(Map<String, String> searchCriteria) {
+		return this.toGroupInfo((List<GroupImpl>)this.getLookupService().findCollectionBySearchHelper(GroupImpl.class, searchCriteria, true));
 	}
 
 	/**
@@ -560,10 +566,10 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         criteria.put(KIMPropertyConstants.Group.GROUP_ID, group.getGroupId());
         getBusinessObjectService().deleteMatching(GroupAttributeDataImpl.class, criteria);
 
-        
+
         saveGroup(group);
         getIdentityManagementNotificationService().groupUpdated();
-        
+
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes = copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
@@ -683,6 +689,20 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return info;
     }
 
+    protected List<GroupInfo> toGroupInfo(List<GroupImpl> kimGroups){
+    	List<GroupInfo> lRet = null;
+
+    	if(kimGroups != null){
+    		lRet = new ArrayList<GroupInfo>();
+
+    		for(GroupImpl gi: kimGroups){
+    			lRet.add(this.toGroupInfo(gi));
+    		}
+    	}
+
+    	return lRet;
+    }
+
     protected GroupImpl copyInfoToGroup(GroupInfo info, GroupImpl group) {
         group.setActive(info.isActive());
         group.setGroupDescription(info.getGroupDescription());
@@ -698,7 +718,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
 
         // TODO: fix this to use the KimTypeInfoService to get the attribute information rather than selecting from the database
-        
+
         for(String key : infoMap.keySet()) {
             Map<String,String> criteria = new HashMap<String,String>();
             criteria.put("attributeName", key);
@@ -763,4 +783,14 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
     protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
         return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
     }
+
+    /**
+	 * @return the lookupService
+	 */
+    protected LookupService getLookupService() {
+		if(lookupService == null) {
+			lookupService = KNSServiceLocator.getLookupService();
+		}
+		return lookupService;
+	}
 }

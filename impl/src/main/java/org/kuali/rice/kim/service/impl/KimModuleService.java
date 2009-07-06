@@ -100,8 +100,8 @@ public class KimModuleService extends ModuleServiceBase {
 			return (List)getPersonService().findPeople( (Map)fieldValues );
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
-		} else if ( Group.class.isAssignableFrom(externalizableBusinessObjectClass) ) { 
-			return (List)getGroupService().lookupGroupIds( (Map)fieldValues );
+		} else if ( Group.class.isAssignableFrom(externalizableBusinessObjectClass) ) {
+			return (List)getGroupService().lookupGroups( (Map)fieldValues );
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );

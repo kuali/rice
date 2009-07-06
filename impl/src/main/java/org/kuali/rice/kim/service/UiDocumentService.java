@@ -25,7 +25,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -118,5 +117,8 @@ public interface UiDocumentService {
 	public RoleMemberImpl getRoleMember(String roleMemberId);
 	
 	public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues);
+	
+	public boolean canModifyEntity( String principalId );
+	public boolean canOverrideEntityPrivacyPreferences( String principalId );
 
 }

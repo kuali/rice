@@ -31,7 +31,6 @@ import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.AddressType;
 import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -112,7 +111,7 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 */
 	public String getCountryCode() {
 	    if (isSuppressAddress()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "XX";
         }
 		return countryCode;
 	}
@@ -161,7 +160,7 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 */
 	public String getPostalCode() {
 	    if (isSuppressAddress()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "00000";
         }
 		return postalCode;
 	}
@@ -171,7 +170,7 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 */
 	public String getStateCode() {
 	    if (isSuppressAddress()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "XX";
         }
 		return stateCode;
 	}
@@ -269,6 +268,7 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();

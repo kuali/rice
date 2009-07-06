@@ -32,7 +32,6 @@ import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -81,7 +80,7 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 */
 	public String getCountryCode() {
 	    if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "XX";
         }
 		return countryCode;
 	}
@@ -108,7 +107,7 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 */
 	public String getPhoneNumber() {
 	    if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "000-000-0000";
         }
 		return phoneNumber;
 	}

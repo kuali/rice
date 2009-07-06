@@ -28,8 +28,18 @@ import org.apache.commons.lang.StringUtils;
  */
 public class AttributeSet extends HashMap<String,String> {
 
+	private static final long serialVersionUID = -5960854367616060667L;
+
 	public AttributeSet() {
 		super();
+	}
+	
+	/**
+	 * Create an AttributeSet with a single key/value pair.
+	 */
+	public AttributeSet( String key, String value ) {
+		this();
+		put( key, value );
 	}
 	
 	/**

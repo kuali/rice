@@ -64,7 +64,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 */
 	public String getCountryCode() {
 	    if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "XX";
         }
 		return countryCode;
 	}
@@ -91,7 +91,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 */
 	public String getPhoneNumber() {
 	    if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "000-000-0000";
         }
 		return phoneNumber;
 	}

@@ -103,9 +103,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         if ( principalId != null ) {
         	personDocumentForm.setPrincipalId(principalId);
         }
-        forward =  super.execute(mapping, form, request, response);
-        personDocumentForm.setCanModifyEntity(canModifyEntity(personDocumentForm.getPersonDocument()));
-        personDocumentForm.setCanOverrideEntityPrivacyPreferences(canOverrideEntityPrivacyPreferences(personDocumentForm.getPersonDocument()));
+        forward = super.execute(mapping, form, request, response);
+        
+        personDocumentForm.setCanModifyEntity(getUiDocumentService().canModifyEntity(personDocumentForm.getPrincipalId()));
+        personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(personDocumentForm.getPrincipalId()));
 		return forward;
     }
     
@@ -495,44 +496,14 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     	return serviceName;
 
 	}
-
-	private boolean canModifyEntity(IdentityManagementPersonDocument document){
-        boolean rulePassed = true;
-        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.PRINCIPAL_ID, document.getPrincipalId());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorized(
-				document,
-				KimConstants.NAMESPACE_CODE,
-				KimConstants.PermissionTemplateNames.MODIFY_ENTITY,
-				GlobalVariables.getUserSession().getPrincipalId(),
-				additionalPermissionDetails, null)){
-            rulePassed = false;
-		}
-		return rulePassed;
-	}
-
-	private boolean canOverrideEntityPrivacyPreferences(IdentityManagementPersonDocument document){
-        boolean rulePassed = true;
-        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.PRINCIPAL_ID, document.getPrincipalId());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorized(
-				document,
-				KimConstants.NAMESPACE_CODE,
-				KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
-				GlobalVariables.getUserSession().getPrincipalId(),
-				additionalPermissionDetails, null)){
-            rulePassed = false;
-		}
-		return rulePassed;
-	}
 	
     @Override
     public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm impdForm = (IdentityManagementPersonDocumentForm) form;
 
-        ActionForward actionAfterPayeeLookup = this.refreshAfterDelegationMemberRoleSelection(mapping, impdForm, request);
-        if (actionAfterPayeeLookup != null) {
-            return actionAfterPayeeLookup;
+        ActionForward forward = this.refreshAfterDelegationMemberRoleSelection(mapping, impdForm, request);
+        if (forward != null) {
+            return forward;
         }
 
         return super.refresh(mapping, form, request, response);
@@ -540,7 +511,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
     public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	return super.performLookup(mapping, form, request, response);
-}
+    }
+    
     private ActionForward refreshAfterDelegationMemberRoleSelection(ActionMapping mapping, IdentityManagementPersonDocumentForm impdForm, HttpServletRequest request) {
         String refreshCaller = impdForm.getRefreshCaller();
 

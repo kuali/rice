@@ -85,7 +85,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 */
 	public String getCountryCode() {
 	    if (isSuppressAddress()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "XX";
         }
 		return countryCode;
 	}
@@ -132,7 +132,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 */
 	public String getPostalCode() {
 	    if (isSuppressAddress()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "00000";
         }
 		return postalCode;
 	}
@@ -142,7 +142,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 */
 	public String getStateCode() {
 	    if (isSuppressAddress()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
+            return "XX";
         }
 		return stateCode;
 	}

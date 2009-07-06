@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -71,7 +70,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule, AddRoleRule, AddPersonDocumentRoleQualifierRule, AddPersonDelegationMemberRule {
 
-	private static final Logger LOG = Logger.getLogger( IdentityManagementPersonDocumentRule.class );
+//	private static final Logger LOG = Logger.getLogger( IdentityManagementPersonDocumentRule.class );
 	
 	private AddGroupRule addGroupRule;
 	private AddRoleRule  addRoleRule;

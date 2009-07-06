@@ -31,7 +31,7 @@ public class KimConstants {
 	public static final String KIM_TYPE_DEFAULT_NAME = "Default";
 	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KUALI";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
-	public static final String RESTRICTED_DATA_MASK = "xxxxxx";
+	public static final String RESTRICTED_DATA_MASK = "Xxxxxx";
 
 	//Kim services constants for API
 	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
@@ -80,7 +80,6 @@ public class KimConstants {
 
     	public static final String USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
 
-    	public static final String MODIFY_ENTITY = "Modify Entity";
     	public static final String POPULATE_GROUP = "Populate Group";
     	public static final String ASSIGN_ROLE = "Assign Role";
     	public static final String GRANT_PERMISSION = "Grant Permission";
@@ -99,6 +98,7 @@ public class KimConstants {
 		public static final String LOG_IN = "Log In";
 		public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
 		public static final String OVERRIDE_ENTITY_PRIVACY_PREFERENCES = "Override Entity Privacy Preferences";
+    	public static final String MODIFY_ENTITY = "Modify Entity";
 	}
 
 	public static class KimUIConstants {

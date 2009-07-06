@@ -211,6 +211,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 
         model.put("userRecipients", request.getParameter("userRecipients"));
         model.put("workgroupRecipients", request.getParameter("workgroupRecipients"));
+        model.put("workgroupNamespaceCodes", request.getParameter("workgroupNamespaceCodes"));
 
 	return model;
     }
@@ -408,6 +409,9 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	// workgroup recipient names
 	String[] workgroupRecipients = parseWorkgroupRecipients(request);
 
+	// workgroup namespace names
+	String[] workgroupNamespaceCodes = parseWorkgroupNamespaceCodes(request);
+	
 	// title
         String title = request.getParameter("title");
         if (!StringUtils.isEmpty(title)) {
@@ -522,14 +526,25 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 
 	if (workgroupRecipients != null && workgroupRecipients.length > 0) {
 	    recipientsExist = true;
-	    for (String workgroupRecipientId : workgroupRecipients) {
-	        if (isWorkgroupRecipientValid(workgroupRecipientId, errors)) {
-        		NotificationRecipient recipient = new NotificationRecipient();
-        		recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
-        		recipient.setRecipientId(workgroupRecipientId);
-        		notification.addRecipient(recipient);
-	        }
-	    }
+	    if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
+	    	if (workgroupNamespaceCodes.length == workgroupRecipients.length) {
+	    		for (int i = 0; i < workgroupRecipients.length; i++) {
+	    			if (isWorkgroupRecipientValid(workgroupRecipients[i], workgroupNamespaceCodes[i], errors)) {
+	    				NotificationRecipient recipient = new NotificationRecipient();
+	    				recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+	    				recipient.setRecipientId(
+	    						getIdentityManagementService().getGroupByName(workgroupNamespaceCodes[i], workgroupRecipients[i]).getGroupId());
+	    				notification.addRecipient(recipient);
+	    			}
+	    		}
+	    	} else {
+	    		errors.addError("The number of groups must match the number of namespace codes");
+	    	}
+	    } else {
+			errors.addError("You must specify a namespace code for every group name");
+		}
+	} else if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
+		errors.addError("You must specify a group name for every namespace code");
 	}
 
 	// check to see if there were any errors

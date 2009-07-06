@@ -134,13 +134,21 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="thnormal"><strong>Workgroup Recipients:</strong></td>
+					<td class="thnormal"><strong>Group Recipients:</strong></td>
 					<td class="thnormal">
 						<input type="text" name="workgroupRecipients" value="${workgroupRecipients}"/>
                         <img src="images/transparent_002.gif" height="1" width="5">
                         <i>(separate names using a comma - i.e. GroupA, GroupB, ...)</i>
 					</td>
 				</tr>
+				<tr>
+                    <td class="thnormal"><strong>Group Namespace Codes:</strong></td>
+                    <td class="thnormal">
+						<input type="text" name="workgroupNamespaceCodes" value="${workgroupNamespaceCodes}"/>
+                        <img src="images/transparent_002.gif" height="1" width="5">
+                        <i>(separate namespace codes using a comma, corresponding them with the group names above - i.e. NamespaceA, NamespaceB, ...)</i>
+                    </td>
+                </tr>
                 <tr>
                     <td class="thnormal"><strong>Title:</strong></td>
                     <td class="thnormal">

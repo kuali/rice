@@ -2,6 +2,7 @@ package org.kuali.rice.kew.doctype;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,10 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 
-public class DocumentTypeSecurity {
+public class DocumentTypeSecurity implements Serializable {
+
+  private static final long serialVersionUID = -1886779857180381404L;
+
   private Boolean active;
 
   private Boolean initiatorOk;
@@ -172,7 +176,7 @@ public class DocumentTypeSecurity {
       throw new WorkflowRuntimeException(err);
     }
   }
-  
+
   public List<SecurityAttribute> getSecurityAttributes() {
     return this.securityAttributes;
   }
@@ -243,5 +247,119 @@ public class DocumentTypeSecurity {
       return false;
     }
   }
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.active == null) ? 0 : this.active.hashCode());
+		result = prime * result
+				+ ((this.allowedRoles == null) ? 0 : this.allowedRoles.hashCode());
+		result = prime
+				* result
+				+ ((this.disallowedRoles == null) ? 0 : this.disallowedRoles
+						.hashCode());
+		result = prime * result
+				+ ((this.initiatorOk == null) ? 0 : this.initiatorOk.hashCode());
+		result = prime
+				* result
+				+ ((this.routeLogAuthenticatedOk == null) ? 0
+						: this.routeLogAuthenticatedOk.hashCode());
+		result = prime
+				* result
+				+ ((this.searchableAttributes == null) ? 0
+						: this.searchableAttributes.hashCode());
+		result = prime
+				* result
+				+ ((this.securityAttributes == null) ? 0 : this.securityAttributes
+						.hashCode());
+		result = prime * result
+				+ ((this.workgroups == null) ? 0 : this.workgroups.hashCode());
+		return result;
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		DocumentTypeSecurity other = (DocumentTypeSecurity) obj;
+		if (this.active == null) {
+			if (other.active != null) {
+				return false;
+			}
+		} else if (!this.active.equals(other.active)) {
+			return false;
+		}
+		if (this.allowedRoles == null) {
+			if (other.allowedRoles != null) {
+				return false;
+			}
+		} else if (!this.allowedRoles.equals(other.allowedRoles)) {
+			return false;
+		}
+		if (this.disallowedRoles == null) {
+			if (other.disallowedRoles != null) {
+				return false;
+			}
+		} else if (!this.disallowedRoles.equals(other.disallowedRoles)) {
+			return false;
+		}
+		if (this.initiatorOk == null) {
+			if (other.initiatorOk != null) {
+				return false;
+			}
+		} else if (!this.initiatorOk.equals(other.initiatorOk)) {
+			return false;
+		}
+		if (this.routeLogAuthenticatedOk == null) {
+			if (other.routeLogAuthenticatedOk != null) {
+				return false;
+			}
+		} else if (!this.routeLogAuthenticatedOk
+				.equals(other.routeLogAuthenticatedOk)) {
+			return false;
+		}
+		if (this.searchableAttributes == null) {
+			if (other.searchableAttributes != null) {
+				return false;
+			}
+		} else if (!this.searchableAttributes.equals(other.searchableAttributes)) {
+			return false;
+		}
+		if (this.securityAttributes == null) {
+			if (other.securityAttributes != null) {
+				return false;
+			}
+		} else if (!this.securityAttributes.equals(other.securityAttributes)) {
+			return false;
+		}
+		if (this.workgroups == null) {
+			if (other.workgroups != null) {
+				return false;
+			}
+		} else if (!this.workgroups.equals(other.workgroups)) {
+			return false;
+		}
+		return true;
+	}
+
 
 }

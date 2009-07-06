@@ -91,7 +91,7 @@
 
   <bean id="SampleBO-lookupDefinition" parent="SampleBO-lookupDefinition-parentBean"/>
 
-  <bean id="SampleBO-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Sample B O Lookup" p:instructions="Lookup a Sample B O">
+  <bean id="SampleBO-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Sample B O Lookup">
     <property name="defaultSort">
       <bean parent="SortDefinition">
         <property name="attributeNames">

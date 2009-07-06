@@ -17,7 +17,7 @@
     </property>
     <property name="documentTypeName" value="AccountType2MaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="usePessimisticLocking" value="true" />
+    <property name="usePessimisticLocking" value="true"/>
   </bean>
 
 <!-- Maintenance Section Definitions -->

@@ -8,7 +8,7 @@
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementPersonDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer"/>
     <property name="documentPresentationControllerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase"/> 
-    <property name="encryptDocumentDataInPersistentSessionStorage" value="true" />
+    <property name="encryptDocumentDataInPersistentSessionStorage" value="true"/>
     <!-- <property name="documentTypeCode" value="IMPN" /> -->
     <property name="allowsCopy" value="true"/>
     <property name="attributes">
@@ -82,9 +82,9 @@
     </property>
     <property name="attributeSecurity">
 		<bean parent="AttributeSecurity">
-  			<property name="mask" value="true" /> 
+  			<property name="mask" value="true"/> 
 			<property name="maskFormatter">
-  			<bean parent="MaskFormatterLiteral" p:literal="*********" /> 
+  			<bean parent="MaskFormatterLiteral" p:literal="*********"/> 
   			</property>
   		</bean>
   	</property>

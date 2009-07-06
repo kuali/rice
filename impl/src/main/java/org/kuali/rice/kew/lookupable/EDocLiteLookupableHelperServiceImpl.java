@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.edl.UserAction;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -56,7 +57,9 @@ public class EDocLiteLookupableHelperServiceImpl  extends KualiLookupableHelperS
         Properties parameters = new Properties();
         parameters.put("userAction", UserAction.ACTION_CREATE);
         parameters.put("edlName", edlAssociation.getEdlName());
-        href = UrlFactory.parameterizeUrl("../kew/EDocLite", parameters);
+        href = UrlFactory.parameterizeUrl(
+        		ConfigContext.getCurrentContextConfig().getKEWBaseURL()+"/EDocLite", 
+        		parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, null, "Create Document");
         return anchorHtmlData;

@@ -304,11 +304,13 @@ public class ActionListForm extends KualiForm {
 	public void setHeaderButtons(List<ExtraButton> headerButtons) {
 		this.headerButtons = headerButtons;
 	}
+	
 	public String getMenuBar(){
-		  String url = "";
-		  Properties parameters = new Properties();
-		  url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
-          url = "<a href=\"" + url + "\"><img src=\"../kr/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+		String url = "";
+		Properties parameters = new Properties();
+		url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+		String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
+		url = "<a href=\"" + url + "\"><img src=\""+krBaseUrl+"/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 		return url;
 	}
 
@@ -341,9 +343,9 @@ public class ActionListForm extends KualiForm {
         //if (documentPopupInd) {
         //    documentPopup = "true";
         //}
-        setRouteLogPopup(new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND)));
-        setDocumentPopup(new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND)));
-        request.setAttribute("noRefresh", new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
+        setRouteLogPopup(Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND)));
+        setDocumentPopup(Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND)));
+        request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
 		super.populate(request);
 	}
 

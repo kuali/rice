@@ -418,6 +418,38 @@ public abstract class BaseConfig implements Config {
         }
         return Boolean.valueOf(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKEWBaseURL()
+     */
+    public String getKEWBaseURL() {
+    	return getProperty(Config.KEW_URL);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKIMBaseURL()
+     */
+    public String getKIMBaseURL() {
+    	return getProperty(Config.KIM_URL);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKRBaseURL()
+     */
+    public String getKRBaseURL() {
+    	return getProperty(Config.KR_URL);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKENBaseURL()
+     */
+    public String getKENBaseURL() {
+    	return getProperty(Config.KEN_URL);
+    }
 
     public String toString() {
         return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();

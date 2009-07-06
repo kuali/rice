@@ -107,6 +107,26 @@ public interface Config {
 	public static final String DATASOURCE_PASSWORD = "datasource.password";
 
 	/**
+	 * Configuration key under which to specify the base url for workflow
+	 */
+	public static final String KEW_URL = "kew.url";
+
+	/**
+	 * Configuration key under which to specify the base url for rice
+	 */
+	public static final String KR_URL = "kr.url";
+
+	/**
+	 * Configuration key under which to specify the base url for kim
+	 */
+	public static final String KIM_URL = "kim.url";
+	
+	/**
+	 * Configuration key under which to specify the base url for kim
+	 */
+	public static final String KEN_URL = "ken.url";
+
+	/**
 	 * Use DEFAULT_KEW_NOTE_CLASS
 	 */
 	@Deprecated
@@ -178,6 +198,26 @@ public interface Config {
 	public String getClientWSDLFullPathAndFileName();
 
 	public String getWebServicesConnectRetry();
+	
+	/**
+	 * @return the base URL for KEW
+	 */
+	public String getKEWBaseURL();
+	
+	/**
+	 * @return the base URL for KIM
+	 */
+	public String getKIMBaseURL();
+	
+	/**
+	 * @return the base URL for KRice
+	 */
+	public String getKRBaseURL();
+
+	/**
+	 * @return the base URL for KEN
+	 */
+	public String getKENBaseURL();
 
 	public String getLog4jFileLocation();
 

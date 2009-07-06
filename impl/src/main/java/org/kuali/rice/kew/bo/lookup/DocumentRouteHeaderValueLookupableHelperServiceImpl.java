@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
@@ -324,7 +325,10 @@ KualiLookupableHelperServiceImpl {
 			//if !superuser
 			Long routeHeaderId = doc.getRouteHeaderId();
 			link.setDisplayText(routeHeaderId+"");
-			String href = "../"+KEWConstants.APP_CODE + "/" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+			
+			String href = ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/"+
+			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" + 
+			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
 			link.setHref(href);
 
 			return link;

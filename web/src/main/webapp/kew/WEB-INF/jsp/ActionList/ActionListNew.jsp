@@ -78,19 +78,19 @@
 	  <div style="float:left; width:75px">
 	  <a
          href='<c:out value="Preferences.do?returnMapping=viewActionList&returnLocation=${ConfigProperties.kew.url}/ActionList.do" />'  title="preferences"><img
-         src="../kr/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
+         src="${ConfigProperties.kr.url}/images/tinybutton-preferences.gif" class="tinybutton" alt="preferences" title="preferences"
          border="0" /></a>
       </div>
       <div style="float:left; width:52px">
 	  <a
          href='<c:out value="ActionList.do?methodToCall=start" />'  title="refresh"><img
-         src="../kr/images/tinybutton-refresh.gif" class="tinybutton" alt="refresh" title="refresh"
+         src="${ConfigProperties.kr.url}/images/tinybutton-refresh.gif" class="tinybutton" alt="refresh" title="refresh"
          border="0" /></a>
        </div>
        <div style="float:left; width:39px">
 	   <a
          href='<c:out value="ActionListFilter.do?methodToCall=start" />'  title="filter"><img
-         src="../kr/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
+         src="${ConfigProperties.kr.url}/images/tinybutton-filter.gif" class="tinybutton" alt="filter" title="filter"
          border="0" /></a>
         </div>
 
@@ -112,7 +112,7 @@
 		<div style="float:left; width:70px">
 	   <a
          href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
-         src="../kr/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
+         src="${ConfigProperties.kr.url}/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
          border="0" /></a>
         </div>
 		</c:if>
@@ -123,7 +123,7 @@
 			<html-el:text property="helpDeskActionListUserName" size="12" style="position: relative; top: -.35em;" />&nbsp;
             </div>
             <div style="float:left">
-            <html-el:image src="../kr/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" styleClass="tinybutton" />
+            <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" styleClass="tinybutton" />
             </div>
 			<c:if test="${kewUserSession.helpDeskActionListPerson != null}">
 				<a href="
@@ -199,7 +199,7 @@
                         <div align="right">
                           <c:if test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox && !ActionListFormNew.outBoxEmpty}">
                            <html-el:image
-                              src="../kr/images/buttonsmall_delselitems.gif" align="absmiddle"
+                              src="${ConfigProperties.kr.url}/images/buttonsmall_delselitems.gif" align="absmiddle"
                               property="methodToCall.removeOutboxItems" />
                           </c:if>
                         </div>

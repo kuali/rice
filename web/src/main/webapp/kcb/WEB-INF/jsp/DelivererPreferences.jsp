@@ -7,7 +7,7 @@
 <html>
 <head>
 <title>Kuali Communications Broker - Deliverer Configuration</title>
-<link href="../ken/css/notification.css" rel="stylesheet" type="text/css" />
+<link href="${ConfigProperties.ken.url}/css/notification.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -70,10 +70,10 @@ channels.</p>
     </c:forEach>
     <tr>
         <td class="thnormal" colspan="3" align="center">
-            <input type="image" src="../ken/images/buttonsmall_save.gif" value="save" alt="Save" name="save" />
-            <img src="../ken/images/transparent_002.gif" height="1" width="1">
+            <input type="image" src="${ConfigProperties.ken.url}/images/buttonsmall_save.gif" value="save" alt="Save" name="save" />
+            <img src="${ConfigProperties.ken.url}/images/transparent_002.gif" height="1" width="1">
             <a href="${ConfigProperties.application.url}/portal.do">
-              <img src="../ken/images/buttonsmall_cancel.gif" alt="Cancel" border="0" />
+              <img src="${ConfigProperties.ken.url}/images/buttonsmall_cancel.gif" alt="Cancel" border="0" />
             </a>
         </td>
     </tr>

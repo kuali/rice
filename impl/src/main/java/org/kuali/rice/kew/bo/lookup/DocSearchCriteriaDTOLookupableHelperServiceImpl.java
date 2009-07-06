@@ -29,6 +29,7 @@ import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
@@ -58,7 +59,6 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.DateTimeService;
-import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KualiDecimal;
@@ -366,7 +366,7 @@ KualiLookupableHelperServiceImpl {
                         keyValue.setvalue(keyValue.getUserDisplayValue());
                         col.setEscapeXMLValue(false);
                 	} else if (StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, keyValue.getkey())) {
-                		anchor.setHref("../kr/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\" target=\"_blank\""));
+                		anchor.setHref(StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\" target=\"_blank\""));
                 		col.setMaxLength(100); //for now force this
                 	}
 
@@ -421,7 +421,11 @@ KualiLookupableHelperServiceImpl {
 			//if !superuser
 			Long routeHeaderId = doc.getRouteHeaderId();
 			link.setDisplayText(routeHeaderId+"");
-			String href = "../"+KEWConstants.APP_CODE + "/" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+			
+			String href = ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/"+ KEWConstants.APP_CODE + "/" + 
+			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" + 
+			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+			
 			link.setHref(href);
 
 			return link;

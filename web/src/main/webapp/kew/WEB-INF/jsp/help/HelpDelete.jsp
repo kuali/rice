@@ -2,7 +2,7 @@
 <html-el:html>
 <head>
 <title>To delete this help entry?</title>
-<link href="../kr/css/kuali.css" rel="stylesheet" type="text/css">
+<link href="${ConfigProperties.kr.url}/css/kuali.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="scripts/en-common.js"></script>
 </head>
 <body>

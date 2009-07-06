@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 
 /**
@@ -30,7 +31,8 @@ public class RuleBaseValuesLookupableImpl extends KualiLookupableImpl {
 	public String getCreateNewUrl() {
         String url = "";
         if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
-            url = "<a href=\"../kew/Rule.do\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+        	String kewBaseUrl = ConfigContext.getCurrentContextConfig().getKEWBaseURL();
+            url = "<a href=\""+kewBaseUrl+"/Rule.do\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
         return url;
     }

@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -526,8 +527,10 @@ public class StandardDocumentSearchResultProcessor implements
 	public DisplayValues getInitiatorFieldDisplayValue(
 			String fieldLinkTextValue, String initiatorWorkflowId) {
 		DisplayValues dv = new DisplayValues();
-		dv.htmlValue = "<a href=\"../kr/inquiry.do?businessObjectClassName=org.kuali.rice.kim.bo.impl.PersonImpl&methodToCall=continueWithInquiry&principalId="
-				+ initiatorWorkflowId
+		
+		dv.htmlValue = "<a href=\""+ ConfigContext.getCurrentContextConfig().getKRBaseURL() +
+		"/inquiry.do?businessObjectClassName=org.kuali.rice.kim.bo.impl.PersonImpl&" +
+		"methodToCall=continueWithInquiry&principalId="+ initiatorWorkflowId
 				+ "\" target=\"_blank\">"
 				+ fieldLinkTextValue + "</a>";
 		dv.userDisplayValue = fieldLinkTextValue;

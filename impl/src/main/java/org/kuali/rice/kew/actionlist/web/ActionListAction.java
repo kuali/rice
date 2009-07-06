@@ -112,17 +112,18 @@ public class ActionListAction extends KualiAction {
     private List<ExtraButton> getHeaderButtons(){
     	List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
     	ExtraButton eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-preferences.gif");
+    	String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
+    	eb.setExtraButtonSource( krBaseUrl + "/images/tinybutton-preferences.gif");
     	eb.setExtraButtonOnclick("Preferences.do?returnMapping=viewActionList");
 
     	headerButtons.add(eb);
     	eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-refresh.gif");
+    	eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-refresh.gif");
     	eb.setExtraButtonProperty("methodToCall.start");
 
     	headerButtons.add(eb);
     	eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-filter.gif");
+    	eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-filter.gif");
     	eb.setExtraButtonOnclick("javascript: window.open('ActionListFilter.do?methodToCall=start');");
     	headerButtons.add(eb);
 
@@ -393,7 +394,7 @@ public class ActionListAction extends KualiAction {
     			actionItem.initialize(preferences);
     			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = (DocumentRouteHeaderValueActionListExtension)actionItem.getRouteHeader();
     			routeHeaderExtension.setActionListInitiatorPrincipal(routeHeaderExtension.getInitiatorPrincipal());
-    			actionItem.setActionItemIndex(new Integer(index));
+    			actionItem.setActionItemIndex(Integer.valueOf(index));
     			//set background colors for document statuses
     			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
     				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));

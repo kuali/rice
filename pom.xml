@@ -163,6 +163,40 @@
                             </systemProperties>
                         </configuration>
                     </plugin>
+                    <plugin>
+					  <groupId>org.codehaus.mojo</groupId>
+					  <artifactId>buildnumber-maven-plugin</artifactId>
+					  <executions>
+					    <execution>
+					      <phase>validate</phase>
+					      <goals>
+					        <goal>create</goal>
+					      </goals>
+					    </execution>
+					  </executions>
+					  <configuration>
+					    <format>{0,date,yyyy/MM/dd-HH:mm:ss}</format>
+					    <items>
+					      <item>timestamp</item>
+					    </items>
+					    <buildNumberPropertyName>current.timestamp</buildNumberPropertyName>
+					  </configuration>
+					 </plugin>
+					 <plugin>
+					  <groupId>org.apache.maven.plugins</groupId>
+					  <artifactId>maven-jar-plugin</artifactId>
+					  <version>2.2</version>
+					  <configuration>
+					    <archive>
+						  <manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						  </manifest>					    
+					      <manifestEntries>
+					        <Build-Time>${current.timestamp}</Build-Time>
+					      </manifestEntries>
+					    </archive>
+					  </configuration>
+					</plugin>
                     <!--<plugin>
         				<groupId>org.codehaus.mojo</groupId>
         				<artifactId>cobertura-maven-plugin</artifactId>

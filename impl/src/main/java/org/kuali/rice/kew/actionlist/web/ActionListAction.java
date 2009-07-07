@@ -444,6 +444,7 @@ public class ActionListAction extends KualiAction {
     	boolean haveCancels = false;
     	boolean haveDisapproves = false;
     	boolean haveCustomActions = false;
+    	boolean haveDisplayParameters = false;
     	List customActionListProblemIds = new ArrayList();
     	SortOrderEnum sortOrder = parseSortOrder(sortDirection);
     	int startIndex = (page.intValue() - 1) * pageSize;
@@ -495,6 +496,7 @@ public class ActionListAction extends KualiAction {
     				haveDisapproves = haveDisapproves || itemHasDisapproves;
     				haveCancels = haveCancels || itemHasCancels;
     				haveCustomActions = haveCustomActions || itemHasCustomActions;
+    				haveDisplayParameters = haveDisplayParameters || (actionItem.getDisplayParameters() != null);
     			}
     		} catch (Exception e) {
     			// if there's a problem loading the custom action list attribute, let's go ahead and display the vanilla action item
@@ -532,6 +534,8 @@ public class ActionListAction extends KualiAction {
     		form.setDefaultActions(defaultActions);
     	}
 
+   		form.setHasDisplayParameters(haveDisplayParameters);
+    	
     	generateActionItemErrors(CUSTOMACTIONLIST_PROP, ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY, customActionListProblemIds);
     	return new PaginatedActionList(currentPage, actionList.size(), page.intValue(), pageSize, "actionList", sortCriterion, sortOrder);
     }

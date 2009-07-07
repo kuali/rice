@@ -60,6 +60,8 @@ public class ActionListForm extends KualiForm {
     private Boolean routeLogPopup;
     private Boolean documentPopup;
 
+    private Boolean hasDisplayParameters;
+    
     // "sticky" parameters for paginated action list
     private Integer currentPage;
     private String currentSort;
@@ -365,7 +367,12 @@ public class ActionListForm extends KualiForm {
         this.documentPopup = documentPopup;
     }
 
+	public Boolean getHasDisplayParameters() {
+		return this.hasDisplayParameters;
+	}
 
-
+	public void setHasDisplayParameters(Boolean hasDisplayParameters) {
+		this.hasDisplayParameters = hasDisplayParameters;
+	}
 
 }

@@ -200,7 +200,7 @@
                           <c:if test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox && !ActionListFormNew.outBoxEmpty}">
                            <html-el:image
                               src="${ConfigProperties.kr.url}/images/buttonsmall_delselitems.gif" align="absmiddle"
-                              property="methodToCall.removeOutboxItems" />
+                              property="methodToCall.removeOutboxItems" style="border-style:none;" />
                           </c:if>
                         </div>
                         </td>
@@ -236,9 +236,10 @@
 					<display-el:setProperty name="export.banner" value="" />
 					<display-el:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display-el:setProperty name="css.tr.odd" value="actionlist_anyRow" />
-                    <c:if test="${kewUserSession.helpDeskActionListPerson == null && result.displayParameters != null}">
+                    <c:if test="${kewUserSession.helpDeskActionListPerson == null && ActionListFormNew.hasDisplayParameters}">
   					  <display-el:column title="&nbsp;">
-
+						<c:choose>
+						   <c:when test="${result.displayParameters != null}">
                              <br>
                              <a id='A<c:out value="${result.actionItemIndex}"/>'
                               href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
@@ -250,7 +251,9 @@
                              src="images/tinybutton-show.gif" alt="show" width="45" height="15"
                              border="0" id='F<c:out value="${result.actionItemIndex}"/>'></a>
                              <br>
-
+                           </c:when>
+                           <c:otherwise>&nbsp;</c:otherwise>
+						</c:choose>
                       </display-el:column>
                     </c:if>
 					<display-el:column sortable="true" title="${documentIdLabel}"

@@ -28,7 +28,7 @@ public abstract class BusinessObjectTestCase extends KCBTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        businessObjectDao = services.getGenericDao();
+        businessObjectDao = services.getKcbGenericDao();
     }
 
 	/**

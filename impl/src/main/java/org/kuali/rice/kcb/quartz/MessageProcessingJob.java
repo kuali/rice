@@ -76,7 +76,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
 
     public MessageProcessingJob() {
-        dao = GlobalKCBServiceLocator.getInstance().getGenericDao();
+        dao = GlobalKCBServiceLocator.getInstance().getKcbGenericDao();
         registry = GlobalKCBServiceLocator.getInstance().getMessageDelivererRegistryService();
         messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
         txManager = GlobalKCBServiceLocator.getInstance().getTransactionManager();

@@ -50,5 +50,36 @@
 			<ref local="jtaTransactionManager" />
 		</property>
 	</bean>
+	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+	</bean>
+	
+		<!-- Proxy for rollback on all exceptions -->
+	<bean id="matchAllWithPropReqCheckedException" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource"
+		lazy-init="true">
+		<property name="transactionAttribute">
+			<value>PROPAGATION_REQUIRED,-Exception</value>
+		</property>
+	</bean>
+
+	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
+		<property name="transactionAttribute">
+			<value>PROPAGATION_REQUIRED</value>
+		</property>
+	</bean>
+
+	<bean id="matchAllTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor" lazy-init="true">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributeSource">
+			<ref bean="matchAllWithPropReq" />
+		</property>
+	</bean>
+	
+	<bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
 
 </beans>

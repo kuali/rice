@@ -87,40 +87,10 @@
 		<property name="serverDataSource" value="false"/>
 	</bean>
 
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-	</bean>
-
-	<!-- Proxy for rollback on all exceptions -->
-
-	<bean id="matchAllWithPropReqCheckedException" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource"
-		lazy-init="true">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED,-Exception</value>
-		</property>
-	</bean>
-
-	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED</value>
-		</property>
-	</bean>
-
-	<bean id="matchAllTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributeSource">
-			<ref bean="matchAllWithPropReq" />
-		</property>
-	</bean>
-
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">
 			<list>
-				<idref local="matchAllTxInterceptor" />
+				<idref bean="matchAllTxInterceptor" />
 			</list>
 		</property>
 		<property name="beanNames">
@@ -223,8 +193,6 @@
   <!-- Used for @Transactional so you don't have to wire services up in here -->
   <tx:annotation-driven transaction-manager="transactionManager"/>
   
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
   <!-- 
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">

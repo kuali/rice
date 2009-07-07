@@ -91,14 +91,11 @@
     class="org.kuali.rice.kew.useroptions.dao.impl.UserOptionsDaoJpaImpl" />
 
 
-  <bean id="NoResultExceptionInterceptor"
-    class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
   <bean
     class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
-        <idref local="NoResultExceptionInterceptor" />
+        <idref bean="NoResultExceptionInterceptor" />
       </list>
     </property>
     <property name="beanNames">

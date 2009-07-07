@@ -99,7 +99,7 @@ def searchFile(){
 			File currentFile = new File(it.toString())
 			String ext = currentFile.toString().substring(currentFile.toString().lastIndexOf('.')+1, currentFile.toString().length());
 			if(!currentFile.isHidden() && currentFile.isFile() && ext.equals("xml")){				
-				listOfSearchableFiles.push(currentFile);	
+				listOfSearchableFiles.add(currentFile);	
 			}
 		})
 	}	
@@ -120,11 +120,11 @@ def detectDuplicateFiles(){
 		for(int i = 0; i < listOfSearchableFiles.size();i++){
 			File file = listOfSearchableFiles[i];
 			if(inputFile.name == file.name){						
-				listOfXMLFileObjects.push(file);
+				listOfXMLFileObjects.add(file);
 				numberOfCopies++;						
 				if(numberOfCopies > 1){							
 					if(isRecordingDuplicates){
-						listOfDuplicates.push(listOfSearchableFiles.get(listOfSearchableFiles.indexOf(file)))
+						listOfDuplicates.add(listOfSearchableFiles.get(listOfSearchableFiles.indexOf(file)))
 						listOfSearchableFiles.remove(listOfSearchableFiles.indexOf(file))
 					}
 					else{
@@ -201,7 +201,7 @@ def detectDuplicateSpringBeans(){
 		
 		duplicateBeans.keySet().each({					
 			File file = duplicateBeans.getAt(it)
-			duplicateBeanReport.append("Bean ID:" + it.toString() + "  File:" + file.name + System.getProperty("line.separator"));
+			duplicateBeanReport.append("Bean ID:" + it.toString() + "  File:" + file.path + System.getProperty("line.separator"));
 		})
 		println "Report written to :"+duplicateBeanReport.canonicalPath
 	}

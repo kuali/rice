@@ -41,7 +41,7 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
     private static final String NOTIFICATION_SERVICE = "notificationService";
     private static final String NOTIFICATION_CONTENT_TYPE_SERVICE = "notificationContentTypeService";
     private static final String MESSAGE_CONTENT_SERVICE = "messageContentService";
-    private static final String GENERIC_DAO = "genericDao";
+    private static final String GENERIC_DAO = "kenGenericDao";
     private static final String NOTIFICATION_AUTHORIZATION_SERVICE = "notificationAuthorizationService";
     private static final String NOTIFICATION_WORKFLOW_DOCUMENT_SERVICE = "notificationWorkflowDocumentService";
     private static final String NOTIFICATION_MESSAGE_DELIVERY_DISPATCH_SERVICE = "notificationMessageDeliveryDispatchService";

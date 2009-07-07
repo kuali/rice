@@ -154,12 +154,6 @@
 		<property name="dbPlatform" ref="dbPlatform" />
 	</bean>
 
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-	</bean>
-
 	<bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
 		<property name="name" value="scriptConfigurationFilePaths" />
 		<property name="listItem" value="classpath:org/kuali/rice/kns/dwr-core.xml" />
@@ -901,12 +895,10 @@
   <!-- Used for @Transactional so you don't have to wire services up in here-->
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
-        <idref local="NoResultExceptionInterceptor" />
+        <idref bean="NoResultExceptionInterceptor" />
       </list>
     </property>
     <property name="beanNames">

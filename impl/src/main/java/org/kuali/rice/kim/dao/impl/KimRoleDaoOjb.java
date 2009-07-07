@@ -33,13 +33,13 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -537,58 +537,92 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     private ReportQueryByCriteria setupPermCriteria(Map<String,String> permCrit) {
 
-    	//Criteria tmplSubCrit = new Criteria();
-        Criteria memberSubCrit = new Criteria();
+    	Map<String,String> searchCrit = new HashMap<String, String>();
+
         for (Entry<String, String> entry : permCrit.entrySet()) {
         	if (entry.getKey().equals("permTmplName") || entry.getKey().equals("permTmplNamespaceCode")) {
         		if (entry.getKey().equals("permTmplName")) {
-        			addLikeToCriteria(memberSubCrit, "kimPermission.template.name",entry.getValue());
+        			searchCrit.put("template." + KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME,entry.getValue());
 
         		} else {
-        			addLikeToCriteria(memberSubCrit, "kimPermission.template.namespaceCode",entry.getValue());
+        			searchCrit.put("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE,entry.getValue());
         		}
         	}
 
         	if (entry.getKey().equals("permName") || entry.getKey().equals("permNamespaceCode")) {
         		if (entry.getKey().equals("permName")) {
-        			addLikeToCriteria(memberSubCrit, "kimPermission.name", entry.getValue());
+        			searchCrit.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, entry.getValue());
         		} else {
-        			addLikeToCriteria(memberSubCrit, "kimPermission.namespaceCode",entry.getValue());
+        			searchCrit.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE,entry.getValue());
 
         		}
         	}
         }
 
+        List<KimPermissionInfo> permList = KIMServiceLocator.getPermissionService().lookupPermissions(searchCrit, true);
+        List<String> roleIds = null;
+
+        if(permList != null && !permList.isEmpty()){
+        	roleIds = KIMServiceLocator.getPermissionService().getRoleIdsForPermissions(permList);
+        }
+
+        if(roleIds == null || roleIds.isEmpty()){
+        	roleIds = new ArrayList<String>();
+        	roleIds.add("-1"); // this forces a blank return.
+        }
+
+        Criteria memberSubCrit = new Criteria();
+        memberSubCrit.addIn("roleId", roleIds);
         memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
-		return QueryFactory.newReportQuery(RolePermissionImpl.class, memberSubCrit);
+		return QueryFactory.newReportQuery(RoleImpl.class, memberSubCrit);
 
     }
 
     private ReportQueryByCriteria setupRespCriteria(Map<String,String> respCrit) {
 
-        Criteria memberSubCrit = new Criteria();
+    	try{
+    	//this.loadTestData();
+    	}catch(Exception ex){
+    		ex.printStackTrace();
+    	}
+    	Map<String,String> searchCrit = new HashMap<String, String>();
+
         for (Entry<String, String> entry : respCrit.entrySet()) {
         	if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
         		if (entry.getKey().equals("respTmplName")) {
-        			addLikeToCriteria(memberSubCrit, "kimResponsibility.template.name", entry.getValue());
+        			searchCrit.put("template." + KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME,entry.getValue());
 
         		} else {
-        			addLikeToCriteria(memberSubCrit, "kimResponsibility.template.namespaceCode",entry.getValue());
+        			searchCrit.put("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE,entry.getValue());
         		}
         	}
 
         	if (entry.getKey().equals("respName") || entry.getKey().equals("respNamespaceCode")) {
         		if (entry.getKey().equals("respName")) {
-        			addLikeToCriteria(memberSubCrit, "kimResponsibility.name", entry.getValue());
+        			searchCrit.put(KimConstants.UniqueKeyConstants.RESPONSIBILITY_NAME, entry.getValue());
         		} else {
-        			addLikeToCriteria(memberSubCrit, "kimResponsibility.namespaceCode",entry.getValue());
+        			searchCrit.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE,entry.getValue());
 
         		}
         	}
         }
 
+        List<? extends KimResponsibilityInfo> kriList = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCrit, true);
+        List<String> roleIds = new ArrayList<String>();
+
+        for(KimResponsibilityInfo kri : kriList){
+        	roleIds.addAll(KIMServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(kri, null));
+        }
+
+        if(roleIds == null || roleIds.isEmpty()){
+        	roleIds = new ArrayList<String>();
+        	roleIds.add("-1"); // this forces a blank return.
+        }
+
+        Criteria memberSubCrit = new Criteria();
+        memberSubCrit.addIn("roleId", roleIds);
         memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
-		return QueryFactory.newReportQuery(RoleResponsibilityImpl.class, memberSubCrit);
+		return QueryFactory.newReportQuery(RoleImpl.class, memberSubCrit);
 
     }
 
@@ -736,5 +770,4 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     	return KIMServiceLocator.getGroupService().lookupGroupIds(searchCrit);
     }
-
 }

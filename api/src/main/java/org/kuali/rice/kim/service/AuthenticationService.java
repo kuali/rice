@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * This service is used to extract the name of the authenticated principal from
  * an incoming http request.  Depending on the implementation of this service,
- * it may extract information from a request which has already been authenticed
+ * it may extract information from a request which has already been authenticated
  * (i.e. via another service like CAS or Shiboleth).  Alternatively, this
  * implementation might actually perform the authentication itself based on
  * information available on the http request.

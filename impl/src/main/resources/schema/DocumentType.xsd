@@ -581,7 +581,13 @@ Definitions are applied to the names in the routeNodes section.
               		</documentation>
               	</annotation>
               </element>
-
+			  <element name="role" type="dt:PathNodeType">
+        		<annotation>
+        		  <documentation>
+        		    Generate request to a Role
+        		  </documentation>
+        		</annotation>
+        	  </element>
               <!-- I don't know what this type of route path node is. It is present in EngineConfig.xml in the engine test package. -->
               <element name="simple" type="dt:PathNodeType">
               	<annotation>
@@ -598,6 +604,31 @@ Definitions are applied to the names in the routeNodes section.
               		</documentation>
               	</annotation>
               </element>
+              
+              <element name="process" type="dt:PathNodeType">
+        		<annotation>
+        			<documentation>
+        		 	Group other nodes together.
+        			</documentation>
+        		</annotation>
+        	</element>
+
+        	<element name="split" type="dt:SplitType">
+        		<annotation>
+        			<documentation>
+        		 	Cause branches in the routing path.
+        			</documentation>
+        		</annotation>
+        	</element>
+
+        	<!-- not quite sure what exactly it means to have an orphan join -->
+        	<element name="join" type="dt:NamedElementType">
+        		<annotation>
+        			<documentation>
+        		 	Join branches back together.
+        			</documentation>
+        		</annotation>
+        	</element>
             </choice>
           </sequence>
         </extension>

@@ -16,7 +16,6 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -26,28 +25,8 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-  <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
-
-	<bean id="ksbOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
-		<property name="jcdAliases">
-			<list>
-				<value>ksbMessageDataSource</value>
-				<value>ksbRegistryDataSource</value>
-			</list>
-		</property>
-		<property name="metadataLocation" value="classpath:org/kuali/rice/ksb/config/OJB-repository-ksb.xml" />
+	<bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
+		<property name="transactionManager" ref="jtaTransactionManager" />
 	</bean>
-	
-  <bean id="bamDao" class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDAOOjbImpl" depends-on="ksbOjbConfigurer">
-    <property name="jcdAlias" value="ksbRegistryDataSource" />
-  </bean>
-  
-  <bean id="messageQueueDao" class="org.kuali.rice.ksb.messaging.dao.impl.MessageQueueDAOOjbImpl" depends-on="ksbOjbConfigurer">
-    <property name="jcdAlias" value="ksbMessageDataSource" />
-  </bean>
-  
-  <bean id="serviceInfoDao" class="org.kuali.rice.ksb.messaging.dao.impl.ServiceInfoDAOOjbImpl" depends-on="ksbOjbConfigurer">
-    <property name="jcdAlias" value="ksbRegistryDataSource" />
-  </bean>
 
 </beans>

@@ -210,6 +210,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     		List<String> roleIds = getRoleIdsForResponsibility( r, qualification );
     		results.addAll( getActionsForResponsibilityRoles( r, roleIds, qualification) );
     	}
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Found " + results.size() + " matching ResponsibilityActionInfo objects");
+    	}
     	return results;
     }
     

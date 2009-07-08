@@ -14,15 +14,6 @@
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
-	<bean id="kewOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
-		<property name="jcdAliases">
-			<list>
-				<value>enWorkflowDataSource</value>
-			</list>
-		</property>
-		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/config/OJB-repository-kew.xml" />
-	</bean>
-
 	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>

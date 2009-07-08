@@ -21,7 +21,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
- * This is a Spring interceptor that can catch NoSuchResult excpetions from JPA and instead of having to catch every
+ * This is a Spring interceptor that can catch NoSuchResult exceptions from JPA and instead of having to catch every
  * exception from a query, it just returns null as we are used to in OJB.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)

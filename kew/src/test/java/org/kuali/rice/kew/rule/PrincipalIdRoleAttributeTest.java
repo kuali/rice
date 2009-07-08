@@ -27,6 +27,7 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.xml.sax.InputSource;
 
 /**
@@ -36,32 +37,32 @@ import org.xml.sax.InputSource;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
-public class NetworkIdRoleAttributeTest extends KEWTestCase {
+public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 
-	private static final String ATTRIBUTE_NAME = "NetworkIdRoleAttribute";
-	private static final String NETWORK_ID_PROP = "networkId";
+	private static final String ATTRIBUTE_NAME = "PrincipalIdRoleAttribute";
+	private static final String PRINCIPAL_ID_PROP = "principalId";
 
 	@Test
-	public void testNetworkIdAttribute() throws Exception {
-		loadXmlFile("NetworkIdRoleAttributeTestConfig.xml");
+	public void testPrincipalIdAttribute() throws Exception {
+		loadXmlFile("PrincipalIdRoleAttributeTestConfig.xml");
 
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(
-				"ewestfal"), "NetworkIdRoleAttributeTest");
+				"ewestfal"), "PrincipalIdRoleAttributeTest");
 
-		WorkflowAttributeDefinitionDTO networkIdDef1 = new WorkflowAttributeDefinitionDTO(
-				"NetworkIdRoleAttribute");
-		PropertyDefinitionDTO networkIdProp1 = new PropertyDefinitionDTO(
-				NETWORK_ID_PROP, "rkirkend");
-		networkIdDef1.addProperty(networkIdProp1);
+		WorkflowAttributeDefinitionDTO principalIdDef1 = new WorkflowAttributeDefinitionDTO(
+				"PrincipalIdRoleAttribute");
+		PropertyDefinitionDTO principalIdProp1 = new PropertyDefinitionDTO(
+				PRINCIPAL_ID_PROP, KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
+		principalIdDef1.addProperty(principalIdProp1);
 
-		WorkflowAttributeDefinitionDTO networkIdDef2 = new WorkflowAttributeDefinitionDTO(
-				"NetworkIdRoleAttribute");
-		PropertyDefinitionDTO networkIdProp2 = new PropertyDefinitionDTO(
-				NETWORK_ID_PROP, "bmcgough");
-		networkIdDef2.addProperty(networkIdProp2);
+		WorkflowAttributeDefinitionDTO principalIdDef2 = new WorkflowAttributeDefinitionDTO(
+				"PrincipalIdRoleAttribute");
+		PropertyDefinitionDTO principalIdProp2 = new PropertyDefinitionDTO(
+				PRINCIPAL_ID_PROP, KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("bmcgough").getPrincipalId());
+		principalIdDef2.addProperty(principalIdProp2);
 
-		document.addAttributeDefinition(networkIdDef1);
-		document.addAttributeDefinition(networkIdDef2);
+		document.addAttributeDefinition(principalIdDef1);
+		document.addAttributeDefinition(principalIdDef2);
 
 		document.routeDocument("Routing!");
 
@@ -96,19 +97,19 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 	}
 
 	@Test
-	public void testParameterizedNetworkIdAttribute() throws Exception {
-		loadXmlFile("ParameterizedNetworkIdRoleAttributeTestConfig.xml");
+	public void testParameterizedPrincipalIdAttribute() throws Exception {
+		loadXmlFile("ParameterizedPrincipalIdRoleAttributeTestConfig.xml");
 
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(
-				"ewestfal"), "NetworkIdRoleAttributeTest");
+				"ewestfal"), "PrincipalIdRoleAttributeTest");
 
-		WorkflowAttributeDefinitionDTO networkIdDef1 = new WorkflowAttributeDefinitionDTO(
-				"NetworkIdRoleAttribute");
-		PropertyDefinitionDTO networkIdProp1 = new PropertyDefinitionDTO(
-				NETWORK_ID_PROP, "rkirkend");
-		networkIdDef1.addProperty(networkIdProp1);
+		WorkflowAttributeDefinitionDTO principalIdDef1 = new WorkflowAttributeDefinitionDTO(
+				"PrincipalIdRoleAttribute");
+		PropertyDefinitionDTO principalIdProp1 = new PropertyDefinitionDTO(
+				PRINCIPAL_ID_PROP, KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
+		principalIdDef1.addProperty(principalIdProp1);
 
-		document.addAttributeDefinition(networkIdDef1);
+		document.addAttributeDefinition(principalIdDef1);
 
 		document.routeDocument("Routing!");
 

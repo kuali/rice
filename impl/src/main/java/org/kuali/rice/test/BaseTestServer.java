@@ -37,14 +37,22 @@ public abstract class BaseTestServer implements Lifecycle {
 
     public void start() throws Exception {
         this.server = createServer();
+        if (this.server == null) {
+        	throw new RuntimeException("Server not successfully created for class: " + getClass().getName());
+        }
         this.server.start();
     }
 
     public void stop() throws Exception {
-        this.server.stop();
+        if (this.server != null) {
+        	this.server.stop();
+        }
     }
 
     public boolean isStarted() {
-        return this.server.isStarted();
+        if (this.server == null) {
+        	return false;
+        }
+    	return this.server.isStarted();
     }
 }

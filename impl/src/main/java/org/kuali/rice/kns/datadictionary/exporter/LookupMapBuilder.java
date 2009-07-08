@@ -58,9 +58,6 @@ public class LookupMapBuilder {
             if (lookupDefinition.hasMenubar()) {
                 lookupMap.set("menubar", lookupDefinition.getMenubar());
             }
-            if (lookupDefinition.hasInstructions()) {
-                lookupMap.set("instructions", lookupDefinition.getInstructions());
-            }
 
             if (lookupDefinition.hasResultSetLimit()) {
                 lookupMap.set("resultSetLimit", lookupDefinition.getResultSetLimit().toString());

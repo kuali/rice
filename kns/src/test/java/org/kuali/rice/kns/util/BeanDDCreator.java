@@ -174,8 +174,8 @@ public class BeanDDCreator {
                 "        p:title=\"" );
         sb.append( camelCaseToString(boClass.getSimpleName() ) );
         sb.append( " Lookup\" \r\n" );
-        sb.append( "        p:instructions=\"Lookup a " );
-        sb.append( camelCaseToString(boClass.getSimpleName() ) );
+        //sb.append( "        p:instructions=\"Lookup a " );
+        //sb.append( camelCaseToString(boClass.getSimpleName() ) );
         sb.append( "\" >\r\n" );
         sb.append( "    <property name=\"defaultSort\" >\r\n" + 
         		"      <bean parent=\"SortDefinition\">\r\n" + 

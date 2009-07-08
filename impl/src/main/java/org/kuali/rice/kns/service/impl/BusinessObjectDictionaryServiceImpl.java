@@ -211,21 +211,6 @@ public class BusinessObjectDictionaryServiceImpl implements
         return menubar;
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupInstructions(java.lang.Class)
-     */
-    public String getLookupInstructions(Class businessObjectClass) {
-        String instructions = "";
-
-        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-        if (lookupDefinition != null) {
-            if (lookupDefinition.hasInstructions()) {
-                instructions = lookupDefinition.getInstructions();
-            }
-        }
-
-        return instructions;
-    }
 
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonSource(java.lang.Class)

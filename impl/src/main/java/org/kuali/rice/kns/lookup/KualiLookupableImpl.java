@@ -196,12 +196,6 @@ public class KualiLookupableImpl implements Lookupable {
         return getLookupableHelperService().getReturnKeys();
     }
 
-    /**
-     * @see org.kuali.rice.kns.lookup.Lookupable#getLookupInstructions()
-     */
-    public String getLookupInstructions() {
-        return getBusinessObjectDictionaryService().getLookupInstructions(getBusinessObjectClass());
-    }
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getExtraButtonSource()

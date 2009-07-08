@@ -458,6 +458,7 @@
      <attribute name="autoWildcardLocation" type="ra:autoWildcardLocation"/>
      <attribute name="caseSensitive" type="boolean"/>
      <attribute name="rangeSearch" type="boolean"/>
+     <attribute name="formatterClass" type="string"/>
   </complexType>
 
   <complexType name="rangeDefinition">

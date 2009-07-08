@@ -41,7 +41,6 @@ import org.kuali.rice.kns.util.KNSConstants;
             * lookupableID (String, optional)
             * title (String)
             * menubar (String, optional)
-            * instructions (String, optional)
             * defaultSort (Map, optional)
             * lookupFields (Map)
             * resultFields (Map)
@@ -59,7 +58,6 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 	protected String lookupableID;
     protected String title;
     protected String menubar;
-    protected String instructions;
     protected SortDefinition defaultSort;
 
     protected List<FieldDefinition> lookupFields = new ArrayList<FieldDefinition>();
@@ -152,33 +150,6 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         this.menubar = this.menubar.replace("${application.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
     }
 
-
-    /**
-     * @return true if this instance has instructions
-     */
-    public boolean hasInstructions() {
-        return (instructions != null);
-    }
-
-    /**
-     * @return instructions
-     */
-    public String getInstructions() {
-        return instructions;
-    }
-
-    /**
-                The instructions element is used to display instructions to the
-                user on how to use the lookup screen.  It appears that this field
-                is not currently being used on the Kuali Rice lookup screens.
-     * @throws IllegalArgumentException if the given instructions are blank
-     */
-    public void setInstructions(String instructions) {
-        if (StringUtils.isBlank(instructions)) {
-            throw new IllegalArgumentException("invalid (blank) instructions");
-        }
-        this.instructions = instructions;
-    }
 
     /**
      * @return true if this instance has a default sort defined
@@ -282,7 +253,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * @return true if this instance has instructions
+     * @return true if this instance has a result set limit
      */
     public boolean hasResultSetLimit() {
         return (resultSetLimit != null);

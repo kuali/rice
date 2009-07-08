@@ -30,7 +30,7 @@ import org.kuali.rice.kns.web.ui.ResultRow;
  * This class defines an interface for lookupables.
  *
  * They should act as facades for LookupableHelperServices and also expose bean handlers
- * (getCreateNewUrl, getHtmlMenuBar, getTitle, getRows, getExtraButton{Source,Params}, getLookupInstructions)
+ * (getCreateNewUrl, getHtmlMenuBar, getTitle, getRows, getExtraButton{Source,Params})
  *
  */
 public interface Lookupable extends Serializable {
@@ -128,11 +128,6 @@ public interface Lookupable extends Serializable {
      * @return
      */
     public List<BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues);
-
-    /**
-     * @return String providing instructions for using the lookup
-     */
-    public String getLookupInstructions();
 
     /**
      * @return String providing source for optional extra button

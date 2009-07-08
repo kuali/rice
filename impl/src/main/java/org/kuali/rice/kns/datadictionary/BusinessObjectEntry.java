@@ -202,7 +202,6 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
             * lookupableID (String, optional)
             * title (String)
             * menubar (String, optional)
-            * instructions (String, optional)
             * defaultSort (Map, optional)
             * lookupFields (Map)
             * resultFields (Map)

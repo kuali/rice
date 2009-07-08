@@ -76,12 +76,7 @@ public interface BusinessObjectDictionaryService {
      * menu bar html defined for the business object.
      */
     public String getLookupMenuBar(Class businessObjectClass);
-
-
-    /**
-     * the text to be displayed for the instructions of business object lookup.
-     */
-    public String getLookupInstructions(Class businessObjectClass);
+    
 
     /**
      * source for optional extra button

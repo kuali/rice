@@ -423,6 +423,7 @@
         <value>enRuleService</value>
         <value>enRuleDelegationService</value>
         <value>enHelpService</value>
+        <value>enEDocLiteService</value>
         <value>enStyleService</value>
       </list>
     </property>

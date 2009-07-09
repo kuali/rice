@@ -131,7 +131,7 @@ public class UserLoginFilter implements Filter {
         principal = idmService.getPrincipalByPrincipalName(principalName);
 
         if (StringUtils.isBlank(principalName) || principal == null) {
-        	throw new RiceRuntimeException("WebAuthenticationService could not establish a principal from incoming request.  The principal name was " + principalName);
+        	throw new RiceRuntimeException("KIM could not identify an authenticated principal from incoming request.  The principal name was " + principalName);
         }
         
         if ( LOG.isDebugEnabled() ) {

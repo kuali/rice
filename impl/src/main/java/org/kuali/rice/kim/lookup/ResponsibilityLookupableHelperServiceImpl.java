@@ -23,7 +23,10 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
+import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
@@ -31,8 +34,10 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -48,6 +53,77 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	private static LookupService lookupService;
 
+	private static boolean reviewResponsibilityDocumentTypeNameLoaded = false;
+	private static String reviewResponsibilityDocumentTypeName = null;
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#allowsMaintenanceEditAction(org.kuali.rice.kns.bo.BusinessObject)
+	 */
+//	@Override
+//	protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
+//        boolean allowsEdit = false;
+//
+//        if ( ((ResponsibilityImpl)businessObject).getTemplate().getName().equals( KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
+//	        String maintDocTypeName = getMaintenanceDocumentTypeName();
+//	
+//	        if (StringUtils.isNotBlank(maintDocTypeName)) {
+//	            allowsEdit = getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+//	        }
+//        }
+//        return allowsEdit;
+//	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
+    	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
+    	// convert the ResponsibilityImpl class into a ReviewResponsibility object
+        if ( ((ResponsibilityImpl)businessObject).getTemplate().getName().equals( KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
+        	ResponsibilityImpl resp = (ResponsibilityImpl)businessObject;
+        	ReviewResponsibility reviewResp = new ReviewResponsibility();
+        	reviewResp.setResponsibilityId( resp.getResponsibilityId() );
+        	reviewResp.setNamespaceCode( resp.getNamespaceCode() );
+        	reviewResp.setName( resp.getName() );
+        	reviewResp.setDescription( resp.getDescription() );
+        	reviewResp.setActive( resp.isActive() );
+        	AttributeSet respDetails = resp.getDetails();
+        	reviewResp.setDocumentTypeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
+        	reviewResp.setRouteNodeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
+        	reviewResp.setActionDetailsAtRoleMemberLevel( Boolean.valueOf( respDetails.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) ) );
+        	reviewResp.setRequired( Boolean.valueOf( respDetails.get( KimAttributes.REQUIRED ) ) );
+        	reviewResp.setQualifierResolverProvidedIdentifier( respDetails.get( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) );
+        	businessObject = reviewResp;
+	        if (allowsMaintenanceEditAction(businessObject)) {
+	        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+	        }
+	        if (allowsMaintenanceNewOrCopyAction()) {
+	        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+	        }
+        }
+        return htmlDataList;
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getMaintenanceDocumentTypeName()
+	 */
+	@Override
+	protected String getMaintenanceDocumentTypeName() {
+		if ( !reviewResponsibilityDocumentTypeNameLoaded ) {
+			reviewResponsibilityDocumentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(ReviewResponsibility.class);
+			reviewResponsibilityDocumentTypeNameLoaded = true;
+		}
+		return reviewResponsibilityDocumentTypeName;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
 	 */

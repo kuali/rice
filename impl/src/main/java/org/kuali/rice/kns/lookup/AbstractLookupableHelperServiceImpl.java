@@ -386,7 +386,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      */
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames){
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
+        if (allowsMaintenanceEditAction(businessObject)) {
         	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }
         if (allowsMaintenanceNewOrCopyAction()) {
@@ -456,7 +456,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
         Properties parameters = new Properties();
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
-        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
+        // TODO: why is this not using the businessObject parmeter's class?
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
         parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
         return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
     }

@@ -63,6 +63,7 @@ public class ActionRequestDTO implements Serializable {
     private ActionTakenDTO actionTaken;
     private String nodeName;
     private Long nodeInstanceId;
+    private String requestLabel;
 
     public ActionRequestDTO() {}
 
@@ -361,5 +362,13 @@ public class ActionRequestDTO implements Serializable {
     public boolean isRouteModuleRequest() {
     	return getResponsibilityId().longValue() > 0;
     }
+
+	public String getRequestLabel() {
+		return this.requestLabel;
+	}
+
+	public void setRequestLabel(String requestLabel) {
+		this.requestLabel = requestLabel;
+	}
 
 }

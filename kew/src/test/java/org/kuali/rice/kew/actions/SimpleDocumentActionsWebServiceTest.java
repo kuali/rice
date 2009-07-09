@@ -46,7 +46,44 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		StandardResponse sr = simpleService.route(dr.getDocId(), "admin", "Doc1Title", "<foo>bar</foo>", "Annotation!");
 		sr = simpleService.approve(dr.getDocId(), "admin", "Doc1Title", "<foo>b</foo>", "Annotation!!!");
-		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));		
+		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));
+		
+	}
+
+	@Test
+	public void testSave_NoDocContent() throws Exception{
+
+		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
+		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
+		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
+		StandardResponse sr = simpleService.save(dr.getDocId(), "admin", "Doc1Title", "Annotation!");
+		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));
+		sr = simpleService.approve(dr.getDocId(), "admin", "Doc1Title", "<foo>b</foo>", "Annotation!!!");
+		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));
+		
+	}
+
+	@Test
+	public void testSave_WithDocContent() throws Exception{
+
+		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
+		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
+		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
+		StandardResponse sr = simpleService.save(dr.getDocId(), "admin", "Doc1Title", "<foo>bar</foo>", "Annotation!");
+		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));
+		sr = simpleService.approve(dr.getDocId(), "admin", "Doc1Title", "<foo>b</foo>", "Annotation!!!");
+		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));
+		
+	}
+
+	@Test
+	public void testSaveDocContent() throws Exception{
+
+		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
+		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
+		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
+		StandardResponse sr = simpleService.saveDocumentContent(dr.getDocId(), "admin", "Doc1Title", "<foo>bar</foo>");
+		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));
 		
 	}
 

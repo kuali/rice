@@ -26,7 +26,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.util.XMLHelper;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;

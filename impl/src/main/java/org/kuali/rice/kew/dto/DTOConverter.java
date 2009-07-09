@@ -522,6 +522,7 @@ public class DTOConverter {
         actionRequestVO.setGroupId(actionRequest.getGroupId());
         actionRequestVO.setDelegationType(actionRequest.getDelegationType());
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
+        actionRequestVO.setRequestLabel(actionRequest.getRequestLabel());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
         int index = 0;
         for (ActionRequestValue childRequest : actionRequest.getChildrenRequests()) {

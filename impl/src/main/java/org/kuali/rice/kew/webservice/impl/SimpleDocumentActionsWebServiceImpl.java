@@ -612,12 +612,17 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @see edu.cornell.kew.service.CornellKewService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse save(String docId, String principalId, String docTitle, String annotation) {
-//		Map<String, Object> results;
+		return save(docId, principalId, docTitle, null, annotation);
+	}
 
+	/**
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public StandardResponse save(String docId, String principalId, String docTitle, String docContent, String annotation) {
 	    StandardResponse results;
 	    
 		try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
 			workflowDocument.saveDocument(annotation);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
@@ -627,7 +632,24 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		return results;
 	}
 
-    /**
+	/**
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#saveDocumentContent(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public StandardResponse saveDocumentContent(String docId, String principalId, String docTitle, String docContent) {
+	    StandardResponse results;
+	    
+		try {
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
+			workflowDocument.saveRoutingData();
+			results = createResults(workflowDocument);
+		} catch (WorkflowException e) {
+			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+		}
+
+		return results;
+	}
+
+	/**
      * Add a note to this KEW document.
      *
 	 * @param docId KEW document id of the document to add the note to

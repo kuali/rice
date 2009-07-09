@@ -606,17 +606,11 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param docId KEW document id of the document to save
 	 * @param principalId principal id of the user who is saving the document
 	 * @param docTitle title for this document
+	 * @param docContent xml content for this document
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
 	 * @see edu.cornell.kew.service.CornellKewService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-	 */
-	public StandardResponse save(String docId, String principalId, String docTitle, String annotation) {
-		return save(docId, principalId, docTitle, null, annotation);
-	}
-
-	/**
-	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse save(String docId, String principalId, String docTitle, String docContent, String annotation) {
 	    StandardResponse results;
@@ -819,6 +813,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * Return a KEW document to a previous route node.  This method should
 	 * be used with caution.
 	 *
+	 * @param docId KEW document id of the document that is being returned
+	 * @param principalId principal id of the user who is returning the doc
 	 * @param annotation a comment associated with this request
      * @param nodeName name of the route node to return to
 	 * @return Map including the standard set of return values
@@ -826,12 +822,28 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @see edu.cornell.kew.service.CornellKewService#returnToPreviousNode(java.lang.String, java.lang.String)
 	 */
     public StandardResponse returnToPreviousNode(String docId, String principalId, String annotation, String nodeName) {
-		//Map<String, Object> results;
+    	return returnToPreviousNodeWithUpdates(docId, principalId, annotation, nodeName, null, null);
+    }
 
+	/**
+	 * Return a KEW document to a previous route node.  This method should
+	 * be used with caution.
+	 *
+	 * @param docId KEW document id of the document that is being returned
+	 * @param principalId principal id of the user who is returning the doc
+	 * @param annotation a comment associated with this request
+     * @param nodeName name of the route node to return to
+	 * @param docTitle title for this document
+	 * @param docContent xml content for this document
+	 * @return Map including the standard set of return values
+	 *
+	 * @see edu.cornell.kew.service.CornellKewService#returnToPreviousNode(java.lang.String, java.lang.String)
+	 */
+    public StandardResponse returnToPreviousNodeWithUpdates(String docId, String principalId, String annotation, String nodeName, String docTitle, String docContent) {
         StandardResponse results;
         
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
 
 			workflowDocument.returnToPreviousNode(annotation, nodeName);
 			results = createResults(workflowDocument);
@@ -867,19 +879,6 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 */
 	private WorkflowDocument setupWorkflowDocument(String docId, String principalId) throws WorkflowException {
 		return setupWorkflowDocument(docId, principalId, null, null);
-	}
-
-	/**
-	 * Convenience method to setup workflow document without content.
-	 *
-	 * @param docId KEW document id for the document to setup
-	 * @param principalId KEW principal id for the user associated with this document
-	 * @param docTitle title for this document
-	 * @return populated WorkflowDocument object
-	 * @throws WorkflowException if something goes wrong
-	 */
-	private WorkflowDocument setupWorkflowDocument(String docId, String principalId, String docTitle) throws WorkflowException {
-		return setupWorkflowDocument(docId, principalId, docTitle, null);
 	}
 
 	/**

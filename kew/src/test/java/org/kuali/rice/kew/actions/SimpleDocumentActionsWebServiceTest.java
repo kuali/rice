@@ -56,7 +56,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
 		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
-		StandardResponse sr = simpleService.save(dr.getDocId(), "admin", "Doc1Title", "Annotation!");
+		StandardResponse sr = simpleService.save(dr.getDocId(), "admin", "Doc1Title", null, "Annotation!");
 		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));
 		sr = simpleService.approve(dr.getDocId(), "admin", "Doc1Title", "<foo>b</foo>", "Annotation!!!");
 		assertTrue(StringUtils.isEmpty(sr.getErrorMessage()));

@@ -133,18 +133,6 @@ public interface SimpleDocumentActionsWebService {
 	 * @param docId KEW document id of the document to save
 	 * @param principalId principal id of the user who is saving the document
 	 * @param docTitle title for this document
-	 * @param annotation a comment associated with this request
-	 * @return StandardResponse including the standard set of return values
-	 */
-	public StandardResponse save(String docId, String principalId, String docTitle, String annotation);
-
-	/**
-	 * Save the KEW document, keeps it in the user's action list for completion later. Also allows updating
-	 * of the document content
-	 *
-	 * @param docId KEW document id of the document to save
-	 * @param principalId principal id of the user who is saving the document
-	 * @param docTitle title for this document
 	 * @param docContent xml content for this document
 	 * @param annotation a comment associated with this request
 	 * @return StandardResponse including the standard set of return values
@@ -315,5 +303,19 @@ public interface SimpleDocumentActionsWebService {
 	 * @return StandardResponse including the standard set of return values
 	 */
     public StandardResponse returnToPreviousNode(String docId, String principalId, String annotation, String nodeName);
+
+	/**
+	 * Return a KEW document to a previous route node.  This method should
+	 * be used with caution.
+	 *
+	 * @param docId KEW document id of the document to return to a previous node
+	 * @param principalId principal id of the user who is requesting this action
+	 * @param annotation a comment associated with this request
+     * @param nodeName name of the route node to return to
+	 * @param docTitle title for this document
+	 * @param docContent xml content for this document
+	 * @return StandardResponse including the standard set of return values
+	 */
+    public StandardResponse returnToPreviousNodeWithUpdates(String docId, String principalId, String annotation, String nodeName, String docTitle, String docContent);
 
 }

@@ -17,6 +17,8 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -42,6 +44,27 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	protected boolean actionDetailsAtRoleMemberLevel;
 	protected boolean required;
 	protected String qualifierResolverProvidedIdentifier;
+	
+	public ReviewResponsibility() {
+	}
+	
+	public ReviewResponsibility( KimResponsibility resp ) {
+		loadFromKimResponsibility(resp);
+	}
+	
+	public void loadFromKimResponsibility( KimResponsibility resp ) {
+    	setResponsibilityId( resp.getResponsibilityId() );
+    	setNamespaceCode( resp.getNamespaceCode() );
+    	setName( resp.getName() );
+    	setDescription( resp.getDescription() );
+    	setActive( resp.isActive() );
+    	AttributeSet respDetails = resp.getDetails();
+    	setDocumentTypeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
+    	setRouteNodeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
+    	setActionDetailsAtRoleMemberLevel( Boolean.valueOf( respDetails.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) ) );
+    	setRequired( Boolean.valueOf( respDetails.get( KimAttributes.REQUIRED ) ) );
+    	setQualifierResolverProvidedIdentifier( respDetails.get( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) );
+	}
 	
 	/**
 	 * @return the responsibilityId
@@ -185,11 +208,6 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 		this.qualifierResolverProvidedIdentifier = qualifierResolverProvidedIdentifier;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.TransientBusinessObjectBase#toStringMapper()
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
@@ -206,14 +224,17 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 		return m;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObject#refresh()
-	 */
 	public void refresh() {
-		// TODO jonathan - THIS METHOD NEEDS JAVADOCS
-
+		// do nothing - not a persistable object
+	}
+	
+	@Override
+	public void refreshNonUpdateableReferences() {
+		// do nothing - not a persistable object
+	}
+	@Override
+	public void refreshReferenceObject(String referenceObjectName) {
+		// do nothing - not a persistable object
 	}
 
 }

@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -61,6 +62,7 @@ import org.kuali.rice.kns.rule.event.KualiAddLineEvent;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -189,14 +191,30 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         // retrieve business object from request parameters
         if (!(KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) && !(KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
             Map requestParameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
-            PersistableBusinessObject oldBusinessObject = (PersistableBusinessObject) getLookupService().findObjectBySearch(Class.forName(maintenanceForm.getBusinessObjectClassName()), requestParameters);
+            PersistableBusinessObject oldBusinessObject = null;
+            try {
+            	oldBusinessObject = (PersistableBusinessObject) getLookupService().findObjectBySearch(Class.forName(maintenanceForm.getBusinessObjectClassName()), requestParameters);
+            } catch ( ClassNotPersistenceCapableException ex ) {
+            	if ( !document.getOldMaintainableObject().isExternalBusinessObject() ) {
+            		throw new RuntimeException( "BO Class: " + maintenanceForm.getBusinessObjectClassName() + " is not persistable and is not externalizable - configuration error" );
+            	}
+            	// otherwise, let fall through
+            }
             if (oldBusinessObject == null && !document.getOldMaintainableObject().isExternalBusinessObject()) {
-                throw new RuntimeException("Cannot retrieve old record for maintenance document, incorrect parameters passed on maint url.");
+                throw new RuntimeException("Cannot retrieve old record for maintenance document, incorrect parameters passed on maint url: " + requestParameters );
             } 
             
             if(document.getOldMaintainableObject().isExternalBusinessObject()){
+            	if ( oldBusinessObject == null ) {
+            		try {
+            			oldBusinessObject = (PersistableBusinessObject)document.getOldMaintainableObject().getBoClass().newInstance();
+            		} catch ( Exception ex ) {
+            			throw new RuntimeException( "External BO maintainable was null and unable to instantiate for old maintainable object.", ex );
+            		}
+            	}
             	populateBOWithCopyKeyValues(request, oldBusinessObject, document.getOldMaintainableObject());
             	document.getOldMaintainableObject().prepareBusinessObject(oldBusinessObject);
+            	oldBusinessObject = document.getOldMaintainableObject().getBusinessObject();
             }
             
             // Temp solution for loading extension objects - need to find a better way

@@ -268,7 +268,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}
 		int maxSize = Integer.MAX_VALUE;
 		// try persistable reference first
-		if (PersistableBusinessObject.class.isAssignableFrom(boClass)) {
+		if (PersistableBusinessObject.class.isAssignableFrom(boClass) && persistenceStructureService.isPersistable(boClass) ) {			
 			Map<String, BusinessObjectRelationship> rels = persistenceStructureService
 					.getRelationshipMetadata(boClass, attributeName,
 							attributePrefix);
@@ -511,7 +511,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}
 
 		Map<String, Class> referenceClasses = null;
-		if (PersistableBusinessObject.class.isAssignableFrom( boClass )) {
+		if (PersistableBusinessObject.class.isAssignableFrom( boClass ) && getPersistenceStructureService().isPersistable(boClass)) {
 			referenceClasses = getPersistenceStructureService().listReferenceObjectFields(boClass);
 		}
 		DataDictionaryEntry ddEntry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(boClass.getName());
@@ -642,7 +642,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}
 
 		// if we can't find anything in the DD, then try the persistence service
-		if(StringUtils.isBlank(fkName) && PersistableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
+		if(StringUtils.isBlank(fkName) && PersistableBusinessObject.class.isAssignableFrom(businessObjectClass) && getPersistenceStructureService().isPersistable(businessObjectClass)) {
 			fkName =
 				getPersistenceStructureService().getForeignKeyFieldName(businessObjectClass, attributeName, targetName);
 		}

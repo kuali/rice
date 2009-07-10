@@ -201,8 +201,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // business rules stop it.
         boolean success = true;
 
-        Map primaryKeys = persistenceService.getPrimaryKeyFieldValues(newBo);
-
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()){
         	success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument)document, GlobalVariables.getUserSession().getPerson());

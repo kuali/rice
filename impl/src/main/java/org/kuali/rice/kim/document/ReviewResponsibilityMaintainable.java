@@ -16,7 +16,9 @@
 package org.kuali.rice.kim.document;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
@@ -68,4 +70,42 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	public Class<? extends BusinessObject> getBoClass() {
 		return ReviewResponsibility.class;
 	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
+	 */
+	@Override
+	public boolean isExternalBusinessObject() {
+		return true;
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.kns.bo.BusinessObject)
+	 */
+	@Override
+	public void prepareBusinessObject(BusinessObject businessObject) {
+		if ( businessObject == null ) {
+			throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable.prepareBusinessObject passed a null object." );
+		}
+		if ( businessObject instanceof ResponsibilityImpl ) {
+			KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ResponsibilityImpl)businessObject).getResponsibilityId() );
+			businessObject = new ReviewResponsibility( resp );
+		} else if ( businessObject instanceof ReviewResponsibility ) {
+			// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
+			KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ReviewResponsibility)businessObject).getResponsibilityId() );		
+			((ReviewResponsibility)businessObject).loadFromKimResponsibility(resp);
+		} else {
+			throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable passed an unsupported object type: " + businessObject.getClass() );
+		}
+		if ( businessObject instanceof PersistableBusinessObject ) {
+			setBusinessObject( (PersistableBusinessObject)businessObject );
+		}
+		
+		super.prepareBusinessObject(businessObject);
+	}
+	
 }

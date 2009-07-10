@@ -73,14 +73,16 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             LOG.debug( RiceDebugUtils.getTruncatedStackTrace(false).toString() );
         }
         try {
-            this.getPersistenceBrokerTemplate().store(routeHeader);
+            getPersistenceBrokerTemplate().store(routeHeader);
             routeHeader.getDocumentContent().setRouteHeaderId(routeHeader.getRouteHeaderId());
-            this.getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
-        } catch ( OjbOperationException ex ) {
+            getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
+        } catch ( RuntimeException ex ) {
             if ( ex.getCause() instanceof OptimisticLockException ) {
                 LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject() );
                 throw ex;
             }
+            LOG.error( "Unable to save document header or content. Route Header: " + routeHeader, ex );
+            throw ex;
         }
     }
 

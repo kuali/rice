@@ -311,32 +311,35 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
      * @see org.kuali.rice.kns.dao.LookupDao#findObjectByMap(java.lang.Object, java.util.Map)
      */
     public Object findObjectByMap(Object example, Map formProps) {
-    	Criteria criteria = new Criteria();
-
-    	// iterate through the parameter map for key values search criteria
-    	Iterator propsIter = formProps.keySet().iterator();
-    	while (propsIter.hasNext()) {
-    		String propertyName = (String) propsIter.next();
-    		String searchValue = "";
-    		if (formProps.get(propertyName) != null) {
-    			searchValue = (formProps.get(propertyName)).toString();
-    		}
-
-    		if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(example, propertyName)) {
-    			Class propertyType = ObjectUtils.getPropertyType(example, propertyName, persistenceStructureService);
-    			if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ) {
-    				criteria.addEqualTo(propertyName, cleanNumeric(searchValue));
-    			} else if (TypeUtils.isTemporalClass(propertyType)) {
-    				criteria.addEqualTo(propertyName, parseDate( ObjectUtils.clean(searchValue) ) );
-    			} else {
-    				criteria.addEqualTo(propertyName, searchValue);
-    			}
-    		}
+    	if ( persistenceStructureService.isPersistable(example.getClass())) {
+	    	Criteria criteria = new Criteria();
+	
+	    	// iterate through the parameter map for key values search criteria
+	    	Iterator propsIter = formProps.keySet().iterator();
+	    	while (propsIter.hasNext()) {
+	    		String propertyName = (String) propsIter.next();
+	    		String searchValue = "";
+	    		if (formProps.get(propertyName) != null) {
+	    			searchValue = (formProps.get(propertyName)).toString();
+	    		}
+	
+	    		if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(example, propertyName)) {
+	    			Class propertyType = ObjectUtils.getPropertyType(example, propertyName, persistenceStructureService);
+	    			if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ) {
+	    				criteria.addEqualTo(propertyName, cleanNumeric(searchValue));
+	    			} else if (TypeUtils.isTemporalClass(propertyType)) {
+	    				criteria.addEqualTo(propertyName, parseDate( ObjectUtils.clean(searchValue) ) );
+	    			} else {
+	    				criteria.addEqualTo(propertyName, searchValue);
+	    			}
+	    		}
+	    	}
+	
+	    	// execute query and return result list
+	    	Query query = QueryFactory.newQuery(example.getClass(), criteria);
+	    	return getPersistenceBrokerTemplate().getObjectByQuery(query);
     	}
-
-    	// execute query and return result list
-    	Query query = QueryFactory.newQuery(example.getClass(), criteria);
-    	return getPersistenceBrokerTemplate().getObjectByQuery(query);
+    	return null;
     }
 
 

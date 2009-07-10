@@ -26,7 +26,7 @@
     </property>
     
     <property name="documentTypeName" value="IdentityManagementReviewResponsibilityMaintenanceDocument"/>
-    <property name="businessRulesClass" value="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase"/>
+    <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.ReviewResponsibilityMaintenanceDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     
     <property name="workflowProperties">

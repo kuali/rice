@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -38,6 +38,7 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -59,25 +60,6 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#allowsMaintenanceEditAction(org.kuali.rice.kns.bo.BusinessObject)
-	 */
-//	@Override
-//	protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
-//        boolean allowsEdit = false;
-//
-//        if ( ((ResponsibilityImpl)businessObject).getTemplate().getName().equals( KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
-//	        String maintDocTypeName = getMaintenanceDocumentTypeName();
-//	
-//	        if (StringUtils.isNotBlank(maintDocTypeName)) {
-//	            allowsEdit = getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
-//	        }
-//        }
-//        return allowsEdit;
-//	}
-	
-	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
@@ -86,19 +68,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
     	// convert the ResponsibilityImpl class into a ReviewResponsibility object
         if ( ((ResponsibilityImpl)businessObject).getTemplate().getName().equals( KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
-        	ResponsibilityImpl resp = (ResponsibilityImpl)businessObject;
-        	ReviewResponsibility reviewResp = new ReviewResponsibility();
-        	reviewResp.setResponsibilityId( resp.getResponsibilityId() );
-        	reviewResp.setNamespaceCode( resp.getNamespaceCode() );
-        	reviewResp.setName( resp.getName() );
-        	reviewResp.setDescription( resp.getDescription() );
-        	reviewResp.setActive( resp.isActive() );
-        	AttributeSet respDetails = resp.getDetails();
-        	reviewResp.setDocumentTypeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
-        	reviewResp.setRouteNodeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
-        	reviewResp.setActionDetailsAtRoleMemberLevel( Boolean.valueOf( respDetails.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) ) );
-        	reviewResp.setRequired( Boolean.valueOf( respDetails.get( KimAttributes.REQUIRED ) ) );
-        	reviewResp.setQualifierResolverProvidedIdentifier( respDetails.get( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) );
+        	ReviewResponsibility reviewResp = new ReviewResponsibility( (ResponsibilityImpl)businessObject );
         	businessObject = reviewResp;
 	        if (allowsMaintenanceEditAction(businessObject)) {
 	        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
@@ -109,6 +79,17 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
         }
         return htmlDataList;
 	}
+
+    protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
+        // TODO: why is this not using the businessObject parmeter's class?
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
+        parameters.put(KNSConstants.OVERRIDE_KEYS, KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID);
+        parameters.put(KNSConstants.COPY_KEYS, KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID);
+        parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
+        return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+    }
 	
 	/**
 	 * This overridden method ...

@@ -406,19 +406,20 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
                     }                    
                 }
             }
-            
-            Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(bo);
-
-            // walk through the ref objects, only doing work if they are Person objects
-            for ( String refField : references.keySet() ) {
-                Class<?> refClass = references.get(refField);
-                if (Person.class.isAssignableFrom(refClass)) {
-                    person = (Person) ObjectUtils.getPropertyValue(bo, refField);
-                    if (person != null) {
-                        String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "principalId");
-                        linkUserReference(bo, person, refField, fkFieldName);
-                    }
-                }
+            if ( persistenceStructureService.isPersistable(bo.getClass())) {
+	            Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(bo);
+	
+	            // walk through the ref objects, only doing work if they are Person objects
+	            for ( String refField : references.keySet() ) {
+	                Class<?> refClass = references.get(refField);
+	                if (Person.class.isAssignableFrom(refClass)) {
+	                    person = (Person) ObjectUtils.getPropertyValue(bo, refField);
+	                    if (person != null) {
+	                        String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "principalId");
+	                        linkUserReference(bo, person, refField, fkFieldName);
+	                    }
+	                }
+	            }
             }
         }
     }

@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +29,17 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
+import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
@@ -45,6 +51,7 @@ import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
@@ -57,10 +64,12 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 	private static final String DEFAULT_RESPONSIBILITY_TYPE_SERVICE = "defaultResponsibilityTypeService";
 	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );
 	private static final Integer DEFAULT_PRIORITY_NUMBER = new Integer(1);
+
 	private BusinessObjectService businessObjectService;
 	private RoleService roleService;
 	private KimResponsibilityDao responsibilityDao;   
 	private KimResponsibilityTypeService responsibilityTypeService;
+	private SequenceAccessorService sequenceAccessorService;
 
     // --------------------------
     // Responsibility Methods
@@ -96,6 +105,38 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
     	pk.put( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityId );
     	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
+    }
+
+    public KimResponsibilityTemplateInfo getResponsibilityTemplate(
+    		String responsibilityTemplateId) {
+    	KimResponsibilityTemplateImpl impl = getResponsibilityTemplateImpl(responsibilityTemplateId);
+    	if ( impl != null ) {
+    		return impl.toInfo();
+    	}
+    	return null;
+    }
+    
+    public KimResponsibilityTemplateInfo getResponsibilityTemplateByName(
+    		String namespaceCode, String responsibilityTemplateName) {
+    	KimResponsibilityTemplateImpl impl = getResponsibilityTemplateImplsByName(namespaceCode, responsibilityTemplateName);
+    	if ( impl != null ) {
+    		return impl.toInfo();
+    	}
+    	return null;
+    }
+    
+    public KimResponsibilityTemplateImpl getResponsibilityTemplateImpl(
+    		String responsibilityTemplateId) {
+    	return (KimResponsibilityTemplateImpl)getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityTemplateImpl.class, responsibilityTemplateId);
+    }
+    
+	public KimResponsibilityTemplateImpl getResponsibilityTemplateImplsByName(
+    		String namespaceCode, String responsibilityTemplateName) {
+    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
+    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+    	pk.put( KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, responsibilityTemplateName );
+		pk.put( KNSPropertyConstants.ACTIVE, "Y");
+    	return (KimResponsibilityTemplateImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityTemplateImpl.class, pk );
     }
     
     public RoleResponsibilityImpl getRoleResponsibilityImpl(String roleResponsibilityId) {
@@ -371,6 +412,64 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 		return results;
     	
     }
+
+    // --------------------
+    // ResponsibilityUpdateService methods
+    // --------------------
+    
+    /**
+     * @see org.kuali.rice.kim.service.ResponsibilityUpdateService#saveResponsibility(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean)
+     */
+    public void saveResponsibility(String responsibilityId,
+    		String responsibilityTemplateId, String namespaceCode, String name,
+    		String description, boolean active, AttributeSet responsibilityDetails ) {
+    	// look for an existing responsibility of the given type
+    	KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
+    	if ( resp == null ) {
+    		resp = new KimResponsibilityImpl();
+    		resp.setResponsibilityId(responsibilityId);
+    	}
+    	resp.setTemplateId(responsibilityTemplateId);
+    	resp.setNamespaceCode(namespaceCode);
+    	resp.setName(name);
+    	resp.setDescription(description);
+    	resp.setActive(active);
+    	AttributeSet attributesToAdd = new AttributeSet( responsibilityDetails );
+    	List<ResponsibilityAttributeDataImpl> details = resp.getDetailObjects();
+    	Iterator<ResponsibilityAttributeDataImpl> detailIter = details.iterator();
+    	while ( detailIter.hasNext() ) {
+    		ResponsibilityAttributeDataImpl detail = detailIter.next();
+    		String attrName = detail.getKimAttribute().getAttributeName();
+    		String attrValue = attributesToAdd.get(attrName);
+    		// if not present in the list or is blank, remove from the list
+    		if ( StringUtils.isBlank(attrValue) ) {
+    			detailIter.remove();
+    		} else {
+    			detail.setAttributeValue(attrValue);
+    		}
+    		// remove from detail map - used to add new ones later
+    		attributesToAdd.remove(attrName);
+    	}
+    	for ( String attrName : attributesToAdd.keySet() ) {
+    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrName);
+    		ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
+    		newDetail.setAttributeDataId(getNewAttributeDataId());
+    		newDetail.setKimAttributeId(attr.getKimAttributeId());
+    		newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
+    		newDetail.setResponsibilityId(responsibilityId);
+    		newDetail.setAttributeValue(attributesToAdd.get(attrName));
+    		details.add(newDetail);
+    	}
+    	getBusinessObjectService().save(resp);
+    }
+
+    protected String getNewAttributeDataId(){
+		SequenceAccessorService sas = getSequenceAccessorService();		
+		Long nextSeq = sas.getNextAvailableSequenceNumber(
+				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
+				RoleMemberAttributeDataImpl.class );
+		return nextSeq.toString();
+    }
     
     // --------------------
     // Support Methods
@@ -406,4 +505,12 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 		return responsibilityTypeService;
 	}
 
+
+	protected SequenceAccessorService getSequenceAccessorService() {
+		if ( sequenceAccessorService == null ) {
+			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+		}
+		return sequenceAccessorService;
+	}
+	
 }

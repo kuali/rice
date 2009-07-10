@@ -13,42 +13,25 @@
  * See the License for the specific language governing responsibilitys and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.impl;
+package org.kuali.rice.kim.bo.role.dto;
 
-import java.util.LinkedHashMap;
+import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
-import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@Entity
-@Table(name="KRIM_RSP_TMPL_T")
-public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase implements KimResponsibilityTemplate {
+public class KimResponsibilityTemplateInfo implements KimResponsibilityTemplate, Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -282533234389371097L;
 	
-	@Id
-	@Column(name="PERM_TMPL_ID")
 	protected String responsibilityTemplateId;
-	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
-	@Column(name="NM")
 	protected String name;
-	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
-	@Column(name="DESC_TXT", length=400)
 	protected String description;
-	@Column(name="ACTV_IND")
 	protected boolean active;
 	
 	public String getKimTypeId() {
@@ -67,10 +50,6 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
-	}
-
-	public KimTypeInfo getKimType() {
-		return KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
 	}
 
 	/**
@@ -106,17 +85,13 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 		this.name = name;
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "responsibilityTemplateId", responsibilityTemplateId );
-		m.put( "name", name );
-		m.put( "kimTypeId", kimTypeId );
-		return m;
+	public String toString() {
+		return new ToStringBuilder( this )
+		.append( "responsibilityTemplateId", this.responsibilityTemplateId )
+		.append( "name", this.name )
+		.append( "kimTypeId", this.kimTypeId )
+		.toString();
 	}
 
 	public String getNamespaceCode() {
@@ -129,16 +104,5 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 
 	public void setResponsibilityTemplateId(String responsibilityTemplateId) {
 		this.responsibilityTemplateId = responsibilityTemplateId;
-	}
-	
-	public KimResponsibilityTemplateInfo toInfo() {
-		KimResponsibilityTemplateInfo info = new KimResponsibilityTemplateInfo();
-		info.setResponsibilityTemplateId(responsibilityTemplateId);
-		info.setNamespaceCode(namespaceCode);
-		info.setName(name);
-		info.setDescription(description);
-		info.setKimTypeId(kimTypeId);
-		info.setActive(active);
-		return info;
 	}
 }

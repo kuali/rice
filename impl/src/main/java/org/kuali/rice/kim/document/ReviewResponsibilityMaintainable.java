@@ -16,9 +16,14 @@
 package org.kuali.rice.kim.document;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
@@ -31,9 +36,10 @@ import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
  */
 public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
-	private static final Logger LOG = Logger.getLogger( ReviewResponsibilityMaintainable.class );
-	
+	private static final Logger LOG = Logger.getLogger( ReviewResponsibilityMaintainable.class );	
 	private static final long serialVersionUID = -8102504656976243468L;
+
+	protected static String reviewTemplateId = null;
 
 	/**
 	 * This overridden method ...
@@ -58,7 +64,32 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 		if ( LOG.isInfoEnabled() ) {
 			LOG.info( "Attempting to save ReviewResponsibility BO via ResponsibilityUpdateService:" + getBusinessObject() );
 		}
+		// find the template ID if needed
+		if ( reviewTemplateId == null ) {
+			populateReviewTemplateInfo();
+		}
+		ReviewResponsibility resp = (ReviewResponsibility)getBusinessObject();
 		// build the AttributeSet with the details
+		AttributeSet details = new AttributeSet();
+		details.put( KimAttributes.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
+		details.put( KimAttributes.ROUTE_NODE_NAME, resp.getRouteNodeName() );
+		details.put( KimAttributes.REQUIRED, resp.isRequired()?"true":"false" );
+		details.put( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL, resp.isActionDetailsAtRoleMemberLevel()?"true":"false" );
+		details.put( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
+		
+		KIMServiceLocator.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(), 
+				reviewTemplateId,
+				resp.getNamespaceCode(), 
+				resp.getName(), 
+				resp.getDescription(), 
+				resp.isActive(), 
+				details );
+	}
+	
+	protected void populateReviewTemplateInfo() {
+		KimResponsibilityTemplateInfo template = KIMServiceLocator.getResponsibilityService().getResponsibilityTemplateByName( KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
+		
+		reviewTemplateId = template.getResponsibilityTemplateId();
 	}
 	
 	/**

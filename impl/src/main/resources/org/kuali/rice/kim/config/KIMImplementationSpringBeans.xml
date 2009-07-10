@@ -283,6 +283,27 @@
     <property name="propertyName" value="kimResponsibilityServiceSOAP.expose"/>
   </bean>
 
+  <alias alias="kimResponsibilityUpdateService" name="kimResponsibilityService" />
+
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="kimResponsibilityUpdateService"
+        p:localServiceName="kimResponsibilityUpdateService" />
+    </property>
+  </bean>
+
+    <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimResponsibilityUpdateService"
+        p:localServiceName="kimResponsibilityUpdateServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimResponsibilityServiceSOAP.expose"/>
+  </bean>
+
   <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />
 
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />

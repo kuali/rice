@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.apache.ojb.broker.PersistenceBroker;
@@ -258,6 +260,7 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert()
 	 */
 	@Override
+	@PrePersist
 	public void beforeInsert() {
 		throw new UnsupportedOperationException( "This object should never be persisted.");
 	}
@@ -268,6 +271,7 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeUpdate()
 	 */
 	@Override
+	@PreUpdate
 	public void beforeUpdate() {
 		throw new UnsupportedOperationException( "This object should never be persisted.");
 	}

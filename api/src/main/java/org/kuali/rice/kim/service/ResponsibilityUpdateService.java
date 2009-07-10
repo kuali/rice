@@ -15,13 +15,27 @@
  */
 package org.kuali.rice.kim.service;
 
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+
 
 /**
  * This service provides operations for creating and updating responsibilities. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-
+@WebService(name = "ResponsibilityUpdateService", targetNamespace = "http://org.kuali.rice/kim/responsibilityUpdate")
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityUpdateService {
 
+	void saveResponsibility( @WebParam(name="responsibilityId") String responsibilityId, 
+							 @WebParam(name="responsibilityTemplateId") String responsibilityTemplateId, 
+							 @WebParam(name="namespaceCode") String namespaceCode,
+							 @WebParam(name="name") String name,
+							 @WebParam(name="description") String description,
+							 @WebParam(name="active") boolean active,
+							 @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails );
 }

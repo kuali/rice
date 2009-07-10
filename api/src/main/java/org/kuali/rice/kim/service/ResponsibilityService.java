@@ -18,7 +18,12 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
@@ -48,6 +53,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@WebService(name = "ResponsibilityService", targetNamespace = "http://org.kuali.rice/kim/responsibility")
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityService {
 
     // --------------------
@@ -57,48 +64,72 @@ public interface ResponsibilityService {
     /**
      * Get the responsibility object with the given ID.
      */
-    KimResponsibilityInfo getResponsibility(String responsibilityId);
+    KimResponsibilityInfo getResponsibility(@WebParam(name="responsibilityId") String responsibilityId);
     
  	/** 
  	 * Return the responsibility object for the given unique combination of namespace,
  	 * component and responsibility name.
  	 */
-    List<KimResponsibilityInfo> getResponsibilitiesByName( String namespaceCode, String responsibilityName );
+    List<KimResponsibilityInfo> getResponsibilitiesByName( @WebParam(name="namespaceCode") String namespaceCode, 
+    													   @WebParam(name="responsibilityName") String responsibilityName );
+    
+    KimResponsibilityTemplateInfo getResponsibilityTemplate( @WebParam(name="responsibilityTemplateId") String responsibilityTemplateId );
+
+    KimResponsibilityTemplateInfo getResponsibilityTemplateByName( 
+    		@WebParam(name="namespaceCode") String namespaceCode, 
+			@WebParam(name="responsibilityTemplateName") String responsibilityTemplateName );
     
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
-    boolean hasResponsibility( String principalId, String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails );
+    boolean hasResponsibility( @WebParam(name="principalId") String principalId, 
+    						   @WebParam(name="namespaceCode") String namespaceCode, 
+    						   @WebParam(name="responsibilityName") String responsibilityName, 
+    						   @WebParam(name="qualification") AttributeSet qualification, 
+    						   @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails );
 
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
-    boolean hasResponsibilityByTemplateName( String principalId, String namespaceCode, String responsibilityTemplateName, AttributeSet qualification, AttributeSet responsibilityDetails );
+    boolean hasResponsibilityByTemplateName( @WebParam(name="principalId") String principalId, 
+    										 @WebParam(name="namespaceCode") String namespaceCode, 
+    										 @WebParam(name="responsibilityTemplateName") String responsibilityTemplateName, 
+    										 @WebParam(name="qualification") AttributeSet qualification, 
+    										 @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails );
     
-   	List<ResponsibilityActionInfo> getResponsibilityActions( String namespaceCode, String responsibilityName, AttributeSet qualification, AttributeSet responsibilityDetails);
-   	List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( String namespaceCode, String responsibilityTemplateName,	AttributeSet qualification, AttributeSet responsibilityDetails);
+   	List<ResponsibilityActionInfo> getResponsibilityActions( @WebParam(name="namespaceCode") String namespaceCode, 
+   															 @WebParam(name="responsibilityName") String responsibilityName, 
+   															 @WebParam(name="qualification") AttributeSet qualification, 
+   															 @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails);
+   	
+   	List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode, 
+   																		   @WebParam(name="responsibilityTemplateName") String responsibilityTemplateName,	
+   																		   @WebParam(name="qualification") AttributeSet qualification, 
+   																		   @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails);
    	
     /**
      * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
      * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
      * to any member assigned to the responsibility.) 
      */
-   	boolean areActionsAtAssignmentLevelById( String responsibilityId );
+   	boolean areActionsAtAssignmentLevelById( @WebParam(name="responsibilityId") String responsibilityId );
 
     /**
      * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
      * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
      * to any member assigned to the responsibility.) 
      */
-   	boolean areActionsAtAssignmentLevel( KimResponsibilityInfo responsibility );
+   	boolean areActionsAtAssignmentLevel( @WebParam(name="responsibility") KimResponsibilityInfo responsibility );
    	
    	/**
    	 * Lookup responsibility objects.
    	 */
-   	List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( Map<String,String> searchCriteria, boolean unbounded );
+   	List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( @WebParam(name="searchCriteria") Map<String,String> searchCriteria, 
+   																	@WebParam(name="unbounded") boolean unbounded );
    	
    	/**
    	 * Get the role IDs associated with the given responsibility.
    	 */
-   	List<String> getRoleIdsForResponsibility( KimResponsibilityInfo responsibility, AttributeSet qualification );
+   	List<String> getRoleIdsForResponsibility( @WebParam(name="responsibility") KimResponsibilityInfo responsibility, 
+   											  @WebParam(name="qualification") AttributeSet qualification );
 }

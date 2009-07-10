@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Jan 4, 2007
 
 package org.kuali.rice.kew.edl.service;
 

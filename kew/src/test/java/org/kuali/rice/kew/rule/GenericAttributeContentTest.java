@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Oct 23, 2006
 
 package org.kuali.rice.kew.rule;
 

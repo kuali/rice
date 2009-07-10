@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Mar 20, 2007
 
 package org.kuali.rice.kew.docsearch;
 

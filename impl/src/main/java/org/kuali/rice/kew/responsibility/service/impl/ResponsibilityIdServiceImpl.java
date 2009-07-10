@@ -14,12 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Created on Jan 7, 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+
 package org.kuali.rice.kew.responsibility.service.impl;
 
 import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;

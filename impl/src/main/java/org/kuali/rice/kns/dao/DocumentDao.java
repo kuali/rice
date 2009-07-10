@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kns.dao;
 
-/*
- * Created on Jan 13, 2005
- */
-
 import java.util.List;
 
 import org.kuali.rice.kns.document.Document;

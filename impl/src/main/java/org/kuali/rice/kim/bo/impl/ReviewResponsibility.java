@@ -17,6 +17,13 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -27,15 +34,23 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@Entity
+@Table(name="KRIM_RSP_T")
 public class ReviewResponsibility extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
 	// standard responsibility attributes 
+	@Id
+	@Column(name="RSP_ID")
 	protected String responsibilityId;
+	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
+	@Column(name="NM")
 	protected String name;
+	@Column(name="DESC_TXT", length=400)
 	protected String description;
+	@Column(name="ACTV_IND")
 	protected boolean active;
 
 	// review responsibility standard properties
@@ -237,4 +252,55 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 		// do nothing - not a persistable object
 	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert()
+	 */
+	@Override
+	public void beforeInsert() {
+		throw new UnsupportedOperationException( "This object should never be persisted.");
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeUpdate()
+	 */
+	@Override
+	public void beforeUpdate() {
+		throw new UnsupportedOperationException( "This object should never be persisted.");
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
+	 */
+	@Override
+	public void beforeInsert(PersistenceBroker persistenceBroker)
+			throws PersistenceBrokerException {
+		throw new UnsupportedOperationException( "This object should never be persisted.");
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeUpdate(org.apache.ojb.broker.PersistenceBroker)
+	 */
+	@Override
+	public void beforeUpdate(PersistenceBroker persistenceBroker) {
+		throw new UnsupportedOperationException( "This object should never be persisted.");
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeDelete(org.apache.ojb.broker.PersistenceBroker)
+	 */
+	@Override
+	public void beforeDelete(PersistenceBroker persistenceBroker)
+			throws PersistenceBrokerException {
+		throw new UnsupportedOperationException( "This object should never be persisted.");
+	}
 }

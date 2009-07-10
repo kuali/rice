@@ -1128,4 +1128,19 @@
     </reference-descriptor>
   </class-descriptor>
 
+  <!-- ******************************************************************* -->
+  <!-- Fake Tables for KNS Support -->
+  <!-- ******************************************************************* -->
+
+  <class-descriptor class="org.kuali.rice.kim.bo.impl.ReviewResponsibility" table="KRIM_RSP_T">
+    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+  </class-descriptor>
+
+
 </descriptor-repository>

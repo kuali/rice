@@ -509,9 +509,8 @@ public class WebUtils {
 		    Class businessObjClass = null;
 		    try{
 		    	businessObjClass = Class.forName(businessObjectClassName);
-		    	
 		    }catch(Exception e){
-		    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+		    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 		    }
 		    return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
 		  			   businessObjClass, fieldName);
@@ -520,10 +519,9 @@ public class WebUtils {
     public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName) {
 	    Class businessObjClass = null;
 	    try{
-	    	businessObjClass = Class.forName(businessObjectClassName);
-	    	
+	    	businessObjClass = Class.forName(businessObjectClassName);	    	
 	    }catch(Exception e){
-	    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+	    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 	    }
 	    return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
 	  			   businessObjClass, fieldName);

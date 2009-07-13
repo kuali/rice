@@ -1346,14 +1346,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 						throw new RuntimeException("Error decrypting value for business object " + businessObjectClass + " attribute " + field.getPropertyName(), e);
 					}
 					if (attributeSecurity.isMask() && !getBusinessObjectAuthorizationService().canFullyUnmaskField(user,
-							businessObjectClass, field.getPropertyName())) {
+							businessObjectClass, field.getPropertyName(),null)) {
 						MaskFormatter maskFormatter = attributeSecurity.getMaskFormatter();
 						field.setEncryptedValue(field.getPropertyValue());
 						field.setDisplayMaskValue(maskFormatter.maskValue(decryptedValue));
 						field.setSecure(true);
 					}
 					else if (attributeSecurity.isPartialMask() && !getBusinessObjectAuthorizationService().canPartiallyUnmaskField(user,
-							businessObjectClass, field.getPropertyName())) {
+							businessObjectClass, field.getPropertyName(),null)) {
 						MaskFormatter maskFormatter = attributeSecurity.getPartialMaskFormatter();
 						field.setEncryptedValue(field.getPropertyValue());
 						field.setDisplayMaskValue(maskFormatter.maskValue(decryptedValue));

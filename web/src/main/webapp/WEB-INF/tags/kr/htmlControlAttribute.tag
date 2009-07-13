@@ -56,18 +56,23 @@
 <c:if test="${!empty attributeEntry.attributeSecurityMask && attributeEntry.attributeSecurityMask == true  }">
 	<c:set var="className" value ="${attributeEntry.fullClassName}" />
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
-	<c:set var="readOnly" value="${(kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true') || readOnly}" />
-	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
-	<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
+	<c:set var="readOnly" value="${displayMask || readOnly}" />
+	<c:if test="${displayMask || encryptValue}">
+		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+	</c:if>
 </c:if>
 
 
 <c:if test="${!displayMask && !empty attributeEntry.attributeSecurityPartialMask && attributeEntry.attributeSecurityPartialMask == true  }">
 	<c:set var="className" value ="${attributeEntry.fullClassName}" />
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
-	<c:set var="readOnly" value="${(kfunc:canPartiallyUnmaskField(attributeEntry.fullClassName, attributeEntry.name) ? 'false' : 'true') || readOnly}"/>
-    <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName)? 'false' : 'true'}" />
+    <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
+	<c:set var="readOnly" value="${displayMask || readOnly}"/>
 	<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
+	<c:if test="${displayMask || encryptValue}">
+		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+	</c:if>
 </c:if>
 
 

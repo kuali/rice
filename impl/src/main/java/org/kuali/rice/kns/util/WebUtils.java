@@ -505,26 +505,36 @@ public class WebUtils {
     	return displayMaskValue;
     }
     
-    public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName) {
+    public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName, KualiForm form ) {
 		    Class businessObjClass = null;
 		    try{
 		    	businessObjClass = Class.forName(businessObjectClassName);
 		    }catch(Exception e){
 		    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 		    }
-		    return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
-		  			   businessObjClass, fieldName);
+		    if ( form instanceof KualiDocumentFormBase ) {
+		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+		    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
+		    } else {
+		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+		    			businessObjClass, fieldName, null);
+		    }
     }
     
-    public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName) {
+    public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName, KualiForm form ) {
 	    Class businessObjClass = null;
 	    try{
 	    	businessObjClass = Class.forName(businessObjectClassName);	    	
 	    }catch(Exception e){
 	    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 	    }
-	    return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
-	  			   businessObjClass, fieldName);
+	    if ( form instanceof KualiDocumentFormBase ) {
+	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+	    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
+	    } else {
+	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+	    			businessObjClass, fieldName, null);
+	    }
     }
     
     public static boolean canAddNoteAttachment(Document document) {

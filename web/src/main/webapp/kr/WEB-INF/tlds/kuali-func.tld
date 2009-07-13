@@ -64,15 +64,15 @@
     	<description>Check Fully Unmask Permission.</description>
     	<name>canFullyUnmaskField</name>
 	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
-	    <function-signature>boolean canFullyUnmaskField(java.lang.String, java.lang.String)</function-signature>
-	    <example>${kfunc:canFullyUnmaskField(businessObjectClassName, fieldName)}</example>
+	    <function-signature>boolean canFullyUnmaskField(java.lang.String, java.lang.String, org.kuali.rice.kns.web.struts.form.KualiForm)</function-signature>
+	    <example>${kfunc:canFullyUnmaskField(businessObjectClassName, fieldName, kualiForm)}</example>
 	</function>
 	<function>
     	<description>Check Partially Unmask Permission.</description>
     	<name>canPartiallyUnmaskField</name>
 	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
-	    <function-signature>boolean canPartiallyUnmaskField(java.lang.String, java.lang.String)</function-signature>
-	    <example>${kfunc:canPartiallyUnmaskField(businessObjectClassName, fieldName)}</example>
+	    <function-signature>boolean canPartiallyUnmaskField(java.lang.String, java.lang.String, org.kuali.rice.kns.web.struts.form.KualiForm)</function-signature>
+	    <example>${kfunc:canPartiallyUnmaskField(businessObjectClassName, fieldName, kualiForm)}</example>
 	</function>
 	<function>
     	<description>Get Fully Masked Value</description>

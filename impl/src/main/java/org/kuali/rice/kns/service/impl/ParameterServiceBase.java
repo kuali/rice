@@ -469,6 +469,17 @@ public abstract class ParameterServiceBase implements ParameterService {
         KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, PARAMETER_CACHE_GROUP_NAME);
     }
     
+    /**
+     * Inserts the given Parameter into the cache.  If the Parameter is already in the cache,
+     * these entries should  be overwritten.
+     */
+    //protected void insertIntoCache(Parameter parameter, String applicationNamespaceCodeOverride) {
+    //    if (parameter == null) {
+    //        return;
+    //    }
+    //    KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName(), applicationNamespaceCodeOverride), parameter, PARAMETER_CACHE_GROUP_NAME);
+    //}
+    
     protected void flushParameterFromCache(String namespaceCode, String detailTypeCode, String name) {
         KEWServiceLocator.getCacheAdministrator().flushEntry(getParameterCacheKey(namespaceCode, detailTypeCode, name));
     }

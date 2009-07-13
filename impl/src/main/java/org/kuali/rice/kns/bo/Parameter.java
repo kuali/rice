@@ -22,6 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.kuali.rice.kns.util.KNSConstants;
+
 /**
  * 
  */
@@ -43,6 +45,10 @@ public class Parameter extends PersistableBusinessObjectBase {
 	@Id
 	@Column(name="PARM_NM")
 	private String parameterName;
+	
+	@Id
+    @Column(name="APPL_NMSPC_CD")
+    private String parameterApplicationNamespaceCode;
 
 	@Column(name="TXT")
 	private String parameterValue;
@@ -78,7 +84,15 @@ public class Parameter extends PersistableBusinessObjectBase {
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
 		this.parameterConstraintCode = parameterConstraintCode;
+		this.parameterApplicationNamespaceCode = KNSConstants.DEFAULT_APPLICATION_CODE;
 	}
+	
+	public Parameter( String parameterName, String parameterValue, String parameterConstraintCode, String parameterApplicationNamespaceCode ) {
+        this.parameterName = parameterName;
+        this.parameterValue = parameterValue;
+        this.parameterConstraintCode = parameterConstraintCode;
+        this.parameterApplicationNamespaceCode = parameterApplicationNamespaceCode;
+    }
 	
 	
 	public String getParameterName() {
@@ -129,6 +143,7 @@ public class Parameter extends PersistableBusinessObjectBase {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "parameterNamespaceCode", this.parameterNamespaceCode );
 		m.put( "parameterDetailTypeCode", this.parameterDetailTypeCode );
+		m.put( "parameterApplicationNamespaceCode", this.parameterApplicationNamespaceCode );
 		m.put( "parameterName", this.parameterName );
 		m.put( "parameterValue", this.parameterValue );
 		m.put( "parameterConstraintCode", this.getParameterConstraintCode() );
@@ -174,6 +189,14 @@ public class Parameter extends PersistableBusinessObjectBase {
 	public void setParameterDetailType(ParameterDetailType parameterDetailType) {
 		this.parameterDetailType = parameterDetailType;
 	}
+
+    public String getParameterApplicationNamespaceCode() {
+        return this.parameterApplicationNamespaceCode;
+    }
+
+    public void setParameterApplicationNamespaceCode(String parameterApplicationNamespaceCode) {
+        this.parameterApplicationNamespaceCode = parameterApplicationNamespaceCode;
+    }
 
 }
 

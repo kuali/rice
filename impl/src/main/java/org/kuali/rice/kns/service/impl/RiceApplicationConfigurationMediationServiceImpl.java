@@ -25,6 +25,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NamespaceService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
+import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.kns.bo.Namespace;
@@ -118,11 +119,16 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 	            nonDatabaseComponents.addAll(nonDatabaseComponentFromCache);
 	        } else {
     			RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(serviceName);
-    			if (rac != null) {
-    				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
-    				synchronized (nonDatabaseComponentsCache) {
-        	            nonDatabaseComponentsCache.put(serviceName.toString(), new MaxAgeSoftReference<List<ParameterDetailType>>( nonDatabaseComponentsCacheMaxAgeSeconds, rac.getNonDatabaseComponents() ));
-					}
+    			try {
+        			if (rac != null) {
+        				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
+        				synchronized (nonDatabaseComponentsCache) {
+            	            nonDatabaseComponentsCache.put(serviceName.toString(), new MaxAgeSoftReference<List<ParameterDetailType>>( nonDatabaseComponentsCacheMaxAgeSeconds, rac.getNonDatabaseComponents() ));
+    					}
+        			}
+    			} catch (Exception e) {
+    			    //TODO : Need a better way to catch if service is not active (404 error)
+    			    LOG.warn("Invalid RiceApplicationConfigurationService with name: " + serviceName + ".  ");
     			}
 	        }
 			

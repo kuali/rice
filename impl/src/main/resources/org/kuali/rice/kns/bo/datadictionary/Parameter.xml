@@ -16,6 +16,7 @@
 			<list>
 				<ref bean="Parameter-parameterNamespaceCode"/>
 				<ref bean="Parameter-parameterDetailTypeCode"/>
+				<ref bean="Parameter-parameterApplicationNamespaceCode"/>
 				<ref bean="Parameter-parameterName"/>
 				<ref bean="Parameter-parameterValue"/>
 				<ref bean="Parameter-parameterDescription"/>
@@ -45,6 +46,25 @@
 
 	<bean id="Parameter-parameterDetailTypeCode-parentBean" abstract="true" parent="ParameterDetailType-parameterDetailTypeCode">
 	</bean>
+	
+	<bean id="Parameter-parameterApplicationNamespaceCode" parent="Parameter-parameterApplicationNamespaceCode-parentBean"/>
+	<bean id="Parameter-parameterApplicationNamespaceCode-parentBean" abstract="true" parent="AttributeDefinition">
+		<property name="name" value="parameterApplicationNamespaceCode"/>
+		<property name="forceUppercase" value="false"/>
+		<property name="label" value="Application Namespace"/>
+		<property name="shortLabel" value="App Nmspc"/>
+		<property name="maxLength" value="20"/>
+		<property name="validationPattern">
+			<bean parent="AlphaNumericValidationPattern" p:allowUnderscore="true"/>
+		</property>
+		<property name="required" value="true"/>
+		<property name="control">
+			<bean parent="TextControlDefinition" p:size="20"/>
+		</property>
+		<property name="summary" value="The application namespace code of the parameter."/>
+		<property name="description" value="This will be used as the identifier to determine which application the parameter is used by."/>
+	</bean>
+	
 	<bean id="Parameter-parameterName" parent="Parameter-parameterName-parentBean"/>
 
 	<bean id="Parameter-parameterName-parentBean" abstract="true" parent="AttributeDefinition">
@@ -153,6 +173,7 @@
 						<list>
 							<bean parent="FieldDefinition" p:attributeName="parameterNamespace.codeAndDescription"/>
 							<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName"/> <!--  p:noInquiry="true" -->
+							<bean parent="FieldDefinition" p:attributeName="parameterApplicationNamespaceCode" />
 							<bean parent="FieldDefinition" p:attributeName="parameterName" p:noInquiry="true"/>
 							<bean parent="FieldDefinition" p:attributeName="parameterValue"/>
 							<bean parent="FieldDefinition" p:attributeName="parameterConstraintCode"/>
@@ -187,6 +208,7 @@
 			<list>
 				<bean parent="FieldDefinition" p:attributeName="parameterNamespaceCode"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName" p:noLookup="true"/>
+				<bean parent="FieldDefinition" p:attributeName="parameterApplicationNamespaceCode" />
 				<bean parent="FieldDefinition" p:attributeName="parameterName" p:noLookup="true"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterValue"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterTypeCode"/>
@@ -196,6 +218,7 @@
 			<list>
 				<bean parent="FieldDefinition" p:attributeName="parameterNamespaceCode" p:forceInquiry="true"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName" p:maxLength="40"/> <!--  p:noInquiry="true" -->
+				<bean parent="FieldDefinition" p:attributeName="parameterApplicationNamespaceCode" p:maxLength="20"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterName" p:maxLength="40" p:forceInquiry="true"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterDescription" p:maxLength="40"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterValue" p:maxLength="40"/>

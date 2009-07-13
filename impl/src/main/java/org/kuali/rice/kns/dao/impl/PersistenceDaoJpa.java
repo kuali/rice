@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.kuali.rice.core.jpa.metadata.CollectionDescriptor;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
@@ -29,7 +32,7 @@ import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class PersistenceDaoJpa implements PersistenceDao {
-
+    
 	/**
 	 * @see org.kuali.rice.kns.dao.PersistenceDao#clearCache()
 	 */

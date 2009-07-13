@@ -264,7 +264,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
 
-//    public static final String KUALI_WORKFLOW_APPLICATION_CODE = "kuali";
+    public static final String DEFAULT_APPLICATION_CODE = "KUALI";
+    public static final String APPLICATION_CODE = "app.namespace";
     public static final String LOOKUP_ACTION = "lookup.do";
     public static final String MULTIPLE_VALUE_LOOKUP_ACTION = "multipleValueLookup.do";
     public static final String LOOKUP_RESULTS_SEQUENCE_NUMBER = "lookupResultsSequenceNumber";

@@ -1,5 +1,6 @@
 <config>
     <!--  NOTE: This environment parameter must be defined early -->
+    <param name="app.namespace">KUALI</param>
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>

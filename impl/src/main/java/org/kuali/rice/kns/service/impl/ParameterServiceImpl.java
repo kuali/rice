@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
@@ -28,6 +30,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ParameterServerService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * See ParameterService. The componentClass must be the business object, document, or step class that the parameter is associated
@@ -46,8 +49,11 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 	protected BusinessObjectService businessObjectService;
 	protected LookupService lookupService;
 	
-	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode,
-			String parameterName) {
+	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode, String parameterName) {
+	    String applicationNamespace = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_CODE);
+	    if (StringUtils.isEmpty(applicationNamespace)) {
+	        applicationNamespace = KNSConstants.DEFAULT_APPLICATION_CODE;
+	    }
 	    Parameter parameter = fetchFromCache(namespaceCode, detailTypeCode, parameterName);
         if (parameter != null) {
             return parameter;
@@ -56,8 +62,29 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 	    crit.put("parameterNamespaceCode", namespaceCode);
 	    crit.put("parameterDetailTypeCode", detailTypeCode);
 	    crit.put("parameterName", parameterName);
-	    parameter = (Parameter)getBusinessObjectService().findByPrimaryKey(Parameter.class, crit);
+	    //crit.put("parameterApplicationNamespaceCode", applicationNamespace);
+	    
+	    List<Parameter> parameters = (List<Parameter>)getBusinessObjectService().findMatching(Parameter.class, crit);
+	    Parameter parameterDefault = null;
+	    for (Parameter parm : parameters) {
+	        if (StringUtils.equals(applicationNamespace, parm.getParameterApplicationNamespaceCode())) {
+	            parameter = parm;
+	            break;
+	        } else if (StringUtils.equals(KNSConstants.DEFAULT_APPLICATION_CODE, parm.getParameterApplicationNamespaceCode())) {
+	            parameterDefault = parm;
+	        }
+	    }
+
+	    if (parameter == null) {
+	        parameter = parameterDefault;
+	    }
+	    
 	    insertIntoCache(parameter); 
+	    //if (parameter != null 
+	    //        && StringUtils.equals(KNSConstants.DEFAULT_APPLICATION_CODE, parameter.getParameterApplicationNamespaceCode())
+	    //        && !StringUtils.equals(KNSConstants.DEFAULT_APPLICATION_CODE, applicationNamespace)) {
+	    //    insertIntoCache(parameter, applicationNamespace); 
+	    //}
 	    return parameter;
 	}
     

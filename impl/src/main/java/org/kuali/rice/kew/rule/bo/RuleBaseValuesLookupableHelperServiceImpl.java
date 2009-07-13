@@ -571,12 +571,15 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             List pkNames) {
         RuleBaseValues ruleBaseValues = (RuleBaseValues)businessObject;
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
+        	if (allowsMaintenanceEditAction(businessObject)) {
+        		htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        	}
+        	if (allowsMaintenanceNewOrCopyAction()) {
+                htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+            }
         }
-        if (allowsMaintenanceNewOrCopyAction()) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
-        }
+        
         return htmlDataList;
     }
 

@@ -575,12 +575,15 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             List pkNames) {
         RuleDelegation ruleDelegation = (RuleDelegation)businessObject;
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(ruleDelegation.getDelegationRuleBaseValues().getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        if (StringUtils.isNotBlank(ruleDelegation.getDelegationRuleBaseValues().getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
+        	if (allowsMaintenanceEditAction(businessObject)) {
+        		htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        	}
+            if (allowsMaintenanceNewOrCopyAction()) {
+                htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+            }
         }
-        if (allowsMaintenanceNewOrCopyAction()) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
-        }
+            
         return htmlDataList;
     }
 

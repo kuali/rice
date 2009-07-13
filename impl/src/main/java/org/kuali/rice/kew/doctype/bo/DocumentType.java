@@ -1492,6 +1492,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
-		active = new Boolean(active);
+		this.active = Boolean.valueOf(active);
 	}
 }

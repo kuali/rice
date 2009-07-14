@@ -108,7 +108,11 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		routeDocumentIfNecessary(document, criteria, context);
     		results.setDocument(document);
     		documentId = document.getRouteHeaderId();
-    		MDC.put("docID", documentId);
+    		
+    		// detect if MDC already has docId param (to avoid nuking it below)
+    		boolean mdcHadDocId = MDC.get("docId") != null;
+    		if (!mdcHadDocId) { MDC.put("docId", documentId); }
+    		
     		PerformanceLogger perfLog = new PerformanceLogger(documentId);
     		try {
     		    if ( LOG.isInfoEnabled() ) {
@@ -153,7 +157,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		} finally {
     			perfLog.log("Time to run simulation.");
     			RouteContext.clearCurrentRouteContext();
-    			MDC.remove("docID");
+    			
+    			if (!mdcHadDocId) { MDC.remove("docID"); }
     		}
     	} finally {
     		RouteContext.releaseCurrentRouteContext();

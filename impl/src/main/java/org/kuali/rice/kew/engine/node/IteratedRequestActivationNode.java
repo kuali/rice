@@ -203,7 +203,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
      * @throws WorkflowException
      */
     private boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
-        MDC.put("docID", document.getRouteHeaderId());
+        MDC.put("docId", document.getRouteHeaderId());
         PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
         List generatedActionItems = new ArrayList();
         List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());

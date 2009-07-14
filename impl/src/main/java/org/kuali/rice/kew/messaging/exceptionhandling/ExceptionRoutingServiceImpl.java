@@ -58,7 +58,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
         throwable = unwrapRouteManagerExceptionIfPossible(throwable);
         RouteContext routeContext = establishRouteContext(document, throwable);
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
-        MDC.put("docID", routeHeaderId);
+        MDC.put("docId", routeHeaderId);
         PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);
         try {
 
@@ -95,7 +95,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } finally {
             performanceLogger.log("Time to generate exception request.");
-            MDC.remove("docID");
+            MDC.remove("docId");
         }
     }
 

@@ -176,7 +176,7 @@ public class RoleNode extends RequestsNode {
 	@SuppressWarnings("unchecked")
 	public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document,
 			RouteNodeInstance nodeInstance) throws WorkflowException {
-		MDC.put( "docID", document.getRouteHeaderId() );
+		MDC.put( "docId", document.getRouteHeaderId() );
 		PerformanceLogger performanceLogger = new PerformanceLogger( document.getRouteHeaderId() );
 		List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
 		List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();

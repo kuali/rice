@@ -85,7 +85,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		if (documentId == null) {
 			throw new IllegalArgumentException("Cannot process a null document id.");
 		}
-		MDC.put("docID", documentId);
+		MDC.put("docId", documentId);
 		boolean success = true;
 		RouteContext context = RouteContext.createNewRouteContext();
 		try {
@@ -156,7 +156,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
                 throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage(), context);
             }
 			RouteContext.clearCurrentRouteContext();
-			MDC.remove("docID");
+			MDC.remove("docId");
 		}
 	}
 

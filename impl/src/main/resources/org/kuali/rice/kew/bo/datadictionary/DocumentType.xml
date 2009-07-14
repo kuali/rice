@@ -99,7 +99,7 @@
 
   <bean id="DocumentType-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Name"/>
-    <property name="maxLength" value="255"/>
+    <property name="maxLength" value="64"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="false"/>
     </property>
@@ -125,7 +125,7 @@
 
   <bean id="DocumentType-label-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Label"/>
-    <property name="maxLength" value="500"/>
+    <property name="maxLength" value="128"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>

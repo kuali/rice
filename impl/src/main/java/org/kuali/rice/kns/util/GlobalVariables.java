@@ -171,7 +171,7 @@ public class GlobalVariables {
 
 
     /**
-     * Clears out GlobalVariable objects
+     * Clears out GlobalVariable objects with the exception of the UserSession
      */
     public static void clear() {
         messageMaps.set(new MessageMap());

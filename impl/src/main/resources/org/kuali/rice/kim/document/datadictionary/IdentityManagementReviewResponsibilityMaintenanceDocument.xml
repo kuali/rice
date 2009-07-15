@@ -11,24 +11,22 @@
         <ref bean="ReviewResponsibilityMaintenanceDocument-Details"/>
       </list>
     </property>
-    <!-- 
     <property name="defaultExistenceChecks">
       <list>
-        <bean parent="ReferenceDefinition" p:attributeName="parameterNamespace" p:attributeToHighlightOnFail="parameterNamespaceCode"/>
-        <bean parent="ReferenceDefinition" p:attributeName="parameterType" p:attributeToHighlightOnFail="parameterTypeCode"/>
+        <bean parent="ReferenceDefinition" p:attributeName="documentType" p:attributeToHighlightOnFail="documentTypeName"/>
       </list>
     </property>
-     -->
     <property name="lockingKeys">
       <list>
         <value>responsibilityId</value>
       </list>
     </property>
     
+    <property name="allowsNewOrCopy" value="true"/>
     <property name="documentTypeName" value="IdentityManagementReviewResponsibilityMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.ReviewResponsibilityMaintenanceDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    
+    <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.ReviewResponsibilityMaintenanceDocumentPresentationController" />
     <property name="workflowProperties">
       <ref bean="ReviewResponsibilityMaintenanceDocument-workflowProperties"/>
     </property>
@@ -42,11 +40,13 @@
   <bean id="ReviewResponsibilityMaintenanceDocument-Main-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="responsibilityId"/>
+        <bean parent="MaintainableFieldDefinition" p:name="responsibilityId"
+            p:unconditionallyReadOnly="true" p:required="true" 
+            p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextResponsibilityIdValuesFinder" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="description"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="active"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" p:defaultValue="Review" />
+        <bean parent="MaintainableFieldDefinition" p:required="false" p:name="description"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="active" p:defaultValue="Y" />
       </list>
     </property>
     <property name="id" value="Main"/>

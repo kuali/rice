@@ -61,29 +61,34 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	 */
 	@Override
 	public void saveBusinessObject() {
-		if ( LOG.isInfoEnabled() ) {
-			LOG.info( "Attempting to save ReviewResponsibility BO via ResponsibilityUpdateService:" + getBusinessObject() );
+		try {
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info( "Attempting to save ReviewResponsibility BO via ResponsibilityUpdateService:" + getBusinessObject() );
+			}
+			// find the template ID if needed
+			if ( reviewTemplateId == null ) {
+				populateReviewTemplateInfo();
+			}
+			ReviewResponsibility resp = (ReviewResponsibility)getBusinessObject();
+			// build the AttributeSet with the details
+			AttributeSet details = new AttributeSet();
+			details.put( KimAttributes.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
+			details.put( KimAttributes.ROUTE_NODE_NAME, resp.getRouteNodeName() );
+			details.put( KimAttributes.REQUIRED, resp.isRequired()?"true":"false" );
+			details.put( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL, resp.isActionDetailsAtRoleMemberLevel()?"true":"false" );
+			details.put( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
+			
+			KIMServiceLocator.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(), 
+					reviewTemplateId,
+					resp.getNamespaceCode(), 
+					resp.getName(), 
+					resp.getDescription(), 
+					resp.isActive(), 
+					details );
+		} catch ( RuntimeException ex ) {
+			LOG.error( "Exception in saveBusinessObject()", ex );
+			throw ex;
 		}
-		// find the template ID if needed
-		if ( reviewTemplateId == null ) {
-			populateReviewTemplateInfo();
-		}
-		ReviewResponsibility resp = (ReviewResponsibility)getBusinessObject();
-		// build the AttributeSet with the details
-		AttributeSet details = new AttributeSet();
-		details.put( KimAttributes.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
-		details.put( KimAttributes.ROUTE_NODE_NAME, resp.getRouteNodeName() );
-		details.put( KimAttributes.REQUIRED, resp.isRequired()?"true":"false" );
-		details.put( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL, resp.isActionDetailsAtRoleMemberLevel()?"true":"false" );
-		details.put( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
-		
-		KIMServiceLocator.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(), 
-				reviewTemplateId,
-				resp.getNamespaceCode(), 
-				resp.getName(), 
-				resp.getDescription(), 
-				resp.isActive(), 
-				details );
 	}
 	
 	protected void populateReviewTemplateInfo() {
@@ -119,24 +124,28 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	 */
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {
-		if ( businessObject == null ) {
-			throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable.prepareBusinessObject passed a null object." );
+		try {
+			if ( businessObject == null ) {
+				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable.prepareBusinessObject passed a null object." );
+			}
+			if ( businessObject instanceof ResponsibilityImpl ) {
+				KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ResponsibilityImpl)businessObject).getResponsibilityId() );
+				businessObject = new ReviewResponsibility( resp );
+			} else if ( businessObject instanceof ReviewResponsibility ) {
+				// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
+				KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ReviewResponsibility)businessObject).getResponsibilityId() );		
+				((ReviewResponsibility)businessObject).loadFromKimResponsibility(resp);
+			} else {
+				throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable passed an unsupported object type: " + businessObject.getClass() );
+			}
+			if ( businessObject instanceof PersistableBusinessObject ) {
+				setBusinessObject( (PersistableBusinessObject)businessObject );
+			}
+			super.prepareBusinessObject(businessObject);
+		} catch ( RuntimeException ex ) {
+			LOG.error( "Exception in prepareBusinessObject()", ex );
+			throw ex;
 		}
-		if ( businessObject instanceof ResponsibilityImpl ) {
-			KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ResponsibilityImpl)businessObject).getResponsibilityId() );
-			businessObject = new ReviewResponsibility( resp );
-		} else if ( businessObject instanceof ReviewResponsibility ) {
-			// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
-			KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, ((ReviewResponsibility)businessObject).getResponsibilityId() );		
-			((ReviewResponsibility)businessObject).loadFromKimResponsibility(resp);
-		} else {
-			throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityMaintainable passed an unsupported object type: " + businessObject.getClass() );
-		}
-		if ( businessObject instanceof PersistableBusinessObject ) {
-			setBusinessObject( (PersistableBusinessObject)businessObject );
-		}
-		
-		super.prepareBusinessObject(businessObject);
 	}
 	
 }

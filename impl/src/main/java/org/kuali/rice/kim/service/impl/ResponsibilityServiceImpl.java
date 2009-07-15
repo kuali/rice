@@ -53,6 +53,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.springframework.orm.ObjectRetrievalFailureException;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -424,43 +425,51 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     		String responsibilityTemplateId, String namespaceCode, String name,
     		String description, boolean active, AttributeSet responsibilityDetails ) {
     	// look for an existing responsibility of the given type
-    	KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
-    	if ( resp == null ) {
-    		resp = new KimResponsibilityImpl();
-    		resp.setResponsibilityId(responsibilityId);
+    	try {
+	    	KimResponsibilityImpl resp = null;
+	    	try {
+	    		resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
+	    	} catch ( ObjectRetrievalFailureException ex ) {
+	    		resp = new KimResponsibilityImpl();
+	    		resp.setResponsibilityId(responsibilityId);
+	    	}
+	    	resp.setTemplateId(responsibilityTemplateId);
+	    	resp.refreshReferenceObject( "template" );
+	    	resp.setNamespaceCode(namespaceCode);
+	    	resp.setName(name);
+	    	resp.setDescription(description);
+	    	resp.setActive(active);
+	    	AttributeSet attributesToAdd = new AttributeSet( responsibilityDetails );
+	    	List<ResponsibilityAttributeDataImpl> details = resp.getDetailObjects();
+	    	Iterator<ResponsibilityAttributeDataImpl> detailIter = details.iterator();
+	    	while ( detailIter.hasNext() ) {
+	    		ResponsibilityAttributeDataImpl detail = detailIter.next();
+	    		String attrName = detail.getKimAttribute().getAttributeName();
+	    		String attrValue = attributesToAdd.get(attrName);
+	    		// if not present in the list or is blank, remove from the list
+	    		if ( StringUtils.isBlank(attrValue) ) {
+	    			detailIter.remove();
+	    		} else {
+	    			detail.setAttributeValue(attrValue);
+	    		}
+	    		// remove from detail map - used to add new ones later
+	    		attributesToAdd.remove(attrName);
+	    	}
+	    	for ( String attrName : attributesToAdd.keySet() ) {
+	    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrName);
+	    		ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
+	    		newDetail.setAttributeDataId(getNewAttributeDataId());
+	    		newDetail.setKimAttributeId(attr.getKimAttributeId());
+	    		newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
+	    		newDetail.setResponsibilityId(responsibilityId);
+	    		newDetail.setAttributeValue(attributesToAdd.get(attrName));
+	    		details.add(newDetail);
+	    	}
+	    	getBusinessObjectService().save(resp);
+    	} catch ( RuntimeException ex ) {
+    		LOG.error( "Exception in saveResponsibility: ", ex );
+    		throw ex;
     	}
-    	resp.setTemplateId(responsibilityTemplateId);
-    	resp.setNamespaceCode(namespaceCode);
-    	resp.setName(name);
-    	resp.setDescription(description);
-    	resp.setActive(active);
-    	AttributeSet attributesToAdd = new AttributeSet( responsibilityDetails );
-    	List<ResponsibilityAttributeDataImpl> details = resp.getDetailObjects();
-    	Iterator<ResponsibilityAttributeDataImpl> detailIter = details.iterator();
-    	while ( detailIter.hasNext() ) {
-    		ResponsibilityAttributeDataImpl detail = detailIter.next();
-    		String attrName = detail.getKimAttribute().getAttributeName();
-    		String attrValue = attributesToAdd.get(attrName);
-    		// if not present in the list or is blank, remove from the list
-    		if ( StringUtils.isBlank(attrValue) ) {
-    			detailIter.remove();
-    		} else {
-    			detail.setAttributeValue(attrValue);
-    		}
-    		// remove from detail map - used to add new ones later
-    		attributesToAdd.remove(attrName);
-    	}
-    	for ( String attrName : attributesToAdd.keySet() ) {
-    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrName);
-    		ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
-    		newDetail.setAttributeDataId(getNewAttributeDataId());
-    		newDetail.setKimAttributeId(attr.getKimAttributeId());
-    		newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
-    		newDetail.setResponsibilityId(responsibilityId);
-    		newDetail.setAttributeValue(attributesToAdd.get(attrName));
-    		details.add(newDetail);
-    	}
-    	getBusinessObjectService().save(resp);
     }
 
     protected String getNewAttributeDataId(){

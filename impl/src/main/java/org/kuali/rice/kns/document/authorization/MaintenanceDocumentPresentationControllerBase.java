@@ -18,8 +18,6 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -33,12 +31,12 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 public class MaintenanceDocumentPresentationControllerBase extends
 		DocumentPresentationControllerBase implements
 		MaintenanceDocumentPresentationController {
-	private static Log LOG = LogFactory
-			.getLog(MaintenanceDocumentPresentationControllerBase.class);
+//	private static final Logger LOG = Logger
+//			.getLogger(MaintenanceDocumentPresentationControllerBase.class);
 
 	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
-	public final boolean canCreate(Class boClass) {
+	public boolean canCreate(Class boClass) {
 		return getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						boClass));

@@ -2,7 +2,12 @@
 
   <bean id="ResponsibilityImpl" parent="ResponsibilityImpl-parentBean"/>
 
-  <bean id="ResponsibilityImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.impl.ResponsibilityImpl" p:titleAttribute="responsibilityId" p:objectLabel="Responsibility" p:inquiryDefinition-ref="ResponsibilityImpl-inquiryDefinition" p:lookupDefinition-ref="ResponsibilityImpl-lookupDefinition">
+  <bean id="ResponsibilityImpl-parentBean" abstract="true" parent="BusinessObjectEntry" 
+        p:businessObjectClass="org.kuali.rice.kim.bo.impl.ResponsibilityImpl" 
+        p:titleAttribute="responsibilityId" 
+        p:objectLabel="Responsibility"
+        p:inquiryDefinition-ref="ResponsibilityImpl-inquiryDefinition" 
+        p:lookupDefinition-ref="ResponsibilityImpl-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="ResponsibilityImpl-template.namespaceCode"/>

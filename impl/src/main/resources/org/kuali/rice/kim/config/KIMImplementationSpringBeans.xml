@@ -477,10 +477,9 @@
         </property>
     </bean>
 
-	<bean id="responsibilityLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+    <bean id="responsibilityLookupable" class="org.kuali.rice.kim.lookup.ResponsibilityLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
-            <bean class="org.kuali.rice.kim.lookup.ResponsibilityLookupableHelperServiceImpl" parent="lookupableHelperService">
-            </bean>
+            <bean class="org.kuali.rice.kim.lookup.ResponsibilityLookupableHelperServiceImpl" parent="lookupableHelperService" />
         </property>
     </bean>
 

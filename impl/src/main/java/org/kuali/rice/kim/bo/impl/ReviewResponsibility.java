@@ -26,6 +26,7 @@ import javax.persistence.Table;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -61,6 +62,8 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	protected boolean actionDetailsAtRoleMemberLevel;
 	protected boolean required;
 	protected String qualifierResolverProvidedIdentifier;
+
+	protected DocumentTypeEBO documentType;
 	
 	public ReviewResponsibility() {
 	}
@@ -306,5 +309,13 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	public void beforeDelete(PersistenceBroker persistenceBroker)
 			throws PersistenceBrokerException {
 		throw new UnsupportedOperationException( "This object should never be persisted.");
+	}
+
+	public DocumentTypeEBO getDocumentType() {
+		return this.documentType;
+	}
+
+	public void setDocumentType(DocumentTypeEBO documentType) {
+		this.documentType = documentType;
 	}
 }

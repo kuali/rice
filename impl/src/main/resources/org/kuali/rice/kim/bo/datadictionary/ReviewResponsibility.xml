@@ -21,6 +21,18 @@
         <ref bean="ReviewResponsibility-qualifierResolverProvidedIdentifier"/>
       </list>
     </property>
+    <property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="documentType"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="documentTypeName" p:targetName="name"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="ReviewResponsibility-responsibilityId" parent="ResponsibilityImpl-responsibilityId"/>
@@ -30,7 +42,11 @@
         p:name="namespaceCode" 
         p:label="Responsibility Namespace" 
         p:shortLabel="Responsibility Namespace" 
-        p:required="true" />
+        p:required="true">
+    <property name="control">
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.NamespaceValuesFinder" p:includeKeyInLabel="true"/>
+    </property>
+  </bean>
 
   <bean id="ReviewResponsibility-name" parent="ResponsibilityImpl-name"/>
   <bean id="ReviewResponsibility-description" parent="AttributeReferenceDummy-genericBigText"

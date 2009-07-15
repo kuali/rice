@@ -416,7 +416,7 @@ public class WorkflowDocument implements java.io.Serializable {
             return new ActionRequestDTO[0];
         }
         try {
-            return getWorkflowUtility().getActionRequests(getRouteHeaderId());
+            return getWorkflowUtility().getAllActionRequests(getRouteHeaderId());
         } catch (Exception e) {
             throw handleException(e);
         }

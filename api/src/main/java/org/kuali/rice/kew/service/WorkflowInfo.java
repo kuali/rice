@@ -171,7 +171,7 @@ public class WorkflowInfo implements java.io.Serializable {
     
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getActionItems(routeHeaderId);
+            return getWorkflowUtility().getAllActionItems(routeHeaderId);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -194,7 +194,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getActionRequests(routeHeaderId);
+            return getWorkflowUtility().getAllActionRequests(routeHeaderId);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -270,7 +270,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
         try {
-            return getWorkflowUtility().isUserInRouteLog(routeHeaderId, principalId, lookFuture, flattenNodes);
+            return getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(routeHeaderId, principalId, lookFuture, flattenNodes);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -545,7 +545,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
-            return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
+            return getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteriaVO);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -624,7 +624,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException {
         try {
-            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes);
+        	return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, false);
         } catch (Exception e) {
             throw handleException(e);
         }

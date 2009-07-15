@@ -225,10 +225,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
         
         // now let's do a flattened evaluation, it should hit both branches
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true, true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true, true));
-        assertTrue("should be in route log because we've flattened nodes", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true, true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true, true));
+        assertTrue("should be in route log", utility.isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true, true));
+        assertTrue("should be in route log", utility.isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true, true));
+        assertTrue("should be in route log because we've flattened nodes", utility.isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true, true));
+        assertTrue("should be in route log", utility.isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true, true));
         
         // now let's switch to the right branch
         TestSplitNode.setRightBranch(true);
@@ -1327,7 +1327,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
@@ -1335,7 +1335,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setThreshold(Integer.valueOf(threshold));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         assertTrue("Search results should signify search went over the given threshold: " + threshold, result.isOverThreshold());
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", threshold, searchResults.size());
@@ -1366,25 +1366,25 @@ public class WorkflowUtilityTest extends KEWTestCase {
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocTitle(docTitle);
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setInitiator("rkirkend");
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setInitiator("user1");
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 3, searchResults.size());
         // now verify that the search returned the proper document id
@@ -1419,7 +1419,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocRouteNodeName(SeqSetup.ADHOC_NODE);
         try {
-            utility.performDocumentSearch(principalId, criteria);
+            utility.performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Exception should have been thrown when specifying a route node name but no document type name");
         } catch (Exception e) {}
 
@@ -1428,7 +1428,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName("Yo homes, smell ya later!");
         try {
-            utility.performDocumentSearch(principalId, criteria);
+            utility.performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Exception should have been thrown when specifying a route node name that does not exist on the specified document type name");
         } catch (Exception e) {}
 
@@ -1451,14 +1451,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
         criteria.findDocsAtExactSpecifiedRouteNode();
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking default node qualifier.", countAtNode, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking docs at exact node.", countAtNode, searchResults.size());
 
@@ -1466,7 +1466,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
         criteria.findDocsBeforeSpecifiedRouteNode();
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking docs before node.", countBeforeNode, searchResults.size());
 
@@ -1474,7 +1474,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
         criteria.findDocsAfterSpecifiedRouteNode();
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking docs after node.", countAfterNode, searchResults.size());
     }
@@ -1497,14 +1497,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE)}));
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,"fred")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1512,21 +1512,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeproperty", "doesntexist")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString())}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1534,21 +1534,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeymcfakefake", "99999999")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString())}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1556,21 +1556,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeylostington", "9999.9999")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)))}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1578,7 +1578,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("lastingsfakerson","07/06/2007")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = utility.performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
     }

@@ -54,14 +54,14 @@ public interface WorkflowUtility {
     public DocumentTypeDTO getDocumentTypeByName(String documentTypeName) throws WorkflowException;
     public Long getNewResponsibilityId() throws WorkflowException;
     public Integer getUserActionItemCount(String principalId) throws WorkflowException;
-    public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException;
+    public ActionItemDTO[] getAllActionItems(Long routeHeaderId) throws WorkflowException;
     public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException;
-    public ActionRequestDTO[] getActionRequests(Long documentId) throws WorkflowException;
+    public ActionRequestDTO[] getAllActionRequests(Long documentId) throws WorkflowException;
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException;
     public ActionTakenDTO[] getActionsTaken(Long documentId) throws WorkflowException;
     public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definition) throws WorkflowException;
     public boolean isUserInRouteLog(Long documentId, String principalId, boolean lookFuture) throws WorkflowException;
-    public boolean isUserInRouteLog(Long documentId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException;
+    public boolean isUserInRouteLogWithOptionalFlattening(Long documentId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException;
     public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
     public void reResolveRoleByDocumentId(Long documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException;
@@ -69,7 +69,7 @@ public interface WorkflowUtility {
     public boolean isFinalApprover(Long documentId, String principalId) throws WorkflowException;
     public boolean isSuperUserForDocumentType(String principalId, Long documentTypeId) throws WorkflowException;
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
-    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
+    public DocumentSearchResultDTO performDocumentSearchWithPrincipal(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
 
     // new in 2.3
 
@@ -101,13 +101,6 @@ public interface WorkflowUtility {
 
     // 2.4
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests);
-
-    /**
-     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
-     *
-     * This method assumes both existing and generated requests should be taken into account
-     */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes);
 
     /**
      * @since 0.9.1

@@ -87,7 +87,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
-@SuppressWarnings({"deprecation","unchecked"})
+@SuppressWarnings({"unchecked"})
 public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     private static final Logger LOG = Logger.getLogger(WorkflowUtilityWebServiceImpl.class);
@@ -248,7 +248,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return actionItemVOs;
     }
 
-    public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
+    public ActionItemDTO[] getAllActionItems(Long routeHeaderId) throws WorkflowException {
         Collection actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(routeHeaderId);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
         int i = 0;
@@ -261,7 +261,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
         List<String> actionRequestedCds = Arrays.asList(actionRequestedCodes);
-        ActionItemDTO[] actionItems = getActionItems(routeHeaderId);
+        ActionItemDTO[] actionItems = getAllActionItems(routeHeaderId);
         List<ActionItemDTO> matchingActionitems = new ArrayList<ActionItemDTO>();
         for (int i = 0; i < actionItems.length; i++) {
             ActionItemDTO actionItemVO = actionItems[i];
@@ -278,7 +278,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return returnActionItems;
     }
 
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
+    public ActionRequestDTO[] getAllActionRequests(Long routeHeaderId) throws WorkflowException {
         return getActionRequests(routeHeaderId, null, null);
     }
 
@@ -427,10 +427,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     public boolean isUserInRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
-    	return isUserInRouteLog(routeHeaderId, principalId, lookFuture, false);
+    	return isUserInRouteLogWithOptionalFlattening(routeHeaderId, principalId, lookFuture, false);
     }
     
-    public boolean isUserInRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
+    public boolean isUserInRouteLogWithOptionalFlattening(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -552,16 +552,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             }
         }
         return false;
-    }
-
-
-    /**
-     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
-     *
-     * @see org.kuali.rice.kew.service.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[])
-     */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) {
-        return documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, false);
     }
 
     /**
@@ -960,10 +950,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
-        return performDocumentSearch(null, criteriaVO);
+        return performDocumentSearchWithPrincipal(null, criteriaVO);
     }
 
-    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearchWithPrincipal(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         DocSearchCriteriaDTO criteria = DTOConverter.convertDocumentSearchCriteriaDTO(criteriaVO);
         criteria.setOverridingUserSession(true);
         if (principalId != null) {

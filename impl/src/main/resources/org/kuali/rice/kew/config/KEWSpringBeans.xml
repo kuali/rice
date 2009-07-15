@@ -357,7 +357,7 @@
 		</property>
 	</bean>
 
-  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>

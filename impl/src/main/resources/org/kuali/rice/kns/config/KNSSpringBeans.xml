@@ -171,7 +171,7 @@
 		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
 	</bean>
 
-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<bean id="transactionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>

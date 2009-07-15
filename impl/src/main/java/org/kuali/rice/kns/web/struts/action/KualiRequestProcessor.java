@@ -74,6 +74,10 @@ import org.springmodules.orm.ojb.OjbOperationException;
  */
 public class KualiRequestProcessor extends RequestProcessor {
 
+	private static final String MDC_USER_ALREADY_SET = "userAlreadySet";
+
+	private static final String MDC_USER = "user";
+
 	private static final String MDC_DOC_ID = "docId";
 
 	private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
@@ -134,8 +138,14 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 
 		} finally {
-			// MDC key is set above, and also during super.process() in the call to processActionForm
+			// MDC docId key is set above, and also during super.process() in the call to processActionForm
 			MDC.remove(MDC_DOC_ID);
+			// MDC user key is set above, although it may have already been set.
+			if (MDC.get(MDC_USER_ALREADY_SET) == null) {
+				MDC.remove(MDC_USER);
+			} else {
+				MDC.remove(MDC_USER_ALREADY_SET);
+			}
 		}
 
 	}
@@ -201,6 +211,14 @@ public class KualiRequestProcessor extends RequestProcessor {
 		request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
 		GlobalVariables.setUserSession(userSession);
 		GlobalVariables.clear();
+		
+		if (MDC.get(MDC_USER) != null) {
+			// abuse the MDC to prevent removing user prematurely if it was set elsewhere (e.g. UserLoginFilter)
+			MDC.put(MDC_USER_ALREADY_SET, Boolean.TRUE); 
+		} else {
+			MDC.put(MDC_USER, userSession.getPrincipalId());
+		}
+		
 		return true;
 	}
 

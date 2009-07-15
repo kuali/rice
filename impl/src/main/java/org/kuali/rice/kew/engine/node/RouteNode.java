@@ -40,6 +40,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -296,7 +297,7 @@ public class RouteNode implements Serializable {
     	try {
     		return nodeType != null && NodeType.fromNode(this).isTypeOf(NodeType.ROLE);
     	} catch( ResourceUnavailableException ex ) {
-    		System.err.println( "isRoleNode(): Unable to determine node type: " + ex.getMessage() );
+    		Logger.getLogger( RouteNode.class ).info( "isRoleNode(): Unable to determine node type: " + ex.getMessage() );
     		return false;
     	}
     }

@@ -417,19 +417,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     // --------------------
     // ResponsibilityUpdateService methods
     // --------------------
-    
-    /**
-     * @see org.kuali.rice.kim.service.ResponsibilityUpdateService#saveResponsibility(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean)
-     */
+
     public void saveResponsibility(String responsibilityId,
     		String responsibilityTemplateId, String namespaceCode, String name,
     		String description, boolean active, AttributeSet responsibilityDetails ) {
     	// look for an existing responsibility of the given type
     	try {
-	    	KimResponsibilityImpl resp = null;
-	    	try {
-	    		resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
-	    	} catch ( ObjectRetrievalFailureException ex ) {
+	    	KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
+	    	if ( resp == null ) {
 	    		resp = new KimResponsibilityImpl();
 	    		resp.setResponsibilityId(responsibilityId);
 	    	}

@@ -38,7 +38,7 @@ import org.springframework.dao.DataAccessException;
  * tests.
  */
 public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements BusinessObjectDao, OjbCollectionAware {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoOjb.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoOjb.class);
 
     private PersistenceStructureService persistenceStructureService;
 
@@ -46,7 +46,12 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
 	public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey) {
-		return (PersistableBusinessObject) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
+		try {
+			return (PersistableBusinessObject) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
+		} catch ( DataAccessException ex ) {
+    		// it doesn't exist, just return null
+			return null;
+		}
 	}
     
     /**

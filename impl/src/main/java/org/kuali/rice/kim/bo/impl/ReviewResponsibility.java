@@ -47,13 +47,9 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	@Id
 	@Column(name="RSP_ID")
 	protected String responsibilityId;
-	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
-	@Column(name="NM")
 	protected String name;
-	@Column(name="DESC_TXT", length=400)
 	protected String description;
-	@Column(name="ACTV_IND")
 	protected boolean active;
 
 	// review responsibility standard properties

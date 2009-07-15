@@ -39,7 +39,8 @@ public interface KimPermission extends Inactivateable {
 	
 	String getNamespaceCode();
 	String getName();
-
+	String getTemplateId();
+	
 	/** Verbose description of the Permission and functionally what permissions it implies. */
 	String getDescription();
 	

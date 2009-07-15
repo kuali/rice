@@ -45,6 +45,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@SuppressWarnings("unchecked")
 @Entity
 @Table(name="KRIM_PERM_T")
 public class KimPermissionImpl extends PersistableBusinessObjectBase implements KimPermission {
@@ -137,6 +138,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
 		dto.setTemplate( getTemplate().toSimpleInfo() );
+		dto.setTemplateId( getTemplateId() );
 		dto.setDetails( getDetails() );
 		
 		return dto;

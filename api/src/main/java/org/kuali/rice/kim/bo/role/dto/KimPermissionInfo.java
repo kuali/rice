@@ -37,6 +37,7 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
 	protected String namespaceCode;
 	protected String name;
 	protected String description;
+	protected String templateId;
 	protected KimPermissionTemplateInfo template;
 	
 	protected boolean active;
@@ -136,6 +137,12 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
 			permissionService = (PermissionService)GlobalResourceLoader.getService( "kimPermissionService" );
 		}
 		return permissionService;
+	}
+	public String getTemplateId() {
+		return this.templateId;
+	}
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
 	}
 	
 }

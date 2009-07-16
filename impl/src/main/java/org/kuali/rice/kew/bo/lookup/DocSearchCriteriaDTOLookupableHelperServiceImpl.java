@@ -54,11 +54,14 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.DateTimeService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KualiDecimal;
@@ -421,11 +424,11 @@ KualiLookupableHelperServiceImpl {
 			//if !superuser
 			Long routeHeaderId = doc.getRouteHeaderId();
 			link.setDisplayText(routeHeaderId+"");
-			
-			String href = ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/"+ KEWConstants.APP_CODE + "/" + 
-			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" + 
+
+			String href = ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/"+ KEWConstants.APP_CODE + "/" +
+			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" +
 			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
-			
+
 			link.setHref(href);
 
 			return link;
@@ -510,9 +513,25 @@ KualiLookupableHelperServiceImpl {
 		//call get rows
 		List<Row> rows = processor.getRows(docType,lookupRows, detailed, superSearch);
 
-		super.getRows().addAll(rows);
+		BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
+        int numCols = boe.getLookupDefinition().getNumOfColumns();
+        if(numCols == 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
+
+		super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows),numCols ));
 
 	}
+
+	 private List<Field> getFields(List<Row> rows){
+	    	List<Field> rList = new ArrayList<Field>();
+
+	    	for(Row r: rows){
+	    		for(Field f: r.getFields()){
+	    			rList.add(f);
+	    		}
+	    	}
+
+	    	return rList;
+	    }
 
 	   private void setRowsAfterClear(DocSearchCriteriaDTO searchCriteria, Map<String,String[]> fieldValues) {
 	        // TODO chris - this method should call the criteria processor adapter which will
@@ -658,7 +677,7 @@ KualiLookupableHelperServiceImpl {
     		dTypeCriteria.setName(docTypeName.trim());
     		dTypeCriteria.setActive(true);
     		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
-    
+
     		// Return the first valid doc type.
     		DocumentType firstDocumentType = null;
     		if(docTypeList != null){
@@ -800,7 +819,7 @@ KualiLookupableHelperServiceImpl {
 		String docTypeName = null;
 		if(this.getParameters().get("docTypeFullName")!=null) {
 			docTypeName = ((String[])this.getParameters().get("docTypeFullName"))[0];
-		} 
+		}
 		else if(fieldValues.get("docTypeFullName")!=null) {
 			docTypeName = (String)fieldValues.get("docTypeFullName");
 		}
@@ -817,8 +836,8 @@ KualiLookupableHelperServiceImpl {
 	            setRows(fieldValues,dType.getName());
 	            return true;
             }
-        } 
-            
+        }
+
 		setRows(fieldValues, docTypeName);
 
 		return true;

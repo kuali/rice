@@ -250,7 +250,7 @@
 
                 <c:when test="${(field.fieldType eq field.BLANK_SPACE)}">
 
-                    <c:if test="${isInquiry}">
+                    <c:if test="${(isInquiry or isLookup)}">
 
                         <th class="grid">&nbsp;</th>
                         <td class="grid">

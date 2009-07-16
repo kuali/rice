@@ -393,11 +393,12 @@
 
   <bean id="DocSearchCriteriaDTO-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
     <property name="lookupableID" value="docSearchCriteriaDTOLookupable"/>
-    
+
     <property name="defaultSort">
       <bean parent="SortDefinition">
       </bean>
     </property>
+    <property name="numOfColumns" value="3" />
     <property name="lookupFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="docTypeFullName" p:noDirectInquiry="true"/>

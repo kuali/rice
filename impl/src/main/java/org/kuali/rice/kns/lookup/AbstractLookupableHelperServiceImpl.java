@@ -34,6 +34,7 @@ import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -289,7 +290,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public void setParameterService(KualiConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
-    
+
     private ParameterService parameterService;
 
     public ParameterService getParameterService() {
@@ -496,7 +497,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         }
         return parameters;
     }
-    
+
     /**
      *
      * This method generates and returns title text for action urls.
@@ -813,7 +814,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (fieldConversions.containsKey(fieldNm)) {
                 fieldNm = (String) fieldConversions.get(fieldNm);
             }
-            
+
             parameters.put(fieldNm, fieldVal.toString());
         }
 
@@ -944,7 +945,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     			LOG.error("Exception caught instantiating " + businessObjectClass.getName(), e);
     			throw new RuntimeException("Cannot instantiate " + businessObjectClass.getName(), e);
     		}
-    		
+
     		Class propertyType = ObjectUtils.getPropertyType(example, attributeName, getPersistenceStructureService());
     		if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
     			GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, attributeLabel);
@@ -957,16 +958,16 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     		if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
 	        	if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
 	        		// encrypted values usually come from the DB, so we don't need to filter for wildcards
-	        		
+
 	        		// wildcards are not allowed on restricted fields, because they are typically encrypted, and wildcard searches cannot be performed without
 	        		// decrypting every row, which is currently not supported by KNS
-        		
+
                     GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
 	        	}
     		}
         }
     }
-    
+
     /**
      * Constructs the list of rows for the search fields. All properties for the field objects come from the DataDictionary.
      * To be called by setBusinessObject
@@ -983,8 +984,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         // construct field object for each search attribute
         List fields = new ArrayList();
+        int numCols;
         try {
             fields = FieldUtils.createAndPopulateFieldsForLookup(lookupFieldAttributeList, getReadOnlyFieldsList(), getBusinessObjectClass());
+
+            BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
+            numCols = boe.getLookupDefinition().getNumOfColumns();
 
         }
         catch (InstantiationException e) {
@@ -993,7 +998,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         catch (IllegalAccessException e) {
             throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
         }
-        this.rows = FieldUtils.wrapFields(fields);
+        if(numCols == 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
+
+        this.rows = FieldUtils.wrapFields(fields, numCols);
     }
 
     public List<Row> getRows() {
@@ -1025,14 +1032,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      */
     public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
     	Map lookupFormFields = lookupForm.getFieldsForLookup();
-    	
+
     	setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
         Collection displayList;
 
-		
+
 		preprocessDateFields(lookupFormFields);
-        
+
 		Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
         // call search method to get results
         if (bounded) {
@@ -1049,16 +1056,16 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         List returnKeys = getReturnKeys();
         List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
-        
+
         // iterate through result list and wrap rows with return url and action urls
         for (Iterator iter = displayList.iterator(); iter.hasNext();) {
             BusinessObject element = (BusinessObject) iter.next();
         	if(element instanceof PersistableBusinessObject){
                 lookupForm.setLookupObjectId(((PersistableBusinessObject)element).getObjectId());
             }
-        	
+
         	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
-        	
+
             HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
 
             String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
@@ -1138,7 +1145,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if(element instanceof PersistableBusinessObject){
                 row.setObjectId((((PersistableBusinessObject)element).getObjectId()));
             }
-            
+
 
             boolean rowReturnable = isResultReturnable(element);
             row.setRowReturnable(rowReturnable);
@@ -1156,7 +1163,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	/**
 	 * changes from/to dates into the range operators the lookupable dao expects ("..",">" etc)
 	 * this method modifies the passed in map and returns a list containing only the modified fields
-	 * 
+	 *
 	 * @param lookupFormFields
 	 */
 	protected Map<String,String> preprocessDateFields(Map lookupFormFields) {
@@ -1175,7 +1182,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				} else if(StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {
 					newPropValue = "<="+dateValue;
 				} //could optionally continue on else here
-				
+
 				fieldsToUpdate.put(dateFieldName, newPropValue);
 			}
 		}
@@ -1256,11 +1263,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public boolean isResultReturnable(BusinessObject object) {
         return true;
     }
-    
+
     /**
-     * 
+     *
      * This method does the logic for the clear action.
-     * 
+     *
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#performClear()
      */
     public void performClear(LookupForm lookupForm) {
@@ -1281,7 +1288,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
 	/**
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
 	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
@@ -1301,7 +1308,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	public String getSupplementalMenuBar() {
 		return new String();
 	}
-    
+
     /**
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#getTitle()
      */
@@ -1313,23 +1320,23 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#performCustomAction(boolean)
      */
 	public boolean performCustomAction(boolean ignoreErrors) {
-		return false;		
+		return false;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.lookup.Lookupable#getExtraField()
 	 */
 	public Field getExtraField() {
 		return null;
 	}
-	
+
 	public boolean allowsNewOrCopyAction(String documentTypeName){
 		throw new UnsupportedOperationException("Function not supported.");
 	}
 
 	/**
 	 * Functional requirements state that users are able to perform searches using criteria values that they are not allowed to view.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.kns.web.ui.Field)
 	 */
 	public void applyFieldAuthorizationsFromNestedLookups(Field field) {

@@ -21,6 +21,10 @@
     <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
 </c:if>
 
+<c:set var="numberOfColumns" value="${KualiForm.numColumns}" />
+<c:set var="headerColspan" value="${numberOfColumns * 2}" />
+
+
 <kul:page lookup="true" showDocumentInfo="false"
 	headerMenuBar="${headerMenu}"
 	headerTitle="Lookup" docTitle="" transactionalDocument="false"
@@ -111,10 +115,10 @@
 				<c:set var="IsLookupDisplay" value="true" scope="request" />
 				<c:set var="cellWidth" value="50%" scope="request" />
 
-                <kul:rowDisplay rows="${FieldRows}" skipTheOldNewBar="true" />
+                <kul:rowDisplay rows="${FieldRows}" skipTheOldNewBar="true" numberOfColumns="${numberOfColumns}" />
 
 				<tr align=center>
-					<td height="30" colspan=2 class="infoline"><html:image
+					<td height="30" colspan="${headerColspan}"  class="infoline"><html:image
 						property="methodToCall.search" value="search"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif" styleClass="tinybutton"
 						alt="search" title="search" border="0" /> <html:image

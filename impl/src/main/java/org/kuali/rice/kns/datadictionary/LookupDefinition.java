@@ -54,7 +54,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class LookupDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 6733008572890721359L;
-    
+
 	protected String lookupableID;
     protected String title;
     protected String menubar;
@@ -69,6 +69,8 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     protected String extraButtonSource;
     protected String extraButtonParams;
+
+    protected int numOfColumns;
 
     public LookupDefinition() {}
 
@@ -310,7 +312,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
                The extraButtonSource element defines the location of an image file
                to use for the extra button.
 
-                
+
      * @throws IllegalArgumentException if the given source is blank
      */
     public void setExtraButtonSource(String extraButtonSource) {
@@ -339,7 +341,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
                 appear on the lookup screen next to the Search and Clear buttons.
                 You can define the image source and additional html parameters for
                 each button.
-                
+
                 The extraButtonParams contains extra HTML parameters that be associated
                 with the button.
 
@@ -426,14 +428,28 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
             if (resultField == null) {
                 throw new IllegalArgumentException("invalid (null) resultField");
             }
-    
+
             String keyName = resultField.getAttributeName();
             if (resultFieldMap.containsKey(keyName)) {
                 throw new DuplicateEntryException("duplicate resultField entry for attribute '" + keyName + "'");
             }
-    
+
             resultFieldMap.put(keyName, resultField);
         }
         this.resultFields = resultFields;
     }
+
+	/**
+	 * @return the numOfColumns
+	 */
+	public int getNumOfColumns() {
+		return this.numOfColumns;
+	}
+
+	/**
+	 * @param numOfColumns the numOfColumns to set
+	 */
+	public void setNumOfColumns(int numOfColumns) {
+		this.numOfColumns = numOfColumns;
+	}
 }

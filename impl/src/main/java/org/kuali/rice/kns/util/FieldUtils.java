@@ -369,8 +369,12 @@ public class FieldUtils {
 
         List<Row> rows = new ArrayList();
         List<Field> fieldOnlyList = new ArrayList();
+
+        List<Field> visableFields = getVisibleFields(fields);
+    	List<Field> nonVisableFields = getNonVisibleFields(fields);
+
         int fieldsPosition = 0;
-        for (Field element : fields) {
+        for (Field element : visableFields) {
             if (Field.SUB_SECTION_SEPARATOR.equals(element.getFieldType()) || Field.CONTAINER.equals(element.getFieldType())) {
                 fieldsPosition = createBlankSpace(fieldOnlyList, rows, numberOfColumns, fieldsPosition);
                 List fieldList = new ArrayList();
@@ -391,7 +395,40 @@ public class FieldUtils {
             }
         }
         createBlankSpace(fieldOnlyList, rows, numberOfColumns, fieldsPosition);
+
+     // Add back the non Visible Rows
+    	if(nonVisableFields != null && !nonVisableFields.isEmpty()){
+    		Row nonVisRow = new Row();
+    		nonVisRow.setFields(nonVisableFields);
+    		rows.add(nonVisRow);
+    	}
+
+
         return rows;
+    }
+
+    private static List<Field> getVisibleFields(List<Field> fields){
+    	List<Field> rList = new ArrayList<Field>();
+
+   		for(Field f: fields){
+   			if(!Field.HIDDEN.equals(f.getFieldType()) &&  !Field.BLANK_SPACE.equals(f.getFieldType())){
+   				rList.add(f);
+   			}
+   		}
+
+    	return rList;
+    }
+
+    private static List<Field> getNonVisibleFields(List<Field> fields){
+    	List<Field> rList = new ArrayList<Field>();
+
+   		for(Field f: fields){
+   			if(Field.HIDDEN.equals(f.getFieldType()) || Field.BLANK_SPACE.equals(f.getFieldType())){
+   				rList.add(f);
+   			}
+   		}
+
+    	return rList;
     }
 
     /**
@@ -408,6 +445,8 @@ public class FieldUtils {
             for (int i = 0; i < (numberOfColumns - fieldOnlySize); i++) {
                 Field empty = new Field();
                 empty.setFieldType(Field.BLANK_SPACE);
+                // Must be set or AbstractLookupableHelperServiceImpl::preprocessDateFields dies
+                empty.setPropertyName(Field.BLANK_SPACE);
                 fieldOnlyList.add(empty);
             }
             rows.add(new Row(new ArrayList(fieldOnlyList)));
@@ -489,7 +528,7 @@ public class FieldUtils {
         	field.setPropertyValue(obj);
             // for user fields, attempt to pull the principal ID and person's name from the source object
             if ( field.getFieldType().equals(Field.KUALIUSER) ) {
-            	// this is supplemental, so catch and log any errors 
+            	// this is supplemental, so catch and log any errors
             	try {
             		if ( StringUtils.isNotBlank(field.getUniversalIdAttributeName()) ) {
             			Object principalId = ObjectUtils.getNestedValue(businessObject, field.getUniversalIdAttributeName());
@@ -649,9 +688,9 @@ public class FieldUtils {
                     try {
                     	//convert to upperCase based on data dictionary
                     	Class businessObjectClass = bo.getClass();
-                    	
+
                     	Object fieldValue = fieldValues.get(propertyName);
-                    	
+
                         ObjectUtils.setObjectProperty(bo, propertyName, type, fieldValue);
                     }
                     catch (FormatException e) {
@@ -847,7 +886,7 @@ public class FieldUtils {
                 if(KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)){
                 	if((KEWConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus) || KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus))
                 		&& user.getPrincipalId().equals(documentInitiatorPrincipalId)){
-                		
+
                 		//user should be able to see the unmark value
                 	}else{
                 		if(fieldAuth.isPartiallyMasked()){
@@ -1141,11 +1180,11 @@ public class FieldUtils {
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
 
             if(field.isDatePicker()) {
-            	
+
             	Field newDate = createRangeDateField(field);
             	fields.add(newDate);
             }
-            
+
             BusinessObject newBusinessObjectInstance;
             if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
             	ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);

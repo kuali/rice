@@ -255,6 +255,27 @@
     <property name="propertyName" value="kimPermissionServiceSOAP.expose"/>
   </bean>
 
+  <alias alias="kimPermissionUpdateService" name="kimPermissionService" />
+
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="kimPermissionUpdateService"
+        p:localServiceName="kimPermissionUpdateService" />
+    </property>
+  </bean>
+
+    <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimPermissionUpdateService"
+        p:localServiceName="kimPermissionUpdateServiceSOAP" />
+    </property>
+    <property name="propertyName" value="kimPermissionServiceSOAP.expose"/>
+  </bean>
+
   <!-- 
         Responsibility Service
   -->
@@ -301,7 +322,7 @@
         p:service-ref="kimResponsibilityUpdateService"
         p:localServiceName="kimResponsibilityUpdateServiceSOAP" />
     </property>
-    <property name="propertyName" value="kimResponsibilityServiceSOAP.expose"/>
+    <property name="propertyName" value="kimResponsibilityUpdateServiceSOAP.expose"/>
   </bean>
 
   <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />
@@ -470,7 +491,7 @@
         </property>
     </bean>
 
-	<bean id="permissionLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+	<bean id="permissionLookupable" class="org.kuali.rice.kim.lookup.PermissionLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.PermissionLookupableHelperServiceImpl" parent="lookupableHelperService">
             </bean>

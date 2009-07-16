@@ -53,7 +53,6 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.springframework.orm.ObjectRetrievalFailureException;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -461,6 +460,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 	    		details.add(newDetail);
 	    	}
 	    	getBusinessObjectService().save(resp);
+	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
     	} catch ( RuntimeException ex ) {
     		LOG.error( "Exception in saveResponsibility: ", ex );
     		throw ex;

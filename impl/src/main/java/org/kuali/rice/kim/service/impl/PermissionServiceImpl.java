@@ -19,24 +19,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
+import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
@@ -50,6 +55,7 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
@@ -61,12 +67,14 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 @WebService(endpointInterface = "org.kuali.rice.kim.service.PermissionService", serviceName = "PermissionService", portName = "PermissionService", targetNamespace = "http://org.kuali.rice/kim/permission")
 public class PermissionServiceImpl implements PermissionService, PermissionUpdateService {
 	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
-//	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
+	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 	
 	private BusinessObjectService businessObjectService;
 	private RoleService roleService;
 	private KimPermissionDao permissionDao;
     private KimPermissionTypeService defaultPermissionTypeService;
+	private SequenceAccessorService sequenceAccessorService;
+	private List<KimPermissionTemplateInfo> allTemplates;
 
     private static final long CACHE_MAX_AGE_SECONDS = 60L;
 
@@ -534,11 +542,6 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 		return results;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.PermissionService#getPermissionDetailLabel(java.lang.String)
-	 */
 	public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName) {
     	// get the type service for this permission
 		KimPermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
@@ -561,13 +564,129 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 			return "No Label: " + attributeName;
 		}
 	}
+	
+	/**
+	 * @see org.kuali.rice.kim.service.PermissionService#getPermissionTemplate(java.lang.String)
+	 */
+	public KimPermissionTemplateInfo getPermissionTemplate(String permissionTemplateId) {
+		KimPermissionTemplateImpl impl = getBusinessObjectService().findBySinglePrimaryKey( KimPermissionTemplateImpl.class, permissionTemplateId );
+		if ( impl != null ) {
+			return impl.toSimpleInfo();
+		}
+		return null;
+	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.PermissionService#getPermissionTemplateByName(java.lang.String, java.lang.String)
+	 */
+	public KimPermissionTemplateInfo getPermissionTemplateByName(String namespaceCode,
+			String permissionTemplateName) {
+		Map<String,String> criteria = new HashMap<String,String>(2);
+		criteria.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+		criteria.put( KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, permissionTemplateName );
+		KimPermissionTemplateImpl impl = (KimPermissionTemplateImpl)getBusinessObjectService().findByPrimaryKey( KimPermissionTemplateImpl.class, criteria );
+		if ( impl != null ) {
+			return impl.toSimpleInfo();
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<KimPermissionTemplateInfo> getAllTemplates() {
+		if ( allTemplates == null ) {
+			Map<String,String> criteria = new HashMap<String,String>(1);
+			criteria.put( KNSPropertyConstants.ACTIVE, "Y" );
+			List<KimPermissionTemplateImpl> impls = (List<KimPermissionTemplateImpl>)getBusinessObjectService().findMatching( KimPermissionTemplateImpl.class, criteria );
+			List<KimPermissionTemplateInfo> infos = new ArrayList<KimPermissionTemplateInfo>( impls.size() );
+			for ( KimPermissionTemplateImpl impl : impls ) {
+				infos.add( impl.toSimpleInfo() );
+			}
+			allTemplates = infos;
+		}
+		return allTemplates;
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.PermissionUpdateService#savePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public void savePermission(String permissionId, String permissionTemplateId,
+			String namespaceCode, String name, String description, boolean active,
+			AttributeSet permissionDetails) {
+    	// look for an existing permission of the given type
+    	try {
+	    	KimPermissionImpl perm = getBusinessObjectService().findBySinglePrimaryKey(KimPermissionImpl.class, permissionId);
+	    	if ( perm == null ) {
+	    		perm = new KimPermissionImpl();
+	    		perm.setPermissionId(permissionId);
+	    	}
+	    	perm.setTemplateId(permissionTemplateId);
+	    	perm.refreshReferenceObject( "template" );
+	    	perm.setNamespaceCode(namespaceCode);
+	    	perm.setName(name);
+	    	perm.setDescription(description);
+	    	perm.setActive(active);
+	    	AttributeSet attributesToAdd = new AttributeSet( permissionDetails );
+	    	List<PermissionAttributeDataImpl> details = perm.getDetailObjects();
+	    	Iterator<PermissionAttributeDataImpl> detailIter = details.iterator();
+	    	while ( detailIter.hasNext() ) {
+	    		PermissionAttributeDataImpl detail = detailIter.next();
+	    		String attrName = detail.getKimAttribute().getAttributeName();
+	    		String attrValue = attributesToAdd.get(attrName);
+	    		// if not present in the list or is blank, remove from the list
+	    		if ( StringUtils.isBlank(attrValue) ) {
+	    			detailIter.remove();
+	    		} else {
+	    			detail.setAttributeValue(attrValue);
+	    		}
+	    		// remove from detail map - used to add new ones later
+	    		attributesToAdd.remove(attrName);
+	    	}
+	    	for ( String attrName : attributesToAdd.keySet() ) {
+	    		KimTypeAttributeInfo attr = perm.getTemplate().getKimType().getAttributeDefinitionByName(attrName);
+	    		if ( attr != null ) {
+		    		PermissionAttributeDataImpl newDetail = new PermissionAttributeDataImpl();
+		    		newDetail.setAttributeDataId(getNewAttributeDataId());
+		    		newDetail.setKimAttributeId(attr.getKimAttributeId());
+		    		newDetail.setKimTypeId(perm.getTemplate().getKimTypeId());
+		    		newDetail.setPermissionId(permissionId);
+		    		newDetail.setAttributeValue(attributesToAdd.get(attrName));
+		    		details.add(newDetail);
+	    		} else {
+	    			LOG.error( "Unknown attribute name saving permission: '" + attrName + "'" );
+	    		}
+	    	}
+	    	getBusinessObjectService().save(perm);
+	    	KIMServiceLocator.getIdentityManagementService().flushPermissionCaches();
+    	} catch ( RuntimeException ex ) {
+    		LOG.error( "Exception in savePermission: ", ex );
+    		throw ex;
+    	}
+	}
+
+    protected String getNewAttributeDataId(){
+		SequenceAccessorService sas = getSequenceAccessorService();		
+		Long nextSeq = sas.getNextAvailableSequenceNumber(
+				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
+				RoleMemberAttributeDataImpl.class );
+		return nextSeq.toString();
+    }
+	
 	private DataDictionaryService dataDictionaryService;
 	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
 		return dataDictionaryService;
+	}
+	protected SequenceAccessorService getSequenceAccessorService() {
+		if ( sequenceAccessorService == null ) {
+			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+		}
+		return sequenceAccessorService;
 	}
 	
 }

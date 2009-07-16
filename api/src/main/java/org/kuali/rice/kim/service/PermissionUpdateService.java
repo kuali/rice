@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.service;
 
+import javax.jws.WebParam;
+
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+
 
 /**
  * This service provides operations for creating and updating permissions. 
@@ -23,4 +27,12 @@ package org.kuali.rice.kim.service;
  */
 public interface PermissionUpdateService {
 
+	void savePermission( @WebParam(name="permissionId") String permissionId, 
+			 @WebParam(name="permissionTemplateId") String permissionTemplateId, 
+			 @WebParam(name="namespaceCode") String namespaceCode,
+			 @WebParam(name="name") String name,
+			 @WebParam(name="description") String description,
+			 @WebParam(name="active") boolean active,
+			 @WebParam(name="permissionDetails") AttributeSet permissionDetails );
+	
 }

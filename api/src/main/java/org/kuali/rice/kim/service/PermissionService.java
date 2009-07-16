@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
@@ -261,6 +262,11 @@ public interface PermissionService {
     List<KimPermissionInfo> getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
 			    											  @WebParam(name="permissionName") String permissionName );
     
+    KimPermissionTemplateInfo getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );
+
+    KimPermissionTemplateInfo getPermissionTemplateByName( @WebParam(name="namespaceCode") String namespaceCode,
+			  											   @WebParam(name="permissionTemplateName") String permissionTemplateName );
+    public List<KimPermissionTemplateInfo> getAllTemplates();
     /**
      * Search for permissions using arbitrary search criteria.  JavaBeans property syntax 
      * should be used to reference the properties.

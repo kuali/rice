@@ -219,6 +219,7 @@ public class KimConstants {
 		public static final String KRIM_DLGN_MBR_ID_S = "KRIM_DLGN_MBR_ID_S";
 		public static final String KRIM_ROLE_RSP_ACTN_ID_S = "KRIM_ROLE_RSP_ACTN_ID_S";
 		public static final String KRIM_DLGN_ID_S = "KRIM_DLGN_ID_S";
+		public static final String KRIM_PERM_ID_S = "KRIM_PERM_ID_S";
 		public static final String KRIM_RSP_ID_S = "KRIM_RSP_ID_S";
 		public static final String KRIM_ATTR_DATA_ID_S = "KRIM_ATTR_DATA_ID_S";
 	}

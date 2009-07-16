@@ -40,21 +40,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 public class ReviewResponsibilityMaintenanceDocumentRule extends
 		MaintenanceDocumentRuleBase {
 
-//	/**
-//	 * Skip the PK check, since that requires that the BO be fully persistable.
-//	 * 
-//	 * @see org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase#processGlobalSaveDocumentBusinessRules(org.kuali.rice.kns.document.MaintenanceDocument)
-//	 */
-//	@Override
-//	protected boolean processGlobalSaveDocumentBusinessRules(
-//			MaintenanceDocument document) {
-//        // this is happening only on the processSave, since a Save happens in both the
-//        // Route and Save events.
-//        dataDictionaryValidate(document);
-//
-//        return true;		
-//	}
-
 	/**
 	 * This overridden method ...
 	 * 

@@ -42,19 +42,6 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	protected static String reviewTemplateId = null;
 
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#setBusinessObject(org.kuali.rice.kns.bo.PersistableBusinessObject)
-	 */
-	@Override
-	public void setBusinessObject(PersistableBusinessObject businessObject) {
-		if ( LOG.isInfoEnabled() ) {
-			LOG.info( "setBO called with: " + businessObject );
-		}
-		// TODO: probably need to convert object to the ReviewResponsibility object at this point
-		super.setBusinessObject(businessObject);
-	}
-	/**
 	 * Saves the responsibility via the responsibility update service
 	 * 
 	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()

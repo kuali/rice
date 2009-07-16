@@ -80,7 +80,8 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
         return htmlDataList;
 	}
 
-    protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
+    @SuppressWarnings("unchecked")
+	protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
         Properties parameters = new Properties();
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
         // TODO: why is this not using the businessObject parmeter's class?

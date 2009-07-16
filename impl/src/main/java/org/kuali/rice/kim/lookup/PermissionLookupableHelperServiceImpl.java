@@ -19,19 +19,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -46,7 +52,55 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	private static final Logger LOG = Logger.getLogger( PermissionLookupableHelperServiceImpl.class );
 	
 	private static LookupService lookupService;
+
+	private static boolean genericPermissionDocumentTypeNameLoaded = false;
+	private static String genericPermissionDocumentTypeName = null;
 	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.kns.bo.BusinessObject, java.util.List)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
+    	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
+    	// convert the PermissionImpl class into a GenericPermission object
+    	businessObject = new GenericPermission( (PermissionImpl)businessObject );
+        if (allowsMaintenanceEditAction(businessObject)) {
+        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        }
+        if (allowsMaintenanceNewOrCopyAction()) {
+        	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+        }
+        return htmlDataList;
+	}
+
+    @SuppressWarnings("unchecked")
+	protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
+        parameters.put(KNSConstants.OVERRIDE_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
+        parameters.put(KNSConstants.COPY_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
+        parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
+        return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+    }
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getMaintenanceDocumentTypeName()
+	 */
+	@Override
+	protected String getMaintenanceDocumentTypeName() {
+		if ( !genericPermissionDocumentTypeNameLoaded ) {
+			genericPermissionDocumentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(GenericPermission.class);
+			genericPermissionDocumentTypeNameLoaded = true;
+		}
+		return genericPermissionDocumentTypeName;
+	}
+		
 	/**
 	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
 	 */

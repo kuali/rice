@@ -25,6 +25,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kim.bo.role.KimPermission;
@@ -74,28 +75,36 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	
 	public String getDetailValues() {
 		StringBuffer sb = new StringBuffer();
-		Iterator<String> keyIter = details.keySet().iterator();
-		while ( keyIter.hasNext() ) {
-			String key = keyIter.next();
-			sb.append( key ).append( '=' ).append( details.get( key ) );
-			if ( keyIter.hasNext() ) {
-				sb.append( ',' );
+		if ( details != null ) {
+			Iterator<String> keyIter = details.keySet().iterator();
+			while ( keyIter.hasNext() ) {
+				String key = keyIter.next();
+				sb.append( key ).append( '=' ).append( details.get( key ) );
+				if ( keyIter.hasNext() ) {
+					sb.append( '\n' );
+				}
 			}
 		}
 		return sb.toString();
 	}
 	
 	public void setDetailValues( String detailValues ) {
-		details = new AttributeSet();
+		AttributeSet details = new AttributeSet();
 		if ( detailValues != null ) {
-			String[] values = detailValues.split( "," );
-			for ( String attrib : values ) {
-				if ( attrib.indexOf( '=' ) != -1 ) {
-					String[] keyValueArray = attrib.split( "=", 2 );
-					details.put( keyValueArray[0], keyValueArray[1] );
+			// ensure that all line delimiters are single linefeeds
+			detailValues = detailValues.replace( "\r\n", "\n" );
+			detailValues = detailValues.replace( '\r', '\n' );
+			if ( StringUtils.isNotBlank( detailValues ) ) {
+				String[] values = detailValues.split( "\n" );
+				for ( String attrib : values ) {
+					if ( attrib.indexOf( '=' ) != -1 ) {
+						String[] keyValueArray = attrib.split( "=", 2 );
+						details.put( keyValueArray[0], keyValueArray[1] );
+					}
 				}
 			}
 		}
+		this.details = details;
 	}
 	
 	/**

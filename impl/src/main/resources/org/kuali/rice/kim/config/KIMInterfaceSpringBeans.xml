@@ -89,10 +89,13 @@
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml</value>
+                
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</value>
                 <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml</value>
 
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml</value>

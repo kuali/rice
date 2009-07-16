@@ -1,80 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="ReviewResponsibilityMaintenanceDocument" parent="ReviewResponsibilityMaintenanceDocument-parentBean"/>
+  <bean id="GenericPermissionMaintenanceDocument" parent="GenericPermissionMaintenanceDocument-parentBean"/>
 
-  <bean id="ReviewResponsibilityMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.impl.ReviewResponsibility"/>
-    <property name="maintainableClass" value="org.kuali.rice.kim.document.ReviewResponsibilityMaintainable"/>
+  <bean id="GenericPermissionMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kim.bo.impl.GenericPermission"/>
+    <property name="maintainableClass" value="org.kuali.rice.kim.document.GenericPermissionMaintainable"/>
     <property name="maintainableSections">
       <list>
-        <ref bean="ReviewResponsibilityMaintenanceDocument-Main"/>
-        <ref bean="ReviewResponsibilityMaintenanceDocument-Details"/>
-      </list>
-    </property>
-    <property name="defaultExistenceChecks">
-      <list>
-        <bean parent="ReferenceDefinition" p:attributeName="documentType" p:attributeToHighlightOnFail="documentTypeName"/>
+        <ref bean="GenericPermissionMaintenanceDocument-Main"/>
+        <ref bean="GenericPermissionMaintenanceDocument-Details"/>
       </list>
     </property>
     <property name="lockingKeys">
       <list>
-        <value>responsibilityId</value>
+        <value>permissionId</value>
       </list>
     </property>
     
     <property name="allowsNewOrCopy" value="true"/>
-    <property name="documentTypeName" value="IdentityManagementReviewResponsibilityMaintenanceDocument"/>
-    <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.ReviewResponsibilityMaintenanceDocumentRule"/>
+    <property name="documentTypeName" value="IdentityManagementGenericPermissionMaintenanceDocument"/>
+    <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.GenericPermissionMaintenanceDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.ReviewResponsibilityMaintenanceDocumentPresentationController" />
+    <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.GenericPermissionMaintenanceDocumentPresentationController" />
     <property name="workflowProperties">
-      <ref bean="ReviewResponsibilityMaintenanceDocument-workflowProperties"/>
+      <ref bean="GenericPermissionMaintenanceDocument-workflowProperties"/>
     </property>
   </bean>
 
 <!-- Maintenance Section Definitions -->
 
 
-  <bean id="ReviewResponsibilityMaintenanceDocument-Main" parent="ReviewResponsibilityMaintenanceDocument-Main-parentBean"/>
+  <bean id="GenericPermissionMaintenanceDocument-Main" parent="GenericPermissionMaintenanceDocument-Main-parentBean"/>
 
-  <bean id="ReviewResponsibilityMaintenanceDocument-Main-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="GenericPermissionMaintenanceDocument-Main-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:name="responsibilityId"
+        <bean parent="MaintainableFieldDefinition" p:name="permissionId"
             p:unconditionallyReadOnly="true" p:required="true" 
-            p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextResponsibilityIdValuesFinder" />
+            p:defaultValueFinderClass="org.kuali.rice.kim.lookup.valuefinder.NextPermissionIdValuesFinder" />
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="templateId"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" p:defaultValue="Review" />
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" />
         <bean parent="MaintainableFieldDefinition" p:required="false" p:name="description"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="active" p:defaultValue="Y" />
       </list>
     </property>
     <property name="id" value="Main"/>
-    <property name="title" value="Responsibility Info"/>
+    <property name="title" value="Permission Info"/>
   </bean>
 
-  <bean id="ReviewResponsibilityMaintenanceDocument-Details" parent="ReviewResponsibilityMaintenanceDocument-Details-parentBean"/>
+  <bean id="GenericPermissionMaintenanceDocument-Details" parent="GenericPermissionMaintenanceDocument-Details-parentBean"/>
 
-  <bean id="ReviewResponsibilityMaintenanceDocument-Details-parentBean" abstract="true" parent="MaintainableSectionDefinition">
+  <bean id="GenericPermissionMaintenanceDocument-Details-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="documentTypeName"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="routeNodeName"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="actionDetailsAtRoleMemberLevel"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="required"/>
-        <bean parent="MaintainableFieldDefinition" p:required="false" p:name="qualifierResolverProvidedIdentifier"/>
+        <bean parent="MaintainableFieldDefinition" p:required="false" p:name="detailValues"/>
       </list>
     </property>
     <property name="id" value="Details"/>
-    <property name="title" value="Responsibility Details"/>
+    <property name="title" value="Permission Details"/>
   </bean>
 
 <!-- Exported Workflow Properties -->
 
 
-  <bean id="ReviewResponsibilityMaintenanceDocument-workflowProperties" parent="ReviewResponsibilityMaintenanceDocument-workflowProperties-parentBean"/>
+  <bean id="GenericPermissionMaintenanceDocument-workflowProperties" parent="GenericPermissionMaintenanceDocument-workflowProperties-parentBean"/>
 
-  <bean id="ReviewResponsibilityMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
+  <bean id="GenericPermissionMaintenanceDocument-workflowProperties-parentBean" abstract="true" parent="WorkflowProperties">
     <property name="workflowPropertyGroups">
       <list>
         <bean parent="WorkflowPropertyGroup">

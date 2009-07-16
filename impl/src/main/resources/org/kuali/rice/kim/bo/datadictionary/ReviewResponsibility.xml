@@ -51,7 +51,8 @@
   <bean id="ReviewResponsibility-name" parent="ResponsibilityImpl-name"/>
   <bean id="ReviewResponsibility-description" parent="AttributeReferenceDummy-genericBigText"
     p:name="description"
-    p:label="Responsibility Description" />
+    p:label="Responsibility Description"
+    p:shortLabel="Resp. Desc." />
   <bean id="ReviewResponsibility-active" parent="ResponsibilityImpl-active"/>
 
   <bean id="ReviewResponsibility-documentTypeName" parent="KimAttributes-documentTypeName"

@@ -777,4 +777,40 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 		return preserveLockingKeysOnCopy;
 	}
 
+	/**
+	 * for isue KULRice 3070
+	 * 
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsRecordDeletion(java.lang.Class)
+	 */
+	public Boolean getAllowsRecordDeletion(Class businessObjectClass) {
+		
+		Boolean allowsRecordDeletion = null;
+
+		MaintenanceDocumentEntry docEntry = getMaintenanceDocumentEntry(businessObjectClass);
+		
+		if (docEntry != null) {
+			allowsRecordDeletion = Boolean.valueOf(docEntry.getAllowsRecordDeletion());
+		}
+		
+		return allowsRecordDeletion;
+	}
+
+	/**
+	 *  for issue KULRice3070, see if need delete button
+	 * 
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsRecordDeletion(org.kuali.rice.kns.document.MaintenanceDocument)
+	 */
+	public Boolean getAllowsRecordDeletion(MaintenanceDocument document) {
+        
+		Boolean allowsRecordDeletion = null;
+        
+		if (document != null) {
+            MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(document.getNewMaintainableObject().getBoClass());
+            if (entry != null) {
+                allowsRecordDeletion = Boolean.valueOf(entry.getAllowsCopy());
+            }
+        }
+        return allowsRecordDeletion;
+	}
+
 }

@@ -64,8 +64,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     private Map oldMaintainableValues;
     private Map newMaintainableValues;
     private String maintenanceAction;
-    
-    /**
+
+	/**
      * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#addRequiredNonEditableProperties()
      */
     @Override
@@ -273,7 +273,10 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         if (((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject() == null) {
             throw new RuntimeException("New maintainable not set in document.");
         }
-        if ((KNSConstants.MAINTENANCE_EDIT_ACTION.equals(this.getMaintenanceAction()) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(this.getMaintenanceAction())) && ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject() == null) {
+        if ((KNSConstants.MAINTENANCE_EDIT_ACTION.equals(this.getMaintenanceAction()) 
+        		|| KNSConstants.MAINTENANCE_COPY_ACTION.equals(this.getMaintenanceAction())
+        		|| KNSConstants.MAINTENANCE_DELETE_ACTION.equals(this.getMaintenanceAction())) 
+        		&& ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject() == null) {
             throw new RuntimeException("Old maintainable not set in document.");
         }
 
@@ -550,11 +553,13 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 	public boolean shouldPropertyBePopulatedInForm(
 			String requestParameterName, HttpServletRequest request) {
 		// the user clicked on a document initiation link
+		//add delete check for 3070
 		String methodToCallActionName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
 		if (StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
 			return true;
 		}
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
@@ -573,10 +578,13 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 		if (StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
 			return true;
 		}
 		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,
 				methodToCallParameterValue, request);
 	}
 }
+
+

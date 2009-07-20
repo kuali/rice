@@ -49,8 +49,10 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     protected String additionalSectionsFile;
     
     //for issue KULRice3072, to enable PK field copy
-
     protected boolean preserveLockingKeysOnCopy = false;
+    
+    // for issue KULRice3070, to enable deleting a db record using maintenance doc
+    protected boolean allowsRecordDeletion = false;
 
 	public MaintenanceDocumentEntry() {
         super();
@@ -309,5 +311,22 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 	public void setPreserveLockingKeysOnCopy(boolean preserveLockingKeysOnCopy) {
 		this.preserveLockingKeysOnCopy = preserveLockingKeysOnCopy;
 	}
+	
+	/**
+	 * @return the allowRecordDeletion
+	 */
+	public boolean getAllowsRecordDeletion() {
+		return this.allowsRecordDeletion;
+	}
+
+	/**
+	 * @param allowRecordDeletion the allowRecordDeletion to set
+	 */
+	public void setAllowsRecordDeletion(boolean allowsRecordDeletion) {
+		this.allowsRecordDeletion = allowsRecordDeletion;
+	}
+	
+
+
 
 }

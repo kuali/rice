@@ -275,4 +275,10 @@ public interface MaintenanceDocumentDictionaryService {
     
     //for issue KULRice 3072, checking PK copy prop
     public boolean getPreserveLockingKeysOnCopy(Class businessObjectClass);
+    
+    //for issue KULRice 3070
+    public Boolean getAllowsRecordDeletion(Class businessObjectClass);
+    //for issue KULRice3070
+    public Boolean getAllowsRecordDeletion(MaintenanceDocument document);
+    
 }

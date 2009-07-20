@@ -128,6 +128,10 @@ public class RiceKeyConstants {
     public static final String MESSAGE_REVERT_UNNECESSARY = "message.revert.unnecessary";
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
 
+    public static final String MESSAGE_DELETE="message.delete";
+    public static final String MESSAGE_DELETED="mesage.deleted";
+    
+    
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
 
     public static final String ERROR_MISSING = "error.missing";

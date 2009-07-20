@@ -291,6 +291,10 @@ public class MaintenanceUtils {
         else if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equalsIgnoreCase(maintenanceAction)) {
             return false;
         }
+        else if (KNSConstants.MAINTENANCE_DELETE_ACTION.equalsIgnoreCase(maintenanceAction)) {
+            return false;
+        }
+        
         else if (KNSConstants.MAINTENANCE_NEW_ACTION.equalsIgnoreCase(maintenanceAction)) {
             return true;
         }

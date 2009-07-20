@@ -281,6 +281,8 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * Return an array of document ids to lock prior to processing this document in the workflow engine. 
      */
     public List<Long> getWorkflowEngineDocumentIdsToLock();
-
-
+    
+    //3070
+    public void deleteBusinessObject(PersistableBusinessObject bo); 
+    
 }

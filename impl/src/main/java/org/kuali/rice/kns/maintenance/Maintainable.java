@@ -283,6 +283,6 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     public List<Long> getWorkflowEngineDocumentIdsToLock();
     
     //3070
-    public void deleteBusinessObject(PersistableBusinessObject bo); 
+    public void deleteBusinessObject(); 
     
 }

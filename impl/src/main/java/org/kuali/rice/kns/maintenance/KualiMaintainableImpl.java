@@ -1429,11 +1429,11 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	}
 	
 	//3070
-	public void deleteBusinessObject(PersistableBusinessObject bo){
-		if(bo == null)
+	public void deleteBusinessObject(){
+		if(businessObject == null)
 			return;
 		
-		KNSServiceLocator.getBusinessObjectService().delete(bo);
-		
+		KNSServiceLocator.getBusinessObjectService().delete(businessObject);
+		businessObject = null;	
 	}
 }

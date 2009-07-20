@@ -80,7 +80,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected PersistableBusinessObject businessObject;
     protected Class boClass;
     protected String maintenanceAction;
-   
     
     protected Map<String,PersistableBusinessObject> newCollectionLines = new HashMap<String,PersistableBusinessObject>();
     protected Map<String, Boolean> inactiveRecordDisplay = new HashMap<String, Boolean>();
@@ -1429,4 +1428,12 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		return getMaintenanceDocumentService().getLockingDocumentId(this, documentNumber);
 	}
 	
+	//3070
+	public void deleteBusinessObject(PersistableBusinessObject bo){
+		if(bo == null)
+			return;
+		
+		KNSServiceLocator.getBusinessObjectService().delete(bo);
+		
+	}
 }

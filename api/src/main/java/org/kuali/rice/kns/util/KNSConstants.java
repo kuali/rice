@@ -289,9 +289,11 @@ public class KNSConstants extends JSTLConstants {
     public static final String MAINTENANCE_ADD_PREFIX = "add.";
     public static final String MAINTENANCE_COPY_ACTION = "Copy";
     public static final String MAINTENANCE_EDIT_ACTION = "Edit";
+    public static final String MAINTENANCE_DELETE_ACTION = "Delete";
     public static final String MAINTENANCE_NEW_ACTION = "New";
     public static final String MAINTENANCE_COPY_METHOD_TO_CALL = "copy";
     public static final String MAINTENANCE_EDIT_METHOD_TO_CALL = "edit";
+    public static final String MAINTENANCE_DELETE_METHOD_TO_CALL = "delete";
     public static final String MAINTENANCE_NEW_METHOD_TO_CALL = "start";
     public static final String MAINTENANCE_NEWWITHEXISTING_ACTION = "newWithExisting";
     public static final String MAINTENANCE_ACTN = "maintenanceAction";

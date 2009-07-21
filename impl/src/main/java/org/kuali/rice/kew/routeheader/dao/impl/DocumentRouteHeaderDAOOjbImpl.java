@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -49,7 +50,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
-import org.springmodules.orm.ojb.OjbOperationException;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -298,5 +298,56 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     public void save(SearchableAttributeValue searchableAttributeValue) {
     	getPersistenceBrokerTemplate().store(searchableAttributeValue);
     }
+
+	public Collection findByDocTypeAndAppId(String documentTypeName,
+			String appId) {
+        Collection routeHeaderIds = new ArrayList();
+
+        PersistenceBroker broker = null;
+        Connection conn = null;
+        ResultSet rs = null;
+        try {
+            broker = getPersistenceBroker(false);
+            conn = broker.serviceConnectionManager().getConnection();
+
+            String query = 
+            	 	"SELECT DISTINCT " +
+            		"    (docHdr.doc_hdr_id) " +
+            		"FROM " +
+            		"    KREW_DOC_HDR_T docHdr, " +
+            		"    KREW_DOC_TYP_T docTyp " +
+            		"WHERE " +
+            		"    docHdr.APP_DOC_ID     = ? " +
+            		"    AND docHdr.DOC_TYP_ID = docTyp.DOC_TYP_ID " +
+            		"    AND docTyp.DOC_TYP_NM = ?";
+            
+            LOG.debug("Query to find documents by app id: " + query);
+            
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, appId);
+            stmt.setString(2, documentTypeName);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                routeHeaderIds.add(new Long(rs.getLong(1)));
+            }
+            rs.close();
+        } catch (SQLException sqle) {
+            LOG.error("SQLException: " + sqle.getMessage(), sqle);
+            throw new WorkflowRuntimeException(sqle);
+        } catch (LookupException le) {
+            LOG.error("LookupException: " + le.getMessage(), le);
+            throw new WorkflowRuntimeException(le);
+        } finally {
+            try {
+                if (broker != null) {
+                    OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());
+                }
+            } catch (Exception e) {
+                LOG.error("Failed closing connection: " + e.getMessage(), e);
+            }
+        }
+        return routeHeaderIds;
+	}
 
 }

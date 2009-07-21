@@ -195,4 +195,9 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
 	public SearchableAttributeDAO getSearchableAttributeDAO() {
 		return searchableAttributeDAO;
 	}
+
+	public Collection findByDocTypeAndAppId(String documentTypeName,
+			String appId) {
+		return getRouteHeaderDAO().findByDocTypeAndAppId(documentTypeName, appId);
+	}
 }

@@ -71,6 +71,8 @@ public interface WorkflowUtility {
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
     public DocumentSearchResultDTO performDocumentSearchWithPrincipal(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
 
+    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
+    
     // new in 2.3
 
     public RuleDTO[] ruleReport(RuleReportCriteriaDTO ruleReportCriteria) throws WorkflowException;

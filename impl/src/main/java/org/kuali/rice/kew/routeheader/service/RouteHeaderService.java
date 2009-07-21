@@ -45,7 +45,8 @@ public interface RouteHeaderService {
     public Long getNextRouteHeaderId();
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader);
     public Collection findPendingByResponsibilityIds(Set responsibilityIds);
-
+    public Collection findByDocTypeAndAppId(String documentTypeName, String appId);
+    
     /**
      * Removes all SearchableAttributeValues associated with the RouteHeader.
      * @param routeHeader

@@ -82,6 +82,49 @@ public class WorkflowUtilityTest extends KEWTestCase {
         utility = KEWServiceLocator.getWorkflowUtilityService();
     }
 
+    @Test
+    public void testFindByAppId() throws WorkflowException{
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        document.setAppDocId("123456789");
+        document.routeDocument("");
+    	DocumentDetailDTO doc=utility.getDocumentDetailFromAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
+    	
+    	assertNotNull(doc);
+    	
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        document.setAppDocId("123456789");
+        document.routeDocument("");
+
+        try{
+        	utility.getDocumentDetailFromAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
+        	assertTrue(false);
+        }catch(WorkflowException e){
+        	assertTrue(true);
+        }
+        
+        try{
+        	utility.getDocumentDetailFromAppId("notExist", "wrong");
+        	assertTrue(false);
+        }catch(WorkflowException e){
+        	assertTrue(true);
+        }
+        
+        try{
+        	utility.getDocumentDetailFromAppId("notExist", null);
+        	assertTrue(false);
+        }catch(RuntimeException e){
+        	assertTrue(true);
+        }
+    	
+        try{
+        	utility.getDocumentDetailFromAppId(null, null);
+        	assertTrue(false);
+        }catch(RuntimeException e){
+        	assertTrue(true);
+        }
+        
+    }
+    
     @Test public void testIsUserInRouteLog() throws Exception {
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");

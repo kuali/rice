@@ -269,5 +269,29 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     	}
     }
 
+    //FIXME might need to convert result lcollection to Longs
+	public Collection findByDocTypeAndAppId(String documentTypeName,
+			String appId) {
+    	try {
+            String sql = 
+        	 	"SELECT DISTINCT " +
+        		"    (docHdr.doc_hdr_id) " +
+        		"FROM " +
+        		"    KREW_DOC_HDR_T docHdr, " +
+        		"    KREW_DOC_TYP_T docTyp " +
+        		"WHERE " +
+        		"    docHdr.APP_DOC_ID     = ? " +
+        		"    AND docHdr.DOC_TYP_ID = docTyp.DOC_TYP_ID " +
+        		"    AND docTyp.DOC_TYP_NM = ?";
+        	
+            Query query = entityManager.createNativeQuery(sql);
+            query.setParameter(1, appId);
+            query.setParameter(2, documentTypeName);
+            return query.getResultList();
+    	} catch (EntityNotFoundException enfe) {
+    		throw new WorkflowRuntimeException(enfe.getMessage());
+		}
+	}
+
 
 }

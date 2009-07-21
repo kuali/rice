@@ -1077,4 +1077,29 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
     	return docType != null && docType.isActive();
     }
+
+	public DocumentDetailDTO getDocumentDetailFromAppId(
+			String documentTypeName, String appId) throws WorkflowException {
+        if (documentTypeName == null) {
+            LOG.error("null documentTypeName passed in.");
+            throw new RuntimeException("null documentTypeName passed in");
+        }
+        if (appId == null) {
+            LOG.error("null appId passed in.");
+            throw new RuntimeException("null appId passed in");
+        }
+        
+        Collection routeHeaderIds = KEWServiceLocator.getRouteHeaderService().findByDocTypeAndAppId(documentTypeName, appId);
+        
+        if(routeHeaderIds==null||routeHeaderIds.isEmpty()){
+            LOG.error("No RouteHeader Ids found for criteria");
+    		throw new WorkflowException("No RouteHeader Ids found for criteria");
+        }
+        if(routeHeaderIds.size()>1){
+            LOG.error("More than one RouteHeader Id found for criteria");
+    		throw new WorkflowException("More than one RouteHeader Id found for criteria");
+		}
+        
+        return getDocumentDetail((Long)routeHeaderIds.iterator().next());
+	}
 }

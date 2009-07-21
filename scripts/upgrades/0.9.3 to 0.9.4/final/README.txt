@@ -1,0 +1,1 @@
+This file documents the steps required to upgrade a RICE 0.9.3 database to a RICE 1.0.0 database.

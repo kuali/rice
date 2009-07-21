@@ -49,21 +49,21 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class RoleManagementServiceImpl implements RoleManagementService, InitializingBean {
 	private static final Logger LOG = Logger.getLogger( RoleManagementServiceImpl.class );
-	
+
 	private RoleService roleService;
 	private RoleUpdateService roleUpdateService;
-	
+
 	// Max age defined in seconds
 	protected int roleCacheMaxSize = 200;
 	protected int roleCacheMaxAgeSeconds = 30;
-	
+
 	protected Map<String,MaxAgeSoftReference<KimRoleInfo>> roleByIdCache;
 	protected Map<String,MaxAgeSoftReference<KimRoleInfo>> roleByNameCache;
 	protected Map<String,MaxAgeSoftReference<List<RoleMembershipInfo>>> roleMembersWithDelegationCache;
 	protected Map<String,MaxAgeSoftReference<List<AttributeSet>>> roleQualifiersForPrincipalCache;
 	protected Map<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
 	protected Map<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
-	
+
 	public void afterPropertiesSet() throws Exception {
 		roleByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize ) );
 		roleByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize ) );
@@ -72,16 +72,16 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		principalHasRoleCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize ) );
 		memberPrincipalIdsCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>>( roleCacheMaxSize ) );
 	}
-	
+
 	public void flushRoleCaches() {
 		roleByIdCache.clear();
 		roleByNameCache.clear();
 		roleMembersWithDelegationCache.clear();
 		roleQualifiersForPrincipalCache.clear();
 		principalHasRoleCache.clear();
-		memberPrincipalIdsCache.clear();		
+		memberPrincipalIdsCache.clear();
 	}
-	
+
 	// Caching helper methods
 
 	protected KimRoleInfo getRoleByIdCache( String roleId ) {
@@ -99,7 +99,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return null;
 	}
-	
+
 	protected List<RoleMembershipInfo> getRoleMembersWithDelegationCache( String key ) {
 		MaxAgeSoftReference<List<RoleMembershipInfo>> roleMembersRef = roleMembersWithDelegationCache.get( key );
 		if ( roleMembersRef != null ) {
@@ -107,7 +107,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return null;
 	}
-	
+
 	protected List<AttributeSet> getRoleQualifiersForPrincipalCache( String key ) {
 		MaxAgeSoftReference<List<AttributeSet>> qualifiersRef = roleQualifiersForPrincipalCache.get( key );
 		if ( qualifiersRef != null ) {
@@ -115,7 +115,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return null;
 	}
-	
+
 	protected Boolean getPrincipalHasRoleCacheCache( String key ) {
 		MaxAgeSoftReference<Boolean> hasRoleRef = principalHasRoleCache.get( key );
 		if ( hasRoleRef != null ) {
@@ -123,7 +123,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return null;
 	}
-	
+
 	protected void addRoleToCaches( KimRoleInfo role ) {
 		if ( role != null ) {
 			roleByNameCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<KimRoleInfo>( roleCacheMaxAgeSeconds, role ) );
@@ -142,11 +142,11 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			roleQualifiersForPrincipalCache.put( key, new MaxAgeSoftReference<List<AttributeSet>>( roleCacheMaxAgeSeconds, qualifiers ) );
 		}
 	}
-	
+
 	protected void addPrincipalHasRoleToCache( String key, boolean hasRole ) {
 		principalHasRoleCache.put( key, new MaxAgeSoftReference<Boolean>( roleCacheMaxAgeSeconds, hasRole ) );
 	}
-		
+
 	// Cached methods
 
 	protected Collection<String> getRoleMemberPrincipalIdsCache(String key) {
@@ -156,11 +156,11 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return null;
 	}
-	
+
 	protected void addRoleMemberPrincipalIdsToCache(String key, Collection<String> principalIds) {
 		memberPrincipalIdsCache.put(key, new MaxAgeSoftReference<Collection<String>>(roleCacheMaxAgeSeconds, principalIds ));
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleMemberPrincipalIds(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
@@ -214,7 +214,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return role.getRoleId();
 	}
-		
+
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRoles(java.util.List)
 	 */
@@ -231,7 +231,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			}
 		}
 	}
-	
+
 	protected void addAttributesToKey( StringBuffer key, AttributeSet attributes ) {
 		if ( attributes == null || attributes.isEmpty() ) {
 			key.append( "[null]" );
@@ -263,7 +263,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipal(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, AttributeSet qualification) {		
+	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, AttributeSet qualification) {
 		StringBuffer cacheKey = new StringBuffer( principalId );
 		cacheKey.append( '/' );
 		addIdsToKey( cacheKey, roleIds );
@@ -339,10 +339,10 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 				roleNamespaceCode, roleName, qualification);
 	}
 
-	
+
 
 	// Helper methods
-	
+
 	public void removeCacheEntries( String roleId, String principalId ) {
 		if ( principalId != null ) {
 			String keyPrefix = principalId + "-";
@@ -407,7 +407,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			}
 		}
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
@@ -415,7 +415,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			String principalId, List<String> roleIds, AttributeSet qualification) {
 		return getRoleService().getRoleQualifiersForPrincipalIncludingNested(principalId, roleIds, qualification);
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
@@ -424,7 +424,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			AttributeSet qualification) {
 		return getRoleService().getRoleQualifiersForPrincipalIncludingNested(principalId, namespaceCode, roleName, qualification);
 	}
-	
+
 	public void assignGroupToRole(String groupId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		getRoleUpdateService().assignGroupToRole( groupId, namespaceCode, roleName, qualifications );
@@ -496,23 +496,23 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
      * @see org.kuali.rice.kim.service.RoleService#principalInactivated(java.lang.String)
      */
     public void principalInactivated(String principalId) {
-    	getRoleService().principalInactivated(principalId);    
+    	getRoleService().principalInactivated(principalId);
     	removeCacheEntries(null, principalId);
     }
-    
+
     /**
      * @see org.kuali.rice.kim.service.RoleService#roleInactivated(java.lang.String)
      */
     public void roleInactivated(String roleId) {
-    	getRoleService().roleInactivated(roleId);    
+    	getRoleService().roleInactivated(roleId);
     	removeCacheEntries(roleId, null);
     }
-    
+
     /**
      * @see org.kuali.rice.kim.service.RoleService#roleInactivated(java.lang.String)
      */
     public void groupInactivated(String groupId) {
-    	getRoleService().groupInactivated(groupId);    
+    	getRoleService().groupInactivated(groupId);
     }
 
     public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){
@@ -525,7 +525,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
 	public void assignRoleToRole(String roleId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
-		getRoleUpdateService().assignRoleToRole( 
+		getRoleUpdateService().assignRoleToRole(
 				roleId, namespaceCode, roleName, qualifications);
 		KimRoleInfo role = getRoleByName( namespaceCode, roleName );
 		removeCacheEntries( role.getRoleId(), null );
@@ -534,22 +534,22 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     /**
      * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
-	public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode, 
-			String delegationTypeCode, String roleId, AttributeSet qualifications, 
+	public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode,
+			String delegationTypeCode, String roleId, AttributeSet qualifications,
 			Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
     	getRoleUpdateService().saveDelegationMemberForRole(delegationMemberId, roleMemberId, memberId, memberTypeCode, delegationTypeCode, roleId, qualifications, activeFromDate, activeToDate);
 		KimRoleInfo role = getRole( roleId );
 		removeCacheEntries( role.getRoleId(), null );
     }
 
-    public RoleMemberCompleteInfo saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, 
+    public RoleMemberCompleteInfo saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode,
     		String roleId, AttributeSet qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
 		KimRoleInfo role = getRole( roleId );
 		RoleMemberCompleteInfo roleMemberCompleteInfo = getRoleUpdateService().saveRoleMemberForRole(roleMemberId, memberId, memberTypeCode, roleId, qualifications, activeFromDate, activeToDate);
 		removeCacheEntries( role.getRoleId(), memberId );
 		return roleMemberCompleteInfo;
     }
-    
+
 	public void removeRoleFromRole(String roleId, String namespaceCode, String roleName,
 			AttributeSet qualifications) {
 		getRoleUpdateService().removeRoleFromRole( roleId, namespaceCode, roleName, qualifications );
@@ -560,27 +560,27 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     public List<RoleMemberCompleteInfo> findRoleMembersCompleteInfo(Map<String, String> fieldValues){
     	return getRoleService().findRoleMembersCompleteInfo(fieldValues);
     }
-    
+
     public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(Map<String, String> fieldValues){
     	return getRoleService().findDelegateMembersCompleteInfo(fieldValues);
     }
-	
+
     public List<DelegateMemberCompleteInfo> getDelegationMembersByDelegationId(@WebParam(name="delegationId") String delegationId){
 		return getRoleService().getDelegationMembersByDelegationId(delegationId);
 	}
-	
+
 	public DelegateMemberCompleteInfo getDelegationMemberByDelegationAndMemberId(@WebParam(name="delegationId") String delegationId, @WebParam(name="memberId") String memberId){
 		return getRoleService().getDelegationMemberByDelegationAndMemberId(delegationId, memberId);
 	}
-	
+
 	public DelegateMemberCompleteInfo getDelegationMemberById(@WebParam(name="delegationMemberId") String delegationMemberId){
-		return getRoleService().getDelegationMemberById(delegationMemberId);	
+		return getRoleService().getDelegationMemberById(delegationMemberId);
 	}
 
 	public List<RoleResponsibilityActionInfo> getRoleMemberResponsibilityActionInfo(String roleMemberId){
 		return getRoleService().getRoleMemberResponsibilityActionInfo(roleMemberId);
 	}
-	
+
 	public DelegateTypeInfo getDelegateTypeInfo(String roleId, String delegationTypeCode){
 		return getRoleService().getDelegateTypeInfo(roleId, delegationTypeCode);
 	}
@@ -588,8 +588,8 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public DelegateTypeInfo getDelegateTypeInfoById(String delegationId){
 		return getRoleService().getDelegateTypeInfoById(delegationId);
 	}
-	
-	public void saveRoleRspActions(String roleId, String roleResponsibilityId, String roleMemberId, 
+
+	public void saveRoleRspActions(String roleId, String roleResponsibilityId, String roleMemberId,
 			String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction){
     	getRoleUpdateService().saveRoleRspActions(roleId, roleResponsibilityId, roleMemberId, actionTypeCode, actionPolicyCode, priorityNumber, forceAction);
 		removeCacheEntries(roleId, null);
@@ -598,13 +598,13 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public List<RoleResponsibilityInfo> getRoleResponsibilities(String roleId){
 		return getRoleService().getRoleResponsibilities(roleId);
 	}
-	
+
 	public void applicationRoleMembershipChanged(String roleId) {
-		getRoleService().applicationRoleMembershipChanged(roleId);		
+		getRoleService().applicationRoleMembershipChanged(roleId);
 	}
-	
+
 	// Spring and injection methods
-	
+
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
 			roleService = KIMServiceLocator.getRoleService();
@@ -625,7 +625,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return roleUpdateService;
 	}
-	
+
 	public void setRoleCacheMaxSize(int roleCacheMaxSize) {
 		this.roleCacheMaxSize = roleCacheMaxSize;
 	}
@@ -633,5 +633,15 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public void setRoleCacheMaxAgeSeconds(int roleCacheMaxAge) {
 		this.roleCacheMaxAgeSeconds = roleCacheMaxAge;
 	}
-	
+
+	/**
+	 * This overridden method looks up roles based on criteria.  If you want
+	 * to return all roles pass in an empty map.
+	 *
+	 * @see org.kuali.rice.kim.service.RoleService#lookupRoles(java.util.Map)
+	 */
+	public List<KimRoleInfo> lookupRoles(Map<String, String> searchCriteria) {
+		return getRoleService().lookupRoles(searchCriteria);
+	}
+
 }

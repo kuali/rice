@@ -11,6 +11,17 @@
     </parent>
     <artifactId>rice-ken</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.kuali.rice</groupId>

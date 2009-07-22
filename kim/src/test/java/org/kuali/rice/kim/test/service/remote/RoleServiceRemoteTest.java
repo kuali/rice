@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.test.service.remote;
 
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import java.util.List;
+
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kim.test.service.RoleServiceTest;
 import org.kuali.rice.kim.test.service.ServiceTestUtils;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
  * Test the RoleService via remote calls
@@ -34,15 +34,12 @@ public class RoleServiceRemoteTest extends RoleServiceTest {
 	}
 
 	@Override
-	protected Lifecycle getLoadApplicationLifecycle() {
-		return new BaseLifecycle() {
-			public void start() throws Exception {
-				new JettyServerLifecycle(ServiceTestUtils.getConfigIntProp("kim.test.port"), "/" + ServiceTestUtils.getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
-				super.start();
-			}
-		};	
+	protected List<Lifecycle> getPerTestLifecycles() {
+		List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+		lifecycles.add(getJettyServerLifecycle());
+		return lifecycles;
 	}
-	
+
 	@Override
 	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
 		return ServiceTestUtils.getRemoteServiceProxy(svcNamespace, svcNames[0], svcNames[1]);

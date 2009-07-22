@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.test.service.remote;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -36,15 +38,12 @@ public class GroupServiceRemoteTest extends GroupServiceTest {
 	}
 
 	@Override
-	protected Lifecycle getLoadApplicationLifecycle() {
-		return new BaseLifecycle() {
-			public void start() throws Exception { 
-				new JettyServerLifecycle(ServiceTestUtils.getConfigIntProp("kim.test.port"), "/" + ServiceTestUtils.getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
-				super.start();
-			}
-		};
+	protected List<Lifecycle> getPerTestLifecycles() {
+		List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+		lifecycles.add(getJettyServerLifecycle());
+		return lifecycles;
 	}
-	
+
 	@Override
 	@Test
 	public void testPrincipalMembership() {

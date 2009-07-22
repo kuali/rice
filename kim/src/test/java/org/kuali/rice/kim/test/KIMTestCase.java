@@ -26,11 +26,13 @@ import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.test.service.ServiceTestUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
  * This is test base that should be used for all KIM unit tests. All non-web unit tests for KIM should extend this base
@@ -139,4 +141,25 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		Long sequenceId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
 		return "" + sequenceId;
 	}
+
+	protected Lifecycle getJettyServerLifecycle() {
+		// using BaseLifecycle so config properties are loaded prior to retrieval
+		return new BaseLifecycle() {
+			JettyServerLifecycle lifecycle = null;
+			@Override
+			public void start() throws Exception { 
+				lifecycle = new JettyServerLifecycle(ServiceTestUtils.getConfigIntProp("kim.test.port"), "/" + ServiceTestUtils.getConfigProp("app.context.name"), "/../kim/src/test/webapp");
+				lifecycle.start();
+				super.start();
+			}
+			@Override
+			public void stop() throws Exception {
+				if ((lifecycle != null) && lifecycle.isStarted()) {
+					lifecycle.stop();
+				}
+				super.stop();
+			}
+		};
+	}
+
 }

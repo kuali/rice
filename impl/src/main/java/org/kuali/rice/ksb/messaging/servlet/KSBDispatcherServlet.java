@@ -18,12 +18,14 @@ package org.kuali.rice.ksb.messaging.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
 import org.apache.cxf.Bus;
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.cxf.transport.servlet.ServletController;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.apache.log4j.Logger;
@@ -82,7 +84,7 @@ public class KSBDispatcherServlet extends DispatcherServlet {
         Bus bus = KSBServiceLocator.getCXFBus();
 		ServletTransportFactory servletTransportFactory = KSBServiceLocator.getCXFServletTransportFactory();
 				
-		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletContext(), bus);
+		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletConfig(), this.getServletContext(), bus);
 		
 		this.setPublishEvents(false);
 	}

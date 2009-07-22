@@ -18,8 +18,8 @@
     <inceptionYear>2007</inceptionYear>
     <licenses>
         <license>
-            <name>The Kuali Foundation Educational Community License 1.0</name>
-            <url>https://test.kuali.org/confluence/display/KULDOC/The+Kuali+Foundation+ECL</url>
+            <name>The Kuali Foundation Educational Community License 2.0</name>
+            <url>http://www.opensource.org/licenses/ecl2.txt</url>
             <distribution>manual</distribution>
         </license>
     </licenses>
@@ -255,6 +255,16 @@
                         <configuration>
                             <aggregate>true</aggregate>
                             <maxmemory>512m</maxmemory>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.atlassian.maven.plugins</groupId>
+                        <artifactId>maven-licenses-plugin</artifactId>
+                        <configuration>
+                            <licenses.repositoryId>kr-repo</licenses.repositoryId>
+                            <licenses.repositoryUrl>https://test.kuali.org/maven</licenses.repositoryUrl>
+                            <locateJarDirectory>${basedir}/web/target/rice-web-${project.version}/WEB-INF/lib</locateJarDirectory>
+                            <locateOutputFile>locate.out</locateOutputFile>
                         </configuration>
                     </plugin>
                 </plugins>

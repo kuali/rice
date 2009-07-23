@@ -17,8 +17,10 @@
 package org.kuali.rice.kew.service;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -38,10 +40,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kns.util.ObjectUtils;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 
 /**
  * Convenience class for client applications to query workflow.  This class is one of two
@@ -589,12 +587,10 @@ public class WorkflowInfo implements java.io.Serializable {
      * Returns names of nodes already traversed
      * @param documentId id of the document to check
      * @return names of nodes already traversed
-     * @throws RemoteException if an error occurs
      * @throws WorkflowException if an error occurs
      * @see WorkflowUtility#getPreviousRouteNodeNames(Long)
-     * TODO: RemoteException not thrown
      */
-    public String[] getPreviousRouteNodeNames(Long documentId) throws RemoteException, WorkflowException {
+    public String[] getPreviousRouteNodeNames(Long documentId) throws WorkflowException {
         try {
             return getWorkflowUtility().getPreviousRouteNodeNames(documentId);
         } catch (Exception e) {
@@ -666,11 +662,10 @@ public class WorkflowInfo implements java.io.Serializable {
      * @return
      * @throws WorkflowException
      */
-    @SuppressWarnings("unchecked")
 	public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
     	try{
     		String[] results = getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
-    		if (ObjectUtils.isNull(results)) {
+    		if (ObjectUtils.equals(null, results)) {
     			return null;
     		}
     		return (List<String>) Arrays.asList(results);
@@ -691,11 +686,10 @@ public class WorkflowInfo implements java.io.Serializable {
      * @return
      * @throws WorkflowException
      */
-    @SuppressWarnings("unchecked")
 	public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
     	try{
     		String[] results = getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
-    		if (ObjectUtils.isNull(results)) {
+    		if (ObjectUtils.equals(null, results)) {
     			return null;
     		}
     		return (List<String>) Arrays.asList(results);

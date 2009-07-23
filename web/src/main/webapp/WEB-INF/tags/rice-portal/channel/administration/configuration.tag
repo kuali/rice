@@ -39,7 +39,7 @@
         </li>
 		<li>
 		<portal:portalLink displayTitle="true" title="System Namespace"
-            url="${ConfigProperties.kr.url}/maintenance.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.Namespace&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
+            url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.Namespace&docFormKey=88888888&returnLocation=http://localhost:8080/kr-dev/portal.do&hideReturnLink=true" />
 		</li>		
 	
 	</ul>

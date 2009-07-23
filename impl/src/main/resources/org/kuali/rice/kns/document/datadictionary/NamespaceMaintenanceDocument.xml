@@ -25,7 +25,7 @@
         <ref bean="NamespaceMaintenanceDocument-EditNamespace"/>
       </list>
     </property>
-    <property name="allowsNewOrCopy" value="false"/>    
+    <property name="allowsNewOrCopy" value="true"/>    
     <property name="lockingKeys">
       <list>
         <value>code</value>

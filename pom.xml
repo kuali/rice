@@ -260,6 +260,7 @@
                     <plugin>
                         <groupId>com.atlassian.maven.plugins</groupId>
                         <artifactId>maven-licenses-plugin</artifactId>
+                        <version>0.3-kuali</version>
                         <configuration>
                             <licenses.repositoryId>kr-repo</licenses.repositoryId>
                             <licenses.repositoryUrl>https://test.kuali.org/maven</licenses.repositoryUrl>

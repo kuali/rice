@@ -317,6 +317,14 @@
             <url>https://test.kuali.org/maven</url>
         </repository>
     </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>kuali</id>
+            <url>https://test.kuali.org/maven</url>
+	    </pluginRepository>
+    </pluginRepositories>
+    
 
     <dependencyManagement>
         <dependencies>

@@ -67,7 +67,7 @@
             		<ruleName>AfterSplitRule</ruleName>
 				</requests>
 				<split name="Split">
-				  <type>org.kuali.rice.kew.server.WorkflowUtilityTest$TestSplitNode</type>
+				  <type>org.kuali.rice.kew.server.TestSplitNode</type>
 				</split>
 				<join name="Join"/>
 			</routeNodes>

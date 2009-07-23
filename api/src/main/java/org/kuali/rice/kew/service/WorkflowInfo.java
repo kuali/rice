@@ -38,6 +38,9 @@ import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kns.util.ObjectUtils;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 
 /**
@@ -663,9 +666,14 @@ public class WorkflowInfo implements java.io.Serializable {
      * @return
      * @throws WorkflowException
      */
-    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
+    @SuppressWarnings("unchecked")
+	public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
     	try{
-    		return getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    		String[] results = getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    		if (ObjectUtils.isNull(results)) {
+    			return null;
+    		}
+    		return (List<String>) Arrays.asList(results);
     	} catch (Exception e) {
             throw handleException(e);
         }
@@ -683,9 +691,14 @@ public class WorkflowInfo implements java.io.Serializable {
      * @return
      * @throws WorkflowException
      */
-    public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
+    @SuppressWarnings("unchecked")
+	public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
     	try{
-    		return getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+    		String[] results = getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+    		if (ObjectUtils.isNull(results)) {
+    			return null;
+    		}
+    		return (List<String>) Arrays.asList(results);
     	} catch (Exception e) {
             throw handleException(e);
         }

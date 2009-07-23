@@ -36,11 +36,20 @@ public class ActionTakenDTO implements Serializable {
     private String actionTaken;
     private Calendar actionDate;
     private String annotation = null;
+    private ActionRequestDTO[] actionRequests = new ActionRequestDTO[0];
 
     public ActionTakenDTO() {
     }
 
-    public Calendar getActionDate() {
+    public ActionRequestDTO[] getActionRequests() {
+		return this.actionRequests;
+	}
+
+	public void setActionRequests(ActionRequestDTO[] actionRequests) {
+		this.actionRequests = actionRequests;
+	}
+
+	public Calendar getActionDate() {
         return actionDate;
     }
 
@@ -112,5 +121,4 @@ public class ActionTakenDTO implements Serializable {
 		this.delegatorGroupId = delegatorGroupId;
 	}
 
-    
 }

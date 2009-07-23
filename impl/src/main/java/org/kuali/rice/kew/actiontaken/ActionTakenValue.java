@@ -62,7 +62,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Sequence(name="KREW_RTE_NODE_S", property="actionTakenId")
+@Sequence(name="KREW_ACTN_TKN_S", property="actionTakenId")
 @Table(name="KREW_ACTN_TKN_T")
 public class ActionTakenValue implements WorkflowPersistable {
 

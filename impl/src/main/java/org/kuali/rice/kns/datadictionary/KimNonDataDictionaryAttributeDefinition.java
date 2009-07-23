@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import org.kuali.rice.kns.bo.BusinessObject;
+
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -48,4 +50,11 @@ public class KimNonDataDictionaryAttributeDefinition extends AttributeDefinition
 		this.kimAttrDefnId = kimAttrDefnId;
 	}
 
+	public Class<? extends BusinessObject> getLookupBoClass() {
+		return null;
+	}
+
+	public void setLookupBoClass(Class<? extends BusinessObject> lookupBoClass) {
+
+	}
 }

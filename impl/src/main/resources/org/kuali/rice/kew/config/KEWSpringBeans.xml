@@ -509,6 +509,7 @@
         </bean>
           </property>
     </bean>
+
     <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
@@ -519,13 +520,32 @@
           <property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
-          <!-- Should we change the security for SOAP? -->
-          <property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
+          <property name="busSecurity" value="${secure.workflowutility.soapservice.endpoint}"/>
         </bean>
           </property>
           <property name="propertyName" value="WorkflowUtilityServiceSOAP.expose"/>
     </bean>
 
+<!--
+    <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+      <property name="serviceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+          <property name="service" ref="enWorkflowUtilityService" />
+          <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew"/>
+          <property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.service.WorkflowUtility" />
+          <property name="jaxWsService" value="true" />
+          <property name="priority" value="3" />
+          <property name="retryAttempts" value="0" />
+          <property name="busSecurity" value="${secure.workflowutility.soapservice.endpoint}"/>
+        </bean>
+      </property>
+      <property name="propertyName" value="WorkflowUtilityServiceSOAP.expose"/>
+    </bean>
+-->
+
+<!--
     <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
       <property name="serviceDefinition">
@@ -533,8 +553,24 @@
           <property name="service">
             <ref bean="simpleDocumentActionsService" />
           </property>
-          <!-- <property name="serviceNameSpaceURI" value=""/> -->
           <property name="localServiceName" value="simpleDocumentActionsService" />
+          <property name="priority" value="3" />
+          <property name="retryAttempts" value="0" />
+          <property name="busSecurity" value="${simpleDocumentActionsService.security}"/>
+        </bean>
+      </property>
+    </bean>
+-->
+
+    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+      <property name="serviceDefinition">
+        <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+          <property name="service" ref="simpleDocumentActionsService" />
+          <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew"/>
+          <property name="localServiceName" value="simpleDocumentActionsService" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService" />
+          <property name="jaxWsService" value="true" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
           <property name="busSecurity" value="${simpleDocumentActionsService.security}"/>

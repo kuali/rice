@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.webservice.DocumentResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
@@ -38,11 +39,15 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	protected void loadTestData() throws Exception {
 		loadXmlFile("ActionsConfig.xml");
 	}
-	
+
+	protected SimpleDocumentActionsWebService getSimpleDocumentActionsWebService() {
+		return (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName(KEWWebServiceConstants.MODULE_TARGET_NAMESPACE, KEWWebServiceConstants.SimpleDocumentActionsWebService.WEB_SERVICE_NAME));
+	}
+
 	@Test
 	public void testCreateAndRoute() throws Exception{
 
-		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
+		SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
 		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		StandardResponse sr = simpleService.route(dr.getDocId(), "admin", "Doc1Title", "<foo>bar</foo>", "Annotation!");
 		sr = simpleService.approve(dr.getDocId(), "admin", "Doc1Title", "<foo>b</foo>", "Annotation!!!");
@@ -53,7 +58,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	@Test
 	public void testSave_NoDocContent() throws Exception{
 
-		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
+		SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
 		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
 		StandardResponse sr = simpleService.save(dr.getDocId(), "admin", "Doc1Title", null, "Annotation!");
@@ -66,7 +71,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	@Test
 	public void testSave_WithDocContent() throws Exception{
 
-		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
+		SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
 		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
 		StandardResponse sr = simpleService.save(dr.getDocId(), "admin", "Doc1Title", "<foo>bar</foo>", "Annotation!");
@@ -79,7 +84,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	@Test
 	public void testSaveDocContent() throws Exception{
 
-		SimpleDocumentActionsWebService simpleService = (SimpleDocumentActionsWebService) GlobalResourceLoader.getService(new QName("KEW", "simpleDocumentActionsService"));
+		SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
 		DocumentResponse dr = simpleService.create("admin","doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
 		StandardResponse sr = simpleService.saveDocumentContent(dr.getDocId(), "admin", "Doc1Title", "<foo>bar</foo>");

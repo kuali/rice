@@ -524,7 +524,15 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	
 	public <T extends BusinessObject> boolean canFullyUnmaskField(Person user,
 			Class<T> businessObjectClass, String fieldName, Document document) {
-		if ( document == null ) {
+
+		// This is a band-aid fix for KULRICE-3365
+		// TODO: refactor, this requires too much knowlege of DocumentHelperServiceImpl
+		boolean useDocumentAuthorizer = 
+			document != null &&
+			document.getDocumentHeader() != null &&
+			document.getDocumentHeader().hasWorkflowDocument();
+
+		if (!useDocumentAuthorizer) {
 			return getIdentityManagementService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
 					KNSConstants.KNS_NAMESPACE,

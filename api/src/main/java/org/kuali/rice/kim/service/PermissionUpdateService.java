@@ -16,8 +16,11 @@
 package org.kuali.rice.kim.service;
 
 import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 
 /**
@@ -25,6 +28,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@WebService(name = KIMWebServiceConstants.PermissionUpdateService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionUpdateService {
 
 	void savePermission( @WebParam(name="permissionId") String permissionId, 

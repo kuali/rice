@@ -35,6 +35,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * 
@@ -64,7 +65,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@WebService(name = "RoleService", targetNamespace = "http://org.kuali.rice/kim/role")
+@WebService(name = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RoleService {
     // --------------------

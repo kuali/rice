@@ -22,8 +22,6 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**

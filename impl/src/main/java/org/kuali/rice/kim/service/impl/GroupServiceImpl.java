@@ -41,6 +41,7 @@ import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -49,7 +50,7 @@ import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
-@WebService(endpointInterface = "org.kuali.rice.kim.service.GroupService", serviceName = "GroupService", portName = "GroupService", targetNamespace = "http://org.kuali.rice/kim/group")
+@WebService(endpointInterface = KIMWebServiceConstants.GroupService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.GroupService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.GroupService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
 	private BusinessObjectService businessObjectService;

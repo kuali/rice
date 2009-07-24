@@ -84,4 +84,6 @@ public class RiceConstants extends JSTLConstants {
     }
 
 	public static final long NO_WAIT = 0;
+
+	public static final String RICE_JAXWS_TARGET_NAMESPACE_BASE = "http://rice.kuali.org/wsdl";
 }

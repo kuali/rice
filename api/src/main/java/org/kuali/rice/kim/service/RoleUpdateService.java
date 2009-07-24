@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.kuali.rice.core.jaxb.SqlDateAdapter;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * This service provides operations for creating and updating roles. 
@@ -32,7 +33,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 
-@WebService(name = "RoleUpdateService", targetNamespace = "http://org.kuali.rice/kim/role")
+@WebService(name = KIMWebServiceConstants.RoleUpdateService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RoleUpdateService {
    

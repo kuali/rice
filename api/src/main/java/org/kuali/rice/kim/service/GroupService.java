@@ -28,6 +28,7 @@ import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  *
@@ -51,7 +52,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@WebService(name = "GroupService", targetNamespace = "http://org.kuali.rice/kim/group")
+@WebService(name = KIMWebServiceConstants.GroupService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface GroupService {
 

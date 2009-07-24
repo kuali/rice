@@ -70,6 +70,7 @@ import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -86,7 +87,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@WebService(endpointInterface = "org.kuali.rice.kim.service.RoleService", serviceName = "RoleService", portName = "RoleService", targetNamespace = "http://org.kuali.rice/kim/role")
+@WebService(endpointInterface = KIMWebServiceConstants.RoleService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.RoleService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );

@@ -26,6 +26,7 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * 
@@ -53,7 +54,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@WebService(name = "ResponsibilityService", targetNamespace = "http://org.kuali.rice/kim/responsibility")
+@WebService(name = KIMWebServiceConstants.ResponsibilityService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityService {
 

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.util;
 
+import org.kuali.rice.core.util.RiceConstants;
+
 
 /**
  * This class is used to hold constants that are used when exposing services to the bus 
@@ -24,8 +26,7 @@ package org.kuali.rice.kew.util;
  */
 public class KEWWebServiceConstants {
 
-	public static final String RICE_TARGET_NAMESPACE_BASE = "http://rice.kuali.org/wsdl/";
-	public static final String MODULE_TARGET_NAMESPACE = RICE_TARGET_NAMESPACE_BASE + "kew";
+	public static final String MODULE_TARGET_NAMESPACE = RiceConstants.RICE_JAXWS_TARGET_NAMESPACE_BASE + "/kew";
 
 	public static class SimpleDocumentActionsWebService {
 		public static final String WEB_SERVICE_NAME = "simpleDocumentActionsService";

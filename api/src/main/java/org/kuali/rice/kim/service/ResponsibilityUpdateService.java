@@ -20,6 +20,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 
 /**
@@ -27,7 +28,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-@WebService(name = "ResponsibilityUpdateService", targetNamespace = "http://org.kuali.rice/kim/responsibilityUpdate")
+@WebService(name = KIMWebServiceConstants.ResponsibilityUpdateService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityUpdateService {
 

@@ -48,6 +48,7 @@ import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -64,7 +65,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@WebService(endpointInterface = "org.kuali.rice.kim.service.PermissionService", serviceName = "PermissionService", portName = "PermissionService", targetNamespace = "http://org.kuali.rice/kim/permission")
+@WebService(endpointInterface = KIMWebServiceConstants.PermissionService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class PermissionServiceImpl implements PermissionService, PermissionUpdateService {
 	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );

@@ -20,6 +20,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * 
@@ -28,7 +29,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@WebService(name = "GroupUpdateService", targetNamespace = "http://org.kuali.rice/kim/group")
+@WebService(name = KIMWebServiceConstants.GroupUpdateService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface GroupUpdateService {
 

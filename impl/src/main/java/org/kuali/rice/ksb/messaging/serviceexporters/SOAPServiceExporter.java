@@ -131,7 +131,7 @@ public class SOAPServiceExporter implements ServiceExporter {
 	 */
 	protected boolean isServicePublished(String serviceAddress){
 		
-		ServerRegistry serverRegistry = getCXFServerRegistry();		
+		ServerRegistry serverRegistry = getCXFServerRegistry();
 		List<Server> servers = serverRegistry.getServers();
 		
 		for (Server server:servers){		

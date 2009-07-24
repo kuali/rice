@@ -28,8 +28,7 @@ public class WorkflowUtilitySoapTest extends WorkflowUtilityTest {
 
     protected WorkflowUtility getWorkflowUtility() {
     	if (utility == null) {
-    		utility = (WorkflowUtility) GlobalResourceLoader.getResourceLoader().getService(new QName("KEW", KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME));
-//    		utility = (WorkflowUtility) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWWebServiceConstants.MODULE_TARGET_NAMESPACE, KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME));
+    		utility = (WorkflowUtility) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWWebServiceConstants.MODULE_TARGET_NAMESPACE, KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME));
     	}
     	return utility; 
     }

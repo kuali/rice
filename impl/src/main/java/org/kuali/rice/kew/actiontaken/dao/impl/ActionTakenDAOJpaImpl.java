@@ -41,7 +41,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
 	
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenDAOOjbImpl.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenDAOJpaImpl.class);
 
     public ActionTakenValue load(Long id) {
         LOG.debug("Loading Action Taken for the given id " + id);

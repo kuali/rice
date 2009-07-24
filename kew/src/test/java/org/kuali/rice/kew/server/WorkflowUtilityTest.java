@@ -47,7 +47,6 @@ import org.kuali.rice.kew.dto.RuleResponsibilityDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
@@ -754,16 +753,15 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testRoutingReportOnDocumentType() throws Exception {
-    	WorkflowInfo info = new WorkflowInfo();
     	ReportCriteriaDTO criteria = new ReportCriteriaDTO("SeqDocType");
     	criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate" });
-    	DocumentDetailDTO documentDetail = info.routingReport(criteria);
+    	DocumentDetailDTO documentDetail = getWorkflowUtility().routingReport(criteria);
     	assertNotNull(documentDetail);
     	assertEquals("Should have been 2 requests generated.", 2, documentDetail.getActionRequests().length);
 
     	// let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
     	criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });
-    	documentDetail = info.routingReport(criteria);
+    	documentDetail = getWorkflowUtility().routingReport(criteria);
     	assertEquals("Should have been 3 requests generated.", 3, documentDetail.getActionRequests().length);
 
     	boolean foundRkirkend = false;
@@ -791,18 +789,17 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
     @Test public void testRoutingReportOnRouteHeaderId() throws Exception {
         WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), "SeqDocType");
-        WorkflowInfo info = new WorkflowInfo();
 
         ReportCriteriaDTO criteria = new ReportCriteriaDTO(doc.getRouteHeaderId());
         criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate" });
-        DocumentDetailDTO documentDetail = info.routingReport(criteria);
+        DocumentDetailDTO documentDetail = getWorkflowUtility().routingReport(criteria);
         assertNotNull(documentDetail);
         assertEquals("Route header id returned should be the same as the one passed in", doc.getRouteHeaderId(), documentDetail.getRouteHeaderId());
         assertEquals("Wrong number of action requests generated", 2, documentDetail.getActionRequests().length);
 
         // let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
         criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });
-        documentDetail = info.routingReport(criteria);
+        documentDetail = getWorkflowUtility().routingReport(criteria);
         assertEquals("Should have been 3 requests generated.", 3, documentDetail.getActionRequests().length);
 
         boolean foundRkirkend = false;
@@ -829,33 +826,31 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testRuleReportGeneralFunction() throws Exception {
-        WorkflowInfo info = new WorkflowInfo();
-
         RuleReportCriteriaDTO ruleReportCriteria = null;
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in null RuleReportCriteriaDTO should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in null RuleReportCriteriaDTO should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in empty RuleReportCriteriaDTO should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in empty RuleReportCriteriaDTO should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setResponsiblePrincipalId("hobo_man");
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid principle ID should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in an invalid principle ID should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setResponsibleGroupId("-1234567");
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid Workgroup ID should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in an invalid Workgroup ID should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         RuleExtensionDTO ruleExtensionVO = new RuleExtensionDTO("key","value");
         ruleReportCriteria.setRuleExtensionVOs(new RuleExtensionDTO[]{ruleExtensionVO});
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in one or more RuleExtentionVO objects with no Rule Template Name should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in one or more RuleExtentionVO objects with no Rule Template Name should throw Exception");
 
         RuleDTO[] rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setConsiderWorkgroupMembership(Boolean.FALSE);
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 3",3,rules.length);
 
         rules = null;
@@ -865,7 +860,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("temay"));
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 0",0,rules.length);
 
         rules = null;
@@ -874,7 +869,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setConsiderWorkgroupMembership(Boolean.FALSE);
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 1",1,rules.length);
         // check the rule returned
         RuleDTO ruleVO = rules[0];
@@ -907,7 +902,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("temay"));
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules returned is not correct",2,rules.length);
         for (int i = 0; i < rules.length; i++) {
             ruleVO = rules[i];
@@ -953,7 +948,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsibleGroupId(RuleTestGeneralSetup.RULE_TEST_GROUP_ID);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 1",1,rules.length);
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -973,7 +968,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 1",1,rules.length);
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -993,13 +988,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
      */
     @Test public void testRuleReportOrgReviewTest() throws Exception {
         loadXmlFile("WorkflowUtilityRuleReportConfig.xml");
-        WorkflowInfo info = new WorkflowInfo();
         RuleReportCriteriaDTO ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setDocumentTypeName(RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setRuleTemplateName(RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        RuleDTO[] rules = info.ruleReport(ruleReportCriteria);
+        RuleDTO[] rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
 
         ruleReportCriteria = null;
@@ -1010,7 +1004,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
         ruleReportCriteria.setConsiderWorkgroupMembership(Boolean.FALSE);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",1,rules.length);
 
         ruleReportCriteria = null;
@@ -1023,7 +1017,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         RuleExtensionDTO[] ruleExtensionVOs = new RuleExtensionDTO[] {ruleExtensionVO,ruleExtensionVO2};
         ruleReportCriteria.setRuleExtensionVOs(ruleExtensionVOs);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
 
         ruleReportCriteria = null;
@@ -1036,7 +1030,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setRuleTemplateName(RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("ewestfal"));
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",1,rules.length);
         RuleDTO ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -1074,7 +1068,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setRuleTemplateName(RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
 
         ruleReportCriteria = null;
@@ -1092,7 +1086,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleExtensionVOs = new RuleExtensionDTO[] {ruleExtensionVO,ruleExtensionVO2};
         ruleReportCriteria.setRuleExtensionVOs(ruleExtensionVOs);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",1,rules.length);
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -1107,21 +1101,20 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testGetUserActionItemCount() throws Exception {
-        WorkflowInfo info = new WorkflowInfo();
         String principalId = getPrincipalIdForName("ewestfal");
         WorkflowDocument document = new WorkflowDocument(principalId, SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
 
         TestUtilities.assertAtNode(document, "WorkflowDocument");
         document.returnToPreviousNode("", "AdHoc");
@@ -1131,18 +1124,18 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
         // expect one action item for approval request
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertFalse(document.isApprovalRequested());
         assertTrue(document.isFYIRequested());
         // expect one action item for fyi action request
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertFalse(document.isApprovalRequested());
         // expect no action items
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
 
         principalId = getPrincipalIdForName("ewestfal");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
@@ -1153,15 +1146,15 @@ public class WorkflowUtilityTest extends KEWTestCase {
         principalId = getPrincipalIdForName("ewestfal");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertFalse(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
     }
 
     @Test public void testGetActionItems() throws Exception {
@@ -1171,7 +1164,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String initiatorPrincipalId = getPrincipalIdForName(initiatorNetworkId);
         String user1PrincipalId = getPrincipalIdForName(user1NetworkId);
         String user2PrincipalId = getPrincipalIdForName(user2NetworkId);
-        WorkflowInfo info = new WorkflowInfo();
         String principalId = getPrincipalIdForName(initiatorNetworkId);
         String docTitle = "this is the doc title";
         WorkflowDocument document = new WorkflowDocument(principalId, SeqSetup.DOCUMENT_TYPE_NAME);
@@ -1179,7 +1171,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId());
+        ActionItemDTO[] actionItems = getWorkflowUtility().getAllActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1194,7 +1186,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = info.getActionItems(document.getRouteHeaderId());
+        actionItems = getWorkflowUtility().getAllActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
@@ -1213,7 +1205,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = info.getActionItems(document.getRouteHeaderId());
+        actionItems = getWorkflowUtility().getAllActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1229,7 +1221,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String initiatorPrincipalId = getPrincipalIdForName(initiatorNetworkId);
         String user1PrincipalId = getPrincipalIdForName(user1NetworkId);
         String user2PrincipalId = getPrincipalIdForName(user2NetworkId);
-        WorkflowInfo info = new WorkflowInfo();
         String principalId = getPrincipalIdForName(initiatorNetworkId);
         String docTitle = "this is the doc title";
         WorkflowDocument document = new WorkflowDocument(principalId, SeqSetup.DOCUMENT_TYPE_NAME);
@@ -1237,9 +1228,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
+        ActionItemDTO[] actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
         assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1254,13 +1245,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
         assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ});
         assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
@@ -1281,9 +1272,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
         assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1587,9 +1578,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         } catch (Exception e) {}
     }
 
-    private void ruleExceptionTest(WorkflowInfo info, RuleReportCriteriaDTO ruleReportCriteria, String message) {
+    private void ruleExceptionTest(RuleReportCriteriaDTO ruleReportCriteria, String message) {
         try {
-            info.ruleReport(ruleReportCriteria);
+            getWorkflowUtility().ruleReport(ruleReportCriteria);
             fail(message);
         } catch (Exception e) {
             e.printStackTrace();

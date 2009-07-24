@@ -22,14 +22,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.namespace.QName;
 
-import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
-public class ServiceInfoDAOJpaImpl extends PersistenceBrokerDaoSupport implements ServiceInfoDAO {
+public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
 	
 	@PersistenceContext
 	EntityManager entityManager;

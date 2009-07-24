@@ -22,14 +22,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.dao.NoteDAO;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
 public class NoteDAOJpaImpl implements NoteDAO {

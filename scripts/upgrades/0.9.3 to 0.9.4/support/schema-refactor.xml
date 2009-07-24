@@ -887,35 +887,6 @@
             <index-column oldName="ORG_DOC_NBR" newName="ORG_DOC_HDR_ID"/>
         </index>
     </table>
-    <table oldName="FP_DOC_TYPE_ATTR_T" newName="KRNS_DOC_TYP_ATTR_T">
-        <column oldName="ID" newName="DOC_TYP_ATTR_ID" primaryKey="true" size="8" type="DECIMAL"/>
-        <column default="SYS_GUID()" name="OBJ_ID" required="true"
-            size="36" type="VARCHAR"/>
-        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column default="Y" oldName="ACTIVE_IND" newName="ACTV_IND" required="true" size="1" type="CHAR"/>
-        <column oldName="DOC_TYP_ATTR_CD" newName="CD" required="true" size="100" type="VARCHAR"/>
-        <column oldName="DOC_TYP_ATTR_VAL" newName="VAL" size="400" type="VARCHAR"/>
-        <column oldName="DOC_TYP_ATTR_LBL" newName="LBL" size="400" type="VARCHAR"/>
-        <column oldName="FDOC_TYP_CD" newName="DOC_TYP_CD" required="true" size="4" type="VARCHAR"/>
-        <foreign-key oldForeignTable="FP_DOC_TYPE_T" newForeignTable="KRNS_DOC_TYP_T"
-		oldName="FP_DOC_TYPE_ATTR_TR1" newName="KRNS_DOC_TYP_ATTR_TR1">
-            <reference oldForeign="FDOC_TYP_CD" oldLocal="FDOC_TYP_CD" newForeign="DOC_TYP_CD" newLocal="DOC_TYP_CD"/>
-        </foreign-key>
-        <unique oldName="FP_DOC_TYPE_ATTR_TC0" newName="KRNS_DOC_TYP_ATTR_TC1" >
-            <unique-column name="OBJ_ID"/>
-        </unique>
-    </table>
-    <table oldName="FP_DOC_TYPE_T" newName="KRNS_DOC_TYP_T">
-        <column oldName="FDOC_TYP_CD" newName="DOC_TYP_CD" primaryKey="true" size="4" type="VARCHAR"/>
-        <column default="SYS_GUID()" name="OBJ_ID" required="true"
-            size="36" type="VARCHAR"/>
-        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column oldName="FDOC_NM" newName="NM" size="40" type="VARCHAR"/>
-        <column oldName="FDOC_TYP_ACTIVE_CD" newName="ACTV_IND" size="1" type="VARCHAR"/>
-        <unique oldName="FP_DOC_TYPE_TC0" newName="KRNS_DOC_TYP_TC1">
-            <unique-column name="OBJ_ID"/>
-        </unique>
-    </table>
     <table oldName="FP_MAINTENANCE_DOCUMENT_T" newName="KRNS_MAINT_DOC_T">
         <column oldName="FDOC_NBR" newName="DOC_HDR_ID"  primaryKey="true" size="14" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
@@ -948,6 +919,7 @@
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="FDOC_NBR" newName="DOC_HDR_ID"  required="true" size="14" type="VARCHAR"/>
+        <column name="MAINT_LOCK_ID" primaryKey="true" size="14" type="VARCHAR"/>
         <unique oldName="FP_MAINT_LOCK_TC0"  newName="KRNS_MAINT_LOCK_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>

@@ -26,5 +26,7 @@ import java.util.List;
 public interface DocumentSearchResultProcessor {
 
     public DocumentSearchResultComponents processIntoFinalResults(List<DocSearchDTO> docSearchResultRows,DocSearchCriteriaDTO criteria, String principalId) throws SQLException;
-
+    public void setProcessFinalResults(boolean isProcessFinalResults);
+    public boolean isProcessFinalResults();
+    
 }

@@ -81,7 +81,6 @@ import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.derviedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.kns.web.format.FormatException;
 
 /**
@@ -909,6 +908,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.defaultExceptionWorkgroup = defaultExceptionWorkgroup;
     }
 
+    
     public DocumentSearchGenerator getDocumentSearchGenerator() {
         DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getName());
         Class<? extends DocumentSearchGenerator> docSearchGeneratorClass = null;
@@ -923,7 +923,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         			return getParentDocType().getDocumentSearchGenerator();
         		} else {
                     DocumentSearchGenerator generator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
-        	    	generator.setSearchableAttributes(getSearchableAttributes());
         	    	return generator;
         		}
         	}
@@ -933,12 +932,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
                 throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
             }
             DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
-            docSearchGenerator.setSearchableAttributes(getSearchableAttributes());
             return docSearchGenerator;
         } else {
             try {
                 DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)docSearchGeneratorClass.newInstance();
-                docSearchGenerator.setSearchableAttributes(getSearchableAttributes());
                 return docSearchGenerator;
             } catch (InstantiationException e) {
                 throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator defined in data dictionary " );

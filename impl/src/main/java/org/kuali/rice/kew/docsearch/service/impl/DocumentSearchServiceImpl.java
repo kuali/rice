@@ -123,8 +123,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             } else {
                 docListResults = docSearchDao.getList(docSearchGenerator,criteria, principalId);
             }
-            searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, principalId);
-		} catch (Exception e) {
+            if (docSearchResultProcessor.isProcessFinalResults()) {
+                searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, principalId);
+            } else {
+                searchResult = new StandardDocumentSearchResultProcessor().processIntoFinalResults(docListResults, criteria, principalId);
+            }
+            
+        } catch (Exception e) {
 			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();
 			LOG.error("getList() " + errorMsg,e);
             throw new WorkflowServiceErrorException(errorMsg,new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));

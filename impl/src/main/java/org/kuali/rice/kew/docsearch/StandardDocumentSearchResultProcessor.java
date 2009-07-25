@@ -53,6 +53,7 @@ public class StandardDocumentSearchResultProcessor implements
 	private Map<String, String> labelsByKey = new HashMap<String, String>();
 	private DocSearchCriteriaDTO searchCriteria;
 	private String searchingUser;
+	private boolean processFinalResults = true;
 //FIXME: Chris get rid of all sortable references!
 	/**
 	 * @return the searchCriteria
@@ -791,4 +792,22 @@ public class StandardDocumentSearchResultProcessor implements
 			return "</a>";
 		}
 	}
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#setProcessResultSet(boolean)
+     */
+    public void setProcessFinalResults(boolean isProcessFinalResults) {
+       this.processFinalResults = isProcessFinalResults;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#isProcessResultSet()
+     */
+    public boolean isProcessFinalResults() {
+        return this.processFinalResults;
+    }
 }

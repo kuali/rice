@@ -15,13 +15,15 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.io.Serializable;
+
 /**
  * This class contains all the information needed for document search, validation and indexing. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class DocumentSearchContext {
+public class DocumentSearchContext implements Serializable {
 
 	protected String documentId;
 	protected String documentTypeName;

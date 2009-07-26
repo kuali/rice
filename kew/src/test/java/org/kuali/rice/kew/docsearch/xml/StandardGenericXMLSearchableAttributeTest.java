@@ -390,7 +390,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         } catch (WorkflowServiceErrorException wsee) {}
     }
 
-    @Ignore("See KULRICE-2988")
     @Test public void testDocumentSearchAttributeWildcarding() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
@@ -435,7 +434,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "ack", docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "*ack", docType));
         result = docSearchService.getList(user.getPrincipalId(), criteria);
         searchResults = result.getSearchResults();
 
@@ -501,7 +500,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         assertEquals("Search results should be empty trying to use assumed ending wildcard.", 0, searchResults.size());
     }
 
-    @Ignore("See KULRICE-2988")
     @Test public void testDocumentSearchAttributeCaseSensitivity() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
     	String documentTypeName = "SearchDocTypeCaseSensitivity";
@@ -587,7 +585,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "aCk", docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "*aCk", docType));
         result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
     }

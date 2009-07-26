@@ -27,7 +27,6 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition autoWildcardLocation="prefixonly"/>
 					<validation required="true">
 						<regex>^[a-zA-Z ]+$</regex>
 						<message>Invalid first name</message>
@@ -56,7 +55,7 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition autoWildcardLocation="prefixonly" caseSensitive="false"/>
+					<searchDefinition caseSensitive="false"/>
 					<validation required="true">
 						<regex>^[a-zA-Z ]+$</regex>
 						<message>Invalid first name</message>
@@ -85,7 +84,7 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition dataType="long" allowWildcards="true" autoWildcardLocation="suffixOnly"/>
+					<searchDefinition dataType="long"/>
 					<fieldEvaluation>
 						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testLongKey/value</xpathexpression>
 					</fieldEvaluation>
@@ -363,8 +362,12 @@
 					<display>
 						<type>text</type>
 					</display>
-					<!-- the service and appliesTo are completey fake here because we aren't actually going to render this thing -->
-					<quickfinder service="myLookuable" appliesTo="MyBean.data" draw="true" />
+					<!-- the businessObjectClass and lookupFieldName are completey fake here because we aren't actually going to render this thing -->
+					<lookup businessObjectClass="org.kuali.rice.kew.docsearch.xml.MyLookupable">
+					  <fieldConversions>
+					    <fieldConversion lookupFieldName="chart" localFieldName="MyBean.data"/>
+					  </fieldConversions>
+					</lookup>
 					<fieldEvaluation>
 						<xpathexpression>//chart</xpathexpression>
 					</fieldEvaluation>
@@ -389,7 +392,11 @@
 					<visibility>
 						<column visible="false"/>
 					</visibility>
-					<quickfinder service="ChartLookuable" appliesTo="chart" draw="true" />
+					<lookup businessObjectClass="Chart">
+					  <fieldConversions>
+					    <fieldConversion lookupFieldName="chart" localFieldName="chart" />
+					  </fieldConversions>
+					</lookup>
 					<fieldEvaluation>
 						<xpathexpression>//chart</xpathexpression>
 					</fieldEvaluation>

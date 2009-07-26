@@ -31,6 +31,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kns.web.ui.Field;
@@ -193,20 +194,11 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                                 //}
                             }
                         }
-                    } else if ("quickfinder".equals(childNode.getNodeName())) {
-                        NamedNodeMap quickfinderAttributes = childNode.getAttributes();
-                        String drawQuickfinder = quickfinderAttributes.getNamedItem("draw").getNodeValue();
-                        if (!Utilities.isEmpty(drawQuickfinder) && "true".equals(drawQuickfinder)) {
-                            quickfinderService = quickfinderAttributes.getNamedItem("service").getNodeValue();
-                        }
-                        myField.setQuickFinderClassNameImpl(quickfinderAttributes.getNamedItem("service").getNodeValue());
-                        //myField.setDefaultLookupableName(quickfinderAttributes.getNamedItem("appliesTo").getNodeValue());
-                    }
+                    } else if ("lookup".equals(childNode.getNodeName())) {
+						XMLAttributeUtils.establishFieldLookup(myField, childNode);
+					} 
                 }
                 fields.add(myField);
-                //if(!Utilities.isEmpty(quickfinderService)){
-                //    fields.add(new Field("", "", Field.QUICKFINDER, false, "", "", null, quickfinderService));
-                //}
                 rows.add(new Row(fields));
             }
         }

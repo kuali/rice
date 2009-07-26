@@ -80,7 +80,6 @@
 					<visibility>
 						<column visible="true"/>
 					</visibility>
-					<searchDefinition autoWildcardLocation="prefixonly"/>
 					<validation required="true">
 						<regex>^[a-zA-Z ]+$</regex>
 						<message>Invalid first name</message>
@@ -112,7 +111,6 @@
 					<visibility>
 						<column visible="false"/>
 					</visibility>
-					<searchDefinition autoWildcardLocation="prefixonly"/>
 					<validation required="true">
 						<regex>^[a-zA-Z ]+$</regex>
 						<message>Invalid first name</message>

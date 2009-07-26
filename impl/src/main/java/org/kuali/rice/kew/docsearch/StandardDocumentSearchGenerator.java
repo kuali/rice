@@ -341,7 +341,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched));
                 }
         	}
-        } else {
+        } else {        	
             boolean usingWildcards = false;
         	StringBuffer prefix = new StringBuffer("");
         	StringBuffer suffix = new StringBuffer("");
@@ -349,43 +349,29 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         		prefix.append("'");
         		suffix.insert(0,"'");
         	}
-        	if (criteriaComponent.isAllowWildcards() && criteriaComponent.getSearchableAttributeValue().allowsWildcards()) {
-                if (!Utilities.isEmpty(attributeValuesSearched)) {
-                    List<String> newList = new ArrayList<String>();
-                    for (String attributeValueEntered : attributeValuesSearched) {
-                        newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
-                        usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
-                    }
-                    attributeValuesSearched = newList;
-                } else {
-                    attributeValueSearched = attributeValueSearched.trim().replace('*', DATABASE_WILDCARD_CHARACTER);
-                    usingWildcards |= (attributeValueSearched.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
-                }
-                if (criteriaComponent.isAutoWildcardBeginning()) {
-                    usingWildcards |= true;
-                	if (prefix.length() == 0) {
-                    	prefix.append("'" + DATABASE_WILDCARD_CHARACTER_STRING);
-                	} else {
-                    	prefix.append(DATABASE_WILDCARD_CHARACTER_STRING);
-                	}
-                }
-                if (criteriaComponent.isAutoWildcardEnd()) {
-                    usingWildcards |= true;
-                	if (suffix.length() == 0) {
-                		suffix.insert(0,DATABASE_WILDCARD_CHARACTER_STRING + "'");
-                	} else {
-                		suffix.insert(0,DATABASE_WILDCARD_CHARACTER_STRING);
-                	}
-                }
+        	// apply wildcarding if wildcard character is specified
+        	// after conversion of doc search to lookup, wildcards are always allowed
+        	if (!Utilities.isEmpty(attributeValuesSearched)) {
+        		List<String> newList = new ArrayList<String>();
+        		for (String attributeValueEntered : attributeValuesSearched) {
+        			newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
+        			usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
+        		}
+        		attributeValuesSearched = newList;
+        	} else {
+        		attributeValueSearched = attributeValueSearched.trim().replace('*', DATABASE_WILDCARD_CHARACTER);
+        		usingWildcards |= (attributeValueSearched.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
         	}
-        	String prefixToUse = prefix.toString();
+            String prefixToUse = prefix.toString();
         	String suffixToUse = suffix.toString();
+        	
         	if (addCaseInsensitivityForValue) {
             	queryTableColumnName = "upper(" + queryTableColumnName + ")";
             	prefixToUse = "upper(" + prefix.toString();
             	suffixToUse = suffix.toString() + ")";
         	}
-            if (!Utilities.isEmpty(attributeValuesSearched)) {
+
+        	if (!Utilities.isEmpty(attributeValuesSearched)) {
                 // for a multivalue search we need multiple 'or' clause statements entered
                 whereSqlTemp.append(initialClauseStarter).append(" (");
                 boolean firstValue = true;

@@ -64,10 +64,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
         if (field != null) {
             sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
             sacc.setRangeSearch(field.isMemberOfRange());
-//            sacc.setAllowWildcards(field.isAllowingWildcards());
-//            sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-//            sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-//            sacc.setCaseSensitive(field.isCaseSensitive());
+            sacc.setCaseSensitive(!field.isUpperCase());
             sacc.setSearchInclusive(field.isInclusive());
             sacc.setSearchable(field.isIndexedForSearch());
             sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));

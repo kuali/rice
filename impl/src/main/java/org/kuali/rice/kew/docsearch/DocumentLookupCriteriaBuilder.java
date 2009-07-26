@@ -106,6 +106,7 @@ public class DocumentLookupCriteriaBuilder  {
 								SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
 								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
 								sacc.setRangeSearch(dsField.isMemberOfRange());
+								sacc.setCaseSensitive(!dsField.isUpperCase());
 
 								//FIXME: don't force this when dd changes are in, instead delete line 1 row below and uncomment one two lines below
 								sacc.setAllowInlineRange(true);

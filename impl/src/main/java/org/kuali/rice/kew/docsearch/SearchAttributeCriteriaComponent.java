@@ -36,9 +36,6 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     private String value;
     private List<String> values;
     private String lookupableFieldType;
-    private boolean allowWildcards = true;
-    private boolean autoWildcardBeginning = false;
-    private boolean autoWildcardEnd = false;
     private boolean caseSensitive = false;
     private boolean searchInclusive = true;  // not just for ranges... used by single date searches
     private SearchableAttributeValue searchableAttributeValue;
@@ -140,48 +137,6 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     public void setSearchable(boolean searchable) {
         this.searchable = searchable;
     }
-
-    /**
-	 * @return the allowWildcards
-	 */
-	public boolean isAllowWildcards() {
-		return allowWildcards;
-	}
-
-	/**
-	 * @param allowWildcards the allowWildcards to set
-	 */
-	public void setAllowWildcards(boolean allowWildcards) {
-		this.allowWildcards = allowWildcards;
-	}
-
-	/**
-	 * @return the autoWildcardBeginning
-	 */
-	public boolean isAutoWildcardBeginning() {
-		return autoWildcardBeginning;
-	}
-
-	/**
-	 * @param autoWildcardBeginning the autoWildcardBeginning to set
-	 */
-	public void setAutoWildcardBeginning(boolean autoWildcardBeginning) {
-		this.autoWildcardBeginning = autoWildcardBeginning;
-	}
-
-	/**
-	 * @return the autoWildcardEnd
-	 */
-	public boolean isAutoWildcardEnd() {
-		return autoWildcardEnd;
-	}
-
-	/**
-	 * @param autoWildcardEnd the autoWildcardEnd to set
-	 */
-	public void setAutoWildcardEnd(boolean autoWildcardEnd) {
-		this.autoWildcardEnd = autoWildcardEnd;
-	}
 
 	/**
 	 * @return the caseSensitive

@@ -97,8 +97,6 @@ public class Field implements java.io.Serializable {
     private Boolean rangeFieldInclusive;
     private boolean memberOfRange = false;
     private boolean allowInlineRange = false;
-    //FIXME: can this go away?  only seems to be used on column
-    private Map<String, String> displayParameters;
 
     //FIXME: these next two are iffy, need to reevaluate whether really used by doc search
     // below boolean used by criteria processor to hide field without removing classic 'field type' variable
@@ -1549,14 +1547,6 @@ public class Field implements java.io.Serializable {
         this.propertyValues = propertyValues;
     }
     
-    public Map<String, String> getDisplayParameters() {
-        return this.displayParameters;
-    }
-
-    public void setDisplayParameters(Map<String, String> displayParameters) {
-        this.displayParameters = displayParameters;
-    }
-
 	/**
 	 * @return the skipBlankValidValue
 	 */

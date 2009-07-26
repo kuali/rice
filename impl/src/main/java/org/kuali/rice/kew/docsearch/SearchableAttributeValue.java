@@ -31,8 +31,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  */
 public interface SearchableAttributeValue {
 
-    public static final String DISPLAY_FORMAT_PATTERN_MAP_KEY = "displayFormatPattern";
-
 	public String getAttributeDataType();
 
 	public String getAttributeTableName();
@@ -52,8 +50,6 @@ public interface SearchableAttributeValue {
     public void setupAttributeValue(ResultSet resultSet, String columnName) throws SQLException;
 
     public String getSearchableAttributeDisplayValue();
-
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters);
 
 	public String getOjbConcreteClass();
 

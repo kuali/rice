@@ -118,28 +118,14 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
 	}
 
     /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue()
-     */
-    public String getSearchableAttributeDisplayValue() {
-        return getSearchableAttributeDisplayValue(new HashMap<String,String>());
-    }
-
-    /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
      */
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
+    public String getSearchableAttributeDisplayValue() {
 	    NumberFormat format = DecimalFormat.getInstance();
 	    ((DecimalFormat)format).toPattern();
-	    ((DecimalFormat)format).applyPattern(getFormatPatternToUse(displayParameters.get(DISPLAY_FORMAT_PATTERN_MAP_KEY)));
+	    ((DecimalFormat)format).applyPattern(DEFAULT_FORMAT_PATTERN);
 	    return format.format(getSearchableAttributeValue().doubleValue());
 	}
-
-    private String getFormatPatternToUse(String parameterFormatPattern) {
-        if (StringUtils.isNotBlank(parameterFormatPattern)) {
-            return parameterFormatPattern;
-        }
-        return DEFAULT_FORMAT_PATTERN;
-    }
 
     /* (non-Javadoc)
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getAttributeDataType()

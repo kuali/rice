@@ -133,7 +133,6 @@
 				<fieldDef name="testCurrencyKey" title="Dollars Here">
 					<display>
 						<type>text</type>
-                        <parameters name="displayFormatPattern">#.00</parameters>
 					</display>
 					<searchDefinition dataType="float"/>
 					<fieldEvaluation>

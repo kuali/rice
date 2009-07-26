@@ -134,13 +134,6 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
         return formatAttributeValue(null);
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
-     */
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
-        return formatAttributeValue(displayParameters.get(DISPLAY_FORMAT_PATTERN_MAP_KEY));
-    }
-
     private String formatAttributeValue(String formatPattern) {
         DateFormat df = getDateFormatToUse(formatPattern);
         return df.format(new Date(getSearchableAttributeValue().getTime()));

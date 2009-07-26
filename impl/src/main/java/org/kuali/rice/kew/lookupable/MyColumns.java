@@ -20,9 +20,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
+
 /**
- * A bean which wraps a List of {@link Column} objects.  Used in the
- * {@link RuleBaseValuesLookupableImpl}.
+ * A bean which wraps a List of {@link <KeyLabelPair>} objects.
  * 
  * @see RuleBaseValuesLookupableImpl
  *
@@ -31,16 +32,16 @@ import java.util.List;
 public class MyColumns implements Serializable {
 
 	private static final long serialVersionUID = -4669528607040709102L;
-	private List columns;
+	private List<KeyLabelPair> columns;
 
     public MyColumns() {
-        columns = new ArrayList();
+        columns = new ArrayList<KeyLabelPair>();
     }
 
-    public List getColumns() {
+    public List<KeyLabelPair> getColumns() {
         return columns;
     }
-    public void setColumns(List columns) {
+    public void setColumns(List<KeyLabelPair> columns) {
         this.columns = columns;
     }
 }

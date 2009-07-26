@@ -98,14 +98,6 @@ public class StandardDocumentSearchResultProcessor implements
 					if (field instanceof Field) {
 						Field dsField = (Field) field;
 						dsColumn.setFormatter((Formatter)dsField.getFormatter());
-//FIXME: Chris - either get rid of this
-//						if ((dsField.getPropertyName().equals(dsColumn
-//								.getPropertyName()))
-//								&& (dsColumn.getDisplayParameters().isEmpty())) {
-//
-//							dsColumn.setDisplayParameters(dsField
-//									.getDisplayParameters());
-//						}
 					} else {
 						throw new RiceRuntimeException(
 								"field must be of type org.kuali.rice.kew.docsearch.Field");
@@ -470,19 +462,9 @@ public class StandardDocumentSearchResultProcessor implements
 					Object sortValue = sortValuesByColumnKey.get(columnKeyName);
 					sortFieldValue = (sortValue != null) ? sortValue
 							: searchAttribute.getSortValue();
-					attributeValue = searchAttribute
-							.getSearchableAttributeValue();
-//					if ((column.getDisplayParameters() != null)
-//							&& (!column.getDisplayParameters().isEmpty())) {
-//						fieldValue = new DisplayValues();
-//						fieldValue.htmlValue = searchAttribute
-//								.getSearchableAttributeValue()
-//								.getSearchableAttributeDisplayValue(
-//										column.getDisplayParameters());
-//					} else {
-						fieldValue = new DisplayValues();
-						fieldValue.htmlValue = searchAttribute.getValue();
-//					}
+					attributeValue = searchAttribute.getSearchableAttributeValue();
+					fieldValue = new DisplayValues();
+					fieldValue.htmlValue = searchAttribute.getValue();
 					break;
 				}
 			}
@@ -677,33 +659,23 @@ public class StandardDocumentSearchResultProcessor implements
 				null, null);
 	}
 
-	public void addColumnUsingKey(List<Column> columns,
-			Map<String, String> displayParameters, String key, String label) {
+	public void addColumnUsingKey(List<Column> columns, String key, String label) {
 		this.addColumnUsingKey(columns, key, label, null);
 	}
 
-	public void addColumnUsingKey(List<Column> columns,
-			Map<String, String> displayParameters, String key, Boolean sortable) {
+	public void addColumnUsingKey(List<Column> columns, String key, Boolean sortable) {
 		this.addColumnUsingKey(columns, key, null, sortable);
 	}
 
-	public void addColumnUsingKey(List<Column> columns,String key, String label,
+	public void addColumnUsingKey(List<Column> columns, String key, String label,
 			Boolean sortable) {
 		columns.add(this.constructColumnUsingKey(key, label,
 				sortable));
 	}
 
 	public void addSearchableAttributeColumnUsingKey(
-			List<Column> columns, String key, String label,
-			Boolean sortableOverride, Boolean defaultSortable) {
-		addSearchableAttributeColumnUsingKey(columns,
-				new HashMap<String, String>(), key, label, sortableOverride,
-				defaultSortable);
-	}
-
-	public void addSearchableAttributeColumnUsingKey(
 			List<Column> columns,
-			Map<String, String> displayParameters, String key, String label,
+			String key, String label,
 			Boolean sortableOverride, Boolean defaultSortable) {
 		columns.add(this
 				.constructColumnUsingKey(key, label,

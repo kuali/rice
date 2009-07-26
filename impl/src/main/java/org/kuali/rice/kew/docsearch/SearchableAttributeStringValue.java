@@ -107,13 +107,6 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
         return getSearchableAttributeValue();
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
-     */
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
-        return getSearchableAttributeDisplayValue();
-    }
-
 	/* (non-Javadoc)
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getAttributeDataType()
 	 */

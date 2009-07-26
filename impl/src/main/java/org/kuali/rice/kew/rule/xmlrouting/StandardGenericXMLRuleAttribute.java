@@ -170,10 +170,6 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                                 	title = titleAttribute.getNodeValue();
                             	}
                             	options.add(new KeyLabelPair(optionValue, title));
-                            //} else if ("parameters".equals(displayChildNode.getNodeName())) {
-                            //    NamedNodeMap parametersAttributes = displayChildNode.getAttributes();
-                            //    String parameterValue = (displayChildNode.getFirstChild() == null) ? "" : displayChildNode.getFirstChild().getNodeValue();
-                            //    myField.addDisplayParameter(parametersAttributes.getNamedItem("name").getNodeValue(), parameterValue);
                             }
                         }
                         if (!options.isEmpty()) {

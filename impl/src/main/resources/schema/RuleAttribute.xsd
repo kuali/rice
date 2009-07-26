@@ -454,28 +454,6 @@
            </simpleContent>
          </complexType>
        </element>
-
-       <element name="parameters" minOccurs="0" maxOccurs="unbounded">
-         <annotation>
-           <documentation>
-             Parameters used to display values.
-           </documentation>
-         </annotation>
-         <complexType>
-           <simpleContent>
-             <extension base="string">
-               <attribute name="name" form="unqualified" type="string">
-                <annotation>
-                  <documentation>
-                   The name of the diplay parameter.
-                  </documentation>
-                </annotation>
-               </attribute>
-             </extension>
-           </simpleContent>
-         </complexType>
-       </element>
-
      </sequence>
   </complexType>
 

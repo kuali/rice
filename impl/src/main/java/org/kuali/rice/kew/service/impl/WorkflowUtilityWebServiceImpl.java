@@ -1020,7 +1020,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 	 */
 	public Timestamp[] getSearchableAttributeDateTimeValuesByKey(
 			Long documentId, String key) {
-		List<Timestamp> results = null;
+		List<Timestamp> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(documentId, key);
 		if (ObjectUtils.isNull(results)) {
 			return null;
 		}

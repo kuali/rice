@@ -990,6 +990,8 @@
     <table oldName="KR_KNS_SESN_DOC_T" newName="KRNS_SESN_DOC_T">
         <column oldName="SESSION_ID" newName="SESN_DOC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column oldName="FDOC_NBR" newName="DOC_HDR_ID"  primaryKey="true" size="14" type="VARCHAR"/>
+        <column name="PRNCPL_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="IP_ADDR" primaryKey="true" size="60" type="VARCHAR"/>
         <column oldName="SERIALIZED_DOC_FRM" newName="SERIALZD_DOC_FRM" type="BLOB"/>
         <column oldName="LST_UPDATE_DT" newName="LAST_UPDT_DT" type="DATE"/>
         <index oldName="KR_KNS_SESN_DOC_TI1" newName="KRNS_SESN_DOC_TI1">
@@ -1031,12 +1033,6 @@
         <unique oldName="SH_NTE_TC0" newName="KRNS_NTE_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
-        <unique oldName="SH_NTE_TC1" newName="KRNS_NTE_TC1">
-            <unique-column name="RMT_OBJ_ID"/>
-            <unique-column oldName="NTE_AUTH_ID" newName="AUTH_PRNCPL_ID"/>
-            <unique-column oldName="NTE_POST_TS" newName="POST_TS"/>
-            <unique-column oldName="NTE_TYP_CD" newName="NTE_TYP_CD"/>
-        </unique>
     </table>
     <table oldName="SH_NTE_TYP_T" newName="KRNS_NTE_TYP_T">
         <column name="NTE_TYP_CD" primaryKey="true" size="4" type="VARCHAR"/>
@@ -1071,6 +1067,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column oldName="SH_PARM_NMSPC_NM" newName="NM" size="40" type="VARCHAR"/>
         <column default="Y" oldName="ACTIVE_IND" newName="ACTV_IND" required="true" size="1" type="CHAR"/>
+        <column name="APPL_NMSPC_CD" size="20" type="VARCHAR"/>
         <unique oldName="SH_PARM_NMSPC_TC0" newName="KRNS_NMSPC_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1086,9 +1083,12 @@
         <column oldName="SH_PARM_TXT" newName="TXT" size="4000" type="VARCHAR"/>
         <column oldName="SH_PARM_DESC" newName="PARM_DESC_TXT" size="4000" type="VARCHAR"/>
         <column oldName="SH_PARM_CONS_CD" newName="CONS_CD" size="1" type="VARCHAR"/>
+        <column default="KUALI" name="APPL_NMSPC_CD" primaryKey="true"
+            size="20" type="VARCHAR"/>
         <column default="WorkflowAdmin" oldName="WRKGRP_NM" newName="GRP_NM" required="true"
             size="70" type="VARCHAR"/>
         <column default="Y" oldName="ACTIVE_IND" newName="ACTV_IND" required="true" size="1" type="CHAR"/>
+
         <foreign-key oldForeignTable="SH_PARM_NMSPC_T" newForeignTable="KRNS_NMSPC_T" oldName="SH_PARM_TR1" newName="KRNS_PARM_TR1">
             <reference oldForeign="SH_PARM_NMSPC_CD" newForeign="NMSPC_CD" oldLocal="SH_PARM_NMSPC_CD" newLocal="NMSPC_CD"/>
         </foreign-key>
@@ -1241,10 +1241,6 @@
         <column name="CALENDAR_NAME" size="80" type="VARCHAR"/>
         <column name="MISFIRE_INSTR" size="2" type="DECIMAL"/>
         <column name="JOB_DATA" type="BLOB"/>
-        <foreign-key oldForeignTable="KR_QRTZ_JOB_DETAILS" newForeignTable="KRSB_QRTZ_JOB_DETAILS" oldName="KR_QRTZ_TRIGGERS_TR1" newName="KRSB_QRTZ_TRIGGERS_TR1">
-            <reference foreign="JOB_NAME" local="JOB_NAME"/>
-            <reference foreign="JOB_GROUP" local="JOB_GROUP"/>
-        </foreign-key>
         <index oldName="IDX_KR_QRTZ_T_NEXT_FIRE_TIME" newName="KRSB_QRTZ_TRIGGERS_TI1">
             <index-column name="NEXT_FIRE_TIME"/>
         </index>
@@ -1360,6 +1356,7 @@
         <column oldName="NAME" newName="NM" required="true" size="40" type="VARCHAR"/>
         <column oldName="DESCRIPTION" newName="DESC_TXT" required="true" size="500" type="VARCHAR"/>
         <column oldName="PRIORITY_ORDER" newName="PRIO_ORD" required="true" size="4" type="DECIMAL"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <unique oldName="NOTIFICATION_PRIORITIES_UK1" newName="KREN_PRIO_UK1">
             <unique-column oldName="NAME" newName="NM"/>
         </unique>
@@ -1390,7 +1387,7 @@
         <column oldName="CONTENT_TYPE_ID" newName="CNTNT_TYP_ID" required="true" size="8" type="DECIMAL"/>
         <column oldName="NOTIFICATION_CHANNEL_ID" newName="CHNL_ID" required="true" size="8" type="DECIMAL"/>
         <column oldName="PRODUCER_ID" newName="PRODCR_ID" required="true" size="8" type="DECIMAL"/>
-        <column name="PROCESSING_FLAG" newName="PRCS_FLG" required="true" size="15" type="VARCHAR"/>
+        <column name="PROCESSING_FLAG" required="true" size="15" type="VARCHAR"/>
         <column oldName="LOCKED_DATE" newName="LOCKD_DTTM" type="TIMESTAMP"/>
         <column default="0" oldName="DB_LOCK_VER_NBR" newName="VER_NBR" required="true"
             size="22" type="DECIMAL"/>

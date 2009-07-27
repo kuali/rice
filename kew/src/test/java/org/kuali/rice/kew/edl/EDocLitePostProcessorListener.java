@@ -14,9 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Copyright (c) 2005 Aaron Hamid.  All rights reserved.
-// See license in COPYING.txt distributed with this file and available online at http://www.gnu.org/licenses/gpl.txt
-// Created on Dec 13, 2005
 
 package org.kuali.rice.kew.edl;
 

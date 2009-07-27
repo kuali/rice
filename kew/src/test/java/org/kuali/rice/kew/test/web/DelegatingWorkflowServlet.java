@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Copyright (c) 2005 Aaron Hamid.  All rights reserved.
 
 package org.kuali.rice.kew.test.web;
 

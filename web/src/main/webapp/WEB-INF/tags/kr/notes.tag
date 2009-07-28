@@ -31,6 +31,7 @@
   <c:set var="notesBo" value="${KualiForm.document.documentHeader.boNotes}" />
 </c:if>
 
+<c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 <c:set var="allowsNoteAttachments" value="${documentEntry.allowsNoteAttachments}" />
 <c:set var="allowsNoteFYI" value="${documentEntry.allowsNoteFYI}" />

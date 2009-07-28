@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -40,6 +41,7 @@ import org.kuali.rice.kns.exception.InfrastructureException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -48,10 +50,12 @@ import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.web.format.DateFormatter;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
@@ -277,31 +281,84 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
                 LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
 
-                if (!validationExpression.matcher(attributeValue).matches()) {
-                    boolean isError=true;
-                    // Calling formatter class
+            	if (!validationExpression.matcher(attributeValue).matches()) {
+            		// Retrieving formatter class
                     Class<?> formatterClass=getDataDictionaryService().getAttributeFormatter(
                             objectClassName, attributeName);
                     if (formatterClass != null) {
-                        try {
-                            Method validatorMethod=formatterClass.getDeclaredMethod(
-                                    VALIDATE_METHOD, new Class<?>[] {String.class});
-                            Object o=validatorMethod.invoke(
-                                    formatterClass.newInstance(), attributeValue);
-                            if (o instanceof Boolean) {
-                                isError=!((Boolean)o).booleanValue();
+                    	boolean valuesAreValid = true;
+                        String[] valuesToValidate = null;
+                        String[] errorKeyPrefix = null;
+                    	
+                        // For dates, remove the substrings "<=", ">=", and ".." from the date Strings before validating them. It is not necessary to
+                        // remove these substrings prior to the regex validation because custom date fields should be validated with the formatter anyway.
+                        if (DateFormatter.class.isAssignableFrom(formatterClass)) {
+                        	// Remove the substrings via logic resembling DocSearchCriteriaDTOLookupableHelperServiceImpl.getSearchableAttributeFieldValue.
+                        	if (StringUtils.contains(attributeValue, "..")) {
+                        	    // If a "From" and "To" date are embedded together, validate each one individually.
+                        	    String[] datesToTest = StringUtils.split(attributeValue, "..");
+                        	    valuesToValidate = new String[] { datesToTest[0], datesToTest[1] };
+                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX, "" };
+                        	} else if (StringUtils.contains(attributeValue, ">=")) {
+                        	    valuesToValidate = new String[] { StringUtils.split(attributeValue, ">=")[0] };
+                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX };
+                            } else if (StringUtils.contains(attributeValue, "<=")) {
+                                valuesToValidate = new String[] { StringUtils.split(attributeValue, "<=")[0] };
+                                errorKeyPrefix = new String [] { "" };
+                            } else {
+                                valuesToValidate = new String[] { attributeValue };
+                                errorKeyPrefix = new String [] { "" };
                             }
-                        } catch (Exception e) {
-                            LOG.debug(e.getMessage(), e);
+                        } else {
+                        	valuesToValidate = new String[] { attributeValue };
+                        	errorKeyPrefix = new String [] { "" };
                         }
-                    }
-                    if (isError) {
+                        
+                        // Loop twice if the field is a date field and both a "From" and "To" date were specified; otherwise, run once.
+                    	for (int i = 0; i < valuesToValidate.length; i++) {
+                    		boolean isError=true;
+                    		try {
+                    			Method validatorMethod=formatterClass.getDeclaredMethod(
+                    					VALIDATE_METHOD, new Class<?>[] {String.class});
+                        		Object o=validatorMethod.invoke(
+                        				formatterClass.newInstance(), valuesToValidate[i]);
+                        		if (o instanceof Boolean) {
+                        			isError = !((Boolean)o).booleanValue();
+                        		}
+                        		valuesAreValid &= !isError;
+                    		} catch (Exception e) {
+                    			LOG.debug(e.getMessage(), e);
+                    			valuesAreValid = false;
+                    		}
+                    		if (isError) {
+                    			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+                    			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+                    			GlobalVariables.getMessageMap().putError(errorKeyPrefix[i] + errorKey, errorMessageKey, errorMessageParameters);
+                    		}
+                    	}
+                        
+                        // If there were two dates validated and both were valid, ensure that the "From" date does not occur after the "To" date.
+                		if (valuesToValidate.length == 2 && valuesAreValid) {
+                			try {
+                				valuesAreValid &= Utilities.checkDateRanges(valuesToValidate[0], valuesToValidate[1]);
+                			} catch (Exception e) {
+                				LOG.debug(e.getMessage(), e);
+                				valuesAreValid = false;
+                			}
+                			if (!valuesAreValid) {
+                           		String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+                        		String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+                        		GlobalVariables.getMessageMap().putError(errorKeyPrefix[0] + errorKey, errorMessageKey + ".range", errorMessageParameters);
+                			}
+                		}
+                    } else {
                     	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                    	String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                        GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+            			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+            			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
                     }
                     return;
                 }
+
             }
             BigDecimal exclusiveMin = getDataDictionaryService().getAttributeExclusiveMin(objectClassName, attributeName);
             if (exclusiveMin != null) {

@@ -42,6 +42,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.format.DateFormatter;
 
 
 /**
@@ -274,14 +275,14 @@ public class Utilities {
 
     public static boolean checkDateRanges(String fromDate, String toDate) {
         try {
-            Date parsedDate = RiceConstants.getDefaultDateFormat().parse(fromDate.trim());
+            Date parsedDate = DateFormatter.getDateTimeService().convertToDate(fromDate.trim());
             Calendar fromCalendar = Calendar.getInstance();
             fromCalendar.setTime(parsedDate);
             fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
             fromCalendar.set(Calendar.MINUTE, 0);
             fromCalendar.set(Calendar.SECOND, 0);
             fromCalendar.set(Calendar.MILLISECOND, 0);
-            parsedDate = RiceConstants.getDefaultDateFormat().parse(toDate.trim());
+            parsedDate = DateFormatter.getDateTimeService().convertToDate(toDate.trim());
             Calendar toCalendar = Calendar.getInstance();
             toCalendar.setTime(parsedDate);
             toCalendar.set(Calendar.HOUR_OF_DAY, 0);

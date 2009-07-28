@@ -150,6 +150,10 @@ KualiLookupableHelperServiceImpl {
     			GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
     		};
     	}
+    	
+    	if(!GlobalVariables.getMessageMap().hasNoErrors()) {
+        	throw new ValidationException("error with doc search");
+        }
 
     	for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {

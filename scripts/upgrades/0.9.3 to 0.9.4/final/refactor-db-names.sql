@@ -1,3 +1,19 @@
+--
+-- Copyright 2008-2009 The Kuali Foundation
+--
+-- Licensed under the Educational Community License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+-- http://www.opensource.org/licenses/ecl2.php
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+--
+
 ALTER TABLE EN_ACTN_ITM_T RENAME TO KREW_ACTN_ITM_T
 /
 ALTER TABLE KREW_ACTN_ITM_T RENAME COLUMN ACTN_ITM_PRSN_EN_ID TO PRNCPL_ID
@@ -305,8 +321,6 @@ ALTER INDEX EN_DOC_TYP_TI4 RENAME TO KREW_DOC_TYP_TI4
 ALTER INDEX EN_DOC_TYP_TI5 RENAME TO KREW_DOC_TYP_TI5
 /
 ALTER INDEX EN_DOC_TYP_TI6 RENAME TO KREW_DOC_TYP_TI6
-/
-ALTER TABLE KREW_DOC_TYP_T RENAME CONSTRAINT EN_DOC_TYP_TI1 TO KREW_DOC_TYP_TI1
 /
 ALTER TABLE EN_EDL_DMP_T RENAME TO KREW_EDL_DMP_T
 /
@@ -663,8 +677,6 @@ ALTER TABLE EN_RULE_TMPL_T RENAME TO KREW_RULE_TMPL_T
 ALTER TABLE KREW_RULE_TMPL_T RENAME COLUMN RULE_TMPL_NM TO NM
 /
 ALTER TABLE KREW_RULE_TMPL_T RENAME COLUMN DB_LOCK_VER_NBR TO VER_NBR
-/
-ALTER TABLE KREW_RULE_TMPL_T RENAME CONSTRAINT EN_RULE_TMPL_TI1 TO KREW_RULE_TMPL_TI1
 /
 ALTER TABLE EN_USR_OPTN_T RENAME TO KREW_USR_OPTN_T
 /

@@ -76,7 +76,7 @@ public class ActionListForm extends KualiForm {
     private String cssFile = "kuali.css";
     private String logoAlign = "left";
     private String viewOutbox;
-    private Long[] outboxItems;
+    private String[] outboxItems;
     private boolean outBoxEmpty;
     private Boolean showOutbox;
     private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
@@ -275,11 +275,11 @@ public class ActionListForm extends KualiForm {
 	this.viewOutbox = viewOutbox;
     }
 
-    public Long[] getOutboxItems() {
+    public String[] getOutboxItems() {
 	return outboxItems;
     }
 
-    public void setOutboxItems(Long[] outboxItems) {
+    public void setOutboxItems(String[] outboxItems) {
 	this.outboxItems = outboxItems;
     }
 

@@ -650,7 +650,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(java.lang.String, java.util.List)
      */
-    public void removeOutboxItems(String principalId, List<Long> outboxItems) {
+    public void removeOutboxItems(String principalId, List<String> outboxItems) {
         Criteria crit = new Criteria();
         crit.addIn("actionItemId", outboxItems);
         getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));

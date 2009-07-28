@@ -86,7 +86,7 @@ public interface ActionListService {
      */
     public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
     public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName);
-    public void removeOutboxItems(String principalId, List<Long> outboxItems);
+    public void removeOutboxItems(String principalId, List<String> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox);
 }

@@ -310,7 +310,7 @@ public class ActionListServiceImpl implements ActionListService {
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser,
      *      java.util.List)
      */
-    public void removeOutboxItems(String principalId, List<Long> outboxItems) {
+    public void removeOutboxItems(String principalId, List<String> outboxItems) {
         this.getActionListDAO().removeOutboxItems(principalId, outboxItems);
     }
 

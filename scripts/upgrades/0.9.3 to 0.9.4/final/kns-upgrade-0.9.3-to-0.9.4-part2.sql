@@ -111,31 +111,6 @@ FOREIGN KEY (COUNTY_CD, POSTAL_STATE_CD, POSTAL_CNTRY_CD)
 REFERENCES KR_COUNTY_T
 /
 
--- ALTER TABLE SH_PARM_T DROP COLUMN GRP_NM
-/
-
-INSERT INTO SH_PARM_T
-(SH_PARM_NMSPC_CD,SH_PARM_DTL_TYP_CD,SH_PARM_NM,OBJ_ID,VER_NBR,SH_PARM_TYP_CD,SH_PARM_TXT,SH_PARM_DESC,SH_PARM_CONS_CD,WRKGRP_NM)
-VALUES
-('KR-NS','State','STATE', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fstatemaintenancedocument.htm','Help URL for State document.','A','FP_OPERATIONS')
-/
-INSERT INTO SH_PARM_T
-(SH_PARM_NMSPC_CD,SH_PARM_DTL_TYP_CD,SH_PARM_NM,OBJ_ID,VER_NBR,SH_PARM_TYP_CD,SH_PARM_TXT,SH_PARM_DESC,SH_PARM_CONS_CD,WRKGRP_NM)
-VALUES
-('KR-NS','Country','COUNTRY', SYS_GUID(), 1,'HELP','default.htm?turl=WordDocuments%2Fcountrymaintenancedocument.htm','Help URL for Chart Country.','A','FP_OPERATIONS')
-/
-INSERT INTO SH_PARM_T
-(SH_PARM_NMSPC_CD,SH_PARM_DTL_TYP_CD,SH_PARM_NM,OBJ_ID,VER_NBR,SH_PARM_TYP_CD,SH_PARM_TXT,SH_PARM_DESC,SH_PARM_CONS_CD,WRKGRP_NM)
-VALUES
-('KR-NS','PostalCode','POSTAL_CODE', SYS_GUID(),1,'HELP','default.htm?turl=WordDocuments%2Fpostalcodemaintenancedocument.htm','Help URL for Postal Code document.','A','FP_OPERATIONS')
-/
-
-INSERT INTO SH_PARM_T
-(SH_PARM_NMSPC_CD,SH_PARM_DTL_TYP_CD,SH_PARM_NM,OBJ_ID,VER_NBR,SH_PARM_TYP_CD,SH_PARM_TXT,SH_PARM_DESC,SH_PARM_CONS_CD,WRKGRP_NM)
-VALUES
-('KR-NS','All','DEFAULT_COUNTRY',  SYS_GUID(),1,'CONFG','US','Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected.','A','FP_OPERATIONS')
-/
-
 INSERT INTO FP_DOC_TYPE_T
 VALUES
 ('ZIPC', SYS_GUID(),1,'Postal Code','Y')

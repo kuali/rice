@@ -396,14 +396,18 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 						"<type>text</type>"+
 						"<meta><name>size</name><value>20</value></meta>"+
 					"</display>" +
-					"<quickfinder service=\"ChartOrgLookupableImplService\" appliesTo=\"fin_coa_cd\" draw=\"false\"/>" +
 					"<fieldEvaluation><xpathexpression>//xmlContent/field[@name='chart']/value = wf:ruledata('chart')</xpathexpression></fieldEvaluation>"+
 				"</fieldDef>"+
 				"<fieldDef name=\"org\" title=\"Org\" workflowType=\"ALL\">"+
 					"<display>"+
 						"<type>text</type>"+
 					"</display>" +
-					"<quickfinder service=\"ChartOrgLookupableImplService\" appliesTo=\"org_cd\" draw=\"true\" />" +
+					"<lookup businessObjectClass=\"ChartOrgLookupableImplService\">" +
+					    "<fieldConversions>" +
+				          "<fieldConversion lookupFieldName=\"fin_coa_cd\" localFieldName=\"chart\"/>" +
+					      "<fieldConversion lookupFieldName=\"org_cd\" localFieldName=\"org\"/>" +
+					    "</fieldConversions>" +
+					"</lookup>" +
 					"<fieldEvaluation><xpathexpression>//xmlContent/field[@name='gender']/value = wf:ruledata('gender')</xpathexpression></fieldEvaluation>"+
 				"</fieldDef>" +
             "</routingConfig>";

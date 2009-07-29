@@ -110,6 +110,8 @@ DROP TABLE KIM_ENTITY_TYPES_T
 /
 DROP TABLE FP_DOC_TYPE_ATTR_T
 /
+DROP TABLE FP_DOC_TYPE_T
+/
 
 -- note that for mysql, these would need to be DROP TABLE statements /
 

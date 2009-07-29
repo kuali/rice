@@ -25,11 +25,13 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.test.service.ServiceTestUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.SQLDataLoader;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -144,11 +146,12 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
-		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
-				"/../web/src/main/webapp/kew");
-		server.setFailOnContextFailure(true);
-		server.setTestMode(true);
-		lifeCycles.add(server);
+//		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
+//				"/../web/src/main/webapp/kew");
+//		server.setFailOnContextFailure(true);
+//		server.setTestMode(true);
+//		lifeCycles.add(server);
+		lifeCycles.add(buildJettyServer(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()));
 		lifeCycles.add(new InitializeGRL());
 		lifeCycles.add(new BaseLifecycle() {
 			public void start() throws Exception {
@@ -167,9 +170,8 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 				.runSql();
 	}
 
-	protected JettyServer getJettyServer() {
-		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
-			"/../web/src/main/webapp/kew");
+	protected JettyServer buildJettyServer(int port, String contextName, String relativeWebappRoot) {
+		JettyServer server = new JettyServer(port, contextName, relativeWebappRoot);
 		server.setFailOnContextFailure(true);
 		server.setTestMode(true);
 		return server;
@@ -177,6 +179,14 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 
 	protected int getJettyServerPort() {
 		return 9952;
+	}
+
+	protected String getJettyServerContextName() {
+		return "/en-test";
+	}
+
+	protected String getJettyServerRelativeWebappRoot() {
+		return "/../web/src/main/webapp/kew";
 	}
 
 	/**

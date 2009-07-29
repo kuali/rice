@@ -18,8 +18,10 @@ package org.kuali.rice.kim.test.service.remote;
 import java.util.List;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.service.PermissionServiceTest;
 import org.kuali.rice.kim.test.service.ServiceTestUtils;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * Test the PermissionService via remote calls
@@ -31,6 +33,7 @@ public class PermissionServiceRemoteTest extends PermissionServiceTest {
 
 	public void setUp() throws Exception {
 		super.setUp();
+		setPermissionService((PermissionService) ServiceTestUtils.getRemoteServiceProxy(KIMWebServiceConstants.MODULE_TARGET_NAMESPACE, KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, KIMWebServiceConstants.PermissionService.INTERFACE_CLASS));
 	}
 
 	@Override
@@ -40,8 +43,4 @@ public class PermissionServiceRemoteTest extends PermissionServiceTest {
 		return lifecycles;
 	}
 
-	@Override
-	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
-		return ServiceTestUtils.getRemoteServiceProxy(svcNamespace, svcNames[0], svcNames[1]);
-	}
 }

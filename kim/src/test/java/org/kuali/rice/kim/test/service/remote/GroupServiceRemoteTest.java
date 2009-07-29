@@ -18,12 +18,13 @@ package org.kuali.rice.kim.test.service.remote;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.test.service.GroupServiceTest;
 import org.kuali.rice.kim.test.service.ServiceTestUtils;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * Test the GroupService via remote calls
@@ -35,6 +36,8 @@ public class GroupServiceRemoteTest extends GroupServiceTest {
 
 	public void setUp() throws Exception {
 		super.setUp();
+		setGroupService((GroupService) ServiceTestUtils.getRemoteServiceProxy(KIMWebServiceConstants.MODULE_TARGET_NAMESPACE, KIMWebServiceConstants.GroupService.WEB_SERVICE_NAME, KIMWebServiceConstants.GroupService.INTERFACE_CLASS));
+		setGroupUpdateService((GroupUpdateService) ServiceTestUtils.getRemoteServiceProxy(KIMWebServiceConstants.MODULE_TARGET_NAMESPACE, KIMWebServiceConstants.GroupUpdateService.WEB_SERVICE_NAME, KIMWebServiceConstants.GroupUpdateService.INTERFACE_CLASS));
 	}
 
 	@Override
@@ -51,20 +54,9 @@ public class GroupServiceRemoteTest extends GroupServiceTest {
 		
 		// change group g4 back to inactive; remote service not transactional
 		// TODO - fix that
-		GroupInfo g4Info = groupService.getGroupInfo("g4");
+		GroupInfo g4Info = getGroupService().getGroupInfo("g4");
 		g4Info.setActive(false);
-		groupUpdateService.updateGroup("g4", g4Info);
+		getGroupUpdateService().updateGroup("g4", g4Info);
 	}
 
-	/**
-	 * This method tries to get a client proxy for the specified KIM service
-	 * 
-	 * @param  svcName - name of the KIM service desired
-	 * @return the proxy object
-	 * @throws Exception 
-	 */
-	@Override
-	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
-		return ServiceTestUtils.getRemoteServiceProxy(svcNamespace, svcNames[0], svcNames[1]);
-	}
 }

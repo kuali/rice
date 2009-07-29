@@ -18,8 +18,10 @@ package org.kuali.rice.kim.test.service.remote;
 import java.util.List;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.service.RoleServiceTest;
 import org.kuali.rice.kim.test.service.ServiceTestUtils;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * Test the RoleService via remote calls
@@ -31,6 +33,7 @@ public class RoleServiceRemoteTest extends RoleServiceTest {
 
 	public void setUp() throws Exception {
 		super.setUp();
+		setRoleService((RoleService) ServiceTestUtils.getRemoteServiceProxy(KIMWebServiceConstants.MODULE_TARGET_NAMESPACE, KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, KIMWebServiceConstants.RoleService.INTERFACE_CLASS));
 	}
 
 	@Override
@@ -40,8 +43,4 @@ public class RoleServiceRemoteTest extends RoleServiceTest {
 		return lifecycles;
 	}
 
-	@Override
-	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
-		return ServiceTestUtils.getRemoteServiceProxy(svcNamespace, svcNames[0], svcNames[1]);
-	}
 }

@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -65,20 +66,27 @@ import org.kuali.rice.kns.util.KNSConstants;
 public class WorkflowUtilityTest extends KEWTestCase {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowUtilityTest.class);
 
-    private WorkflowUtility utility;
+    private WorkflowUtility workflowUtility;
 
-    protected void loadTestData() throws Exception {
+    @Override
+	public void setUp() throws Exception {
+		super.setUp();
+		setWorkflowUtility(KEWServiceLocator.getWorkflowUtilityService());
+	}
+
+	protected void loadTestData() throws Exception {
         loadXmlFile("WorkflowUtilityConfig.xml");
     }
 
-    protected WorkflowUtility getWorkflowUtility() {
-    	if (utility == null) {
-    		utility = KEWServiceLocator.getWorkflowUtilityService();
-    	}
-    	return utility; 
-    }
+	public WorkflowUtility getWorkflowUtility() {
+		return this.workflowUtility;
+	}
 
-    @Test
+	public void setWorkflowUtility(WorkflowUtility workflowUtility) {
+		this.workflowUtility = workflowUtility;
+	}
+
+	@Test
     public void testFindByAppId() throws WorkflowException{
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.setAppDocId("123456789");
@@ -824,6 +832,11 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Did not find request for pmckown", foundPmckown);
 
     }
+    
+    protected void verifyEmptyArray(String qualifier, Object[] array) {
+    	assertNotNull("Array should not be empty", array);
+        assertEquals("Number of " + qualifier + "s Returned Should be 0",0,array.length);
+    }
 
     @Test public void testRuleReportGeneralFunction() throws Exception {
         RuleReportCriteriaDTO ruleReportCriteria = null;
@@ -861,7 +874,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("temay"));
         rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
-        assertEquals("Number of Rules Returned Should be 0",0,rules.length);
+        verifyEmptyArray("Rule", rules);
 
         rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
@@ -1229,7 +1242,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue(document.stateIsEnroute());
 
         ActionItemDTO[] actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        assertEquals("Incorrect number of action items returned",0,actionItems.length);
+        verifyEmptyArray("Action Item", actionItems);
         actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
@@ -1246,7 +1259,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
         actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        assertEquals("Incorrect number of action items returned",0,actionItems.length);
+        verifyEmptyArray("Action Item", actionItems);
         actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",1,actionItems.length);
         actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ});
@@ -1273,7 +1286,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // we should be back where we were
         actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        assertEquals("Incorrect number of action items returned",0,actionItems.length);
+        verifyEmptyArray("Action Item", actionItems);
         actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {

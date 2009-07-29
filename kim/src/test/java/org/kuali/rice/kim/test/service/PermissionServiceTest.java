@@ -17,14 +17,12 @@ package org.kuali.rice.kim.test.service;
 
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -40,46 +38,44 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		permissionService = (PermissionService) getKimService(ServiceTestUtils.getConfigProp("kim.test.namespace.permission"),
-															  ServiceTestUtils.getConfigProp("kim.test.servicename.permission"),
-															  ServiceTestUtils.getConfigProp("kim.test.serviceclass.permission"));
+		setPermissionService(KIMServiceLocator.getPermissionService());
 	}
 
 	@Test
 	public void testHasPermission() {
-		assertTrue(permissionService.hasPermission("entity123pId", "KR-NS", "perm1", new AttributeSet()));
-		assertTrue(permissionService.hasPermission("entity123pId", "KR-NS", "perm2", new AttributeSet()));
-		assertFalse(permissionService.hasPermission("entity124pId", "KR-NS", "perm2", new AttributeSet()));
+		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm1", new AttributeSet()));
+		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm2", new AttributeSet()));
+		assertFalse(getPermissionService().hasPermission("entity124pId", "KR-NS", "perm2", new AttributeSet()));
 	}
 	
 	@Test
 	public void testIsAuthorized() {
-		assertTrue(permissionService.isAuthorized("entity123pId", "KR-NS", "perm1", new AttributeSet(), new AttributeSet()));
-		assertTrue(permissionService.isAuthorized("entity123pId", "KR-NS", "perm2", new AttributeSet(), new AttributeSet()));
-		assertFalse(permissionService.isAuthorized("entity124pId", "KR-NS", "perm2", new AttributeSet(), new AttributeSet()));
+		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm1", new AttributeSet(), new AttributeSet()));
+		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm2", new AttributeSet(), new AttributeSet()));
+		assertFalse(getPermissionService().isAuthorized("entity124pId", "KR-NS", "perm2", new AttributeSet(), new AttributeSet()));
 	}
 	
 	@Test
 	public void testHasPermissionByTemplateName() {
-		assertTrue(permissionService.hasPermissionByTemplateName("entity123pId", "KUALI", "Default", new AttributeSet()));
+		assertTrue(getPermissionService().hasPermissionByTemplateName("entity123pId", "KUALI", "Default", new AttributeSet()));
 		// TODO - getting a SOAPFaultException on this call; fix and un-comment
-		// assertFalse(permissionService.hasPermissionByTemplateName("entity124pId", "KUALI", "Default", new AttributeSet()));
+		// assertFalse(getPermissionService().hasPermissionByTemplateName("entity124pId", "KUALI", "Default", new AttributeSet()));
 	}
 	
 	@Test
 	public void testIsAuthorizedByTemplateName() {
-		// assertTrue(permissionService.isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification)("entity123pId", "KR-NS", "1", new AttributeSet()));
+		// assertTrue(getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification)("entity123pId", "KR-NS", "1", new AttributeSet()));
 	}
 	
 	@Test
 	public void testGetPermissionAssignees() {
 		
-		List<PermissionAssigneeInfo> assignees = permissionService.getPermissionAssignees("KUALI", "Log In", null, null);
+		List<PermissionAssigneeInfo> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In", null, null);
 		assertNotNull(assignees);
 		assertEquals(1, assignees.size());
 		PermissionAssigneeInfo permInfo = assignees.get(0);
 		assertEquals("entity123pId", permInfo.getPrincipalId());
-		assignees = permissionService.getPermissionAssignees("KUALI", "Not A Valid Permission Name", null, null);
+		assignees = getPermissionService().getPermissionAssignees("KUALI", "Not A Valid Permission Name", null, null);
 		// TODO - jax-ws remoted service returns null; local return empty List. Fix webservice return
 		assertTrue(null == assignees || assignees.size() == 0);
 	}
@@ -87,12 +83,12 @@ public class PermissionServiceTest extends KIMTestCase {
 	@Test
 	public void testGetPermissionAssigneesForTemplateName() {
 		/*
-		List<PermissionAssigneeInfo> assignees = permissionService.getPermissionAssignees("KUALI", "Log In", null, null);
+		List<PermissionAssigneeInfo> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In", null, null);
 		assertNotNull(assignees);
 		assertEquals(1, assignees.size());
 		PermissionAssigneeInfo permInfo = assignees.get(0);
 		assertEquals("entity123pId", permInfo.getPrincipalId());
-		assignees = permissionService.getPermissionAssignees("KUALI", "Not A Valid Permission Name", null, null);
+		assignees = getPermissionService().getPermissionAssignees("KUALI", "Not A Valid Permission Name", null, null);
 		assertNull(assignees);
 		*/
 	}
@@ -115,7 +111,7 @@ public class PermissionServiceTest extends KIMTestCase {
 	
 	@Test
 	public void testGetPermission() {
-		KimPermissionInfo permInfo = permissionService.getPermission("p1");
+		KimPermissionInfo permInfo = getPermissionService().getPermission("p1");
 		
 		assertNotNull(permInfo);
 		assertEquals("perm1", permInfo.getName());
@@ -130,7 +126,7 @@ public class PermissionServiceTest extends KIMTestCase {
 		assertEquals("Default", templateInfo.getName());
 		assertEquals("KUALI", templateInfo.getNamespaceCode());
 		
-		permInfo = permissionService.getPermission("p0");
+		permInfo = getPermissionService().getPermission("p0");
 		assertNull(permInfo);
 	}
 	
@@ -157,16 +153,13 @@ public class PermissionServiceTest extends KIMTestCase {
 	@Test
 	public void testGetPermissionDetailLabel() {
 	}
-	
-	/**
-	 * This method tries to get a client proxy for the specified KIM service
-	 * 
-	 * @param  class1 - name of the KIM service desired
-	 * @return the proxy object
-	 * @throws Exception 
-	 */
-	protected Object getKimService(String svcNamespace, String... svcNames) throws Exception {
-		// TODO: local namespace should be a valid, non-partial namespace (unlike 'KIM')
-		return GlobalResourceLoader.getService(new QName("KIM", svcNames[0]));
+
+	public PermissionService getPermissionService() {
+		return this.permissionService;
 	}
+
+	public void setPermissionService(PermissionService permissionService) {
+		this.permissionService = permissionService;
+	}
+
 }

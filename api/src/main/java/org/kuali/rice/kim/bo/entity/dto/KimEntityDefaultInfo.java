@@ -19,9 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -31,14 +29,15 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  */
 public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
+	private static final long serialVersionUID = 7930630152792502380L;
 	protected String entityId;
-	protected KimEntityName defaultName;
-	protected List<? extends KimPrincipal> principals;
+	protected KimEntityNameInfo defaultName;
+	protected List<KimPrincipalInfo> principals;
 	protected List<KimEntityEntityTypeDefaultInfo> entityTypes;
-	protected List<? extends KimEntityAffiliation> affiliations;
-	protected KimEntityAffiliation defaultAffiliation;
-	protected KimEntityEmploymentInformation primaryEmployment;
-	protected List<? extends KimEntityExternalIdentifier> externalIdentifiers;
+	protected List<KimEntityAffiliationInfo> affiliations;
+	protected KimEntityAffiliationInfo defaultAffiliation;
+	protected KimEntityEmploymentInformationInfo primaryEmployment;
+	protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
 	protected KimEntityPrivacyPreferencesInfo privacyPreferences;
 	
 	public String getEntityId() {
@@ -47,11 +46,11 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-	public KimEntityName getDefaultName() {
+	public KimEntityNameInfo getDefaultName() {
 		return this.defaultName;
 	}
 	public void setDefaultName(KimEntityName defaultName) {
-		this.defaultName = defaultName;
+		this.defaultName = new KimEntityNameInfo(defaultName);
 	}
 	public List<KimEntityEntityTypeDefaultInfo> getEntityTypes() {
 		return this.entityTypes;
@@ -59,34 +58,34 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 	public void setEntityTypes(List<KimEntityEntityTypeDefaultInfo> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
-	public List<? extends KimEntityAffiliation> getAffiliations() {
+	public List<KimEntityAffiliationInfo> getAffiliations() {
 		return this.affiliations;
 	}
-	public void setAffiliations(List<? extends KimEntityAffiliation> affiliations) {
+	public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
 		this.affiliations = affiliations;
 	}
-	public KimEntityAffiliation getDefaultAffiliation() {
+	public KimEntityAffiliationInfo getDefaultAffiliation() {
 		return this.defaultAffiliation;
 	}
 	public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
-		this.defaultAffiliation = defaultAffiliation;
+		this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
 	}
-	public KimEntityEmploymentInformation getPrimaryEmployment() {
+	public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
 		return this.primaryEmployment;
 	}
 	public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
-		this.primaryEmployment = primaryEmployment;
+		this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
 	}
-	public List<? extends KimEntityExternalIdentifier> getExternalIdentifiers() {
+	public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
 		return this.externalIdentifiers;
 	}
-	public void setExternalIdentifiers(List<? extends KimEntityExternalIdentifier> externalIdentifiers) {
+	public void setExternalIdentifiers(List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
-	public List<? extends KimPrincipal> getPrincipals() {
+	public List<KimPrincipalInfo> getPrincipals() {
 		return this.principals;
 	}
-	public void setPrincipals(List<? extends KimPrincipal> principals) {
+	public void setPrincipals(List<KimPrincipalInfo> principals) {
 		this.principals = principals;
 	}
 	

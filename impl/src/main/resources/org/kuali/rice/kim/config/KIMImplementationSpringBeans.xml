@@ -131,10 +131,11 @@
         p:localServiceName="kimIdentityService" />
     </property>
   </bean>
+  
   <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
-      <bean parent="kimSoapService"
+      <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityService"
         p:localServiceName="kimIdentityServiceSOAP" />
     </property>

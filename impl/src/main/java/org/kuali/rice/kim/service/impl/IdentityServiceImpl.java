@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.WebService;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
@@ -64,13 +66,11 @@ import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -79,6 +79,8 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+
+@WebService(endpointInterface = KIMWebServiceConstants.IdentityService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class IdentityServiceImpl implements IdentityService, IdentityUpdateService {
 
 	private BusinessObjectService businessObjectService;
@@ -222,7 +224,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		if ( principal == null ) {
 			return null;
 		}
-		return new KimPrincipalInfo( getPrincipalImpl( principalId ) );
+		return new KimPrincipalInfo( principal );
 	}
 	
 	public KimPrincipalImpl getPrincipalImpl(String principalId) {
@@ -340,7 +342,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		for(String s : entityIds) {
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, s);
-			criteria.put("dflt", "Y");
+			criteria.put("DFLT_IND", "Y");
 			
 			KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
 			
@@ -365,16 +367,18 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 			criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, s);
 			KimPrincipalImpl principal = (KimPrincipalImpl) getBusinessObjectService().findByPrimaryKey(KimPrincipalImpl.class, criteria);
 			
-			namePrincipal.setPrincipalName(principal.getPrincipalName());
-			
-			criteria.clear();
-			criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, principal.getEntityId());
-			criteria.put("dflt", "Y");
-			KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
-			
-			namePrincipal.setDefaultEntityName( new KimEntityNameInfo( name ) );
-			
-			result.put(s, namePrincipal);
+			if (null != principal) {
+				namePrincipal.setPrincipalName(principal.getPrincipalName());
+				
+				criteria.clear();
+				criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, principal.getEntityId());
+				criteria.put("DFLT_IND", "Y");
+				KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
+				
+				namePrincipal.setDefaultEntityName( new KimEntityNameInfo( name ) );
+				
+				result.put(s, namePrincipal);
+			}
 		}
 		
 		return result;

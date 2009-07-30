@@ -19,23 +19,26 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class IdentityServiceImplTest extends KIMTestCase {
+public class IdentityServiceTest extends KIMTestCase {
 
-	private IdentityServiceImpl identityService;
+	private IdentityService identityService;
 
 	public void setUp() throws Exception {
 		super.setUp();
-		identityService = (IdentityServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
+		if (null == identityService) {
+			identityService = findIdSvc();
+		}
+		GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
 	}
 
 	@Test
@@ -56,12 +59,19 @@ public class IdentityServiceImplTest extends KIMTestCase {
 	public void testGetContainedAttributes() {
 		KimPrincipal principal = identityService.getPrincipal("p1");
 		
-		KimEntity entity = identityService.getEntityImpl( principal.getEntityId() );
+		KimEntityDefaultInfo entity = identityService.getEntityDefaultInfo( principal.getEntityId() );
 		assertNotNull( "Entity Must not be null", entity );
-		KimEntityEntityType eet = entity.getEntityType( "PERSON" );
-		assertNotNull( "PERSON EntityEntityType Must not be null", eet );
-		assertEquals( "there should be 1 email address", 1, eet.getEmailAddresses().size() );
-		assertEquals( "email address does not match", "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
+		KimEntityEntityTypeDefaultInfo eet = entity.getEntityType( "PERSON" );
+		assertNotNull( "PERSON EntityEntityType must not be null", eet );
+		assertNotNull( "EntityEntityType's default email address must not be null", eet.getDefaultEmailAddress() );
+		assertEquals( "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
 	}
 
+	protected IdentityService findIdSvc() throws Exception {
+		return (IdentityService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
+	}
+
+	protected void setIdentityService(IdentityService idSvc) {
+		this.identityService = idSvc;
+	}
 }

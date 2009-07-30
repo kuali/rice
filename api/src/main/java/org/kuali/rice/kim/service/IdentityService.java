@@ -18,6 +18,14 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.kuali.rice.core.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.jaxb.StringToKimEntityNameInfoMapAdapter;
+import org.kuali.rice.core.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
@@ -33,6 +41,7 @@ import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * This service provides operations to query for principal and entity data.
@@ -61,37 +70,39 @@ import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@WebService(name = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IdentityService {
 	    
 	/** 
 	 * Get the principal with the given unique principal ID 
 	 */
-	KimPrincipalInfo getPrincipal(String principalId);
+	KimPrincipalInfo getPrincipal( @WebParam(name="principalId") String principalId );
 	
 	/**
 	 * Get the principal with the given principalName.
 	 */
-	KimPrincipalInfo getPrincipalByPrincipalName(String principalName);
+	KimPrincipalInfo getPrincipalByPrincipalName( @WebParam(name="principalName") String principalName );
 
 	/**
 	 * Get the principal with the given name and password.
 	 */
-	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(String principalName, String password);
+	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password );
 	    
 	/**
 	 * Get the entity default info for the entity with the given id.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
+	KimEntityDefaultInfo getEntityDefaultInfo( @WebParam(name="entityId") String entityId );
 	
 	/**
 	 * Get the entity default info for the entity of the principal with the given principal id.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
+	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( @WebParam(name="principalId") String principalId );
 	
 	/**
 	 * Get the entity default info for the entity of the principal with the given principal name.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
+	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( @WebParam(name="principalName") String principalName );
 	
 	/**
 	 * Gets a List of entity default info for entities based on the given search criteria.
@@ -102,17 +113,17 @@ public interface IdentityService {
 	 * 
 	 * <p>The searchCriteria Map is a map of entity field names to search values.
 	 */
-	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
+	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
 	
 	/**
 	 * Returns a count of the number of entities that match the given search criteria.
 	 */
-	int getMatchingEntityCount( Map<String,String> searchCriteria );
+	int getMatchingEntityCount( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria );
 	
 	/**
 	 * Gets the privacy preferences for the entity with the given entity id.
 	 */
-	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences( String entityId );
+	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences( @WebParam(name="entityId") String entityId );
 	
 	/**
 	 * Gets the name for the principals with ids in the given List.
@@ -121,61 +132,63 @@ public interface IdentityService {
 	 * When fetching names by principal id, the resulting name info contains the entity's name info
 	 * as well as the principal's name info.
 	 */
-    Map<String, KimEntityNamePrincipalNameInfo> getDefaultNamesForPrincipalIds(List<String> principalIds);
+	@XmlJavaTypeAdapter(value = StringToKimEntityNamePrincipalInfoMapAdapter.class) 
+    Map<String, KimEntityNamePrincipalNameInfo> getDefaultNamesForPrincipalIds(@WebParam(name="principalIds") List<String> principalIds);
     
     /**
      * Gets the names for the entities with ids in the given list.
      */
-    Map<String, KimEntityNameInfo> getDefaultNamesForEntityIds(List<String> entityIds);
+	@XmlJavaTypeAdapter(value = StringToKimEntityNameInfoMapAdapter.class) 
+    Map<String, KimEntityNameInfo> getDefaultNamesForEntityIds(@WebParam(name="entityIds") List<String> entityIds);
 
     /**
      * Gets the address type for the given address type code.
      */
-	public AddressTypeInfo getAddressType( String code );
+	public AddressTypeInfo getAddressType( @WebParam(name="code") String code );
 
     /**
      * Gets the affiliation type for the given affiliation type code.
      */
-	public AffiliationTypeInfo getAffiliationType( String code );
+	public AffiliationTypeInfo getAffiliationType( @WebParam(name="code") String code );
 	
 	/**
 	 * Gets the citizenship status for the given citizenship status code.
 	 */
-	public CitizenshipStatusInfo getCitizenshipStatus( String code );
+	public CitizenshipStatusInfo getCitizenshipStatus( @WebParam(name="code") String code );
 	
     /**
      * Gets the email type for the given email type code.
      */
-	public EmailTypeInfo getEmailType( String code );
+	public EmailTypeInfo getEmailType( @WebParam(name="code") String code );
 
     /**
      * Gets the employment status for the given employment status code.
      */
-	public EmploymentStatusInfo getEmploymentStatus( String code );
+	public EmploymentStatusInfo getEmploymentStatus( @WebParam(name="code") String code );
 	
     /**
      * Gets the employment type for the given employment type code.
      */
-	public EmploymentTypeInfo getEmploymentType( String code );
+	public EmploymentTypeInfo getEmploymentType( @WebParam(name="code") String code );
 	
     /**
      * Gets the entity name type for the given entity name type code.
      */
-	public EntityNameTypeInfo getEntityNameType( String code );
+	public EntityNameTypeInfo getEntityNameType( @WebParam(name="code") String code );
 	
     /**
      * Gets the entity type for the given entity type code.
      */
-	public EntityTypeInfo getEntityType( String code );
+	public EntityTypeInfo getEntityType( @WebParam(name="code") String code );
 	
     /**
      * Gets the external identifier type for the given external identifier type code.
      */
-	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code );
+	public ExternalIdentifierTypeInfo getExternalIdentifierType( @WebParam(name="code") String code );
 	
     /**
      * Gets the phone type for the given phone type code.
      */
-	public PhoneTypeInfo getPhoneType( String code );
+	public PhoneTypeInfo getPhoneType( @WebParam(name="code") String code );
     
 }

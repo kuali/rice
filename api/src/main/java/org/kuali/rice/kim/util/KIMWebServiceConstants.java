@@ -76,4 +76,10 @@ public class KIMWebServiceConstants {
 		public static final String WEB_SERVICE_PORT = "ResponsibilityUpdateServicePort";
 	}
 
+	public static class IdentityService {
+		public static final String WEB_SERVICE_NAME = "kimIdentityServiceSOAP";
+		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.IdentityService";
+		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
+	}
+
 }

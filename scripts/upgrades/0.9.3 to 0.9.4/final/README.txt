@@ -12,3 +12,5 @@ ken-upgrade
 kew-upgrade - part 2 - second part of the file
 kns-upgrade - part 2
 
+kim-create.sql - this will create the kim tables
+kim-data.sql - this will insert default data into kim.

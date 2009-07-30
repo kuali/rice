@@ -13,4 +13,4 @@ kew-upgrade - part 2 - second part of the file
 kns-upgrade - part 2
 
 kim-create.sql - this will create the kim tables
-kim-data.sql - this will insert default data into kim.
+update_final.sql - this is a compilation of all the daily sql updates minus KIM.  KIM is pulled new

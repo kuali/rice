@@ -148,7 +148,7 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="parameterDetailTypeName" p:noInquiry="true"/>
+        <bean parent="FieldDefinition" p:attributeName="parameterDetailTypeName"/><!-- p:noInquiry="true" -->
         <bean parent="FieldDefinition" p:attributeName="parameterNamespace.codeAndDescription" p:noInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>

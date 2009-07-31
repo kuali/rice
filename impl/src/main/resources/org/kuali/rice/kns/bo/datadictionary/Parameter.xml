@@ -42,6 +42,19 @@
 				<ref bean="Parameter-parameterNamespace.codeAndDescription"/>
 			</list>
 		</property>
+		<property name="relationships">
+			<list>
+				<bean parent="RelationshipDefinition">
+					<property name="objectAttributeName" value="parameterDetailType" />
+					<property name="primitiveAttributes">
+						<list>
+							<bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterNamespaceCode" p:targetName="parameterNamespaceCode" />
+							<bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterDetailType.parameterDetailTypeName" p:targetName="parameterDetailTypeName" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Attribute Definitions -->
@@ -222,7 +235,7 @@
 		<property name="lookupFields">
 			<list>
 				<bean parent="FieldDefinition" p:attributeName="parameterNamespaceCode"/>
-				<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName" p:noLookup="true"/>
+				<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName"/><!-- p:noLookup="true" -->
 				<bean parent="FieldDefinition" p:attributeName="parameterApplicationNamespaceCode" />
 				<bean parent="FieldDefinition" p:attributeName="parameterName" p:noLookup="true"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterValue"/>
@@ -232,7 +245,7 @@
 		<property name="resultFields">
 			<list>
 				<bean parent="FieldDefinition" p:attributeName="parameterNamespaceCode" p:forceInquiry="true"/>
-				<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName" p:maxLength="40"/> <!--  p:noInquiry="true" -->
+				<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName" p:maxLength="40"/><!-- p:noInquiry="true" -->
 				<bean parent="FieldDefinition" p:attributeName="parameterApplicationNamespaceCode" p:maxLength="20"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterName" p:maxLength="40" p:forceInquiry="true"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterDescription" p:maxLength="40"/>

@@ -76,7 +76,9 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             Map<String, String> detailTypeCriteria = new HashMap<String, String>(2);
             String parameterNamespaceCode = fieldValues.get("parameterNamespaceCode");
             String parameterDetailTypeName = fieldValues.get("parameterDetailType.parameterDetailTypeName");
-            detailTypeCriteria.put("parameterNamespaceCode", parameterNamespaceCode);
+            if (StringUtils.isNotBlank(parameterNamespaceCode)) {
+            	detailTypeCriteria.put("parameterNamespaceCode", parameterNamespaceCode);
+            }
             detailTypeCriteria.put("parameterDetailTypeName", parameterDetailTypeName);
             Collection<ParameterDetailType> databaseDetailTypes = getBusinessObjectService().findMatching(ParameterDetailType.class, detailTypeCriteria);
             // get all detail types from the data dictionary and filter by their name
@@ -113,10 +115,13 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
                 parameterDetailTypeCodeCriteria.append(detailType.getParameterDetailTypeCode());
             }
 
-            // remove the original parameter so it is not applied
-            fieldValues.remove("parameterDetailType.parameterDetailTypeName");
-            // add the new detail type code criteria string to the lookup
-            fieldValues.put("parameterDetailTypeCode", parameterDetailTypeCodeCriteria.toString());
+            String parameterDetailTypeCodeCriteriaStr = parameterDetailTypeCodeCriteria.toString();
+            if (StringUtils.isNotBlank(parameterDetailTypeCodeCriteriaStr)) {
+            	// remove the original parameter so it is not applied
+            	fieldValues.remove("parameterDetailType.parameterDetailTypeName");
+            	// add the new detail type code criteria string to the lookup
+            	fieldValues.put("parameterDetailTypeCode", parameterDetailTypeCodeCriteriaStr);
+            }
             results = super.getSearchResults(fieldValues);
         }
         else {

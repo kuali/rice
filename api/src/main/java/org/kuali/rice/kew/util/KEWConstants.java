@@ -123,8 +123,6 @@ public class KEWConstants extends JSTLConstants {
     public static final String DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME = "showCloseButton";
     public static final String DISPLAY_CLOSE_BUTTON_TRUE_VALUE = "showCloseButton";
 
-    public static final String WORKFLOW_SUPER_USER_WORKGROUP_NAME = "WorkflowAdmin";
-
     public static final String DAILY_UNIT = "Daily";
     public static final String WEEKLY_UNIT = "Weekly";
     public static final String MONTHLY_UNIT = "Monthly";

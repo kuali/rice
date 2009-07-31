@@ -341,10 +341,13 @@ update krim_perm_attr_data_t set perm_id='290' where perm_id='169'
 update krim_role_perm_t set perm_id='290' where perm_id='169'
 /
 
--- setup "Modify Entity" permission (stays unassigned to any particular role)
+-- setup "Modify Entity" permission, assign to KR-SYS Technical Administrators
 
 INSERT INTO krim_perm_t(PERM_ID, OBJ_ID, VER_NBR, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND)
   VALUES('307', '638DD46953F9BCD5E0404F8189D86240', 1, '1', 'KR-IDM', 'Modify Entity', 'Users who can modify entity records in Kuali Identity Management.', 'Y')
+/
+INSERT INTO krim_role_perm_t(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
+  VALUES('850', '70086A2DF17C62E4E0404F8189D863CD', 1, '63', '307', 'Y')
 /
 
 -- setup "Full Unmask Field" permission

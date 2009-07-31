@@ -65,7 +65,7 @@
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterDetailTypeCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterApplicationNamespaceCode" p:defaultValue="KUALI"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterName"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterValue"/>
+        <bean parent="MaintainableFieldDefinition" p:required="false" p:name="parameterValue"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterDescription"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterTypeCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterConstraintCode"/>

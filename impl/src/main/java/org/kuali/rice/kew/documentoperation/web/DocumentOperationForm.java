@@ -39,7 +39,6 @@ public class DocumentOperationForm extends KualiForm {
 
 	private static final long serialVersionUID = 2994179393392218743L;
 	private DocumentRouteHeaderValue routeHeader;
-    private String methodToCall = "";
     private String routeHeaderId;
 
     private List actionRequestOps = new ArrayList();
@@ -135,12 +134,6 @@ public class DocumentOperationForm extends KualiForm {
         routeHeader = new DocumentRouteHeaderValue();
     }
 
-    public String getMethodToCall() {
-        return methodToCall;
-    }
-    public void setMethodToCall(String methodToCall) {
-        this.methodToCall = methodToCall;
-    }
     public DocumentRouteHeaderValue getRouteHeader() {
         return routeHeader;
     }

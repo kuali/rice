@@ -292,9 +292,9 @@ public class DocumentOperationAction extends KewKualiAction {
 		}
 
 		List routeNodeInstances=(List)(request.getSession().getAttribute("routeNodeInstances"));
-		String ids=docForm.getNodeStatesDelete().trim();
+		String ids = (docForm.getNodeStatesDelete() != null) ? docForm.getNodeStatesDelete().trim() : null;
 		List statesToBeDeleted=new ArrayList();
-		if(ids!=null||!ids.equals("")){
+		if(ids!=null && !ids.equals("")){
 		    StringTokenizer idSets=new StringTokenizer(ids);
 		    while (idSets.hasMoreTokens()) {
 		    	String id=idSets.nextToken().trim();
@@ -387,9 +387,9 @@ public class DocumentOperationAction extends KewKualiAction {
 
 
 		List branches=(List)(request.getSession().getAttribute("branches"));
-		String branchStateIds=docForm.getBranchStatesDelete().trim();
+		String branchStateIds = (docForm.getBranchStatesDelete() != null) ? docForm.getBranchStatesDelete().trim() : null;
 		List branchStatesToBeDeleted=new ArrayList();
-		if(branchStateIds!=null||!branchStateIds.equals("")){
+		if(branchStateIds!=null && !branchStateIds.equals("")){
 		    StringTokenizer idSets=new StringTokenizer(branchStateIds);
 		    while (idSets.hasMoreTokens()) {
 		    	String id=idSets.nextToken().trim();

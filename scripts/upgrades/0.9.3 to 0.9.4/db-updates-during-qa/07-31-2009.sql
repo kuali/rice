@@ -47,7 +47,7 @@ END;
 
 -- the mysql way to disable constraints
 -- SET foreign_key_checks = 0
--- /
+
 
 -- ##############
 -- # KEW Tables #
@@ -628,17 +628,18 @@ INSERT INTO krim_role_t(ROLE_ID, OBJ_ID, VER_NBR, ROLE_NM, NMSPC_CD, DESC_TXT, K
   VALUES('95', '67F145466E8B9160E0404F8189D86771', 1, 'Document Initiator', 'KR-SYS', 'This role derives its members from users with the Initiate Document permission for a given document type.', '66', 'Y', NULL)
 /
 INSERT INTO krim_role_perm_t(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
-  VALUES('144', '5C27A267EF357417E0404F8189D830A9', 1, '95', '108', 'Y')
+  VALUES('250', '70086A2DF17D62E4E0404F8189D863CD', 1, '95', '156', 'Y')
 /
 
--- create missing "Non-Ad Hoc Approve Request Recipient" role
+-- create missing "Non-Ad Hoc Approve Request Recipient" role, no permissions assigned here
 
 INSERT INTO krim_role_t(ROLE_ID, OBJ_ID, VER_NBR, ROLE_NM, NMSPC_CD, DESC_TXT, KIM_TYP_ID, ACTV_IND, LAST_UPDT_DT)
   VALUES('97', '67F145466EB09160E0404F8189D86771', 1, 'Non-Ad Hoc Approve Request Recipient', 'KR-WKFLW', 'This role derives its members from users with an Approval action request (that was not generated via the ad-hoc recipients tab) in the route log of a given document.', '42', 'Y', NULL)
 /
 INSERT INTO krim_role_perm_t(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND)
-  VALUES('228', '45D9E428CF5A102CB4D55CC8D8E0D89C', 1, '97', '181', 'Y')
+  VALUES('251', '70086A2DF17E62E4E0404F8189D863CD', 1, '97', '181', 'Y')
 /
+
 
 -- Kim Types
 
@@ -695,4 +696,3 @@ END;
 
 -- the mysql way to re-enable constraints
 -- SET foreign_key_checks = 1
--- /

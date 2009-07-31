@@ -34,6 +34,25 @@
 -- # prior to this script!													  #
 -- ############################################################################
 
+-- Disable constraints for the duration of this script
+DECLARE 
+   CURSOR constraint_cursor IS 
+      SELECT table_name, constraint_name 
+         FROM user_constraints 
+         WHERE constraint_type = 'R'
+           AND status = 'ENABLED';
+BEGIN 
+   FOR r IN constraint_cursor LOOP
+      execute immediate 'ALTER TABLE '||r.table_name||' DISABLE CONSTRAINT '||r.constraint_name; 
+   END LOOP; 
+END;
+/
+
+-- the mysql way to disable constraints
+-- SET foreign_key_checks = 0
+-- /
+
+
 -- ##############
 -- # KEW Tables #
 -- ##############
@@ -117,6 +136,13 @@ delete from krew_rule_tmpl_t where nm='WorkflowDocument2Template'
 delete from krew_rule_tmpl_t where nm='WorkflowDocument3Template'
 /
 
+-- Rules
+
+delete from krew_rule_t where rule_tmpl_id is not null and rule_tmpl_id not in (select rule_tmpl_id from krew_rule_tmpl_t)
+/
+delete from krew_rule_t where doc_typ_nm is not null and doc_typ_nm not in (select doc_typ_nm from krew_doc_typ_t)
+/
+
 -- EDL
 
 delete from krew_edl_assctn_t
@@ -196,29 +222,45 @@ delete from kren_rvwer_t
 delete from krim_ext_id_typ_t where ext_id_typ_cd != 'TAX'
 /
 
-Add code here to delete all principals and entities and groups and unassign from perms!
+-- delete all groups except WorkflowAdmin and NotificationAdmin (they're referenced from Document Types)
 
-| krim_entity_addr_t             | 
-| krim_entity_afltn_t            | 
-| krim_entity_bio_t              | 
-| krim_entity_ctznshp_t
-| krim_entity_email_t            | 
-| krim_entity_emp_info_t         | 
-| krim_entity_ent_typ_t          | 
-| krim_entity_ext_id_t           | 
-| krim_entity_nm_t               | 
-| krim_entity_phone_t            | 
-| krim_entity_priv_pref_t        | 
-| krim_entity_t                  |
+delete from krim_grp_t where grp_nm not in ('WorkflowAdmin', 'NotificationAdmin')
+/
+delete from krim_grp_attr_data_t where grp_id not in (select grp_id from krim_grp_t)
+/
+delete from krim_grp_mbr_t where grp_id not in (select grp_id from krim_grp_t)
+/
 
-Remeber, delete all principals/entities *EXCEPT* 'kr'
+-- delete all entity and principal data except for principalID/entityID = 1 which is the 'kr' system user
+-- and principalID=admin/entityID = 1100 which is the 'admin' user
 
-| krim_prncpl_t                  |
+delete from krim_entity_addr_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_afltn_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_bio_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_ctznshp_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_email_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_emp_info_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_ent_typ_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_ext_id_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_nm_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_phone_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_priv_pref_t where entity_id not in ('1', '1100')
+/
+delete from krim_entity_t where entity_id not in ('1', '1100')
+/
 
-| krim_grp_attr_data_t           |
-| krim_grp_mbr_t
-| krim_grp_t
-
+delete from krim_prncpl_t where prncpl_id not in ('1', 'admin')
+/
 
 -- #####################
 -- # Sample App Tables #
@@ -246,3 +288,21 @@ drop sequence trv_fo_id_s
 -- drop table trv_fo_id_s
 drop table kr_kim_test_bo
 /
+
+-- Re-enable constraints
+DECLARE 
+   CURSOR constraint_cursor IS 
+      SELECT table_name, constraint_name 
+         FROM user_constraints 
+         WHERE constraint_type = 'R'
+           AND status <> 'ENABLED';
+BEGIN 
+   FOR r IN constraint_cursor LOOP
+      execute immediate 'ALTER TABLE '||r.table_name||' ENABLE CONSTRAINT '||r.constraint_name; 
+   END LOOP; 
+END;
+/
+
+-- the mysql way to re-enable constraints
+-- SET foreign_key_checks = 1
+-- /

@@ -16,15 +16,18 @@
 package org.kuali.rice.kim.document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -45,6 +48,9 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -282,10 +288,12 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
         super.doRouteStatusChange(statusChangeEvent);
         if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
+        	setIfRolesEditable();
             KIMServiceLocator.getUiDocumentService().saveEntityPerson(this);
         }
     }
 
+    
     @Override
     public void prepareForSave(){
         if (StringUtils.isBlank(getPrivacy().getDocumentNumber())) {
@@ -376,4 +384,40 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 	public void afterLookup(){
         taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
 	}
+	
+	public void setIfRolesEditable(){
+		if(CollectionUtils.isNotEmpty(getRoles())){
+			for(PersonDocumentRole role: getRoles()){
+				role.setEditable(validAssignRole(role));
+			}
+		}
+	}
+
+	public boolean validAssignRole(PersonDocumentRole role){
+        boolean rulePassed = true;
+        if(StringUtils.isNotEmpty(role.getNamespaceCode())){
+	        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
+	        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, role.getNamespaceCode());
+	        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, role.getRoleName());
+			if (!getDocumentHelperService().getDocumentAuthorizer(this).isAuthorizedByTemplate(
+					this,
+					KimConstants.NAMESPACE_CODE,
+					KimConstants.PermissionTemplateNames.ASSIGN_ROLE,
+					GlobalVariables.getUserSession().getPrincipalId(),
+					additionalPermissionDetails, null)){
+	            rulePassed = false;
+			}
+        }
+        return rulePassed;
+	}
+
+	private transient DocumentHelperService documentHelperService;
+	
+	protected DocumentHelperService getDocumentHelperService() {
+	    if ( documentHelperService == null ) {
+	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
+		}
+	    return this.documentHelperService;
+	}
+
 }

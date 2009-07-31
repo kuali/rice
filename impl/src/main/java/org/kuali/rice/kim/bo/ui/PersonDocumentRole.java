@@ -60,6 +60,8 @@ public class PersonDocumentRole extends KimDocumentBoBase {
     protected KimDocumentRoleMember newRolePrncpl;
 	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 
+    protected boolean isEditable = true;
+    
 	public PersonDocumentRole() {
 		attributes = new ArrayList<KimAttributes>();	
 		rolePrncpls = new ArrayList<KimDocumentRoleMember>();	
@@ -199,6 +201,20 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	 */
 	public void setRoleImpl(RoleImpl roleImpl) {
 		this.roleImpl = roleImpl;
+	}
+
+	/**
+	 * @return the isEditable
+	 */
+	public boolean isEditable() {
+		return this.isEditable;
+	}
+
+	/**
+	 * @param isEditable the isEditable to set
+	 */
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 
 }

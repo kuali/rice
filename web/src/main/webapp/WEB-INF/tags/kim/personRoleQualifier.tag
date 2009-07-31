@@ -4,7 +4,7 @@
 <%@ attribute name="role" required="true" type="org.kuali.rice.kim.bo.ui.PersonDocumentRole" %>
 <c:set var="docRolePrncplAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 <c:set var="docRoleRspActionAttributes" value="${DataDictionary.KimDocumentRoleResponsibilityAction.attributes}" />
-
+<c:out value="${readOnlyRole}"/>
 <kul:subtab lookedUpCollectionName="roleQualifier" width="${tableWidth}" subTabTitle="Role Qualifier" useCurrentTabIndexAsKey="true">      
 	<table cellpadding="0" cellspacing="0" summary="">
     	<tr>
@@ -23,7 +23,7 @@
  			 <kul:htmlAttributeHeaderCell literalLabel="Actions"/>
            </c:if>   			
 		</tr>                		
-		<c:if test="${not inquiry and not readOnly}">			              					
+		<c:if test="${not inquiry and not readOnlyRole}">			              					
 			<tr>
 				<th class="infoline">
 					<c:out value="Add:" />
@@ -34,12 +34,12 @@
 					<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 			       	<td align="left" valign="middle">
 			       		<div align="center"> 
-			      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
+			      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnlyRole}" />
 			      		   <%-- 
 			      		   TODO: code (probably) does not pull the remote property name properly
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
 			      		   --%>
-			       		   <c:if test="${!empty attr.lookupBoClass and not readOnly}">
+			       		   <c:if test="${!empty attr.lookupBoClass and not readOnlyRole}">
 			       		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
 			          	   </c:if>
 			          	   
@@ -52,12 +52,12 @@
 				</c:forEach>	
 				<td>
 					<div align="center">
-			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
+			            <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnlyRole}" />
 			  		</div>
 				</td>
 				<td>
 					<div align="center">
-					   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}" />
+					   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnlyRole}" />
 					</div>
 				</td>			        		
 			   	<td class="infoline">
@@ -90,8 +90,8 @@
 					        		<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 				            <td align="left" valign="middle">
 				                <div align="center"> 
-				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
-						      		   <c:if test="${!empty attr.lookupBoClass  and not readOnly}">
+				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnlyRole}" />
+						      		   <c:if test="${!empty attr.lookupBoClass  and not readOnlyRole}">
 						      		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
 						         	   </c:if>
 								</div>
@@ -101,19 +101,19 @@
 						</c:forEach>									
 						<td>
 							<div align="center">
-				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
+				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnlyRole}" />
 			        		</div>
 		        		</td>
 		        		<td>
 			        		<div align="center">
-				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}" />
+				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnlyRole}" />
 			        		</div>
 		        		</td>
            				<c:if test="${not inquiry}">									
 								<td class="infoline">
 								<div align=center>
 				        	     <c:choose>
-				        	       <c:when test="${rolePrncpl.edit or readOnly}">
+				        	       <c:when test="${rolePrncpl.edit or readOnlyRole}">
 				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 				        	       </c:when>
 				        	       <c:otherwise>

@@ -1186,67 +1186,69 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List <RoleMemberImpl> roleMembers = new ArrayList<RoleMemberImpl>();
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getRoles())){
 			for (PersonDocumentRole role : identityManagementPersonDocument.getRoles()) {
-				List<RoleMemberImpl> origRoleMembers = new ArrayList<RoleMemberImpl>();
-				if(ObjectUtils.isNotNull(origRoles)){
-					for (RoleImpl origRole : origRoles) {
-						if (origRole.getRoleId()!=null && StringUtils.equals(origRole.getRoleId(), role.getRoleId())) {
-							origRoleMembers = origRole.getMembers();
-							break;
+				if(role.isEditable()){
+					List<RoleMemberImpl> origRoleMembers = new ArrayList<RoleMemberImpl>();
+					if(ObjectUtils.isNotNull(origRoles)){
+						for (RoleImpl origRole : origRoles) {
+							if (origRole.getRoleId()!=null && StringUtils.equals(origRole.getRoleId(), role.getRoleId())) {
+								origRoleMembers = origRole.getMembers();
+								break;
+							}
 						}
 					}
-				}
-				if (role.getRolePrncpls().isEmpty()) {
-					if (!role.getDefinitions().isEmpty()) {
-						RoleMemberImpl roleMemberImpl = new RoleMemberImpl();
-						roleMemberImpl.setRoleId(role.getRoleId());
-						roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-						roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
-						roleMembers.add(roleMemberImpl);
-					}
-				} else {
-					for (KimDocumentRoleMember roleMember : role.getRolePrncpls()) {
-						RoleMemberImpl roleMemberImpl = new RoleMemberImpl();
-						roleMemberImpl.setRoleId(role.getRoleId());
-						// TODO : principalId is not ready here yet ?
-						roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-						roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
-						roleMemberImpl.setRoleMemberId(roleMember.getRoleMemberId());
-						roleMemberImpl.setActiveFromDate(roleMember.getActiveFromDate());
-						roleMemberImpl.setActiveToDate(roleMember.getActiveToDate());
-						List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
-						if(ObjectUtils.isNotNull(origRoleMembers)){
-							for (RoleMemberImpl origMember : origRoleMembers) {
-								if (origMember.getRoleMemberId()!=null && StringUtils.equals(origMember.getRoleMemberId(), roleMember.getRoleMemberId())) {
-									origAttributes = origMember.getAttributes();
-									roleMemberImpl.setVersionNumber(origMember.getVersionNumber());
+					if (role.getRolePrncpls().isEmpty()) {
+						if (!role.getDefinitions().isEmpty()) {
+							RoleMemberImpl roleMemberImpl = new RoleMemberImpl();
+							roleMemberImpl.setRoleId(role.getRoleId());
+							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
+							roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
+							roleMembers.add(roleMemberImpl);
+						}
+					} else {
+						for (KimDocumentRoleMember roleMember : role.getRolePrncpls()) {
+							RoleMemberImpl roleMemberImpl = new RoleMemberImpl();
+							roleMemberImpl.setRoleId(role.getRoleId());
+							// TODO : principalId is not ready here yet ?
+							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
+							roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
+							roleMemberImpl.setRoleMemberId(roleMember.getRoleMemberId());
+							roleMemberImpl.setActiveFromDate(roleMember.getActiveFromDate());
+							roleMemberImpl.setActiveToDate(roleMember.getActiveToDate());
+							List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
+							if(ObjectUtils.isNotNull(origRoleMembers)){
+								for (RoleMemberImpl origMember : origRoleMembers) {
+									if (origMember.getRoleMemberId()!=null && StringUtils.equals(origMember.getRoleMemberId(), roleMember.getRoleMemberId())) {
+										origAttributes = origMember.getAttributes();
+										roleMemberImpl.setVersionNumber(origMember.getVersionNumber());
+									}
 								}
 							}
-						}
-						List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
-						if(CollectionUtils.isNotEmpty(roleMember.getQualifiers())){
-							for (KimDocumentRoleQualifier qualifier : roleMember.getQualifiers()) {
-								//if (StringUtils.isNotBlank(qualifier.getAttrVal())) {
-									RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
-									attribute.setAttributeDataId(qualifier.getAttrDataId());
-									attribute.setAttributeValue(qualifier.getAttrVal());
-									attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
-									attribute.setRoleMemberId(qualifier.getRoleMemberId());
-									attribute.setKimTypeId(qualifier.getKimTypId());
-									if(ObjectUtils.isNotNull(origAttributes)){
-										for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
-											if (origAttribute.getAttributeDataId()!=null && StringUtils.equals(origAttribute.getAttributeDataId(), qualifier.getAttrDataId())) {
-												attribute.setVersionNumber(origAttribute.getVersionNumber());
+							List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
+							if(CollectionUtils.isNotEmpty(roleMember.getQualifiers())){
+								for (KimDocumentRoleQualifier qualifier : roleMember.getQualifiers()) {
+									//if (StringUtils.isNotBlank(qualifier.getAttrVal())) {
+										RoleMemberAttributeDataImpl attribute = new RoleMemberAttributeDataImpl();
+										attribute.setAttributeDataId(qualifier.getAttrDataId());
+										attribute.setAttributeValue(qualifier.getAttrVal());
+										attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
+										attribute.setRoleMemberId(qualifier.getRoleMemberId());
+										attribute.setKimTypeId(qualifier.getKimTypId());
+										if(ObjectUtils.isNotNull(origAttributes)){
+											for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
+												if (origAttribute.getAttributeDataId()!=null && StringUtils.equals(origAttribute.getAttributeDataId(), qualifier.getAttrDataId())) {
+													attribute.setVersionNumber(origAttribute.getVersionNumber());
+												}
 											}
 										}
-									}
-									if (attribute.getVersionNumber() != null || StringUtils.isNotBlank(qualifier.getAttrVal())) {
-										attributes.add(attribute);
-									}
-								//}
+										if (attribute.getVersionNumber() != null || StringUtils.isNotBlank(qualifier.getAttrVal())) {
+											attributes.add(attribute);
+										}
+									//}
+								}
 							}
+							roleMemberImpl.setAttributes(attributes);
+							roleMembers.add(roleMemberImpl);
 						}
-						roleMemberImpl.setAttributes(attributes);
-						roleMembers.add(roleMemberImpl);
 					}
 				}
 			}

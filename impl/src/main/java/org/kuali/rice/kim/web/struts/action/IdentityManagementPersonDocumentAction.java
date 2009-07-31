@@ -17,9 +17,7 @@ package org.kuali.rice.kim.web.struts.action;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +31,6 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
@@ -156,6 +153,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         } else {
         	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
         	populateRoleInformation( personDocumentForm.getPersonDocument() );
+        	if(personDocumentForm.getPersonDocument()!=null) 
+        		personDocumentForm.getPersonDocument().setIfRolesEditable();
         }
 	}
 	
@@ -318,7 +317,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        newRole.setRoleName(roleImpl.getRoleName());
 	        newRole.setNamespaceCode(roleImpl.getNamespaceCode());
 	        newRole.setKimTypeId(roleImpl.getKimTypeId());
-	        if(!validAssignRole(personDocumentForm.getPersonDocument(), newRole)){
+	        if(!validateRoleAssignment(personDocumentForm.getPersonDocument(), newRole)){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
 	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(newRole.getKimRoleType()));
@@ -349,20 +348,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
-	private boolean validAssignRole(IdentityManagementPersonDocument document, PersonDocumentRole newRole){
+	private boolean validateRoleAssignment(IdentityManagementPersonDocument document, PersonDocumentRole newRole){
         boolean rulePassed = true;
-        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        if(StringUtils.isNotEmpty(newRole.getNamespaceCode())){
-	        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, newRole.getNamespaceCode());
-	        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, newRole.getRoleName());
-			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
-					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-	    		GlobalVariables.getMessageMap().putError("document.newRole.roleId", 
-	    				RiceKeyConstants.ERROR_ASSIGN_ROLE, 
-	    				new String[] {newRole.getNamespaceCode(), newRole.getRoleName()});
-	            rulePassed = false;
-			}
+        if(!document.validAssignRole(newRole)){
+			GlobalVariables.getMessageMap().putError("newRole.roleId", 
+					RiceKeyConstants.ERROR_ASSIGN_ROLE, 
+					new String[] {newRole.getNamespaceCode(), newRole.getRoleName()});
+	        rulePassed = false;
         }
 		return rulePassed;
 	}

@@ -76,6 +76,7 @@
        		</tr>         
      	</c:if>       
         <c:forEach var="role" items="${KualiForm.document.roles}" varStatus="status">
+			<c:set var="readOnlyRole" scope="request" value="${!role.editable || readOnly}" />
         	<%-- add header label for each 'role' to see if it is less confusion for user --%>
           	<tr>
           		<th>&nbsp;</th> 
@@ -115,7 +116,7 @@
                 	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].kimRoleType.name"  attributeEntry="${docRoleAttributes.kimGroupType.name}" readOnly="true"  />
 				</div>
 				</td>
-				<c:set var="roleMemberActiveDatesReadOnly" value="${(!empty role.definitions and fn:length(role.definitions) > 0) || readOnly}" />
+				<c:set var="roleMemberActiveDatesReadOnly" value="${(!empty role.definitions and fn:length(role.definitions) > 0) || readOnlyRole}" />
                 <td align="left" valign="middle">
                 	<c:if test="${fn:length(role.rolePrncpls) > 0}">
                 		<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].rolePrncpls[0].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${roleMemberActiveDatesReadOnly}" />
@@ -128,7 +129,7 @@
 						</div>
 					</c:if>
 				</td>
-           		<c:if test="${!readOnly}">						
+           		<c:if test="${!readOnlyRole}">
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>

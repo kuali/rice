@@ -136,13 +136,13 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         	for (String roleName : unassignableRoles.get(namespaceCode)) {
         		int i = 0;
         		for (PersonDocumentRole role : document.getRoles()) {
-        			if (namespaceCode.endsWith(role.getNamespaceCode()) && roleName.equals(role.getRoleName())) {
+        			if (role.isEditable() && namespaceCode.endsWith(role.getNamespaceCode()) && roleName.equals(role.getRoleName())) {
         				GlobalVariables.getMessageMap().putError("roles["+i+"].roleId", RiceKeyConstants.ERROR_ASSIGN_ROLE, new String[] {namespaceCode, roleName});
+        	        	valid = false;
         			}
         			i++;
         		}
         	}
-        	valid = false;
         }
         return valid;
 	}

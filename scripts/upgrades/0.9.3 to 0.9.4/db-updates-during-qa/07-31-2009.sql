@@ -97,6 +97,10 @@ delete from krew_rule_t where rule_id=1637
 delete from krew_rule_t where rule_id=1640
 /
 
+-- update rule for Recipe Masters so that it points to a valid group id
+update krew_rule_rsp_t set NM='9997' where rule_rsp_id='2064'
+/
+
 delete from krew_dlgn_rsp_t
 /
 

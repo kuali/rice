@@ -268,7 +268,7 @@
 		</target>
 
 	<target name="check-dist-database-properties" depends="init">
-		<condition property=" -- the directory containing the impex directorydist.database.properties.set">
+		<condition property="dist.database.properties.set">
 			<and>
 				<isset property="impex.home.directory" />
 				<isset property="dist.database.svn.base" />

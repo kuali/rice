@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
@@ -82,6 +83,19 @@ public class AttributeValidationHelper {
 		return m;
 	}
 
+	public AttributeSet getBlankValueQualifiersMap(List<KimTypeAttributeInfo> attributes) {
+		AttributeSet m = new AttributeSet();
+		for(KimTypeAttributeInfo attribute: attributes){
+			KimAttributeImpl attrib = getAttributeDefinition(attribute.getKimAttributeId());
+			if ( attrib != null ) {
+				m.put( attrib.getAttributeName(), "" );
+			} else {
+				LOG.error("Unable to get attribute name for ID:" + attribute.getKimAttributeId());
+			}
+		}
+		return m;
+	}
+	
 	public AttributeSet convertQualifiersToAttrIdxMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		AttributeSet m = new AttributeSet();
 		int i = 0;

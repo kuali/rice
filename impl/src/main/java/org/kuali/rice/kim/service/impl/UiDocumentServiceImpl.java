@@ -1186,7 +1186,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List <RoleMemberImpl> roleMembers = new ArrayList<RoleMemberImpl>();
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getRoles())){
 			for (PersonDocumentRole role : identityManagementPersonDocument.getRoles()) {
-				if(role.isEditable()){
+				//if(role.isEditable()){
 					List<RoleMemberImpl> origRoleMembers = new ArrayList<RoleMemberImpl>();
 					if(ObjectUtils.isNotNull(origRoles)){
 						for (RoleImpl origRole : origRoles) {
@@ -1250,7 +1250,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							roleMembers.add(roleMemberImpl);
 						}
 					}
-				}
+				//}
 			}
 		}
 		return roleMembers;

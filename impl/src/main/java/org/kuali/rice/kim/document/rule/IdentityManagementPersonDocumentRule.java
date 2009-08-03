@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -358,12 +359,23 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     }
 	
     private boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
-
 		AttributeSet validationErrors = new AttributeSet();
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
     	for(PersonDocumentRole role : roles ) {
-	        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
+    		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
+        	if(CollectionUtils.isEmpty(role.getRolePrncpls()) && !role.getDefinitions().isEmpty()){
+        		KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(role.getKimRoleType().getKimTypeId());
+        		AttributeSet blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
+        		AttributeSet localErrors = kimTypeService.validateAttributes( 
+        			role.getKimRoleType().getKimTypeId(), blankQualifiers);
+        		if(localErrors!=null && !localErrors.isEmpty()){
+        			GlobalVariables.getMessageMap().putError("document.roles["+i+"].newRolePrncpl.qualifiers[0].attrVal", 
+        					RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "Role Qualifier"); 
+        			return false;
+        		}
+        	}
+
 	        if ( kimTypeService != null ) {
 		        int j = 0;
 	        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {

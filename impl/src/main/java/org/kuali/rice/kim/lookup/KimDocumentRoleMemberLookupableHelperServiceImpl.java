@@ -95,11 +95,13 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
 				StringBuffer attributesToDisplay = new StringBuffer();
 				AttributeDefinition attribDefn;
 				for(KimDocumentRoleQualifier attribute: roleMember.getQualifiers()){
-					attribDefn = attributesHelper.getAttributeDefinition(attribute.getKimAttribute().getAttributeName());
-					attributesToDisplay.append(attribDefn!=null?attribDefn.getLabel():"");
-					attributesToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
-					attributesToDisplay.append(attribute.getAttrVal());
-					attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+					if(attribute.getKimAttribute()!=null){
+						attribDefn = attributesHelper.getAttributeDefinition(attribute.getKimAttribute().getAttributeName());
+						attributesToDisplay.append(attribDefn!=null?attribDefn.getLabel():"");
+						attributesToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
+						attributesToDisplay.append(attribute.getAttrVal());
+						attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+					}
 				}
 				return KimCommonUtils.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
 			}

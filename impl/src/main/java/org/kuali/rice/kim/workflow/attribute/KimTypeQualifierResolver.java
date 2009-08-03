@@ -40,6 +40,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.workflow.attribute.QualifierResolverBase;
@@ -90,8 +91,8 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	KimTypeService typeService = typeServices.get(typeId);
     	if ( typeService == null ) {       		
         	KimTypeInfo typeInfo = getKimTypeInfoService().getKimType(typeId);
-        	if ( typeInfo != null && StringUtils.isNotEmpty( typeInfo.getKimTypeServiceName() ) ) {
-        		typeService = (KimTypeService)KIMServiceLocator.getBean(typeInfo.getKimTypeServiceName());
+        	if ( typeInfo != null ) {
+        		typeService = KimCommonUtils.getKimTypeService(typeInfo);
         		typeServices.put(typeId, typeService);
         	} else {
         		LOG.warn( "Unable to retrieve KIM Type Info object for id: " + typeId );

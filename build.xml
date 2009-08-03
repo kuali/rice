@@ -42,6 +42,8 @@
 		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>
 		<property name="dist.binary.config.dir" value="${dist.binary.dir}/config"/>
 		<property name="dist.src.dir" value="${dist.build.dir}/dist-src/rice-${maven.project.version}-src"/>
+		<property name="dist.impex.dir" value="${dist.build.dir}/database-impex"/>
+		<property name="dist.dataset.dir" value="${dist.build.dir}/datasets"/>
 		<property name="junit.report.dir" value="target/junitreport"/>
 		<property name="groovy.lib.dir" value="scripts/groovy-1.5.4/lib"/>
 		<property name="oracle.driver.version" value="10.2.0.3.0"/>
@@ -178,7 +180,6 @@
         <maven goals="install:install-file" options="-DgroupId=org.kuali.rice -DartifactId=rice-server -Dversion=${maven.project.version} -Dpackaging=jar -Dfile=target/rice-${maven.project.version}-server.war"/>
     </target>
 
-	<!-- target name="dist-binary" depends="maven-install-server-jar,install-rice-jars" description="Creates Kuali Rice binary packages." -->
 	<target name="dist-binary" depends="init" description="Creates Kuali Rice binary packages.">
 		<artifact:install file="pom.xml">
 			<pom refid="maven.project" />
@@ -253,8 +254,180 @@
 				<fileset dir="${dist.src.dir}"/>
 			</tar>
 		</target>
+	
+	<target name="check-dist-database-properties" depends="init">
+		<condition property="dist.database.properties.set">
+			<and>
+				<isset property="impex.home.directory" />
+				<isset property="dist.database.svn.base" />
+				<isset property="dist.database.password" />
+				<isset property="dist.database.admin.user" />
+				<isset property="dist.database.admin.password" />
+			</and>
+		</condition>
 
-	<target name="dist-all" depends="clean, clean-maven, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
+		<fail unless="dist.database.properties.set">
+				
+Database packaging properties not set.
+	
+All of the following need to be set in your kuali-build.properties 
+file in your home directory (${user.home}) 
+in order to package the various Rice datasets.
+				
+1) impex.home.directory
+2) dist.database.svn.base
+3) dist.database.password
+4) dist.database.admin.user
+5) dist.database.admin.password
+
+			</fail>
+
+	</target>
+
+		
+	<target name="dist-impex" depends="init, check-dist-database-properties" description="Prepares a distribution of the impex tool">
+		<echo>Cleaning the impex project at ${impex.home.directory}</echo> 
+				
+		<ant dir="${impex.home.directory}" inheritall="false" target="clean"/>
+				
+		<echo>Copying the impex tool for packaging at ${dist.impex.dir}</echo> 
+				
+		<copy todir="${dist.impex.dir}">
+			<fileset dir="${impex.home.directory}"/>
+		</copy>
+	</target>
+	
+	<target name="dist-server-datasets" depends="init, check-dist-database-properties" description="Creates distributions of the Rice server datasets and the Impex tool">
+
+		<property name="dist.dba.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/dba-server-dataset"/>
+		
+		<echo>Checking out the rice-cfg-dbs project from SVN to ${dist.dba.server.dataset.dir}</echo>
+		
+		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
+			<property name="svn.base" value="${dist.database.svn.base}"/>
+			<property name="torque.schema.dir" value="${dist.dba.server.dataset.dir}"/>
+			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
+		</ant>
+		
+		<echo>Importing the master database into the RICEPACKAGING database.</echo>
+		<echo>Also executing the demo dataset cleanup script after import, this will create our demo database.</echo>
+		
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="import.torque.database.password" value="${dist.database.password}"/>
+			<property name="torque.schema.dir" value="${dist.dba.server.dataset.dir}"/>
+			<property name="torque.sql.dir" value="${dist.dba.server.dataset.dir}/sql"/>
+			<property name="import.admin.user" value="${dist.database.admin.user}"/>
+			<property name="import.admin.password" value="${dist.database.admin.password}"/>
+			<property name="post.import.script.files" value="${basedir}/scripts/dataset/demo-server-dataset-cleanup.sql"/>
+			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
+			<target name="empty-schema"/>
+			<target name="import"/>
+		</ant>
+		
+		<property name="dist.demo.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/demo-server-dataset"/>
+		
+		<echo>Exporting the demo database to create our demo dataset at ${dist.demo.server.dataset.dir}</echo>
+		
+		<mkdir dir="${dist.demo.server.dataset.dir}"/>
+		<touch file="${dist.demo.server.dataset.dir}/schema.xml"/>
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="export.torque.database.password" value="${dist.database.password}"/>
+			<property name="torque.schema.dir" value="${dist.demo.server.dataset.dir}"/>
+			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
+			<target name="export"/>
+		</ant>
+		
+		<echo>Running the bootstrap dataset cleanup against the RICEPACKAGING database.</echo>
+		
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="import.torque.database.password" value="${dist.database.password}"/>
+			<property name="post.import.script.files" value="${basedir}/scripts/dataset/bootstrap-server-dataset-cleanup.sql"/>
+			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
+			<target name="inittasks"/>		
+			<target name="post-import-sql"/>
+		</ant>
+		
+		<property name="dist.bootstrap.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/bootstrap-server-dataset"/>
+		
+		<echo>Exporting the bootstrap database to create our bootstrap dataset at ${dist.bootstrap.server.dataset.dir}</echo>
+
+		<mkdir dir="${dist.bootstrap.server.dataset.dir}"/>
+		<touch file="${dist.bootstrap.server.dataset.dir}/schema.xml"/>
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="export.torque.database.password" value="${dist.database.password}"/>
+			<property name="torque.schema.dir" value="${dist.bootstrap.server.dataset.dir}"/>
+			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
+			<target name="export"/>
+		</ant>
+	</target>
+
+	<target name="dist-client-datasets" depends="init, check-dist-database-properties" description="Creates distributions of the various Rice client datasets and the Impex tool">
+
+		<property name="dist.dba.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/dba-client-dataset"/>
+		
+		<echo>Checking out the rice-client-db project from SVN to ${dist.dba.client.dataset.dir}</echo>
+		
+		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
+			<property name="svn.base" value="${dist.database.svn.base}"/>
+			<property name="torque.schema.dir" value="${dist.dba.client.dataset.dir}"/>
+			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
+		</ant>
+		
+		<echo>Importing the master database into the RICEPACKAGING database.</echo>
+		<echo>Also executing the demo dataset cleanup script after import, this will create our demo database.</echo>
+		
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="import.torque.database.password" value="${dist.database.password}"/>
+			<property name="torque.schema.dir" value="${dist.dba.client.dataset.dir}"/>
+			<property name="torque.sql.dir" value="${dist.dba.client.dataset.dir}/sql"/>
+			<property name="import.admin.user" value="${dist.database.admin.user}"/>
+			<property name="import.admin.password" value="${dist.database.admin.password}"/>
+			<property name="post.import.script.files" value="${basedir}/scripts/dataset/demo-client-dataset-cleanup.sql"/>
+			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
+			<target name="empty-schema"/>
+			<target name="import"/>
+		</ant>
+		
+		<property name="dist.demo.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/demo-client-dataset"/>
+		
+		<echo>Exporting the demo database to create our demo dataset at ${dist.demo.client.dataset.dir}</echo>
+		
+		<mkdir dir="${dist.demo.client.dataset.dir}"/>
+		<touch file="${dist.demo.client.dataset.dir}/schema.xml"/>
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="export.torque.database.password" value="${dist.database.password}"/>
+			<property name="torque.schema.dir" value="${dist.demo.client.dataset.dir}"/>
+			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
+			<target name="export"/>
+		</ant>
+		
+		<echo>Running the bootstrap dataset cleanup against the RICEPACKAGING database.</echo>
+		
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="import.torque.database.password" value="${dist.database.password}"/>
+			<property name="post.import.script.files" value="${basedir}/scripts/dataset/bootstrap-client-dataset-cleanup.sql"/>
+			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
+			<target name="inittasks"/>		
+			<target name="post-import-sql"/>
+		</ant>
+		
+		<property name="dist.bootstrap.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/bootstrap-client-dataset"/>
+		
+		<echo>Exporting the bootstrap database to create our bootstrap dataset at ${dist.bootstrap.client.dataset.dir}</echo>
+
+		<mkdir dir="${dist.bootstrap.client.dataset.dir}"/>
+		<touch file="${dist.bootstrap.client.dataset.dir}/schema.xml"/>
+		<ant dir="${impex.home.directory}" inheritall="false">
+			<property name="export.torque.database.password" value="${dist.database.password}"/>
+			<property name="torque.schema.dir" value="${dist.bootstrap.client.dataset.dir}"/>
+			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
+			<target name="export"/>
+		</ant>
+	</target>
+
+	<target name="dist-database" depends="dist-impex, dist-server-datasets, dist-client-datasets" description="Creates all database distributions"/>
+	
+	<target name="dist-all" depends="clean, clean-maven, dist-database, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
 	
 	<!-- Used for deployments on the server -->
 	<target name="dist" depends="dist-server">

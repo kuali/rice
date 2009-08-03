@@ -24,12 +24,6 @@
 -- ############################################################################
 --
 -- # IMPORTANT! ###############################################################
--- # This script is designed to run against an Oracle DB.  There are a few    # 
--- # lines below that are commented out and need to be changed if you want to #
--- # run this against mysql.												  #
--- ############################################################################
---
--- # IMPORTANT! ###############################################################
 -- # The demo-server-dataset-cleanup.sql should be run against the database   # 
 -- # prior to this script!													  #
 -- ############################################################################
@@ -47,11 +41,6 @@ BEGIN
    END LOOP; 
 END;
 /
-
--- the mysql way to disable constraints
--- SET foreign_key_checks = 0
--- /
-
 
 -- ##############
 -- # KEW Tables #
@@ -275,17 +264,16 @@ drop table trv_acct
 drop table trv_acct_ext
 /
 drop table trv_acct_fo
-/ 
+/
 drop table trv_acct_type
-/ 
+/
 drop table trv_doc_2
-/ 
+/
 drop table trv_doc_acct
-/ 
+/
 drop sequence trv_fo_id_s
 /
--- for mysql
--- drop table trv_fo_id_s
+
 drop table kr_kim_test_bo
 /
 
@@ -302,7 +290,3 @@ BEGIN
    END LOOP; 
 END;
 /
-
--- the mysql way to re-enable constraints
--- SET foreign_key_checks = 1
--- /

@@ -50,7 +50,7 @@ delete from krsb_qrtz_calendars
 delete from krsb_qrtz_paused_trigger_grps
 /
 delete from krsb_qrtz_scheduler_state 
-/ 
+/
 
 -- Message Queue Tables - tables should be emptied
 
@@ -72,7 +72,7 @@ delete from krsb_msg_que_t
 delete from krns_adhoc_rte_actn_recip_t
 /
 delete from krns_att_t
-/ 
+/
 delete from krns_lookup_rslt_t
 /
 delete from krns_lookup_sel_t
@@ -90,4 +90,4 @@ delete from krns_pessimistic_lock_t
 delete from krns_sesn_doc_t
 /
 delete from krns_doc_hdr_t
-/ 
+/

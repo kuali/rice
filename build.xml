@@ -14,7 +14,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project name="Kuali Rice" default="dist-binary" xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors">
+<project name="Kuali Rice" default="dist-all" xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors">
 	<target name="echo-properties" depends="init" description="print build environment properties to console">
 	   <echoproperties/>
 	</target>
@@ -33,17 +33,39 @@
         <echo>${maven.project.dependencyManagement.dependencies}</echo>
 		<property name="dist.build.dir" value="target/ant-build"/>
 		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
-		<property name="dist.server.lib.dir" value="${dist.server.dir}/WEB-INF/lib"/>
+		<property name="dist.war.dir" value="${dist.build.dir}/dist-war"/>
+		<property name="dist.war.lib.dir" value="${dist.war.dir}/WEB-INF/lib"/>
 		<property name="webapp.src.dir" value="web/src/main/webapp"/>
-		<property name="server.config.src.dir" value="web/src/main/config/standalone-config"/>
+		<property name="war.config.src.dir" value="web/src/main/config/standalone-config"/>
 		<property name="dist.binary.dir" value="${dist.build.dir}/dist-binary/rice-${maven.project.version}-bin"/>
 		<property name="dist.binary.lib.dir" value="${dist.binary.dir}/lib"/>
-        <!-- target/ant-build/dist-binary-rice-<version>-bin/webcontent -->
 		<property name="dist.binary.webcontent.dir" value="${dist.binary.dir}/webcontent"/>
 		<property name="dist.binary.config.dir" value="${dist.binary.dir}/config"/>
 		<property name="dist.src.dir" value="${dist.build.dir}/dist-src/rice-${maven.project.version}-src"/>
+		
 		<property name="dist.impex.dir" value="${dist.build.dir}/database-impex"/>
 		<property name="dist.dataset.dir" value="${dist.build.dir}/datasets"/>
+		<property name="dist.dba.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/dba-server-dataset"/>
+		<property name="dist.demo.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/demo-server-dataset"/>
+		<property name="dist.bootstrap.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/bootstrap-server-dataset"/>
+		<property name="dist.dba.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/dba-client-dataset"/>
+		<property name="dist.demo.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/demo-client-dataset"/>
+		<property name="dist.bootstrap.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/bootstrap-client-dataset"/>
+		<condition property="dist.server.datasets.exist">
+			<and>
+				<available file="${dist.dba.server.dataset.dir}"/>
+				<available file="${dist.demo.server.dataset.dir}"/>
+				<available file="${dist.bootstrap.server.dataset.dir}"/>
+			</and>
+		</condition>
+		<condition property="dist.client.datasets.exist">
+			<and>
+				<available file="${dist.dba.client.dataset.dir}"/>
+				<available file="${dist.demo.client.dataset.dir}"/>
+				<available file="${dist.bootstrap.client.dataset.dir}"/>
+			</and>
+		</condition>
+		
 		<property name="junit.report.dir" value="target/junitreport"/>
 		<property name="groovy.lib.dir" value="scripts/groovy-1.5.4/lib"/>
 		<property name="oracle.driver.version" value="10.2.0.3.0"/>
@@ -65,51 +87,7 @@
 	</target>
 	
 	<target name="clean" description="Cleans the temporary build files." depends="init">
-		<delete dir="${dist.build.dir}"/>
-		<delete dir="target" includes="rice-${maven.project.version}-*"/>
-	</target>
-	
-	<target name="clean-maven" depends="init">
 		<maven goals="clean"/>
-	</target>
-	
-	<target name="tests" depends="init">
-		<!-- I hate doing logic in Ant :( 
-			Basically, if they don't pass in an alt.config.location, I don't want to pass that property to Maven
-		-->
-		<condition property="alt.config.location.prop" value="alt.config.location" else="property.name.that.means.nothing">
-			<isset property="alt.config.location"/>
-		</condition>
-		<condition property="alt.log4j.config.location.prop" value="alt.log4j.config.location" else="property.name.that.means.nothing">
-		    <isset property="alt.log4j.config.location"/>
-		</condition>
-		<condition property="maven.test.name.prop" value="test" else="property.name.that.means.nothing">
-			<isset property="maven.test.name"/>
-		</condition>
-		<maven goals="clean test site" options="-U -D${alt.config.location.prop}=${alt.config.location} -D${alt.log4j.config.location.prop}=${alt.log4j.config.location} -D${maven.test.name.prop}=${maven.test.name} -DfailIfNoTests=false"/>
-		<mkdir dir="${junit.report.dir}"/>
-		<junitreport todir="${junit.report.dir}">
-			<fileset dir="${basedir}">
-				<include name="**/target/surefire-reports/*.xml" />
-			</fileset>
-			<report format="frames" todir="${junit.report.dir}" />
-		</junitreport>
-		<antcall target="check-failure"/>
-	</target>
-	
-	<target name="check-failure" depends="init">
-		<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy">
-			<classpath>
-				<fileset dir="${groovy.lib.dir}" includes="*.jar"/>
-			</classpath>
-		</taskdef>
-		<groovy src="scripts/CheckTestResults.groovy" >
-			<classpath>
-				<fileset dir="${groovy.lib.dir}" includes="*.jar"/>
-			</classpath>
-		</groovy>
-		<fail if="testsfailed" message="One or more test failures was detected!"/>
-		<fail if="notestreports" message="Failed to locate junit test reports!"/>
 	</target>
 	
 	<target name="update-eclipse-classpath" depends="init" description="Updates Eclipse classpath">
@@ -154,33 +132,53 @@
 	</target>
 
     <!-- unzip src is made when prepare-lib dep calls install-rice-jars -->	
-	<target name="dist-server" depends="init-jta-excludes, prepare-lib" description="Builds and packages the Rice server distribution">
+	<target name="dist-war" depends="init-jta-excludes, prepare-lib">
 		<echo>jta.excludes: ${jta.excludes}</echo>
 
-		<unzip src="web/target/rice-web-${maven.project.version}.war" dest="${dist.server.dir}"/>
-		<copy todir="${dist.server.dir}">
-			<fileset dir="${server.config.src.dir}"/>
+		<unzip src="web/target/rice-web-${maven.project.version}.war" dest="${dist.war.dir}"/>
+		<copy todir="${dist.war.dir}">
+			<fileset dir="${war.config.src.dir}"/>
 		</copy>
 		<!-- change the environment code appropriately -->
 		<replaceregexp match="\b(dev|snd|unt|reg|stg|trn|prd)\b" replace="${rice.environment}" byline="true" flags="g">
-			<fileset dir="${dist.server.dir}">
+			<fileset dir="${dist.war.dir}">
 				<include name="**/web.xml" />
 			</fileset>
 		</replaceregexp>
-		<jar destfile="target/rice-${maven.project.version}-server.war">
-			<fileset dir="${dist.server.dir}" excludes="${jta.excludes}"/>
+		<jar destfile="target/${rice.app.code}-${rice.environment}.war">
+			<fileset dir="${dist.war.dir}" excludes="${jta.excludes}"/>
 		</jar>
 	</target>
 	
-    <target name="maven-install-server-war" depends="dist-server" description="Builds, packages, and installs the Rice Server war file into the local maven repository">
-        <maven goals="install:install-file" options="-DgroupId=org.kuali.rice -DartifactId=rice-server -Dversion=${maven.project.version} -Dpackaging=war -Dfile=target/rice-${maven.project.version}-server.war"/>
-    </target>
-    
-    <target name="maven-install-server-jar" depends="dist-server" description="Builds, packages, and installs the Rice server jar file into the local maven repository">
-        <maven goals="install:install-file" options="-DgroupId=org.kuali.rice -DartifactId=rice-server -Dversion=${maven.project.version} -Dpackaging=jar -Dfile=target/rice-${maven.project.version}-server.war"/>
-    </target>
+	<target name="dist-server" depends="dist-database, dist-war" description="Builds and packages the Rice server distribution">
+		<copy todir="${dist.server.dir}" file="target/${rice.app.code}-${rice.environment}.war"/>
+		<copy todir="${dist.server.dir}">
+			<fileset dir=".">
+				<include name="licenses/**"/>
+				<include name="scripts/**"/>
+				<include name="security/**"/>
+				<include name="*.txt"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${dist.server.dir}/database"/>
+		<copy todir="${dist.server.dir}/database" >
+			<fileset dir="${dist.impex.dir}"/>
+			<fileset dir="${dist.demo.server.dataset.dir}"/>
+			<fileset dir="${dist.bootstrap.server.dataset.dir}"/>
+		</copy>
+		<zip destfile="target/rice-${maven.project.version}-server.zip">
+			<fileset dir="${dist.server.dir}"/>
+		</zip>
+		<!--
+		<tar destfile="target/rice-${maven.project.version}-server.tar.gz" compression="gzip" longfile="gnu">
+			<fileset dir="${dist.server.dir}"/>
+		</tar>
+		<tar destfile="target/rice-${maven.project.version}-server.tar.bz2" compression="bzip2" longfile="gnu">
+			<fileset dir="${dist.server.dir}"/>
+		</tar> -->
+	</target>
 
-	<target name="dist-binary" depends="init" description="Creates Kuali Rice binary packages.">
+	<target name="dist-binary" depends="init, dist-database" description="Creates Kuali Rice binary packages.">
 		<artifact:install file="pom.xml">
 			<pom refid="maven.project" />
 		</artifact:install>
@@ -213,6 +211,14 @@
 				<include name="security/**"/>
 				<include name="*.txt"/>
 			</fileset>
+		</copy>
+		<mkdir dir="${dist.binary.dir}/database"/>
+		<copy todir="${dist.binary.dir}/database" >
+			<fileset dir="${dist.impex.dir}"/>
+			<fileset dir="${dist.demo.server.dataset.dir}"/>
+			<fileset dir="${dist.bootstrap.server.dataset.dir}"/>
+			<fileset dir="${dist.demo.client.dataset.dir}"/>
+			<fileset dir="${dist.bootstrap.client.dataset.dir}"/>
 		</copy>
 		<copy todir="${dist.binary.webcontent.dir}">
 			<fileset dir="web/src/main/webapp">
@@ -280,7 +286,7 @@ in order to package the various Rice datasets.
 4) dist.database.admin.user
 5) dist.database.admin.password
 
-			</fail>
+		</fail>
 
 	</target>
 
@@ -297,10 +303,8 @@ in order to package the various Rice datasets.
 		</copy>
 	</target>
 	
-	<target name="dist-server-datasets" depends="init, check-dist-database-properties" description="Creates distributions of the Rice server datasets and the Impex tool">
+	<target name="dist-server-datasets" depends="init, check-dist-database-properties" unless="dist.server.datasets.exist" description="Creates distributions of the Rice server datasets and the Impex tool">
 
-		<property name="dist.dba.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/dba-server-dataset"/>
-		
 		<echo>Checking out the rice-cfg-dbs project from SVN to ${dist.dba.server.dataset.dir}</echo>
 		
 		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
@@ -324,7 +328,7 @@ in order to package the various Rice datasets.
 			<target name="import"/>
 		</ant>
 		
-		<property name="dist.demo.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/demo-server-dataset"/>
+		
 		
 		<echo>Exporting the demo database to create our demo dataset at ${dist.demo.server.dataset.dir}</echo>
 		
@@ -347,8 +351,6 @@ in order to package the various Rice datasets.
 			<target name="post-import-sql"/>
 		</ant>
 		
-		<property name="dist.bootstrap.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/bootstrap-server-dataset"/>
-		
 		<echo>Exporting the bootstrap database to create our bootstrap dataset at ${dist.bootstrap.server.dataset.dir}</echo>
 
 		<mkdir dir="${dist.bootstrap.server.dataset.dir}"/>
@@ -361,10 +363,8 @@ in order to package the various Rice datasets.
 		</ant>
 	</target>
 
-	<target name="dist-client-datasets" depends="init, check-dist-database-properties" description="Creates distributions of the various Rice client datasets and the Impex tool">
+	<target name="dist-client-datasets" depends="init, check-dist-database-properties" unless="dist.client.datasets.exist" description="Creates distributions of the various Rice client datasets and the Impex tool">
 
-		<property name="dist.dba.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/dba-client-dataset"/>
-		
 		<echo>Checking out the rice-client-db project from SVN to ${dist.dba.client.dataset.dir}</echo>
 		
 		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
@@ -388,8 +388,6 @@ in order to package the various Rice datasets.
 			<target name="import"/>
 		</ant>
 		
-		<property name="dist.demo.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/demo-client-dataset"/>
-		
 		<echo>Exporting the demo database to create our demo dataset at ${dist.demo.client.dataset.dir}</echo>
 		
 		<mkdir dir="${dist.demo.client.dataset.dir}"/>
@@ -411,8 +409,6 @@ in order to package the various Rice datasets.
 			<target name="post-import-sql"/>
 		</ant>
 		
-		<property name="dist.bootstrap.client.dataset.dir" value="${basedir}/${dist.dataset.dir}/bootstrap-client-dataset"/>
-		
 		<echo>Exporting the bootstrap database to create our bootstrap dataset at ${dist.bootstrap.client.dataset.dir}</echo>
 
 		<mkdir dir="${dist.bootstrap.client.dataset.dir}"/>
@@ -423,15 +419,16 @@ in order to package the various Rice datasets.
 			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
 			<target name="export"/>
 		</ant>
+		
 	</target>
 
 	<target name="dist-database" depends="dist-impex, dist-server-datasets, dist-client-datasets" description="Creates all database distributions"/>
 	
-	<target name="dist-all" depends="clean, clean-maven, dist-database, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
+	<target name="dist-all" depends="clean, dist-database, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
 	
-	<!-- Used for deployments on the server -->
-	<target name="dist" depends="dist-server">
-		<copy file="target/rice-${maven.project.version}-server.war" tofile="${rice.app.code}-${rice.environment}.war"/>
+	<!-- Used for deployments in the kuali test environments -->
+	<target name="dist" depends="dist-war">
+		<copy file="target/${rice.app.code}-${rice.environment}.war" todir="${basedir}"/>
 	</target>
 	
 	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM and groovy scripts to">

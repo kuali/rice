@@ -524,30 +524,29 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	
 	public <T extends BusinessObject> boolean canFullyUnmaskField(Person user,
 			Class<T> businessObjectClass, String fieldName, Document document) {
-
-		// BEGIN band-aid fix for KULRICE-3365
-		// TODO: refactor, this requires too much knowledge of DocumentHelperServiceImpl
-		boolean useDocumentAuthorizer = 
-			document != null &&
-			document.getDocumentHeader() != null &&
-			document.getDocumentHeader().hasWorkflowDocument();
-
-		if (!useDocumentAuthorizer) {
-	    // END band-aid fix for KULRICE-3365 -- un-comment the following line after removing
-		//if ( document == null )
-			return getIdentityManagementService().isAuthorizedByTemplateName(
+		Boolean result = null;
+		if (document != null) { // if a document was passed, evaluate the permission in the context of a document
+			try { // try/catch and fallthrough is a fix for KULRICE-3365
+				result = getDocumentHelperService().getDocumentAuthorizer( document )
+				.isAuthorizedByTemplate( document, 
+						KNSConstants.KNS_NAMESPACE, 
+						KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, 
+						user.getPrincipalId(), getFieldPermissionDetails(businessObjectClass, fieldName), null  );
+			} catch (IllegalArgumentException e) { 
+				// document didn't have needed metadata
+				// TODO: this requires intimate knowledge of DocumentHelperServiceImpl 
+			} 
+		}
+		if (result == null) { 
+			result = getIdentityManagementService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
 					KNSConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
 					new AttributeSet(getFieldPermissionDetails(businessObjectClass, fieldName)), 
 					null);
-		} else { // if a document was passed, evaluate the permission in the context of a document
-			return getDocumentHelperService().getDocumentAuthorizer( document )
-					.isAuthorizedByTemplate( document, 
-											 KNSConstants.KNS_NAMESPACE, 
-											 KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, 
-											 user.getPrincipalId(), getFieldPermissionDetails(businessObjectClass, fieldName), null  );
 		}
+		return result; // should be safe to return Boolean here since the only circumstances that
+		               // will leave it null will result in an exception being thrown above.
 	}
 
 	public <T extends BusinessObject> boolean canPartiallyUnmaskField(

@@ -161,9 +161,13 @@
 			</fileset>
 		</copy>
 		<mkdir dir="${dist.server.dir}/database"/>
-		<copy todir="${dist.server.dir}/database" >
+		<copy todir="${dist.server.dir}/database/database-impex">
 			<fileset dir="${dist.impex.dir}"/>
+		</copy>
+		<copy todir="${dist.server.dir}/database/demo-server-dataset">
 			<fileset dir="${dist.demo.server.dataset.dir}"/>
+		</copy>
+		<copy todir="${dist.server.dir}/database/bootstrap-server-dataset">
 			<fileset dir="${dist.bootstrap.server.dataset.dir}"/>
 		</copy>
 		<zip destfile="target/rice-${maven.project.version}-server.zip">
@@ -212,11 +216,19 @@
 			</fileset>
 		</copy>
 		<mkdir dir="${dist.binary.dir}/database"/>
-		<copy todir="${dist.binary.dir}/database" >
+		<copy todir="${dist.binary.dir}/database/database-impex">
 			<fileset dir="${dist.impex.dir}"/>
+		</copy>
+		<copy todir="${dist.binary.dir}/database/demo-server-dataset">
 			<fileset dir="${dist.demo.server.dataset.dir}"/>
+		</copy>
+		<copy todir="${dist.binary.dir}/database/bootstrap-server-dataset">
 			<fileset dir="${dist.bootstrap.server.dataset.dir}"/>
+		</copy>
+		<copy todir="${dist.binary.dir}/database/demo-client-dataset">
 			<fileset dir="${dist.demo.client.dataset.dir}"/>
+		</copy>
+		<copy todir="${dist.binary.dir}/database/bootstrap-client-dataset">
 			<fileset dir="${dist.bootstrap.client.dataset.dir}"/>
 		</copy>
 		<copy todir="${dist.binary.webcontent.dir}">

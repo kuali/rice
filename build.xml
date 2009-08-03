@@ -30,7 +30,7 @@
 		<property name="rice.environment" value="dev"/>
 		<property name="rice.app.code" value="kr"/>
 		<echo>The Kuali Rice version is ${maven.project.version}</echo>
-        <echo>${maven.project.dependencyManagement.dependencies}</echo>
+        <!-- echo>${maven.project.dependencyManagement.dependencies}</echo -->
 		<property name="dist.build.dir" value="target/ant-build"/>
 		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
 		<property name="dist.war.dir" value="${dist.build.dir}/dist-war"/>
@@ -132,7 +132,7 @@
 	</target>
 
     <!-- unzip src is made when prepare-lib dep calls install-rice-jars -->	
-	<target name="dist-war" depends="init-jta-excludes, prepare-lib">
+	<target name="dist-war" depends="init-jta-excludes, prepare-lib" description="Builds and packages the Rice server distribution">
 		<echo>jta.excludes: ${jta.excludes}</echo>
 
 		<unzip src="web/target/rice-web-${maven.project.version}.war" dest="${dist.war.dir}"/>
@@ -173,12 +173,13 @@
 		<zip destfile="target/rice-${maven.project.version}-server.zip">
 			<fileset dir="${dist.server.dir}"/>
 		</zip>
+		<!--
 		<tar destfile="target/rice-${maven.project.version}-server.tar.gz" compression="gzip" longfile="gnu">
 			<fileset dir="${dist.server.dir}"/>
 		</tar>
 		<tar destfile="target/rice-${maven.project.version}-server.tar.bz2" compression="bzip2" longfile="gnu">
 			<fileset dir="${dist.server.dir}"/>
-		</tar>
+		</tar> -->
 	</target>
 
 	<target name="dist-binary" depends="init, dist-database" description="Creates Kuali Rice binary packages.">
@@ -192,17 +193,11 @@
 				<rsel:name name="*ojdbc*.jar"/>
 			</rsel:not>
 			<rsel:not>
-				<rsel:name name="*jotm*.jar"/>
-			</rsel:not>
-			<rsel:not>
 				<rsel:name name="*junit*.jar"/>
 			</rsel:not>
 			<rsel:not>
 				<rsel:name name="*htmlunit*.jar"/>
 			</rsel:not>
-			<rsel:not>
-				<rsel:name name="*xapool*.jar"/>
-			</rsel:not> 
 	    </restrict>
 		<copy todir="${dist.binary.lib.dir}" flatten="true">
 			<restrict refid="rice-web-deps-exclusions"/>
@@ -271,9 +266,9 @@
 				<fileset dir="${dist.src.dir}"/>
 			</tar>
 		</target>
-	
+
 	<target name="check-dist-database-properties" depends="init">
-		<condition property="dist.database.properties.set">
+		<condition property=" -- the directory containing the impex directorydist.database.properties.set">
 			<and>
 				<isset property="impex.home.directory" />
 				<isset property="dist.database.svn.base" />
@@ -291,8 +286,8 @@ All of the following need to be set in your kuali-build.properties
 file in your home directory (${user.home}) 
 in order to package the various Rice datasets.
 				
-1) impex.home.directory
-2) dist.database.svn.base
+1) impex.home.directory -- the absolute path of the impex directory
+2) dist.database.svn.base -- the base path of the Rice master database project (rice-cfg-dbs) to use.  For example: branches/rice-release-1-0-0-br
 3) dist.database.password
 4) dist.database.admin.user
 5) dist.database.admin.password

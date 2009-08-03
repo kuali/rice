@@ -39,6 +39,7 @@ import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -196,16 +197,16 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         StringBuffer urlBuffer = new StringBuffer();
         
         if(user != null && StringUtils.isNotEmpty(linkBody) ) {
-            AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KimAttributes.PRINCIPAL_ID, false);
+        	ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(Person.class);
+        	Map<String, String[]> parameters = new HashMap<String, String[]>();
+        	parameters.put(KimAttributes.PRINCIPAL_ID, new String[] { user.getPrincipalId() });
+        	String inquiryUrl = moduleService.getExternalizableBusinessObjectInquiryUrl(Person.class, parameters);
             if(!StringUtils.equals(KimConstants.EntityTypes.SYSTEM, user.getEntityTypeCode())){
-	            String inquiryUrlSection = inquiryHref.getHref();
 	            urlBuffer.append("<a href='");
-	            urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
-	            urlBuffer.append("/kr/");
-	            urlBuffer.append(inquiryUrlSection);
+	            urlBuffer.append(inquiryUrl);
 	            urlBuffer.append("' ");
 	            urlBuffer.append("target='_blank'");
-	            urlBuffer.append("title='" + inquiryHref.getTitle() + "'>");
+	            urlBuffer.append("title='Person Inquiry'>");
 	            urlBuffer.append(linkBody);
 	            urlBuffer.append("</a>");
             } else{

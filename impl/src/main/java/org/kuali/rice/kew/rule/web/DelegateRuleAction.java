@@ -56,7 +56,8 @@ public class DelegateRuleAction extends KewKualiAction {
 			GlobalVariables.getMessageMap().putError(PARENT_RULE_PROPERTY, PARENT_RULE_ERROR);
 		} else {
 			RuleTemplate ruleTemplate = form.getParentRule().getRuleTemplate();
-			if (ruleTemplate.getDelegationTemplate() == null) {
+			if (ruleTemplate == null
+			        || ruleTemplate.getDelegationTemplate() == null) {
 				GlobalVariables.getMessageMap().putError(PARENT_RULE_PROPERTY, DELEGATE_RULE_INVALID_ERROR);
 			}
 		}

@@ -72,6 +72,14 @@ public class DelegateRuleForm extends KualiForm {
 	}
 
 	public void setParentRule(RuleBaseValues parentRule) {
+	    if (this.parentRule != null 
+	            && parentRule != null
+	            && this.parentResponsibility != null) {
+	        if (this.parentRule.getRuleBaseValuesId().longValue() != parentRule.getRuleBaseValuesId().longValue()) {
+	            this.parentResponsibility = null;
+	            this.parentResponsibilityId = null;
+	        }
+	    }
 		this.parentRule = parentRule;
 	}
 
@@ -139,11 +147,15 @@ public class DelegateRuleForm extends KualiForm {
 			for (RuleResponsibility responsibility : getParentRule().getResponsibilities()) {
 				if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType())) {
 					KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(responsibility.getRuleResponsibilityName());
-					reviewers.add(principal.getPrincipalName());
+					if (principal != null) {
+					    reviewers.add(principal.getPrincipalName());
+					}
 					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL);
 				} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
 					Group group = KIMServiceLocator.getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName());
-					reviewers.add(group.getNamespaceCode() + " " + group.getGroupName());
+					if (group != null) {
+					    reviewers.add(group.getNamespaceCode() + " " + group.getGroupName());
+					}
 					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID_LABEL);
 				} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(responsibility.getRuleResponsibilityType())) {
 					reviewers.add(responsibility.getResolvedRoleName());

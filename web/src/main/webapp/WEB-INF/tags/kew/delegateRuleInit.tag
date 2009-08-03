@@ -19,7 +19,7 @@
 
     <div class="tab-container" align=center >
         <h3>Select Parent Rule</h3>
-	    <table cellpadding=0 class="datatable" summary="Parent Rule Section">
+	    <table cellpadding="0" cellspacing="0" class="datatable" summary="Parent Rule Section">
 			<tr>
 				<th align=right valign=middle class="bord-l-b">Select parent rule: </th>
 				<td align=left valign=middle class="datacell">
@@ -34,7 +34,7 @@
 
     <div class="tab-container" align=center >
         <h3>Select Parent Responsibility to Delegate From</h3>
-	    <table cellpadding=0 class="datatable" summary="Parent Responsibility Section">
+	    <table cellpadding="0" cellspacing="0" class="datatable" summary="Parent Responsibility Section">
 			<tr>
 				<th align=middle valign=middle class="bord-l-b" width="10%">Select</th>
 				<th align=middle valign=middle class="bord-l-b">Reviewer</th>

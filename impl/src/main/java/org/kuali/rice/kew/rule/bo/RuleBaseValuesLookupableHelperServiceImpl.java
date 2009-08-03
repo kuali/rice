@@ -77,7 +77,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "ruleTemplate.name";
     private static final String RULE_ID_PROPERTY_NAME = "ruleBaseValuesId";
-    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleBaseValuesId";
+    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplateId";
     private static final String ACTIVE_IND_PROPERTY_NAME = "activeInd";
     private static final String DELEGATE_RULE_PROPERTY_NAME = "delegateRule";
     private static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";

@@ -119,6 +119,7 @@
         </bean>
       </list>
     </property>
+    <property name="inquirableClass" value="org.kuali.rice.kns.inquiry.ParameterDetailTypeInquirableImpl"/>
   </bean>
 
 <!-- Business Object Lookup Definition -->

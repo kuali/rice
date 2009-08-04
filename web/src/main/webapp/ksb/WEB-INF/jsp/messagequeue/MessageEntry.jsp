@@ -107,7 +107,7 @@
 									  </c:if>
 									  <td class="datacell"><c:out value="${MessageQueueForm.messageQueueFromForm.routeQueueId}" />
 									  &nbsp;
-									  <bean-el:message key="routequeue.help.routeQueueId"/></td>
+									  <bean-el:message key="messagequeue.help.routeQueueId"/></td>
 				  		    </tr>
 
 				  		    <tr>
@@ -146,7 +146,7 @@
 				  		    			<c:when test="${inEditMode}">
 		                      <html-el:text property="messageQueueFromForm.queuePriority"/>
 								          &nbsp;
-								          <bean-el:message key="routequeue.help.queuePriority"/>
+								          <bean-el:message key="messagequeue.help.queuePriority"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
 				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.queuePriority}" />
@@ -172,7 +172,7 @@
 														<html-el:option value="${ksb_constant.ROUTE_QUEUE_EXCEPTION}"><c:out value="${ksb_constant.ROUTE_QUEUE_EXCEPTION_LABEL}" /></html-el:option>
 													</html-el:select>
 													&nbsp;
-													<bean-el:message key="routequeue.help.queueStatus"/></td>
+													<bean-el:message key="messagequeue.help.queueStatus"/></td>
 				  		    			</c:when>
 				  		    			<c:otherwise>
 				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.queueStatus}" />
@@ -195,7 +195,7 @@
 				  		    			<c:when test="${inEditMode}">
 													<html-el:text property="messageQueueFromForm.retryCount" size="5" maxlength="2" />
 													&nbsp;
-													<bean-el:message key="routequeue.help.retryCount"/>
+													<bean-el:message key="messagequeue.help.retryCount"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
 				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.retryCount}" />
@@ -216,7 +216,7 @@
 				  		    			<c:when test="${inEditMode}">
 													<html-el:text property="messageQueueFromForm.ipNumber" size="20" maxlength="15"/>
 													&nbsp;
-													<bean-el:message key="routequeue.help.ipNumber"/>
+													<bean-el:message key="messagequeue.help.ipNumber"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
 				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.ipNumber}" />
@@ -237,7 +237,7 @@
 				  		    			<c:when test="${inEditMode}">
 													<html-el:text property="messageQueueFromForm.serviceName" size="35" maxlength="50" />
 													&nbsp;
-													<bean-el:message key="routequeue.help.serviceName"/>
+													<bean-el:message key="messagequeue.help.serviceName"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
 				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.serviceName}" />
@@ -258,7 +258,7 @@
 				  		    			<c:when test="${inEditMode}">
 													<html-el:text property="messageQueueFromForm.serviceNamespace" size="35" maxlength="50" />
 													&nbsp;
-													<bean-el:message key="routequeue.help.serviceNamespace"/>
+													<bean-el:message key="messagequeue.help.serviceNamespace"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
 				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.serviceNamespace}" />
@@ -279,7 +279,7 @@
 				  		    			<c:when test="${inEditMode}">
 													<html-el:text property="messageQueueFromForm.methodName" size="35" maxlength="50" />
 													&nbsp;
-													<bean-el:message key="routequeue.help.methodName"/>
+													<bean-el:message key="messagequeue.help.methodName"/>
 				  		    			</c:when>
 				  		    			<c:otherwise>
 				  		    				<c:out value="${MessageQueueForm.messageQueueFromForm.methodName}" />

@@ -1143,4 +1143,11 @@ UPDATE krns_parm_dtl_typ_t SET parm_dtl_typ_cd = 'QuickLinks' WHERE parm_dtl_typ
 UPDATE krns_parm_t SET parm_dtl_typ_cd = 'PersonDocumentName' WHERE parm_dtl_typ_cd = 'EntityNameImpl'
 /
 
+-- KULRICE-3416
+UPDATE KREW_DOC_TYP_T SET DOC_HDLR_URL='${kr.url}/maintenance.do?methodToCall=docHandler' WHERE DOC_TYP_NM='RoutingRuleDocument' AND CUR_IND=1
+/
+
+UPDATE KREW_DOC_TYP_T SET DOC_HDLR_URL='${kr.url}/maintenance.do?methodToCall=docHandler' WHERE DOC_TYP_NM='RoutingRuleDelegationMaintenanceDocument' AND CUR_IND=1
+/
+
 -- 08-04-2009 - last entry

@@ -18,7 +18,7 @@
     xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:output method="html" indent="yes"/>
-<xsl:include href="http://localhost:8080/en-dev/example3.xsl"/>
+<xsl:include href="example3.xsl"/>
 
 <xsl:template match="/">
   <html>

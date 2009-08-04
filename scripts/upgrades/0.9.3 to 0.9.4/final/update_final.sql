@@ -1132,4 +1132,15 @@ ALTER TABLE KREW_ACTN_ITM_T MODIFY (DOC_TYP_LBL VARCHAR2(128))
 /
 ALTER TABLE KREW_OUT_BOX_ITM_T MODIFY (DOC_TYP_LBL VARCHAR2(128))
 /
--- 07-24-2009 - last entry
+
+-- KULRICE-3408 - Certain parameters on the parameter lookup show blank component names
+INSERT INTO krns_parm_dtl_typ_t (nmspc_cd, parm_dtl_typ_cd, obj_id, ver_nbr, nm, actv_ind) 
+VALUES ('KR-WKFLW', 'All', SYS_GUID(), 1, 'All', 'Y')
+/
+
+UPDATE krns_parm_dtl_typ_t SET parm_dtl_typ_cd = 'QuickLinks' WHERE parm_dtl_typ_cd = 'QuickLink'
+/
+UPDATE krns_parm_t SET parm_dtl_typ_cd = 'PersonDocumentName' WHERE parm_dtl_typ_cd = 'EntityNameImpl'
+/
+
+-- 08-04-2009 - last entry

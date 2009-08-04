@@ -1,3 +1,0 @@
-For example, to change the version from 0.9.1-SNAPSHOT to 0.9.1, execute the following command from the root of the project.
-
-find . -name pom.xml | xargs perl -i -pe 's/0.9.1-SNAPSHOT/0.9.1/'

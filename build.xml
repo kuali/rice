@@ -66,8 +66,6 @@
 			</and>
 		</condition>
 		
-		<property name="junit.report.dir" value="target/junitreport"/>
-		<property name="groovy.lib.dir" value="scripts/groovy-1.5.4/lib"/>
 		<property name="oracle.driver.version" value="10.2.0.3.0"/>
 		<property name="default.jta.excludes" value="**/xapool*.jar, **/jotm*.jar, **/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>		
 		<property environment="env"/>

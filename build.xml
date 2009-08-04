@@ -155,6 +155,7 @@
 				<include name="licenses/**"/>
 				<include name="scripts/**"/>
 				<include name="security/**"/>
+				<include name="config/**"/>
 				<include name="*.txt"/>
 			</fileset>
 		</copy>
@@ -171,13 +172,12 @@
 		<zip destfile="target/rice-${maven.project.version}-server.zip">
 			<fileset dir="${dist.server.dir}"/>
 		</zip>
-		<!--
 		<tar destfile="target/rice-${maven.project.version}-server.tar.gz" compression="gzip" longfile="gnu">
 			<fileset dir="${dist.server.dir}"/>
 		</tar>
 		<tar destfile="target/rice-${maven.project.version}-server.tar.bz2" compression="bzip2" longfile="gnu">
 			<fileset dir="${dist.server.dir}"/>
-		</tar> -->
+		</tar>
 	</target>
 
 	<target name="dist-binary" depends="init, dist-database" description="Creates Kuali Rice binary packages.">
@@ -205,6 +205,7 @@
 				<include name="licenses/**"/>
 				<include name="scripts/**"/>
 				<include name="security/**"/>
+				<include name="config/**"/>
 				<include name="*.txt"/>
 			</fileset>
 		</copy>

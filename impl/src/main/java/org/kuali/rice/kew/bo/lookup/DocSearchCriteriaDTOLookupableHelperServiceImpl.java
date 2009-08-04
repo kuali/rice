@@ -278,9 +278,10 @@ KualiLookupableHelperServiceImpl {
                     	//ADDED 3
                     	if(prop!=null) {
                     		propertyTypes.put(propertyName, prop.getClass());
+                    		propClass = prop.getClass();
                     	}
 
-//                    	propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
+                    	//propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
 //                    	propertyTypes.put( col.getPropertyName(), propClass );
                     } catch (Exception e) {
 //                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);

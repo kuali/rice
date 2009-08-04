@@ -55,6 +55,8 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	protected String roleTypeName;
 	protected String roleNamespace = "";
 	protected String roleName = "";
+	protected String roleDescription = "";
+
 	protected boolean active = true;
 
 	protected boolean editing;
@@ -103,6 +105,20 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 */
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	/**
+	 * @return the roleDescription
+	 */
+	public String getRoleDescription() {
+		return this.roleDescription;
+	}
+
+	/**
+	 * @param roleDescription the roleDescription to set
+	 */
+	public void setRoleDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
 	}
 
 	/**

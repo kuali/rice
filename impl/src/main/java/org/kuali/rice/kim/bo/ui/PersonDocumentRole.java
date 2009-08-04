@@ -33,6 +33,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -121,6 +122,17 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	@Deprecated // for testing only
 	public void setKimRoleType(KimTypeInfo kimRoleType) {
 		this.kimRoleType = kimRoleType;
+	}
+
+	public AttributeDefinitionMap getDefinitionsKeyedByAttributeName() {
+		AttributeDefinitionMap definitionsKeyedBySortCode = getDefinitions();
+		AttributeDefinitionMap returnValue = new AttributeDefinitionMap();
+		if (definitionsKeyedBySortCode != null) {
+			for (AttributeDefinition definition : definitionsKeyedBySortCode.values()) {
+				returnValue.put(definition.getName(), definition);
+			}
+		}
+		return returnValue;
 	}
 
 	public AttributeDefinitionMap getDefinitions() {

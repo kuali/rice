@@ -24,6 +24,7 @@
         <ref bean="RoleImpl-kimTypeId"/>
         <ref bean="RoleImpl-kimRoleType.name"/>
         <ref bean="RoleImpl-roleName"/>
+        <ref bean="RoleImpl-roleDescription"/>
         <ref bean="RoleImpl-namespaceCode"/>
         <ref bean="RoleImpl-active"/>
         <ref bean="RoleImpl-principalName"/>
@@ -83,6 +84,20 @@
     </property>
   </bean>
   
+  <bean id="RoleImpl-roleDescription" parent="RoleImpl-roleDescription-parentBean"/>
+  <bean id="RoleImpl-roleDescription-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Desc"/>
+    <property name="maxLength" value="400"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="400"/>
+    </property>
+    <property name="control">
+      <bean parent="TextareaControlDefinition" p:cols="40" p:rows="3"/>
+    </property>
+    <property name="name" value="roleDescription"/>
+    <property name="label" value="Role Description"/>
+  </bean>
   
   <bean id="RoleImpl-namespaceCode" parent="RoleImpl-namespaceCode-parentBean"/>
   <bean id="RoleImpl-namespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true" p:name="namespaceCode" p:forceUppercase="false" p:label="Namespace" p:shortLabel="Namespace" p:maxLength="40" p:required="false">
@@ -214,6 +229,7 @@
         <bean parent="FieldDefinition" p:attributeName="kimRoleType.name"/>
         <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
         <bean parent="FieldDefinition" p:attributeName="roleName"/>
+        <bean parent="FieldDefinition" p:attributeName="roleDescription"/>
       </list>
     </property>
   </bean>

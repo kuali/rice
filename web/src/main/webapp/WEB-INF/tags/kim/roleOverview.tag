@@ -43,8 +43,8 @@
 	 	<tr>
 			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.active}"  /></div></th>
 	 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${roleAttributes.active}" readOnly="${readOnly}" /></td>
-	 		<th>&nbsp;</th>
-	 		<td>&nbsp;</td>
+			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.roleDescription}"  /></div></th>
+	 		<td><kul:htmlControlAttribute property="document.roleDescription" attributeEntry="${roleAttributes.roleDescription}" readOnly="true" /></td>
 	 	</tr>
 	</table> 
 

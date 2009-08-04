@@ -25,6 +25,7 @@
         <ref bean="PermissionImpl-namespaceCode"/>
         <ref bean="PermissionImpl-permissionId"/>
         <ref bean="PermissionImpl-name"/>
+        <ref bean="PermissionImpl-description"/>
         <ref bean="PermissionImpl-assignedToRoleNamespaceForLookup"/>
         <ref bean="PermissionImpl-assignedToRoleNameForLookup"/>
         <ref bean="PermissionImpl-roleId"/>
@@ -169,6 +170,21 @@
     </property>
   </bean>
 
+  <bean id="PermissionImpl-description" parent="PermissionImpl-description-parentBean"/>
+  <bean id="PermissionImpl-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Explanation"/>
+    <property name="maxLength" value="400"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="400"/>
+    </property>
+    <property name="control">
+      <bean parent="TextareaControlDefinition" p:cols="40" p:rows="3"/>
+    </property>
+    <property name="name" value="description"/>
+    <property name="label" value="Permission Description"/>
+  </bean>
+
   <bean id="PermissionImpl-assignedToRoleNamespaceForLookup" parent="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean"/>
   <bean id="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
   </bean>
@@ -235,6 +251,7 @@
 				<bean parent="FieldDefinition" p:attributeName="template.name"/>
 				<bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
 				<bean parent="FieldDefinition" p:attributeName="name"/>
+				<bean parent="FieldDefinition" p:attributeName="description"/>
 			</list>
           </property>
         </bean>
@@ -332,6 +349,7 @@
           <bean parent="FieldDefinition" p:attributeName="template.name"/>
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
        	  <bean parent="FieldDefinition" p:attributeName="name"/>
+       	  <bean parent="FieldDefinition" p:attributeName="description"/>
        	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay"/>
        	  <bean parent="FieldDefinition" p:attributeName="assignedToRolesToDisplay"/>
       </list>

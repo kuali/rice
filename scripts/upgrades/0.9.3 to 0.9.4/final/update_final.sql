@@ -1150,4 +1150,8 @@ UPDATE KREW_DOC_TYP_T SET DOC_HDLR_URL='${kr.url}/maintenance.do?methodToCall=do
 UPDATE KREW_DOC_TYP_T SET DOC_HDLR_URL='${kr.url}/maintenance.do?methodToCall=docHandler' WHERE DOC_TYP_NM='RoutingRuleDelegationMaintenanceDocument' AND CUR_IND=1
 /
 
--- 08-04-2009 - last entry
+-- KULRICE-3409 - Wildcards do not function properly on the Component search field of the Parameter lookup
+DELETE FROM krns_parm_dtl_typ_t WHERE nmspc_cd = 'KR-WKFLW' AND parm_dtl_typ_cd IN ('Rule', 'RuleTemplate');
+/
+
+-- 08-05-2009 - last entry

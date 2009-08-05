@@ -114,7 +114,7 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
         m.put("parameterNamespaceCode", getParameterNamespaceCode());
         m.put("parameterDetailTypeCode", getParameterDetailTypeCode());
         m.put("parameterDetailTypeName", getParameterDetailTypeName());
-
+        
         return m;
     }
 
@@ -136,7 +136,6 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
 		ParameterDetailType rhs = (ParameterDetailType)object;
 		return new EqualsBuilder()
 				.append( this.parameterDetailTypeCode, rhs.parameterDetailTypeCode )
-				.append( this.parameterDetailTypeName, rhs.parameterDetailTypeName )
 				.append( this.parameterNamespaceCode, rhs.parameterNamespaceCode ).isEquals();
 	}
 
@@ -146,7 +145,6 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
 	public int hashCode() {
 		return new HashCodeBuilder( -2037246405, 1981572401 )
 				.append( this.parameterDetailTypeCode )
-				.append( this.parameterDetailTypeName )
 				.append( this.parameterNamespaceCode ).toHashCode();
 	}
 	

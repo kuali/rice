@@ -1074,7 +1074,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 	
     protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
 		sb.append( "             Principal:  " ).append( principalId );
@@ -1097,11 +1097,15 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		} else {
 			sb.append( "                         [null]\n" );
 		}
-		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+		if (LOG.isTraceEnabled()) { 
+			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+		} else {
+			LOG.debug(sb.toString());
+		}
     }
 
     protected void logHasPermissionCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Has Perm for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
 		sb.append( "             Principal:  " ).append( principalId );
@@ -1118,7 +1122,11 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		} else {
 			sb.append( "                         [null]\n" );
 		}
-		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+		if (LOG.isTraceEnabled()) { 
+			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+		} else {
+			LOG.debug(sb.toString());
+		}
     }
 
 	public GroupUpdateService getGroupUpdateService() {

@@ -112,7 +112,7 @@ public class RoleRouteModule implements RouteModule {
 	}
 	
     protected void logQualifierCheck(String namespaceCode, String responsibilityName, AttributeSet responsibilityDetails, List<AttributeSet> qualifiers ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
 		sb.append( "             Details:\n" );
@@ -129,7 +129,11 @@ public class RoleRouteModule implements RouteModule {
 				sb.append( "                         [null]\n" );
 			}
 		}
-		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+		if (LOG.isTraceEnabled()) { 
+			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+		} else {
+			LOG.debug(sb.toString());
+		}
     }
 
     /**

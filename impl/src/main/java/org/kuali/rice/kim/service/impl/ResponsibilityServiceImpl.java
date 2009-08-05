@@ -216,7 +216,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     }
 
     protected void logResponsibilityCheck(String namespaceCode, String responsibilityName, AttributeSet responsibilityDetails, AttributeSet qualification ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
 		sb.append( "             Details:\n" );
@@ -231,7 +231,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 		} else {
 			sb.append( "                         [null]\n" );
 		}
-		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+		if (LOG.isTraceEnabled()) { 
+			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+		} else {
+			LOG.debug(sb.toString());
+		}
     }
     
     /**

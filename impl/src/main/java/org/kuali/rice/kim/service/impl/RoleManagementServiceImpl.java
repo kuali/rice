@@ -462,7 +462,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
     protected void logPrincipalHasRoleCheck(String principalId, List<String> roleIds, AttributeSet roleQualifiers ) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Has Role     : " ).append( roleIds ).append( '\n' );
 		if ( roleIds != null ) {
@@ -489,7 +489,11 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		} else {
 			sb.append( "               [null]\n" );
 		}
-		LOG.debug( sb.append( RiceDebugUtils.getTruncatedStackTrace(true) ).toString() );
+		if (LOG.isTraceEnabled()) { 
+			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+		} else {
+			LOG.debug(sb.toString());
+		}
     }
 
     /**

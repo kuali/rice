@@ -34,6 +34,12 @@ public class KualiDecimal extends AbstractKualiDecimal<KualiDecimal> {
     
     public static final int SCALE = 2;
     
+    /**
+     * No-arg constructor for serialization purposes
+     */
+    public KualiDecimal() {
+    }
+    
 	/**
 	 * This is the base constructor, used by constructors that take other types
 	 * 

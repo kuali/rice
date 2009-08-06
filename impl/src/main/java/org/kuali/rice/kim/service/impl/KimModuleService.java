@@ -188,7 +188,7 @@ public class KimModuleService extends ModuleServiceBase {
 			}
 		}
 		urlParameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObjectClassAttribute);
-        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL); // .PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
         urlParameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
 		return urlParameters;
 	}

@@ -93,7 +93,7 @@ public interface WorkflowUtility {
 
 	public ActionItemDTO[] getActionItems(
 			@WebParam(name = "documentId") Long documentId,
-			@WebParam(name = "documentId") String[] actionRequestedCodes)
+			@WebParam(name = "dactionRequestedCodes") String[] actionRequestedCodes)
 			throws WorkflowException;
 
 	public ActionRequestDTO[] getAllActionRequests(

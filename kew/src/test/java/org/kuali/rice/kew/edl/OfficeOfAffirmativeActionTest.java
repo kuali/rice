@@ -101,7 +101,7 @@ public class OfficeOfAffirmativeActionTest extends KEWTestCase {
         loadXmlFileFromFileSystem(OAA_DIR + "OfficeOfAffirmativeActionPilotRules.xml");
 
         // widgets
-        loadXmlFileFromFileSystem(getBaseDir() + "/../impl/src/main/config/bootstrap/widgets.xml");
+        loadXmlFileFromFileSystem(getBaseDir() + "/../config/edoclite/widgets.xml");
     }
 
 	@Test public void testOAAEdocLiteLoad() {

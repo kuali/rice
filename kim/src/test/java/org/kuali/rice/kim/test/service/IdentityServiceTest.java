@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
@@ -22,6 +26,8 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -41,6 +47,28 @@ public class IdentityServiceTest extends KIMTestCase {
 		GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
 	}
 
+	@Test
+	public void testGetDefaultNamesForEntityIds(){
+		List<String> entityIds= new ArrayList<String>();
+		entityIds.add("p1");
+		entityIds.add("kuluser");
+		Map<String,KimEntityNameInfo> results = identityService.getDefaultNamesForEntityIds(entityIds);
+		assertEquals(2,results.size());
+		assertTrue(results.containsKey("p1"));
+		assertTrue(results.containsKey("kuluser"));
+	}
+	
+	@Test
+	public void getDefaultNamesForPrincipalIds(){
+		List<String> principalIds= new ArrayList<String>();
+		principalIds.add("p1");
+		principalIds.add("KULUSER");
+		Map<String, KimEntityNamePrincipalNameInfo> results = identityService.getDefaultNamesForPrincipalIds(principalIds);
+		assertEquals(2,results.size());
+		assertTrue(results.containsKey("p1"));
+		assertTrue(results.containsKey("KULUSER"));
+	}
+	
 	@Test
 	public void testGetPrincipal() {
 		KimPrincipal principal = identityService.getPrincipal("KULUSER");

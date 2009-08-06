@@ -35,7 +35,6 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
@@ -60,7 +59,6 @@ import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
@@ -123,8 +121,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
-	        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
-			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
+//			try {
+	        KimTypeService kimTypeService = getKimTypeService(role.getKimRoleType());
+	        if ( kimTypeService != null ) {
+	        	role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
+	        }
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
             for (String key : role.getDefinitions().keySet()) {
@@ -320,11 +321,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        if(!validateRoleAssignment(personDocumentForm.getPersonDocument(), newRole)){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
-	        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(getKimTypeServiceName(newRole.getKimRoleType()));
+	        KimTypeService kimTypeService = getKimTypeService(newRole.getKimRoleType());
 	        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
 	        // role type populated from form is not a complete record
 	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
-	        newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimTypeId()));
+	        if ( kimTypeService != null ) {
+	        	newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimTypeId()));
+	        }
 	        KimDocumentRoleMember newRolePrncpl = newRole.getNewRolePrncpl();
 	        newRole.refreshReferenceObject("assignedResponsibilities");
 	        
@@ -478,15 +481,6 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 			throws Exception {
 
 		return super.save(mapping, form, request, response);
-	}
-	
-	private String getKimTypeServiceName (KimTypeInfo kimType) {
-    	String serviceName = kimType.getKimTypeServiceName();
-    	if (StringUtils.isBlank(serviceName)) {
-    		serviceName = "kimTypeService";
-    	}
-    	return serviceName;
-
 	}
 	
     @Override

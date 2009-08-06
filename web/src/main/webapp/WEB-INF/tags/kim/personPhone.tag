@@ -18,6 +18,7 @@
 <c:set var="docPhoneAttributes" value="${DataDictionary.PersonDocumentPhone.attributes}" />
 
 <c:set var="canModify" scope="request" value="${!KualiForm.document.privacy.suppressPhone || KualiForm.canOverrideEntityPrivacyPreferences}" />
+<c:set var="maskData" value="${KualiForm.document.privacy.suppressPhone && !KualiForm.canOverrideEntityPrivacyPreferences}" />
 
 <kul:subtab lookedUpCollectionName="phone" width="${tableWidth}" subTabTitle="Phone Numbers" noShowHideButton="true">      
     <table cellpadding="0" cellspacing="0" summary="">
@@ -86,16 +87,16 @@
                     </div>
                 </td>
                 <td>
-                    <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnlyEntity or !canModify}" />
+                    <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneNumber" attributeEntry="${docPhoneAttributes.phoneNumber}" readOnly="${readOnlyEntity or !canModify}"   displayMask="${maskData}" displayMaskValue="(XXX) XXX-XXXX" />
                     </div>
                 </td>
                 <td>     
                     <div align="center">            
-                      <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnlyEntity or !canModify}" />
+                      <kul:htmlControlAttribute property="document.phones[${status.index}].extensionNumber" attributeEntry="${docPhoneAttributes.extensionNumber}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XXXX" />
                     </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                    <div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnlyEntity or !canModify}" />
+                    <div align="center"><kul:htmlControlAttribute property="document.phones[${status.index}].countryCode" attributeEntry="${docPhoneAttributes.countryCode}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XX" />
                     </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">

@@ -18,6 +18,7 @@
 <c:set var="docEmailAttributes" value="${DataDictionary.PersonDocumentEmail.attributes}" />
 
 <c:set var="canModify" scope="request" value="${!KualiForm.document.privacy.suppressEmail || KualiForm.canOverrideEntityPrivacyPreferences}" />
+<c:set var="maskData" value="${KualiForm.document.privacy.suppressPhone && !KualiForm.canOverrideEntityPrivacyPreferences}" />
 
 <kul:subtab lookedUpCollectionName="email" width="${tableWidth}" subTabTitle="Email Addresses" noShowHideButton="true">      
     <table cellpadding="0" cellspacing="0" summary="">
@@ -69,7 +70,7 @@
                 </th>
                 <td>     
                     <div align="center">            
-                      <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity or !canModify}" />
+                      <kul:htmlControlAttribute property="document.emails[${status.index}].emailAddress" attributeEntry="${docEmailAttributes.emailAddress}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="xxxxx@xxx.xxx" />
                     </div>
                 </td>
                 <td align="left" valign="middle">

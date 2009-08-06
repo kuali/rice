@@ -18,6 +18,7 @@
 <c:set var="docNameAttributes" value="${DataDictionary.PersonDocumentName.attributes}" />
 
 <c:set var="canModify" scope="request" value="${!KualiForm.document.privacy.suppressName || KualiForm.canOverrideEntityPrivacyPreferences}" />
+<c:set var="maskData" value="${KualiForm.document.privacy.suppressName && !KualiForm.canOverrideEntityPrivacyPreferences}" />
 
 <kul:subtab lookedUpCollectionName="name" width="${tableWidth}" subTabTitle="Names" noShowHideButton="true">      
     <table cellpadding="0" cellspacing="0" summary="">
@@ -88,20 +89,20 @@
                     </div>
                 </td>
                 <td>
-                    <div align="center"> <kul:htmlControlAttribute property="document.names[${status.index}].title" attributeEntry="${docNameAttributes.title}" readOnly="${readOnlyEntity or !canModify}" />
+                    <div align="center"> <kul:htmlControlAttribute property="document.names[${status.index}].title" attributeEntry="${docNameAttributes.title}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
                     </div>
                 </td>
                 <td>     
                     <div align="center">            
-                      <kul:htmlControlAttribute property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity or !canModify}" />
+                      <kul:htmlControlAttribute property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
                     </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity or !canModify}" />
+                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].suffix" attributeEntry="${docNameAttributes.suffix}" readOnly="${readOnlyEntity or !canModify}" />
+                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].suffix" attributeEntry="${docNameAttributes.suffix}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">

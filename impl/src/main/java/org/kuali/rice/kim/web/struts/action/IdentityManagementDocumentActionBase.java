@@ -18,16 +18,20 @@ package org.kuali.rice.kim.web.struts.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
@@ -188,4 +192,23 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     public ActionForward changeNamespace(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return refresh(mapping, form, request, response);
     }
+
+    protected KimTypeService getKimTypeService( KimTypeInfo typeInfo ) {
+		String serviceName = typeInfo.getKimTypeServiceName();
+		if ( StringUtils.isNotBlank(serviceName) ) {
+			try {
+				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+				if ( service != null && service instanceof KimRoleTypeService ) {
+					return (KimRoleTypeService)service;
+				} else {
+					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+				}
+			} catch ( Exception ex ) {
+//				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
+				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+			}
+		}
+		return null;
+    }
+
 }

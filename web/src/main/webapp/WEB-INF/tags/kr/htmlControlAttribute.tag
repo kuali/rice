@@ -36,6 +36,8 @@
 <%@ attribute name="encryptValue" required="false"
 			  description="when readOnly or hidden field, boolean to indicate whether the value should
 			  be encrypted and display masked. Defaults to false." %>
+<%@ attribute name="displayMask" required="false"
+              description="Specify whether to mask the given field using the displayMaskValue rather than showing the actual value." %>
 <%@ attribute name="displayMaskValue" required="false"
 			  description="when a field is not to be displayed in clear text and encrypted as hidden, the
 			  string to display." %>

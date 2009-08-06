@@ -26,24 +26,6 @@
       <ref bean="PessimisticLock-lookupDefinition"/>
     </property>
     <property name="objectLabel" value="Pessimistic Lock"/>
-    <property name="relationships">
-      <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="ownedByUser"/>
-          <property name="primitiveAttributes">
-            <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="ownedByPrincipalIdentifier" p:targetName="principalId"/>
-            </list>
-          </property>
-          <property name="supportAttributes">
-            <list>
-              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="ownedByUser.principalName" p:targetName="principalName"/>
-              <bean parent="SupportAttributeDefinition" p:sourceName="ownedByUser.principalName" p:targetName="name"/>
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
     <property name="attributes">
       <list>
         <ref bean="PessimisticLock-id"/>
@@ -56,6 +38,24 @@
         <ref bean="PessimisticLock-objectId"/>
       </list>
     </property>
+    <property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="ownedByUser"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="ownedByPrincipalIdentifier" p:targetName="principalId"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="ownedByUser.principalName" p:targetName="principalName"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    
   </bean>
 
 <!-- Attribute Definitions -->
@@ -91,14 +91,19 @@
   </bean>
   <bean id="PessimisticLock-ownedByUser.principalName" parent="PessimisticLock-ownedByUser.principalName-parentBean"/>
 
-  <bean id="PessimisticLock-ownedByUser.principalName-parentBean" abstract="true" parent="PersonImpl-principalName">
+  <bean id="PessimisticLock-ownedByUser.principalName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Owner Prncpl Name"/>
     <property name="required" value="false"/>
-    <property name="control">
-      <bean parent="KualiUserControlDefinition" p:personNameAttributeName="ownedByUser.principalName" p:universalIdAttributeName="ownedByPrincipalIdentifier" p:userIdAttributeName="ownedByUser.principalName"/>
+    <property name="maxLength" value="80"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
     </property>
     <property name="name" value="ownedByUser.principalName"/>
     <property name="label" value="Lock Owner Principal Name"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="30"/>
+      <!-- <bean parent="KualiUserControlDefinition" p:personNameAttributeName="ownedByUser.name" p:universalIdAttributeName="ownedByPrincipalIdentifier" p:userIdAttributeName="ownedByUser.principalName"/>-->
+    </property>
   </bean>
   
   <!--  
@@ -189,11 +194,7 @@
     </property>
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="ownedByUser.principalName" p:noLookup="true"/>
-        <!--  
-        <bean parent="FieldDefinition"
-              p:attributeName="ownedByUser.principalName" />
-        -->
+        <bean parent="FieldDefinition" p:attributeName="ownedByUser.principalName" p:noDirectInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="ownedByPrincipalIdentifier"/>
         <bean parent="FieldDefinition" p:attributeName="lockDescriptor"/>
         <bean parent="FieldDefinition" p:attributeName="generatedTimestamp"/>

@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<ArrayList<StringEntNmPrncpInfoMapEntry>, Map<String, KimEntityNamePrincipalNameInfo>> {
+public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<StringEntNmPrncpInfoMapEntry[], Map<String, KimEntityNamePrincipalNameInfo>> {
 
 	/**
 	 * This overridden method ...
@@ -37,13 +37,15 @@ public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<Arr
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public ArrayList<StringEntNmPrncpInfoMapEntry> marshal(Map<String, KimEntityNamePrincipalNameInfo> map) throws Exception {
+	public StringEntNmPrncpInfoMapEntry[] marshal(Map<String, KimEntityNamePrincipalNameInfo> map) throws Exception {
 		if(null == map) return null;
-		ArrayList<StringEntNmPrncpInfoMapEntry> entryList = new ArrayList<StringEntNmPrncpInfoMapEntry>();
+		StringEntNmPrncpInfoMapEntry[] entryArray = new StringEntNmPrncpInfoMapEntry[map.size()];
+		int i = 0;
 		for (Map.Entry<String, KimEntityNamePrincipalNameInfo> e : map.entrySet()) {
-			entryList.add(new StringEntNmPrncpInfoMapEntry(e.getKey(), e.getValue()));
+			entryArray[i] = new StringEntNmPrncpInfoMapEntry(e.getKey(), e.getValue());
+			i++;
 		}
-		return entryList;
+		return entryArray;
 	}
 
 	/**
@@ -52,10 +54,11 @@ public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<Arr
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Map<String, KimEntityNamePrincipalNameInfo> unmarshal(ArrayList<StringEntNmPrncpInfoMapEntry> entryList) throws Exception {
-		if (null == entryList) return null;
-		Map<String, KimEntityNamePrincipalNameInfo> resultMap = new HashMap<String, KimEntityNamePrincipalNameInfo>();
-		for (StringEntNmPrncpInfoMapEntry entry : entryList) {
+	public Map<String, KimEntityNamePrincipalNameInfo> unmarshal(StringEntNmPrncpInfoMapEntry[] entryArray) throws Exception {
+		if (null == entryArray) return null;
+		Map<String, KimEntityNamePrincipalNameInfo> resultMap = new HashMap<String, KimEntityNamePrincipalNameInfo>(entryArray.length);
+		for (int i = 0; i < entryArray.length; i++) {
+			StringEntNmPrncpInfoMapEntry entry = entryArray[i];
 			resultMap.put(entry.key, entry.value);
 		}
 		return resultMap;

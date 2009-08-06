@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.jaxb;
 
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -40,18 +42,24 @@ public class StringMapEntry {
 	/**
 	 *
 	 */
-	public StringMapEntry() {
-	    super();
-	}
+	public StringMapEntry() {}
 	
 	/**
 	 * @param name
 	 * @param value
 	 */
 	public StringMapEntry(String key, String value) {
-	    super();
-	    
 	    this.key = key;
 	    this.value = value;
+	}
+
+	/**
+	 * This constructs a ...
+	 * 
+	 * @param e
+	 */
+	public StringMapEntry(Map.Entry<String, String> e) {
+	    this.key = e.getKey();
+	    this.value = e.getValue();
 	}
 }

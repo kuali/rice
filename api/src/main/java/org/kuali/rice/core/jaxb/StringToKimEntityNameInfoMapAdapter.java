@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.core.jaxb;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +28,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<ArrayList<StringEntityNameInfoMapEntry>, Map<String, KimEntityNameInfo>> {
+public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntityNameInfoMapEntry[], Map<String, KimEntityNameInfo>> {
 
 	/**
 	 * This overridden method ...
@@ -37,13 +36,15 @@ public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<ArrayList<St
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public ArrayList<StringEntityNameInfoMapEntry> marshal(Map<String, KimEntityNameInfo> map) throws Exception {
+	public StringEntityNameInfoMapEntry[] marshal(Map<String, KimEntityNameInfo> map) throws Exception {
 		if(null == map) return null;
-		ArrayList<StringEntityNameInfoMapEntry> entryList = new ArrayList<StringEntityNameInfoMapEntry>();
+		StringEntityNameInfoMapEntry[] entryArray = new StringEntityNameInfoMapEntry[map.size()];
+		int i = 0;
 		for (Map.Entry<String, KimEntityNameInfo> e : map.entrySet()) {
-			entryList.add(new StringEntityNameInfoMapEntry(e.getKey(), e.getValue()));
+			entryArray[i] = new StringEntityNameInfoMapEntry(e.getKey(), e.getValue());
+			i++;
 		}
-		return entryList;
+		return entryArray;
 	}
 
 	/**
@@ -52,10 +53,11 @@ public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<ArrayList<St
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Map<String, KimEntityNameInfo> unmarshal(ArrayList<StringEntityNameInfoMapEntry> entryList) throws Exception {
-		if (null == entryList) return null;
-		Map<String, KimEntityNameInfo> resultMap = new HashMap<String, KimEntityNameInfo>();
-		for (StringEntityNameInfoMapEntry entry : entryList) {
+	public Map<String, KimEntityNameInfo> unmarshal(StringEntityNameInfoMapEntry[] entryArray) throws Exception {
+		if (null == entryArray) return null;
+		Map<String, KimEntityNameInfo> resultMap = new HashMap<String, KimEntityNameInfo>(entryArray.length);
+		for (int i = 0; i < entryArray.length; i++) {
+			StringEntityNameInfoMapEntry entry = entryArray[i];
 			resultMap.put(entry.key, entry.value);
 		}
 		return resultMap;

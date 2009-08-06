@@ -16,8 +16,11 @@
 package org.kuali.rice.kns.util;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
@@ -30,12 +33,32 @@ public class GlobalVariables {
 
     private static ThreadLocal<UserSession> userSessions = new ThreadLocal<UserSession>();
     private static ThreadLocal<String> hideSessionFromTestsMessage = new ThreadLocal<String>();
-    private static ThreadLocal<MessageMap> messageMaps = new ThreadLocal<MessageMap>();
-    // todo: generic collections
-    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>();
-    private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>();
     private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
-    private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>();
+    
+    private static ThreadLocal<MessageMap> messageMaps = new ThreadLocal<MessageMap>()  {
+		protected MessageMap initialValue() {
+			return new MessageMap();
+		}
+	};
+	
+    // todo: generic collections
+    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>() {
+		protected MessageList initialValue() {
+			return new MessageList();
+		}
+	};
+	
+    private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>() {
+    	protected HashMap initialValue() {
+    		return new HashMap();
+    	}
+    };
+    
+    private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>() {
+    	protected HashMap<String, Object> initialValue() {
+    		return new HashMap<String, Object>();
+    	}
+    };
 
     /**
      * @return the UserSession that has been assigned to this thread of execution it is important that this not be called by

@@ -64,6 +64,9 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 		return members;
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
 	@Override
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,

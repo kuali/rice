@@ -16,11 +16,8 @@
  */
 package org.kuali.rice.kew.server;
 
-import java.util.List;
-
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;

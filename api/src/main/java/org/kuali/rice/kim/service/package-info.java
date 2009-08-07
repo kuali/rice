@@ -19,4 +19,4 @@
 	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.jaxb.SqlDateAdapter.class,type=java.sql.Date.class),
 	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.jaxb.SqlTimestampAdapter.class,type=java.sql.Timestamp.class),
 })
-package org.kuali.rice.kew.service;
+package org.kuali.rice.kim.service;

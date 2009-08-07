@@ -103,8 +103,8 @@ public interface RoleUpdateService {
     		@WebParam(name="delegationTypeCode") String delegationTypeCode, 
     		@WebParam(name="roleId") String roleId, 
     		@WebParam(name="qualifications") AttributeSet qualifications, 
-    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeFromDate") Date activeFromDate, 
-    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeToDate") Date activeToDate) throws UnsupportedOperationException;
+    		@WebParam(name="activeFromDate") Date activeFromDate, 
+    		@WebParam(name="activeToDate") Date activeToDate) throws UnsupportedOperationException;
 
     /**
      * Remove the principal with the given id and qualifications from the role

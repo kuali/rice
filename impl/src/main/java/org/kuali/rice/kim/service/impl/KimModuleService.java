@@ -188,7 +188,18 @@ public class KimModuleService extends ModuleServiceBase {
 			}
 		}
 		urlParameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObjectClassAttribute);
-        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL); // .PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
+		try{
+			Class inquiryBusinessObjectClass = Class.forName(businessObjectClassAttribute);
+			if(Role.class.isAssignableFrom(inquiryBusinessObjectClass) || 
+					Group.class.isAssignableFrom(inquiryBusinessObjectClass) || 
+					Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+		        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);			
+			} else{
+		        urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
+			}
+		} catch(Exception eix){
+			urlParameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL);
+		}
         urlParameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
 		return urlParameters;
 	}

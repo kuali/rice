@@ -25,8 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -45,7 +44,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
@@ -323,13 +322,12 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     private void setEmployeeRecordIds(){
-        KimEntityImpl origEntity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(getEntityId());
+    	List<KimEntityEmploymentInformationInfo> empInfos = getUiDocumentService().getEntityEmploymentInformationInfo(getEntityId());
         for(PersonDocumentAffiliation affiliation: getAffiliations()) {
-            int employeeRecordCounter = (origEntity==null || origEntity.getEmploymentInformation()==null)
-                                            ?0:origEntity.getEmploymentInformation().size();
+            int employeeRecordCounter = CollectionUtils.isEmpty(empInfos) ? 0 : empInfos.size();
             for(PersonDocumentEmploymentInfo empInfo: affiliation.getEmpInfos()){
-                if((origEntity!=null && origEntity.getEmploymentInformation()!=null)){
-                    for(KimEntityEmploymentInformationImpl origEmpInfo: origEntity.getEmploymentInformation()){
+                if(CollectionUtils.isNotEmpty(empInfos)){
+                    for(KimEntityEmploymentInformationInfo origEmpInfo: empInfos){
                         if (origEmpInfo.getEntityEmploymentId().equals(empInfo.getEntityEmploymentId())) {
                             empInfo.setEmploymentRecordId(origEmpInfo.getEmploymentRecordId());
                         }
@@ -412,12 +410,20 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 	}
 
 	private transient DocumentHelperService documentHelperService;
-	
+	private transient UiDocumentService uiDocumentService;
+		
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
 	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
+	}
+
+	protected UiDocumentService getUiDocumentService() {
+	    if (uiDocumentService == null ) {
+	    	uiDocumentService = KIMServiceLocator.getUiDocumentService();
+		}
+	    return this.uiDocumentService;
 	}
 
 }

@@ -36,6 +36,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
@@ -144,7 +145,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public void saveEntityPerson(
 			IdentityManagementPersonDocument identityManagementPersonDocument) {
 		KimEntityImpl kimEntity = new KimEntityImpl();
-		KimEntityImpl origEntity = ((IdentityServiceImpl)getIdentityService()).getEntityImpl(identityManagementPersonDocument.getEntityId());
+		KimEntityImpl origEntity = getEntityImpl(identityManagementPersonDocument.getEntityId());
 		if (origEntity == null) {
 			origEntity = new KimEntityImpl();
 			kimEntity.setActive(true);
@@ -272,7 +273,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(IdentityManagementPersonDocument, String)
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
-        KimPrincipalImpl principal = ((IdentityServiceImpl)getIdentityService()).getPrincipalImpl(principalId);
+        KimPrincipalImpl principal = getPrincipalImpl(principalId);
         if(principal==null)
         	throw new RuntimeException("Principal does not exist for principal id:"+principalId);
 
@@ -280,7 +281,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
-		KimEntityImpl kimEntity = ((IdentityServiceImpl)getIdentityService()).getEntityImpl(principal.getEntityId());
+		KimEntityImpl kimEntity = getEntityImpl(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getEntityId());
 		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
@@ -572,6 +573,34 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
     }
 
+	private KimPrincipalImpl getPrincipalImpl(String principalId) {
+		Map<String,String> criteria = new HashMap<String,String>(1);
+        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
+		return (KimPrincipalImpl)getBusinessObjectService().findByPrimaryKey(KimPrincipalImpl.class, criteria);
+	}
+
+	public List<KimEntityEmploymentInformationInfo> getEntityEmploymentInformationInfo(String entityId) {
+        KimEntityImpl entityImpl = getEntityImpl(entityId);
+        List<KimEntityEmploymentInformationInfo> empInfos = new ArrayList<KimEntityEmploymentInformationInfo>();
+        KimEntityEmploymentInformationInfo empInfo;
+        if(CollectionUtils.isNotEmpty(entityImpl.getEmploymentInformation())){
+        	for(KimEntityEmploymentInformationImpl empImpl: entityImpl.getEmploymentInformation()){
+            	empInfo = new KimEntityEmploymentInformationInfo(empImpl);
+            	empInfos.add(empInfo);
+        	}
+        }
+        return empInfos;
+	}
+	
+	private KimEntityImpl getEntityImpl(String entityId) {
+		Map<String,String> criteria = new HashMap<String,String>(1);
+        criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
+        KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, criteria);
+        if(entityImpl!=null)
+        	entityImpl.refresh();
+        return entityImpl;
+	}
+	
     @SuppressWarnings("unchecked")
 	protected List<RoleImpl> getRolesForPrincipal(String principalId) {
 		if ( principalId == null ) {

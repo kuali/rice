@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
@@ -121,4 +122,5 @@ public interface UiDocumentService {
 	public boolean canModifyEntity( String principalId );
 	public boolean canOverrideEntityPrivacyPreferences( String principalId );
 
+	public List<KimEntityEmploymentInformationInfo> getEntityEmploymentInformationInfo(String entityId);
 }

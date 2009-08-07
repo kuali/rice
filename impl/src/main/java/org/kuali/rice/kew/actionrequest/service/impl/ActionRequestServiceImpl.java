@@ -463,7 +463,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
         ActionRequestDAO arDAO = getActionRequestDAO();
-        Collection pendingArs = arDAO.findAllPendingByDocId(routeHeaderId);
+        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
         return findAllValidRequests(principalId, pendingArs, requestCode);
     }
 

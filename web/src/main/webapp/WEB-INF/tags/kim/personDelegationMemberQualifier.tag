@@ -48,9 +48,11 @@
 				       	<td align="left" valign="middle">
 				       		<div align="center"> 
 				      		   <kul:htmlControlAttribute property="document.delegationMembers[${delegationMemberIdx}].qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
-				       		   <c:if test="${!empty attr.lookupBoClass and not readOnly}">
-				       		       <kim:attributeLookup attributeDefinitions="${delegationMember.attributesHelper.definitions}" pathPrefix="document.delegationMembers[${delegationMemberIdx}]" attr="${attr}" />
-				          	   </c:if>
+				       		   <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
+                                   <c:if test="${!empty attr.lookupBoClass and not readOnly}">
+    				       		       <kim:attributeLookup attributeDefinitions="${delegationMember.attributesHelper.definitions}" pathPrefix="document.delegationMembers[${delegationMemberIdx}]" attr="${attr}" />
+    				          	   </c:if>
+                               </c:if>
 				  			</div>
 						</td>
 					</c:forEach>	

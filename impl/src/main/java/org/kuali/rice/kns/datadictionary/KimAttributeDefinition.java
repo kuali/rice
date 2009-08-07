@@ -20,7 +20,36 @@ package org.kuali.rice.kns.datadictionary;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimNonDataDictionaryAttributeDefinition extends KimAttributeDefinition {
-	private static final long serialVersionUID = -1889598053944123010L;
+public class KimAttributeDefinition extends AttributeDefinition {
+	private static final long serialVersionUID = -1889598053944123008L;
+	
+	private String sortCode;
+	protected String kimAttrDefnId;
 
+	/**
+	 * @return the sortCode
+	 */
+	public String getSortCode() {
+		return this.sortCode;
+	}
+
+	/**
+	 * @param sortCode
+	 *            the sortCode to set
+	 */
+	public void setSortCode(String sortCode) {
+		this.sortCode = sortCode;
+	}
+
+	public String getKimAttrDefnId() {
+		return this.kimAttrDefnId;
+	}
+
+	public void setKimAttrDefnId(String kimAttrDefnId) {
+		this.kimAttrDefnId = kimAttrDefnId;
+	}
+	
+	public boolean isHasLookupBoDefinition() {
+        return false;
+    }
 }

@@ -100,8 +100,10 @@
                     <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                     <td align="left" valign="middle">
                         <div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
- 	               	    <c:if test="${!empty attrDefinition.lookupBoClass and not readOnlyAssignees}">
-                          <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${attrDefinition}" />
+ 	               	    <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
+                            <c:if test="${!empty attrDefinition.lookupBoClass and not readOnlyAssignees}">
+                              <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${attrDefinition}" />
+                            </c:if>
                         </c:if>
                         </div>
                     </td>
@@ -168,8 +170,10 @@
                     <c:set var="attrReadOnly" value="${(!canModifyAssignees || (attrDefinition.unique && member.edit))}"/>
                     <td align="left" valign="middle">
                         <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
-                        <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
-                          <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.members[${statusMember.index}]" attr="${attrDefinition}" />
+                        <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
+                            <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
+                              <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.members[${statusMember.index}]" attr="${attrDefinition}" />
+                            </c:if>
                         </c:if>
                         </div>
                     </td>

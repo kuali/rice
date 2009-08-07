@@ -25,13 +25,11 @@ import org.kuali.rice.kns.web.format.Formatter;
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
+public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
 	private static final long serialVersionUID = 7006569761728813805L;
 	
 	protected Class<? extends Formatter> formatterClass;
 	protected Mask mask;
-	protected String sortCode;
-	protected String kimAttrDefnId;
 	protected String applicationUrl;
 	protected Map<String, String> lookupInputPropertyConversions;
 	protected Map<String, String> lookupReturnPropertyConversions;
@@ -49,21 +47,6 @@ public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 	@Override
 	public Class<? extends Formatter> getFormatterClass() {
 		return formatterClass;
-	}
-
-	/**
-	 * @return the sortCode
-	 */
-	public String getSortCode() {
-		return this.sortCode;
-	}
-
-	/**
-	 * @param sortCode
-	 *            the sortCode to set
-	 */
-	public void setSortCode(String sortCode) {
-		this.sortCode = sortCode;
 	}
 
 	/**
@@ -146,13 +129,10 @@ public class KimDataDictionaryAttributeDefinition extends AttributeDefinition {
 		this.lookupBoClass = lookupBoClass;
 	}
 
-	public String getKimAttrDefnId() {
-		return this.kimAttrDefnId;
-	}
-
-	public void setKimAttrDefnId(String kimAttrDefnId) {
-		this.kimAttrDefnId = kimAttrDefnId;
-	}
+    @Override
+    public boolean isHasLookupBoDefinition() {
+        return true;
+    }
 
 	
 }

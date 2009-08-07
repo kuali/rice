@@ -111,9 +111,11 @@
         			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>
 		            <td align="left" valign="middle">
 		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
-		               	<c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
-			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="delegationMember" attr="${attrDefinition}" />
-			          	</c:if>
+		               	<c:if test="${attrDefinition.hasLookupBoDefinition}"> 
+                            <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
+    			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="delegationMember" attr="${attrDefinition}" />
+    			          	</c:if>
+                        </c:if>
 						</div>
 					</td>
 		        </c:forEach>
@@ -184,9 +186,11 @@
         			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>
 		            <td align="left" valign="middle">
 		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}"  />
-		               	<c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
-			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.delegationMembers[${statusMember.index}]" attr="${attrDefinition}" />
-			          	</c:if>
+		               	<c:if test="${attrDefinition.hasLookupBoDefinition}"> 
+                            <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
+    			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.delegationMembers[${statusMember.index}]" attr="${attrDefinition}" />
+    			          	</c:if>
+                        </c:if>
 						</div>
 					</td>
 		        </c:forEach>

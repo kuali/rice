@@ -42,6 +42,8 @@
        		   </c:forEach>
      		          <c:set var="fieldConversion" value="${fn:substringAfter(fieldConversion, ',')}"/>
      		          <c:set var="params" value="${fn:substringAfter(params, ',')}"/>
-			<kul:lookup boClassName="${attr.lookupBoClass.name}" 
-			fieldConversions="${fieldConversion}"
-			lookupParameters="${params}" />
+            <c:if test="${attr.hasLookupBoDefinition}">      
+    			<kul:lookup boClassName="${attr.lookupBoClass.name}" 
+    			     fieldConversions="${fieldConversion}"
+    			     lookupParameters="${params}" />
+            </c:if>

@@ -38,7 +38,7 @@
 				<ref bean="Parameter-parameterConstraintCode"/>
 				<ref bean="Parameter-parameterTypeCode"/>
 				<ref bean="Parameter-parameterType.name"/>
-				<ref bean="Parameter-parameterDetailType.parameterDetailTypeName"/>
+                <ref bean="Parameter-parameterDetailType.parameterDetailTypeName"/>
 				<ref bean="Parameter-parameterNamespace.codeAndDescription"/>
 			</list>
 		</property>
@@ -49,6 +49,7 @@
 					<property name="primitiveAttributes">
 						<list>
 							<bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterNamespaceCode" p:targetName="parameterNamespaceCode" />
+                            <bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterDetailTypeCode" p:targetName="parameterDetailTypeCode" />
 							<bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterDetailType.parameterDetailTypeName" p:targetName="parameterDetailTypeName" />
 						</list>
 					</property>
@@ -200,7 +201,8 @@
 					<property name="inquiryFields">
 						<list>
 							<bean parent="FieldDefinition" p:attributeName="parameterNamespace.codeAndDescription"/>
-							<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName"/> <!--  p:noInquiry="true" -->
+                            <bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName"/> <!--  p:noInquiry="true" -->
+                            <bean parent="FieldDefinition" p:attributeName="parameterDetailTypeCode"/>
 							<bean parent="FieldDefinition" p:attributeName="parameterApplicationNamespaceCode" />
 							<bean parent="FieldDefinition" p:attributeName="parameterName" p:noInquiry="true"/>
 							<bean parent="FieldDefinition" p:attributeName="parameterValue"/>
@@ -236,6 +238,7 @@
 			<list>
 				<bean parent="FieldDefinition" p:attributeName="parameterNamespaceCode"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterDetailType.parameterDetailTypeName"/><!-- p:noLookup="true" -->
+                <bean parent="FieldDefinition" p:attributeName="parameterDetailTypeCode" p:hidden="true"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterApplicationNamespaceCode" />
 				<bean parent="FieldDefinition" p:attributeName="parameterName" p:noLookup="true"/>
 				<bean parent="FieldDefinition" p:attributeName="parameterValue"/>

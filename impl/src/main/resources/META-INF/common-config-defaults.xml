@@ -22,11 +22,12 @@
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
 
     <param name="cas.context.name" override="false">cas</param>
-    <param name="cas.url" override="false">${appserver.url}/${cas.context.name}</param>
+    <param name="cas.url" override="false">https://test.kuali.org/cas-stg</param>
     <param name="cas.login.url" override="false">${cas.url}/login</param>
     <param name="cas.validate.url" override="false">${cas.url}/serviceValidate</param>
     <param name="cas.require.https" override="false">false</param>
     <param name="cas.validate.password" override="false">false</param>
+    <param name="cas.rice.server.name" override="false">${application.http.scheme}://${application.host}:${http.port}</param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>

@@ -228,9 +228,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					if (control.isSelect()) {
 						Map<String,Object> controlMap = new HashMap<String,Object>();
 			            controlMap.put("select", "true");
-			            controlMap.put("valuesFinder", control.getValuesFinderClass().getName());
+			            controlMap.put("valuesFinder", control.getValuesFinderClass());
 			            if (control.getBusinessObjectClass() != null) {
-			                controlMap.put("businessObject", control.getBusinessObjectClass().getName());
+			                controlMap.put("businessObject", control.getBusinessObjectClass());
 			            }
 			            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
 			                controlMap.put("keyAttribute", control.getKeyAttribute());

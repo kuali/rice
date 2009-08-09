@@ -35,7 +35,7 @@ public class ApcSelectControlDefinition extends SelectControlDefinition {
 
     public ApcSelectControlDefinition() {
         super();
-        setValuesFinderClass(ApcValuesFinder.class);
+        setValuesFinderClass(ApcValuesFinder.class.getName());
     }
 
     public String getParameterNamespace() {

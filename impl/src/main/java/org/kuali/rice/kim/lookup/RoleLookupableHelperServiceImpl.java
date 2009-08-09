@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -173,7 +174,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 								typeField.setPropertyName(definition.getName()+"."+attrDefnId);
 								if (definition.getControl().isSelect()) {
 							        try {
-							            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+							            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
 								        typeField.setFieldValidValues(finder.getKeyValues());
 								        typeField.setFieldType(Field.DROPDOWN);
 							        }

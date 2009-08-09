@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -232,7 +233,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
             if (attributeDefinition.hasFormatterClass()) {
-                formatterClass = attributeDefinition.getFormatterClass();
+                formatterClass = ClassLoaderUtils.getClass(attributeDefinition.getFormatterClass());
             }
         }
 
@@ -334,7 +335,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            valuesFinderClass = attributeDefinition.getControl().getValuesFinderClass();
+            String valuesFinderClassName = attributeDefinition.getControl().getValuesFinderClass();
+            valuesFinderClass = ClassLoaderUtils.getClass(valuesFinderClassName);
         }
 
         return valuesFinderClass;

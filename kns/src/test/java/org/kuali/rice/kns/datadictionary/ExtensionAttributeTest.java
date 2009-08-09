@@ -74,8 +74,8 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		assertNotNull( "BusinessObjectEntry for TravelAccount should not be null", boe );
 		AttributeDefinition extAttrib = boe.getAttributeDefinition( "extension.accountTypeCode" );
 		assertNotNull( "AttributeDefinition for 'extension.accountType' should not be null", extAttrib );
-		assertEquals(PersistableBusinessObjectValuesFinder.class, extAttrib.getControl().getValuesFinderClass());
-		assertEquals(AccountType.class, extAttrib.getControl().getBusinessObjectClass());
+		assertEquals(PersistableBusinessObjectValuesFinder.class.getName(), extAttrib.getControl().getValuesFinderClass());
+		assertEquals(AccountType.class.getName(), extAttrib.getControl().getBusinessObjectClass());
 		assertEquals("accountTypeCode", extAttrib.getControl().getKeyAttribute());
 		assertEquals("name", extAttrib.getControl().getLabelAttribute());
 		assertEquals(true, extAttrib.getControl().getIncludeKeyInLabel());

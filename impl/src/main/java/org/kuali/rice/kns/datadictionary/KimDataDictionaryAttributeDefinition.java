@@ -17,10 +17,12 @@ package org.kuali.rice.kns.datadictionary;
 
 import java.util.Map;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
-import org.kuali.rice.kns.web.format.Formatter;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -28,12 +30,11 @@ import org.kuali.rice.kns.web.format.Formatter;
 public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
 	private static final long serialVersionUID = 7006569761728813805L;
 	
-	protected Class<? extends Formatter> formatterClass;
 	protected Mask mask;
 	protected String applicationUrl;
 	protected Map<String, String> lookupInputPropertyConversions;
 	protected Map<String, String> lookupReturnPropertyConversions;
-	protected Class<? extends BusinessObject> lookupBoClass;
+	protected String lookupBoClass;
 
 	/**
 	 * 
@@ -41,14 +42,7 @@ public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition
 	public KimDataDictionaryAttributeDefinition() {
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.AttributeDefinition#getFormatterClass()
-	 */
-	@Override
-	public Class<? extends Formatter> getFormatterClass() {
-		return formatterClass;
-	}
-
+	
 	/**
 	 * @return the applicationUrl
 	 */
@@ -105,27 +99,14 @@ public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition
 			.append( "required", isRequired() )
 			.append( "lookupInputPropertyConversions", this.lookupInputPropertyConversions )
 			.append( "lookupReturnPropertyConversions", this.lookupReturnPropertyConversions )
-//			.append( "formatterClass", this.formatterClass )
-//			.append( "maxLength", this.maxLength )
-//			.append( "dataDictionaryAttributeDefinition", this.dataDictionaryAttributeDefinition )				
-//			.append( "control", this.control )
-//			.append( "validationPattern", this.validationPattern )
-//			.append( "applicationUrl", this.applicationUrl )
-//			.append( "exclusiveMin", this.exclusiveMin )
-//			.append( "attributeSecurity", this.attributeSecurity )
-//			.append( "forceUppercase", this.forceUppercase )
-//			.append( "shortLabel", this.shortLabel )
-//			.append( "inclusiveMax", this.inclusiveMax )
-//			.append( "displayLabelAttribute", this.displayLabelAttribute )
-//			.append( "sortCode", this.sortCode )
 			.toString();
 	}
 
-	public Class<? extends BusinessObject> getLookupBoClass() {
+	public String getLookupBoClass() {
 		return this.lookupBoClass;
 	}
 
-	public void setLookupBoClass(Class<? extends BusinessObject> lookupBoClass) {
+	public void setLookupBoClass(String lookupBoClass) {
 		this.lookupBoClass = lookupBoClass;
 	}
 
@@ -133,6 +114,24 @@ public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition
     public boolean isHasLookupBoDefinition() {
         return true;
     }
+
+
+	@Override
+	public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
+		if (lookupBoClass != null) {
+        	try {
+        		Class lookupBoClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(), getLookupBoClass());
+        		if (!BusinessObject.class.isAssignableFrom(lookupBoClassObject)) {
+        			throw new ClassValidationException("lookupBoClass is not a valid instance of " + BusinessObject.class.getName() + " instead was: " + lookupBoClassObject.getName());
+        		}
+        	} catch (ClassNotFoundException e) {
+        		throw new ClassValidationException("lookupBoClass could not be found: " + getLookupBoClass(), e);
+        	}
+        }
+		super.completeValidation(rootObjectClass, otherObjectClass);
+	}
+    
+    
 
 	
 }

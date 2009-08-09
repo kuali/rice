@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
@@ -243,11 +244,12 @@ public class FieldUtils {
 
             // for dropdown and radio, get instance of specified KeyValuesFinder and set field values
             if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType) || Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType) || Field.MULTISELECT.equals(fieldType)) {
-                Class keyFinderClassName = control.getValuesFinderClass();
+                String keyFinderClassName = control.getValuesFinderClass();
 
-                if (keyFinderClassName != null) {
+                if (!StringUtils.isBlank(keyFinderClassName)) {
                     try {
-                        KeyValuesFinder finder = (KeyValuesFinder) keyFinderClassName.newInstance();
+                    	Class keyFinderClass = ClassLoaderUtils.getClass(keyFinderClassName);
+                        KeyValuesFinder finder = (KeyValuesFinder) keyFinderClass.newInstance();
 
                         if (finder != null) {
                             if (finder instanceof ApcValuesFinder && control instanceof ApcSelectControlDefinition) {
@@ -255,7 +257,7 @@ public class FieldUtils {
                                 ((ApcValuesFinder) finder).setParameterDetailType(((ApcSelectControlDefinition) control).getParameterDetailType());
                                 ((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) control).getParameterName());
                             } else if (finder instanceof PersistableBusinessObjectValuesFinder) {
-                                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(control.getBusinessObjectClass());
+                                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(ClassLoaderUtils.getClass(control.getBusinessObjectClass()));
                                 ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(control.getKeyAttribute());
                                 ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(control.getLabelAttribute());
                                 if (control.getIncludeBlankRow() != null) {

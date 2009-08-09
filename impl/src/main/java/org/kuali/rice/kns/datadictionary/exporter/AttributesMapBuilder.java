@@ -81,7 +81,7 @@ public class AttributesMapBuilder {
             attributeMap.set("description", attribute.getDescription());
         }
         if (attribute.hasFormatterClass()) {
-            attributeMap.set("formatterClass", attribute.getFormatterClass().getName());
+            attributeMap.set("formatterClass", attribute.getFormatterClass());
         }
 
         // complex properties
@@ -120,9 +120,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isRadio()) {
             controlMap.set("radio", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass().getName());
+            controlMap.set("valuesFinder", control.getValuesFinderClass());
             if (control.getBusinessObjectClass() != null) {
-                controlMap.set("businessObject", control.getBusinessObjectClass().getName());
+                controlMap.set("businessObject", control.getBusinessObjectClass());
             }
             if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
                 controlMap.set("keyAttribute", control.getKeyAttribute());
@@ -136,9 +136,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isSelect()) {
             controlMap.set("select", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass().getName());
+            controlMap.set("valuesFinder", control.getValuesFinderClass());
             if (control.getBusinessObjectClass() != null) {
-                controlMap.set("businessObject", control.getBusinessObjectClass().getName());
+                controlMap.set("businessObject", control.getBusinessObjectClass());
             }
             if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
                 controlMap.set("keyAttribute", control.getKeyAttribute());
@@ -155,9 +155,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isMultiselect()) {
             controlMap.set("multiselect", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass().getName());
+            controlMap.set("valuesFinder", control.getValuesFinderClass());
             if (control.getBusinessObjectClass() != null) {
-                controlMap.set("businessObject", control.getBusinessObjectClass().getName());
+                controlMap.set("businessObject", control.getBusinessObjectClass());
             }
             if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
                 controlMap.set("keyAttribute", control.getKeyAttribute());

@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kns.datadictionary.control;
 
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionaryDefinition;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 
 /**
  * ControlDefinition
@@ -121,14 +119,14 @@ public interface ControlDefinition extends DataDictionaryDefinition {
      *
      * @param valuesFinderClass
      */
-    public void setValuesFinderClass(Class<? extends KeyValuesFinder> valuesFinderClass);
+    public void setValuesFinderClass(String valuesFinderClass);
 
     /**
      * Sets the BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
      *
      * @param businessObjectClass
      */
-    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass);
+    public void setBusinessObjectClass(String businessObjectClass);
 
 
     /**
@@ -162,12 +160,12 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     /**
      * @return Class used to retrieve the complete range of values for radiobutton and select controls.
      */
-    public Class<? extends KeyValuesFinder> getValuesFinderClass();
+    public String getValuesFinderClass();
 
     /**
      * @return BO Class used for the KeyLabelBusinessObjectValueFinder to retrieve the complete range of values for radiobutton and select controls.
      */
-    public Class<? extends BusinessObject> getBusinessObjectClass();
+    public String getBusinessObjectClass();
 
     /**
      * @return the keyAttribute used for radiobutton and select controls.

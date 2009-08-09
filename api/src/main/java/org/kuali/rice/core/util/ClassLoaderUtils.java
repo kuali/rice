@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.proxy.TargetedInvocationHandler;
 
 /**
@@ -124,6 +126,17 @@ public class ClassLoaderUtils {
 	    }
 	    Class[] interfaceArray = new Class[interfaces.size()];
 	    return (Class[]) interfaces.toArray(interfaceArray);
+	}
+	
+	public static Class getClass(String className) {
+		if (StringUtils.isEmpty(className)) {
+			return null;
+		}
+		try {
+			return ClassUtils.getClass(getDefaultClassLoader(), className);
+		} catch (ClassNotFoundException e) {
+			throw new RiceRuntimeException(e);
+		}
 	}
 
 }

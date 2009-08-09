@@ -18,10 +18,13 @@ package org.kuali.rice.kns.datadictionary;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.springframework.beans.factory.InitializingBean;
@@ -57,7 +60,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
     protected String summary;
     protected String description;
 
-    protected Class<? extends Formatter> formatterClass;
+    protected String formatterClass;
 
     protected AttributeSecurity attributeSecurity;
 
@@ -368,7 +371,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
         return (formatterClass != null);
     }
 
-    public Class<? extends Formatter> getFormatterClass() {
+    public String getFormatterClass() {
         return formatterClass;
     }
 
@@ -379,7 +382,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
                       15 different classes are available including BooleanFormatter,
                       CurrencyFormatter, DateFormatter, etc.
      */
-    public void setFormatterClass(Class<? extends Formatter> formatterClass) {
+    public void setFormatterClass(String formatterClass) {
         if (formatterClass == null) {
             throw new IllegalArgumentException("invalid (null) formatterClass");
         }
@@ -409,6 +412,17 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
             
             if (validationPattern != null) {
             	validationPattern.completeValidation();
+            }
+            
+            if (formatterClass != null) {
+            	try {
+            		Class formatterClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(), getFormatterClass());
+            		if (!Formatter.class.isAssignableFrom(formatterClassObject)) {
+            			throw new ClassValidationException("formatterClass is not a valid instance of " + Formatter.class.getName() + " instead was: " + formatterClassObject.getName());
+            		}
+            	} catch (ClassNotFoundException e) {
+            		throw new ClassValidationException("formatterClass could not be found: " + getFormatterClass(), e);
+            	}
             }
         } catch ( RuntimeException ex ) {
             Logger.getLogger(getClass()).error("Unable to validate attribute " + rootObjectClass + "." + getName() + ": " + ex.getMessage(), ex );

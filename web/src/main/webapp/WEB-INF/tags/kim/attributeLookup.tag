@@ -43,7 +43,7 @@
      		          <c:set var="fieldConversion" value="${fn:substringAfter(fieldConversion, ',')}"/>
      		          <c:set var="params" value="${fn:substringAfter(params, ',')}"/>
             <c:if test="${attr.hasLookupBoDefinition}">      
-    			<kul:lookup boClassName="${attr.lookupBoClass.name}" 
+    			<kul:lookup boClassName="${attr.lookupBoClass}" 
     			     fieldConversions="${fieldConversion}"
     			     lookupParameters="${params}" />
             </c:if>

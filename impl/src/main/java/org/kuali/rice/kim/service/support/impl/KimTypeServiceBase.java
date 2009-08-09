@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -364,7 +365,7 @@ public class KimTypeServiceBase implements KimTypeService {
         Class<? extends Formatter> formatterClass = null;
         if (definition != null) {
             if (definition.hasFormatterClass()) {
-                formatterClass = definition.getFormatterClass();
+                formatterClass = ClassLoaderUtils.getClass(definition.getFormatterClass());
             }
         }
         return formatterClass;
@@ -590,7 +591,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					field = LookupUtils.setFieldQuickfinder( sampleComponent, attributeName, field, displayedFieldNames );
 					if ( StringUtils.isNotBlank( field.getQuickFinderClassNameImpl() ) ) {
 						Class<? extends BusinessObject> lookupClass = (Class<? extends BusinessObject>)Class.forName( field.getQuickFinderClassNameImpl() );
-						definition.setLookupBoClass( lookupClass );
+						definition.setLookupBoClass( lookupClass.getName() );
 						if ( field.getLookupParameters() != null ) {
 							String [] lookupInputPropertyConversions = field.getLookupParameters().split(",");
 							for (String string : lookupInputPropertyConversions) {

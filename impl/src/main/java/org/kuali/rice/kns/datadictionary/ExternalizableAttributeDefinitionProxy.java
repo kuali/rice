@@ -303,8 +303,8 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	 * 
 	 * @see org.kuali.core.datadictionary.AttributeDefinition#getFormatterClass()
 	 */
-	public Class getFormatterClass() {
-		Class formatterClass = super.getFormatterClass();
+	public String getFormatterClass() {
+		String formatterClass = super.getFormatterClass();
 		if (formatterClass == null) {
 			formatterClass = getDelegate().getFormatterClass();
 		}

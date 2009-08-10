@@ -643,6 +643,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.routeDocument("");
+        
+        // on this document type approval progression will go as follows:
+        // Workflow Document   (Sequential): bmcgough (1, fa=false),  rkirkend (2, fa=false), ewestfal (3, fa=true)
+        // Workflow Document 2 (Sequential): pmckown (1, fa=false), ewestfal (2, fa=false)
 
         // at this point, neither bmcgough, rkirkend nor ewestfal should be the last approver
         assertFalse("Bmcgough should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
@@ -657,15 +661,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertFalse("Rkirkend should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         assertFalse("Ewestfal should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
-        // approve as ewestfal
+        // verify that ewestfal does not have permissions to approve the document yet since his request has not yet been activated
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        assertFalse("Ewestfal should not have permissions to approve", document.isApprovalRequested());
+        
+        // approve as rkirkend
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         document.approve("");
 
-        // rkirkend should now be the final approver
-        assertTrue("Rkirkend should now be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        assertTrue("Ewestfal should now have permission to approve", document.isApprovalRequested());
+        
+        // ewestfal should now be the final approver
+        assertTrue("Ewestfal should now be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
-        // approve as rkirkend to send it to the next node
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        // approve as ewestfal to send it to the next node
         document.approve("");
 
         TestUtilities.assertAtNode(document, SeqSetup.WORKFLOW_DOCUMENT_2_NODE);

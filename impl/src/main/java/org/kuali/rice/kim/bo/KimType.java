@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kns.bo.BusinessObject;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -25,7 +26,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimType {
+public interface KimType extends BusinessObject {
 	String getKimTypeId();
 	String getKimTypeServiceName();
 	String getName();

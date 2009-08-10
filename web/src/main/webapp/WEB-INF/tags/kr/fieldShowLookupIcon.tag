@@ -32,7 +32,8 @@
             lookupParameters="${field.lookupParameters}"
             fieldLabel="${field.fieldLabel}"
             referencesToRefresh="${field.referencesToRefresh}"
-            anchor="${anchor}" />
+            anchor="${anchor}"
+            baseLookupUrl="${field.baseLookupUrl}" />
                 
     </c:if>
 

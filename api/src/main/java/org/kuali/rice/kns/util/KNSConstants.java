@@ -341,8 +341,12 @@ public class KNSConstants extends JSTLConstants {
     // below 2 fields used in rowDisplay.tag file
     public static final String METHOD_TO_CALL_PARM13_LEFT_DEL = "(:::;";
     public static final String METHOD_TO_CALL_PARM13_RIGHT_DEL = ";:::)";
+    // used for baseLookupURL
+    public static final String METHOD_TO_CALL_PARM14_LEFT_DEL = "(::::;";
+    public static final String METHOD_TO_CALL_PARM14_RIGHT_DEL = ";::::)";
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
-
+    
+    
     // Pessimistic Locking Constants
     public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
     public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";

@@ -155,7 +155,7 @@ public class MaintenanceUtils {
         if (maintainableFieldDefinition.getOverrideLookupClass() != null && StringUtils.isNotBlank(maintainableFieldDefinition.getOverrideFieldConversions())) {
             field.setQuickFinderClassNameImpl(maintainableFieldDefinition.getOverrideLookupClass().getName());
             field.setFieldConversions(maintainableFieldDefinition.getOverrideFieldConversions());
-            
+            field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
             field.setReferencesToRefresh(LookupUtils.convertReferencesToSelectCollectionToString(
                     srr.getAffectedReferencesFromLookup(businessObject, attributeName, "")));
             return field;
@@ -183,7 +183,7 @@ public class MaintenanceUtils {
                 
                 String prefixedFieldConversions = prefixFieldConversionsDestinationsWithCollectionPrefix(maintainableFieldDefinition.getOverrideFieldConversions(), collectionPrefix);
                 field.setFieldConversions(prefixedFieldConversions);
-                
+                field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
                 field.setReferencesToRefresh(LookupUtils.convertReferencesToSelectCollectionToString(
                         maintainable.getAffectedReferencesFromLookup(businessObject, attributeName, collectionPrefix)));
             }

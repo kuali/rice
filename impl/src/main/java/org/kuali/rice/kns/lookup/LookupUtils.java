@@ -381,6 +381,7 @@ public class LookupUtils {
                     field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
                     field.setFieldConversions(generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
                     field.setLookupParameters(generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
+                    field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
                 }
             }
 
@@ -393,14 +394,37 @@ public class LookupUtils {
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
+            field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
         } else {
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
+            field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
         }
 
         return field;
     }
+    
+    public static String getBaseLookupUrl(boolean isMultipleValue) {
+    	String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+		String lookupUrl = riceBaseUrl;
+		if (!lookupUrl.endsWith("/")) {
+			lookupUrl = lookupUrl + "/";
+		}
+		lookupUrl += "kr/";
+		if (isMultipleValue) {
+			lookupUrl = lookupUrl + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+		}
+		else {
+			lookupUrl = lookupUrl + KNSConstants.LOOKUP_ACTION;
+		}
+		return lookupUrl;
+    }
+    
+    public static String transformLookupUrlToMultiple(String lookupUrl) {
+    	return lookupUrl.replace("kr/" + KNSConstants.LOOKUP_ACTION, "kr/" + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION);
+    }
+    	
 
 
     /**

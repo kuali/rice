@@ -42,6 +42,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -408,7 +409,7 @@ public abstract class KualiAction extends DispatchAction {
     		}
     	}
     	
-    	if (value != null && getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, parameterName)) {
+    	if (value != null && boClass != null && getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, parameterName)) {
     		value = getEncryptionService().encrypt(value) + EncryptionService.ENCRYPTION_POST_PREFIX;
     	}
     	return value;
@@ -436,6 +437,9 @@ public abstract class KualiAction extends DispatchAction {
         kualiForm.registerEditableProperty(KNSConstants.DISPATCH_REQUEST_PARAMETER);
         kualiForm.registerNextMethodToCallIsRefresh(true);
         
+        // parse out the baseLookupUrl if there is one
+        String baseLookupUrl = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM14_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM14_RIGHT_DEL);
+        
         // parse out business object class name for lookup
         String boClassName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
         if (StringUtils.isBlank(boClassName)) {
@@ -445,7 +449,10 @@ public abstract class KualiAction extends DispatchAction {
 		try{
 			boClass = Class.forName(boClassName);
 		} catch(ClassNotFoundException cnfex){
-			throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class.");
+			// we must have a valid boClass that can be loaded unless baseLookupUrl is defined
+			if (StringUtils.isBlank(baseLookupUrl)) {
+				throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class.");
+			}
 		}
 		
         // build the parameters for the lookup url
@@ -518,10 +525,12 @@ public abstract class KualiAction extends DispatchAction {
         String lookupAction = KNSConstants.LOOKUP_ACTION;
 
         // is this a multi-value return?
+        boolean isMultipleValue = false;
         String multipleValues = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
         if ((new Boolean(multipleValues).booleanValue())) {
             parameters.put(KNSConstants.MULTIPLE_VALUE, multipleValues);
             lookupAction = KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+            isMultipleValue = true;
         }
 
         // the name of the collection being looked up (primarily for multivalue lookups
@@ -577,18 +586,27 @@ public abstract class KualiAction extends DispatchAction {
 			}
     	}
 
-    	ModuleService responsibleModuleService = getKualiModuleService().getResponsibleModuleService(boClass);
-		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
-			Map<String, String> parameterMap = new HashMap<String, String>();
-			Enumeration<Object> e = parameters.keys();
-			while (e.hasMoreElements()) {
-				String paramName = (String) e.nextElement();
-				parameterMap.put(paramName, parameters.getProperty(paramName));
-			}
-			return new ActionForward(responsibleModuleService.getExternalizableBusinessObjectLookupUrl(boClass, parameterMap), true);
-		}
+    	if (boClass != null) {
+    		ModuleService responsibleModuleService = getKualiModuleService().getResponsibleModuleService(boClass);
+    		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
+    			Map<String, String> parameterMap = new HashMap<String, String>();
+    			Enumeration<Object> e = parameters.keys();
+    			while (e.hasMoreElements()) {
+    				String paramName = (String) e.nextElement();
+    				parameterMap.put(paramName, parameters.getProperty(paramName));
+    			}
+    			return new ActionForward(responsibleModuleService.getExternalizableBusinessObjectLookupUrl(boClass, parameterMap), true);
+    		}
+    	}
 		
-        String lookupUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + lookupAction, parameters);
+    	if (StringUtils.isBlank(baseLookupUrl)) {
+    		baseLookupUrl = getBasePath(request) + "/kr/" + lookupAction;
+    	} else {
+    		if (isMultipleValue) {
+    			LookupUtils.transformLookupUrlToMultiple(baseLookupUrl);
+    		}
+    	}
+    	String lookupUrl = UrlFactory.parameterizeUrl(baseLookupUrl, parameters);
         return new ActionForward(lookupUrl, true);
     }
 

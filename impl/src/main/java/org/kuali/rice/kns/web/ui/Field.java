@@ -126,6 +126,7 @@ public class Field implements java.io.Serializable {
 
     private List<KeyLabelPair> fieldValidValues;
     private String quickFinderClassNameImpl;
+    private String baseLookupUrl;
 
     private boolean clear;
     private boolean dateField;
@@ -1590,6 +1591,16 @@ public class Field implements java.io.Serializable {
 	public void setPersonNameValue(String personNameValue) {
 		this.personNameValue = personNameValue;
 	}
-    
+
+	public String getBaseLookupUrl() {
+		return this.baseLookupUrl;
+	}
+
+	public void setBaseLookupUrl(String baseLookupURL) {
+		this.baseLookupUrl = baseLookupURL;
+	}
+
+	
+	
     //#END DOC SEARCH RELATED
 }

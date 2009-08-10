@@ -19,9 +19,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import junit.framework.Assert;
-
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
@@ -29,7 +28,6 @@ import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob;
-import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.service.MessagingService;
@@ -216,8 +214,15 @@ public class MessagingServiceImpl implements MessagingService {
     private void queueJob(MessageProcessingJob.Mode mode, long messageId, String user, String cause) {
         // queue up the processing job after the transaction has committed
         LOG.debug("registering synchronization");
-        Assert.assertTrue(TransactionSynchronizationManager.isSynchronizationActive());
-        Assert.assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
+
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
+        	throw new RiceRuntimeException("transaction syncronization is not active " + 
+        			"(!TransactionSynchronizationManager.isSynchronizationActive())");
+        } else if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+        	throw new RiceRuntimeException("actual transaction is not active " +
+        			"(!TransactionSynchronizationManager.isActualTransactionActive())");
+        }
+
         TransactionSynchronizationManager.registerSynchronization(new QueueProcessingJobSynchronization(
             jobName,
             jobGroup,

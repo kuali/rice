@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -71,6 +72,8 @@ public class AffiliationTypeImpl extends KimCodeBase implements AffiliationType 
 	}
 
 	public boolean isEmploymentAffiliationType() {
+		if(ObjectUtils.isNull(this.employmentAffiliationType))
+			return false;
 		return this.employmentAffiliationType;
 	}
 

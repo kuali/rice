@@ -25,6 +25,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -61,6 +62,8 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
+		if(ObjectUtils.isNull(affiliationTypeCode))
+			return "";
 		return affiliationTypeCode;
 	}
 
@@ -75,6 +78,8 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
+		if(ObjectUtils.isNull(entityAffiliationId))
+			return "";
 		return entityAffiliationId;
 	}
 
@@ -124,9 +129,17 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	}
 
 	public AffiliationTypeImpl getAffiliationType() {
+		if(ObjectUtils.isNull(affiliationType))
+			return null;
 		return this.affiliationType;
 	}
 
+	public boolean isEmploymentAffiliationType() {
+		if(ObjectUtils.isNull(affiliationType))
+			return false;
+		return this.affiliationType.isEmploymentAffiliationType();
+	}
+	 
 	public void setAffiliationType(AffiliationTypeImpl affiliationType) {
 		this.affiliationType = affiliationType;
 	}

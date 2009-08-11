@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -604,6 +605,18 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 			for ( KimPermissionTemplateImpl impl : impls ) {
 				infos.add( impl.toSimpleInfo() );
 			}
+			Collections.sort(infos, new Comparator<KimPermissionTemplateInfo>() {
+				public int compare(KimPermissionTemplateInfo tmpl1,
+						KimPermissionTemplateInfo tmpl2) {
+					int result = 0;
+					result = tmpl1.getNamespaceCode().compareTo(tmpl2.getNamespaceCode());
+					if ( result != 0 ) {
+						return result;
+					}
+					result = tmpl1.getName().compareTo(tmpl2.getName());
+					return result;
+				}
+			});
 			allTemplates = infos;
 		}
 		return allTemplates;

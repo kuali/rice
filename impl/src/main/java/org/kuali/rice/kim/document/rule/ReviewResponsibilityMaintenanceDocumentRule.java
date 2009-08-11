@@ -40,33 +40,37 @@ import org.kuali.rice.kns.util.GlobalVariables;
 public class ReviewResponsibilityMaintenanceDocumentRule extends
 		MaintenanceDocumentRuleBase {
 
+	protected static final String ERROR_MESSAGE_PREFIX = "error.document.kim.reviewresponsibility.";
+	protected static final String ERROR_INVALID_ROUTE_NODE = ERROR_MESSAGE_PREFIX + "invalidroutenode";
+	protected static final String ERROR_DUPLICATE_RESPONSIBILITY = ERROR_MESSAGE_PREFIX + "duplicateresponsibility";
+
 	/**
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.kns.document.MaintenanceDocument)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
 		boolean rulesPassed = true;
+		GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 		try {
 			ReviewResponsibility resp = (ReviewResponsibility)document.getNewMaintainableObject().getBusinessObject();
 			// check the route level exists on the document or a child
 			HashSet<String> routeNodeNames = getAllPossibleRouteNodeNames( resp.getDocumentTypeName() );
-			GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 			if ( !routeNodeNames.contains( resp.getRouteNodeName() ) ) {
-				GlobalVariables.getMessageMap().putError( "routeNodeName", "review.responsibility.doc.invalid.route.node", resp.getRouteNodeName() );
+				GlobalVariables.getMessageMap().putError( "routeNodeName", ERROR_INVALID_ROUTE_NODE, resp.getRouteNodeName() );
 				rulesPassed = false;
 			}
 			// check for creation of a duplicate node
 			if ( !checkForDuplicateResponsibility( resp ) ) {
-				GlobalVariables.getMessageMap().putError( "documentTypeName", "review.responsibility.doc.duplicateResponsibility" );
+				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
 				rulesPassed = false;
 			}
-			GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 		} catch ( RuntimeException ex ) {
 			LOG.error( "Error in processCustomRouteDocumentBusinessRules()", ex );
 			throw ex;
+		} finally {
+			GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 		}
 		return rulesPassed;
 	}

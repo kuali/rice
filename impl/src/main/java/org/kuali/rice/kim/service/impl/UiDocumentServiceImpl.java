@@ -319,6 +319,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			return new ArrayList<KimDelegationImpl>();
 		Map<String,String> criteria = new HashMap<String,String>(1);
 		criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, principalId);
+		criteria.put( KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
 		List<KimDelegationMemberImpl> delegationMembers = (List<KimDelegationMemberImpl>)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
 		List<KimDelegationImpl> delegations = new ArrayList<KimDelegationImpl>();
 		List<String> delegationIds = new ArrayList<String>();
@@ -1285,16 +1286,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleMembers;
 	}
 
-    @SuppressWarnings("unchecked")
-	private List<KimDelegationImpl> getDelegations(String principalId){
-    	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put(KIMPropertyConstants.DelegationMember.MEMBER_ID, principalId);
-		criteria.put( KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
-		return (List<KimDelegationImpl>)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
-    }
-
 	protected List<KimDelegationImpl> populateDelegations(IdentityManagementPersonDocument identityManagementPersonDocument){
-		List<KimDelegationImpl> origDelegations = getDelegations(identityManagementPersonDocument.getPrincipalId());
+		List<KimDelegationImpl> origDelegations = getPersonDelegations(identityManagementPersonDocument.getPrincipalId());
 		List<KimDelegationImpl> kimDelegations = new ArrayList<KimDelegationImpl>();
 		KimDelegationImpl newKimDelegation;
 		KimDelegationImpl origDelegationImplTemp = null;

@@ -616,7 +616,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
 				}
 			} catch ( Exception ex ) {
-				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
+				LOG.error( "Unable to find role type service with name: " + serviceName );
+				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
 				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
 			}
 		}

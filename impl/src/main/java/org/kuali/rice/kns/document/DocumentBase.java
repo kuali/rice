@@ -592,31 +592,33 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * This method logs errors.
      */
     protected void logErrors() {
-        if (!GlobalVariables.getMessageMap().isEmpty()) {
-
-            for (Iterator i = GlobalVariables.getMessageMap().entrySet().iterator(); i.hasNext();) {
-                Map.Entry e = (Map.Entry) i.next();
-
-                StringBuffer logMessage = new StringBuffer();
-                logMessage.append("[" + e.getKey() + "] ");
-                boolean first = true;
-
-                TypedArrayList errorList = (TypedArrayList) e.getValue();
-                for (Iterator j = errorList.iterator(); j.hasNext();) {
-                    ErrorMessage em = (ErrorMessage) j.next();
-
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        logMessage.append(";");
-                    }
-                    logMessage.append(em);
-                }
-
-                LOG.error(logMessage);
-            }
-        }
+    	if ( LOG.isInfoEnabled() ) {
+	        if (!GlobalVariables.getMessageMap().isEmpty()) {
+	
+	            for (Iterator i = GlobalVariables.getMessageMap().entrySet().iterator(); i.hasNext();) {
+	                Map.Entry e = (Map.Entry) i.next();
+	
+	                StringBuffer logMessage = new StringBuffer();
+	                logMessage.append("[" + e.getKey() + "] ");
+	                boolean first = true;
+	
+	                TypedArrayList errorList = (TypedArrayList) e.getValue();
+	                for (Iterator j = errorList.iterator(); j.hasNext();) {
+	                    ErrorMessage em = (ErrorMessage) j.next();
+	
+	                    if (first) {
+	                        first = false;
+	                    }
+	                    else {
+	                        logMessage.append(";");
+	                    }
+	                    logMessage.append(em);
+	                }
+	
+	                LOG.info(logMessage);
+	            }
+	        }
+    	}
     }
 
     /**

@@ -1180,7 +1180,7 @@ update kren_chnl_subscrp_t set prncpl_id = 'testuser4' where prncpl_id = 'TestUs
 /
 
 -- KULRICE-3449
-insert into KRIM_GRP_MBR_T (GRP_MBR_ID, VER_NBR, OBJ_ID, GRP_ID, MBR_ID, MBR_TYP_CD, ACTV_FRM_DT, ACTV_TO_DT, LAST_UPDT_DT) VALUES('1207', 1, '6798B3E6C3C49827AE62E5F7A275A1A3', '2000', 'admin', 'P', Null, Null, TO_DATE('2009-08-11 08:59:07','yyyy-mm-dd hh24:mi:ss')) 
+insert into KRIM_GRP_MBR_T (GRP_MBR_ID, VER_NBR, OBJ_ID, GRP_ID, MBR_ID, MBR_TYP_CD, ACTV_FRM_DT, ACTV_TO_DT) VALUES('1207', 1, '6798B3E6C3C49827AE62E5F7A275A1A3', '2000', 'admin', 'P', Null, Null) 
 /
 
 -- 08-11-2009 - last entry

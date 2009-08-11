@@ -77,8 +77,8 @@ public class ContentTypeController extends MultiActionController {
        String user = request.getRemoteUser();
        if (!notificationAuthzService.isUserAdministrator(user)) {
            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-           //response.sendError(HttpServletResponse.SC_FORBIDDEN, "User " + user + " is not a Notification System administratior");
-           throw new SecurityException("User " + user + " is not a Notification System administratior");
+           //response.sendError(HttpServletResponse.SC_FORBIDDEN, "User " + user + " is not a Notification System administrator");
+           throw new SecurityException("User " + user + " is not a Notification System administrator");
        }
        return super.handleRequestInternal(request, response);
    }

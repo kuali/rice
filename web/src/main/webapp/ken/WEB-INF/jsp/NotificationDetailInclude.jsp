@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
+
    <ul>
         <div><strong>Id: ${messageDeliveryId}</strong></div>
 		<div><strong>From: </strong>
@@ -98,7 +99,9 @@
 	         	<img src="images/buttonsmall_close.gif" border="0" alt="close" />
             </a>
 
-            <button onClick="window.location='HomePage.form'">Back to Action List</button>
+            <a href="${ConfigProperties.workflow.url}/ActionList.do">
+                <button onClick="window.location='${ConfigProperties.workflow.url}/ActionList.do'">Back to Action List</button>
+            </a>
          </c:if>
         </div>
 	</ul>

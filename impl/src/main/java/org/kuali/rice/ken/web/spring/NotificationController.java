@@ -152,20 +152,6 @@ public class NotificationController extends MultiActionController {
         return new ModelAndView(view, model);
     }
 
-    /**
-     * Logs out a user
-     * @param request : a servlet request
-     * @param response : a servlet response
-     * @throws ServletException : an exception
-     * @throws IOException : an exception
-     * @return RedirectView
-     */   
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().invalidate();
-
-        Map<String, Object> model = new HashMap<String, Object>(); 
-        return new ModelAndView(new RedirectView("HomePage.form"), model);
-    }
 
     /**
      * This method retrieves the NotificationMessageDelivery given an HttpServletRequest which

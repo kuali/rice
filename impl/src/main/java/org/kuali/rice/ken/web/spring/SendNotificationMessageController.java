@@ -279,7 +279,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 
 			// This ain't pretty, but it gets the job done for now.
 			ErrorList el = new ErrorList();
-			el.addError("Notifcation(s) sent.");
+			el.addError("Notification(s) sent.");
 			model.put("errors", el);
 
 		} catch (ErrorList el) {

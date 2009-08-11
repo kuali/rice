@@ -1158,4 +1158,29 @@ DELETE FROM krns_parm_dtl_typ_t WHERE nmspc_cd = 'KR-WKFLW' AND parm_dtl_typ_cd 
 INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD)
     VALUES('KR-NS', 'Document', 'ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND', sys_guid(), 1, 'CONFG', 'N', 'Controls whether the nervous system will show the blanket approve button to a user who is authorized for blanket approval but is neither the initiator of the particular document nor the recipient of an active, pending, approve action request.', 'A')
 / 
--- 08-10-2009 - last entry
+
+-- KULRICE-3448
+update kren_recip_deliv_t set recip_id = 'testuser1' where recip_id = 'TestUser1'
+/
+update kren_recip_deliv_t set recip_id = 'testuser2' where recip_id = 'TestUser2'
+/
+update kren_recip_deliv_t set recip_id = 'testuser4' where recip_id = 'TestUser4'
+/
+update kren_recip_deliv_t set recip_id = 'testuser5' where recip_id = 'TestUser5'
+/
+update kren_recip_deliv_t set recip_id = 'testuser6' where recip_id = 'TestUser6'
+/
+update kren_recip_list_t set recip_id = 'testuser1' where recip_id = 'TestUser1'
+/
+update kren_recip_list_t set recip_id = 'testuser3' where recip_id = 'TestUser3'
+/
+update kren_rvwer_t set prncpl_id = 'testuser3' where prncpl_id = 'TestUser3'
+/
+update kren_chnl_subscrp_t set prncpl_id = 'testuser4' where prncpl_id = 'TestUser4'
+/
+
+-- KULRICE-3449
+insert into KRIM_GRP_MBR_T (GRP_MBR_ID, VER_NBR, OBJ_ID, GRP_ID, MBR_ID, MBR_TYP_CD, ACTV_FRM_DT, ACTV_TO_DT, LAST_UPDT_DT) VALUES('1207', 1, '6798B3E6C3C49827AE62E5F7A275A1A3', '2000', 'admin', 'P', Null, Null, TO_DATE('2009-08-11 08:59:07','yyyy-mm-dd hh24:mi:ss')) 
+/
+
+-- 08-11-2009 - last entry

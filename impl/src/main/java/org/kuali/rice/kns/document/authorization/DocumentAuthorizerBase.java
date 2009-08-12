@@ -106,13 +106,14 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
 		}
-		if (canTakeRequestedAction(document,
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE) 
+				&& !canTakeRequestedAction(document,
 				KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)) {
-			documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
 		}
-		if (canTakeRequestedAction(document,
-				KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
-			documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_FYI) &&
+				!canTakeRequestedAction(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_FYI);
 		}
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_APPROVE)
 				|| documentActions

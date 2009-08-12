@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -36,9 +37,9 @@ public interface IdentityManagementService {
 	// IdentityService
 	// *******************************
 	
-//	KimEntity getEntityByPrincipalId(String principalId);
-//    KimEntity getEntityByPrincipalName(String principalName);
-//	KimEntity getEntity(String entityId);
+	KimEntityInfo getEntityByPrincipalId(String principalId);
+    KimEntityInfo getEntityByPrincipalName(String principalName);
+	KimEntityInfo getEntity(String entityId);
 
 	KimPrincipalInfo getPrincipal(String principalId);
 	KimPrincipalInfo getPrincipalByPrincipalName(String principalName);

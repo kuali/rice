@@ -14,6 +14,7 @@ import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -127,6 +128,39 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		// nothing currently being cached
 	}
 
+	/**
+	 * Retrieves entity info by entity id.
+	 * 
+	 * @return the entity info
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getEntity(java.lang.String)
+	 */
+	public KimEntityInfo getEntity(String entityId) {
+		//TODO: implement this
+		return new KimEntityInfo();
+	}
+
+	/**
+	 * Retrieves entity info by principal id.
+	 * 
+	 * @return the entity info
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityByPrincipalId(java.lang.String)
+	 */
+	public KimEntityInfo getEntityByPrincipalId(String principalId) {
+		//TODO: implement this
+		return new KimEntityInfo();
+	}
+
+	/**
+	 * Retrieves entity info by principal name.
+	 * 
+	 * @return the entity info
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityByPrincipalName(java.lang.String)
+	 */
+	public KimEntityInfo getEntityByPrincipalName(String principalName) {
+		//TODO: implement this
+		return new KimEntityInfo();
+	}
+	
 	protected KimEntityDefaultInfo getEntityDefaultInfoFromCache( String entityId ) {
 		MaxAgeSoftReference<KimEntityDefaultInfo> entityRef = entityDefaultInfoCache.get( "entityId="+entityId );
 		if ( entityRef != null ) {
@@ -1047,5 +1081,4 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return identityUpdateService;
 	}
- 	
 }

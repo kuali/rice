@@ -593,9 +593,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return getRoleService().getDelegateTypeInfoById(delegationId);
 	}
 	
-	public void saveRoleRspActions(String roleId, String roleResponsibilityId, String roleMemberId, 
+	public void saveRoleRspActions(String roleResponsibilityActionId, String roleId, String roleResponsibilityId, String roleMemberId, 
 			String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction){
-    	getRoleUpdateService().saveRoleRspActions(roleId, roleResponsibilityId, roleMemberId, actionTypeCode, actionPolicyCode, priorityNumber, forceAction);
+    	getRoleUpdateService().saveRoleRspActions(roleResponsibilityActionId, roleId, roleResponsibilityId, roleMemberId, actionTypeCode, actionPolicyCode, priorityNumber, forceAction);
 		removeCacheEntries(roleId, null);
 	}
 

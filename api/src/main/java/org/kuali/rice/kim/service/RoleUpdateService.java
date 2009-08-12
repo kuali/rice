@@ -84,7 +84,8 @@ public interface RoleUpdateService {
      * @param priorityNumber
      * @param forceAction
      */
-    void saveRoleRspActions(@WebParam(name="roleId") String roleId, 
+    void saveRoleRspActions(@WebParam(name="roleResponsibilityActionId") String roleResponsibilityActionId,
+    		@WebParam(name="roleId") String roleId, 
     		@WebParam(name="roleResponsibilityId") String roleResponsibilityId, 
     		@WebParam(name="roleMemberId") String roleMemberId, 
     		@WebParam(name="actionTypeCode") String actionTypeCode, 

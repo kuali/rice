@@ -31,6 +31,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
@@ -1849,7 +1850,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		return roleResponsibilities;
 	}
 
-	public void saveRoleRspActions(String roleId, String roleResponsibilityId, String roleMemberId, 
+	public void saveRoleRspActions(String roleResponsibilityActionId, String roleId, String roleResponsibilityId, String roleMemberId, 
 			String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction){
 		RoleResponsibilityActionImpl newRoleRspAction = new RoleResponsibilityActionImpl();
 		newRoleRspAction.setActionPolicyCode(actionPolicyCode);
@@ -1858,21 +1859,32 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		newRoleRspAction.setForceAction(forceAction);
 		newRoleRspAction.setRoleMemberId(roleMemberId);
 		newRoleRspAction.setRoleResponsibilityId(roleResponsibilityId);
-		//If there is an existing one
-		Map<String, String> criteria = new HashMap<String, String>(1);		
-		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId);
-		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-		List<RoleResponsibilityActionImpl> roleResponsibilityActionImpls = (List<RoleResponsibilityActionImpl>)
-			getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
-		if(roleResponsibilityActionImpls!=null && roleResponsibilityActionImpls.size()>0){
-			newRoleRspAction.setRoleResponsibilityActionId(roleResponsibilityActionImpls.get(0).getRoleResponsibilityActionId());
-			newRoleRspAction.setVersionNumber(roleResponsibilityActionImpls.get(0).getVersionNumber());
+		if(StringUtils.isEmpty(roleResponsibilityActionId)){
+			//If there is an existing one
+			Map<String, String> criteria = new HashMap<String, String>(1);		
+			criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId);
+			criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+			List<RoleResponsibilityActionImpl> roleResponsibilityActionImpls = (List<RoleResponsibilityActionImpl>)
+				getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
+			if(roleResponsibilityActionImpls!=null && roleResponsibilityActionImpls.size()>0){
+				newRoleRspAction.setRoleResponsibilityActionId(roleResponsibilityActionImpls.get(0).getRoleResponsibilityActionId());
+				newRoleRspAction.setVersionNumber(roleResponsibilityActionImpls.get(0).getVersionNumber());
+			} else{
+	//			 get a new ID from the sequence
+		    	SequenceAccessorService sas = getSequenceAccessorService();
+		    	Long nextSeq = sas.getNextAvailableSequenceNumber(
+		    			KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S, RoleResponsibilityActionImpl.class);
+		    	newRoleRspAction.setRoleResponsibilityActionId(nextSeq.toString());
+			}
 		} else{
-//			 get a new ID from the sequence
-	    	SequenceAccessorService sas = getSequenceAccessorService();
-	    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-	    			KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S, RoleResponsibilityActionImpl.class);
-	    	newRoleRspAction.setRoleResponsibilityActionId(nextSeq.toString());
+			Map<String, String> criteria = new HashMap<String, String>(1);		
+			criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ACTION_ID, roleResponsibilityActionId);
+			List<RoleResponsibilityActionImpl> roleResponsibilityActionImpls = (List<RoleResponsibilityActionImpl>)
+				getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
+			if(CollectionUtils.isNotEmpty(roleResponsibilityActionImpls) && roleResponsibilityActionImpls.size()>0){
+				newRoleRspAction.setRoleResponsibilityActionId(roleResponsibilityActionImpls.get(0).getRoleResponsibilityActionId());
+				newRoleRspAction.setVersionNumber(roleResponsibilityActionImpls.get(0).getVersionNumber());
+			}
 		}
 		getBusinessObjectService().save(newRoleRspAction);
 		getIdentityManagementNotificationService().roleUpdated();

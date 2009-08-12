@@ -33,9 +33,6 @@
               description="when readOnly, you can specify a String value to display instead of
               the main property.  The readOnlyBody and extraReadOnlyProperty attributes take precedence.
               THIS VALUE WILL BE DISPLAYED WITHOUT ANY XML FILTERING/ESCAPING, AND NEEDS TO BE PROPERLY ESCAPED TO PREVENT CROSS-SITE SCRIPTING VULNERABILITIES" %>
-<%@ attribute name="encryptValue" required="false"
-			  description="when readOnly or hidden field, boolean to indicate whether the value should
-			  be encrypted and display masked. Defaults to false." %>
 <%@ attribute name="displayMask" required="false"
               description="Specify whether to mask the given field using the displayMaskValue rather than showing the actual value." %>
 <%@ attribute name="displayMaskValue" required="false"
@@ -60,7 +57,7 @@
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
 	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
 	<c:set var="readOnly" value="${displayMask || readOnly}" />
-	<c:if test="${displayMask || encryptValue}">
+	<c:if test="${displayMask}">
 		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
 	</c:if>
 </c:if>
@@ -72,7 +69,7 @@
     <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
 	<c:set var="readOnly" value="${displayMask || readOnly}"/>
 	<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
-	<c:if test="${displayMask || encryptValue}">
+	<c:if test="${displayMask}">
 		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
 	</c:if>
 </c:if>
@@ -93,10 +90,6 @@
 <c:set var="disableField" value="false" />
 <c:if test="${disabled}">
   <c:set var="disableField" value="true" />
-</c:if>
-
-<c:if test="${empty encryptValue}">
-    <c:set var="encryptValue" value="false"/>
 </c:if>
 
 <c:if test="${empty styleClass}">
@@ -120,15 +113,6 @@
 
      <c:otherwise>
         <c:choose>
-         <c:when test="${encryptValue}">
-            <%-- mask and encrypt --%>
-            <%
-              ((org.kuali.rice.kns.web.struts.form.KualiForm) request.getAttribute("KualiForm")).setFormatterType((String) property, org.kuali.rice.kns.web.format.EncryptionFormatter.class);
-            %>
-            <html:hidden property="encryptedProperties('${fn:replace(property,'.','_')}')" value="true"/>
-            <html:hidden write="false" property="${property}" style="${textStyle}"/>
-            ${displayMaskValue}
-         </c:when>
 		<c:when test="${displayMask}" >
 			${displayMaskValue}
 		</c:when>

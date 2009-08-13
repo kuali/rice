@@ -604,6 +604,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	public void applicationRoleMembershipChanged(String roleId) {
+		removeCacheEntries(roleId, null);
 		getRoleService().applicationRoleMembershipChanged(roleId);		
 	}
 	

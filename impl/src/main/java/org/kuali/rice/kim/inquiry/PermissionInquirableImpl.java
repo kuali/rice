@@ -112,6 +112,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
         				roleInfo.getNamespaceCode()+" "+
         				roleInfo.getRoleName());
 				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
+				inquiryHtmlData.setTarget(AnchorHtmlData.TARGET_BLANK);
         		htmlData.add(inquiryHtmlData);
         	}
 		}

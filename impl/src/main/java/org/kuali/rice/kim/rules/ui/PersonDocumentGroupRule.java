@@ -80,7 +80,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-    		GlobalVariables.getMessageMap().putError("newGroup", 
+    		GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, 
     				RiceKeyConstants.ERROR_ASSIGN_GROUP, 
     				new String[] {newGroup.getNamespaceCode(), newGroup.getGroupName()});
             rulePassed = false;

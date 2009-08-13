@@ -231,6 +231,7 @@ public abstract class HtmlData implements Serializable {
 	 * 
 	 */
 	public static class AnchorHtmlData extends HtmlData {
+		public static final String TARGET_BLANK = "blank";
 		protected String href = "";
 		protected String target = "";
 

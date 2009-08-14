@@ -19,8 +19,9 @@ package org.kuali.rice.kim.bo.entity;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface KimPrincipal {
-	public String getPrincipalId();
-	public String getPrincipalName();
-	public String getEntityId();
-	public boolean isActive();
+	String getPrincipalId();
+	String getPrincipalName();
+	String getPassword();
+	String getEntityId();
+	boolean isActive();
 }

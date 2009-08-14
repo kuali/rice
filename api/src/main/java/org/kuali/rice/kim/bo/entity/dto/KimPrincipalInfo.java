@@ -26,15 +26,16 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 
 	private static final long serialVersionUID = 4480581610252159266L;
 
-	private String principalId = "";
-	private String principalName = "";
-	private String entityId = "";
-
+	private String principalId;
+	private String principalName;
+	private String entityId;
+    private String password;
+    
 	/**
 	 * 
 	 */
 	public KimPrincipalInfo() {
-		active = true;
+		this.active = true;
 	}
 	
 	/**
@@ -42,15 +43,16 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	 */
 	public KimPrincipalInfo( KimPrincipal p ) {
 		if ( p != null ) {
-			principalId = unNullify( p.getPrincipalId() );
-			entityId = unNullify( p.getEntityId() );
-			principalName = unNullify( p.getPrincipalName() );
-			active = p.isActive();
+			this.principalId = p.getPrincipalId();
+			this.entityId = p.getEntityId();
+			this.principalName = p.getPrincipalName();
+			this.password = p.getPassword();
+			this.active = p.isActive();
 		}
 	}
 	
 	public String getPrincipalId() {
-		return this.principalId;
+		return unNullify(this.principalId);
 	}
 
 	public void setPrincipalId(String principalId) {
@@ -58,7 +60,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getPrincipalName() {
-		return this.principalName;
+		return unNullify(this.principalName);
 	}
 
 	public void setPrincipalName(String principalName) {
@@ -66,11 +68,19 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getEntityId() {
-		return this.entityId;
+		return unNullify(this.entityId);
 	}
 
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
+	}
+
+	public String getPassword() {
+		return unNullify(this.password);
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

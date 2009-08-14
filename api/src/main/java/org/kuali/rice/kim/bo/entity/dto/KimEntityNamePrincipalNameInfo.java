@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import org.kuali.rice.kim.bo.entity.KimEntityNamePrincipalName;
 
 /**
@@ -32,7 +34,7 @@ public class KimEntityNamePrincipalNameInfo implements KimEntityNamePrincipalNam
 	 * @return the defaultEntityName
 	 */
 	public KimEntityNameInfo getDefaultEntityName() {
-		return this.defaultEntityName;
+		return unNullify(this.defaultEntityName, KimEntityNameInfo.class);
 	}
 	/**
 	 * @param defaultEntityName the defaultEntityName to set
@@ -44,7 +46,7 @@ public class KimEntityNamePrincipalNameInfo implements KimEntityNamePrincipalNam
 	 * @return the principalName
 	 */
 	public String getPrincipalName() {
-		return this.principalName;
+		return unNullify(this.principalName);
 	}
 	/**
 	 * @param principalName the principalName to set
@@ -52,6 +54,4 @@ public class KimEntityNamePrincipalNameInfo implements KimEntityNamePrincipalNam
 	public void setPrincipalName(String principalName) {
 		this.principalName = principalName;
 	}
-	
-	
 }

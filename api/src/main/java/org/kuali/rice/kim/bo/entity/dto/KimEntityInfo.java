@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.getDefaultAndUnNullify;
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
@@ -33,7 +36,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityInfo extends KimInfoBase implements KimEntity {
+public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +50,6 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	private List<? extends KimEntityName> names;
 	private List<? extends KimPrincipal> principals;
 	private KimEntityPrivacyPreferences privacyPreferences;
-	private boolean active;
 	
 	/**
 	 * Retrieves all the entity affiliations.
@@ -56,7 +58,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getAffiliations()
 	 */
 	public List<? extends KimEntityAffiliation> getAffiliations() {
-		return this.affiliations;
+		return unNullify(this.affiliations);
 	}
 	
 	/**
@@ -74,7 +76,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getBioDemographics()
 	 */
 	public KimEntityBioDemographics getBioDemographics() {
-		return this.bioDemographics;
+		return unNullify(this.bioDemographics, KimEntityBioDemographicsInfo.class);
 	}
 	
 	/**
@@ -93,7 +95,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getCitizenships()
 	 */
 	public List<? extends KimEntityCitizenship> getCitizenships() {
-		return this.citizenships;
+		return unNullify(this.citizenships);
 	}
 	
 	/**
@@ -112,12 +114,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultAffiliation()
 	 */
 	public KimEntityAffiliation getDefaultAffiliation() {
-		for (KimEntityAffiliation affiliation : this.affiliations) {
-			if (affiliation.isDefault()) {
-				return affiliation;
-			}
-		}
-		return null;
+		return getDefaultAndUnNullify(this.affiliations, KimEntityAffiliationInfo.class);
 	}
 
 	/**
@@ -127,12 +124,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getDefaultName()
 	 */
 	public KimEntityName getDefaultName() {
-		for (KimEntityName name : this.names) {
-			if (name.isDefault()) {
-				return name;
-			}
-		}
-		return null;
+		return getDefaultAndUnNullify(this.names, KimEntityNameInfo.class);
 	}
 
 	/**
@@ -142,7 +134,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEmploymentInformation()
 	 */
 	public List<? extends KimEntityEmploymentInformation> getEmploymentInformation() {
-		return this.employmentInformation;
+		return unNullify(this.employmentInformation);
 	}
 	
 	/**
@@ -161,12 +153,12 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityExternalIdentifier(java.lang.String)
 	 */
 	public KimEntityExternalIdentifier getEntityExternalIdentifier(String externalIdentifierTypeCode) {
-		for (KimEntityExternalIdentifier externalIdentifier : this.externalIdentifiers) {
+		for (KimEntityExternalIdentifier externalIdentifier : this.getExternalIdentifiers()) {
 			if (externalIdentifier.getExternalIdentifierTypeCode().equals(externalIdentifierTypeCode)) {
 				return externalIdentifier;
 			}
 		}
-		return null;
+		return new KimEntityExternalIdentifierInfo();
 	}
 
 	/**
@@ -176,7 +168,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityId()
 	 */
 	public String getEntityId() {
-		return this.entityId;
+		return unNullify(this.entityId);
 	}
 	
 	/**
@@ -195,12 +187,12 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityType(java.lang.String)
 	 */
 	public KimEntityEntityType getEntityType(String entityTypeCode) {
-		for (KimEntityEntityType entityType : this.entityTypes) {
+		for (KimEntityEntityType entityType : this.getEntityTypes()) {
 			if (entityType.getEntityTypeCode().equals(entityType)) {
 				return entityType;
 			}
 		}
-		return null;
+		return new KimEntityEntityTypeInfo();
 	}
 
 	/**
@@ -210,7 +202,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityTypes()
 	 */
 	public List<? extends KimEntityEntityType> getEntityTypes() {
-		return this.entityTypes;
+		return unNullify(this.entityTypes);
 	}
 	
 	/**
@@ -229,7 +221,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getExternalIdentifiers()
 	 */
 	public List<? extends KimEntityExternalIdentifier> getExternalIdentifiers() {
-		return this.externalIdentifiers;
+		return unNullify(this.externalIdentifiers);
 	}
 	
 	/**
@@ -248,7 +240,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getNames()
 	 */
 	public List<? extends KimEntityName> getNames() {
-		return this.names;
+		return unNullify(this.names);
 	}
 	
 	/**
@@ -267,12 +259,12 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getPrimaryEmployment()
 	 */
 	public KimEntityEmploymentInformation getPrimaryEmployment() {
-		for (KimEntityEmploymentInformation primaryEmployment : this.employmentInformation) {
+		for (KimEntityEmploymentInformation primaryEmployment : this.getEmploymentInformation()) {
 			if (primaryEmployment.isPrimary()) {
 				return primaryEmployment;
 			}
 		}
-		return null;
+		return new KimEntityEmploymentInformationInfo();
 	}
 
 	/**
@@ -282,7 +274,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getPrincipals()
 	 */
 	public List<? extends KimPrincipal> getPrincipals() {
-		return this.principals;
+		return unNullify(this.principals);
 	}
 	
 	/**
@@ -301,7 +293,7 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getPrivacyPreferences()
 	 */
 	public KimEntityPrivacyPreferences getPrivacyPreferences() {
-		return this.privacyPreferences;
+		return unNullify(this.privacyPreferences, KimEntityPrivacyPreferencesInfo.class);
 	}
 	
 	/**
@@ -311,25 +303,5 @@ public class KimEntityInfo extends KimInfoBase implements KimEntity {
 	 */
 	public void setPrivacyPreferences(KimEntityPrivacyPreferences privacyPreferences) {
 		this.privacyPreferences = privacyPreferences;
-	}
-
-	/**
-	 * Checks if the entity is active.
-	 * @return the active status 
-	 * 
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
-	 */
-	public boolean isActive() {
-		return this.active;
-	}
-
-	/**
-	 * Sets the entity active indicator
-	 * @param active the active indicator.
-	 * 
-	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 }

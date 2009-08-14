@@ -25,7 +25,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimInactivatableInfo extends KimInfoBase implements Serializable, Inactivateable {
+public class KimInactivatableInfo implements Serializable, Inactivateable {
 
 	protected boolean active;
 

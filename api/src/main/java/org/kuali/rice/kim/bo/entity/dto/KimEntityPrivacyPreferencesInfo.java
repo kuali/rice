@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import java.io.Serializable;
+
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 
 /**
@@ -23,7 +25,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimEntityPrivacyPreferencesInfo extends KimInfoBase implements KimEntityPrivacyPreferences {
+public class KimEntityPrivacyPreferencesInfo implements KimEntityPrivacyPreferences, Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import java.io.Serializable;
+
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimEntityExternalIdentifier {
+public class KimEntityExternalIdentifierInfo implements KimEntityExternalIdentifier, Serializable {
 
 	private static final long serialVersionUID = 1L;
 

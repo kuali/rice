@@ -29,5 +29,5 @@ public interface KimEntityCitizenship extends Inactivateable {
 	String getCitizenshipStatusCode();
 	Date getStartDate();
 	Date getEndDate();
-		
+	String getCountryCode();	
 }

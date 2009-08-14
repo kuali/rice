@@ -58,7 +58,7 @@ class DtoUtils {
 	 *  @return a non-null date.
 	 */
 	public static Date unNullify( Date dte ) {
-		return dte != null ? dte : new Date();
+		return dte != null ? dte : new Date(0L);
 	}
 	
 	/**

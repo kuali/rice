@@ -117,7 +117,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getEntityType()
 	 */
 	public EntityType getEntityType() {
-		return unNullify(this.entityType, EntityTypeInfo.class);
+		return unNullify(this.entityType, KimEntityTypeInfo.class);
 	}
 
 	/**

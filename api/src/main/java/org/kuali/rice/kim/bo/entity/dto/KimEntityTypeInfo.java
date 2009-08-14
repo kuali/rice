@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.reference.EntityType;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EntityTypeInfo extends KimInactivatableInfo implements EntityType {
+public class KimEntityTypeInfo extends KimInactivatableInfo implements EntityType {
 
 	private static final long serialVersionUID = 1L;
 	

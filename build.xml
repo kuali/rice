@@ -70,7 +70,7 @@
 		<property name="default.jta.excludes" value="**/xapool*.jar, **/jotm*.jar, **/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>		
 		<property environment="env"/>
 	    <!-- if the M2_HOME is already defined in the environment, use it -->
-		<property name="maven.home.directory" value="/usr/local/lib/maven/current"/>
+		<property name="maven.home.directory" value="${env.M2_HOME}"/>
 		<!-- default environment.path.variable to 'PATH' variable from the local environment -->
 		<condition property="environment.path.variable" value="${env.PATH}">
 			<isset property="env.PATH"/>

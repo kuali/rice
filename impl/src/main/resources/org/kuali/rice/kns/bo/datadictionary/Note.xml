@@ -31,7 +31,20 @@
         <ref bean="Note-attachment"/>
         <ref bean="Note-attachmentLink"/>
         <ref bean="Note-versionNumber"/>
+        <ref bean="Note-authorUniversal.principalName"/>
       </list>
+    </property>
+    <property name="relationships">
+    	<list>
+    		<bean parent="RelationshipDefinition">
+    			<property name="objectAttributeName" value="authorUniversal" />
+    			<property name="primitiveAttributes">
+    				<list>
+    					<bean parent="PrimitiveAttributeDefinition" p:sourceName="authorUniversal.principalName" p:targetName="principalName" />
+    				</list>
+    			</property>
+    		</bean>
+    	</list>
     </property>
     <property name="objectLabel" value="Note"/>
   </bean>
@@ -186,5 +199,12 @@
     <property name="name" value="versionNumber"/>
     <property name="label" value="Version Number"/>
     <property name="description" value="versionNumber description..."/>
+  </bean>
+  
+  <bean id="Note-authorUniversal.principalName" parent="Note-authorUniversal.principalName-parentBean"/>
+
+  <bean id="Note-authorUniversal.principalName-parentBean" abstract="true" parent="KimBaseBeans-principalName">
+    <property name="name" value="authorUniversal.principalName"/>
+    <property name="required" value="false"/>
   </bean>
 </beans>

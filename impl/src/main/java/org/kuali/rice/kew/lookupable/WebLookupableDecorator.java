@@ -19,7 +19,7 @@ package org.kuali.rice.kew.lookupable;
 /**
  * Decorates a web-tier bean to give it necessary properties to allow for lookups.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WebLookupableDecorator {
 

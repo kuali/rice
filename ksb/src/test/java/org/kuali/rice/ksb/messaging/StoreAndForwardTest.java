@@ -33,7 +33,7 @@ import org.kuali.rice.ksb.test.KSBTestCase;
 /**
  * Test store and forward capabilities in calling services
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StoreAndForwardTest extends KSBTestCase {
 

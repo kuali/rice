@@ -37,7 +37,7 @@ import org.kuali.rice.kns.web.ui.Column;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestBase {
 //	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CustomSearchAttributesTest.class);

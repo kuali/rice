@@ -33,7 +33,7 @@ import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
 /**
  * JPA implementation of SearchableAttributeDAO
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {

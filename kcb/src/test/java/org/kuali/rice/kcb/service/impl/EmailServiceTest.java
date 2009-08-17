@@ -31,7 +31,7 @@ import org.kuali.rice.test.data.UnitTestSql;
 
 /**
  * This class tests the implementation of the email service.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public class EmailServiceTest extends KCBTestCase {

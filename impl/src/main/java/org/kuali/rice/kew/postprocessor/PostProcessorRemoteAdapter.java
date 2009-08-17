@@ -28,7 +28,7 @@ import org.kuali.rice.kew.dto.DTOConverter;
  * @see PostProcessorRemote
  * @see PostProcessor
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PostProcessorRemoteAdapter implements PostProcessor {
 

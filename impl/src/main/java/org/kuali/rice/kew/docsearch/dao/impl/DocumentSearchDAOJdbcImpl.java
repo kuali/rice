@@ -43,7 +43,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
  *
  * Spring JdbcTemplate implementation of DocumentSearchDAO
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {

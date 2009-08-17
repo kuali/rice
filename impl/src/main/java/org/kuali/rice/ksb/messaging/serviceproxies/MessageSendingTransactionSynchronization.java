@@ -25,7 +25,7 @@ import org.springframework.transaction.support.TransactionSynchronization;
 /**
  * Sends message when current transaction commits.  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MessageSendingTransactionSynchronization implements TransactionSynchronization {

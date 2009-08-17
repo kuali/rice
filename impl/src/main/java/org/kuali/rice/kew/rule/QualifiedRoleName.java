@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule;
 /**
  * Helper class that encapsulates a qualified rolename, and can encode and decode to String representation.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class QualifiedRoleName {
     private final String baseRoleName;

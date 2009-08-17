@@ -59,7 +59,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Model object mapped to ojb for representing actions taken on documents by
  * users.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Sequence(name="KREW_ACTN_TKN_S", property="actionTakenId")

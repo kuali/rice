@@ -20,7 +20,7 @@ package org.kuali.rice.kns.bo;
  * 
  * @see org.kuali.rice.kns.bo.Defaultable
  * @see org.kuali.rice.kns.bo.Inactivateable
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface DefaultableInactivateable extends Defaultable, Inactivateable {

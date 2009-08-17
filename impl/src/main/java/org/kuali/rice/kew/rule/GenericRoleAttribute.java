@@ -53,7 +53,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
  *   </li>
  * </ol> 
  *     
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class GenericRoleAttribute extends GenericWorkflowAttribute implements RoleAttribute {
     public GenericRoleAttribute() {

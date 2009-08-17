@@ -38,7 +38,7 @@ import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 /**
  * Various plugin utilities.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class PluginUtils {
 

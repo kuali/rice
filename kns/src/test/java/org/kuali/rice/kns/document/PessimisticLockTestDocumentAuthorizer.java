@@ -27,7 +27,7 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
  * This class is used to allow a mock {@link Document} object to specify whether or not to use pessimistic locking without
  * requiring a {@link DocumentEntry} in the kuali data dictionary
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PessimisticLockTestDocumentAuthorizer extends DocumentAuthorizerBase {
 

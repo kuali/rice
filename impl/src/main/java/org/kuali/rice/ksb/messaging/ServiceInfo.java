@@ -45,7 +45,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * 
  * @see ServiceDefinition
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRSB_SVC_DEF_T")

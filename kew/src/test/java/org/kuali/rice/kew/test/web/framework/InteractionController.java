@@ -18,7 +18,7 @@ package org.kuali.rice.kew.test.web.framework;
 
 /**
  * Controls interactions with a web site
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface InteractionController {
     public String submit(String method, String uri, Script script) throws Exception;

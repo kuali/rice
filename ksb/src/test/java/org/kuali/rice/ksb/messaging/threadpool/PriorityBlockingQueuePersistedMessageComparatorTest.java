@@ -29,7 +29,7 @@ import org.kuali.rice.ksb.messaging.threadpool.PriorityBlockingQueuePersistedMes
  * Tests that the {@link PriorityBlockingQueuePersistedMessageComparator} is sorting by 
  * priority and date. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PriorityBlockingQueuePersistedMessageComparatorTest extends TestCase {

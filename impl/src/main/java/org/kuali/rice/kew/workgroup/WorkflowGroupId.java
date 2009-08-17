@@ -21,7 +21,7 @@ package org.kuali.rice.kew.workgroup;
  * 
  * @see Workgroup
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class WorkflowGroupId implements GroupId {
 

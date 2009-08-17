@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Service for doing the actual work of a mass action in the action list. Represents a single action on a single document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionInvocationProcessor implements ActionInvocationService { // implements RouteQueueProcessor {
 

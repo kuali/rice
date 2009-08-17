@@ -69,7 +69,7 @@ import org.xml.sax.SAXParseException;
  *
  * @see org.kuali.rice.kew.batch.XmlIngesterService
  * @see org.kuali.rice.kew.batch.XmlDigesterServiceImpl
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlIngesterServiceImpl implements XmlIngesterService {
     private static final Logger LOG = Logger.getLogger(XmlIngesterServiceImpl.class);

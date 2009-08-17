@@ -29,7 +29,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * Standard rule expression implementation that evaluates the attributes associated with the rule definition 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class WorkflowAttributeRuleExpression implements RuleExpression {
     

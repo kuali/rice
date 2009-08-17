@@ -23,7 +23,7 @@ import java.io.Writer;
  * This class wraps a Writer in an Outputstream.  Supports setting a custom encoding
  * in the constructor.  Otherwise the default encoding is used.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WriterOutputStream extends OutputStream {

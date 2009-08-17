@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Encapsulates an asynchronous call to a service.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AsynchronousCall implements Serializable {
 

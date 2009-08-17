@@ -21,7 +21,7 @@ package org.kuali.rice.kew.batch;
  * @see org.kuali.rice.kew.batch.BaseXmlDocCollection
  * @see org.kuali.rice.kew.batch.FileXmlDoc
  * @see org.kuali.rice.kew.batch.ZipXmlDoc
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract class BaseXmlDoc implements XmlDoc {
     protected XmlDocCollection collection;

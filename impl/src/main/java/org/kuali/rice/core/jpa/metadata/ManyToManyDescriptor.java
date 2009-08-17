@@ -23,7 +23,7 @@ import javax.persistence.CascadeType;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ManyToManyDescriptor extends CollectionDescriptor implements java.io.Serializable {
 

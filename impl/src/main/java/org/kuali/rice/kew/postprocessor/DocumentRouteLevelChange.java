@@ -22,7 +22,7 @@ package org.kuali.rice.kew.postprocessor;
  * <p><Description> </p>
  * <p><p><p>Copyright: Copyright (c) 2002</p>
  * <p><p>Company: UIS - Indiana University</p>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentRouteLevelChange implements IDocumentEvent {
 	

@@ -46,7 +46,7 @@ import org.springframework.beans.factory.annotation.Required;
  * Job that delivers messages to endpoints.  This job is not really stateful,
  * but should not be executed concurrently.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> implements StatefulJob {
     public static final String NAME = "MessageProcessingJobDetail";

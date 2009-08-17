@@ -25,7 +25,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 /**
  * Convenience object to hang valuable objects in edl off of.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDLContext {

@@ -35,7 +35,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 /**
  * Struts ActionForm for {@link DelegateRuleAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DelegateRuleForm extends KualiForm {
 

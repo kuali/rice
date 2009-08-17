@@ -26,7 +26,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 /**
  * An XML services which is used to submit documents to the engine.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteDocumentMessageService implements KSBXMLService {
 

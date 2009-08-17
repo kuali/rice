@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 /**
  * This class represents the different types of Notification content that the system can handle.  
  * For example, and instance of content type could be "Alert" or "Event".
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_CNTNT_TYP_T")

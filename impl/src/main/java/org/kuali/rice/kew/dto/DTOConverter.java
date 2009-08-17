@@ -108,7 +108,7 @@ import org.w3c.dom.NodeList;
 /**
  * Translates Workflow server side beans into client side VO beans.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DTOConverter {
     private static final Logger LOG = Logger.getLogger(DTOConverter.class);

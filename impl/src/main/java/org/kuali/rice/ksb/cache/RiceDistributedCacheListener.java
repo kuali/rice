@@ -41,7 +41,7 @@ import com.opensymphony.oscache.plugins.clustersupport.ClusterNotification;
  * them to a Topic on the bus so that all other entities on the bus can flush
  * their cache if neccessary.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceDistributedCacheListener extends AbstractBroadcastingListener implements KSBJavaService {
 

@@ -29,7 +29,7 @@ import org.kuali.rice.core.web.jetty.JettyServer;
 
 /**
  * A lifecycle for running a jetty web server.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JettyServerLifecycle implements Lifecycle {
     private static final Logger LOG = Logger.getLogger(JettyServerLifecycle.class);

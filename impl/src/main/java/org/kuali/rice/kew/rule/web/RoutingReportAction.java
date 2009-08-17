@@ -71,7 +71,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * A Struts Action for executing routing reports and retrieving the results.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoutingReportAction extends KewKualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoutingReportAction.class);

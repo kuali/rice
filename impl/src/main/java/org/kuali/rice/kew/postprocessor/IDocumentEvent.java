@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Base event interface for events emitted from the workflow engine
  * and hooked by the {@link PostProcessor}
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface IDocumentEvent extends Serializable {
   public static final String ROUTE_LEVEL_CHANGE = "rt_lvl_change";

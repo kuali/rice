@@ -40,7 +40,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * Tests MessagingService 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 /*
 @PerTestUnitTestData({

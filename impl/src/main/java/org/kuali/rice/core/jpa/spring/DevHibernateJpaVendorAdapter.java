@@ -45,7 +45,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
  * Note: This implementation should not be used in test or production environments
  * unless further testing determines is it appropriate.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DevHibernateJpaVendorAdapter extends AbstractJpaVendorAdapter implements InitializingBean {

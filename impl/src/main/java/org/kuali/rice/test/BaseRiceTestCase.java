@@ -34,7 +34,7 @@ import org.kuali.rice.test.runners.RiceUnitTestClassRunner;
  * 3) Stores the name of the method being run for use by subclasses (set by {@link RiceUnitTestClassRunner}
  * 4) Sets the PerTestDataLoaderLifecycle that will load sql for the currently running test.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 @RunWith(RiceUnitTestClassRunner.class)

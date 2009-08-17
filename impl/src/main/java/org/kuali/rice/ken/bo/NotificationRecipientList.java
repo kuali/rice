@@ -26,7 +26,7 @@ import javax.persistence.Table;
 
 /**
  * This class represents the data structure that will house a default recipient list for a notification channel.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_RECIP_LIST_T")

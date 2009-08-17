@@ -19,7 +19,7 @@ package org.kuali.rice.kew.exception;
 /**
  * An exception which is thrown when a pessimistic lock fails to be aquired.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LockingException extends WorkflowRuntimeException {
 

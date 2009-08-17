@@ -26,7 +26,7 @@ import java.util.Set;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EntityDescriptor implements Serializable {
 

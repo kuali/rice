@@ -30,7 +30,7 @@ import javax.persistence.Version;
 /**
  * The state of a {@link RouteNodeInstance} represented as a key-value pair of Strings.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RTE_NODE_INSTN_ST_T")

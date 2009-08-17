@@ -35,7 +35,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * SignatureVerifyingInputStream which will verify the digital signature of the request after 
  * all of the data has been read from the input stream.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SignatureVerifyingRequestWrapper extends HttpServletRequestWrapper {
 

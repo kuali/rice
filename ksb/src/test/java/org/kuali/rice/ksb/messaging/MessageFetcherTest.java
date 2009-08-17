@@ -29,7 +29,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * this will result in messages being persisted to db but not delivered. from
  * there we start up the {@link MessageFetcher} and make sure he does his job.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class MessageFetcherTest extends KSBTestCase {

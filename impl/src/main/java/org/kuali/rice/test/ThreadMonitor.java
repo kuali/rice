@@ -25,7 +25,7 @@ import org.junit.Assert;
  * next test.  The ThreadMonitor is a place where those outstanding thread can be stored
  * and handled by the test harnesses tearDown method.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ThreadMonitor {

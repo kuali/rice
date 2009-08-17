@@ -31,7 +31,7 @@ import uk.ltd.getahead.dwr.util.LoggingOutput;
  * This is used instead of a standard ContextLoaderListener in order to load
  * an extra test context if running in unit tests. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TravelAppInitializeListener implements ServletContextListener {
     private static final Logger LOG = Logger.getLogger(TravelAppInitializeListener.class);

@@ -26,7 +26,7 @@ import javax.persistence.Entity;
  * In addition, it describes information about a priority such as its ranking order of priority.  Priority 
  * order within the system is assumed to be ascending.  This by no means impacts the order of delivery 
  * of a notification system message.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_PRIO_T")

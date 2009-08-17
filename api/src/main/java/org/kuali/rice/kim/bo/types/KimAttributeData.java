@@ -19,7 +19,7 @@ package org.kuali.rice.kim.bo.types;
  * This is the generic template for a holder for the
  * actual value of a property attached to a KIM object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimAttributeData {

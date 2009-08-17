@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service;
 /**
  * Service to purge local Kim caches when backend KIM data has changed. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface IdentityManagementNotificationService {

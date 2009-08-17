@@ -23,7 +23,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  *
  * @see FeedbackAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 /* Action Form for Feedback and Support Web form */
 public class FeedbackForm extends KualiForm {

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.identity.PrincipalId;
 /**
  * RoleAttribute that exposes a document's user who routed the document
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoutedByUserRoleAttribute extends UnqualifiedRoleAttribute {
     private static final long serialVersionUID = -7099014184598851664L;

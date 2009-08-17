@@ -23,7 +23,7 @@ import org.kuali.rice.kew.test.web.framework.ScriptAction;
 /**
  * Abstract base ScriptAction that does nothing except define
  * a Logger 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract class BaseScriptAction implements ScriptAction {
     protected Logger log = Logger.getLogger(getClass());

@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * 
  * Is it used to interpret the qualifiers which may be attached.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimRoleTypeService extends KimTypeService {

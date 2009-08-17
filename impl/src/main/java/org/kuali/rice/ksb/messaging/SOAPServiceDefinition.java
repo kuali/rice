@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.messaging;
 import org.kuali.rice.core.config.ConfigurationException;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 public class SOAPServiceDefinition extends ServiceDefinition {

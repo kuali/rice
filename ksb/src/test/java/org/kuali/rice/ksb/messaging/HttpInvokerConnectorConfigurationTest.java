@@ -35,7 +35,7 @@ import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 /**
  * A test which tests the RemoteResourceServiceLocatorImpl class.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HttpInvokerConnectorConfigurationTest extends TestCase {
 

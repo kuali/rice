@@ -35,7 +35,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 /**
  * Base class for KEN controllers for sending notifications
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class BaseSendNotificationController extends MultiActionController {

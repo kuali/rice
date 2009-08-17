@@ -29,7 +29,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 /**
  * Provides some utility methods for translating user ID types.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserUtils {
 

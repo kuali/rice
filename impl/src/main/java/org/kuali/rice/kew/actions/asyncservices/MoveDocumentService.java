@@ -26,7 +26,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * Interface fronting {@link MoveDocumentProcessor} so it can be invoked remotely async.  Created 
  * when the {@link MoveDocumentProcessor} transitioned to a service.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MoveDocumentService {
 

@@ -31,7 +31,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * This class is used to interface with the distributed session database.
  * 
  * TODO: add clear principals to clearSesn
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DistributedSession {

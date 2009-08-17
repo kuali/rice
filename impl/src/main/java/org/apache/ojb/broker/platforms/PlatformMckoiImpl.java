@@ -44,7 +44,7 @@ import org.apache.ojb.broker.query.LikeCriteria;
 /**
  * DatabasePlatform implementation for the Mckoi database.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see http://www.mckoi.com/database
  */
 public class PlatformMckoiImpl extends PlatformDefaultImpl

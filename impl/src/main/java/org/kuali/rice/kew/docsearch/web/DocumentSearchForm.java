@@ -23,7 +23,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 /**
  * Struts form for document search action
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentSearchForm extends KualiForm {
 //FIXME: delete this class when doc search is fully moved over

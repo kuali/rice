@@ -46,7 +46,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
  * The BaselineMode annotation can be used on a per-test-class basis to indicate to the base class which mode to use for test
  * subclass.  It accepts a {@link Mode} value.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class BaselineTestCase extends BaseModuleTestCase {

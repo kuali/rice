@@ -17,13 +17,13 @@ package org.kuali.rice.kcb.util;
 
 /**
  * This class houses various constants for KCB
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBConstants {
     /**
      * Different message delivers for KCB
      * DEFAULT_MESSAGE_DELIVERY_TYPE - the default message delivery type
-     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class MESSAGE_DELIVERY_TYPES {
         public static final String EMAIL_MESSAGE_DELIVERY_TYPE = "Email"; 

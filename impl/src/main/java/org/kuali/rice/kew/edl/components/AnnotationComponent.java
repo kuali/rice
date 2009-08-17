@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
 /**
  * EDL pipeline component that exposes annotations from the previous array of taken actions
  * in the EDL to render.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AnnotationComponent implements EDLModelComponent {
     private static final Logger LOG = Logger.getLogger(AnnotationComponent.class);

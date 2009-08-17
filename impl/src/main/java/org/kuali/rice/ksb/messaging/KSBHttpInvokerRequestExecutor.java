@@ -40,7 +40,7 @@ import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
  * At HttpInvokerRequestExecutor which is capable of digitally signing and verifying messages.  It's capabilities
  * to execute the signing and verification can be turned on or off via an application constant.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KSBHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExecutor {
 	

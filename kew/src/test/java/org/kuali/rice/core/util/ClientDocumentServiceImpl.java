@@ -27,7 +27,7 @@ import org.springframework.beans.factory.InitializingBean;
  * {@link RiceService} annotation and {@link GRLServiceInjectionPostProcessor} should
  * inject everything we need. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ClientDocumentServiceImpl extends DocumentServiceImpl implements InitializingBean {
     public static ClientDocumentServiceImpl me;

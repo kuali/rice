@@ -51,7 +51,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * Current implementation only supports returning to a node on the main branch of the
  * document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 

@@ -32,7 +32,7 @@ import org.kuali.rice.kcb.service.MessageDeliveryService;
 /**
  * MessageDeliveryService implementation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implements MessageDeliveryService {
     private static final Logger LOG = Logger.getLogger(MessageDeliveryServiceImpl.class);

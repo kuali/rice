@@ -27,7 +27,7 @@ import org.kuali.rice.ken.exception.InvalidXMLException;
  * that come into the system.  It also is able to retrieve notifications that have 
  * already been entered/processed by the system.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationService {
     /**

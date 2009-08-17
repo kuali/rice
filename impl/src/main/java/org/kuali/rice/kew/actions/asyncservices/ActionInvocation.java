@@ -25,7 +25,7 @@ import org.kuali.rice.kew.util.Utilities;
  * Used for mass actions from the action list.
  * Represents the definition of an Action invocation against an action item.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ActionInvocation implements Serializable {

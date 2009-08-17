@@ -22,7 +22,7 @@ import org.kuali.rice.kew.test.FakeServiceImpl.Invocation;
 /**
  * Interface for a fake service
  * TODO: consider merging with {@link TestServiceInterface}/{@link GenericTestService} in KSB module 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see FakeServiceImpl
  * @see TestServiceInterface
  */

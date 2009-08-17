@@ -22,7 +22,7 @@ import org.kuali.test.KNSTestCase;
 /**
  * ObjectUtilsTest
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ObjectUtilsTest extends KNSTestCase {
     @Test

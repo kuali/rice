@@ -38,7 +38,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
  * 
  * Intended to be called async and wired that way in server/client spring beans.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentRequeuerImpl implements DocumentRequeuerService {
 	

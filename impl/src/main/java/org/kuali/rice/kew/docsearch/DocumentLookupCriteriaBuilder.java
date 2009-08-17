@@ -38,7 +38,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * Helper class Used for building a Document Search criteria for the lookup
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentLookupCriteriaBuilder  {

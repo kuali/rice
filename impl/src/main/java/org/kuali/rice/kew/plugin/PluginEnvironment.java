@@ -24,7 +24,7 @@ package org.kuali.rice.kew.plugin;
  * <p>The PluginEnvironment also keeps a reference to the PluginRegistry because this
  * allows it to add and remove Plugins as child resource loaders of the registry.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PluginEnvironment implements Reloadable {
 

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
  * general Map.Entry<String, String> to specify
  * cardinality in resulting wsdl's.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class StringMapEntry {

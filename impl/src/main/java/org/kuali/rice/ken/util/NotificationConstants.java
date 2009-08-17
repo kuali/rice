@@ -21,13 +21,13 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * This class houses all constants for the NotificationSystem.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationConstants {
     /**
      * This inner class holds contants that are used for parsing and resolving of content 
      * inside of the XML message format that represents a notification request.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class XML_MESSAGE_CONSTANTS {
         public static final String MESSAGE_OPEN = "<message><![CDATA[";
@@ -39,7 +39,7 @@ public class NotificationConstants {
     
     /**
      * Different content types for the Notification System.  These are static out of the box content types that have specific UIs built for them.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class CONTENT_TYPES {
 	public static final String EVENT_CONTENT_TYPE = "Event";
@@ -50,7 +50,7 @@ public class NotificationConstants {
      * Different delivery types for the Notification System.
      * FYI - user gets notification in list, but can remove without actually viewing details and taking action
      * ACK - user gets notification in list, but has to view details and conciously press the acknowledge button
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class DELIVERY_TYPES {
         public static final String FYI = "FYI";
@@ -69,7 +69,7 @@ public class NotificationConstants {
      * This class holds constants for different detail views of a notification.
      * INLINE - display the details inline (i.e. without any menus around them)
      * NORMAL_VIEW - display the details in a normal view with all of the appropriate menus
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class NOTIFICATION_DETAIL_VIEWS {
 	public static final String NORMAL_VIEW = "displayActionListView";
@@ -79,7 +79,7 @@ public class NotificationConstants {
     
     /**
      * Constants for request processing (web layer).
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class NOTIFICATION_CONTROLLER_CONSTANTS {
         public static final String MSG_DELIVERY_ID = "messageDeliveryId";
@@ -95,7 +95,7 @@ public class NotificationConstants {
      * DELIVERED - the notification has been delivered by the delivery machine
      * REMOVED - the notification has been removed by the delivery machine
      * AUTO_REMOVED - the notification was auto removed by the delivery machine
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class MESSAGE_DELIVERY_STATUS {
         public static final String UNDELIVERED = "UNDELIVERED";
@@ -108,7 +108,7 @@ public class NotificationConstants {
      * Different message delivery types for the notification system.
      * KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE - the KEW action list
      * DEFAULT_MESSAGE_DELIVERY_TYPE - the default message delivery type
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class MESSAGE_DELIVERY_TYPES {
         public static final String KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE = "KEWActionList"; 
@@ -119,7 +119,7 @@ public class NotificationConstants {
      * Different recipient types for the notification system.
      * USER - the notification specifically has a user as one of its recipients
      * GROUP - the notification specifically has a group as one of its recipients
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class RECIPIENT_TYPES {
         public static final String USER = "USER";
@@ -130,7 +130,7 @@ public class NotificationConstants {
      * Different processing flags for the notification system.
      * RESOLVED - the notification has been resolved by the system and specific message deliveries have been created
      * UNRESOLVED - the notification has not been resolved by the system
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class PROCESSING_FLAGS {
         public static final String RESOLVED = "RESOLVED";
@@ -139,7 +139,7 @@ public class NotificationConstants {
 
     /**
      * Flags for record locking
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class LOCKED_FLAG {
         public static final String UNLOCKED = "U";
@@ -150,7 +150,7 @@ public class NotificationConstants {
      * Different response statuses for sending notifications.
      * SUCCESS - the notification message was successfully received and will be processed and delivered by the system
      * FAILURE - the notification message was received but there were problems and it will not be processed and delivered by the system.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class RESPONSE_STATUSES {
         public static final String SUCCESS = "Success";
@@ -159,7 +159,7 @@ public class NotificationConstants {
     
     /**
      * Different response messages for sending notifications.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class RESPONSE_MESSAGES {
         public static final String SUCCESSFULLY_RECEIVED = "The notification message has been successfully received by the system and will be processed and delivered.";
@@ -178,7 +178,7 @@ public class NotificationConstants {
     /**
      * This class houses constants that represent the property names for the business objects.  This should 
      * be used for building database queries.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class BO_PROPERTY_NAMES {
         public static final String ID = "id";
@@ -210,7 +210,7 @@ public class NotificationConstants {
     
     /**
      * This inner class is used to hold constants needed for KEW integration.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class KEW_CONSTANTS {
         public static final String NOTIFICATION_DOC_TYPE = "KualiNotification";
@@ -228,7 +228,7 @@ public class NotificationConstants {
     /**
      * This inner class is used to hold constants around needed for the default system producer which all channels must be exposed 
      * to for the generic message sending form to work with.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class NOTIFICATION_PRODUCERS {
         public static final NotificationProducer NOTIFICATION_SYSTEM_PRODUCER = buildNotificationSystemProducer();

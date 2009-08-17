@@ -33,7 +33,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * This is the inverse of the {@link TakeWorkgroupAuthority} action.  This puts the document back
  * in all the peoples action lists that have the document routed to them.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
 

@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
  * The 'actual', 'regex' and 'expected' attributes are resolved via {@link org.kuali.rice.kew.test.web.framework.Util#getResolvableAttribute(Node, String, PropertyScheme)}.
  * The 'actual' attribute defautls to variable scheme.
  * The 'regex' and 'expected' attributes default to literal scheme.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AssertAction extends BaseScriptAction {
     private static final String[] NAMES = { "assert" };

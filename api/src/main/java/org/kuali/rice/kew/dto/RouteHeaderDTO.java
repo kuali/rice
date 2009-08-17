@@ -25,7 +25,7 @@ import java.util.List;
  * Transport object for the DocumentRouteHeaderValue.  Represents a document to the
  * client programmer
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteHeaderDTO implements Serializable {
 

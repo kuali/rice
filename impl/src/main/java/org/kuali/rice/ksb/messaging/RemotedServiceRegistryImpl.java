@@ -366,7 +366,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 * Looks up service QNameS based on URL StringS.  API is Map-like, but non-service specific portions of the
 	 * URL are trimmed prior to accessing its internal Map.
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
 	private static class ServiceNameFinder {

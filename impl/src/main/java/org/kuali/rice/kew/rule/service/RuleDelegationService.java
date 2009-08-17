@@ -29,7 +29,7 @@ import org.kuali.rice.kew.xml.export.XmlExporter;
  *
  * @see RuleDelegation
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleDelegationService extends XmlLoader, XmlExporter {
 

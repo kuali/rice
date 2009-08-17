@@ -37,7 +37,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Responsible for creating adhoc requests that are requested from the client.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AdHocAction extends ActionTakenEvent {
     /**

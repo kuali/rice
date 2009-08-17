@@ -73,7 +73,7 @@ import org.xml.sax.SAXParseException;
 /**
  * Provides a set of utilities for XML-related operations.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlHelper {
 	protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XmlHelper.class);

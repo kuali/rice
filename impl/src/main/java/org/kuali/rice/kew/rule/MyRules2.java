@@ -32,7 +32,7 @@ import org.kuali.rice.kew.rule.web.WebRuleBaseValues;
  *
  * @see WebRuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MyRules2 implements Serializable {
 

@@ -38,7 +38,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
  * </dl>
  * E.g.
  * <div><tt>bizRule1: next; bizRule2: true; bizRule3: false</tt></div>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
     private static final Logger LOG = Logger.getLogger(MetaRuleExpression.class);

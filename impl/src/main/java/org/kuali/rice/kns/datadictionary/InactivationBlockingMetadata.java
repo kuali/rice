@@ -19,7 +19,7 @@ package org.kuali.rice.kns.datadictionary;
  * This interface provides read-only metadata about inactivation blocking.  This metadata object is associated with a business object.
  * The source of this information often comes from the data dictionary file.
  *  
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface InactivationBlockingMetadata {

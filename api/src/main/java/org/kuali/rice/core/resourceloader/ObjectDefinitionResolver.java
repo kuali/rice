@@ -33,7 +33,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  * Resolves object definitions into java Objects that are wrapped in a proxy whose classloader is the current
  * context classloader.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ObjectDefinitionResolver {

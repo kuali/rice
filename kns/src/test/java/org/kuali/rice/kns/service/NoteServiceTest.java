@@ -23,7 +23,7 @@ import org.kuali.test.KNSTestCase;
 /**
  * This class is used to test the {@link NoteService} implementation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class NoteServiceTest extends KNSTestCase {

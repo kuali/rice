@@ -45,7 +45,7 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * This is an implementation of the {@link JavaSecurityManagementService} interface used by the KSB module 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class JavaSecurityManagementServiceImpl implements JavaSecurityManagementService, InitializingBean {

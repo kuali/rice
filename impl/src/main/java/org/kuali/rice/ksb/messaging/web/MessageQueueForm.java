@@ -31,7 +31,7 @@ import org.kuali.rice.ksb.util.CodeTranslator;
 /**
  * Struts ActionForm for the {@link MessageQueueAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageQueueForm extends ActionForm {
 

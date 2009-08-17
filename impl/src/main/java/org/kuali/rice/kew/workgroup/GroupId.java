@@ -21,6 +21,6 @@ import org.kuali.rice.kew.identity.Id;
 /**
  * A marker interface for Id implementations for groups.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface GroupId extends Id {}

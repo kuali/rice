@@ -36,7 +36,7 @@ import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
  * Can grab any KSB specific resource loader from the resource loading stack.
  *
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KSBResourceLoaderFactory {

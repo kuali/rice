@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Simply records an action taken with an annotation.  
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LogDocumentActionAction extends ActionTakenEvent {
 

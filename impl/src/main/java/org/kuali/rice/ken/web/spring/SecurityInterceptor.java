@@ -26,7 +26,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * Spring HandlerInterceptor implementation that implements security.  For now this just
  * adds a flag to the request indicating whether the authenticated user is a Notification
  * System administrator.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private static final Logger LOG = Logger.getLogger(SecurityInterceptor.class);

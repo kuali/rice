@@ -20,7 +20,7 @@ package org.kuali.rice.kew.exception;
 /**
  * Thrown when a resource is not available.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ResourceUnavailableException extends WorkflowException {
 

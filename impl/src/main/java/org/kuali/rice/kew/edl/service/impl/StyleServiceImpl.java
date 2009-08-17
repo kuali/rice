@@ -53,7 +53,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * Implements generic StyleService via existing EDL style table
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleServiceImpl implements StyleService {
     private static final Logger LOG = Logger.getLogger(StyleServiceImpl.class);

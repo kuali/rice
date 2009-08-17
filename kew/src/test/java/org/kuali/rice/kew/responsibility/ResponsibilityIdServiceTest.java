@@ -23,7 +23,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 /**
  * Test the Responsibility ID Service
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ResponsibilityIdServiceTest extends KEWTestCase {

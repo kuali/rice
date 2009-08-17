@@ -26,7 +26,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * Abstract base class for {@link WorkflowAttribute}s.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AbstractWorkflowAttribute implements WorkflowAttribute {
     protected boolean required;

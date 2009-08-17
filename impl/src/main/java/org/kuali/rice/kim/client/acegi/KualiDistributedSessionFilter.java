@@ -32,7 +32,7 @@ import org.kuali.rice.kim.sesn.DistributedSession;
  * TODO: Need to add check for missing DST (update 
  * {@link org.kuali.rice.kim.sesn.DistributedSession})  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.acegisecurity.ui.cas.CasProcessingFilter#attemptAuthentication
  */
 public class KualiDistributedSessionFilter extends CasProcessingFilter {

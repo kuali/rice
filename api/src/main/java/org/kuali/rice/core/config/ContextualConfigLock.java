@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 /**
  * Synchronization primitive that implements a condition that can be waited upon.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ContextualConfigLock {
     private static final Logger LOG = Logger.getLogger(ContextualConfigLock.class);

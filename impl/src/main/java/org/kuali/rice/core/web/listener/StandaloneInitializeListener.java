@@ -43,7 +43,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * A ServletContextListener responsible for intializing the Standalone Kuali Rice application.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandaloneInitializeListener implements ServletContextListener {
     private static final long serialVersionUID = -6603009920502691099L;

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.dto;
 /**
  * A document event representing the transition of a document from one status to another.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentRouteStatusChangeDTO extends DocumentEventDTO {
 

@@ -35,7 +35,7 @@ import org.kuali.rice.kns.web.format.DateFormatter;
 /**
  * This class holds details of html data for an action url.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public abstract class HtmlData implements Serializable {
@@ -227,7 +227,7 @@ public abstract class HtmlData implements Serializable {
 	 * 
 	 * This class is an extension of HtmlData. It represents an anchor tag.
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 * 
 	 */
 	public static class AnchorHtmlData extends HtmlData {
@@ -319,7 +319,7 @@ public abstract class HtmlData implements Serializable {
 	 * 
 	 * This class is an extension of HtmlData. It represents an input tag.
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 * 
 	 */
 	public static class InputHtmlData extends HtmlData {

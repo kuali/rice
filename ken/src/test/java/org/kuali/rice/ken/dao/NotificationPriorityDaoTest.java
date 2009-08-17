@@ -25,7 +25,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 /**
  * This class test basic persistence for the NotificationPriority business object.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationPriorityDaoTest extends BusinessObjectPersistenceTestCaseBase {
     NotificationPriority mockPriority1 = MockObjectsUtil.getTestPriority1();

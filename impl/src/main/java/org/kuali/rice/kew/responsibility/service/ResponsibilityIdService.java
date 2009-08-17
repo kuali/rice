@@ -19,7 +19,7 @@ package org.kuali.rice.kew.responsibility.service;
 /**
  * A service for obtaining responsibility IDs.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ResponsibilityIdService {
 

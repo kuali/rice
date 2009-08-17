@@ -39,7 +39,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * @see RuleBaseValues
  * @see RuleResponsibility
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleService extends XmlLoader, XmlExporter {
 

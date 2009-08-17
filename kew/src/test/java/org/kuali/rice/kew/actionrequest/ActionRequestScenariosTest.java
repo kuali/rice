@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * This test exercises various Action Request graph scenarios and tests them for correctness.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestScenariosTest extends KEWTestCase {
 

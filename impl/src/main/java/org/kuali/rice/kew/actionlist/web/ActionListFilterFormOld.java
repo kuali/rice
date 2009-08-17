@@ -30,7 +30,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 /**
  * Struts form class for ActionListFilterAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class ActionListFilterFormOld extends ActionForm {

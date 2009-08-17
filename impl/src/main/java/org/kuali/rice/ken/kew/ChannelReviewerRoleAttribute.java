@@ -39,7 +39,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
  * KEW RoleAttribute implementation that is responsible for encapsulating a list
  * of users and groups which are reviewers for a Notification Channel.
  * This implementation relies on the default XML form implemented by GenericRoleAttribute
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     private static final Logger LOG = Logger.getLogger(ChannelReviewerRoleAttribute.class);

@@ -27,7 +27,7 @@ import java.util.Map;
  * 
  * <p>Since Node Settings are runtime-mutable, it is important that implementations of this class be thread-safe.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NodeSettings {
 	

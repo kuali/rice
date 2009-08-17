@@ -24,7 +24,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 /**
  * This class allows the NotificationService.sendNotification(XML) service 
  * to be invoked as a web service generically from the bus.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SendNotificationServiceKewXmlImpl implements KSBXMLService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

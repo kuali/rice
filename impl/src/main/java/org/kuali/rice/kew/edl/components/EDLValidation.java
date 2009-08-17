@@ -18,7 +18,7 @@ package org.kuali.rice.kew.edl.components;
 /**
  * Represents an EDocLite Validation that can be executed.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EDLValidation {
 

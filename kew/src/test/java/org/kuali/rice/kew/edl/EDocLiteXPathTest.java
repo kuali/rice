@@ -46,7 +46,7 @@ import org.w3c.dom.Text;
 /**
  * This class is used to test edoc lite xml xpath operations
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Ignore

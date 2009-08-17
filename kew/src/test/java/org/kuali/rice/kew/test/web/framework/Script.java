@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
  * ... script actions ...
  * &lt;/script&gt;
  * </pre>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Script {
     private static final Logger LOG = Logger.getLogger(Script.class);

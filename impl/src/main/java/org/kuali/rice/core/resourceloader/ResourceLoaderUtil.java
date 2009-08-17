@@ -22,7 +22,7 @@ import org.kuali.rice.core.resourceloader.ResourceLoader;
 /**
  * A class for {@link ResourceLoader} related utilities.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ResourceLoaderUtil {
     private static final Logger LOG = Logger.getLogger(ResourceLoaderUtil.class);

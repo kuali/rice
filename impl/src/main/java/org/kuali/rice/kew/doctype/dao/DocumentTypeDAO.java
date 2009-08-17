@@ -24,7 +24,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentTypeDAO {
 

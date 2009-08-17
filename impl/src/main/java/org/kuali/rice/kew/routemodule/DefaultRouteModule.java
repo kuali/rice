@@ -29,7 +29,7 @@ import org.kuali.rice.kew.util.ResponsibleParty;
  * A default implementation of a {@link RouteModule}.  This implementation
  * does not generate requests or resolve responsibility IDs.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefaultRouteModule implements RouteModule {
 

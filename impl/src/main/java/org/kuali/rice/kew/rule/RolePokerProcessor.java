@@ -29,7 +29,7 @@ import org.kuali.rice.kew.util.Utilities;
 /**
  * RolePoker implementation which handles initiating refresh of the "poked" role.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RolePokerProcessor implements RolePoker {
 

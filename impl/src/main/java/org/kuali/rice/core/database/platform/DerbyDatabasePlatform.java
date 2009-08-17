@@ -25,7 +25,7 @@ import org.apache.ojb.broker.query.Criteria;
 
 /**
  * DatabasePlatform implementation that generates Mckoi-compliant SQL
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DerbyDatabasePlatform extends ANSISqlDatabasePlatform {
 

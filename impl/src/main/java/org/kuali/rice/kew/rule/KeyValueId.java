@@ -23,7 +23,7 @@ import org.kuali.rice.kew.rule.web.WebRuleBaseValues;
 /**
  * Used by the {@link WebRuleBaseValues} to hold key-value-id data for {@link Field}s.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KeyValueId {
 	private String key;

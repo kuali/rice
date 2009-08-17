@@ -24,7 +24,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 /**
  * Compares an action item to another action item.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionItemComparator implements Comparator {
 

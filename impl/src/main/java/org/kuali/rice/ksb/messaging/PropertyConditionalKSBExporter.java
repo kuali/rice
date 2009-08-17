@@ -24,7 +24,7 @@ import org.kuali.rice.core.config.ConfigContext;
  * setting a configuration parameter. The default behavior if the parameter is
  * not set is to export the service as the {@link KSBExporter} normally would.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PropertyConditionalKSBExporter extends KSBExporter {
 

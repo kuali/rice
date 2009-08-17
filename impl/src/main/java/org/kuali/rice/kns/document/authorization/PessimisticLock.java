@@ -35,7 +35,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * lock exists that a user should only have read-only access to a document. For
  * more information see documentation pages.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 

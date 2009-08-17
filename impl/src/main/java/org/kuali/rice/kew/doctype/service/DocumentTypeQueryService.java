@@ -25,7 +25,7 @@ import org.kuali.rice.kew.xml.XmlLoader;
 /**
  * A service for querying document type stuff for plugins without exposing the document type service.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentTypeQueryService extends XmlLoader {
 

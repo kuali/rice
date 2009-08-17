@@ -27,7 +27,7 @@ import org.kuali.rice.kew.validation.ValidationResults;
  * An attribute that defines extensions fields on a business object to allow for render on a
  * screen for data collection.  Also performs validation on the extension data.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ExtensionAttribute {
 

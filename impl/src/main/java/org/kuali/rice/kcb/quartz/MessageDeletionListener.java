@@ -31,7 +31,7 @@ import org.quartz.JobListener;
 /**
  * Listener that takes care of deleting removed messages 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MessageDeletionListener implements JobListener {

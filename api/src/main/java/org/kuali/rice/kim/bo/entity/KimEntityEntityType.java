@@ -23,7 +23,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
 /**
  * Represents the entity type associated with a particular entity. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimEntityEntityType extends Inactivateable {

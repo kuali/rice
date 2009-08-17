@@ -19,7 +19,7 @@ package org.kuali.rice.kew.engine.node;
 /**
  * An implementation of a {@link NodeMatcher} which matches nodes based on the name of the node.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NodeNameMatcher implements NodeMatcher {
 

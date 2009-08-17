@@ -27,7 +27,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 
 /**
  * This class is the simulator for s2s notification requests for testers.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class NotificationUsageSimulator extends NotificationWebServiceTestCaseBase {
     private static final Logger LOG = Logger.getLogger(NotificationUsageSimulator.class);

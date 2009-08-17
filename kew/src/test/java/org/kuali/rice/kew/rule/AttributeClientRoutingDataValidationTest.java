@@ -30,7 +30,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
  * 
  * An attribute that doesn't implement the interface should record no errors when validated.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class AttributeClientRoutingDataValidationTest extends KEWTestCase {

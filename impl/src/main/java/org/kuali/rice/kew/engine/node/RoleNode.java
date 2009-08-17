@@ -49,7 +49,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Essentially extends RequestsNode and provides a custom RouteModule
  * implementation.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class RoleNode extends RequestsNode {

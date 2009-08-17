@@ -33,7 +33,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * NotificationService implementation that delegates to KCB
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBNotificationService extends DefaultNotificationService {
     @Override

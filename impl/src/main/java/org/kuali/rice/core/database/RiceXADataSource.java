@@ -35,7 +35,7 @@ import org.enhydra.jdbc.standard.StandardXAStatefulConnection;
  * 
  * Portions of this code were copied from Apache DBCP 1.2.1
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RiceXADataSource extends StandardXADataSource {

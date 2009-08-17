@@ -24,7 +24,7 @@ import javax.persistence.FetchType;
 /**
  * Base class for the "one" side of a relationship.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ObjectDescriptor implements java.io.Serializable {
 

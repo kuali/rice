@@ -26,7 +26,7 @@ import org.kuali.rice.kew.mail.service.impl.DefaultEmailService;
 /**
  * This class is used to disallow email sending for KEW tests 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MockDefaultEmailServiceImpl extends DefaultEmailService {

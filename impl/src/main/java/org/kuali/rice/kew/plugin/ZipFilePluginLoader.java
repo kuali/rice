@@ -37,7 +37,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 /**
  * Loads a plugin from a zip file on the file system.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ZipFilePluginLoader extends BasePluginLoader {
 	private static final Logger LOG = Logger.getLogger(ZipFilePluginLoader.class);

@@ -27,7 +27,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * Implements KEN integration by querying the database tables directly.  This avoids
  * a runtime dependence on KEN. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KENIntegrationServiceDirectImpl implements KENIntegrationService {
     private DataSource datasource;

@@ -27,7 +27,7 @@ import javax.servlet.ServletResponse;
 /**
  * Servlet designed to help run tests for EDocLite documents 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDocLiteTestServlet extends GenericServlet {

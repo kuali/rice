@@ -28,7 +28,7 @@ import org.kuali.rice.kew.web.session.UserSession;
  * a user is a member of a workgroup or a role, it is not necessary to requery the
  * workgroup or role for information on whether that user is a member.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SecuritySession implements Serializable {
 

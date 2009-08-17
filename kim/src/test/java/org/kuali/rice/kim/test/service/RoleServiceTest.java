@@ -27,7 +27,7 @@ import org.kuali.rice.kim.test.KIMTestCase;
 /**
  * Test the RoleService
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoleServiceTest extends KIMTestCase {

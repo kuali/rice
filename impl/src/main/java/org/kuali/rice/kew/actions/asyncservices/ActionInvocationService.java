@@ -21,7 +21,7 @@ package org.kuali.rice.kew.actions.asyncservices;
  * Interface for defining the contract for the remoting of ActionInvocationProcessor.  
  * Created when the ActionInvocationProcessor went to a service.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionInvocationService {
 

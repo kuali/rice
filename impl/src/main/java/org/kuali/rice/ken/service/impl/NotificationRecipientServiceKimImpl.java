@@ -28,7 +28,7 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 /**
  * NotificationRecipientService implementation
  * This implementation relies on KIM user and group management
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationRecipientServiceKimImpl implements NotificationRecipientService
 {

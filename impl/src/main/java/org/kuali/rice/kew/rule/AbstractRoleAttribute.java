@@ -24,7 +24,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 /**
  * Abstract base class for {@link RoleAttribute}s.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AbstractRoleAttribute extends AbstractWorkflowAttribute implements RoleAttribute {
 

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * Implementation of the {@link ActionListImmediateEmailReminderService}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListImmediateProcessorImpl implements ActionListImmediateEmailReminderService {
 

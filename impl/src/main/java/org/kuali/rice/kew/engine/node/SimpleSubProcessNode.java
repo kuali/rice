@@ -24,7 +24,7 @@ import org.kuali.rice.kew.engine.transition.SubProcessTransitionEngine;
  * defers to the {@link SubProcessTransitionEngine} to handle the initiation of the
  * sub process.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimpleSubProcessNode implements SubProcessNode {
 

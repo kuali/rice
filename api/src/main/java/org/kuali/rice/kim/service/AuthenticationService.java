@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * implementation might actually perform the authentication itself based on
  * information available on the http request.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public interface AuthenticationService {

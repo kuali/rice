@@ -20,7 +20,7 @@ package org.kuali.rice.kew.exception;
 /**
  * An exception which is thrown when a DocumentType cannot be found.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeNotFoundException extends WorkflowException {
 

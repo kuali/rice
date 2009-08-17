@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  * There is probably a better way to do this, e.g. a filter to bean proxy in some spring context,
  * but the sample app doesn't really have a web context of its own to put this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class HideWebInfFilter implements Filter {

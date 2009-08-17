@@ -31,7 +31,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 /**
  * Tests DB persistence using JPA and OJB. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 //@KEWTransactionalTest

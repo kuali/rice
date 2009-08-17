@@ -39,7 +39,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * Does a node level super user approve action.  All approve/complete requests outstanding for
  * this node are satisfied by this action.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {

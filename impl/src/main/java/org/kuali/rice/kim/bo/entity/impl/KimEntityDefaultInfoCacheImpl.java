@@ -44,7 +44,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 /**
  * Used to store a cache of person information to be used if the user's information disappears from KIM. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity

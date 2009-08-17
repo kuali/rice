@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * ActionListEmailService implementation whose content is configurable/parameterizable
  * via a pluggable EmailContentService
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CustomizableActionListEmailServiceImpl extends ActionListEmailServiceImpl {
     private static final Logger LOG = Logger.getLogger(CustomizableActionListEmailServiceImpl.class);

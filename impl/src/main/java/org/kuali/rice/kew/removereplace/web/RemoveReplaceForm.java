@@ -31,7 +31,7 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * A struts form for Remove/Replace.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RemoveReplaceForm extends KewRoutingKualiForm {
 

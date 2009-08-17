@@ -26,7 +26,7 @@ package org.kuali.rice.ken.client.ws.stubs;
 /**
  * This class is a facade service wrapper interface for JAX-RPC compliance within 
  * Apache Axis.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationWebService extends java.rmi.Remote {
     public java.lang.String sendNotification(java.lang.String notificationMessageAsXml) throws java.rmi.RemoteException;

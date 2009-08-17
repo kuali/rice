@@ -27,7 +27,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * Implements the KRA meta-rule processing and state machine engine 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRAMetaRuleEngine {
     private static final Logger LOG = Logger.getLogger(KRAMetaRuleEngine.class);

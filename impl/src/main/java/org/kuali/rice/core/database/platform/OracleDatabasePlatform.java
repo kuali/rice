@@ -34,7 +34,7 @@ import org.kuali.rice.core.util.RiceConstants;
 
 /**
  * DatabasePlatform implementation that generates Oracle-compliant SQL
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
 

@@ -42,7 +42,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 /**
  * The standard implementation of the DocumentTypeService.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 

@@ -24,7 +24,7 @@ import org.kuali.rice.kew.identity.PrincipalName;
  *
  * @deprecated use {@link PrincipalName} instead
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AuthenticationUserId implements UserId {
 

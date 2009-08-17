@@ -27,7 +27,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
 /**
  * Default implementation of the {@link MessageExceptionHandler} which handles exceptions thrown from message processing.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 

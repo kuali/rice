@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * Implementation of the Null Object Pattern for QualiferResolvers.  Returns an List with a single empty
  * AttributeSet when asked to resolve. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class NullQualifierResolver implements QualifierResolver {

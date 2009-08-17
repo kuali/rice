@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary.control;
 /**
  * A control definition for Multiselect
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MultiselectControlDefinition extends MultivalueControlDefinitionBase {

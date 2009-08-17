@@ -26,7 +26,7 @@ import java.util.List;
  * the methods on the interface.  Simply returns a "true"
  * ProcessDocReport for all events exception for deletion.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefaultPostProcessor implements PostProcessor {
 

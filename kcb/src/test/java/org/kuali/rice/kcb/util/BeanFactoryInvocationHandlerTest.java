@@ -27,7 +27,7 @@ import org.springframework.test.AssertThrows;
 
 /**
  * Tests BeanFactoryIinvocationHandler class 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BeanFactoryInvocationHandlerTest {
      private static interface BadInterface {

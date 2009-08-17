@@ -41,7 +41,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * related to this user are deactivated.
  * </p>
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AcknowledgeAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AcknowledgeAction.class);

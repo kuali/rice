@@ -26,7 +26,7 @@ import org.kuali.rice.kew.identity.PrincipalId;
  * take as configuration the label to use for the element name in the XML. This
  * allows for re-use of this component in different contexts.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PrincipalIdRoleAttribute extends AbstractIdRoleAttribute {
 

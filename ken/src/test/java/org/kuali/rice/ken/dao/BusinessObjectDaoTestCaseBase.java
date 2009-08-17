@@ -23,7 +23,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 /**
  * Convenience test case implementation that just stores the BusinessObjectDao bean
  * in a protected member field for ease of use
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public abstract class BusinessObjectDaoTestCaseBase extends KENTestCase {

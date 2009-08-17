@@ -33,7 +33,7 @@ import uk.ltd.getahead.dwr.create.SpringCreator;
  * bean name in question if the default {@link BeanFactory} (the applications)
  * does not have the bean in question.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class GlobalResourceDelegatingSpringCreator extends SpringCreator {

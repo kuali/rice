@@ -31,7 +31,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * ServiceLocator that starts and wraps the primary workflow Spring Application Context.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public final class SpringLoader extends BaseLifecycle implements ServiceLocator {

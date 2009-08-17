@@ -49,7 +49,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * it is simple enough for the <code>XmlIngesterService</code> to determine this.
  * @see org.kuali.rice.kew.batch.XmlPollerService
  * @see org.kuali.rice.kew.batch.XmlIngesterServiceImpl
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlPollerServiceImpl implements XmlPollerService {
 

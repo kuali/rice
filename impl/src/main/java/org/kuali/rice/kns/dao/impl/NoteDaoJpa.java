@@ -32,7 +32,7 @@ import org.springframework.dao.DataAccessException;
 /**
  * This class is the JPA implementation of the NoteDao interface.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NoteDaoJpa implements NoteDao {
 

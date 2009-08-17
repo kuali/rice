@@ -49,7 +49,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * determine how to connect to KEW.  To use this API, simply create a new instance using the
  * empty constructor.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowInfo implements java.io.Serializable {
 

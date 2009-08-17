@@ -35,7 +35,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * This is a basic implementation of the KualiReporterService. Currently, it only has
  * a mail service as reporting mechanism.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncidentService {

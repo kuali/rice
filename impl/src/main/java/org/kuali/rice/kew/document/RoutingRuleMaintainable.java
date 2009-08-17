@@ -37,7 +37,7 @@ import org.kuali.rice.kns.web.ui.Section;
  * This class is the maintainable implementation for Routing Rules 
  * in KEW (represented by the {@link RuleBaseValues} business object). 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoutingRuleMaintainable extends KualiMaintainableImpl {

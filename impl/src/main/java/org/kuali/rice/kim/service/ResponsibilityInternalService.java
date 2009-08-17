@@ -23,7 +23,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
  * This is an internal serverice that was created as a proxy for kew
  * updates
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface ResponsibilityInternalService {

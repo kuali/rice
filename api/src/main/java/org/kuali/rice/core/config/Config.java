@@ -25,7 +25,7 @@ import java.util.Properties;
  * Interface encapsulating central config settings. This interface was taken
  * directly from BundleUtility which it replaces.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Config {
 

@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * A transport object representing an action a user might take
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReportActionToTakeDTO implements Serializable {
 	private static final long serialVersionUID = 5212455086079117671L;

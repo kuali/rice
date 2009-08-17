@@ -27,7 +27,7 @@ import org.springframework.beans.factory.InitializingBean;
  * Returns a {@link RiceCacheAdministrator}.  Starts and registers this 
  * cache with the bus.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBean {
 	

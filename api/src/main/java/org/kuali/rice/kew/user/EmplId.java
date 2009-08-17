@@ -25,7 +25,7 @@ import org.kuali.rice.kew.identity.EmployeeId;
  * 
  * @deprecated use {@link EmployeeId} instead 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmplId implements UserId {
 

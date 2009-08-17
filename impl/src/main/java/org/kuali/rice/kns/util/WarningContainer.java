@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * An implementation of {@link MessageContainer} that makes warning messages accessible by the JSP layer 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WarningContainer extends MessageContainer {

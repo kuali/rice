@@ -39,7 +39,7 @@ import org.kuali.rice.kew.util.Utilities;
  * </pre>
  * If <code>org.kuali.rice.kew.engine.node.hierarchyrouting.SimpleHierarchyProvider</code> supplied stops named 'a', 'b', and 'c', the rules
  * selected would be 'hierarchy-a', 'hierarchy-b', and 'hierarchy-c', respectively.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HierarchicalNamedRuleSelector extends NamedRuleSelector {
     private static final Logger LOG = Logger.getLogger(HierarchicalNamedRuleSelector.class);

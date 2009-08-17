@@ -19,7 +19,7 @@ package org.kuali.rice.kew.test.services;
 /**
  * A simple service which we can use to effectively "touch" the servers in a system
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ChainedRequestService {
 

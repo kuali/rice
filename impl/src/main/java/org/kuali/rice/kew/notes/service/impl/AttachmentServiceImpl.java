@@ -28,7 +28,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * Implementation of the {@link AttachmentService}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttachmentServiceImpl implements AttachmentService {
 	

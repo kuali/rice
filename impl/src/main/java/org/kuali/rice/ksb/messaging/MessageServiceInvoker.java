@@ -33,7 +33,7 @@ import org.springframework.transaction.support.TransactionCallback;
 /**
  * Handles invocation of a {@link PersistedMessage}.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageServiceInvoker implements Runnable {
 

@@ -22,7 +22,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 /**
  * An abstract superclass to aid in implementing lifeycles.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseLifecycle implements Lifecycle {
 

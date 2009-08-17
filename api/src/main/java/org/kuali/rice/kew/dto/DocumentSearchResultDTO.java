@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * This is a virtual object representing the DocumentSearchResultComponents class
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentSearchResultDTO implements Serializable {
 

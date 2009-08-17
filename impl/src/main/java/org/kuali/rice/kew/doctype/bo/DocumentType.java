@@ -88,7 +88,7 @@ import org.kuali.rice.kns.web.format.FormatException;
  * can construct {@link ObjectDefinition} objects correctly to account for ServiceNamespace inheritance.
  * Can also navigate parent hierarchy when getting data/components.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")

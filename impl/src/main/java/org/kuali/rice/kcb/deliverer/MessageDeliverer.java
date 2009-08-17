@@ -28,7 +28,7 @@ import org.kuali.rice.kcb.exception.MessageDismissalException;
  * This class represents the different types of Notification Delivery Types that the system can handle.  
  * For example, an instance of delivery type could be "ActionList" or "Email" or "SMS".  Any deliverer implementation 
  * adhering to this interface can be plugged into the system and will be automatically available for use.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MessageDeliverer {
     /**

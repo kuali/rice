@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport for representing a principal, group, or role associated with and request
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ResponsiblePartyDTO implements Serializable {
 

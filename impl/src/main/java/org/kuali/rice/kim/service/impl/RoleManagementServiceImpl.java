@@ -45,7 +45,7 @@ import org.kuali.rice.kim.service.RoleUpdateService;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoleManagementServiceImpl implements RoleManagementService, InitializingBean {
 	private static final Logger LOG = Logger.getLogger( RoleManagementServiceImpl.class );

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.web.KeyValue;
  * Links provide quick information and access to various functions
  * in the Quick Links GUI of the web application.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface QuickLinksService {
     public List<WatchedDocument> getWatchedDocuments(String principalId);

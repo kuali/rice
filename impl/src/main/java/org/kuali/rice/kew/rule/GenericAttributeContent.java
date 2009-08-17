@@ -38,7 +38,7 @@ import org.w3c.dom.NodeList;
  * Helper class that can parse and generate generic attribute content
  * from Map<String,String> values.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GenericAttributeContent {
     private static final XPathExpression NAME_EXPR;

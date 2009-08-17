@@ -27,7 +27,7 @@ import javax.persistence.Table;
 /**
  * This class represents the data structure that will house information about the non-system 
  * sender that a notification message is sent on behalf of.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_SNDR_T")

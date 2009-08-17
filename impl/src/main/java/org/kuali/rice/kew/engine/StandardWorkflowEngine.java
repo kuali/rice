@@ -58,7 +58,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Document, processing nodes on the document until the document is completed or a node halts the
  * processing.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardWorkflowEngine implements WorkflowEngine {
 

@@ -24,7 +24,7 @@ import org.kuali.rice.kns.exception.ExportNotSupportedException;
 /**
  * An Exporter provides the ability to export a List of BusinessObjects to a supported ExportFormat.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface Exporter {

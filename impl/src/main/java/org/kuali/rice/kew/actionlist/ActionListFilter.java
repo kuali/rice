@@ -25,7 +25,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * model for the action list filter preferences
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListFilter implements Serializable {
 

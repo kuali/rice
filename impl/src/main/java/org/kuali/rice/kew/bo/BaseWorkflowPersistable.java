@@ -20,7 +20,7 @@ package org.kuali.rice.kew.bo;
 /**
  * A base implementation of a WorkflowPersistable.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseWorkflowPersistable implements WorkflowPersistable {
 

@@ -25,7 +25,7 @@ import javax.xml.ws.ResponseWrapper;
 /**
  * This is a jaxws annotated web service, used for testing web services on the ksb. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @WebService(targetNamespace = "http://rice.kuali.org/", name = "JaxWsEchoService")

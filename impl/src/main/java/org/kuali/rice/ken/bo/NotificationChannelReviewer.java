@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A reviewer for a notification publications to a NotificationChannel
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_RVWER_T")

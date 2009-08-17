@@ -34,7 +34,7 @@ import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
 /**
  * OJB implementation of the {@link ActionTakenDAO}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
 	

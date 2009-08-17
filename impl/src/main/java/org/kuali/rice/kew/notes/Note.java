@@ -50,7 +50,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * 
  * @see Attachment
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DOC_NTE_T")

@@ -70,7 +70,7 @@ import org.kuali.rice.kim.bo.Person;
  * A WorkflowEngine implementation which runs simulations.  This object is not thread-safe
  * and therefore a new instance needs to be instantiated on every use.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimulationEngine extends StandardWorkflowEngine {
 

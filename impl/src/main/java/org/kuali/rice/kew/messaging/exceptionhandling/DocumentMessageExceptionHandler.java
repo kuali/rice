@@ -25,7 +25,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * A {@link MessageExceptionHandler} which handles putting documents into exception routing.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentMessageExceptionHandler extends DefaultMessageExceptionHandler {
 

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.dto;
 /**
  * Signal to the PostProcessor that the routeHeader is being deleted.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DeleteEventDTO extends DocumentEventDTO {
 

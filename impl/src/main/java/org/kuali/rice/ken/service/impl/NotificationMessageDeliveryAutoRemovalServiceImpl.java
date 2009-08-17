@@ -35,7 +35,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 
 /**
  * Auto removes expired message deliveries.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationMessageDeliveryAutoRemovalServiceImpl extends ConcurrentJob<NotificationMessageDelivery> implements NotificationMessageDeliveryAutoRemovalService {
     private GenericDao businessObjectDao;

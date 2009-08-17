@@ -25,7 +25,7 @@ import java.io.InputStream;
  * @see org.kuali.rice.kew.batch.BaseXmlDoc
  * @see org.kuali.rice.kew.batch.FileXmlDoc
  * @see org.kuali.rice.kew.batch.ZipXmlDoc
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlDoc {
     String getName();

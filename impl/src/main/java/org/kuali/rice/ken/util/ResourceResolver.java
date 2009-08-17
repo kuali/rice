@@ -17,7 +17,7 @@ package org.kuali.rice.ken.util;
 
 /**
  * Interface for Entity and LSResource Resolver implementations that should resolve ids to resources
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ResourceResolver {
     /**

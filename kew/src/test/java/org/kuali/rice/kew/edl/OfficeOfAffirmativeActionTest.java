@@ -53,7 +53,7 @@ import org.kuali.rice.kew.test.TestUtils;
 /**
  * Tests the web GUI for the ActionList.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class OfficeOfAffirmativeActionTest extends KEWTestCase {
 

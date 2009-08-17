@@ -41,7 +41,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * another rule.  Specifies the delegation type which can be either
  * {@link KEWConstants#DELEGATION_PRIMARY} or {@link KEWConstants#DELEGATION_SECONDARY}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DLGN_RSP_T")

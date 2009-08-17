@@ -26,7 +26,7 @@ import org.springframework.util.Assert;
  * Abstract implementation of the ServiceConnector that holds the ServiceInfo
  * and the CredentialsSource as well as providing convenience proxy methods.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  * 
  */

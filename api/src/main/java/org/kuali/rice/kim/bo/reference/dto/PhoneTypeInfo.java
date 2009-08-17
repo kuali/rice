@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.reference.dto;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PhoneTypeInfo extends KimCodeInfoBase implements PhoneType {
 

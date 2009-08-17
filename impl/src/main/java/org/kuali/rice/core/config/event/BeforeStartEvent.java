@@ -18,7 +18,7 @@ package org.kuali.rice.core.config.event;
 /**
  * An event which occurs prior to Rice startup.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class BeforeStartEvent implements RiceConfigEvent {

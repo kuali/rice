@@ -24,7 +24,7 @@ import org.junit.Test;
 
 /**
  * This class runs the s2s generator that throws notifications at the system to simulate that situation for users.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Ignore
 public class NotificationTestUsageGenerator extends NotificationUsageSimulator {

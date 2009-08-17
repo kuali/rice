@@ -38,7 +38,7 @@ import org.kuali.rice.kew.test.TestUtilities;
  * Tests the HotDeployer and Reloader which handle hot deployment and hot reloading
  * of Plugins.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HotDeployTest extends KEWTestCase {
 

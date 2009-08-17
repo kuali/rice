@@ -27,7 +27,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
  * This Document Authorizer instance is used to test the {@link PessimisticLock} object and it's
  * use of lock descriptors 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {

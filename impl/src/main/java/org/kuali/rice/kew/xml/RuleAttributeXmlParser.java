@@ -47,7 +47,7 @@ import org.xml.sax.InputSource;
  *
  * @see RuleAttribute
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleAttributeXmlParser implements XmlConstants {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeXmlParser.class);

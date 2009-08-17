@@ -85,7 +85,7 @@ import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * Lookupable helper class for new doc search
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends

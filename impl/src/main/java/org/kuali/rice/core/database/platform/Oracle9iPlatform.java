@@ -19,7 +19,7 @@ package org.kuali.rice.core.database.platform;
 /**
  * Use {@link Oracle9iDatabasePlatform} instead
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
 public class Oracle9iPlatform extends Oracle9iDatabasePlatform {}

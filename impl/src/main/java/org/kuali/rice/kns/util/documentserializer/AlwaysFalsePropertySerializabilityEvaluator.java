@@ -20,7 +20,7 @@ import org.kuali.rice.kns.document.Document;
 /**
  * This implementation of {@link PropertySerializabilityEvaluator} specifies that all properties of a document are serializable.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class AlwaysFalsePropertySerializabilityEvaluator extends PropertySerializabilityEvaluatorBase {

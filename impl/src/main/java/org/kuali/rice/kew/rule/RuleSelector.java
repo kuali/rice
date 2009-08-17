@@ -26,7 +26,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 /**
  * RuleSelector is responsible for selecting the rules to be evaluated for a given rule-based requests node.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleSelector {
     /**

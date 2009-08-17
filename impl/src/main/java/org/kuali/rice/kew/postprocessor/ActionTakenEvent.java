@@ -19,7 +19,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 
 /**
  * Event sent to the postprocessor when an action has been taken
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionTakenEvent implements IDocumentEvent {
 

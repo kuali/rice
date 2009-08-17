@@ -25,7 +25,7 @@ import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
  * respectively which is the standard way to represent these values in OJB.
  * This differs from other pieces of the KNS where "N" and "Y" are used.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class OjbCharBooleanConversion implements FieldConversion {
     

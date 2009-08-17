@@ -29,7 +29,7 @@ import org.kuali.rice.kew.util.Utilities;
 
 /**
  * Tests the parsing of route node config params 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteNodeConfigParamTest extends KEWTestCase {
 

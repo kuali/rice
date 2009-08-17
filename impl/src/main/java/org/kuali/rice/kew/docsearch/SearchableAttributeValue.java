@@ -26,7 +26,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 /**
  * Model bean mapped to ojb that holds a single piece of searchable data for a document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface SearchableAttributeValue {

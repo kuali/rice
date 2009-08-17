@@ -70,7 +70,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains
  * references to children/parent if a member of a graph
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_ACTN_RQST_T")

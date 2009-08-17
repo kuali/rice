@@ -30,7 +30,7 @@ import org.kuali.rice.kew.webservice.StandardResponse;
  * This is a description of what this class does - Daniel Epstein don't forget
  * to fill this in.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {

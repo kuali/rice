@@ -43,7 +43,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * A filter for processing user logins and creating a {@link UserSession}.
  *
  * @see UserSession
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserLoginFilter implements Filter {
     private static final Logger LOG = Logger.getLogger(UserLoginFilter.class);

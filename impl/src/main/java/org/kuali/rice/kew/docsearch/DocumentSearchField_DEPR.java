@@ -28,7 +28,7 @@ import org.kuali.rice.kew.engine.node.KeyValuePair;
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @deprecated
  */
 public class DocumentSearchField_DEPR extends Field {

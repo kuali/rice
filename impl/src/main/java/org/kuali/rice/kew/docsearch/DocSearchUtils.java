@@ -50,7 +50,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * Various static utility methods for helping with Searcha.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocSearchUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocSearchUtils.class);

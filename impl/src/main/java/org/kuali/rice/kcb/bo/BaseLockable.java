@@ -23,7 +23,7 @@ import javax.persistence.MappedSuperclass;
 /**
  * Simple BO base class that implements Lockable interface 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
 public class BaseLockable implements Lockable {

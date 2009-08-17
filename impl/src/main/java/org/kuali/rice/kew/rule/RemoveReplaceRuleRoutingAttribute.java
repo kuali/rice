@@ -42,7 +42,7 @@ import org.w3c.dom.NodeList;
  * to verify that at least one rule exists for each Document Type which is represented in the rule
  * changeset.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RemoveReplaceRuleRoutingAttribute extends RuleRoutingAttribute implements MassRuleAttribute {
 

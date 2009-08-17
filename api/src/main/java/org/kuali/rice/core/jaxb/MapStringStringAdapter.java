@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 /**
  * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MapStringStringAdapter extends XmlAdapter<ArrayList<StringMapEntry>, Map<String, String>> {

@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 /**
  * Interface to be implemented by test cases that want to be informed of the Method being
  * run.  
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MethodAware {
     public void setTestMethod(Method testMethod);

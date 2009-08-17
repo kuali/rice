@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 /**
  * XmlDocCollection that is not File-based 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StreamXmlDocCollection extends BaseXmlDocCollection {
     public StreamXmlDocCollection(InputStream stream) {

@@ -25,7 +25,7 @@ import org.kuali.rice.kew.actionlist.ActionToTake;
 /**
  * Struts form for action ActionListAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListFormOld extends ActionForm {
 

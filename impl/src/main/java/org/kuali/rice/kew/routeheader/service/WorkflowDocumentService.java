@@ -36,7 +36,7 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
  * @see WorkflowDocumentActions
  * @see ActionTakenEvent
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface WorkflowDocumentService {
 

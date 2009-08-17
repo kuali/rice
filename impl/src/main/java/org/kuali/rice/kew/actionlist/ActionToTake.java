@@ -19,7 +19,7 @@ package org.kuali.rice.kew.actionlist;
 /**
  * Represents a mass action taken from the action list
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionToTake {
 

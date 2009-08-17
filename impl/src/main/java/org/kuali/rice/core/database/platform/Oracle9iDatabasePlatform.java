@@ -21,6 +21,6 @@ package org.kuali.rice.core.database.platform;
  * of the platforms supported by OJB so we want to keep our platform identifiers
  * consistent with OJB.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Oracle9iDatabasePlatform extends OracleDatabasePlatform {}

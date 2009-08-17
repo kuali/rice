@@ -27,7 +27,7 @@ import org.kuali.rice.kns.util.MessageMap;
 
 /**
  * TODO delyea - documentation
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentSearchGenerator {
 	public static final int DEFAULT_SEARCH_RESULT_CAP = 500;

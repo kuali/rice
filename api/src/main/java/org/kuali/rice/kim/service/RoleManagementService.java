@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service;
 /**
  * This service adds caching on top of the RoleService. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RoleManagementService extends RoleService, RoleUpdateService {
 

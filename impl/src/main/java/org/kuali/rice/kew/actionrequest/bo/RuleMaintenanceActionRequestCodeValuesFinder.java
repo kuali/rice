@@ -31,7 +31,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
 /**
  * A values finder for returning KEW Action Request codes related to Kuali maintenance forms.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RuleMaintenanceActionRequestCodeValuesFinder extends ActionRequestCodeValuesFinder {

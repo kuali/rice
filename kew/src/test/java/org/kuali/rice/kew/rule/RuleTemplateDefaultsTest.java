@@ -38,7 +38,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
 /**
  * This class tests the code that handles the default values for the rule templates.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleTemplateDefaultsTest extends KEWTestCase {
 

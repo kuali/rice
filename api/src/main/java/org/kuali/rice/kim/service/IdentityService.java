@@ -67,7 +67,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
  * 
  * @see IdentityUpdateService
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @WebService(name = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.engine.RouteHelper;
 /**
  * A simple {@link SplitNode} implementation which always splits to all branches that are defined for the split.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimpleSplitNode implements SplitNode {
 

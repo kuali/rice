@@ -27,7 +27,7 @@ import org.apache.struts.util.MessageResources;
 
 /**
  * ForwardAction subclass that interprets path as module-relative 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ModuleRelativeForwardAction extends ForwardAction {
     /**

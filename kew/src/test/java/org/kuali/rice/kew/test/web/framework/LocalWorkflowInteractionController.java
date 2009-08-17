@@ -25,7 +25,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * LocalInteractionController subclass that supplies a WorkflowServletRequest initialized
  * with user session
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocalWorkflowInteractionController extends LocalInteractionController {
     public LocalWorkflowInteractionController(Servlet servlet) {

@@ -29,7 +29,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 /**
  * Test the GroupService via remote calls
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GroupServiceRemoteTest extends GroupServiceTest {

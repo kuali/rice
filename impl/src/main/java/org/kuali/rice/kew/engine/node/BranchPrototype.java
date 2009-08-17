@@ -33,7 +33,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * Represents a Branch in the definition of a DocumentType.  This should not be confused with the
  * {@link Branch} class which represents the actual instance of a branch on a document. 
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RTE_BRCH_PROTO_T")

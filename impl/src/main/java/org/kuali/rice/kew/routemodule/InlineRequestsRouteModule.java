@@ -50,7 +50,7 @@ import org.kuali.rice.kew.xml.XmlConstants;
 /**
  * A RouteModule that generates requests for responsibilities statically defined
  * in the config block of the node.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InlineRequestsRouteModule extends FlexRMAdapter {
     private static final Logger LOG = Logger.getLogger(InlineRequestsRouteModule.class);

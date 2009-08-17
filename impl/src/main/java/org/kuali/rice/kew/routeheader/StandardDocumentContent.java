@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  * String that it's constructed with into content with the application,
  * attribute, and searchable content sections.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardDocumentContent implements DocumentContent, Serializable {
 

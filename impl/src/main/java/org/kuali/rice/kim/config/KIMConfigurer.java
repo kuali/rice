@@ -21,7 +21,7 @@ import org.kuali.rice.core.config.ModuleConfigurer;
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
  * exist in all Rice based systems and clients. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KIMConfigurer extends ModuleConfigurer {
 	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMInterfaceSpringBeans.xml";

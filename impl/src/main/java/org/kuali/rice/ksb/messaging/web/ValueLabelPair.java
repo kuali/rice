@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.web;
 /**
  * A bean to be used by the web tier for holding Values and Labels for a SELECT box.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValueLabelPair {
 

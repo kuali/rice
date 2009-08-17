@@ -24,7 +24,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 /**
  * Specialization of HashMap to facilitate web services and simplify API definitions.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class AttributeDefinitionMap extends TreeMap<String,AttributeDefinition> {

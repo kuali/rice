@@ -30,7 +30,7 @@ import org.kuali.rice.ksb.test.KSBTestCase;
 /**
  * Tests distributed Queue scenarios
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class DistributedQueueTest extends KSBTestCase {

@@ -28,7 +28,7 @@ import java.sql.Types;
 import org.apache.ojb.broker.query.LikeCriteria;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PlatformMySQLImpl extends PlatformDefaultImpl
 {

@@ -27,7 +27,7 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * Tests starting up and standalone Rice instance, shutting it down, and then restarting it.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Ignore

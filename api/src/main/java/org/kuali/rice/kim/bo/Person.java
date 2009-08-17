@@ -25,7 +25,7 @@ import org.kuali.rice.kns.util.KualiDecimal;
  * Person object for use by the KNS and KNS-based applications.  This provides an abstraction layer
  * between application code and the KIM objects to simplify use. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public interface Person extends ExternalizableBusinessObject {

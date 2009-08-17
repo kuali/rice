@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * uses a sequence like algorithm for all supported databases (mysql, oracle) 
  * rather than identity or auto-incrementing fields.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Documented
 @Target({ElementType.TYPE})

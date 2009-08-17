@@ -19,7 +19,7 @@ package org.kuali.rice.kew.removereplace.web;
 /**
  * Represents an input from the Remove/Replace User screen to remove or replace a user in a Workgroup.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RemoveReplaceWorkgroup {
 

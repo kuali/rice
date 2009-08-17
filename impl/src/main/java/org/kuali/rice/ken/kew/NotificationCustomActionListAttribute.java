@@ -25,7 +25,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 /**
  * This class is our custom action list for Notifications in KEW.  It's wired in as the implementation to use as part of the NotificationData.xml 
  * bootstrap file for KEW.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationCustomActionListAttribute implements CustomActionListAttribute {
     /**

@@ -20,7 +20,7 @@ import java.security.SecureRandom;
 /**
  * This class generates a random string for creating Distributed Session Tickets 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SessionIdGenerator {

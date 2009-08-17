@@ -25,7 +25,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * Looks up Strings from the Config and System Parameters.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigStringLookup extends StrLookup {
 	private String namespace;

@@ -41,7 +41,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  *
  * @deprecated Use {@link UniversityIdRoleAttribute} instead
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FYIByUniversityId extends RequestActivationNode {
     private static final Logger LOG = Logger.getLogger(FYIByUniversityId.class);

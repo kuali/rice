@@ -43,7 +43,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * Represents a branch in the routing path of the document.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Sequence(name="KREW_RTE_NODE_S",property="branchId")

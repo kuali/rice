@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * A generic, reusable fake service that records invocations, for testing purposes
  * TODO: consider merging with {@link TestServiceInterface}/{@link GenericTestService} in KSB module 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see FakeService
  * @see GenericTestService
  */

@@ -40,7 +40,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 /**
  * A PluginRegistry implementation which loads plugins from the file system on the server.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ServerPluginRegistry extends BasePluginRegistry {
 

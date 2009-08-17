@@ -84,7 +84,7 @@ public class PostProcessorTest extends KEWTestCase {
 	/**
 	 * Tests the locking of additional documents from the Post Processor.
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
 	@Test public void testGetDocumentIdsToLock() throws Exception {
 		
@@ -203,7 +203,7 @@ public class PostProcessorTest extends KEWTestCase {
 	/**
 	 * A Thread which simply locks and updates the document
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
 	private class UpdateDocumentThread implements Runnable {
 		private Long documentId;

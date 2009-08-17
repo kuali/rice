@@ -25,7 +25,7 @@ import org.kuali.rice.kcb.test.BusinessObjectTestCase;
 /**
  * This class test basic persistence for the RecipientPreference business object.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RecipientPreferenceDaoTest extends BusinessObjectTestCase {
     RecipientPreference pref1 = new RecipientPreference();

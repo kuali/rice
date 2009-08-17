@@ -28,7 +28,7 @@ package org.kuali.rice.kew.plugin;
  * modified which result in it's modified status being reset.  Another possibility is
  * for a Modifiable to be discarded once it has been modified.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Modifiable {
 

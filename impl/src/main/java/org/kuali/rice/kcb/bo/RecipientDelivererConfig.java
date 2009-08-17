@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * Each RecipientDelivererConfig instance represents a user as having applied a deliverer type configuration
  * to a channel, such that any messages, targeted at the userId, will also be delivered to the correlating
  * deliverer type (delivererName) for that user.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_RECIP_DELIV_T")

@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Represents the current Activation context of the workflow engine
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActivationContext implements Serializable {
     private static final long serialVersionUID = 5063689034941122774L;

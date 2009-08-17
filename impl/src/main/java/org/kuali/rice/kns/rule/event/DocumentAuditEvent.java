@@ -22,7 +22,7 @@ import org.kuali.rice.kns.rule.DocumentAuditRule;
 /**
  * Event class for document audit  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentAuditEvent extends KualiDocumentEventBase implements KualiDocumentEvent {

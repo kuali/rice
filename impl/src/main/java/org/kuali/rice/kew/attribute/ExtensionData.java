@@ -19,7 +19,7 @@ package org.kuali.rice.kew.attribute;
 /**
  * A key-value representation of an extension to a data object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ExtensionData {
 

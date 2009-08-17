@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * Container annotation for a list of JettyServer annotations 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})

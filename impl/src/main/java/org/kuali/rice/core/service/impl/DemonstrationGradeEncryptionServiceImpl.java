@@ -34,7 +34,7 @@ import org.kuali.rice.core.service.EncryptionService;
 /**
  * Implementation of encryption service for demonstration. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DemonstrationGradeEncryptionServiceImpl implements EncryptionService, Demonstration {
     public final static String ALGORITHM = "DES/ECB/PKCS5Padding";

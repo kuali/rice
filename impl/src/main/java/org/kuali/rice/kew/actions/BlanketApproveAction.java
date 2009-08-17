@@ -44,7 +44,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Does the sync work for blanket approves requested by client apps.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BlanketApproveAction extends ActionTakenEvent {
 

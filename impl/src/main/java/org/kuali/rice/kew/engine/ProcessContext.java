@@ -25,7 +25,7 @@ import java.util.List;
  * is processed from the context, the engine will check the status of the complete
  * flag to determine whether processing should continue or halt.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ProcessContext {
 

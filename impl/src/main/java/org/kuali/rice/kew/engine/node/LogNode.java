@@ -35,7 +35,7 @@ import org.xml.sax.InputSource;
 /**
  * A node which Logs messages to Log4j.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LogNode implements SimpleNode {
     private static final Logger LOG = Logger.getLogger(LogNode.class);

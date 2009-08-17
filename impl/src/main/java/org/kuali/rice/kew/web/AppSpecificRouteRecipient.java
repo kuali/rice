@@ -25,7 +25,7 @@ import org.kuali.rice.kew.util.CodeTranslator;
 /**
  * A bean for the web-tier when represents the recipient of an Ad Hoc request.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AppSpecificRouteRecipient implements Serializable {
 

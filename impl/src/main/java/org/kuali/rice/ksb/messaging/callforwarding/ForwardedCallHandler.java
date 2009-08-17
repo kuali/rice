@@ -22,7 +22,7 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
  *
  * Takes a call made on a remote machine and forwarded here to be invoked.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ForwardedCallHandler {
 

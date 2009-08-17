@@ -47,7 +47,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 /**
  * This class is the implementation of a Kim Group 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity

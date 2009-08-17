@@ -19,7 +19,7 @@ package org.kuali.rice.kew.dto;
 /**
  * Tracks changed to document content for lazy loading
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ModifiableDocumentContentDTO extends DocumentContentDTO {
 

@@ -45,7 +45,7 @@ import org.kuali.rice.test.ClearDatabaseLifecycle;
  * XML having unique descriptions as this is the only way for the test to identify
  * the rules from the original imported XML and the XML imported from the export.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleXmlExporterTest extends XmlExporterTestCase {
 

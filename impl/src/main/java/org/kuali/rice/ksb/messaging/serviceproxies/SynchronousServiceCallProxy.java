@@ -34,7 +34,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * Used to Call a service synchronously but through the messaging code within workflow. Used to when switching generally
  * asynchronously called services to synchronously called services. Generally for testing purposes.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {

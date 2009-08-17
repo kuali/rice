@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
  * credentials from the CredentialsSource and places them in a BASIC HTTP
  * Authorization header.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 public final class AuthenticationCommonsHttpInvokerRequestExecutor extends

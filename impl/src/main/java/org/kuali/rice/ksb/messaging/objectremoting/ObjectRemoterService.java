@@ -28,7 +28,7 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  * used for remoting attributes which are defined by class name rather than a
  * service name.  For example, this would includes PostProcessor, WorkflowAttribute, etc.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ObjectRemoterService {
 

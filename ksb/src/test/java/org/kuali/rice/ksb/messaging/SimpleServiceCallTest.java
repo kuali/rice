@@ -30,7 +30,7 @@ import org.kuali.rice.ksb.test.KSBTestCase;
  * Tests calling services in a very simple scenario. This test could probably go now that more 'feature-full' tests are out
  * there.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SimpleServiceCallTest extends KSBTestCase {

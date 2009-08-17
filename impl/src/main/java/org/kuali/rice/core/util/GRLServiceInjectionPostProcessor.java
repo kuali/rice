@@ -42,7 +42,7 @@ import org.springframework.util.ReflectionUtils;
  * This bean postprocessor initializes fields which are marked with the {@link RiceService} annotation
  * and are null after property injection and prior to init call, with a named Rice service obtained
  * from a specified (or global) resource loader. 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 // some of the implementation derived from PersistenceAnnotationBeanPostProcessor which is an

@@ -40,7 +40,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * Base test case for KEN that extends RiceTestCase
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.CLEAR_DB)
 public abstract class KENTestCase extends BaselineTestCase {

@@ -39,7 +39,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  *
  * @see EDocLiteDefinition
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EDocLiteXmlExporter implements XmlExporter, XmlConstants {
 

@@ -29,7 +29,7 @@ import org.kuali.rice.kns.inquiry.InquiryRestrictions;
  * AttributeDefinitions, InquirableField the data dictionary business object and
  * maintenance document entries
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public interface BusinessObjectAuthorizationService {

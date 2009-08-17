@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * This is the out of box authentication method used by rice.  It authenticates any username/password pairs that match  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiTestAuthenticationProvider implements AuthenticationProvider {

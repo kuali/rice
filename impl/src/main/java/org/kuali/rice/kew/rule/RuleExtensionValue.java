@@ -42,7 +42,7 @@ import org.kuali.rice.kew.util.Utilities;
  * @see RuleBaseValues
  * @see RuleExtension
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_EXT_VAL_T")

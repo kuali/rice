@@ -20,7 +20,7 @@ package org.kuali.rice.kew.rule;
  * 'Rule' is defined as an interface to make the contract in the system clear and independent of implementation.
  * @see RuleBaseValues
  * @see RuleExpression
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Rule extends RuleExpression {
     /**

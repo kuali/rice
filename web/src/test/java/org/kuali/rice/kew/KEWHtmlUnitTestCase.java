@@ -35,7 +35,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 /**
  * This is a helper class for writing html unit tests for KEW
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KEWHtmlUnitTestCase extends ServerTestBase {

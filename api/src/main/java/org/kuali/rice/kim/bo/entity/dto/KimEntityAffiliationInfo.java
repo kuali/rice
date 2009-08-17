@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.entity.dto;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimEntityAffiliation {
 

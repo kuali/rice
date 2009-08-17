@@ -24,7 +24,7 @@ import org.kuali.rice.test.data.UnitTestDataUtils;
  * loaded first, followed by the statements inside the files (files are loaded sequentially in the order listed in the
  * annotation).
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PerTestDataLoaderLifecycle implements Lifecycle {
 	private boolean started;

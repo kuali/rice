@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * A common superclass for user and group ids.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RecipientIdDTO implements Serializable {
 	private static final long serialVersionUID = -6938158347498838618L;

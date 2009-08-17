@@ -34,7 +34,7 @@ import org.kuali.rice.kcb.service.RecipientPreferenceService;
 /**
  * This class is responsible for describing the email delivery mechanism for
  * the system.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailMessageDeliverer implements MessageDeliverer {
     private static Logger LOG = Logger.getLogger(EmailMessageDeliverer.class);

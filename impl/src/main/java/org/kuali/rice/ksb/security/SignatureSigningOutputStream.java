@@ -30,7 +30,7 @@ import javax.servlet.ServletOutputStream;
  * the resulting digital signature will reside, a DigitalSigner will be invoked to
  * execute the actual signing of the message (i.e. put it in a header).
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SignatureSigningOutputStream extends ServletOutputStream {
 

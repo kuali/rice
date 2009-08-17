@@ -23,7 +23,7 @@ import javax.persistence.EntityManagerFactory;
 /**
  * Null EntityManagerFactory that enables SharedEntityManagerBean to create a proxy when jpa is not enabled. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class NullEntityManagerFactory implements EntityManagerFactory {

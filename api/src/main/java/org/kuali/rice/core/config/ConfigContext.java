@@ -31,7 +31,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  * Singleton that holds references to global engine objects.
  *
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigContext {
     private static final Logger LOG = Logger.getLogger(ConfigContext.class);

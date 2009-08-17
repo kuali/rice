@@ -18,7 +18,7 @@ package org.kuali.rice.ken.exception;
 /**
  * This class represents an auto-remove exception - when notifications are not properly removed 
  * from their target audiences.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationAutoRemoveException extends Exception {
     /**

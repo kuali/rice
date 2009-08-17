@@ -26,7 +26,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 /**
  * This class test basic persistence for the UserChannelSubscription business object.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserChannelSubscriptionDaoTest extends BusinessObjectPersistenceTestCaseBase {
     NotificationChannel channel1 = MockObjectsUtil.getTestChannel1();

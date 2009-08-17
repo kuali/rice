@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
 /**
  * Populates workflow rule attributes associated with the current configElement.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {

@@ -23,7 +23,7 @@ import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 /**
  * Class to test custom search criteria processor implementation
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class CustomDocumentSearchCriteriaProcessor extends StandardDocumentSearchCriteriaProcessor {

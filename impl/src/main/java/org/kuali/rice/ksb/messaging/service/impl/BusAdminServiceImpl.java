@@ -29,7 +29,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * Implementation of the Bus Admin service.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminService {
 

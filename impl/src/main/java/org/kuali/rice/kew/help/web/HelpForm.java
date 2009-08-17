@@ -24,7 +24,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 /**
  * Struts ActionForm for {@link HelpAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HelpForm extends KualiForm {
 

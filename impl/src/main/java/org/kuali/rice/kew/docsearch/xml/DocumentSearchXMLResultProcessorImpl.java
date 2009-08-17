@@ -39,7 +39,7 @@ import org.xml.sax.InputSource;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearchResultProcessor implements DocumentSearchXMLResultProcessor {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchXMLResultProcessorImpl.class);

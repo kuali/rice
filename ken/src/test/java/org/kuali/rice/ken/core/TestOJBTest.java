@@ -32,7 +32,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Scratch test case for testing aspects of OJB under test harness
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.CLEAR_DB)
 public class TestOJBTest extends BusinessObjectDaoTestCaseBase {

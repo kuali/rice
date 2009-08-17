@@ -70,7 +70,7 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 /**
  * Action doing Action list stuff
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ActionListAction extends KualiAction {

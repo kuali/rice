@@ -20,7 +20,7 @@ package org.kuali.rice.ken.service;
  * This class is responsible for the job that will actually resolve which recipients receive a notification for specific endpoints.
  * This service will be responsible for creating NotificationDeliveryMessage object instances to be used by a later process that actually 
  * delivers the messages.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationMessageDeliveryResolverService {
     /**

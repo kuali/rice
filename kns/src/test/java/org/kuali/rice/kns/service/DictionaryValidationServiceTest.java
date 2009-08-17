@@ -25,7 +25,7 @@ import org.kuali.test.KNSTestCase;
 /**
  * This class tests the DictionaryValidationService (currently only recursive validation is tested).
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DictionaryValidationServiceTest extends KNSTestCase {

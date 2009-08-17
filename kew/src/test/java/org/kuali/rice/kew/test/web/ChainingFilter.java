@@ -25,7 +25,7 @@ import org.kuali.rice.kew.test.web.framework.Filter;
 
 /**
  * Filter which invokes a series of Filters in a chain 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ChainingFilter implements Filter {
     private static final Logger LOG = Logger.getLogger(ChainingFilter.class);

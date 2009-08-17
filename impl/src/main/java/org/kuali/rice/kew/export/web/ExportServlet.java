@@ -35,7 +35,7 @@ import org.kuali.rice.kew.xml.export.XmlExporterService;
  * A servet which generates and returns a file conforming to the specified {@link ExportFormat} 
  * with the exported data in it.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExportServlet extends HttpServlet {
 

@@ -47,7 +47,7 @@ import org.w3c.dom.NodeList;
  *   </attribute>
  * </attributes>
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent implements EDLModelComponent  {
 

@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  * This class is the service implementation for a SessionDocument. This is
  * the default, Kuali delivered implementation.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Transactional

@@ -27,7 +27,7 @@ import org.apache.ojb.broker.query.Criteria;
  * TODO Had to move this down into embedded source because of the OJB dependencies.  This probably will
  * go away once we get rid of the embedded plugin.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DatabasePlatform {
     public String getCurTimeFunction();

@@ -29,7 +29,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * Struts action form for the {@link JavaSecurityManagementAction} 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class JavaSecurityManagementForm extends ActionForm {

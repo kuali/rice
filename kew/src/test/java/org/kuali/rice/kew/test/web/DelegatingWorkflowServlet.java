@@ -32,7 +32,7 @@ import org.kuali.rice.kew.web.UserLoginFilter;
 /**
  * A wrapper servlet that invokes the UserLoginFilter, and then delegates to a
  * target servlet
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DelegatingWorkflowServlet implements Servlet {
     private static final UserLoginFilter USERLOGINFILTER = new UserLoginFilter();

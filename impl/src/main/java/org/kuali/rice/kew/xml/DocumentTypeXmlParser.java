@@ -80,7 +80,7 @@ import org.xml.sax.SAXException;
 /**
  * A parser for parsing an XML file into {@link DocumentType}s.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeXmlParser implements XmlConstants {
 
@@ -1206,7 +1206,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
     /**
      * This is a helper class for indicating if an unprocessed document type node is "standard" or "routing."
      * 
-     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private class DocTypeNode {
         /** The Node that needs to be converted into a doc type. */

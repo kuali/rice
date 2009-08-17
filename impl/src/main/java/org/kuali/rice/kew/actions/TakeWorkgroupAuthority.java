@@ -38,7 +38,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Removes all workgroup action items for a document from everyone's action list except the person
  * who took the workgroup authority
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class TakeWorkgroupAuthority extends ActionTakenEvent {

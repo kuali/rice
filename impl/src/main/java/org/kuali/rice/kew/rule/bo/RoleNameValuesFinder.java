@@ -35,7 +35,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  * GlobalVariables to get a reference to the KualiForm so it can examine the business object
  * and extract the role names from the RuleTemplate.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoleNameValuesFinder extends KeyValuesBase {
 	

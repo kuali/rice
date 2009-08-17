@@ -27,7 +27,7 @@ import java.util.List;
  * @see org.kuali.rice.kew.batch.FileXmlDocCollection
  * @see org.kuali.rice.kew.batch.DirectoryXmlDocCollection
  * @see org.kuali.rice.kew.batch.ZipXmlDocCollection
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlDocCollection {
     File getFile();

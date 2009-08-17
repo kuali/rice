@@ -20,7 +20,7 @@ package org.kuali.rice.kew.edl;
  * Represents a User Action in eDoc Lite.  Also contains methods
  * for classifying the user action.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserAction {
 

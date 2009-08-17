@@ -42,7 +42,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * This class is the controller for the basic notification related actions - viewing, etc.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationController extends MultiActionController {
     /** Logger for this class and subclasses */

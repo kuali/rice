@@ -20,7 +20,7 @@ package org.kuali.rice.kew.rule;
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoleRuleResponsibility extends RuleResponsibility {

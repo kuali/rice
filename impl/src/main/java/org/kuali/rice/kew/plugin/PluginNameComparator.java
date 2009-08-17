@@ -21,7 +21,7 @@ import java.util.Comparator;
 /**
  * A comparator which sorts a collection of plugins names alphabeticaly.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PluginNameComparator implements Comparator<String> {
 	

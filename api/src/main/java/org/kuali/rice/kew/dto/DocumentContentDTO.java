@@ -33,7 +33,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * These definition VOs will be transient and will not be returned again when content is refreshed
  * from the server.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentContentDTO implements Serializable {
 

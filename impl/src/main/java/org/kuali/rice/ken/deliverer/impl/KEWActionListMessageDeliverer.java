@@ -38,7 +38,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 /**
  * This class is responsible for describing the default delivery mechanism for
  * the system - the KEW Action List.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KEWActionListMessageDeliverer implements NotificationMessageDeliverer {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KEWActionListMessageDeliverer.class);

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * A property scheme that looks the property up in the state variable map
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class VariableScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(VariableScheme.class);

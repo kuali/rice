@@ -23,7 +23,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * DocumentType policy enum type.
  * Encapsulates  policies of the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class DocumentTypePolicyEnum {
 

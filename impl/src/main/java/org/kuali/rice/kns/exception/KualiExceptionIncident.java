@@ -22,7 +22,7 @@ import java.util.Map;
  * session user. It is constructed and saved into the HTTP Request for passing to the
  * jsp when an exception occurs. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KualiExceptionIncident {

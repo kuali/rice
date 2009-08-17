@@ -24,7 +24,7 @@ import org.kuali.rice.kns.bo.InactivateableFromTo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
 public abstract class InactivatableFromToImpl extends PersistableBusinessObjectBase implements InactivateableFromTo {

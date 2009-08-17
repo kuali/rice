@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
  * specifically allows GroupServiceImpl to notify interested parties that
  * a group's membership has changed.  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface GroupInternalService {

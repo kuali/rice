@@ -20,6 +20,6 @@ package org.kuali.rice.core.database.platform;
 /**
  * Use {@link OracleDatabasePlatform} instead.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class OraclePlatform extends OracleDatabasePlatform {}

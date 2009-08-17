@@ -28,7 +28,7 @@
  * - checks for duplicate entries of a SpringBean. If duplicate beans are found, 
  * the report is written to DuplicateBeanReport.txt
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 import org.apache.xpath.XPathAPI;

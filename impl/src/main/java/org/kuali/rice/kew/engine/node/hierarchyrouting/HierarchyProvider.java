@@ -25,7 +25,7 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 /**
  * HierarchyProvider is responsible for exposing the hierarchy that the HierarchyRoutingNode
  * climbs/descends.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface HierarchyProvider {
     /**

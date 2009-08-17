@@ -32,7 +32,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
  * A workgroup role attribute which resolves to workgroups with empty ids.  This
  * should result in an error being thrown from the engine.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestBadWorkgroupRoleAttribute extends AbstractRoleAttribute {
 

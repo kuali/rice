@@ -32,7 +32,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * This class represents an abstract message that has been sent to a single user
  * recipient and may result in several {@link MessageDelivery}s.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 // this class could possibly just extend the MessageDTO
 @Entity

@@ -20,7 +20,7 @@ package org.kuali.rice.ksb.messaging.service;
  * A service which can be invoked with a String message that contains
  * XML content.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KSBXMLService {
 

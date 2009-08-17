@@ -36,7 +36,7 @@ import org.quartz.Trigger;
  * the message in the queue as is, which should be marked Exception by the 
  * {@link MessageExceptionHandler}.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DefaultExceptionServiceImpl implements ExceptionRoutingService {

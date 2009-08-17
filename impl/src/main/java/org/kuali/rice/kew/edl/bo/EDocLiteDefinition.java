@@ -32,7 +32,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 /**
  * EDocLite document definition
  * Table: en_edoclt_def_t
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_EDL_DEF_T")

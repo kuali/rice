@@ -25,7 +25,7 @@ import java.util.Map;
  * A container that holds all of the {@link WorkflowAttributeDefinition} for a document for both document searches
  * and routing that depends on the values that exist on the document.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WorkflowAttributes extends DataDictionaryDefinitionBase {

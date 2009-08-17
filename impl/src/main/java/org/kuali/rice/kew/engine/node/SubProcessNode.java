@@ -21,7 +21,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 /**
  * A {@link Node} which represents the initiation of a sub process.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface SubProcessNode extends Node {
 

@@ -46,7 +46,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
  * there for is to allow us to bind the thin client configuration in the ConfigContext while
  * at the same time running a rice instance with its own config.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ThinClientTest extends KEWTestCase {
@@ -136,7 +136,7 @@ public class ThinClientTest extends KEWTestCase {
 	/**
 	 * a privileged action to create a new classloader with our thread's classloader as its parent 
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
 	private class DelegatingClassLoaderCreater implements PrivilegedAction<ClassLoader> {
@@ -148,7 +148,7 @@ public class ThinClientTest extends KEWTestCase {
 	/**
 	 * a very minimal classloader to allow us to bind our thin client cofiguration 
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
 	private class DelegatingClassLoader extends ClassLoader {

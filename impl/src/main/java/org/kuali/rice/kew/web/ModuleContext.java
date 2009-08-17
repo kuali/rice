@@ -20,7 +20,7 @@ package org.kuali.rice.kew.web;
  * Maintains a ThreadLocal which indicates whether the current struts module we are in is the
  * KEW module.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ModuleContext {
 

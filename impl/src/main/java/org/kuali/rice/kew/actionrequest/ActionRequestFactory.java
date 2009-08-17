@@ -60,7 +60,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * A factory to aid in creating the ever-so-gnarly ActionRequestValue object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestFactory {
 

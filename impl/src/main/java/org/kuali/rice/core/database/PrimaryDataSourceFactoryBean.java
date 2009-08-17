@@ -53,7 +53,7 @@ import org.springframework.jndi.JndiTemplate;
  * The config properties checked can be overridden by setting values into the list parameters
  * <code>preferredDataSourceParams</code> and <code>preferredDataSourceJndiParams</code>
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 

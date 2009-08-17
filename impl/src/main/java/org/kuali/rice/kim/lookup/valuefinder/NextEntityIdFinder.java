@@ -18,7 +18,7 @@ package org.kuali.rice.kim.lookup.valuefinder;
 /**
  * This class is responsible for retrieving the next Namespace Id.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NextEntityIdFinder extends KIMNextIdFinder {
     public NextEntityIdFinder() {

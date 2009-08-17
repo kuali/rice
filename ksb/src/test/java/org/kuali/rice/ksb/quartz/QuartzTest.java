@@ -26,7 +26,7 @@ import org.quartz.TriggerUtils;
 /**
  * Test basic sanity check of quartz implementation
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class QuartzTest extends KSBTestCase {

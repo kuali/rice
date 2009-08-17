@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary;
 
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = -1889598053944123008L;

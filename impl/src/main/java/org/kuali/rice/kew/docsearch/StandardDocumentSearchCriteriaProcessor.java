@@ -30,7 +30,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * This is the standard document search criteria processor implementation.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCriteriaProcessor {

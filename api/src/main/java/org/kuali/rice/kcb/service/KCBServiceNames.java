@@ -18,7 +18,7 @@ package org.kuali.rice.kcb.service;
 /**
  * Defines service name constants 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBServiceNames {
     public static final String KCB_MESSAGING = "KCB-MessagingService";

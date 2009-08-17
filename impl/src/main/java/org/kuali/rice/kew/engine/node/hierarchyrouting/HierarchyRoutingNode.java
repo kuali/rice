@@ -54,7 +54,7 @@ import org.kuali.rice.kew.util.Utilities;
 
 /**
  * Generic hierarchy routing node
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HierarchyRoutingNode implements DynamicNode {
     protected final Logger LOG = Logger.getLogger(getClass());

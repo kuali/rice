@@ -54,7 +54,7 @@ import org.xml.sax.InputSource;
 
 /**
  * PostProcessor responsible for posting events to a url defined in the EDL doc definition.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EDocLitePostProcessor extends DefaultPostProcessor {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessor.class);

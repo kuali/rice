@@ -43,7 +43,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 
 /**
  * Tests NotificationMessageDeliveryResolverServiceImpl
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 // Make sure KCB has some deliverers configured for the test users, so message deliveries get created and the messages aren't removed

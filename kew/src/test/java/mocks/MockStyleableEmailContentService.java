@@ -21,7 +21,7 @@ import org.kuali.rice.kew.mail.service.EmailContentService;
 /**
  * Class to use for verification of style service being called
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MockStyleableEmailContentService extends EmailContentService {
     public boolean wasServiceAccessed();

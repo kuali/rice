@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 /**
  * Defines an interface with methods that help us test distributed caching.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DistributedCachingTestHelperService {
 

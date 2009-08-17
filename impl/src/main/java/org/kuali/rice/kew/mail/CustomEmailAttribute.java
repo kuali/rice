@@ -26,7 +26,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
  * RouteHeaderVO and ActionRequestVO have already been set so the implementing class can
  * simply call the approriate getters to retrieve the data beans.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface CustomEmailAttribute {
 

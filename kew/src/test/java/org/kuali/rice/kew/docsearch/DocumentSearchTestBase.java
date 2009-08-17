@@ -29,7 +29,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * This is a base class used for document search unit test classes to consolidate some helper methods
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Ignore("This class is a helper class only with no specific tests within")

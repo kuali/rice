@@ -22,7 +22,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
  * Stores statistics about the number of times a particular {@link DocumentType}
  * appears in a particular user's Action List.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListStats implements Comparable {
 

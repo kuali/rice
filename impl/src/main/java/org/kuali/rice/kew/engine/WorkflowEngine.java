@@ -23,7 +23,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * is the process method.  Document must also be initialized by the WorkflowEngine when they
  * are initially created.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface WorkflowEngine {

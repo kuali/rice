@@ -18,7 +18,7 @@ package org.kuali.rice.kns.document;
 /**
  * This is a marker interface for implementing session in document. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface SessionDocument {

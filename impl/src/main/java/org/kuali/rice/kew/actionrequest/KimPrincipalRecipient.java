@@ -21,7 +21,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * Represents an ActionRequest recipient who is a KimGroup
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimPrincipalRecipient implements Recipient {

@@ -37,7 +37,7 @@ import org.springframework.beans.factory.BeanInitializationException;
  * An implementation of the XmlExporterService which can be configured with a set of
  * services that know how to export various pieces of the {@link ExportDataSet} to XML.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlExporterServiceImpl implements XmlExporterService, XmlConstants {
 

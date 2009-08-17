@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.entity;
 /**
  * DTO interface to be used for caching default EntityNames with the PrincipalName
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimEntityNamePrincipalName {

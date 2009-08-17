@@ -33,7 +33,7 @@ import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 
 /**
  * MessageDelivererRegistryService implementation - for now we use a HashMap to do this registration, in the future we'll use resource loading.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegistryService {
     private static Logger LOG = Logger.getLogger(MessageDelivererRegistryServiceImpl.class);

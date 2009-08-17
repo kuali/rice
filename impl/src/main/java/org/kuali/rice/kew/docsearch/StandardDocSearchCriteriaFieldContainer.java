@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.Utilities;
 /**
  * This class is a holder for fields for standard document search criteria objects
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class StandardDocSearchCriteriaFieldContainer implements java.io.Serializable {

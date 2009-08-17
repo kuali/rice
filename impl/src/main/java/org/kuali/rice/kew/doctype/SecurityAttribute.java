@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * This is an attribute used for document security and based off document type.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface SecurityAttribute extends Serializable {

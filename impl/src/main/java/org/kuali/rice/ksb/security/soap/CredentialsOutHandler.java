@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
 
 /**
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  * 
  */

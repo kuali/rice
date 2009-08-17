@@ -35,7 +35,7 @@ import org.w3c.dom.Node;
 /**
  * A function resolver for XPath functions provided by KEW.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowFunctionResolver implements XPathFunctionResolver {
 	

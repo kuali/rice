@@ -41,7 +41,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * simply points to an initial {@link RouteNode} which represents the beginning of the Process.
  * The path of the process can then be followed using the next nodes defined on the route nodes. 
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DOC_TYP_PROC_T")

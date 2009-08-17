@@ -48,7 +48,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  * and initializes those filters, and invokes them when it is invoked. This
  * allows runtime user configuration of arbitrary filters in the webapp context.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BootstrapFilter implements Filter {
 	private static final Logger LOG = Logger.getLogger(BootstrapFilter.class);
@@ -273,7 +273,7 @@ public class BootstrapFilter implements Filter {
  * A filter chain that invokes a series of filters with which it was
  * initialized, and then delegates to a target filterchain.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class BootstrapFilterChain implements FilterChain {
 
@@ -323,7 +323,7 @@ class BootstrapFilterChain implements FilterChain {
 /**
  * Borrowed from spring-mock.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class BootstrapFilterConfig implements FilterConfig {
 

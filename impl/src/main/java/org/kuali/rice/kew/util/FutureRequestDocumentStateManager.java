@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Manages document state in relation to users seeing future requests for a particular document.
  * Construct the object with a document and a user and ask it questions in relation to future requests.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class FutureRequestDocumentStateManager {

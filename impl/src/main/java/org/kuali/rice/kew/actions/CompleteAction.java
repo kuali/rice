@@ -40,7 +40,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * document at the actions responsibility or below. The action is recorded. Any requests
  * related to this user are deactivated.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CompleteAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CompleteAction.class);

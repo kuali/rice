@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
  * This is the base EDL Config Component for dealing with defined elements in an edl definition.  Most 
  * custom edl element behavior can be achieved by subclassing this.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SimpleWorkflowEDLConfigComponent implements EDLModelComponent {

@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * Maintains the registry of Workflow Actions.  Actions are (currently) identified by a one-letter
  * action code and map to a Class which should extend the org.kuali.rice.kew.actions.ActionTakenEvent class.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionRegistry {
 	

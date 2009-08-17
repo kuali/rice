@@ -23,7 +23,7 @@ import org.kuali.rice.kim.bo.Person;
  * from classes and placed here.  Also changed some of the logic
  * so that we can stop using workflowUser
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WebFriendlyRecipient implements Recipient{

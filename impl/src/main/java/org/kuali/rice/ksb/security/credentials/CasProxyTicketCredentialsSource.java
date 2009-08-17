@@ -36,7 +36,7 @@ import edu.yale.its.tp.cas.proxy.ProxyTicketReceptor;
  * This assumes the services are stateless and will not maintain an HttpSession
  * so each call for credentials will result in a new Proxy Ticket being granted.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  * @see ThreadLocal
  * @see ProxyTicketReceptor

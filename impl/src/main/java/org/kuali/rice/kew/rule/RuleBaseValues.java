@@ -63,7 +63,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * A model bean for a Rule within the KEW rules engine.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_T")

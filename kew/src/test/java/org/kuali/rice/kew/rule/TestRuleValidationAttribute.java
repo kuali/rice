@@ -23,7 +23,7 @@ import org.kuali.rice.kew.validation.ValidationResults;
 /**
  * A simple test implementation of a RuleValidationAttribute that can be used in the unit tests.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class TestRuleValidationAttribute implements RuleValidationAttribute {

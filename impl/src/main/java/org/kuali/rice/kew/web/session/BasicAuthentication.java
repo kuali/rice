@@ -20,7 +20,7 @@ package org.kuali.rice.kew.web.session;
  * Represents a basic authentication within the system which can be represented
  * by a String.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BasicAuthentication implements Authentication {
 

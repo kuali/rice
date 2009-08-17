@@ -60,7 +60,7 @@ import org.xml.sax.SAXException;
  * 
  * <p>The xml file can contain html tags as long as these tags are wrapped between "&lt;![CDATA[" and "]]&rt;"
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HelpEntryXmlParser {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpEntryXmlParser.class);

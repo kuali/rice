@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * An extension of {@link DocumentRouteHeaderValue} which is mapped to OJB to help
  * with optimization of the loading of a user's Action List.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 //@Entity
 //@Table(name="KREW_DOC_HDR_T")

@@ -35,7 +35,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * Tests that client interaction with document content behaves approriately.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentContentTest extends KEWTestCase {
 

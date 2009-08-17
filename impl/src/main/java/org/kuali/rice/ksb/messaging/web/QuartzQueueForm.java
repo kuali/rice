@@ -23,7 +23,7 @@ import org.quartz.Trigger;
 /**
  * Struts form for quartz queue processing 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class QuartzQueueForm extends ActionForm {

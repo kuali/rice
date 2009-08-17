@@ -37,7 +37,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
  * Tests various aspects of our JTA environment and configuration.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Ignore("Test was written to verify that Atomikos can handle a situation that will fail under JOTM/XAPool.  System is not back to using JOTM/XAPool so test will always fail.")
 public class JtaTest extends BaseRiceTestCase {

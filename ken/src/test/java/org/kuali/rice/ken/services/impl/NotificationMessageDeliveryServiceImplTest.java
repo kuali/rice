@@ -26,7 +26,7 @@ import org.kuali.rice.ken.test.TestConstants;
 
 /**
  * This class tests the message delivery service implementation
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationMessageDeliveryServiceImplTest extends KENTestCase {
 

@@ -26,7 +26,7 @@ import java.util.zip.ZipFile;
  * @see org.kuali.rice.kew.batch.XmlDoc
  * @see org.kuali.rice.kew.batch.BaseXmlDoc
  * @see org.kuali.rice.kew.batch.ZipXmlDocCollection
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class ZipXmlDoc extends BaseXmlDoc {
     private ZipFile zipFile;

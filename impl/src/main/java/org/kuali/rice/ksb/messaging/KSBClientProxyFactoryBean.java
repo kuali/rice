@@ -20,7 +20,7 @@ import org.springframework.beans.factory.FactoryBean;
 /**
  * This class can be used to create a KSBClientProxy.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KSBClientProxyFactoryBean implements FactoryBean {

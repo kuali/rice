@@ -22,7 +22,7 @@ import java.util.Iterator;
  * Formats a collection into a string that looks like an array.  To print out each element,
  * the toString method of each element is called. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class CollectionFormatter extends Formatter {

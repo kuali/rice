@@ -29,7 +29,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * A convienance bean for use in the web tier when collecting data from custom field extensions.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebExtensions {
 

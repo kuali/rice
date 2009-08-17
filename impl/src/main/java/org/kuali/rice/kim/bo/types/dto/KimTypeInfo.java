@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimTypeInfo extends TransientBusinessObjectBase implements KimType, Serializable {
 

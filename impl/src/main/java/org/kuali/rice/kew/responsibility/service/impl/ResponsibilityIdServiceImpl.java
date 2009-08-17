@@ -21,7 +21,7 @@ import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates

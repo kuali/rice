@@ -25,7 +25,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
  * which contains information about the state of the engine at the time the
  * problem was encountered.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteManagerException extends WorkflowRuntimeException {
 

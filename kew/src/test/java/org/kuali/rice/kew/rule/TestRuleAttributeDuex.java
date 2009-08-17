@@ -34,7 +34,7 @@ import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 /**
  * Another test attribute, this one doesn't implement {@link WorkflowAttributeXmlValidator}
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestRuleAttributeDuex implements WorkflowAttribute, RoleAttribute {
 	

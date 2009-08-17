@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 /**
  * This class acts like an LRU cache, automatically purging contents when it gets above a certain size. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaxSizeMap<K,V> extends LinkedHashMap<K,V> {
 

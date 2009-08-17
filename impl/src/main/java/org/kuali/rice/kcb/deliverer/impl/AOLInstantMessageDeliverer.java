@@ -29,7 +29,7 @@ import org.kuali.rice.kcb.exception.MessageDismissalException;
 /**
  * This class is responsible for describing the AOL Instant Messenger delivery mechanism for
  * the system; however, it is not yet integrated into the system and is just a stub.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AOLInstantMessageDeliverer implements MessageDeliverer {
     private static Logger LOG = Logger.getLogger(AOLInstantMessageDeliverer.class);

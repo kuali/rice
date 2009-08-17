@@ -37,7 +37,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * since those bos are mostly persisted and retrieved through the parent Notification 
  * instance.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationDaoTest extends BusinessObjectPersistenceTestCaseBase {
     Long id = new Long(-1);

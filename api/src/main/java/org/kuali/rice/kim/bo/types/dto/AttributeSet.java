@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Specialization of HashMap to facilitate web services and simplify API definitions.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class AttributeSet extends HashMap<String,String> {

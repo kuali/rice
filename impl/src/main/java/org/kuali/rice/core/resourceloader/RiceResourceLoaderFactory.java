@@ -27,7 +27,7 @@ import org.kuali.rice.core.config.ConfigurationException;
  * Creates resource loader for rice spring context.
  * Uses config object to store QNames so everything is good with the current context classloader.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceResourceLoaderFactory {
 

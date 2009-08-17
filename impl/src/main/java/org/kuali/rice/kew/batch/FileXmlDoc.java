@@ -27,7 +27,7 @@ import java.io.InputStream;
  * @see org.kuali.rice.kew.batch.BaseXmlDoc
  * @see org.kuali.rice.kew.batch.FileXmlDocCollection
  * @see org.kuali.rice.kew.batch.DirectoryXmlDocCollection
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class FileXmlDoc extends BaseXmlDoc {
     private File file;

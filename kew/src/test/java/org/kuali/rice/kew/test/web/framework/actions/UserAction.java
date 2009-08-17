@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
  * &lt;user&gt;...&lt;/user&gt;
  * &lt;backdoorId&gt;...&lt;/backdoorId&gt;
  * </pre>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserAction extends BaseScriptAction {
     private static final String[] NAMES = { "user", "backdoorId" };

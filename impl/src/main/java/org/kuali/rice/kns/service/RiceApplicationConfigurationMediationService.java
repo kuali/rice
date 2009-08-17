@@ -25,7 +25,7 @@ import org.kuali.rice.kns.bo.ParameterDetailType;
  * which RiceApplicationConfiguration services to contact and dispatching service calls
  * to them to properly implement the methods on the service.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface RiceApplicationConfigurationMediationService {

@@ -60,7 +60,7 @@ import org.xml.sax.InputSource;
  * This class tests the {@link KualiXmlAttributeHelper} operations of getting data from the data dictionary for workflow
  * attributes
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Ignore
 public class KualiXMLAttributeImplTest extends KNSTestCase {

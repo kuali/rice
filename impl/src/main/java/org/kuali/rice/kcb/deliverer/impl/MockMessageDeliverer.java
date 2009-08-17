@@ -28,7 +28,7 @@ import org.kuali.rice.kcb.exception.MessageDismissalException;
 /**
  * A mock message deliverer that does nothing 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MockMessageDeliverer implements MessageDeliverer {

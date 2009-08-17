@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Cancels a document at the request of a client app.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CancelAction extends ActionTakenEvent {
 

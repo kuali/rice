@@ -38,7 +38,7 @@ import org.kuali.rice.kew.util.Utilities;
  * Delegates to template methods to obtain plugin ClassLoader and plugin config file URL,
  * then load the config under the plugin ClassLoader, and constructs a Plugin object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BasePluginLoader implements PluginLoader {
     private static final Logger LOG = Logger.getLogger(BasePluginLoader.class);

@@ -60,7 +60,7 @@ import org.w3c.dom.Node;
  * <dd>The response output after filters have been applied</dd>
  * </dl>
  * The only filter applied by default at this time is the CANONICALIZE filter.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SubmitAction extends BaseScriptAction {
     public static final String RESPONSE_OUTPUT = "OUTPUT";

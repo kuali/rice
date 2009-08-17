@@ -19,7 +19,7 @@ package org.kuali.rice.core.lifecycle;
 /**
  * Interface describing an object life cycle
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Lifecycle {
 	public void start() throws Exception;

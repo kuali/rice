@@ -48,7 +48,7 @@ import org.xml.sax.SAXException;
  * the ability to import "users" from XML in KEW.  KIM does not provide XML
  * import capabilities in the initial implementation so this class provides that.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class UserXmlParser implements XmlConstants {

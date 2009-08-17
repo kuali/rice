@@ -62,7 +62,7 @@ import org.kuali.rice.kew.util.Utilities;
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebRuleBaseValues extends RuleBaseValues {
 

@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Responsible for invoking the async piece of BlanketApprove
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	

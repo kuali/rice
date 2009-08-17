@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  *
  * Fetching that is being done is also taking into account the 'weight' of action request codes.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionRequestService {
 	public ActionRequestValue initializeActionRequestGraph(ActionRequestValue actionRequest, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance);

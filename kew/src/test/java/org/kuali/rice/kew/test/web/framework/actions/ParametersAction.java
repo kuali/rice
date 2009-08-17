@@ -42,7 +42,7 @@ import org.w3c.dom.NodeList;
  * defaulting to literal scheme.
  * If a value variant is not present, the algorithm proceeds again without a specific prefix (i.e., just looks for variable, literal, etc.).
  * If no attribute is found, element content is used.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ParametersAction extends BaseScriptAction {
     private static final String[] NAMES = { "parameters" };

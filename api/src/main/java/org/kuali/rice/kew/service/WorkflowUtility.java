@@ -48,7 +48,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * A remotable service which provides an API for performing various queries and
  * other utilities on KEW.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @WebService(name = KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME, targetNamespace = KEWWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)

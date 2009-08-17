@@ -23,7 +23,7 @@ package org.kuali.rice.kew.plugin;
  * 
  * @see Plugin
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PluginListener {
 

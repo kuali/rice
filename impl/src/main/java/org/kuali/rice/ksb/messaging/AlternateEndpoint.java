@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.messaging;
  * Represents an alternate endpoint URL based on an endpoint URL pattern (reg-exp) to replace with
  * the given actual endpoint.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class AlternateEndpoint {

@@ -386,7 +386,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
      * Sorts by RouteNodeId or the order the nodes will be evaluated in *roughly*.  This is 
      * for display purposes when rendering a flattened list of nodes.
      * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static class RouteNodeSorter implements Comparator {
         public int compare(Object arg0, Object arg1) {

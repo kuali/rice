@@ -24,7 +24,7 @@ package org.kuali.rice.ksb.messaging;
  * repeated every original topic call when the call was first made we would miss all the 
  * original topic calls.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RepeatTopicInvokerQueue {
 

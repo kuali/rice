@@ -33,7 +33,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * An implementation of the {@link PreferencesService}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PreferencesServiceImpl implements PreferencesService {
 

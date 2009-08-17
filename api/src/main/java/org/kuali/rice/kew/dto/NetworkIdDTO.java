@@ -20,7 +20,7 @@ package org.kuali.rice.kew.dto;
 /**
  * Transport object for the AuthenticationUserId
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NetworkIdDTO extends UserIdDTO {
 

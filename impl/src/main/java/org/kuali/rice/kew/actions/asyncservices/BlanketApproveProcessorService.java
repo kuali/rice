@@ -22,7 +22,7 @@ import java.util.Set;
 /**
  * Created to front the BlanketApproveProcessor when it went to a service for async remoting.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface BlanketApproveProcessorService {
 	

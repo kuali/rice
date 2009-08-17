@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 
 /**
  * This class handles XSLT transformations.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ContentTransformer {
     private static final Logger LOG = Logger.getLogger(ContentTransformer.class);

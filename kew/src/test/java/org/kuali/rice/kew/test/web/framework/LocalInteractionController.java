@@ -29,7 +29,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 /**
  * An InteractionController which uses Spring mock servlet objects against
  * a specified Servlet instance
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocalInteractionController implements InteractionController {
     private static final Logger LOG = Logger.getLogger(LocalInteractionController.class);

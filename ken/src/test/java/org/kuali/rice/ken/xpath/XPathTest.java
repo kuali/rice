@@ -53,7 +53,7 @@ import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
  *       is to predefine the prefix in the NamespaceContent (which can be done by using a CompositeNamespaceContenxt
  *       consisting of a ConfiguredNamespaceContext and a DocumentNamespaceContext).</li>
  * </ul>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public class XPathTest extends KENTestCase {

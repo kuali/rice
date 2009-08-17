@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
  * The 'value' attribute is resolved via {@link org.kuali.rice.kew.test.web.framework.Util#getResolvableAttribute(Node, String, PropertyScheme)},
  * defaulting to literal scheme.
  * If a value variant is not present, the algorithm proceeds again without a specific prefix (i.e., just looks for variable, literal, etc.).
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EchoAction extends BaseScriptAction {
     private static final String[] NAMES = { "echo" };

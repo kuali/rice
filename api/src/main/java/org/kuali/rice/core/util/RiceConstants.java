@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 /**
  * This is a class to hold constant values that will be used across multiple modules of Rice
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceConstants extends JSTLConstants {
 

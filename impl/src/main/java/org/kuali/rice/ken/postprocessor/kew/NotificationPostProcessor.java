@@ -47,7 +47,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * underlying core NotificationDocumentType that all notifications go into KEW as.  This class is responsible for changing 
  * the state of the associated notification message delivery record after someone FYIs or ACKs their notification 
  * in the KEW Action List.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationPostProcessor implements PostProcessorRemote {
     private static final Logger LOG = Logger.getLogger(NotificationPostProcessor.class);

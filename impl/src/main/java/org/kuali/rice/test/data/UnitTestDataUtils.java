@@ -21,7 +21,7 @@ import org.kuali.rice.test.SQLDataLoader;
 /**
  * Utilities for unit test data annotations. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class UnitTestDataUtils {

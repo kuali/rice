@@ -21,7 +21,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimResponsibilityTemplateInfo implements KimResponsibilityTemplate, Serializable {
 

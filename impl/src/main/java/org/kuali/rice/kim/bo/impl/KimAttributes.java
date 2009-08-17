@@ -27,7 +27,7 @@ import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimAttributes extends TransientBusinessObjectBase {
 

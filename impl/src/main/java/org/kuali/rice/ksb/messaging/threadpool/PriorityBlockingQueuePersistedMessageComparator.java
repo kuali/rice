@@ -27,7 +27,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.PriorityBlockingQueue;
  * 
  *  Determines execution order by priority and create date.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PriorityBlockingQueuePersistedMessageComparator implements Comparator {

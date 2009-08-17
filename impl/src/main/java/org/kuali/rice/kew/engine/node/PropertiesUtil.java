@@ -30,7 +30,7 @@ import org.kuali.rice.kew.engine.node.var.PropertyScheme;
 /**
  * A utility class for reading properties from a document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PropertiesUtil {
     private static final Logger LOG = Logger.getLogger(PropertiesUtil.class);

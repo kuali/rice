@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.Utilities;
  * A simple utility class which can handle translated a comma-seperated String
  * into an array of String paramters and vice-versa.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ParameterTranslator {
 

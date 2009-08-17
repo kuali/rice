@@ -20,7 +20,7 @@ package org.kuali.rice.kns.bo;
  * 
  * Created for use by the KIM entity attributes.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface Defaultable {

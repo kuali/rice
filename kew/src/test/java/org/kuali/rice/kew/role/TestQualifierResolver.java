@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * A test implementatino of a QualifierResolver which returns qualifications for chart
  * and org as "BL-BUS" and "IN-MED"
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class TestQualifierResolver implements QualifierResolver {

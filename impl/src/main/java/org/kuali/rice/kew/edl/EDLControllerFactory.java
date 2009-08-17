@@ -40,7 +40,7 @@ import org.w3c.dom.NodeList;
  * Creates EDL controllers.  Contains a cache of parsed EDL configurations.  The parsed config is a definition name related to 
  * a Map containing config element and their associated class.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDLControllerFactory {

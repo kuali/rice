@@ -19,7 +19,7 @@ package org.kuali.rice.kim.sesn.timeouthandlers;
  * This Abstract Class allows the configuration of timeout fields.
  * TODO: change how TimoutHandlers choose fields from ndx to name.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public abstract class AbstractTimeoutHandler implements TimeoutHandler{

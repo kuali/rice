@@ -42,7 +42,7 @@ import org.w3c.dom.NodeList;
 /**
  * A {@link WorkflowAttribute} which can be used to route documents based on Workgroup Type.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkgroupTypeRoutingAttribute implements WorkflowAttribute {
 

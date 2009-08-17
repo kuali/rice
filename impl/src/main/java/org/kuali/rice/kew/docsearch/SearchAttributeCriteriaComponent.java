@@ -25,7 +25,7 @@ import org.kuali.rice.kew.util.Utilities;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SearchAttributeCriteriaComponent implements Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeCriteriaComponent.class);

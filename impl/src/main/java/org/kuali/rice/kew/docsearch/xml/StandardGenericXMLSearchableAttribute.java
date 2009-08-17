@@ -60,7 +60,7 @@ import org.xml.sax.InputSource;
 /**
  * implementation of {@link GenericXMLSearchableAttribute}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchableAttribute {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardGenericXMLSearchableAttribute.class);

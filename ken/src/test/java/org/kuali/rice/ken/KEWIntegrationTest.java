@@ -29,7 +29,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Tests integration with KEW
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public class KEWIntegrationTest extends KENTestCase {

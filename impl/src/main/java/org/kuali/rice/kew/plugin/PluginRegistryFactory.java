@@ -28,7 +28,7 @@ import org.kuali.rice.kew.util.Utilities;
  * A factory for creating {@link PluginRegistry} instances based on the configured client protocol of the application.
  * 
  * @see PluginRegistry
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PluginRegistryFactory {
 

@@ -40,7 +40,7 @@ import org.kuali.test.KNSTestCase;
 /**
  * This is a test case for the data dictionary's ability to index entries by a "base" superclass. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BaseBOClassAndBaseDocumentClassTest extends KNSTestCase {
 

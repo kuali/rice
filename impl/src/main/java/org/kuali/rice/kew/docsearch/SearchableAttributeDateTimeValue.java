@@ -50,7 +50,7 @@ import org.kuali.rice.kew.util.Utilities;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DOC_HDR_EXT_DT_T")

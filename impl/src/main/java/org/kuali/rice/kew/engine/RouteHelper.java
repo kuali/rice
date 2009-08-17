@@ -36,7 +36,7 @@ import org.kuali.rice.kew.engine.node.SubProcessNode;
  * A helper class which provides some useful utilities for examining and generating nodes.
  * Provides access to the {@link JoinEngine} and the {@link RoutingNodeFactory}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteHelper {
 

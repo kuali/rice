@@ -32,7 +32,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 /**
  * EDocLite XSLT stylesheet
  * Table: en_edoclt_style_t
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_STYLE_T")

@@ -22,7 +22,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 /**
  * This is a simple test class for testing the data dictionary's ability to grab entries by "base" class. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AccountType2Parent extends PersistableBusinessObjectBase {
 

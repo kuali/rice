@@ -37,7 +37,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * A Struts Action which permits a user to execute a backdoor login to masquerade
  * as another user.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BackdoorAction extends KewKualiAction {
 

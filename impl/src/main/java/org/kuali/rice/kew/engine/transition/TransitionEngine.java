@@ -32,7 +32,7 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
  * Common superclass for all Transition Engines.  A TransitionEngine handles transitioning into and out of
  * a {@link RouteNodeInstance}.  The TransitionEngine is also responsible for determining if a Node has completed.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class TransitionEngine {
     

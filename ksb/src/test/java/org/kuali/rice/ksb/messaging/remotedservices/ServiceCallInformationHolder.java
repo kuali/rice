@@ -26,7 +26,7 @@ import java.util.Map;
  * Holds a single hashmap that can hold whatever is needed for confirmation of call for 
  * testing.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ServiceCallInformationHolder {

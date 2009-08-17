@@ -23,7 +23,7 @@ import org.kuali.rice.kns.bo.DocumentHeader;
  * Financial System custom document header which included a 'total amount'
  * field.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public interface DocumentHeaderService {

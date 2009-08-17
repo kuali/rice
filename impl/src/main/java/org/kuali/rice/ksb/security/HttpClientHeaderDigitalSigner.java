@@ -26,7 +26,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * A DigitalSigner implementation which places the alias and digital signature into the request
  * headers of the commons HttpClient's HttpMethod.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HttpClientHeaderDigitalSigner extends AbstractDigitalSigner {
 

@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * This is a test class to verify the operation of the custom security attributes
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class CustomSecurityFilterAttribute implements SecurityAttribute {

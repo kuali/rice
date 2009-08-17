@@ -57,7 +57,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * objects for performance reasons.  These should be preserved and their related objects should not be added to the OJB
  * mapping as we do not want them loaded for each ActionItem object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 

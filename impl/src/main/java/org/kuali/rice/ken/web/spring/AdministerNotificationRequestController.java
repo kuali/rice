@@ -50,7 +50,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 /**
  * Implements reviewer Approve/Disapprove and initiator Acknowledge of a Notification requests
  * sent to channels configured with reviewers
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AdministerNotificationRequestController extends MultiActionController {
     private static final Logger LOG = Logger.getLogger(AdministerNotificationRequestController.class);

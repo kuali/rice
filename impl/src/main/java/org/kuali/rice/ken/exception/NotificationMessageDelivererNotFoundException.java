@@ -18,7 +18,7 @@ package org.kuali.rice.ken.exception;
 /**
  * This class represents a notification message deliverer not found exception - when a deliverer 
  * that is thought to be registered is not found in the registry.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationMessageDelivererNotFoundException extends Exception {
     /**

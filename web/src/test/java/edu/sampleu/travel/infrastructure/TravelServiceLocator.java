@@ -22,7 +22,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Initializes the Travel App Spring context.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TravelServiceLocator {
     private static final Logger LOG = Logger.getLogger(TravelServiceLocator.class);

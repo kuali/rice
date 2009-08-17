@@ -22,7 +22,7 @@ import java.io.Serializable;
  * Represents the display params of the inline action list view.  This dictates 
  * how the inline frame will look height-wise.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DisplayParameters implements Serializable {
 

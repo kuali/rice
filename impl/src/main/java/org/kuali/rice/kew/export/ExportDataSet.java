@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.Group;
 /**
  * A set of data to be exported to a KEW XML file.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExportDataSet {
 

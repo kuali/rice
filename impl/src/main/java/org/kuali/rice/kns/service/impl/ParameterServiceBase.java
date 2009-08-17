@@ -42,7 +42,7 @@ import org.kuali.rice.kns.util.KNSUtils;
 /**
  * This is a description of what this class does - tom don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public abstract class ParameterServiceBase implements ParameterService {

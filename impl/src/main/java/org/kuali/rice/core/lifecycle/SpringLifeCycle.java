@@ -23,7 +23,7 @@ import org.kuali.rice.core.resourceloader.SpringLoader;
  * A Lifecycle which simply initializes the SpringLoader with the correct spring context file.  It's important that
  * we don't actually start the SpringLoader here because that will be handled by the GlobalResourceLoader.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SpringLifeCycle extends BaseLifecycle {
 

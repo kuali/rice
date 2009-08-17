@@ -26,7 +26,7 @@ import org.apache.commons.pool.KeyedObjectPool;
  * A subclass of Apache DBCP's PoolingConnection class.  This class generates a unique
  * toString value for each instance of this class, because XApool relies on such behavior
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PreparedStatementCachingConnection extends PoolingConnection {

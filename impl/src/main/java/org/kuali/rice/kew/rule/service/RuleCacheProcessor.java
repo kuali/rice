@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule.service;
 /**
  * Clears a rule from the rule cache by the given rule ID.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleCacheProcessor {
 	

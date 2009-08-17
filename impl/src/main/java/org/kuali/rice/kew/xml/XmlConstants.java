@@ -21,7 +21,7 @@ import org.jdom.Namespace;
 /**
  * Constants for various XML namespaces, elements and attributes for the various parsers.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlConstants {
 

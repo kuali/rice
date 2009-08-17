@@ -27,7 +27,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 /**
  * Responsible for the data access for {@link ActionTakenValue} objects.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionTakenService {
 

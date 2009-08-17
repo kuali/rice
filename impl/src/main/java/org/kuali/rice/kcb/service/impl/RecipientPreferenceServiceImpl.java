@@ -29,7 +29,7 @@ import org.kuali.rice.kcb.service.RecipientPreferenceService;
 /**
  * RecipientPreferenceService implementation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl implements RecipientPreferenceService {
     /**

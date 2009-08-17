@@ -21,7 +21,7 @@ package org.kuali.rice.kew.exception;
  * The exception used from the Simulation Engine when it has problems routing a
  * document
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentSimulatedRouteException extends WorkflowException {
 

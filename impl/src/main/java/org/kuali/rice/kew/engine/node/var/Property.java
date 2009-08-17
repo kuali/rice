@@ -27,7 +27,7 @@ package org.kuali.rice.kew.engine.node.var;
  *   <dd>PropertyScheme-implementation-specific property name or URI</dd>
  * </dl>
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class Property {
     /**

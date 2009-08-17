@@ -33,7 +33,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
  * 	 <li><b>workgroupId</b> - the ID of the workgroup whose requests(s) should be revoked</li>
  * </ol>
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AdHocRevoke implements java.io.Serializable {
 

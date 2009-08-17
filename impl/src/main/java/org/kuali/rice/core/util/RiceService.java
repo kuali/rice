@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * Annotation that marks a field as requiring Rice service injection via GlobalResourceLoader
  * lookup. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

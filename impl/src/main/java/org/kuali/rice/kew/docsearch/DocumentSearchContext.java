@@ -20,7 +20,7 @@ import java.io.Serializable;
 /**
  * This class contains all the information needed for document search, validation and indexing. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentSearchContext implements Serializable {

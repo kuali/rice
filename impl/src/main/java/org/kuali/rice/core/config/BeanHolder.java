@@ -22,7 +22,7 @@ import org.springframework.beans.factory.FactoryBean;
  * whose class is dynamically set at runtime through the PropertyPlaceholderConfigurer
  * because the <bean> element attributes themselves are not parameterizable,
  * only the property values. 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BeanHolder implements FactoryBean {
     private Class clazz;

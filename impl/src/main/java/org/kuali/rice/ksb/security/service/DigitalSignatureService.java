@@ -24,7 +24,7 @@ import java.security.cert.Certificate;
 /**
  * A service for aquiring Signatures for signing and verification of messages.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DigitalSignatureService {
 

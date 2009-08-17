@@ -25,7 +25,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  *
  * @see QuickLinksAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class QuickLinksForm extends KualiForm {
 

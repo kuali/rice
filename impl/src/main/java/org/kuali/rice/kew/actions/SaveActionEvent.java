@@ -35,7 +35,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * Saves a document.  Puts the document in the persons action list that saved the document.
  * This can currently only be done by the initiator of the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SaveActionEvent extends ActionTakenEvent {

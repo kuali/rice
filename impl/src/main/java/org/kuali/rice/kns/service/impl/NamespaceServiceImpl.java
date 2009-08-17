@@ -25,7 +25,7 @@ import org.kuali.rice.kns.service.NamespaceService;
 /**
  * Kuali Rice Namespace Service Standard Implementation
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class NamespaceServiceImpl implements NamespaceService {

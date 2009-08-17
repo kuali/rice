@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
  * not contain a particular piece, then the associated getter should return
  * null.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentContent extends Serializable {
 

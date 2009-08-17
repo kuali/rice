@@ -20,7 +20,7 @@ import java.io.Serializable;
 import javax.persistence.TemporalType;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FieldDescriptor implements Comparable, Serializable {
 

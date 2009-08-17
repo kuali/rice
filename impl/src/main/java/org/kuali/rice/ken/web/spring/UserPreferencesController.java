@@ -37,7 +37,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 /**
  * This class is the controller that handles management of various user preferences interfaces (deliver types, user subscriptions, etc).
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserPreferencesController extends MultiActionController {
     

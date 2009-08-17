@@ -65,7 +65,7 @@ import org.kuali.rice.kim.util.KimConstants;
  *
  * <p>This class is not thread safe and must by synchronized externally for concurrent access.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowDocument implements java.io.Serializable {
 

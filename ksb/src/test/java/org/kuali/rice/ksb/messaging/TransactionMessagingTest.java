@@ -29,7 +29,7 @@ import org.springframework.transaction.support.TransactionSynchronization;
  * Verify that messaging works in the context of a transaction and message invokation is done via the
  * {@link TransactionSynchronization} messagei
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class TransactionMessagingTest extends KSBTestCase {

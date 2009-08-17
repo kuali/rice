@@ -22,7 +22,7 @@ import org.kuali.rice.kew.engine.RouteHelper;
 /**
  * A {@link SimpleNode} implementation which does nothing.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NoOpNode implements SimpleNode {
 

@@ -26,7 +26,7 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
  * if the 'use.kewXmlmlDataLoaderLifecycle' configuration property is defined, and is
  * not 'true'.  If the property is omitted the lifecycle runs as normal.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KEWXmlDataLoaderLifecycle extends BaseLifecycle {
     private static final Logger LOG = Logger.getLogger(KEWXmlDataLoaderLifecycle.class);

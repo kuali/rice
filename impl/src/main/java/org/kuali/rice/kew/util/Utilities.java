@@ -48,7 +48,7 @@ import org.kuali.rice.kns.web.format.DateFormatter;
 /**
  * Various static utility methods.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Utilities {
     /**

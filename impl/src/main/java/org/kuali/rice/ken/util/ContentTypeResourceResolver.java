@@ -22,7 +22,7 @@ import org.kuali.rice.ken.service.NotificationContentTypeService;
 /**
  * Utility base class for Entity and LSResource Resolvers that should resolve
  * arguments to XSDs defined for NotificationContentTypes
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ContentTypeResourceResolver {
     protected static final String CONTENT_TYPE_PREFIX = "resource:notification/ContentType";

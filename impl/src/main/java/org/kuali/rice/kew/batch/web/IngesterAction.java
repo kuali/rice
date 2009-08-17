@@ -53,7 +53,7 @@ import org.kuali.rice.kns.web.struts.action.KualiAction;
  * Struts action that accepts uploaded files and feeds them to the XmlIngesterService
  * @see org.kuali.rice.kew.batch.XmlIngesterService
  * @see org.kuali.rice.kew.batch.web.IngesterForm
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IngesterAction extends KualiAction {
     private static final Logger LOG = Logger.getLogger(IngesterAction.class);

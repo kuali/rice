@@ -20,7 +20,7 @@ package org.kuali.rice.kew.exception;
 /**
  * Thrown whenever a problem with a workgroup exists, like one is execpected but not found.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InvalidWorkgroupException extends WorkflowException {
   /**

@@ -32,7 +32,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * Holds message payload content.  Needed to proxy the content so we don't have to 
  * take the hit when grabbing large amounts of persisted messages at time.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity

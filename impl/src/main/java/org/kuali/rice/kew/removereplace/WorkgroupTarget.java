@@ -29,7 +29,7 @@ import javax.persistence.Table;
  * Represents a target of a remove/replace document.  This will typically be
  * either a rule or a workgroup
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @IdClass(org.kuali.rice.kew.removereplace.WorkgroupTargetId.class)
 @Entity

@@ -23,7 +23,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 
 /**
  * The NotificationWorkflowDocumentService class is responsible for housing service methods for interacting with KEW.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationWorkflowDocumentService {
     /**

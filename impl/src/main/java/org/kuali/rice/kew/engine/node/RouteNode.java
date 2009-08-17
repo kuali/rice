@@ -58,7 +58,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RTE_NODE_T")

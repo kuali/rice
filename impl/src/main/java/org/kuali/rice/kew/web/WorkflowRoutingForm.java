@@ -36,7 +36,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * A Struts ActionForm which can be extended by ActionForms which need to add
  * support for document routing to a Struts Action.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowRoutingForm extends ActionForm {
 

@@ -43,6 +43,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.exception.RiceException;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
@@ -52,6 +53,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.KeyValueDTO;
@@ -62,6 +64,7 @@ import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
@@ -474,11 +477,52 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
         return appDocStatus;
     }
 
-    public void setAppDocStatus(java.lang.String appDocStatus) {
-    	//TODO: verify against valid statuses if specified for doctype
+    public void setAppDocStatus(java.lang.String appDocStatus){
         this.appDocStatus = appDocStatus;
     }
 
+    /**
+     * 
+     * This method sets the appDocStatus.
+     * It firsts validates the new value against the defined acceptable values, if defined.
+     * It also updates the AppDocStatus date, and saves the status transition information
+     * 
+     * @param appDocStatus
+     * @throws RiceException
+     */
+    public void updateAppDocStatus(java.lang.String appDocStatus) throws RiceException{
+       	//validate against allowable values if defined
+    	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(this.getDocumentTypeId());    	
+    	if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
+    		Iterator iter = documentType.getValidApplicationStatuses().iterator();
+    		boolean statusValidated = false;
+    		while (iter.hasNext())
+    		{
+    			ApplicationDocumentStatus myAppDocStat = (ApplicationDocumentStatus) iter.next();
+    			if (appDocStatus.compareToIgnoreCase(myAppDocStat.getStatusName()) == 0)
+    			{
+    				statusValidated = true;
+    				break;
+    			}
+    		}
+    		if (!statusValidated){
+    				RiceException xpee = new RiceException("AppDocStatus value " +  appDocStatus + " not allowable."); 
+    				LOG.error("Error validating nextAppDocStatus name: " +  appDocStatus + " against acceptable values.", xpee);
+    				throw xpee; 
+    		}
+    	}
+    	
+    	// set the status value
+        this.appDocStatus = appDocStatus;
+        
+        // update the timestamp
+        setAppDocStatusDate(new Timestamp(System.currentTimeMillis()));
+        
+        // TODO: save the status transition
+        
+    }
+    
+    
     public java.sql.Timestamp getAppDocStatusDate() {
         return appDocStatusDate;
     }

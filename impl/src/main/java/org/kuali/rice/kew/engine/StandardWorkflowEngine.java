@@ -311,13 +311,19 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	 * nextNodeInstances = invokeTransition(context, nodeInstance.getProcess(),
 	 * processResult, transitionEngine); } } return nextNodeInstances; }
 	 *
-	 */private void notifyNodeChange(RouteContext context, RouteNodeInstance nextNodeInstance) {
+	 */private void notifyNodeChange(RouteContext context, RouteNodeInstance nextNodeInstance) throws Exception {
 		if (!context.isSimulation()) {
 			RouteNodeInstance nodeInstance = context.getNodeInstance();
+			// if application document status transition has been defined, update the status
+			String nextStatus = nodeInstance.getRouteNode().getNextDocStatus();
+			if (nextStatus != null && nextStatus.length() > 0){
+				context.getDocument().updateAppDocStatus(nextStatus);
+			}
+			
 			DocumentRouteLevelChange event = new DocumentRouteLevelChange(context.getDocument().getRouteHeaderId(), context.getDocument().getAppDocId(), CompatUtils.getLevelForNode(context.getDocument().getDocumentType(), context.getNodeInstance()
 					.getRouteNode().getRouteNodeName()), CompatUtils.getLevelForNode(context.getDocument().getDocumentType(), nextNodeInstance.getRouteNode().getRouteNodeName()), nodeInstance.getRouteNode().getRouteNodeName(), nextNodeInstance
 					.getRouteNode().getRouteNodeName(), nodeInstance.getRouteNodeInstanceId(), nextNodeInstance.getRouteNodeInstanceId());
-			context.setDocument(notifyPostProcessor(context.getDocument(), nodeInstance, event));
+			context.setDocument(notifyPostProcessor(context.getDocument(), nodeInstance, event));			
 		}
 	}
 

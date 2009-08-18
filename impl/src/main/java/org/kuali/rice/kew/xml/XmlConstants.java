@@ -95,6 +95,8 @@ public interface XmlConstants {
     public static final String MANDATORY_ROUTE = "mandatoryRoute";
     public static final String ROUTE_MODULE = "routeModule";
     public static final String NEXT_NODE = "nextNode";
+    public static final String APP_DOC_STATUSES = "validApplicationStatuses";
+    public static final String STATUS = "status";
 
     // rules
     public static final String RULES = "rules";

@@ -36,6 +36,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
@@ -88,6 +89,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
     private static final String NEXT_NODE_EXP = "./@nextNode";
     private static final String PARENT_NEXT_NODE_EXP = "../@nextNode";
+    private static final String NEXT_DOC_STATUS_EXP = "./@nextAppDocStatus";
     /**
      * Default route node activation type to use if omitted
      */
@@ -737,6 +739,25 @@ public class DocumentTypeXmlParser implements XmlConstants {
             throw xpee;
         }
 
+        // set the valid application document statuses for the document type
+        /*
+         * The following code does not need to apply the isOverwrite mode logic because it already checks to see if each node
+         * is available on the ingested XML. If the node is ingested then it doesn't matter if we're in overwrite mode or not
+         * the ingested code should save.
+         */
+        NodeList appDocStatusList = (NodeList) getXPath().evaluate("./" + APP_DOC_STATUSES, documentTypeNode, XPathConstants.NODESET);
+        if (appDocStatusList.getLength() > 1) {
+            // more than one <validDocumentStatuses> tag is invalid
+            throw new InvalidXmlException("More than one " + APP_DOC_STATUSES + " node is present in a document type node");
+        }
+        else if (appDocStatusList.getLength() > 0) {
+            // if there is exactly one <validDocumentStatuses> tag then parse it and use the values
+//        	NodeList statusNodes = appDocStatusList.item(0).getChildNodes();
+            NodeList statusNodes = (NodeList) getXPath().evaluate("./" + STATUS, appDocStatusList.item(0), XPathConstants.NODESET);
+            documentType.setValidApplicationStatuses(getDocumentTypeStatuses(statusNodes, documentType));
+        }
+        
+        
         return documentType;
     }
 
@@ -963,6 +984,46 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 }
             }
         }
+        
+        // handle nextAppDocStatus route node attribute
+        String nextDocStatusName = null;
+        boolean hasNextDocStatus;
+        try {
+            hasNextDocStatus = ((Boolean) getXPath().evaluate(NEXT_DOC_STATUS_EXP, currentNode, XPathConstants.BOOLEAN)).booleanValue();
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining node nextAppDocStatus attrib", xpee);
+            throw xpee;
+        }
+        if (hasNextDocStatus){
+        	try {
+        		nextDocStatusName = (String) getXPath().evaluate(NEXT_DOC_STATUS_EXP, currentNode, XPathConstants.STRING);
+        	} catch (XPathExpressionException xpee) {
+        		LOG.error("Error obtaining node nextNode attrib", xpee);
+        		throw xpee;
+        	}
+        	
+        	//validate against allowable values if defined
+        	if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
+        		Iterator iter = documentType.getValidApplicationStatuses().iterator();
+        		boolean statusValidated = false;
+        		while (iter.hasNext())
+        		{
+        			ApplicationDocumentStatus myAppDocStat = (ApplicationDocumentStatus) iter.next();
+        			if (nextDocStatusName.compareToIgnoreCase(myAppDocStat.getStatusName()) == 0)
+        			{
+        				statusValidated = true;
+        				break;
+        			}
+        		}
+        		if (!statusValidated){
+        				InvalidXmlException xpee = new InvalidXmlException("AppDocStatus value " +  nextDocStatusName + " not allowable."); 
+        				LOG.error("Error validating nextAppDocStatus name: " +  nextDocStatusName + " against acceptable values.", xpee);
+        				throw xpee; 
+        		}
+        	}
+        	currentRouteNode.setNextDocStatus(nextDocStatusName);
+        }
+        
         return currentRouteNode;
     }
 
@@ -1159,6 +1220,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 LOG.error("Error obtaining document type policy value", xpee);
                 throw xpee;
             }
+            try {
+            	String policyStringValue = (String) getXPath().evaluate("./stringValue", documentTypePolicies.item(i), XPathConstants.STRING);
+                policy.setPolicyStringValue(policyStringValue);
+                policy.setPolicyValue(Boolean.TRUE);
+            } catch (XPathExpressionException xpee) {
+                LOG.error("Error obtaining document type policy string value", xpee);
+                throw xpee;
+            }
             if (!policyNames.add(policy.getPolicyName())) {
                 throw new InvalidXmlException("Policy '" + policy.getPolicyName() + "' has already been defined on this document");
             } else {
@@ -1167,6 +1236,26 @@ public class DocumentTypeXmlParser implements XmlConstants {
         }
 
         return policies;
+    }
+
+    private List getDocumentTypeStatuses(NodeList documentTypeStatuses, DocumentType documentType) throws XPathExpressionException, InvalidXmlException {
+        List statuses = new ArrayList();
+        Set statusNames = new HashSet();
+
+        for (int i = 0; i < documentTypeStatuses.getLength(); i++) {
+        	ApplicationDocumentStatus status = new ApplicationDocumentStatus();
+        	status.setDocumentTypeId(documentType.getDocumentTypeId());
+        	Node myNode = documentTypeStatuses.item(i);  
+        	String statusName = myNode.getFirstChild().getNodeValue();
+        	String myStatusName =  (String) getXPath().evaluate("./" + STATUS, myNode, XPathConstants.STRING);
+        	status.setStatusName(statusName);
+        	if (!statusNames.add(status.getStatusName())) {
+        		throw new InvalidXmlException("Application Status '" + status.getStatusName() + "' has already been defined on this document");
+        	} else {
+        		statuses.add(status);
+        	}      
+        }
+        return statuses;
     }
 
     private List getDocumentTypeAttributes(NodeList documentTypeAttributes, DocumentType documentType) throws XPathExpressionException, WorkflowException {

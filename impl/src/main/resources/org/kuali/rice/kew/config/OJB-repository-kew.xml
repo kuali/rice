@@ -380,6 +380,12 @@
      	auto-retrieve="true" auto-update="true"	proxy="false">
       <inverse-foreignkey field-ref="documentTypeId"/>
     </collection-descriptor>
+    <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
+      element-class-ref="org.kuali.rice.kew.doctype.ApplicationDocumentStatus"
+      name="validApplicationStatuses"
+      proxy="false">
+      <inverse-foreignkey field-ref="documentTypeId"  />
+    </collection-descriptor>
   </class-descriptor>
 
 
@@ -388,6 +394,18 @@
     <field-descriptor column="DOC_PLCY_NM" name="policyName" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="PLCY_NM" name="policyValue" jdbc-type="BIT"/>
     <field-descriptor column="PLCY_DESC" name="policyStringValue" jdbc-type="VARCHAR"/>    
+    <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
+    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
+<!--
+    <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-retrieve="true" auto-update="false" auto-delete="false">
+      <foreignkey field-ref="documentTypeId" />
+    </reference-descriptor>
+-->
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.doctype.ApplicationDocumentStatus" table="KREW_DOC_TYP_APP_DOC_STAT_T">
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="BIGINT" primarykey="true"/>
+    <field-descriptor column="DOC_STAT_NM" name="statusName" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
 <!--
@@ -646,6 +664,7 @@
     <field-descriptor column="RTE_MTHD_CD" name="routeMethodCode" jdbc-type="VARCHAR" />
     <field-descriptor column="ACTVN_TYP" name="activationType" jdbc-type="VARCHAR" />
     <field-descriptor column="BRCH_PROTO_ID" name="branchId" jdbc-type="BIGINT" access="anonymous"/>
+    <field-descriptor column="NEXT_DOC_STATUS" name="nextDocStatus" jdbc-type="VARCHAR" />
 
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
     <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType" auto-delete="false" auto-retrieve="true" auto-update="false">

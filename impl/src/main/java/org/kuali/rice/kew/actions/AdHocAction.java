@@ -129,7 +129,7 @@ public class AdHocAction extends ActionTakenEvent {
                 }
                 if (adhocRequest.isApproveOrCompleteRequest() && ! (routeHeader.isEnroute() || routeHeader.isStateInitiated() ||
                         routeHeader.isStateSaved())) {
-                    return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getDocRouteStatusLabel() + "'.";
+                    return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getRouteStatusLabel() + "'.";
                 }
                 if (!forValidationOnly) {
                     if (routeHeader.isDisaproved() || routeHeader.isFinal() || routeHeader.isProcessed()) {

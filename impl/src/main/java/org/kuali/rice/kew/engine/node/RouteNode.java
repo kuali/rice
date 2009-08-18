@@ -93,6 +93,8 @@ public class RouteNode implements Serializable {
 	private String routeMethodCode;
     @Column(name="ACTVN_TYP")
     private String activationType = ActivationTypeEnum.PARALLEL.getCode();
+    @Column(name="NEXT_DOC_STATUS")
+	private String nextDocStatus;
 
     @Version
 	@Column(name="VER_NBR")
@@ -266,6 +268,20 @@ public class RouteNode implements Serializable {
         this.routeMethodCode = routeMethodCode;
     }
 
+	/**
+	 * @param nextDocStatus the nextDocStatus to set
+	 */
+	public void setNextDocStatus(String nextDocStatus) {
+		this.nextDocStatus = nextDocStatus;
+	}
+
+	/**
+	 * @return the nextDocStatus
+	 */
+	public String getNextDocStatus() {
+		return nextDocStatus;
+	}
+	
     public String getExceptionWorkgroupName() {
     	Group exceptionGroup = getExceptionWorkgroup();
         if (exceptionWorkgroupName == null || exceptionWorkgroupName.equals("")) {
@@ -368,4 +384,5 @@ public class RouteNode implements Serializable {
 	public String toString() {
 		return "RouteNode[routeNodeName="+routeNodeName+", nodeType="+nodeType+", activationType="+activationType+"]";
 	}
+
 }

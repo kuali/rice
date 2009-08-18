@@ -54,6 +54,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
@@ -163,7 +164,13 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @OneToMany(fetch=FetchType.EAGER, mappedBy="documentType")
     @Fetch(value=FetchMode.SUBSELECT)
     private Collection<DocumentTypePolicy> policies;
-    @Transient
+    
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
+    		mappedBy="documentType")
+    @Fetch(value=FetchMode.SUBSELECT)
+    private List<ApplicationDocumentStatus> validApplicationStatuses;
+    
+	@Transient
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
@@ -446,6 +453,15 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     public void setPolicies(Collection<DocumentTypePolicy> policies) {
         this.policies = policies;
     }
+
+    public List<ApplicationDocumentStatus> getValidApplicationStatuses() {
+		return this.validApplicationStatuses;
+	}
+
+	public void setValidApplicationStatuses(
+			List<ApplicationDocumentStatus> validApplicationStatuses) {
+		this.validApplicationStatuses = validApplicationStatuses;
+	}
 
     public String getDocumentTypeSecurityXml() {
       return documentTypeSecurityXml;

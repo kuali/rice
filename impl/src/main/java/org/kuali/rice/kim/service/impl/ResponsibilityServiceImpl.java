@@ -257,6 +257,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     	}
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Found " + results.size() + " matching ResponsibilityActionInfo objects");
+    		if ( LOG.isTraceEnabled() ) {
+    			LOG.trace( results );
+    		}
     	}
     	return results;
     }

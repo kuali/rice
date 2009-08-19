@@ -172,6 +172,10 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 						row.setHidden(true);
 					}
 					field.setFieldType(fieldType);
+
+					//this is set to 30 in the jsp for standard fields, should this be a parameter?!
+					field.setMaxLength(30); // moved this here so the value can be altered below
+
 					//TODO: special processing for some field types
 					if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN,fieldType)||
 					   StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY, fieldType)){
@@ -185,6 +189,9 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 						if("documentRouteStatus".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())) {
 							DocumentRouteStatusValuesFinder values = new DocumentRouteStatusValuesFinder();
 							field.setFieldValidValues(values.getKeyValues());
+							field.setFieldType(Field.MULTISELECT); // this is now multi select [KULRICE-2840]
+							int size = (values.getKeyValues().size() > 10)?10:values.getKeyValues().size();
+							field.setMaxLength(size);
 						} else if("routeNodes".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())){
 							if(documentType!=null) {
 								//TODO: can these be used directly in values finder also there is an option key and value property that could probably be used by all of these
@@ -226,9 +233,6 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 
 					boolean hasDatePicker = StringUtils.isNotEmpty(standardSearchCriteriaField.getDatePickerKey());
 					field.setDatePicker(hasDatePicker);
-
-					//this is set to 30 in the jsp for standard fields, should this be a parameter?!
-					field.setMaxLength(30);
 
 					if(!skipadd) {
 						knsFields.add(field);

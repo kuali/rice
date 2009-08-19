@@ -1101,24 +1101,27 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql;
     }
 
-    public String getDocRouteStatusSql(String docRouteStatus, String whereClausePredicatePrefix) {
-        if ((docRouteStatus == null) || "".equals(docRouteStatus.trim())) {
+    public String getDocRouteStatusSql(String docRouteStatuses, String whereClausePredicatePrefix) {
+        if ((docRouteStatuses == null) || "".equals(docRouteStatuses.trim())) {
             return whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
 
-        	// test if they are searching for a parent type: pending, successful, unsuccessful
-        	if(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.containsKey(docRouteStatus)){
-        		String inList = "";
-        		// build the sql
-        		for(String docStatusCd : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(docRouteStatus)){
-        			inList += "'" + getDbPlatform().escapeString(docStatusCd.trim()) + "',";
+        	// doc status can now be a comma deliminated list
+        	List<String> docRouteStatusList = Arrays.asList(docRouteStatuses.split(","));
+        	String inList = "";
+
+        	for(String docRouteStatus : docRouteStatusList){
+        		if(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.containsKey(docRouteStatus)){
+        			// build the sql
+        			for(String docStatusCd : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(docRouteStatus)){
+            			inList += "'" + getDbPlatform().escapeString(docStatusCd.trim()) + "',";
+            		}
+        		} else{
+        			inList += "'" + getDbPlatform().escapeString(docRouteStatus.trim()) + "',";
         		}
         		inList = inList.substring(0,inList.length()-1); // remove trailing ','
-        		return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD in (" + inList +")";
-
-        	}else{
-        		return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD = '" + getDbPlatform().escapeString(docRouteStatus.trim()) + "'";
         	}
+        	return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD in (" + inList +")";
         }
     }
 

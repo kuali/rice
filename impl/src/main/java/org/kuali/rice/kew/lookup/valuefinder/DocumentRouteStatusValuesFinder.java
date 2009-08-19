@@ -17,6 +17,7 @@ package org.kuali.rice.kew.lookup.valuefinder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +42,15 @@ public class DocumentRouteStatusValuesFinder extends KeyValuesBase {
 	  return list;
 	}
 
+	// This will compare a status label and not the code.
+	private static Comparator<String> compareStatusLbl = new Comparator<String>(){
+
+		public int compare(String o1, String o2) {
+			return KEWConstants.DOCUMENT_STATUSES.get(o1).compareToIgnoreCase(KEWConstants.DOCUMENT_STATUSES.get(o2));
+		}
+
+	};
+
 	/**
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
@@ -53,7 +63,9 @@ public class DocumentRouteStatusValuesFinder extends KeyValuesBase {
 			keyValues.add(keyLabel);
 
 			// each parent key, pending, successful, unsuccessful each has a sub list of real document statuses
-			for(String docStatusCode : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(parentKey)){
+			List<String> docStatusCodes = KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(parentKey);
+			Collections.sort(docStatusCodes, compareStatusLbl); // sort them alpha
+			for(String docStatusCode : docStatusCodes){
 				KeyLabelPair docStat = new KeyLabelPair(docStatusCode, "- "+ KEWConstants.DOCUMENT_STATUSES.get(docStatusCode));
 				keyValues.add(docStat);
 			}

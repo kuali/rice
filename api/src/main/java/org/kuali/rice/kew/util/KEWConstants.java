@@ -1,12 +1,12 @@
 /*
  * Copyright 2007-2009 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +16,12 @@
 package org.kuali.rice.kew.util;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -222,6 +224,42 @@ public class KEWConstants extends JSTLConstants {
     public static final int TITLE_MAX_LENGTH = 255;
 
     public static final Date CURRENT_DATE = new Date(-7);
+
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_PENDING = "Pending";
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_SUCCESSFUL = "Successful";
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_UNSUCCESSFUL = "Unsuccessful";
+
+    public static final Map<String, List<String>> DOCUMENT_STATUS_PARENT_TYPES;
+
+    static {
+
+    	DOCUMENT_STATUS_PARENT_TYPES = new HashMap<String, List<String>>();
+
+    	// Pending Statuses
+    	List<String> pendingList = new ArrayList<String>();
+    	pendingList.add(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_SAVED_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_INITIATED_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+
+    	// Successful Statuses
+    	List<String> successfulList = new ArrayList<String>();
+    	successfulList.add(KEWConstants.ROUTE_HEADER_FINAL_CD);
+    	successfulList.add(KEWConstants.ROUTE_HEADER_PROCESSED_CD);
+    	successfulList.add(KEWConstants.ROUTE_HEADER_APPROVED_CD);
+
+    	// Unsuccessful Statuses
+    	List<String> unsuccessfulList = new ArrayList<String>();
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD);
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_CANCEL_CD);
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_CANCEL_DISAPPROVE_CD);
+
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_PENDING, pendingList);
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_SUCCESSFUL, successfulList);
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_UNSUCCESSFUL, unsuccessfulList);
+
+    }
+
     public static final Map<String, String> DOCUMENT_STATUSES;
 
     static {
@@ -271,7 +309,7 @@ public class KEWConstants extends JSTLConstants {
     		ACTION_LIST_COLOR_NAMES.put(colorEntry.getValue(), colorEntry.getKey());
     	}
     }
-    
+
     public static final String HEADER_TAG = "ROUTE_HEADER";
     public static final String DOCTYPE_TAG = "DOCTYPE";
 

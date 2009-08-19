@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.lookup.valuefinder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -23,23 +24,39 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
- * This is a description of what this class does - chris don't forget to fill this in. 
- * 
+ * This is a description of what this class does - chris don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentRouteStatusValuesFinder extends KeyValuesBase {
+
+	private static
+	<T extends Comparable<? super T>> List<T> asSortedList(Collection<T> c) {
+	  List<T> list = new ArrayList<T>(c);
+	  java.util.Collections.sort(list);
+	  return list;
+	}
 
 	/**
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
 	public List getKeyValues() {
 		List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
-		Set<String> docStatusKeys = KEWConstants.DOCUMENT_STATUSES.keySet();
-		for (String string : docStatusKeys) {
-			KeyLabelPair keyLabel = new KeyLabelPair(string,KEWConstants.DOCUMENT_STATUSES.get(string));
+		List<String> docStatusParentKeys = asSortedList(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.keySet());
+
+		for (String parentKey : docStatusParentKeys) {
+			KeyLabelPair keyLabel = new KeyLabelPair(parentKey,parentKey);
 			keyValues.add(keyLabel);
+
+			// each parent key, pending, successful, unsuccessful each has a sub list of real document statuses
+			for(String docStatusCode : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(parentKey)){
+				KeyLabelPair docStat = new KeyLabelPair(docStatusCode, "- "+ KEWConstants.DOCUMENT_STATUSES.get(docStatusCode));
+				keyValues.add(docStat);
+			}
 		}
 		return keyValues;
 	}

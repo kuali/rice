@@ -341,7 +341,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched));
                 }
         	}
-        } else {        	
+        } else {
             boolean usingWildcards = false;
         	StringBuffer prefix = new StringBuffer("");
         	StringBuffer suffix = new StringBuffer("");
@@ -364,7 +364,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	}
             String prefixToUse = prefix.toString();
         	String suffixToUse = suffix.toString();
-        	
+
         	if (addCaseInsensitivityForValue) {
             	queryTableColumnName = "upper(" + queryTableColumnName + ")";
             	prefixToUse = "upper(" + prefix.toString();
@@ -787,7 +787,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             fromSQL.append(", KREW_ACTN_TKN_T ");
         }
 
-        
+
 
         String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocTypeFullName(), criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!"".equals(docRouteNodeSql)) {
@@ -827,7 +827,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	criteria.setFromDateCreated(RiceConstants.getDefaultDateFormat().format(calendar.getTime()));
             whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
         }
-        
+
         String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!("".equals(docTypeFullNameSql))) {
             possibleSearchableAttributesExist |= true;
@@ -974,12 +974,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         	if(viewer != null)
         		viewerGroupIds = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
-        	
+
         	// Documents routed to users as part of a workgoup should be returned.
             if (viewerGroupIds != null && !viewerGroupIds.isEmpty()) {
 
             	returnSql += " or ( " +
-            		"DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +            		
+            		"DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +
             		"and KREW_ACTN_RQST_T.GRP_ID in (";
 
             	boolean first = true;
@@ -1105,7 +1105,20 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((docRouteStatus == null) || "".equals(docRouteStatus.trim())) {
             return whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
-            return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD = '" + getDbPlatform().escapeString(docRouteStatus.trim()) + "'";
+
+        	// test if they are searching for a parent type: pending, successful, unsuccessful
+        	if(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.containsKey(docRouteStatus)){
+        		String inList = "";
+        		// build the sql
+        		for(String docStatusCd : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(docRouteStatus)){
+        			inList += "'" + getDbPlatform().escapeString(docStatusCd.trim()) + "',";
+        		}
+        		inList = inList.substring(0,inList.length()-1); // remove trailing ','
+        		return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD in (" + inList +")";
+
+        	}else{
+        		return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD = '" + getDbPlatform().escapeString(docRouteStatus.trim()) + "'";
+        	}
         }
     }
 

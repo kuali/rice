@@ -140,7 +140,8 @@ public class UserXmlParser implements XmlConstants {
 			name.setActive(true);
 			name.setEntityNameId("" + entityNameId);
 			name.setEntityId(entity.getEntityId());
-			name.setNameTypeCode("PREFERRED");
+			// must be in krim_ent_nm_typ_t.ent_nm_typ_cd
+			name.setNameTypeCode("PRFR");
 			name.setFirstName(firstName);
 			name.setMiddleName("");
 			name.setLastName(lastName);
@@ -159,7 +160,8 @@ public class UserXmlParser implements XmlConstants {
 			email.setActive(true);
 			email.setEntityEmailId("" + emailId);
 			email.setEntityTypeCode("PERSON");
-			email.setEmailTypeCode("CAMPUS");
+			// must be in krim_email_typ_t.email_typ_cd:
+			email.setEmailTypeCode("WRK");
 			email.setEmailAddress(emailAddress);
 			email.setDefault(true);
 			email.setEntityId(entity.getEntityId());

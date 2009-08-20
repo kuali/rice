@@ -24,6 +24,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -31,8 +32,10 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimEntityDefaultInfo extends KimInactivatableInfo {
+public class KimEntityDefaultInfo extends KimInactivatableInfo implements ExternalizableBusinessObject {
 
+	private static final long serialVersionUID = 1L;
+	
 	protected String entityId;
 	protected KimEntityName defaultName;
 	protected List<? extends KimPrincipal> principals;
@@ -99,5 +102,15 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 		}
 		return new KimEntityEntityTypeDefaultInfo();
 	}
+	
+	/** {@inheritDoc} */
+    public void refresh(){
+    	
+    }
+    
+    /** {@inheritDoc} */
+    public void prepareForWorkflow(){
+    	
+    }
 	
 }

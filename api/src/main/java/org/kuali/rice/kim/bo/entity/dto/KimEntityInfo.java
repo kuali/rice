@@ -304,4 +304,14 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	public void setPrivacyPreferences(KimEntityPrivacyPreferences privacyPreferences) {
 		this.privacyPreferences = privacyPreferences;
 	}
+	
+	/** {@inheritDoc} */
+    public void refresh(){
+    	
+    }
+    
+    /** {@inheritDoc} */
+    public void prepareForWorkflow(){
+    	
+    }
 }

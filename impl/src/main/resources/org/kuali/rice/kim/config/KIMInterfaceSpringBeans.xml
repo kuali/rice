@@ -113,6 +113,7 @@
              <entry key="org.kuali.rice.kim.bo.Person" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
              <entry key="org.kuali.rice.kim.bo.Role" value="org.kuali.rice.kim.bo.impl.RoleImpl" />
              <entry key="org.kuali.rice.kim.bo.Group" value="org.kuali.rice.kim.bo.impl.GroupImpl" />
+             <entry key="org.kuali.rice.kim.bo.entity.KimEntity" value="org.kuali.rice.kim.bo.entity.impl.KimEntityImpl" />
             </map>
         </property>
   </bean>

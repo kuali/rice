@@ -82,5 +82,15 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	/** {@inheritDoc} */
+    public void refresh(){
+    	
+    }
+    
+    /** {@inheritDoc} */
+    public void prepareForWorkflow(){
+    	
+    }
 
 }

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.List;
 
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 
@@ -26,7 +27,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public interface KimEntity extends Inactivateable {
+public interface KimEntity extends Inactivateable, ExternalizableBusinessObject {
 	
 	String getEntityId();
 	

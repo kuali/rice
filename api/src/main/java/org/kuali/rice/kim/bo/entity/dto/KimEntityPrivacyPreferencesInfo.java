@@ -109,5 +109,13 @@ public class KimEntityPrivacyPreferencesInfo implements KimEntityPrivacyPreferen
 		this.suppressPhone = suppressPhone;
 	}
 
-
+	/** {@inheritDoc} */
+    public void refresh(){
+    	
+    }
+    
+    /** {@inheritDoc} */
+    public void prepareForWorkflow(){
+    	
+    }
 }

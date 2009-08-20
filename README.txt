@@ -17,7 +17,7 @@ References and Links
 Preface
 -----
 This file is included in each of the three types of distributed archives
-available from the Kuali Rice website (http://rice.kuali.org/download.html). Its
+available from the Kuali Rice website (http://rice.kuali.org/download). Its
 contents are generic and do not vary between archives.
 
 
@@ -26,11 +26,12 @@ Licensing and Licenses
 The Kuali Rice team has made every effort to acknowledge the contributions of
 third-parties whose libraries are used by, or distributed with, Kuali Rice. All
 relevant third-party licenses are included in the Rice binary and server 
-distributions (in the /licenses directory). Due attribution is also given on the
-Kuali wiki (https://test.kuali.org/confluence/x/Zm4).
+distributions (in the /licenses directory) and in the NOTICE.txt file. Due
+attribution is also given on the Kuali wiki at
+https://test.kuali.org/confluence/x/-ILxCw.
 
 
-Manfests by Distribution
+Manifests by Distribution
 -----
 
 Source
@@ -47,8 +48,7 @@ For example:
 >ant dist-server
 
 For more information about compiling and building Rice from the source
-distribution, consult the Rice section of the Kuali wiki 
-(https://test.kuali.org/confluence/display/KRDOC/Home).
+distribution, consult the Rice documentation (http://rice.kuali.org/docs).
 
 Here is a partial, annotated directory structure for the source distribution:
 
@@ -58,6 +58,7 @@ Here is a partial, annotated directory structure for the source distribution:
   /api  <-- Java interfaces for each of the six Rice modules
   /config/edoclite  <-- eDocLite templates
   /config/templates  <-- templates for XML files used in Rice
+  /config/examples <-- example configuration files
   /impl/src/main/java  <-- Java implementations for each of the six Rice modules
   /impl/src/main/resources  <-- auxiliary files used for configuration of Spring
       framework, configuration of ORM, as well as XML schemas
@@ -141,7 +142,7 @@ Here is a partial, annotated directory structure for the server distribution:
 
 References and Links
 ----- 
-Rice documentation wiki: https://test.kuali.org/confluence/display/KRDOC/Home 
-Rice distribution download:  http://rice.kuali.org/download.html
+Rice documentation: http://rice.kuali.org/docs 
+Rice distribution download:  http://rice.kuali.org/download
 
 

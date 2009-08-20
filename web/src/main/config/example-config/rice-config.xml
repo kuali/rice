@@ -50,6 +50,8 @@
 	
 	<param name="attachment.dir.location">/usr/local/rice/kew_attachments</param>
 
+    <param name="mail.smtp.host">localhost</param>
+
 	<!-- log4j settings -->
 	<param name="log4j.settings.path">/usr/local/rice/log4j.properties</param>
 	<param name="log4j.settings.reloadInterval">5</param>

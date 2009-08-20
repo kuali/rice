@@ -27,7 +27,6 @@ import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.ksb.util.KSBConstants;
 
 public class KNSConfigurer extends ModuleConfigurer {
 

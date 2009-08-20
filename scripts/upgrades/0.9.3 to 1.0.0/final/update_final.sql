@@ -1134,7 +1134,7 @@ ALTER TABLE KREW_OUT_BOX_ITM_T MODIFY (DOC_TYP_LBL VARCHAR2(128))
 /
 
 -- KULRICE-3408 - Certain parameters on the parameter lookup show blank component names
-INSERT INTO krns_parm_dtl_typ_t (nmspc_cd, parm_dtl_typ_cd, obj_id, ver_nbr, nm, actv_ind) 
+INSERT INTO krns_parm_dtl_typ_t (nmspc_cd, parm_dtl_typ_cd, obj_id, ver_nbr, nm, actv_ind)
 VALUES ('KR-WKFLW', 'All', SYS_GUID(), 1, 'All', 'Y')
 /
 
@@ -1157,7 +1157,7 @@ DELETE FROM krns_parm_dtl_typ_t WHERE nmspc_cd = 'KR-WKFLW' AND parm_dtl_typ_cd 
 -- KULRICE-3437
 INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD)
     VALUES('KR-NS', 'Document', 'ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND', sys_guid(), 1, 'CONFG', 'N', 'Controls whether the nervous system will show the blanket approve button to a user who is authorized for blanket approval but is neither the initiator of the particular document nor the recipient of an active, pending, approve action request.', 'A')
-/ 
+/
 
 -- KULRICE-3448
 update kren_recip_deliv_t set recip_id = 'testuser1' where recip_id = 'TestUser1'
@@ -1180,7 +1180,12 @@ update kren_chnl_subscrp_t set prncpl_id = 'testuser4' where prncpl_id = 'TestUs
 /
 
 -- KULRICE-3449
-insert into KRIM_GRP_MBR_T (GRP_MBR_ID, VER_NBR, OBJ_ID, GRP_ID, MBR_ID, MBR_TYP_CD, ACTV_FRM_DT, ACTV_TO_DT) VALUES('1207', 1, '6798B3E6C3C49827AE62E5F7A275A1A3', '2000', 'admin', 'P', Null, Null) 
+-- ignored because this data is populated by kim
+--insert into KRIM_GRP_MBR_T (GRP_MBR_ID, VER_NBR, OBJ_ID, GRP_ID, MBR_ID, MBR_TYP_CD, ACTV_FRM_DT, ACTV_TO_DT) VALUES('1207', 1, '6798B3E6C3C49827AE62E5F7A275A1A3', '2000', 'admin', 'P', Null, Null)
+
+update krim_perm_t set desc_txt = 'Allows users to access the XML Ingester screen.' where perm_id=265 and nmspc_cd='KR-WKFLW' and NM='Use Screen'
+/
+update krim_perm_t set desc_txt = 'Allows users to access the Document Operation screen.' where perm_id=140 and nmspc_cd='KR-WKFLW' and NM='Use Screen'
 /
 
--- 08-11-2009 - last entry
+-- 08-13-2009 - last entry

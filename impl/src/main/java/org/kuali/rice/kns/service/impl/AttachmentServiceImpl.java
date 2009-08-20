@@ -170,7 +170,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         // Create a directory; all ancestor directories must exist
         File documentDirectory = new File(getDocumentFileStorageLocation(objectId));
         if (!documentDirectory.exists()) {
-            boolean success = documentDirectory.mkdir();
+            boolean success = documentDirectory.mkdirs();
             if (!success) {
                 throw new RuntimeException("Could not generate directory for File at: " + documentDirectory.getAbsolutePath());
             }

@@ -28,7 +28,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
-import edu.sampleu.travel.document.keyvalue.TravelRequestType;
+//import edu.sampleu.travel.document.keyvalue.TravelRequestType;
 
 /**
  * This class tests various ValuesFinders classes.
@@ -109,12 +109,12 @@ public class ValuesFinderTest extends WebTestBase {
      *
      * @throws Exception
      */
-    @Test public void testTravelRequestTypeNonWeb() {
-	TravelRequestType travelRequestType = new TravelRequestType();
-	List<KeyLabelPair> keyValues = travelRequestType.getKeyValues();
-        assertEquals(requestTypes.size() - 1, keyValues.size());
-        for (KeyLabelPair keyValue: keyValues) {
-            assertEquals(requestTypes.get(keyValue.getKey()), keyValue.getLabel());
-        }
-    }
+//    @Test public void testTravelRequestTypeNonWeb() {
+//	TravelRequestType travelRequestType = new TravelRequestType();
+//	List<KeyLabelPair> keyValues = travelRequestType.getKeyValues();
+//        assertEquals(requestTypes.size() - 1, keyValues.size());
+//        for (KeyLabelPair keyValue: keyValues) {
+//            assertEquals(requestTypes.get(keyValue.getKey()), keyValue.getLabel());
+//        }
+//    }
 }

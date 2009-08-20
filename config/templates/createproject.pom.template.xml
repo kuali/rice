@@ -17,7 +17,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${PROJECT_NAME}-group-id</groupId>
-	<artifactId>${PROJECT_NAME}-artifact-id</artifactId>
+	<artifactId>${PROJECT_NAME}</artifactId>
 	<packaging>war</packaging>
 	<name>${PROJECT_NAME}</name>
 	<version>0.1-SNAPSHOT</version>
@@ -47,9 +47,44 @@
 		</dependency>
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-server</artifactId>
+			<artifactId>rice-api</artifactId>
 			<version>${RICE_VERSION}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-impl</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kcb</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-ken</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kew</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kim</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kns</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-ksb</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>			
 	</dependencies>
 	<repositories>
 		<repository>

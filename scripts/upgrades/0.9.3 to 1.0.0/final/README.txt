@@ -13,4 +13,7 @@ kew-upgrade - part 2 - second part of the file
 kns-upgrade - part 2
 
 kim-create.sql - this will create the kim tables
+kim_entity_import_from_kew.sql - this will copy existing data into the new KIM tables
+kim_group_import.sql - will try to import group info into KIM
+kim-data.sql - will populate kim with default data.  some inserts might fail if data already exists in kim.
 update_final.sql - this is a compilation of all the daily sql updates minus KIM.  KIM is pulled new

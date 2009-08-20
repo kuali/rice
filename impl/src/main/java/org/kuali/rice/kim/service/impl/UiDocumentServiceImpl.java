@@ -584,7 +584,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         KimEntityImpl entityImpl = getEntityImpl(entityId);
         List<KimEntityEmploymentInformationInfo> empInfos = new ArrayList<KimEntityEmploymentInformationInfo>();
         KimEntityEmploymentInformationInfo empInfo;
-        if(CollectionUtils.isNotEmpty(entityImpl.getEmploymentInformation())){
+        if(ObjectUtils.isNotNull(entityImpl) && CollectionUtils.isNotEmpty(entityImpl.getEmploymentInformation())){
         	for(KimEntityEmploymentInformationImpl empImpl: entityImpl.getEmploymentInformation()){
             	empInfo = new KimEntityEmploymentInformationInfo(empImpl);
             	empInfos.add(empInfo);

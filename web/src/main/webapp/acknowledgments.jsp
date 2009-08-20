@@ -34,11 +34,11 @@
 <h3><a name="Acknowledgements-"></a><font color="maroon">Acknowledgments</font></h3>
 
 <p><img src="http://opensource.org/trademarks/osi-certified/web/osi-certified-60x50.png" align="right" border="0" /><br/>
-Copyright 2005-2007  The Kuali Foundation.  All rights reserved.  Kuali is licensed for use pursuant to the Educational Community License v. 1.0.  Portions of Kuali are copyrighted by other parties, including the parties listed below.  You should refer to the licenses directory for complete copyright and licensing information.  Questions about licensing should be directed to <span class="nobr"><a href="mailto:license@kuali.org" title="Send mail to license@kuali.org" rel="nofollow">license@kuali.org</a>.</span></p>
+Copyright 2005-2009 The Kuali Foundation. All rights reserved. Kuali is licensed for use pursuant to the <a href="http://www.opensource.org/licenses/ecl2.php">Educational Community License, Version 2.0</a>. Portions of Kuali are copyrighted by other parties, including the parties listed below, and you should see the licenses directory for complete copyright and licensing information. Questions about licensing should be directed to <span class="nobr"><a href="mailto:licensing@kuali.org" title="Send mail to licensing@kuali.org" rel="nofollow">licensing@kuali.org</a>.</span></p>
 
 <h3><a name="LicensingandAcknowledgments-ThirdPartyContributions"></a>Third Party Contributions</h3>
 
-<p>Portions of Kuali were developed by Indiana University, Cornell University, University of Hawaii, Michigan State University, University of Arizona, San Joaquin Delta Community College, University of California, Rutgers University, University of Southern California and The rSmart Group (<a href="http://www.kuali.org" rel="nofollow">http://www.kuali.org</a>).</p>
+<p>Portions of Kuali were developed by Indiana University, Cornell University, University of Hawaii, Michigan State University, University of Arizona, San Joaquin Delta Community College, University of California, Rutgers University, University of Southern California, University of Maryland, University of Washington, Iowa State University, University of British Columbia, Innovativ Consulting Partners, Syntel Inc., and The rSmart Group (<a href="http://www.kuali.org" rel="nofollow">http://www.kuali.org</a>).</p>
 
 <p>This product includes software developed by the Apache Software Foundation (<a href="http://www.apache.org" rel="nofollow">http://www.apache.org</a>). <!-- Rice 1.0.0 --></p>
 

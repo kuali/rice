@@ -32,7 +32,7 @@ PROJECT_PATH = PROJECT_DIR + '/' + PROJECT_NAME
 
 TEMPLATE_BINDING = [
 	"\${PROJECT_NAME}":"$PROJECT_NAME",
-	"\${RICE_VERSION}":"1.0.1-SNAPSHOT",
+	"\${RICE_VERSION}":"1.0.0-SNAPSHOT",
 	"\${USER_HOME}":System.getProperty('user.home'),
 	"\${bootstrap.spring.file}":"SpringBeans.xml"
 ] 
@@ -70,11 +70,11 @@ def springTemplateFile = null;
 
 if (SAMPLEAPP) {
 	// copy the Sample Application Files
-	ant.copy(todir:PROJECT_PATH + '/src/main/java/org') { 
-    	fileset(dir:RICE_DIR + '/web/src/test/java/org')
+	ant.copy(todir:PROJECT_PATH + '/src/main/java') { 
+    	fileset(dir:RICE_DIR + '/web/src/test/java')
 	}
-	ant.copy(todir:PROJECT_PATH + '/src/main/resources/org') {
-		fileset(dir:RICE_DIR + '/web/src/test/resources/org') 
+	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
+		fileset(dir:RICE_DIR + '/web/src/test/resources') 
 	}
 	
 	// copy sample-app-config.xml
@@ -86,7 +86,7 @@ if (SAMPLEAPP) {
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
     	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'configurationServiceData.xml, *Resources.properties, OJB-*.xml')
     }
-    
+	
 	springTemplateFile = new File(RICE_DIR + '/config/templates/createproject.SampleAppBeans.template.xml')
 } else {
 	// copy an empty java file to /src/main/java
@@ -144,11 +144,12 @@ ant.copy(todir:PROJECT_PATH + '/src/main/webapp') {
     fileset(dir:RICE_DIR + '/web/src/main/webapp', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 
+// [tbradford] There's already an index.jsp in the portal that redirects to portal.jsp
 // if this isn't the sample application, copy the index.jsp which doesn't include the sample app links
-if (!SAMPLEAPP) {
-	ant.copy(file:RICE_DIR + "/web/src/main/config/index.jsp",
-		 tofile:PROJECT_PATH + "/src/main/webapp/index.jsp", overwrite:"true")
-}
+// if (!SAMPLEAPP) {
+// 	ant.copy(file:RICE_DIR + "/web/src/main/config/index.jsp",
+// 		 tofile:PROJECT_PATH + "/src/main/webapp/index.jsp", overwrite:"true")
+// }
 
 // copy the keystore files
 ant.copy(todir:"${System.getProperty('user.home')}/kuali/main/dev") { 
@@ -201,14 +202,14 @@ index.delete()
 index = new File(PROJECT_PATH + "/src/main/webapp/index.jsp")
 index << indextext
 
+// [tbradford] replaced by datasets that come from the master datasources
 // execute variable replacement on RiceSampleAppWorkflowBootstrap.xml
-
-ingest = new File(PROJECT_PATH + '/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml')
-ingesttext = ""
-ingest.eachLine { line -> ingesttext += line.replace('kr-dev', "${PROJECT_NAME}-dev") + "\n" }
-ingest.delete()
-ingest = new File(PROJECT_PATH + "/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml")
-ingest << ingesttext
+// ingest = new File(PROJECT_PATH + '/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml')
+// ingesttext = ""
+// ingest.eachLine { line -> ingesttext += line.replace('kr-dev', "${PROJECT_NAME}-dev") + "\n" }
+// ingest.delete()
+// ingest = new File(PROJECT_PATH + "/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml")
+// ingest << ingesttext
 
 if (maven) {
 	// execute the maven command to build eclipse classpath
@@ -324,12 +325,13 @@ def instructionstext() {
 2. Configure an M2_REPO classpath variable in Eclipse
 3. Update ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml 
    with application runtime database information.
-4. Run the /src/main/config/sql/rice_db_bootstrap.sql script if
-   you have a fresh database.  If you need to drop all tables first,
-   run the /src/main/config/sql/rice_db_destroy.sql script 
-   followed by the former.
-5. If you generated the project with the -sampleapp option, run 
-   the /src/main/config/sql/rice_sample_app.sql script.
+4. Configure an impex-build.properties file in your home directory
+   with application runtime database information, being sure to set
+   the torque.schema.dir property to the location of the rice
+   /database/demo-server-dataset directory.
+5. Run the impex tool under /database/impex-database.  If you require
+   a schema to be created for you, type: 'ant create-schema'.
+   To import the demonstration dataset, type: 'ant import'
 6. Start the application using the eclipse launch configuration.
    In the eclipse Run menu, choose 'Run...' and select the the
    configuration named 'Launch Web App'

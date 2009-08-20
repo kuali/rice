@@ -59,12 +59,12 @@ public class DocumentRouteStatusValuesFinder extends KeyValuesBase {
 		List<String> docStatusParentKeys = asSortedList(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.keySet());
 
 		for (String parentKey : docStatusParentKeys) {
-			KeyLabelPair keyLabel = new KeyLabelPair(parentKey,parentKey);
+			KeyLabelPair keyLabel = new KeyLabelPair(parentKey,parentKey + " Statuses");
 			keyValues.add(keyLabel);
 
 			// each parent key, pending, successful, unsuccessful each has a sub list of real document statuses
 			List<String> docStatusCodes = KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(parentKey);
-			Collections.sort(docStatusCodes, compareStatusLbl); // sort them alpha
+			//Collections.sort(docStatusCodes, compareStatusLbl); // sort them alpha
 			for(String docStatusCode : docStatusCodes){
 				KeyLabelPair docStat = new KeyLabelPair(docStatusCode, "- "+ KEWConstants.DOCUMENT_STATUSES.get(docStatusCode));
 				keyValues.add(docStat);

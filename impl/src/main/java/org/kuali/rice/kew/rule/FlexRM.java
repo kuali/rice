@@ -140,6 +140,9 @@ public class FlexRM {
 		try {
 			ruleSelector = ((Class<RuleSelector>) ruleSelectorClass).newInstance();
 		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException)e;
+			}
 			throw new WorkflowException("Error instantiating rule selector implementation '" + ruleSelectorClass + "'", e);
 		}
 

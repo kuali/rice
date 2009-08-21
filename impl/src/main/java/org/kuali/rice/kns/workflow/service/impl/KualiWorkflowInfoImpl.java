@@ -60,98 +60,43 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     }
 
     public RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException {
-        try {
-        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(KNSConstants.SYSTEM_USER);
-        	if (principal == null) {
-        		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
-        	}
-            return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), routeHeaderId);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(KNSConstants.SYSTEM_USER);
+    	if (principal == null) {
+    		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
+    	}
+    	return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), routeHeaderId);
     }
 
     public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocType(documentTypeId);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().getDocType(documentTypeId);
     }
 
     public DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException {
-        try {
-            // throw new WorkflowException("not supported");
-            return getWorkflowUtility().getDocType(documentTypeName);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().getDocType(documentTypeName);
     }
 
     public Long getNewResponsibilityId() throws WorkflowException {
-        try {
-            return getWorkflowUtility().getNewResponsibilityId();
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().getNewResponsibilityId();
     }
 
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getActionRequests(routeHeaderId);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().getActionRequests(routeHeaderId);
     }
 
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
     }
 
     public ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getActionsTaken(routeHeaderId);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().getActionsTaken(routeHeaderId);
     }
 
     public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-        try {
-            getWorkflowUtility().reResolveRole(documentTypeName, roleName, qualifiedRoleNameLabel);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	getWorkflowUtility().reResolveRole(documentTypeName, roleName, qualifiedRoleNameLabel);
     }
 
     public void reResolveRole(Long routeHeaderId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-        try {
-            getWorkflowUtility().reResolveRole(routeHeaderId, roleName, qualifiedRoleNameLabel);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	getWorkflowUtility().reResolveRole(routeHeaderId, roleName, qualifiedRoleNameLabel);
     }
 
     /**
@@ -192,52 +137,28 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowInfo#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[], boolean)
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException {
-        try {
-            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, ignoreCurrentlyActiveRequests);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, ignoreCurrentlyActiveRequests);
     }
     
     /**
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowInfo#getApprovalRequestedUsers(java.lang.Long)
      */
     public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException {
-        try {
-            ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
-            List<String> users = new ArrayList<String>();
-            for (int i = 0; i < actionItemVOs.length; i++) {
-                ActionItemDTO actionItemVO = actionItemVOs[i];
-                users.add(actionItemVO.getPrincipalId());
-            }
-            return users;
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+    	List<String> users = new ArrayList<String>();
+    	for (int i = 0; i < actionItemVOs.length; i++) {
+    		ActionItemDTO actionItemVO = actionItemVOs[i];
+    		users.add(actionItemVO.getPrincipalId());
+    	}
+    	return users;
     }
 
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
-        try {
-            return getWorkflowUtility().performDocumentSearch(criteriaVO);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().performDocumentSearch(criteriaVO);
     }
 
     public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
-        try {
-            return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-        } catch (Exception e) {
-            throw new WorkflowException(e);
-        }
+    	return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
     }
     
     /**
@@ -246,12 +167,6 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowInfo#isCurrentActiveDocumentType(java.lang.String)
      */
     public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
-    	try {
-    		return getWorkflowUtility().isCurrentActiveDocumentType( documentTypeName );
-    	} catch ( WorkflowException ex ) {
-    		throw ex;
-    	} catch ( Exception ex ) {
-    		throw new WorkflowException( ex );
-    	}
+    	return getWorkflowUtility().isCurrentActiveDocumentType( documentTypeName );
     }
 }

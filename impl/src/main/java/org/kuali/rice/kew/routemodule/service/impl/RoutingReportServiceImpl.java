@@ -27,11 +27,14 @@ import org.kuali.rice.kew.routemodule.service.RoutingReportService;
 public class RoutingReportServiceImpl implements RoutingReportService {
 
     public DocumentRouteHeaderValue report(SimulationCriteria criteria) throws WorkflowException {
-        try {
-            SimulationEngine simulationEngine = new SimulationEngine();
-            SimulationResults results = simulationEngine.runSimulation(criteria);
-            return materializeDocument(results);
+    	try {
+    		SimulationEngine simulationEngine = new SimulationEngine();
+    		SimulationResults results = simulationEngine.runSimulation(criteria);
+    		return materializeDocument(results);
         } catch (Exception e) {
+        	if (e instanceof RuntimeException) {
+        		throw (RuntimeException)e;
+        	}
             throw new WorkflowException("Problem running report: " + e.getMessage(), e);
         }
     }

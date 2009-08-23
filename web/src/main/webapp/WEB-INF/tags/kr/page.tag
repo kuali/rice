@@ -186,8 +186,6 @@
 <!-- DOCUMENT INFO HEADER BOX -->
 	<c:set var="docHeaderAttributes"
 		value="${DataDictionary.DocumentHeader.attributes}" />
-	<c:set var="dummyAttributes"
-		value="${DataDictionary.AttributeReferenceDummy.attributes}" />
 <c:if test="${showDocumentInfo}">
 <%--
     <c:if test="${!empty KualiForm.document.documentHeader.additionalDocId1.label}">

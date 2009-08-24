@@ -28,17 +28,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.Guid;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -46,6 +42,7 @@ import org.kuali.rice.kns.util.Guid;
 @Entity
 @Table(name = "KRIM_ENTITY_EXT_ID_T")
 public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implements KimEntityExternalIdentifier {
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimEntityExternalIdentifierImpl.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -144,7 +141,8 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 				try{
 					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
 				}catch (GeneralSecurityException e) {
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+					LOG.error("Caught Exception attempting to encrypt external id", e);
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
 		        }
 
 			}
@@ -162,7 +160,8 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 				try{
 					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
 				}catch (GeneralSecurityException e) {
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+					LOG.error("Caught Exception attempting to encrypt external id", e);
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
 		        }
 
 			}
@@ -179,7 +178,8 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 				try{
 					externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
 				}catch (GeneralSecurityException e) {
-		            throw new RuntimeException("Unable to decrypt value : " + e.getMessage());
+					LOG.error("Caught Exception attempting to decrypt external id", e);
+		            throw new RuntimeException("Unable to decrypt value : " + e.getMessage(), e);
 		        }
 
 			}
@@ -196,7 +196,8 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 				try{
 					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
 				}catch (GeneralSecurityException e) {
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+					LOG.error("Caught Exception attempting to encrypt external id", e);
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
 		        }
 
 			}
@@ -213,7 +214,8 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 				try{
 					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
 				}catch (GeneralSecurityException e) {
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage());
+					LOG.error("Caught Exception attempting to encrypt external id", e);
+		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
 		        }
 
 			}
@@ -230,7 +232,8 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 					try{
 						externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
 					}catch (GeneralSecurityException e) {
-			            throw new RuntimeException("Unable to decrypt value : " + e.getMessage());
+						LOG.error("Caught Exception attempting to decrypt external id", e);
+			            throw new RuntimeException("Unable to decrypt value : " + e.getMessage(), e);
 			        }
 
 				}

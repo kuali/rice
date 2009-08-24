@@ -1,12 +1,12 @@
-alter table KREW_DOC_HDR_T add column APP_DOC_STATUS varchar(30), add column APP_DOC_STAT_MDFN_DT datetime;
+alter table KREW_DOC_HDR_T add (APP_DOC_STATUS varchar(30), APP_DOC_STAT_MDFN_DT date);
 /
 create index KREW_DOC_HDR_T10 on KREW_DOC_HDR_T (APP_DOC_STATUS);
 /
 create index KREW_DOC_HDR_T12 on KREW_DOC_HDR_T (APP_DOC_STAT_MDFN_DT);
 /
-alter table KREW_DOC_TYP_PLCY_RELN_T add column PLCY_DESC varchar(20)
+alter table KREW_DOC_TYP_PLCY_RELN_T add PLCY_DESC varchar(20)
 /
-alter table KREW_RTE_NODE_T add column NEXT_DOC_STATUS varchar(30)
+alter table KREW_RTE_NODE_T add NEXT_DOC_STATUS varchar(30)
 /
 CREATE TABLE KREW_DOC_TYP_APP_DOC_STAT_T
 (

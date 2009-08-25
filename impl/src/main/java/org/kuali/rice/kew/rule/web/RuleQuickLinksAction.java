@@ -376,4 +376,16 @@ public class RuleQuickLinksAction extends KewKualiAction {
 		return maintenanceDocumentDictionaryService;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public ActionForward toggleTab(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		establishRequiredState(request, form);
+		return super.toggleTab(mapping, form, request, response);
+	}
+
 }

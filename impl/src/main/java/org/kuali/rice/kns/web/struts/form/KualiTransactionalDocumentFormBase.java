@@ -133,5 +133,19 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
         }
     }
 
+    @SuppressWarnings("unchecked")
+	protected TransactionalDocument instantiateTransactionalDocumentByDocumentTypeName( String documentTypeName ) {
+    	Class<TransactionalDocument> transDocClass = KNSServiceLocator.getTransactionalDocumentDictionaryService().getDocumentClassByName(documentTypeName);
+    	if ( transDocClass != null ) {
+    		try {
+    			return transDocClass.newInstance();
+    		} catch (Exception ex) {
+				LOG.error( "Unable to instantiate transDocClass: " + transDocClass, ex);
+			}
+    	} else {
+    		LOG.error( "Unable to retrieve transactional document class for type: " + documentTypeName);
+    	}
+    	return null;
+    }
 
 }

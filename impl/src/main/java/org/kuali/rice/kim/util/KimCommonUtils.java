@@ -335,12 +335,11 @@ public class KimCommonUtils {
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
 	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
-			if(externalIdentifier != null){
+			if(StringUtils.isNotEmpty(externalIdentifier)){
 				try{
 					return KNSServiceLocator.getEncryptionService().encrypt(externalIdentifier);
 				}catch (GeneralSecurityException e) {
-		            LOG.error("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
-		            return externalIdentifier;
+		            LOG.info("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
 		        }
 			}
 		}
@@ -352,12 +351,11 @@ public class KimCommonUtils {
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
 	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
-			if(externalIdentifier != null){
+			if(StringUtils.isNotEmpty(externalIdentifier)){
 				try{
 					return KNSServiceLocator.getEncryptionService().decrypt(externalIdentifier);
 				}catch (GeneralSecurityException e) {
-		            LOG.error("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
-		            return externalIdentifier;
+		            LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
 		        }
 			}
 		}

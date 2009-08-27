@@ -99,7 +99,7 @@
                     <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                     <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                     <td align="left" valign="middle">
-                        <div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
+                        <div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.kimTypeId}" property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
  	               	    <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
                             <c:if test="${!empty attrDefinition.lookupBoClass and not readOnlyAssignees}">
                               <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${attrDefinition}" />

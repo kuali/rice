@@ -45,7 +45,7 @@
         description="Use this to attach further information to the title attribute of a field
         if present"%>
 <%@ attribute name="forceRequired" required="false" %>
-<%@ attribute name="kimTypeName" required="false" %>
+<%@ attribute name="kimTypeId" required="false" %>
 <!-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) -->
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
 <c:if test="${empty readOnly}">
@@ -176,11 +176,11 @@
 
             <html:select styleId="${property}" property="${property}" title="${accessibleTitle}" tabindex="${tabindex}" style="${textStyle}" disabled="${disableField}" onblur="${onblur}" onchange="${onchange}" styleClass="${styleClass}">
               <c:choose>
-              	<c:when test="${not empty businessObjectClass and empty kimTypeName}">
+              	<c:when test="${not empty businessObjectClass and empty kimTypeId}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
               	</c:when>
-              	<c:when test="${not empty businessObjectClass and not empty kimTypeName}">
-                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeName}"/>
+              	<c:when test="${not empty kimTypeId}">
+                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.name}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeId}"/>
               	</c:when>
               	<c:otherwise>
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
@@ -196,11 +196,11 @@
         <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 
 		<c:choose>
-      		<c:when test="${not empty businessObjectClass and empty kimTypeName}">
+      		<c:when test="${not empty businessObjectClass and empty kimTypeId}">
             	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
       	  	</c:when>
-      		<c:when test="${not empty businessObjectClass and not empty kimTypeName}">
-            	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeName}"/>
+      		<c:when test="${not empty kimTypeId}">
+                <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.name}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeId}"/>
       	  	</c:when>
       	  	<c:otherwise>
             	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>

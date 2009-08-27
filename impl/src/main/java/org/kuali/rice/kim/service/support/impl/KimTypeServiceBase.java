@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
@@ -39,6 +38,7 @@ import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
@@ -46,6 +46,8 @@ import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -59,6 +61,7 @@ import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.comparator.StringValueComparator;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -361,7 +364,8 @@ public class KimTypeServiceBase implements KimTypeService {
         return regex;
     }
     
-    protected Class<? extends Formatter> getAttributeFormatter(AttributeDefinition definition) {
+    @SuppressWarnings("unchecked")
+	protected Class<? extends Formatter> getAttributeFormatter(AttributeDefinition definition) {
         Class<? extends Formatter> formatterClass = null;
         if (definition != null) {
             if (definition.hasFormatterClass()) {
@@ -509,32 +513,66 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new ArrayList<String>();
 	}
 
-	// JHK: commenting out - is not currently used by any code
-//	@SuppressWarnings("unchecked")
-//	protected List<KeyLabelPair> getDataDictionaryAttributeValues(KimTypeAttributeInfo attr) {
-//		AttributeDefinition definition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attr.getComponentName()).getAttributeDefinition(attr.getAttributeName());
-//		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
-//		Class<? extends KeyValuesFinder> keyValuesFinderName = (Class<? extends KeyValuesFinder>)definition.getControl().getValuesFinderClass();
-//		try {
-//			KeyValuesFinder finder = keyValuesFinderName.newInstance();
-//			pairs = finder.getKeyValues();
-//		} catch (Exception e) {
-//			LOG.error("Unable to build a KeyValuesFinder for " + attr.getAttributeName(), e);
-//		}
-//		return pairs;
-//	}
-//
-//	protected List<KeyLabelPair> getNonDataDictionaryAttributeValues(String attributeName) {
-//		return new ArrayList<KeyLabelPair>(0);
-//	}
-//
-//	// FIXME: the attributeName is not guaranteed to be unique!
-//	public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
-//		Map<String,String> criteria = new HashMap<String,String>();
-//        criteria.put("attributeName", attributeName);
-//        KimAttributeImpl attributeImpl = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-//        return attributeImpl.getComponentName() == null ? getNonDataDictionaryAttributeValues(attributeName) : getDataDictionaryAttributeValues(attributeImpl);
-//	}
+	@SuppressWarnings("unchecked")
+	protected List<KeyLabelPair> getLocalDataDictionaryAttributeValues(KimTypeAttributeInfo attr) throws ClassNotFoundException {
+		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
+		BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attr.getComponentName());
+		if ( entry == null ) {
+			LOG.warn( "Unable to obtain BusinessObjectEntry for component name: " + attr.getComponentName() );
+			return pairs;
+		}
+		AttributeDefinition definition = entry.getAttributeDefinition(attr.getAttributeName());
+		if ( definition == null ) {
+			LOG.warn( "No attribute named " + attr.getAttributeName() + " found on BusinessObjectEntry for: " + attr.getComponentName() );
+			return pairs;
+		}
+		String keyValuesFinderName = definition.getControl().getValuesFinderClass();
+		if ( StringUtils.isNotBlank(keyValuesFinderName)) {
+			try {
+				KeyValuesFinder finder = (KeyValuesFinder)Class.forName(keyValuesFinderName).newInstance();
+				pairs = finder.getKeyValues();
+			} catch ( ClassNotFoundException ex ) {
+				LOG.info( "Unable to find class: " + keyValuesFinderName + " in the current context." );
+				throw ex;
+			} catch (Exception e) {
+				LOG.error("Unable to build a KeyValuesFinder for " + attr.getAttributeName(), e);
+			}
+		} else {
+			LOG.warn( "No values finder class defined on the control definition (" + definition.getControl() + ") on BO / attr = " + attr.getComponentName() + " / " + attr.getAttributeName() );
+		}
+		return pairs;
+	}
+
+	protected List<KeyLabelPair> getCustomValueFinderValues(KimTypeAttributeInfo attrib) {
+		return new ArrayList<KeyLabelPair>(0);
+	}
+
+	public List<KeyLabelPair> getAttributeValidValues(String kimTypeId, String attributeName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "getAttributeValidValues(" + kimTypeId + "," + attributeName + ")");			
+		}
+		KimTypeAttributeInfo attrib = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(attributeName);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "Found Attribute definition: " + attrib );
+		}
+		List<KeyLabelPair> pairs = null;
+		if ( StringUtils.isNotBlank(attrib.getComponentName()) ) {
+			try {
+				Class.forName(attrib.getComponentName());
+				try {
+					pairs = getLocalDataDictionaryAttributeValues(attrib);
+				} catch ( ClassNotFoundException ex ) {
+					LOG.error( "Got a ClassNotFoundException resolving a values finder - since this should have been executing in the context of the host system - this should not happen.");
+					pairs = new ArrayList<KeyLabelPair>(0);
+				}
+			} catch ( ClassNotFoundException ex ) {
+				LOG.error( "Got a ClassNotFoundException resolving a component name (" + attrib.getComponentName() + ") - since this should have been executing in the context of the host system - this should not happen.");
+			}
+		} else {
+			pairs = getCustomValueFinderValues(attrib);
+		}
+        return pairs;
+	}
 
 	/**
 	 * @param namespaceCode
@@ -543,18 +581,27 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * matches the typeAttribute parameter's attributeName.
 	 */
 	@SuppressWarnings("unchecked")
-	protected AttributeDefinition getDataDictionaryAttributeDefinition( String namespaceCode, KimTypeAttributeInfo typeAttribute) {
+	protected AttributeDefinition getDataDictionaryAttributeDefinition( String namespaceCode, String kimTypeId, KimTypeAttributeInfo typeAttribute) {
 		// TODO: this method looks like it could use some refactoring
 		KimDataDictionaryAttributeDefinition definition = null;
 		String componentClassName = typeAttribute.getComponentName();
 		String attributeName = typeAttribute.getAttributeName();
-		AttributeDefinition baseDefinition;
+		AttributeDefinition baseDefinition = null;
 		
+		// try to resolve the component name - if not possible - try to pull the definition from the app mediation service
 		try {
-			baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
-		} catch ( Exception ex ) {
-			LOG.error( "Unable to get base DD definition for " + componentClassName + "." + attributeName, ex );
-			return definition;
+			Class.forName(componentClassName);
+			try {
+				baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
+			} catch ( Exception ex ) {
+				LOG.error( "Unable to get base DD definition for " + componentClassName + "." + attributeName, ex );
+				return definition;
+			}
+		} catch (ClassNotFoundException ex) {
+			if ( LOG.isDebugEnabled() ) {
+				LOG.debug( "Unable to find class " + componentClassName + " in available classloaders. Deferring to the service bus." );
+			}
+			baseDefinition = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
 		}
 		
 		if (baseDefinition != null) {
@@ -571,16 +618,22 @@ public class KimTypeServiceBase implements KimTypeService {
 				definition.setFormatterClass(baseDefinition.getFormatterClass());
 			}
 			ControlDefinition control = copy(baseDefinition.getControl());
-			//		if (control.getValuesFinderClass() != null) {
-			//			control.setValuesFinderClass(KimAttributeValuesFinder.class);
-			//		}
+			if ( StringUtils.isNotBlank( control.getValuesFinderClass() ) ) {
+//				try {
+//					Class.forName(control.getValuesFinderClass());
+//				} catch ( ClassNotFoundException ex ) {
+					// not found locally, add the KimAttributeValuesFinder as a proxy
+					control.setValuesFinderClass(KimAttributeValuesFinder.class.getName());
+//				}
+			}
 			definition.setControl(control);
 			definition.setSortCode(typeAttribute.getSortCode());
 			definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
-			definition.setApplicationUrl( Utilities.substituteConfigParameters( namespaceCode, typeAttribute.getApplicationUrl() ) );
+			definition.setKimTypeId(kimTypeId);
 
 			Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
 			Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
+
 			try {
 				Class<? extends BusinessObject> componentClass = (Class<? extends BusinessObject>)Class.forName(componentClassName);
 				BusinessObject sampleComponent = componentClass.newInstance();
@@ -611,7 +664,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					}
 				}
 			} catch (Exception e) {
-				LOG.error("Unable to get DD data for: " + typeAttribute, e);
+				LOG.warn("Unable to get DD data for: " + typeAttribute, e);
 			}
 		}
 		return definition;
@@ -666,7 +719,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					if (typeAttribute.getComponentName() == null) {
 						definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
 					} else {
-						definition = getDataDictionaryAttributeDefinition(nsCode,typeAttribute);
+						definition = getDataDictionaryAttributeDefinition(nsCode,kimTypeId,typeAttribute);
 					}
 
 					if (definition != null) {

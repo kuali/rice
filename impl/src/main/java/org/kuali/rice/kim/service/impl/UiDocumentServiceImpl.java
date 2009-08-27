@@ -226,7 +226,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	//						.getDataDictionaryAttributeDefinition();
 					ControlDefinition control = definition.getControl();
 					if (control.isSelect()) {
-						Map<String,Object> controlMap = new HashMap<String,Object>();
+						Map<String,Object> controlMap = new HashMap<String,Object>();						
 			            controlMap.put("select", "true");
 			            controlMap.put("valuesFinder", control.getValuesFinderClass());
 			            if (control.getBusinessObjectClass() != null) {
@@ -247,6 +247,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			        	// Maybe this should use the AttributesMapBuilder code to create this
 			        	attribute.put("control", definition.getControl());
 			        }
+					attribute.put("name", definition.getName());
 					attribute.put("label", definition.getLabel());
 					attribute.put("shortLabel", definition.getShortLabel());
 					attribute.put("maxLength", definition.getMaxLength());
@@ -255,6 +256,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				} else {
 					TextControlDefinition control = new TextControlDefinition();
 					control.setSize(10);
+					attribute.put("name", definition.getName());
 					attribute.put("control", control);
 					attribute.put("label", definition.getLabel());
 					attribute.put("maxLength", 20);

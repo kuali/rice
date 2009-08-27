@@ -246,7 +246,7 @@ public class FieldUtils {
             if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType) || Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType) || Field.MULTISELECT.equals(fieldType)) {
                 String keyFinderClassName = control.getValuesFinderClass();
 
-                if (!StringUtils.isBlank(keyFinderClassName)) {
+                if (StringUtils.isNotBlank(keyFinderClassName)) {
                     try {
                     	Class keyFinderClass = ClassLoaderUtils.getClass(keyFinderClassName);
                         KeyValuesFinder finder = (KeyValuesFinder) keyFinderClass.newInstance();
@@ -282,7 +282,7 @@ public class FieldUtils {
 
             if (Field.CHECKBOX.equals(fieldType) && translateCheckboxes) {
                 fieldType = Field.RADIO;
-                field.setFieldValidValues((new IndicatorValuesFinder()).getKeyValues());
+                field.setFieldValidValues(IndicatorValuesFinder.INSTANCE.getKeyValues());
             }
 
             // for button control

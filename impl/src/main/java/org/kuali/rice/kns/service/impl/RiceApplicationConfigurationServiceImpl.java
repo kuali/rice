@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
@@ -36,16 +37,18 @@ import org.kuali.rice.kns.util.KNSUtils;
 public class RiceApplicationConfigurationServiceImpl implements RiceApplicationConfigurationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationServiceImpl.class);
     
-    private List<ParameterDetailType> components = new ArrayList<ParameterDetailType>();
+    protected List<ParameterDetailType> components = new ArrayList<ParameterDetailType>();
+    protected List<String> packagePrefixes = new ArrayList<String>();
     private KualiConfigurationService kualiConfigurationService;
     private ParameterService parameterService;    
+    private DataDictionaryService dataDictionaryService;
     
     public String getConfigurationParameter( String parameterName ){
     	return getKualiConfigurationService().getPropertyString(parameterName);
     }
     
     /**
-     * This method derived ParameterDetailedTypes from the DataDictionary for all BusinessObjects and Transactional Documents Entries and from Spring for
+     * This method derived ParameterDetailedTypes from the DataDictionary for all BusinessObjects and Documents and from Spring for
      * all batch Steps.
      * 
      * @return List<ParameterDetailedType> containing the detailed types derived from the data dictionary and Spring
@@ -83,7 +86,8 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
         return Collections.unmodifiableList(components);
     }
     
-    protected ParameterDetailType getParameterDetailType(Class documentOrStepClass) {
+    @SuppressWarnings("unchecked")
+	protected ParameterDetailType getParameterDetailType(Class documentOrStepClass) {
         String detailTypeString = getParameterService().getDetailType(documentOrStepClass);
         String detailTypeName = getDetailTypeName(documentOrStepClass);
         ParameterDetailType detailType = new ParameterDetailType(getParameterService().getNamespace(documentOrStepClass), detailTypeString, (detailTypeName == null) ? detailTypeString : detailTypeName);
@@ -91,18 +95,17 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
         return detailType;
     }
 
+    @SuppressWarnings("unchecked")
     /**
      * This method derived ParameterDetailedTypes from the DataDictionary for all BusinessObjects and Transactional Documents Entries and from Spring for
      * all batch Steps.
      * 
      * @return String containing the detailed type name derived from the data dictionary/Business Object
      */
-    protected String getDetailTypeName(Class documentOrStepClass) {
+	protected String getDetailTypeName(Class documentOrStepClass) {
         if (documentOrStepClass == null) {
             throw new IllegalArgumentException("The getDetailTypeName method of ParameterServiceImpl requires non-null documentOrStepClass");
         }
-                
-        DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
         
         /* 
          * Some business objects have a Component annotation that sets the value
@@ -111,7 +114,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
          * exist, it will fall back to the annotation's value.
          */
         if (documentOrStepClass.isAnnotationPresent(COMPONENT.class)) {
-            BusinessObjectEntry boe = dataDictionaryService.getDataDictionary().getBusinessObjectEntry(documentOrStepClass.getName());
+            BusinessObjectEntry boe = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(documentOrStepClass.getName());
             if (boe != null) {
                 return boe.getObjectLabel();
             }
@@ -119,7 +122,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
                 return ((COMPONENT) documentOrStepClass.getAnnotation(COMPONENT.class)).component();
             }
         }
-        
+
         /*
          * If block that determines if the class is either a BusinessObject or a TransactionalDocument
          * return calls try to either get the BusinessObjectEntry's ObjectLable, or grabbing the 
@@ -127,10 +130,10 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
          * TransactionalDocument
          */
         if (TransactionalDocument.class.isAssignableFrom(documentOrStepClass)) {
-            return dataDictionaryService.getDocumentLabelByClass(documentOrStepClass);
+            return getDataDictionaryService().getDocumentLabelByClass(documentOrStepClass);
         }
         else if (BusinessObject.class.isAssignableFrom(documentOrStepClass) ) {
-            BusinessObjectEntry boe = dataDictionaryService.getDataDictionary().getBusinessObjectEntry(documentOrStepClass.getName());
+            BusinessObjectEntry boe = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(documentOrStepClass.getName());
             if (boe != null) {
                 return boe.getObjectLabel();
             }
@@ -154,8 +157,84 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     	}
     	return parameterService;
     }
-    
-    public void setParameterService(ParameterService parameterService) {
-    	this.parameterService = parameterService;
+
+    protected DataDictionaryService getDataDictionaryService() {
+    	if (dataDictionaryService == null) {
+    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    	}
+    	return dataDictionaryService;
     }
+
+	/**
+	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationService#getBaseInquiryUrl(java.lang.String)
+	 */
+	public String getBaseInquiryUrl(String businessObjectClassName) {
+		throw new UnsupportedOperationException( "getBaseInquiryUrl" );
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationService#getBaseLookupUrl(java.lang.String)
+	 */
+	public String getBaseLookupUrl(String businessObjectClassName) {
+		throw new UnsupportedOperationException( "getBaseLookupUrl" );
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationService#isResponsibleForPackage(java.lang.String)
+	 */
+	public boolean isResponsibleForPackage(String packageName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "Checking if application ("+packagePrefixes+") is responsible for package: " + packageName );
+		}
+		for ( String prefix : packagePrefixes ) {
+			if ( packageName.startsWith(prefix) ) {
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug("Found match ("+prefix+") - returning true");
+				}
+				return true;
+			}
+		}
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("No Match Found: packageName="+packageName+" / prefix list=" + packagePrefixes);
+		}
+		return false;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationService#supportsBusinessObjectClass(java.lang.String)
+	 */
+	public boolean supportsBusinessObjectClass(String businessObjectClassName) {
+		return getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClassName) != null;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationService#getBusinessObjectAttributeDefinition(java.lang.String, java.lang.String)
+	 */
+	public AttributeDefinition getBusinessObjectAttributeDefinition( String businessObjectClassName, String attributeName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "Asking ("+packagePrefixes+") for BO AttributeDefinition: " + businessObjectClassName + " / " + attributeName );
+		}
+		BusinessObjectEntry boe = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClassName);
+		if ( boe == null ) {
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info( "No BusinessObjectEntry found for class name: " + businessObjectClassName );
+			}
+			return null;
+		}
+		return boe.getAttributeDefinition(attributeName);
+	}
+
+	/**
+	 * @return the packagePrefixes
+	 */
+	public List<String> getPackagePrefixes() {
+		return this.packagePrefixes;
+	}
+
+	/**
+	 * @param packagePrefixes the packagePrefixes to set
+	 */
+	public void setPackagePrefixes(List<String> packagePrefixes) {
+		this.packagePrefixes = packagePrefixes;
+	}
 }

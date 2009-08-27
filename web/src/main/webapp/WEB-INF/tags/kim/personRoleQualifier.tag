@@ -93,7 +93,7 @@
 									<c:set var="attrReadOnly" value="${(readOnlyRole || attrDefinition.unique)}"/>
 				            <td align="left" valign="middle">
 				                <div align="center"> 
-				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+				                	<kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.kimTypeId}" property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 						      		   <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
                                            <c:if test="${!empty attr.lookupBoClass and not attrReadOnly}">
     						      		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />

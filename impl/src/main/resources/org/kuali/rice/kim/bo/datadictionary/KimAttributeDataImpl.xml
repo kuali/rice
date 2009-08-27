@@ -27,7 +27,6 @@
         <ref bean="KimAttributeDataImpl-attributeLabel"/>
         <ref bean="KimAttributeDataImpl-active"/>
         <ref bean="KimAttributeDataImpl-componentName"/>
-        <ref bean="KimAttributeDataImpl-applicationUrl"/>
       </list>
     </property>
   </bean>
@@ -74,13 +73,6 @@
     </property>
   </bean>
 
-  <bean id="KimAttributeDataImpl-applicationUrl" parent="KimAttributeDataImpl-applicationUrl-parentBean"/>
-  <bean id="KimAttributeDataImpl-applicationUrl-parentBean" parent="AttributeDefinition" abstract="true" p:name="kimAttribute.applicationUrl" p:forceUppercase="true" p:label="Application Url" p:shortLabel="Application Url" p:maxLength="40" p:required="false">
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40"/>
-    </property>
-  </bean>  
-  
   <bean id="KimAttributeDataImpl-inquiryDefinition" parent="KimAttributeDataImpl-inquiryDefinition-parentBean"/>
   <bean id="KimAttributeDataImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Kim Attribute Data Inquiry">
     <property name="inquirySections">
@@ -95,7 +87,6 @@
         	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.attributeLabel"/>
         	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.active"/>
         	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.componentName"/>
-        	  <bean parent="FieldDefinition" p:attributeName="kimAttribute.applicationUrl"/>
             </list>
           </property>
         </bean>

@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.entity.dto;
 import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.getDefaultAndUnNullify;
 import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
@@ -40,6 +41,39 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	private EntityType entityType;
 	private String entityTypeCode;
 	private List<KimEntityPhone> phoneNumbers;
+	
+	/** empty ctor. */
+	public KimEntityEntityTypeInfo() {
+		super();
+	}
+	
+	/**
+	 * Copy ctor.
+	 * @param o the object to copy.
+	 */
+	public KimEntityEntityTypeInfo(KimEntityEntityType o) {
+		if (o != null) {
+			this.addresses = new ArrayList<KimEntityAddress>();
+			for (KimEntityAddress address : o.getAddresses()) {
+				this.addresses.add(new KimEntityAddressInfo(address));
+			}
+			
+			this.emailAddresses = new ArrayList<KimEntityEmail>();
+			for (KimEntityEmail email : o.getEmailAddresses()) {
+				this.emailAddresses.add(new KimEntityEmailInfo(email));
+			}
+			
+			this.entityType = new KimEntityTypeInfo(o.getEntityType());
+			this.entityTypeCode = o.getEntityTypeCode();
+			
+			this.phoneNumbers = new ArrayList<KimEntityPhone>();
+			for (KimEntityPhone phone : o.getPhoneNumbers()) {
+				this.phoneNumbers.add(new KimEntityPhoneInfo(phone));
+			}
+			
+			this.active = o.isActive();
+		}
+	}
 	
 	/**
 	 * Gets all the entity addresses.

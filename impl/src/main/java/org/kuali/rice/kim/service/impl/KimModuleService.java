@@ -24,6 +24,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -32,8 +34,10 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -70,6 +74,8 @@ public class KimModuleService extends ModuleServiceBase {
 		} else if(Group.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID))
 				return (T) getGroupService().getGroupInfo((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
+		} else if (KimEntity.class.isAssignableFrom(businessObjectClass)) {
+			return (T) new KimEntityInfo((KimEntity) super.getExternalizableBusinessObject( businessObjectClass, fieldValues ));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
@@ -89,6 +95,8 @@ public class KimModuleService extends ModuleServiceBase {
 			return (List)getPersonService().findPeople( (Map)fieldValues );
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
+		} else if (KimEntity.class.isAssignableFrom(externalizableBusinessObjectClass)) {
+			return toKimEntity(super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues ));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );
@@ -107,9 +115,31 @@ public class KimModuleService extends ModuleServiceBase {
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			// FIXME: needs to send unbounded flag
 			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
+		} else if (KimEntity.class.isAssignableFrom(externalizableBusinessObjectClass)) {
+			return toKimEntity(super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded);
+	}
+	
+	/**
+	 * Takes a list of some type T (which assumes is a KimEntity) and creates a new list of copies of T.  This makes sure that Info objects
+	 * are returned and not BOs.
+	 * 
+	 * @param <T> the type
+	 * @param entitiesAsT the list to copy
+	 * @return the new list
+	 */
+	@SuppressWarnings("unchecked")
+	private <T> List<T> toKimEntity(List<T> entitiesAsT) {
+		List<T> entities = new ArrayList<T>();
+		for (T t : entitiesAsT) {
+			if (t instanceof PersistableBusinessObject) {
+				ObjectUtils.materializeSubObjectsToDepth((PersistableBusinessObject) t, 5);
+			}
+			entities.add((T) new KimEntityInfo((KimEntity) t)); 			
+		}
+		return entities;
 	}
 
 	/**

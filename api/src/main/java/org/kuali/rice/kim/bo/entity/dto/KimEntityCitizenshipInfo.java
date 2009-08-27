@@ -20,6 +20,7 @@ import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 import java.util.Date;
 
 import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
+import org.kuali.rice.kim.bo.reference.EntityType;
 
 /**
  * A DTO that contains entity citizenship info.
@@ -36,6 +37,26 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	private Date endDate;
 	private Date startDate;
 	private String entityCitizenshipId;
+	
+	/** empty ctor. */
+	public KimEntityCitizenshipInfo() {
+		super();
+	}
+	
+	/**
+	 * Copy ctor.
+	 * @param o the object to copy.
+	 */
+	public KimEntityCitizenshipInfo(KimEntityCitizenship o) {
+		if (o != null) {
+			this.citizenshipStatusCode = o.getCitizenshipStatusCode();
+			this.countryCode = o.getCountryCode();
+			this.endDate = new Date(o.getEndDate() != null ? o.getEndDate().getTime(): 0L);
+			this.startDate = new Date(o.getStartDate() != null ? o.getStartDate().getTime(): 0L);
+			this.entityCitizenshipId = o.getEntityCitizenshipId();
+			this.active = o.isActive();
+		}
+	}
 	
 	/**
 	 * Gets the citizenship status code.

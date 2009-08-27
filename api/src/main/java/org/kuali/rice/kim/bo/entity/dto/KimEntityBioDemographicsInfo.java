@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
+import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
 
 /**
  * Represents an entity's Bio Demographics info.
@@ -34,6 +35,23 @@ public class KimEntityBioDemographicsInfo implements KimEntityBioDemographics, S
 	private Date birthDate;
 	private String ethnicityCode;
 	private String genderCode;
+	
+	/** empty ctor. */
+	public KimEntityBioDemographicsInfo() {
+		super();
+	}
+	
+	/**
+	 * Copy ctor.
+	 * @param o the object to copy.
+	 */
+	public KimEntityBioDemographicsInfo(KimEntityBioDemographics o) {
+		if (o != null) {
+			this.birthDate = new Date(o.getBirthDate() != null ? o.getBirthDate().getTime(): 0L);
+			this.ethnicityCode = o.getEthnicityCode();
+			this.genderCode = o.getGenderCode();
+		}
+	}
 	
 	/**
 	 * Gets the birth date.

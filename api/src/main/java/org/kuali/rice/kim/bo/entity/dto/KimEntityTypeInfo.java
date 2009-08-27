@@ -31,6 +31,23 @@ public class KimEntityTypeInfo extends KimInactivatableInfo implements EntityTyp
 	private String entityTypeCode;
 	private String entityTypeName;
 
+	/** empty ctor. */
+	public KimEntityTypeInfo() {
+		super();
+	}
+	
+	/**
+	 * Copy ctor.
+	 * @param o the object to copy.
+	 */
+	public KimEntityTypeInfo(EntityType o) {
+		if (o != null) {
+			this.entityTypeCode = o.getEntityTypeCode();
+			this.entityTypeName = o.getEntityTypeName();
+			this.active = o.isActive();
+		}
+	}
+	
 	/**
 	 * Gets the entity type code.
 	 * 

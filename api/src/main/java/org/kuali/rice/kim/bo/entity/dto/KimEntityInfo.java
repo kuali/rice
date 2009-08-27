@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.entity.dto;
 import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.getDefaultAndUnNullify;
 import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
@@ -30,6 +31,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.reference.EntityType;
 
 /**
  * This is a data transfer objects containing all information related to a KIM entity.
@@ -40,16 +42,72 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<? extends KimEntityAffiliation> affiliations;
+	private List<KimEntityAffiliation> affiliations;
 	private KimEntityBioDemographics bioDemographics;
-	private List<? extends KimEntityCitizenship> citizenships;
-	private List<? extends KimEntityEmploymentInformation> employmentInformation;
+	private List<KimEntityCitizenship> citizenships;
+	private List<KimEntityEmploymentInformation> employmentInformation;
 	private String entityId;
-	private List<? extends KimEntityEntityType> entityTypes;
-	private List<? extends KimEntityExternalIdentifier> externalIdentifiers;
-	private List<? extends KimEntityName> names;
-	private List<? extends KimPrincipal> principals;
+	private List<KimEntityEntityType> entityTypes;
+	private List<KimEntityExternalIdentifier> externalIdentifiers;
+	private List<KimEntityName> names;
+	private List<KimPrincipal> principals;
 	private KimEntityPrivacyPreferences privacyPreferences;
+	
+	/** empty ctor. */
+	public KimEntityInfo() {
+		super();
+	}
+	
+	/**
+	 * Copy ctor.
+	 * @param o the object to copy.
+	 */
+	public KimEntityInfo(KimEntity o) {
+		if (o != null) {
+			this.affiliations = new ArrayList<KimEntityAffiliation>();
+			for (KimEntityAffiliation affiliation : o.getAffiliations()) {
+				this.affiliations.add(new KimEntityAffiliationInfo(affiliation));
+			}
+			
+			this.bioDemographics = new KimEntityBioDemographicsInfo(o.getBioDemographics());
+			
+			this.citizenships = new ArrayList<KimEntityCitizenship>();
+			for (KimEntityCitizenship cit : o.getCitizenships()) {
+				this.citizenships.add(new KimEntityCitizenshipInfo(cit));
+			}
+			
+			this.employmentInformation = new ArrayList<KimEntityEmploymentInformation>();
+			for (KimEntityEmploymentInformation emp : o.getEmploymentInformation()) {
+				this.employmentInformation.add(new KimEntityEmploymentInformationInfo(emp));
+			}
+			
+			this.entityId = o.getEntityId();
+			
+			this.entityTypes = new ArrayList<KimEntityEntityType>();
+			for (KimEntityEntityType entType : o.getEntityTypes()) {
+				this.entityTypes.add(new KimEntityEntityTypeInfo(entType));
+			}
+			
+			this.externalIdentifiers = new ArrayList<KimEntityExternalIdentifier>();
+			for (KimEntityExternalIdentifier ext : o.getExternalIdentifiers()) {
+				this.externalIdentifiers.add(new KimEntityExternalIdentifierInfo(ext));
+			}
+			
+			this.names = new ArrayList<KimEntityName>();
+			for (KimEntityName name : o.getNames()) {
+				this.names.add(new KimEntityNameInfo(name));
+			}
+			
+			this.principals = new ArrayList<KimPrincipal>();
+			for (KimPrincipal princ : o.getPrincipals()) {
+				this.principals.add(new KimPrincipalInfo(princ));
+			}
+			
+			this.privacyPreferences = new KimEntityPrivacyPreferencesInfo(o.getPrivacyPreferences());
+			
+			this.active = o.isActive();
+		}
+	}
 	
 	/**
 	 * Retrieves all the entity affiliations.
@@ -65,7 +123,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * Sets the entity affiliations.
 	 * @param affiliations the affiliations
 	 */
-	public void setAffiliations(List<? extends KimEntityAffiliation> affiliations) {
+	public void setAffiliations(List<KimEntityAffiliation> affiliations) {
 		this.affiliations = affiliations;
 	}
 
@@ -103,7 +161,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * 
 	 * @param citizenships the citizenships
 	 */
-	public void setCitizenships(List<? extends KimEntityCitizenship> citizenships) {
+	public void setCitizenships(List<KimEntityCitizenship> citizenships) {
 		this.citizenships = citizenships;
 	}
 
@@ -142,7 +200,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * 
 	 * @param employmentInformation the employment information
 	 */
-	public void setEmploymentInformation(List<? extends KimEntityEmploymentInformation> employmentInformation) {
+	public void setEmploymentInformation(List<KimEntityEmploymentInformation> employmentInformation) {
 		this.employmentInformation = employmentInformation;
 	}
 
@@ -210,7 +268,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * 
 	 * @param entityTypes the entity types
 	 */
-	public void setEntityTypes(List<? extends KimEntityEntityType> entityTypes) {
+	public void setEntityTypes(List<KimEntityEntityType> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
 
@@ -229,7 +287,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * 
 	 * @param externalIdentifiers the external identifiers
 	 */
-	public void setExternalIdentifiers(List<? extends KimEntityExternalIdentifier> externalIdentifiers) {
+	public void setExternalIdentifiers(List<KimEntityExternalIdentifier> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
 
@@ -248,7 +306,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * 
 	 * @param names the names
 	 */
-	public void setNames(List<? extends KimEntityName> names) {
+	public void setNames(List<KimEntityName> names) {
 		this.names = names;
 	}
 
@@ -282,7 +340,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * 
 	 * @param principals the principals
 	 */
-	public void setPrincipals(List<? extends KimPrincipal> principals) {
+	public void setPrincipals(List<KimPrincipal> principals) {
 		this.principals = principals;
 	}
 

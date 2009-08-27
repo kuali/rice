@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.test.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,10 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 
 /**
  * 
@@ -93,6 +97,22 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertNotNull( "PERSON EntityEntityType must not be null", eet );
 		assertNotNull( "EntityEntityType's default email address must not be null", eet.getDefaultEmailAddress() );
 		assertEquals( "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
+	}
+
+	@Test
+	public void testLookupEntityDefaultInfo() {
+		String principalIdToTest = "p1";
+		PersonServiceImpl personServiceImpl = (PersonServiceImpl) KIMServiceLocator.getService(KIMServiceLocator.KIM_PERSON_SERVICE);
+		Map<String,String> criteria = new HashMap<String,String>(1);
+		criteria.put(KIMPropertyConstants.Person.PRINCIPAL_ID, principalIdToTest);
+		Map<String,String> searchCriteria = personServiceImpl.convertPersonPropertiesToEntityProperties(criteria);
+		List<? extends KimEntityDefaultInfo> results = identityService.lookupEntityDefaultInfo(searchCriteria, false);
+		assertNotNull("Lookup results should never be null", results);
+		assertEquals("Lookup result count is invalid", 1, results.size());
+		for (KimEntityDefaultInfo kimEntityDefaultInfo : results) {
+			assertEquals("Entity should have only one principal for this test", 1, kimEntityDefaultInfo.getPrincipals().size());
+			assertEquals("Principal Ids should match", principalIdToTest, kimEntityDefaultInfo.getPrincipals().get(0).getPrincipalId());
+		}
 	}
 
 	protected IdentityService findIdSvc() throws Exception {

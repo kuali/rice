@@ -29,6 +29,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kew.engine.node.Process;
 
 
 /**
@@ -113,6 +114,13 @@ public class RouteDocumentAction extends ActionTakenEvent {
             try {
                 String oldStatus = getRouteHeader().getDocRouteStatus();
                 getRouteHeader().markDocumentEnroute();
+                
+                if (((Process)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
+                    getRouteHeader().markDocumentApproved();
+                    getRouteHeader().markDocumentProcessed();
+                    getRouteHeader().markDocumentFinalized();
+                }
+
                 getRouteHeader().setRoutedByUserWorkflowId(getPrincipal().getPrincipalId());
 
                 String newStatus = getRouteHeader().getDocRouteStatus();

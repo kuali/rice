@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 
@@ -73,7 +74,7 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 		try {
 			new WorkflowInfo().validAttributeDefinition(attDef);
 			fail("Should have thrown WorkflowException attempting to lookup non-existent attribute");
-		} catch (WorkflowException e) {
+		} catch (WorkflowRuntimeException e) {
 			assertTrue("This is the correct exception to throw", true);
 		}
 	}

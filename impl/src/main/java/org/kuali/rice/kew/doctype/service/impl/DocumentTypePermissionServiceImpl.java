@@ -321,7 +321,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	
 	private void validateRouteNodeNames(List<String> routeNodeNames) {
 		if (routeNodeNames.isEmpty()) {
-			throw new IllegalArgumentException("List of route node names was empty.");
+		    return;
+			//throw new IllegalArgumentException("List of route node names was empty.");
 		}
 		for (String routeNodeName : routeNodeNames) {
 			if (StringUtils.isBlank(routeNodeName)) {

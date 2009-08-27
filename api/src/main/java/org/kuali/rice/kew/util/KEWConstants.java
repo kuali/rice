@@ -839,6 +839,7 @@ public class KEWConstants extends JSTLConstants {
     // system branch state keys
     public static final String POST_PROCESSOR_PROCESSED_KEY = "System.PostProcessorProcessed";
     public static final String POST_PROCESSOR_FINAL_KEY = "System.PostProcessorFinal";
+    public static final String POST_PROCESSOR_NON_DEFINED_VALUE = "none";
 
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";

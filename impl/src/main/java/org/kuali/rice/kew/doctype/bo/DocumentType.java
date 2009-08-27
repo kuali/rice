@@ -635,6 +635,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 
     public PostProcessor getPostProcessor() {
         String pname = getPostProcessorName();
+
+        if (StringUtils.equals(pname, KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE)) { 
+            return new DefaultPostProcessor();    
+        }
         if (StringUtils.isBlank(pname)) {
             if (getParentDocType() != null) {
                 return getParentDocType().getPostProcessor();
@@ -645,6 +649,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 
         ObjectDefinition objDef = getObjectDefinition(pname);
         Object postProcessor = GlobalResourceLoader.getObject(objDef);
+        
         if (postProcessor == null) {
             throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
         }

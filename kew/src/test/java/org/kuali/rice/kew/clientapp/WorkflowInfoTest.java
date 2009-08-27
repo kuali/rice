@@ -72,7 +72,9 @@ public class WorkflowInfoTest extends KEWTestCase {
 	try {
 	    String status = info.getDocumentStatus(null);
 	    fail("A WorkflowException should have been thrown, instead returned status: " + status);
-	} catch (WorkflowException e) {}
+	} catch (WorkflowException e) {
+    } catch (IllegalArgumentException e) {
+    }
 	// verify that a bad document id throws an exception
 	try {
 	    String status = info.getDocumentStatus(new Long(-1));

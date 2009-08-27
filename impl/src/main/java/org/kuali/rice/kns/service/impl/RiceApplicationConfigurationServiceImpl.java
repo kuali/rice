@@ -45,7 +45,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     }
     
     /**
-     * This method derived ParameterDetailedTypes from the DataDictionary for all BusinessObjects and Documents and from Spring for
+     * This method derived ParameterDetailedTypes from the DataDictionary for all BusinessObjects and Transactional Documents Entries and from Spring for
      * all batch Steps.
      * 
      * @return List<ParameterDetailedType> containing the detailed types derived from the data dictionary and Spring
@@ -91,6 +91,12 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
         return detailType;
     }
 
+    /**
+     * This method derived ParameterDetailedTypes from the DataDictionary for all BusinessObjects and Transactional Documents Entries and from Spring for
+     * all batch Steps.
+     * 
+     * @return String containing the detailed type name derived from the data dictionary/Business Object
+     */
     protected String getDetailTypeName(Class documentOrStepClass) {
         if (documentOrStepClass == null) {
             throw new IllegalArgumentException("The getDetailTypeName method of ParameterServiceImpl requires non-null documentOrStepClass");
@@ -98,6 +104,12 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
                 
         DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
         
+        /* 
+         * Some business objects have a Component annotation that sets the value
+         * of the classes annotaion.  This if block will test to see if it is there, try to get the 
+         * component value from the Data Dictionary if the BusinessObjectEntry exists, if it doesn't
+         * exist, it will fall back to the annotation's value.
+         */
         if (documentOrStepClass.isAnnotationPresent(COMPONENT.class)) {
             BusinessObjectEntry boe = dataDictionaryService.getDataDictionary().getBusinessObjectEntry(documentOrStepClass.getName());
             if (boe != null) {
@@ -107,6 +119,13 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
                 return ((COMPONENT) documentOrStepClass.getAnnotation(COMPONENT.class)).component();
             }
         }
+        
+        /*
+         * If block that determines if the class is either a BusinessObject or a TransactionalDocument
+         * return calls try to either get the BusinessObjectEntry's ObjectLable, or grabbing the 
+         * data dictionary's BusinessTitleForClass if it is a BusinessObject, or the DocumentLabel if it is a
+         * TransactionalDocument
+         */
         if (TransactionalDocument.class.isAssignableFrom(documentOrStepClass)) {
             return dataDictionaryService.getDocumentLabelByClass(documentOrStepClass);
         }

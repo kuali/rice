@@ -128,7 +128,15 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
       	if (!StringUtils.isBlank(documentType.getRoutingVersion())) {
       		renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
       	}
-        exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
+      	Process process = null;
+      	if (documentType.getProcesses().size() > 0) {
+      	    process = (Process)documentType.getProcesses().get(0);
+      	}
+      	if (process != null && process.getInitialRouteNode() != null) {
+      	    exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
+      	} else {
+      	    renderer.renderElement(docTypeElement, ROUTE_PATHS);
+      	}
     }
 
     private void exportPolicies(Element parent, Collection policies) {

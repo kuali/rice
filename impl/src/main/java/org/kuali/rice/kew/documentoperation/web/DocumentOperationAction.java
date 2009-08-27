@@ -187,13 +187,15 @@ public class DocumentOperationAction extends KewKualiAction {
 			DocumentRouteHeaderValue dHeader=docForm.getRouteHeader();
 			String initials=docForm.getInitialNodeInstances();
 			List lInitials=new ArrayList();
-			StringTokenizer tokenInitials=new StringTokenizer(initials,",");
-			while (tokenInitials.hasMoreTokens()) {
-		         Long instanceId=Long.valueOf(tokenInitials.nextToken().trim());
-		         LOG.debug(instanceId);
-		         RouteNodeInstance instance=getRouteNodeService().findRouteNodeInstanceById(instanceId);
-		         lInitials.add(instance);
-		     }
+			if (StringUtils.isNotEmpty(initials)){ 
+    			StringTokenizer tokenInitials=new StringTokenizer(initials,",");
+    			while (tokenInitials.hasMoreTokens()) {
+    		         Long instanceId=Long.valueOf(tokenInitials.nextToken().trim());
+    		         LOG.debug(instanceId);
+    		         RouteNodeInstance instance=getRouteNodeService().findRouteNodeInstanceById(instanceId);
+    		         lInitials.add(instance);
+    		    }
+			}
 			dHeader.setInitialRouteNodeInstances(lInitials);
 			getRouteHeaderService().validateRouteHeader(docForm.getRouteHeader());
 			getRouteHeaderService().saveRouteHeader(docForm.getRouteHeader());

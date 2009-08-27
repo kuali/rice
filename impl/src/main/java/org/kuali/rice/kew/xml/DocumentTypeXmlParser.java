@@ -339,6 +339,9 @@ public class DocumentTypeXmlParser implements XmlConstants {
             if (XmlHelper.pathExists(xpath, "./" + ROUTE_PATHS + "/" + ROUTE_PATH, documentTypeNode)) {
                 processNodes = (NodeList) getXPath().evaluate("./" + ROUTE_PATHS + "/" + ROUTE_PATH, documentTypeNode, XPathConstants.NODESET);
             } else {
+                if (hasRoutePathsElement) {
+                    createEmptyProcess(documentType);
+                }
                 return;
             }
         } catch (XPathExpressionException xpee) {
@@ -483,8 +486,14 @@ public class DocumentTypeXmlParser implements XmlConstants {
              * then the documentType should already carry the value from the previous document type
              */
             if (XmlHelper.pathExists(xpath, "./" + POST_PROCESSOR_NAME, documentTypeNode)) {
-                documentType.setPostProcessorName((String) getXPath().evaluate("./" + POST_PROCESSOR_NAME, documentTypeNode, XPathConstants.STRING));
+                String postProcessor = (String) getXPath().evaluate("./" + POST_PROCESSOR_NAME, documentTypeNode, XPathConstants.STRING);
+                if (StringUtils.isEmpty(postProcessor)) {
+                    documentType.setPostProcessorName(KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE);
+                } else {
+                    documentType.setPostProcessorName((String) getXPath().evaluate("./" + POST_PROCESSOR_NAME, documentTypeNode, XPathConstants.STRING));
+                }    
             }
+                
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type postProcessorName", xpee);
             throw xpee;
@@ -861,6 +870,16 @@ public class DocumentTypeXmlParser implements XmlConstants {
             process.setDocumentType(documentType);
             documentType.addProcess(process);
         }
+    }
+    
+    private void createEmptyProcess(DocumentType documentType) {
+            Process process = new Process();
+            
+            process.setInitial(true);
+            process.setName(KEWConstants.PRIMARY_PROCESS_NAME);
+
+            process.setDocumentType(documentType);
+            documentType.addProcess(process);
     }
 
     private RouteNode createRouteNode(RouteNode previousRouteNode, String nodeName, Node routePathNode, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidXmlException, GroupNotFoundException, TransformerException {

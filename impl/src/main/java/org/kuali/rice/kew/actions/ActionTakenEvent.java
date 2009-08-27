@@ -164,6 +164,7 @@ public abstract class ActionTakenEvent {
 				LOG.warn(report.getMessage(), report.getProcessException());
 				throw new InvalidActionTakenException(report.getMessage());
 			}
+
 		} catch (Exception ex) {
 			LOG.warn(ex, ex);
 			throw new WorkflowRuntimeException(ex.getMessage(), ex);

@@ -424,7 +424,7 @@ Definitions are applied to the names in the routeNodes section.
 		-->
   <complexType name="RoutePathsType">
     <sequence>
-      <element name="routePath" type="dt:RoutePathType" maxOccurs="unbounded">
+      <element name="routePath" type="dt:RoutePathType" minOccurs="0" maxOccurs="unbounded">
       	<annotation>
       		<documentation>
       		 A modifiable configuration parameter in the system.

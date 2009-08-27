@@ -70,12 +70,11 @@ import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttributeImpl;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
 
 
 /**
@@ -682,8 +681,10 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      * @return the branch of the first (and presumably only?) initial node
      */
     public Branch getRootBranch() {
-        // FIXME: assuming there is always a single initial route node instance
-        return ((RouteNodeInstance) getInitialRouteNodeInstance(0)).getBranch();
+        if (!this.initialRouteNodeInstances.isEmpty()) {
+            return ((RouteNodeInstance) getInitialRouteNodeInstance(0)).getBranch();
+        } 
+        return null;
     }
 
     /**
@@ -692,12 +693,14 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      */
     private BranchState findVariable(String name) {
         Branch rootBranch = getRootBranch();
-        List branchState = rootBranch.getBranchState();
-        Iterator it = branchState.iterator();
-        while (it.hasNext()) {
-            BranchState state = (BranchState) it.next();
-            if (Utilities.equals(state.getKey(), BranchState.VARIABLE_PREFIX + name)) {
-                return state;
+        if (rootBranch != null) {
+            List branchState = rootBranch.getBranchState();
+            Iterator it = branchState.iterator();
+            while (it.hasNext()) {
+                BranchState state = (BranchState) it.next();
+                if (Utilities.equals(state.getKey(), BranchState.VARIABLE_PREFIX + name)) {
+                    return state;
+                }
             }
         }
         return null;
@@ -735,31 +738,36 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     public void setVariable(String name, String value) {
         BranchState state = findVariable(name);
         Branch rootBranch = getRootBranch();
-        List branchState = rootBranch.getBranchState();
-        if (state == null) {
-            if (value == null) {
-                LOG.debug("set non existent variable '" + name + "' to null value");
-                return;
-            }
-            LOG.debug("Adding branch state: '" + name + "'='" + value + "'");
-            state = new BranchState();
-            state.setBranch(rootBranch);
-            state.setKey(BranchState.VARIABLE_PREFIX + name);
-            state.setValue(value);
-            rootBranch.addBranchState(state);
-        } else {
-            if (value == null) {
-                LOG.debug("Removing value: " + state.getKey() + "=" + state.getValue());
-                branchState.remove(state);
-            } else {
-                LOG.debug("Setting value of variable '" + name + "' to '" + value + "'");
+        if (rootBranch != null) {
+            List branchState = rootBranch.getBranchState();
+            if (state == null) {
+                if (value == null) {
+                    LOG.debug("set non existent variable '" + name + "' to null value");
+                    return;
+                }
+                LOG.debug("Adding branch state: '" + name + "'='" + value + "'");
+                state = new BranchState();
+                state.setBranch(rootBranch);
+                state.setKey(BranchState.VARIABLE_PREFIX + name);
                 state.setValue(value);
+                rootBranch.addBranchState(state);
+            } else {
+                if (value == null) {
+                    LOG.debug("Removing value: " + state.getKey() + "=" + state.getValue());
+                    branchState.remove(state);
+                } else {
+                    LOG.debug("Setting value of variable '" + name + "' to '" + value + "'");
+                    state.setValue(value);
+                }
             }
         }
     }
     
     public List<BranchState> getRootBranchState() {
-	return this.getRootBranch().getBranchState();
+        if (this.getRootBranch() != null) {
+            return this.getRootBranch().getBranchState();
+        }
+        return null;
     }
 
     public CustomActionListAttribute getCustomActionListAttribute() throws WorkflowException {
@@ -834,11 +842,11 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
         return (ActionItem) actionItems.get(index);
     }
 
-    public RouteNodeInstance getInitialRouteNodeInstance(int index) {
-    	while (initialRouteNodeInstances.size() <= index) {
-    		initialRouteNodeInstances.add(new RouteNodeInstance());
-    	}
-    	return (RouteNodeInstance) initialRouteNodeInstances.get(index);
+    private RouteNodeInstance getInitialRouteNodeInstance(int index) {
+    	if (initialRouteNodeInstances.size() >= index) {
+    	    return (RouteNodeInstance) initialRouteNodeInstances.get(index);
+    	} 
+    	return null;
     }
 
 	/**

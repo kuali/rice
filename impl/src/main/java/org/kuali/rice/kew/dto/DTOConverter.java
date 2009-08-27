@@ -104,6 +104,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import org.kuali.rice.kew.engine.node.Branch;
+
 
 /**
  * Translates Workflow server side beans into client side VO beans.
@@ -207,11 +209,11 @@ public class DTOConverter {
 
         /* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
-        RouteNodeInstance routeNodeInstance = (RouteNodeInstance) routeHeader.getInitialRouteNodeInstance(0);
+        Branch routeNodeInstanceBranch = routeHeader.getRootBranch();
         // Ok, we are using the "branch state" as the arbitrary convenient repository for flow/process/edoc variables
         // so we need to stuff them into the VO
-        if (routeNodeInstance.getBranch() != null) {
-            List listOfBranchStates = routeNodeInstance.getBranch().getBranchState();
+        if (routeNodeInstanceBranch != null) {
+            List listOfBranchStates = routeNodeInstanceBranch.getBranchState();
             Iterator it = listOfBranchStates.iterator();
             while (it.hasNext()) {
                 BranchState bs = (BranchState) it.next();

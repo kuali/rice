@@ -57,7 +57,6 @@ public interface KualiExceptionIncidentService {
      * <li>User email</li>
      * <li>User name</li>
      * <li>Component name</li>
-     * <li>Custom contextual information</li>
      * </ul>
      * @return
      */

@@ -137,7 +137,7 @@ request.setAttribute("test", incident);
 				<tr>
 					<td>
 						<div align="left" valign="top">
-							<strong>Error Message<strong>
+							<strong>Error Message</strong>
 						</div>
 					</td>
 					<td align="left">
@@ -165,11 +165,11 @@ request.setAttribute("test", incident);
 					<td align="left">
 						<div>
 							<c:if test="${exceptionHideIncidentReport eq false}">	
-								<input type="image" name="submit"
+								<input type="image" name="submit" class="tinybutton"
 								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_submit.gif"
 								class="globalbuttons" title="submit" alt="Submit Incident">
 							</c:if>
-							<input type="image" name="cancel" value="true"
+							<input type="image" name="cancel" value="true" class="tinybutton"
 								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif"
 								class="globalbuttons" title="close" alt="Close Without Submitting Incident">
 						</div>
@@ -185,6 +185,7 @@ request.setAttribute("test", incident);
 				<td>
 					&nbsp;
 				</td>
+			</tr>
 			<tr>
 				<td valign="top" colspan="2">
 					<div align="left" valign="top">

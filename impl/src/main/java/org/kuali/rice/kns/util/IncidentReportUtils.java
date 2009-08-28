@@ -68,7 +68,6 @@ public class IncidentReportUtils {
 		properties.put(KualiExceptionIncident.USER_NAME, userName);
 		properties.put(KualiExceptionIncident.UUID, uuid);
 		properties.put(KualiExceptionIncident.COMPONENT_NAME, componentName);
-		properties.put(KualiExceptionIncident.CUSTOM_CONTEXTUAL_INFO, "?");
 
 		// Reset the exception so the forward action can read it
 		request.setAttribute(Globals.EXCEPTION_KEY, exception);

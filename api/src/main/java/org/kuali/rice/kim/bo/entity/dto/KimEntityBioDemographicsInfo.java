@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
-import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
 
 /**
  * Represents an entity's Bio Demographics info.

@@ -269,6 +269,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 				// range search details
 				Field rangeLowerBoundField = null;
 				Field rangeUpperBoundField = null;
+				myField.setUpperCase(true); // this defaults us to case insensitive.
 				for (int j = 0; j < field.getChildNodes().getLength(); j++) {
 					Node childNode = field.getChildNodes().item(j);
 					if ("value".equals(childNode.getNodeName())) {
@@ -341,7 +342,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 						if (!myField.isMemberOfRange()) {
 							Boolean caseSensitive = getBooleanValue(searchDefAttributes, "caseSensitive");
 							if (caseSensitive == null) {
-								caseSensitive = true;
+								caseSensitive = false; // we mimmic the KNS. KNS is case insensitive by default
 							}
 							myField.setUpperCase(!caseSensitive);
 						} else {
@@ -388,7 +389,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
                         }
 					} else if ("lookup".equals(childNode.getNodeName())) {
 						XMLAttributeUtils.establishFieldLookup(myField, childNode);
-					} 
+					}
 				}
                 myField.setIndexedForSearch(hasXPathExpression);
 
@@ -512,7 +513,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		namedNodeMapsByImportance.add(searchDefinitionAttributes);
 		Boolean caseSensitive = getBooleanWithPotentialOverrides(namedNodeMapsByImportance, "caseSensitive");
 		if (caseSensitive == null) {
-			caseSensitive = true;
+			caseSensitive = false; // we mimmic the KNS. KNS is case insensitive by default
 		}
 		boundField.setUpperCase(!caseSensitive);
 		// TODO: after face-to-face work in december 2008, this was throwing a nullpointerexception for lookups with date pickers

@@ -117,7 +117,7 @@ function validateDocTypeAndRefresh(docTypeNameField){
 					window.status = errorMessage;
 				}
 			};
-		DocumentTypeService.findByName(docTypeName, dwrReply);
+		DocumentTypeService.findByNameCaseInsensitive(docTypeName, dwrReply);
 	}
 
 }

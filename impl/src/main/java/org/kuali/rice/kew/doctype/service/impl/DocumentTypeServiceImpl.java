@@ -90,12 +90,21 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public DocumentType findByName(String name) {
+    	return this.findByName(name, true);
+    }
+
+    public DocumentType findByNameCaseInsensitive(String name) {
+    	return this.findByName(name, false);
+    }
+
+
+    protected DocumentType findByName(String name, boolean caseSensitive) {
     	if (name == null) {
     		return null;
     	}
     	DocumentType documentType = fetchFromCacheByName(name);
         if (documentType == null) {
-        	documentType = getDocumentTypeDAO().findByName(name);
+        	documentType = getDocumentTypeDAO().findByName(name, caseSensitive);
         	insertIntoCache(documentType);
         }
     	return documentType;
@@ -242,7 +251,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		//
     		// also we flush in the finally block because if an exception is thrown then it's still possible
     		// the the "oldDocumentType" which was fetched from the cache has had it's dbLockVerNbr incremented
-    		flushCache(); 
+    		flushCache();
     	}
     }
 

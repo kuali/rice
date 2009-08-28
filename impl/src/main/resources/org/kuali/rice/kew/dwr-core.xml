@@ -27,6 +27,7 @@
         <param name="beanName" value="enDocumentTypeService" />
         <include method="findByName" />
         <include method="findById" />
+        <include method="findByNameCaseInsensitive" />
       </create>
   </allow>
 </dwr>

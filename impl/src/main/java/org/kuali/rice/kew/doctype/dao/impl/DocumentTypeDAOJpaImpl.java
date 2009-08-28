@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2008 The Kuali Foundation
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,11 +40,11 @@ import org.kuali.rice.kew.util.Utilities;
 public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 
 	public static final Logger LOG = Logger.getLogger(DocumentTypeDAOJpaImpl.class);
-	
+
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
-	
-	
+
+
 	/**
 	 * @return the entityManager
 	 */
@@ -70,9 +70,18 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	}
 
-	public DocumentType findByName(String name) {
+	public DocumentType findByName(String name){
+		return findByName(name, true); // by default find by name is case sensitive
+	}
+
+	public DocumentType findByName(String name, boolean caseSensitive) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
-		crit.eq("name", name);
+		if(!caseSensitive){
+			crit.like("UPPER(name)", ("%" + name.trim() + "%").toUpperCase());
+
+		}else{
+			crit.eq("name", name);
+		}
 		crit.eq("currentInd", new Boolean(true));
 		try{
 			DocumentType docType = (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
@@ -85,7 +94,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	public Integer getMaxVersionNumber(String docTypeName) {
 		return getMostRecentDocType(docTypeName).getVersion();
 	}
-	
+
 	public List getChildDocumentTypeIds(Long parentDocumentTypeId) {
 		List childrenIds = new ArrayList();
 		try {
@@ -95,12 +104,12 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 			for (Object id:resultIds){
 				childrenIds.add(new Long(id.toString()));
 			}
-			
+
 		} catch (Exception e) {
 			LOG.error("Error occured fetching children document type ids for document type " + parentDocumentTypeId, e);
 			throw new RuntimeException(e);
 		}
-		
+
 		return childrenIds;
 	}
 
@@ -119,14 +128,14 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	public void save(DocumentType documentType) {
 		Collection<DocumentTypePolicy> docPolicies = documentType.getPolicies();
 		documentType.setPolicies(new ArrayList<DocumentTypePolicy>());
-			
+
 		if (documentType.getDocumentTypeId() == null){
 			entityManager.persist(documentType);
 		} else {
 			for(org.kuali.rice.kew.engine.node.Process process:(List<org.kuali.rice.kew.engine.node.Process>)documentType.getProcesses()){
 				if(process.getInitialRouteNode().getRouteNodeId()==null){
 					process.getInitialRouteNode().setDocumentTypeId(documentType.getDocumentTypeId());
-					entityManager.persist(process.getInitialRouteNode());					
+					entityManager.persist(process.getInitialRouteNode());
 				} else {
 					OrmUtils.merge(entityManager, process.getInitialRouteNode());
 				}
@@ -142,7 +151,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 				OrmUtils.merge(entityManager, docTypePolicy);
 			}
 		}
-		
+
 		documentType.setPolicies(docPolicies);
 	}
 
@@ -237,29 +246,29 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		crit.isNull("docTypeParentId");
 		return findAllCurrent(crit);
 	}
-    
+
     public List findAllCurrent() {
     	return findAllCurrent(new Criteria(DocumentType.class.getName()));
     }
-    
+
     public List findAllCurrentByName(String name) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		crit.eq("name", name);
 		return findAllCurrent(crit);
     }
-    
+
     public List<DocumentType> findPreviousInstances(String name) {
         Criteria crit = new Criteria(DocumentType.class.getName());
         crit.eq("name", name);
         crit.eq("currentInd", Boolean.FALSE);
         return findAll(crit);
     }
-    
+
     private List findAllCurrent(Criteria crit) {
         crit.eq("currentInd", Boolean.TRUE);
         return findAll(crit);
     }
-    
+
     private List findAll(Criteria crit) {
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
@@ -269,12 +278,12 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     	crit.eq("ruleAttributeId", ruleAttribute.getRuleAttributeId());
     	return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
-    
+
     public Long findDocumentTypeIdByDocumentId(Long documentId) {
     	//FIXME: I don't think this does what it's supposed to
     	Criteria crit = new Criteria(DocumentType.class.getName());
     	crit.eq("routeHeaderId", documentId);
-    	
+
     	List<DocumentType> docTypes = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     	for (DocumentType docType:docTypes){
     	    return docType.getDocumentTypeId();

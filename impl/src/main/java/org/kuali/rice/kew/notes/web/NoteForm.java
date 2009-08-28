@@ -91,10 +91,6 @@ public class NoteForm extends KualiForm {
         this.showEdit = showEdit;
     }
 
-    public String getInstructionForCreateNew() {
-        return Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.NOTE_DETAIL_TYPE, KEWConstants.NOTE_CREATE_NEW_INSTRUCTION);
-    }
-
     public Long getDocId() {
         return docId;
     }

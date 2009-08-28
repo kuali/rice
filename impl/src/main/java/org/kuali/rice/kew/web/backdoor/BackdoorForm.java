@@ -70,12 +70,14 @@ public class BackdoorForm extends KualiForm {
     public void setLinkTarget(String linkTarget) {
         this.linkTarget = linkTarget;
     }
+    /*
     public String getTargetName() {
         return targetName;
     }
     public void setTargetName(String targetName) {
         this.targetName = targetName;
     }
+    */
     public String getGraphic(){
     	return this.graphic;
     }

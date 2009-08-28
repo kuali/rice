@@ -492,12 +492,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
     public static final String SESSION_SCOPE = "session";
 
-    public static class CoreApcParms {
-
-        public static final String WORKFLOW_EXCEPTION_WORKGROUP = "EXCEPTION_GROUP";
-        public static final String SUPERVISOR_WORKGROUP = "SUPERVISOR_GROUP";
-    }
-
     public static class SystemGroupParameterNames {
         public static final String CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND = "CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND";
 

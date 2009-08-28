@@ -25,6 +25,7 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.document.TransactionalDocument;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -169,14 +170,15 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationService#getBaseInquiryUrl(java.lang.String)
 	 */
 	public String getBaseInquiryUrl(String businessObjectClassName) {
-		throw new UnsupportedOperationException( "getBaseInquiryUrl" );
+		return LookupUtils.getBaseInquiryUrl();
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.service.RiceApplicationConfigurationService#getBaseLookupUrl(java.lang.String)
 	 */
 	public String getBaseLookupUrl(String businessObjectClassName) {
-		throw new UnsupportedOperationException( "getBaseLookupUrl" );
+		// all Rice applications share the same type of lookup URL
+		return LookupUtils.getBaseLookupUrl(false);
 	}
 
 	/**

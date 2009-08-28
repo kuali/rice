@@ -974,7 +974,6 @@ public class KEWConstants extends JSTLConstants {
     public static final String HELP_DESK_ACTION_LIST = "HELP_DESK_NAME_GROUP";
     public static final String QUICK_LINKS_RESTRICT_DOCUMENT_TYPES = "RESTRICT_DOCUMENT_TYPES";
     public static final String RULE_CUSTOM_DOC_TYPES = "CUSTOM_DOCUMENT_TYPES";
-    public static final String RULE_ROUTE_LOG_POPUP_IND = "ROUTE_LOG_POPUP_IND";
     public static final String RULE_GENERATE_ACTION_REQESTS_IND = "GENERATE_ACTION_REQUESTS_IND";
     public static final String SHOW_ATTACHMENTS_IND = "SHOW_ATTACHMENTS_IND";
     public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";

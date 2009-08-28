@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -75,7 +76,7 @@ public class KimModuleService extends ModuleServiceBase {
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID))
 				return (T) getGroupService().getGroupInfo((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
 		} else if (KimEntity.class.isAssignableFrom(businessObjectClass)) {
-			return (T) new KimEntityInfo((KimEntity) super.getExternalizableBusinessObject( businessObjectClass, fieldValues ));
+			return (T) new KimEntityInfo((KimEntity) super.getExternalizableBusinessObject( businessObjectClass, Collections.<String, Object>emptyMap() ));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObject( businessObjectClass, fieldValues );
@@ -96,7 +97,7 @@ public class KimModuleService extends ModuleServiceBase {
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
 		} else if (KimEntity.class.isAssignableFrom(externalizableBusinessObjectClass)) {
-			return toKimEntity(super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues ));
+			return toKimEntity(super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, Collections.<String, Object>emptyMap() ));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );
@@ -116,7 +117,7 @@ public class KimModuleService extends ModuleServiceBase {
 			// FIXME: needs to send unbounded flag
 			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
 		} else if (KimEntity.class.isAssignableFrom(externalizableBusinessObjectClass)) {
-			return toKimEntity(super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded));
+			return toKimEntity(super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, Collections.<String, Object>emptyMap(), unbounded));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded);

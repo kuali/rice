@@ -32,6 +32,7 @@ import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;
  */
 public class AddPersonDocumentRoleQualifierEvent extends KualiDocumentEventBase {
 
+	private IdentityManagementPersonDocument document;
 	private KimDocumentRoleMember kimDocumentRoleMember;
 	private PersonDocumentRole role;
 	private int selectedRoleIdx;
@@ -39,6 +40,7 @@ public class AddPersonDocumentRoleQualifierEvent extends KualiDocumentEventBase 
 	public AddPersonDocumentRoleQualifierEvent(String errorPathPrefix, IdentityManagementPersonDocument document, 
 			KimDocumentRoleMember kimDocumentRoleMember, PersonDocumentRole role, int selectedRoleIdx) {
         super("adding role qualifiers to person document " + getDocumentId(document), errorPathPrefix, document);
+        this.document = document;
         this.kimDocumentRoleMember = kimDocumentRoleMember;
         this.role = role;
         this.selectedRoleIdx = selectedRoleIdx;
@@ -59,7 +61,7 @@ public class AddPersonDocumentRoleQualifierEvent extends KualiDocumentEventBase 
 	 * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.kns.rule.BusinessRule)
 	 */
 	public boolean invokeRuleMethod(BusinessRule rule) {
-		return ((AddPersonDocumentRoleQualifierRule) rule).processAddPersonDocumentRoleQualifier(role, kimDocumentRoleMember, selectedRoleIdx);
+		return ((AddPersonDocumentRoleQualifierRule) rule).processAddPersonDocumentRoleQualifier(document, role, kimDocumentRoleMember, selectedRoleIdx);
 	}
 
 }

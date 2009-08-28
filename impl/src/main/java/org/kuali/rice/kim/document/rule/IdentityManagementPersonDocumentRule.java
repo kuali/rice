@@ -568,7 +568,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return businessObjectService;
 	}
 
-	public boolean processAddPersonDocumentRoleQualifier(PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
+	public boolean processAddPersonDocumentRoleQualifier(IdentityManagementPersonDocument document, PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
 		boolean dateValidationSuccess = validateActiveDate("document.roles[" + selectedRoleIdx + "].newRolePrncpl.activeFromDate", kimDocumentRoleMember.getActiveFromDate(), kimDocumentRoleMember.getActiveToDate());
 		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
 		AttributeSet validationErrors = new AttributeSet();
@@ -583,9 +583,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    AttributeSet oldMemberQualifiers;
 	    List<String> roleIds = new ArrayList<String>();
 	    roleIds.add(role.getRoleId());
-	    List<RoleMembershipInfo> roleMembersForRole = getRoleService().getFirstLevelRoleMembers(roleIds);
-	    for(RoleMembershipInfo member: roleMembersForRole){
-	    	oldMemberQualifiers = member.getQualifier();
+	    //List<RoleMembershipInfo> roleMembersForRole = getRoleService().getFirstLevelRoleMembers(roleIds);
+	    for(KimDocumentRoleMember member: role.getRolePrncpls()){
+	    	oldMemberQualifiers = member.getQualifierAsAttributeSet();
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			role.getKimRoleType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
 	    	validationErrors.putAll( 
@@ -596,11 +596,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
 	    			role.getKimRoleType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
-	    	if (!attributesUnique && (member.getMemberId().equals(kimDocumentRoleMember.getMemberId()) && 
-	    			member.getMemberTypeCode().equals(kimDocumentRoleMember.getMemberTypeCode()))){
-	            rulePassed = false;
-	            GlobalVariables.getMessageMap().putError(errorPath, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role"});
-	            break;
+	    	if (!attributesUnique){
+	            GlobalVariables.getMessageMap().putError("document."+errorPath+".qualifiers[0].attrVal", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role Qualifier"});
+	            return false;
 	    	}
 	    	i++;
 	    }

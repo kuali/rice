@@ -34,7 +34,7 @@
 					<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 			       	<td align="left" valign="middle">
 			       		<div align="center"> 
-			      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnlyRole}" />
+			      		   <kul:htmlControlAttribute kimTypeId="${role.kimTypeId}" property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnlyRole}" />
 			      		   <%-- 
 			      		   TODO: code (probably) does not pull the remote property name properly
 			      		   TODO: code does not handle multiple lookup/conversion parameters 

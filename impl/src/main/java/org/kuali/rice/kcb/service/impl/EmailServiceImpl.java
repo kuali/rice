@@ -17,7 +17,9 @@ package org.kuali.rice.kcb.service.impl;
 
 import java.util.Properties;
 
+import javax.mail.Authenticator;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -30,6 +32,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.EmailService;
+import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.mail.smtp.SMTPTransport;
@@ -105,21 +110,20 @@ public class EmailServiceImpl implements EmailService {
         String title = messageDelivery.getMessage().getTitle();
         String subject = (channelName == null ? "" : channelName + " ") + (!StringUtils.isBlank(title) ? " - " + title : "");
 
-        String format = new String();
-        String link = new String();
-        String linebreak = new String();
+        String format = "text/plain";
+        String linebreak = "\n\n";
 
         // NOTE: we don't set the docId parameter in the link
         // This forces the detail view to not render an acknowledge
         // button
-        link = "fake link";
+        String link = weburl +"/"+ DETAILACTION +"?" 
+        + NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID +"="+ messageDelivery.getId();
+
         if (emailFormat == null || emailFormat.equals("text")) {
-            format = "text/plain";
-            //link = weburl+"/"+DETAILACTION+"?"+ NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID + "="+ messageDelivery.getId();
-            linebreak = "\n\n";
+        	// defaults values are good for text
         } else {  // html format
             format = "text/html";
-            //link = "<a href='"+weburl+"/"+DETAILACTION+"?" + NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID + "="+ messageDelivery.getId()+"'>Notification Detail</a>";
+            link = "<a href='"+ link +"'>Notification Detail</a>";
             linebreak = "<br /><br />";
         }
 

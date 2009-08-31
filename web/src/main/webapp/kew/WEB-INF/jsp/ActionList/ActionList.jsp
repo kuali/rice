@@ -260,10 +260,10 @@
 						sortProperty="routeHeaderId">
 						<c:choose>
 							<c:when test="${kewUserSession.helpDeskActionListPerson == null}">
-								<a
+                                <a
 									href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
-                                     <c:param name="docId" value="${result.routeHeaderId}"/>
-                                         <c:param name="command" value="displayActionListView" />
+                                     <c:param name="${Constants.ROUTEHEADER_ID_PARAMETER}" value="${result.routeHeaderId}"/>
+                                         <c:param name="${Constants.COMMAND_PARAMETER}" value="${Constants.ACTIONLIST_COMMAND}" />
                                              </c:url>"
 									<c:if test="${ActionListForm.documentPopup}"> target="_blank" </c:if>
 									class="showvisit"> <c:out value="${result.routeHeaderId}" />

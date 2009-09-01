@@ -25,12 +25,6 @@ import java.io.Serializable;
  */
 public class KimInfoBase implements Serializable {
 
-	/** So users of this class don't need to program around nulls. */
-	protected String unNullify( String str ) {
-		if ( str == null ) {
-			return "";
-		}
-		return str;
-	}
-	
+	private static final long serialVersionUID = -1278117496016870920L;
+
 }

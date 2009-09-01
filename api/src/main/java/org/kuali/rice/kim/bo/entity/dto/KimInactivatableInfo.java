@@ -27,6 +27,8 @@ import org.kuali.rice.kns.bo.Inactivateable;
  */
 public class KimInactivatableInfo extends KimInfoBase implements Serializable, Inactivateable {
 
+	private static final long serialVersionUID = 3867167307504353932L;
+
 	protected boolean active;
 
 	/**

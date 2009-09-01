@@ -58,6 +58,20 @@ public class DocumentTypeTest extends KEWTestCase {
         loadXmlFile("DoctypeConfig.xml");
     }
 
+    @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
+//        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "DocumentType");
+        WorkflowDocument document = new WorkflowDocument("user1", "TestDoubleNodeDocumentType");
+        document.setTitle("");
+        document.routeDocument("");
+//        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument("rkirkend", document.getRouteHeaderId());
+        assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
+        document.approve("");
+        document = new WorkflowDocument("user2", document.getRouteHeaderId());
+        assertTrue("user2 should have an approve request", document.isApprovalRequested());
+        document.approve("");
+    }
+
     /**
      * Verify that enroute documents are not affected if you edit their document type.
      * @throws Exception

@@ -27,6 +27,14 @@ public class EntityTypeInfo extends KimCodeInfoBase implements EntityType {
 
 	private static final long serialVersionUID = 1L;
 
+	public EntityTypeInfo() {
+		super();
+	}
+
+	public EntityTypeInfo(EntityType entityType) {
+		super(entityType);
+	}
+
 	/**
 	 * @return the entityTypeCode
 	 */

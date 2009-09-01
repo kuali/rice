@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
@@ -32,6 +34,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	 * 
 	 */
 	public KimPrincipalInfo() {
+		super();
 		active = true;
 	}
 	
@@ -39,6 +42,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	 * 
 	 */
 	public KimPrincipalInfo( KimPrincipal p ) {
+		this();
 		if ( p != null ) {
 			principalId = unNullify( p.getPrincipalId() );
 			entityId = unNullify( p.getEntityId() );

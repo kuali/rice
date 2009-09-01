@@ -78,11 +78,11 @@ public class SOAPServiceDefinition extends ServiceDefinition {
 			try {
 				if (!Class.forName(getServiceInterface()).isInterface()) {
 					throw new ConfigurationException(
-							"Service interface must be a Java interface");
+							"Service interface class '" + getServiceInterface() + "' must be a Java interface"); 
 				}
 			} catch (ClassNotFoundException e) {
 				throw new ConfigurationException(
-						"Service interface could not be found in the classpath");
+						"Service interface class '" + getServiceInterface() + "' could not be found in the classpath");
 			}
 		}
 		if (getBusSecurity() == null) {

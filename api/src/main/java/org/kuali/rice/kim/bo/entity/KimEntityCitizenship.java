@@ -25,8 +25,8 @@ import org.kuali.rice.kns.bo.Inactivateable;
 public interface KimEntityCitizenship extends Inactivateable {
 
 	String getEntityCitizenshipId();
-
 	String getCitizenshipStatusCode();
+	String getCountryCode();
 	Date getStartDate();
 	Date getEndDate();
 		

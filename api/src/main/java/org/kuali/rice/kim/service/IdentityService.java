@@ -27,6 +27,7 @@ import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.jaxb.StringToKimEntityNameInfoMapAdapter;
 import org.kuali.rice.core.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
@@ -88,22 +89,37 @@ public interface IdentityService {
 	 * Get the principal with the given name and password.
 	 */
 	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password );
-	    
+
 	/**
 	 * Get the entity default info for the entity with the given id.
 	 */
 	KimEntityDefaultInfo getEntityDefaultInfo( @WebParam(name="entityId") String entityId );
-	
+
 	/**
 	 * Get the entity default info for the entity of the principal with the given principal id.
 	 */
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( @WebParam(name="principalId") String principalId );
-	
+
 	/**
 	 * Get the entity default info for the entity of the principal with the given principal name.
 	 */
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( @WebParam(name="principalName") String principalName );
-	
+
+	/**
+	 * Get the entity info for the entity with the given id.
+	 */
+	KimEntityInfo getEntityInfo( @WebParam(name="entityId") String entityId );
+
+	/**
+	 * Get the entity info for the entity of the principal with the given principal id.
+	 */
+	KimEntityInfo getEntityInfoByPrincipalId( @WebParam(name="principalId") String principalId );
+
+	/**
+	 * Get the entity info for the entity of the principal with the given principal name.
+	 */
+	KimEntityInfo getEntityInfoByPrincipalName( @WebParam(name="principalName") String principalName );
+
 	/**
 	 * Gets a List of entity default info for entities based on the given search criteria.
 	 * 
@@ -113,7 +129,7 @@ public interface IdentityService {
 	 * 
 	 * <p>The searchCriteria Map is a map of entity field names to search values.
 	 */
-	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
+	List<KimEntityDefaultInfo> lookupEntityDefaultInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
 	
 	/**
 	 * Returns a count of the number of entities that match the given search criteria.

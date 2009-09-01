@@ -89,5 +89,10 @@ public interface KimEntity extends Inactivateable {
 	 */
 	KimEntityName getDefaultName();
 
-	
+	public List<? extends KimEntityEthnicity> getEthnicities();
+
+	public List<? extends KimEntityResidency> getResidencies();
+
+	public List<? extends KimEntityVisa> getVisas();
+
 }

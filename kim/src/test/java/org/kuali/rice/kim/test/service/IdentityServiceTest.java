@@ -27,6 +27,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.IdentityService;
@@ -87,6 +88,34 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertEquals("Principal ID did not match expected result","KULUSER", principal.getPrincipalId());
 	}
 	
+	@Test
+	public void testGetDefaultEntityByPrincipalId() {
+		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalId("KULUSER");
+		assertNotNull("entity must not be null", info);
+	}
+
+	@Test
+	public void testGetDefaultEntityByPrincipalName() {
+		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalName("kuluser");
+		assertNotNull("entity must not be null", info);
+	}
+
+	@Test
+	public void testGetEntityByPrincipalId() {
+		KimEntityInfo info = identityService.getEntityInfoByPrincipalId("KULUSER");
+		assertNotNull("entity must not be null", info);
+		assertNotNull("entity visas must not be null", info.getVisas());
+		assertNotNull("entity residencies must not be null", info.getResidencies());
+	}
+
+	@Test
+	public void testGetEntityByPrincipalName() {
+		KimEntityInfo info = identityService.getEntityInfoByPrincipalName("kuluser");
+		assertNotNull("entity must not be null", info);
+		assertNotNull("entity visas must not be null", info.getVisas());
+		assertNotNull("entity residencies must not be null", info.getResidencies());
+	}
+
 	@Test
 	public void testGetContainedAttributes() {
 		KimPrincipal principal = identityService.getPrincipal("p1");

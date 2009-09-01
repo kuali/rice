@@ -25,6 +25,7 @@ public interface KimEntityEmail extends KimDefaultableEntityTypeData {
 
 	String getEntityEmailId();
 	String getEmailTypeCode();
+	String getEntityTypeCode();
 	
 	String getEmailAddress();
 	String getEmailAddressUnmasked();

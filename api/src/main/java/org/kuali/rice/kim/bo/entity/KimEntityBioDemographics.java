@@ -25,11 +25,23 @@ import java.util.Date;
  */
 public interface KimEntityBioDemographics {
 
+	String getEntityId();
 	Date getBirthDate();
-	String getEthnicityCode();
-	String getEthnicityCodeUnmasked();
 	String getGenderCode();
 	String getGenderCodeUnmasked();
-	
+	Date getDeceasedDate();
+	String getMaritalStatusCode();
+	String getPrimaryLanguageCode();
+	String getSecondaryLanguageCode();
+	String getCountryOfBirthCode();
+	String getStateOfBirth();
+	String getCityOfBirth();
+	String getGeographicOrigin();
+
 	boolean isSuppressPersonal();
+
+	// TODO delyea - to be removed once full KimEntityEthnicity is approved
+	String getEthnicityCode();
+	String getEthnicityCodeUnmasked();
+	
 }

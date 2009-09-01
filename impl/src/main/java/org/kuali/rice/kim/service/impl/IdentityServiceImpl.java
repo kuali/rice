@@ -24,25 +24,40 @@ import java.util.Map;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityBioDemographicsInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityCitizenshipInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEthnicityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityResidencyInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityVisaInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityCitizenshipImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
@@ -85,6 +100,39 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	private BusinessObjectService businessObjectService;
 
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityInfo(java.lang.String)
+	 */
+	public KimEntityInfo getEntityInfo(String entityId) {
+		KimEntityImpl entity = getEntityImpl( entityId );
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToInfo( entity );
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityInfoByPrincipalId(java.lang.String)
+	 */
+	public KimEntityInfo getEntityInfoByPrincipalId(String principalId) {
+		KimEntityImpl entity = getEntityByPrincipalId(principalId);
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToInfo(entity);
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityInfoByPrincipalName(java.lang.String)
+	 */
+	public KimEntityInfo getEntityInfoByPrincipalName(String principalName) {
+		KimEntityImpl entity = getEntityByPrincipalName(principalName);
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToInfo(entity);
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getEntityDefaultInfo(java.lang.String)
 	 */
@@ -138,7 +186,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntityDefaultInfo(Map, boolean)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
+	public List<KimEntityDefaultInfo> lookupEntityDefaultInfo(
 			Map<String,String> searchCriteria, boolean unbounded) {
 		Collection baseResults = null; 
 		if ( unbounded ) {
@@ -163,6 +211,91 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		return getBusinessObjectService().countMatching( KimEntityImpl.class, searchCriteria );
 	}
 	
+	protected KimEntityInfo convertEntityImplToInfo( KimEntityImpl entity ) {
+		KimEntityInfo info = new KimEntityInfo();
+		info.setEntityId( entity.getEntityId() );
+		info.setActive( entity.isActive() );
+		ArrayList<KimPrincipalInfo> principalInfo = new ArrayList<KimPrincipalInfo>( entity.getPrincipals().size() );
+		info.setPrincipals( principalInfo );
+		for ( KimPrincipalImpl p : entity.getPrincipals() ) {
+			principalInfo.add( new KimPrincipalInfo( p ) );
+		}
+		KimEntityBioDemographicsInfo bioDemo = null;
+		if ( ObjectUtils.isNotNull( entity.getBioDemographics() ) ) {
+			bioDemo = new KimEntityBioDemographicsInfo(entity.getBioDemographics());
+        }
+		info.setBioDemographics(bioDemo);
+		KimEntityPrivacyPreferencesInfo privacy = null;
+		if ( ObjectUtils.isNotNull( entity.getPrivacyPreferences() ) ) {
+            privacy = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+        }
+		info.setPrivacyPreferences(privacy);
+		ArrayList<KimEntityNameInfo> nameInfos = new ArrayList<KimEntityNameInfo>( entity.getNames().size() );
+		info.setNames(nameInfos);
+		for ( KimEntityNameImpl p : entity.getNames() ) {
+			nameInfos.add( new KimEntityNameInfo( p ) );
+		}
+		ArrayList<KimEntityEntityTypeInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeInfo>( entity.getEntityTypes().size() );
+		info.setEntityTypes( entityTypesInfo );
+		for ( KimEntityEntityType entityEntityType : entity.getEntityTypes() ) {
+			KimEntityEntityTypeInfo typeInfo = new KimEntityEntityTypeInfo();
+			typeInfo.setEntityTypeCode( entityEntityType.getEntityTypeCode() );
+			ArrayList<KimEntityAddressInfo> addresses = new ArrayList<KimEntityAddressInfo>( entityEntityType.getAddresses().size() );
+			typeInfo.setAddresses(addresses);
+			for (KimEntityAddress kimEntityAddress : entityEntityType.getAddresses()) {
+				addresses.add(new KimEntityAddressInfo(kimEntityAddress));
+			}
+			ArrayList<KimEntityEmailInfo> emailAddresses = new ArrayList<KimEntityEmailInfo>( entityEntityType.getAddresses().size() );
+			typeInfo.setEmailAddresses(emailAddresses);
+			for (KimEntityEmail kimEntityEmailAddress : entityEntityType.getEmailAddresses()) {
+				emailAddresses.add(new KimEntityEmailInfo(kimEntityEmailAddress));
+			}
+			ArrayList<KimEntityPhoneInfo> phoneNumbers = new ArrayList<KimEntityPhoneInfo>( entityEntityType.getPhoneNumbers().size() );
+			typeInfo.setPhoneNumbers(phoneNumbers);
+			for (KimEntityPhone kimEntityPhone : entityEntityType.getPhoneNumbers()) {
+				phoneNumbers.add(new KimEntityPhoneInfo(kimEntityPhone));
+			}
+			entityTypesInfo.add( typeInfo );
+		}
+		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( entity.getAffiliations().size() );
+		info.setAffiliations( affInfo );
+		for ( KimEntityAffiliation aff : entity.getAffiliations() ) {
+			affInfo.add( new KimEntityAffiliationInfo( aff ) );
+		}
+		ArrayList<KimEntityEmploymentInformationInfo> employmentInfos = new ArrayList<KimEntityEmploymentInformationInfo>( entity.getEmploymentInformation().size() );
+		info.setEmploymentInformation( employmentInfos );
+		for ( KimEntityEmploymentInformationImpl emp : entity.getEmploymentInformation() ) {
+			employmentInfos.add( new KimEntityEmploymentInformationInfo( emp ) );
+		}
+		info.setPrimaryEmployment(new KimEntityEmploymentInformationInfo(entity.getPrimaryEmployment()));
+		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
+		info.setExternalIdentifiers( idInfo );
+		for ( KimEntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
+			idInfo.add( new KimEntityExternalIdentifierInfo( id ) );
+		}
+		ArrayList<KimEntityCitizenshipInfo> citizenships = new ArrayList<KimEntityCitizenshipInfo>( entity.getCitizenships().size() );
+		info.setCitizenships(citizenships);
+		for ( KimEntityCitizenshipImpl citizenship : entity.getCitizenships() ) {
+			citizenships.add( new KimEntityCitizenshipInfo( citizenship ) );
+		}
+		ArrayList<KimEntityEthnicityInfo> ethnicities = new ArrayList<KimEntityEthnicityInfo>( entity.getEthnicities().size() );
+		info.setEthnicities( ethnicities );
+		for ( KimEntityEthnicityImpl ethnicity : entity.getEthnicities() ) {
+			ethnicities.add( new KimEntityEthnicityInfo( ethnicity ) );
+		}
+		ArrayList<KimEntityResidencyInfo> residencies = new ArrayList<KimEntityResidencyInfo>( entity.getResidencies().size() );
+		info.setResidencies(residencies);
+		for ( KimEntityResidencyImpl residence : entity.getResidencies() ) {
+			residencies.add( new KimEntityResidencyInfo( residence ) );
+		}
+		ArrayList<KimEntityVisaInfo> visas = new ArrayList<KimEntityVisaInfo>( entity.getVisas().size() );
+		info.setVisas( visas );
+		for ( KimEntityVisaImpl visa : entity.getVisas() ) {
+			visas.add( new KimEntityVisaInfo( visa ) );
+		}
+		return info;	
+	}
+
 	protected KimEntityDefaultInfo convertEntityImplToDefaultInfo( KimEntityImpl entity ) {
 		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
 		info.setEntityId( entity.getEntityId() );

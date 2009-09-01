@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.reference.dto;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kns.bo.KualiCode;
@@ -25,15 +27,32 @@ import org.kuali.rice.kns.bo.KualiCode;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class KimCodeInfoBase implements KimCode {
-    
+
+	private static final long serialVersionUID = 3391418027677414695L;
+
 	protected String code;
     protected String name;
     protected boolean active;
     protected String displaySortCode = "";
 	
-    /**
+    public KimCodeInfoBase() {
+		super();
+		active = true;
+	}
+
+    public KimCodeInfoBase(KimCode kimCode) {
+		this();
+		if ( kimCode != null ) {
+			this.code = (kimCode.getCode() != null) ? kimCode.getCode() : "";
+			this.name = (kimCode.getName() != null) ? kimCode.getName() : "";
+			this.displaySortCode = "";
+		}
+	}
+
+	/**
 	 * @return the code
 	 */
+	@XmlTransient
 	public String getCode() {
 		return this.code;
 	}
@@ -48,6 +67,7 @@ public abstract class KimCodeInfoBase implements KimCode {
 	/**
 	 * @return the name
 	 */
+	@XmlTransient
 	public String getName() {
 		return this.name;
 	}

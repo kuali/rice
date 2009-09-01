@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 
 /**
@@ -32,12 +34,14 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimE
 	 * 
 	 */
 	public KimEntityExternalIdentifierInfo() {
+		super();
 	}
 	
 	/**
 	 * 
 	 */
 	public KimEntityExternalIdentifierInfo( KimEntityExternalIdentifier eid ) {
+		this();
 		if ( eid != null ) {
 			entityExternalIdentifierId = unNullify( eid.getEntityExternalIdentifierId() );
 			externalIdentifierTypeCode = unNullify( eid.getExternalIdentifierTypeCode() );

@@ -40,6 +40,9 @@ public class EmailServiceImpl implements EmailService {
 
 	private static Logger LOG = Logger.getLogger(EmailServiceImpl.class);
 
+	private static final String FORMAT_TEXT_HTML = "text/html";
+	private static final String FORMAT_TEXT_PLAIN = "text/plain";
+
     // values injected into these from Spring
     private String weburl;
     private String defaultSender = "kcb@localhost";
@@ -91,7 +94,7 @@ public class EmailServiceImpl implements EmailService {
         String title = messageDelivery.getMessage().getTitle();
         String subject = (channelName == null ? "" : channelName + " ") + (!StringUtils.isBlank(title) ? " - " + title : "");
 
-        String format = "text/plain";
+        String format = FORMAT_TEXT_PLAIN;
         String linebreak = "\n\n";
 
         // NOTE: we don't set the docId parameter in the link
@@ -103,7 +106,7 @@ public class EmailServiceImpl implements EmailService {
         if (emailFormat == null || emailFormat.equals("text")) {
         	// defaults values are good for text
         } else {  // html format
-            format = "text/html";
+            format = FORMAT_TEXT_HTML;
             link = "<a href='"+ link +"'>Notification Detail</a>";
             linebreak = "<br /><br />";
         }
@@ -144,7 +147,7 @@ public class EmailServiceImpl implements EmailService {
     			new EmailTo(sendTo), 
     			new EmailSubject(subject), 
     			new EmailBody(message), 
-    			!"text".equals(format));
+    			!FORMAT_TEXT_PLAIN.equals(format));
 
     }
 }

@@ -383,22 +383,14 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsCopy(MaintenanceDocument)
      */
     public Boolean getAllowsCopy(MaintenanceDocument document) {
-        Boolean allowsCopy = null;
-        if (document != null) {
-            MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(document.getNewMaintainableObject().getBoClass());
-            if (entry != null) {
-                allowsCopy = Boolean.valueOf(entry.getAllowsCopy());
-            }
-        }
-
-        return allowsCopy;
+        return document != null ? this.getAllowsNewOrCopy(this.getDocumentTypeName(document.getNewMaintainableObject().getBoClass())) : Boolean.FALSE;
     }
 
     /**
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsNewOrCopy(java.lang.String)
      */
     public Boolean getAllowsNewOrCopy(String docTypeName) {
-        Boolean allowsNewOrCopy = null;
+        Boolean allowsNewOrCopy = Boolean.FALSE;
 
         if (docTypeName != null) {
             MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(docTypeName);
@@ -784,7 +776,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 	 */
 	public Boolean getAllowsRecordDeletion(Class businessObjectClass) {
 		
-		Boolean allowsRecordDeletion = null;
+		Boolean allowsRecordDeletion = Boolean.FALSE;
 
 		MaintenanceDocumentEntry docEntry = getMaintenanceDocumentEntry(businessObjectClass);
 		
@@ -801,16 +793,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsRecordDeletion(org.kuali.rice.kns.document.MaintenanceDocument)
 	 */
 	public Boolean getAllowsRecordDeletion(MaintenanceDocument document) {
-        
-		Boolean allowsRecordDeletion = null;
-        
-		if (document != null) {
-            MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(document.getNewMaintainableObject().getBoClass());
-            if (entry != null) {
-                allowsRecordDeletion = Boolean.valueOf(entry.getAllowsCopy());
-            }
-        }
-        return allowsRecordDeletion;
+        return document != null ? this.getAllowsRecordDeletion(document.getNewMaintainableObject().getBoClass()) : Boolean.FALSE;
 	}
 
 }

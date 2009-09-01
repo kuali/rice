@@ -103,7 +103,6 @@
 
     <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
         <property name="weburl" value="${ken.url}"/>
-        <property name="smtpHost" value="${mail.smtp.host}"/>
     </bean>
 
     <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceDirectImpl">

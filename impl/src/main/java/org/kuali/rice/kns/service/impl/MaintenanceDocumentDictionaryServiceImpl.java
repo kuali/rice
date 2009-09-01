@@ -383,7 +383,16 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsCopy(MaintenanceDocument)
      */
     public Boolean getAllowsCopy(MaintenanceDocument document) {
-        return document != null ? this.getAllowsNewOrCopy(this.getDocumentTypeName(document.getNewMaintainableObject().getBoClass())) : Boolean.FALSE;
+        Boolean allowsCopy = Boolean.FALSE;
+        
+        if (document != null) {
+            MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(document.getNewMaintainableObject().getBoClass());
+            if (entry != null) {
+                allowsCopy = Boolean.valueOf(entry.getAllowsCopy());
+            }
+        }
+
+        return allowsCopy;
     }
 
     /**

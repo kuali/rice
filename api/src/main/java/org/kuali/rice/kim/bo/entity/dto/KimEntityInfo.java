@@ -15,11 +15,24 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
+import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityResidency;
+import org.kuali.rice.kim.bo.entity.KimEntityVisa;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a data transfer objects containing all information related to a KIM entity.
@@ -50,6 +63,90 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	public KimEntityInfo() {
 		super();
 		active = true;
+	}
+
+	public KimEntityInfo(KimEntity entity) {
+		this();
+		this.setEntityId( entity.getEntityId() );
+		this.setActive( entity.isActive() );
+		ArrayList<KimPrincipalInfo> principalInfo = new ArrayList<KimPrincipalInfo>( entity.getPrincipals().size() );
+		this.setPrincipals( principalInfo );
+		for ( KimPrincipal p : entity.getPrincipals() ) {
+			principalInfo.add( new KimPrincipalInfo( p ) );
+		}
+		KimEntityBioDemographicsInfo bioDemo = null;
+		if ( ObjectUtils.isNotNull( entity.getBioDemographics() ) ) {
+			bioDemo = new KimEntityBioDemographicsInfo(entity.getBioDemographics());
+        }
+		this.setBioDemographics(bioDemo);
+		KimEntityPrivacyPreferencesInfo privacy = null;
+		if ( ObjectUtils.isNotNull( entity.getPrivacyPreferences() ) ) {
+            privacy = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+        }
+		this.setPrivacyPreferences(privacy);
+		ArrayList<KimEntityNameInfo> nameInfos = new ArrayList<KimEntityNameInfo>( entity.getNames().size() );
+		this.setNames(nameInfos);
+		for ( KimEntityName p : entity.getNames() ) {
+			nameInfos.add( new KimEntityNameInfo( p ) );
+		}
+		ArrayList<KimEntityEntityTypeInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeInfo>( entity.getEntityTypes().size() );
+		this.setEntityTypes( entityTypesInfo );
+		for ( KimEntityEntityType entityEntityType : entity.getEntityTypes() ) {
+			KimEntityEntityTypeInfo typeInfo = new KimEntityEntityTypeInfo();
+			typeInfo.setEntityTypeCode( entityEntityType.getEntityTypeCode() );
+			ArrayList<KimEntityAddressInfo> addresses = new ArrayList<KimEntityAddressInfo>( entityEntityType.getAddresses().size() );
+			typeInfo.setAddresses(addresses);
+			for (KimEntityAddress kimEntityAddress : entityEntityType.getAddresses()) {
+				addresses.add(new KimEntityAddressInfo(kimEntityAddress));
+			}
+			ArrayList<KimEntityEmailInfo> emailAddresses = new ArrayList<KimEntityEmailInfo>( entityEntityType.getAddresses().size() );
+			typeInfo.setEmailAddresses(emailAddresses);
+			for (KimEntityEmail kimEntityEmailAddress : entityEntityType.getEmailAddresses()) {
+				emailAddresses.add(new KimEntityEmailInfo(kimEntityEmailAddress));
+			}
+			ArrayList<KimEntityPhoneInfo> phoneNumbers = new ArrayList<KimEntityPhoneInfo>( entityEntityType.getPhoneNumbers().size() );
+			typeInfo.setPhoneNumbers(phoneNumbers);
+			for (KimEntityPhone kimEntityPhone : entityEntityType.getPhoneNumbers()) {
+				phoneNumbers.add(new KimEntityPhoneInfo(kimEntityPhone));
+			}
+			entityTypesInfo.add( typeInfo );
+		}
+		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( entity.getAffiliations().size() );
+		this.setAffiliations( affInfo );
+		for ( KimEntityAffiliation aff : entity.getAffiliations() ) {
+			affInfo.add( new KimEntityAffiliationInfo( aff ) );
+		}
+		ArrayList<KimEntityEmploymentInformationInfo> employmentInfos = new ArrayList<KimEntityEmploymentInformationInfo>( entity.getEmploymentInformation().size() );
+		this.setEmploymentInformation( employmentInfos );
+		for ( KimEntityEmploymentInformation emp : entity.getEmploymentInformation() ) {
+			employmentInfos.add( new KimEntityEmploymentInformationInfo( emp ) );
+		}
+		this.setPrimaryEmployment(new KimEntityEmploymentInformationInfo(entity.getPrimaryEmployment()));
+		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
+		this.setExternalIdentifiers( idInfo );
+		for ( KimEntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
+			idInfo.add( new KimEntityExternalIdentifierInfo( id ) );
+		}
+		ArrayList<KimEntityCitizenshipInfo> citizenships = new ArrayList<KimEntityCitizenshipInfo>( entity.getCitizenships().size() );
+		this.setCitizenships(citizenships);
+		for ( KimEntityCitizenship citizenship : entity.getCitizenships() ) {
+			citizenships.add( new KimEntityCitizenshipInfo( citizenship ) );
+		}
+		ArrayList<KimEntityEthnicityInfo> ethnicities = new ArrayList<KimEntityEthnicityInfo>( entity.getEthnicities().size() );
+		this.setEthnicities( ethnicities );
+		for ( KimEntityEthnicity ethnicity : entity.getEthnicities() ) {
+			ethnicities.add( new KimEntityEthnicityInfo( ethnicity ) );
+		}
+		ArrayList<KimEntityResidencyInfo> residencies = new ArrayList<KimEntityResidencyInfo>( entity.getResidencies().size() );
+		this.setResidencies(residencies);
+		for ( KimEntityResidency residence : entity.getResidencies() ) {
+			residencies.add( new KimEntityResidencyInfo( residence ) );
+		}
+		ArrayList<KimEntityVisaInfo> visas = new ArrayList<KimEntityVisaInfo>( entity.getVisas().size() );
+		this.setVisas( visas );
+		for ( KimEntityVisa visa : entity.getVisas() ) {
+			visas.add( new KimEntityVisaInfo( visa ) );
+		}
 	}
 
 	/** {@inheritDoc} */

@@ -130,7 +130,9 @@ public interface IdentityService {
 	 * <p>The searchCriteria Map is a map of entity field names to search values.
 	 */
 	List<KimEntityDefaultInfo> lookupEntityDefaultInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
-	
+
+	List<KimEntityInfo> lookupEntityInfo( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "searchCriteria") Map<String,String> searchCriteria, @WebParam(name="unbounded") boolean unbounded );
+
 	/**
 	 * Returns a count of the number of entities that match the given search criteria.
 	 */

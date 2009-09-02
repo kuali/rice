@@ -128,19 +128,34 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertEquals( "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
 	}
 
+	protected Map<String,String> setUpEntityLookupCriteria(String principalId) {
+		PersonServiceImpl personServiceImpl = (PersonServiceImpl) KIMServiceLocator.getService(KIMServiceLocator.KIM_PERSON_SERVICE);
+		Map<String,String> criteria = new HashMap<String,String>(1);
+		criteria.put(KIMPropertyConstants.Person.PRINCIPAL_ID, principalId);
+		return personServiceImpl.convertPersonPropertiesToEntityProperties(criteria);
+	}
+
 	@Test
 	public void testLookupEntityDefaultInfo() {
 		String principalIdToTest = "p1";
-		PersonServiceImpl personServiceImpl = (PersonServiceImpl) KIMServiceLocator.getService(KIMServiceLocator.KIM_PERSON_SERVICE);
-		Map<String,String> criteria = new HashMap<String,String>(1);
-		criteria.put(KIMPropertyConstants.Person.PRINCIPAL_ID, principalIdToTest);
-		Map<String,String> searchCriteria = personServiceImpl.convertPersonPropertiesToEntityProperties(criteria);
-		List<? extends KimEntityDefaultInfo> results = identityService.lookupEntityDefaultInfo(searchCriteria, false);
+		List<KimEntityDefaultInfo> results = identityService.lookupEntityDefaultInfo(setUpEntityLookupCriteria(principalIdToTest), false);
 		assertNotNull("Lookup results should never be null", results);
 		assertEquals("Lookup result count is invalid", 1, results.size());
 		for (KimEntityDefaultInfo kimEntityDefaultInfo : results) {
 			assertEquals("Entity should have only one principal for this test", 1, kimEntityDefaultInfo.getPrincipals().size());
 			assertEquals("Principal Ids should match", principalIdToTest, kimEntityDefaultInfo.getPrincipals().get(0).getPrincipalId());
+		}
+	}
+
+	@Test
+	public void testLookupEntityInfo() {
+		String principalIdToTest = "p1";
+		List<KimEntityInfo> results = identityService.lookupEntityInfo(setUpEntityLookupCriteria(principalIdToTest), false);
+		assertNotNull("Lookup results should never be null", results);
+		assertEquals("Lookup result count is invalid", 1, results.size());
+		for (KimEntityInfo kimEntityInfo : results) {
+			assertEquals("Entity should have only one principal for this test", 1, kimEntityInfo.getPrincipals().size());
+			assertEquals("Principal Ids should match", principalIdToTest, kimEntityInfo.getPrincipals().get(0).getPrincipalId());
 		}
 	}
 

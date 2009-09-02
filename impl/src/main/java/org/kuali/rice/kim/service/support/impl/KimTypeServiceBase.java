@@ -759,7 +759,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		List<String> missingAttributes = new ArrayList<String>();
 		// if attributes are null or empty, they're all missing
 		if ( receivedAttributes == null || receivedAttributes.isEmpty() ) {
-			missingAttributes.addAll(requiredAttributes);			
+			return;		
 		} else {
 			for( String requiredAttribute : requiredAttributes ) {
 				if( !receivedAttributes.containsKey(requiredAttribute) ) {

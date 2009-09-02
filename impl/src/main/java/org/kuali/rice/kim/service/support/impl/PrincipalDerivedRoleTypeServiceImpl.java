@@ -58,7 +58,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
 		ArrayList<RoleMembershipInfo> tempIdList = new ArrayList<RoleMembershipInfo>();
-		if ( qualification == null ) {
+		if ( qualification == null || qualification.isEmpty() ) {
 			return tempIdList;
 		}
 		qualification = translateInputAttributeSet(qualification);

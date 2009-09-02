@@ -38,7 +38,7 @@
                         <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.unique && KualiForm.document.editing))}"/>
 	        			<c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.unique && KualiForm.document.editing))}"/>
 			            <td align="left" valign="middle">
-			               	<div align="center"> <kul:htmlControlAttribute property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+			               	<div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.kimTypeId}" property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 			               	<c:if test="${attrDefinition.hasLookupBoDefinition}"> 
                                 <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
     				       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document" attr="${attrDefinition}" />

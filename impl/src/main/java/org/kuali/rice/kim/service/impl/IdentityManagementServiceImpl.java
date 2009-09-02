@@ -424,7 +424,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     }
     
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	if ( qualification == null ) {
+    	if ( qualification == null || qualification.isEmpty() ) {
     		return hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
     	}
     	if ( LOG.isDebugEnabled() ) {
@@ -477,7 +477,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     }
     
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
-    	if ( qualification == null ) {
+    	if ( qualification == null || qualification.isEmpty() ) {
     		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
     	}
     	if ( LOG.isDebugEnabled() ) {
@@ -1092,7 +1092,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 			sb.append( "                         [null]\n" );
 		}
 		sb.append( "             Qualifiers:\n" );
-		if ( qualification != null ) {
+		if ( qualification != null && !qualification.isEmpty() ) {
 			sb.append( qualification.formattedDump( 25 ) );
 		} else {
 			sb.append( "                         [null]\n" );

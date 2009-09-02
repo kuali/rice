@@ -32,7 +32,6 @@ import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a data transfer objects containing all information related to a KIM entity.
@@ -75,12 +74,12 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 			principalInfo.add( new KimPrincipalInfo( p ) );
 		}
 		KimEntityBioDemographicsInfo bioDemo = null;
-		if ( ObjectUtils.isNotNull( entity.getBioDemographics() ) ) {
+		if ( entity.getBioDemographics() != null ) {
 			bioDemo = new KimEntityBioDemographicsInfo(entity.getBioDemographics());
         }
 		this.setBioDemographics(bioDemo);
 		KimEntityPrivacyPreferencesInfo privacy = null;
-		if ( ObjectUtils.isNotNull( entity.getPrivacyPreferences() ) ) {
+		if ( entity.getPrivacyPreferences() != null ) {
             privacy = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
         }
 		this.setPrivacyPreferences(privacy);

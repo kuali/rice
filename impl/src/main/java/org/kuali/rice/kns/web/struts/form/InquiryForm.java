@@ -33,8 +33,11 @@ import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -147,11 +150,30 @@ public class InquiryForm extends KualiForm {
         }
     }
 
+    /**
+     * Gets the alt keys for a class.  Will not return null but and empty list if no keys exist.
+     * 
+     * @param clazz the class.
+     * @return the alt keys
+     */
+    private List<List<String>> getAltkeys(Class<?> clazz) {
+    	final KualiModuleService kualiModuleService = KNSServiceLocator.getKualiModuleService();
+    	final ModuleService moduleService = kualiModuleService.getResponsibleModuleService(clazz);
+    	
+        List<List<String>> altKeys = null;
+        if (moduleService != null) {
+        	altKeys = moduleService.listAlternatePrimaryKeyFieldNames(clazz);
+        }
+
+        return altKeys != null ? altKeys : new ArrayList<List<String>>();
+    }
+    
     protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
         try {
             EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
             DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
             BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+            BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
 
             // List of encrypted fields - Change for KFSMI-1374 -
             // Getting rid of encryptionValues and fetching the list of fields, that should be encrypted, from DataDictionary
@@ -160,12 +182,8 @@ public class InquiryForm extends KualiForm {
             Class businessObjectClass = Class.forName(boClassName);
 
             // build list of key values from request, if all keys not given throw error
-            List<String> boPKeys = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
-            List<List<String>> altKeys = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(businessObjectClass).listAlternatePrimaryKeyFieldNames(businessObjectClass);
-
-            if(altKeys == null){
-            	altKeys = new ArrayList<List<String>>();
-            }
+            List<String> boPKeys = businessObjectMetaDataService.listPrimaryKeyFieldNames(businessObjectClass);
+            final List<List<String>> altKeys = this.getAltkeys(businessObjectClass);
 
             altKeys.add(boPKeys);
             boolean bFound = false;

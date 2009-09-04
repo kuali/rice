@@ -74,7 +74,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String RULE_DETAIL_TYPE = "Rule";
         public static final String ACTION_LIST_DETAIL_TYPE = "ActionList";
         public static final String BACKDOOR_DETAIL_TYPE = "Backdoor";
-        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocumentSearch";
+        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocSearchCriteriaDTO";
         public static final String EDOC_LITE_DETAIL_TYPE = "EDocLite";
         public static final String FEATURE_DETAIL_TYPE = "Feature";
         public static final String GLOBAL_REVIEWER_DETAIL_TYPE = "GlobalReviewer";
@@ -83,9 +83,9 @@ public class KNSConstants extends JSTLConstants {
         public static final String QUICK_LINK_DETAIL_TYPE = "QuickLink";
         public static final String ROUTE_QUEUE_DETAIL_TYPE = "RouteQueue";
         public static final String ROUTE_DETAIL_TYPE = "Route";
-        public static final String RULE_SERVICE_DETAIL_TYPE = "RuleService";
+        public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
-        public static final String WORKGROUP_DETAIL_TYPE = "Workgroup";
+        public static final String WORKGROUP_DETAIL_TYPE = "Notification";
     }
 
     public static class DocumentFormHeaderFieldIds {

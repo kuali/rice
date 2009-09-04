@@ -21,7 +21,6 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kns.service.impl.ParameterServiceBase;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 
 import com.opensymphony.oscache.base.AbstractCacheAdministrator;

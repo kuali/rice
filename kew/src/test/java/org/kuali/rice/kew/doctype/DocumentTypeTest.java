@@ -25,6 +25,7 @@ import java.util.Set;
 import mocks.MockPostProcessor;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -58,12 +59,12 @@ public class DocumentTypeTest extends KEWTestCase {
         loadXmlFile("DoctypeConfig.xml");
     }
 
+    @Ignore
     @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
-//        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "DocumentType");
+        loadXmlFile("DoctypeConfig_duplicateNodes.xml");
         WorkflowDocument document = new WorkflowDocument("user1", "TestDoubleNodeDocumentType");
         document.setTitle("");
         document.routeDocument("");
-//        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
         document = new WorkflowDocument("rkirkend", document.getRouteHeaderId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
         document.approve("");

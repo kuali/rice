@@ -30,6 +30,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
@@ -90,30 +91,56 @@ public class IdentityServiceTest extends KIMTestCase {
 	
 	@Test
 	public void testGetDefaultEntityByPrincipalId() {
-		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalId("KULUSER");
+		String principalId = "KULUSER";
+		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalId(principalId);
 		assertNotNull("entity must not be null", info);
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal id", principalId, principalInfo.getPrincipalId());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
 	}
 
 	@Test
 	public void testGetDefaultEntityByPrincipalName() {
-		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalName("kuluser");
+		String principalName = "kuluser";
+		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalName(principalName);
 		assertNotNull("entity must not be null", info);
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal name", principalName, principalInfo.getPrincipalName());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
 	}
 
 	@Test
 	public void testGetEntityByPrincipalId() {
-		KimEntityInfo info = identityService.getEntityInfoByPrincipalId("KULUSER");
+		String principalId = "KULUSER";
+		KimEntityInfo info = identityService.getEntityInfoByPrincipalId(principalId);
 		assertNotNull("entity must not be null", info);
-		assertNotNull("entity visas must not be null", info.getVisas());
-		assertNotNull("entity residencies must not be null", info.getResidencies());
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal id", principalId, principalInfo.getPrincipalId());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+		assertTrue("entity residencies must not be null", (info.getResidencies() == null) || info.getResidencies().isEmpty());
 	}
 
 	@Test
 	public void testGetEntityByPrincipalName() {
-		KimEntityInfo info = identityService.getEntityInfoByPrincipalName("kuluser");
+		String principalName = "kuluser";
+		KimEntityInfo info = identityService.getEntityInfoByPrincipalName(principalName);
 		assertNotNull("entity must not be null", info);
-		assertNotNull("entity visas must not be null", info.getVisas());
-		assertNotNull("entity residencies must not be null", info.getResidencies());
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal name", principalName, principalInfo.getPrincipalName());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+		assertTrue("entity residencies must not be null", (info.getResidencies() == null) || info.getResidencies().isEmpty());
 	}
 
 	@Test

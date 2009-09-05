@@ -86,63 +86,6 @@
 			</routeNodes>
 		</documentType>
 		<documentType>
-			<name>TestDoubleNodeDocumentType</name>
-			<description>TestDoubleNodeDocumentType</description>
-			<label>TestDoubleNodeDocumentType</label>
-			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>${test.doctype.workgroup}</superUserWorkgroupName>
-			<docHandler>${test.base.url}/_blank</docHandler>
-            <helpDefinitionURL>/_help</helpDefinitionURL>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>${test.doctype.workgroup}</defaultExceptionWorkgroupName>
-			<routePaths>
-				<routePath>
-					<start name="AdHoc" nextNode="Split1" />
-					<split name="Split1" nextNode="Split2">
-						<branch name="Left">
-							<requests name="RuleTemplate1" nextNode="Join1" />
-						</branch>
-						<branch name="Right">
-							<simple name="NoOp1" nextNode="Join1" />
-						</branch>
-						<join name="Join1" />
-					</split>
-					<split name="Split2">
-						<branch name="Left">
-							<requests name="RuleTemplate1" nextNode="Join2" />
-						</branch>
-						<branch name="Right">
-							<simple name="NoOp2" nextNode="Join2" />
-						</branch>
-						<join name="Join2" />
-					</split>
-				</routePath>
-			</routePaths>
-			<routeNodes>
-				<start name="AdHoc">
-					<activationType>P</activationType>
-				</start>
-				<requests name="RuleTemplate1">
-					<activationType>S</activationType>
-					<ruleTemplate>RuleTemplate1</ruleTemplate>
-				</requests>
-				<split name="Split1">
-					<type>org.kuali.rice.kew.server.TestSplitNode</type>
-				</split>
-				<split name="Split2">
-					<type>org.kuali.rice.kew.engine.node.SimpleSplitNode</type>
-				</split>
-				<simple name="NoOp1">
-					<type>org.kuali.rice.kew.engine.node.NoOpNode</type>
-				</simple>
-				<simple name="NoOp2">
-					<type>org.kuali.rice.kew.engine.node.NoOpNode</type>
-				</simple>
-				<join name="Join1"/>
-				<join name="Join2"/>
-			</routeNodes>
-		</documentType>
-		<documentType>
 			<name>FinalApproverDocumentType</name>
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
@@ -283,33 +226,6 @@
 			<documentType>DocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<forceAction>false</forceAction>
-			<responsibilities>
-				<responsibility>
-					<user>user2</user>
-					<actionRequested>A</actionRequested>
-					<priority>1</priority>
-				</responsibility>
-			</responsibilities>
-		</rule>
-		<!-- TestDoubleNodeDocumentType test rules -->
-		<rule>
-			<documentType>TestDoubleNodeDocumentType</documentType>
-			<ruleTemplate>RuleTemplate1</ruleTemplate>
-			<description>RuleTemplate1 TestDoubleNodeDocumentType</description>
-			<forceAction>false</forceAction>
-			<responsibilities>
-				<responsibility>
-					<user>rkirkend</user>
-					<actionRequested>A</actionRequested>
-					<priority>1</priority>
-				</responsibility>
-			</responsibilities>
-		</rule>
-		<rule>
-			<documentType>TestDoubleNodeDocumentType</documentType>
-			<ruleTemplate>RuleTemplate2</ruleTemplate>
-			<description>RuleTemplate2 TestDoubleNodeDocumentType</description>
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>

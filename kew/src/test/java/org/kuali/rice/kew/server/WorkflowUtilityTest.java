@@ -20,6 +20,7 @@ package org.kuali.rice.kew.server;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,6 +54,7 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
@@ -125,7 +127,22 @@ public class WorkflowUtilityTest extends KEWTestCase {
         }
         
     }
-    
+
+    @Test public void testGetActionsRequested() throws Exception {
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        document.routeDocument("");
+        assertActionsRequested("ewestfal", document.getRouteHeaderId());
+        assertActionsRequested("bmcgough", document.getRouteHeaderId());
+        assertActionsRequested("rkirkend", document.getRouteHeaderId());
+    }
+
+    protected void assertActionsRequested(String principalName, Long documentId) throws Exception {
+    	AttributeSet attrSet = getWorkflowUtility().getActionsRequested(getPrincipalIdForName(principalName), documentId);
+    	assertNotNull("Actions requested should be populated", attrSet);
+    	assertFalse("Actions requested should be populated with at least one entry", attrSet.isEmpty());
+    	assertEquals("Wrong number of actions requested", 4, attrSet.size());
+    }
+
     @Test public void testIsUserInRouteLog() throws Exception {
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
@@ -1309,7 +1326,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
     private void setupPerformDocumentSearchTests(String documentTypeName, String expectedRouteNodeName, String docTitle) throws WorkflowException {
         String userNetworkId = "ewestfal";
         WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
-        int size = docTitle.length();
         workflowDocument.setTitle("Respect my Authoritah");
         workflowDocument.routeDocument("routing this document.");
         if (StringUtils.isNotBlank(expectedRouteNodeName)) {
@@ -1368,7 +1384,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
         setupPerformDocumentSearchTests(documentTypeName, null, docTitle);
         String userNetworkId = "delyea";
         WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
-        int size = docTitle.length();
         workflowDocument.setTitle("Get Outta Dodge");
         workflowDocument.routeDocument("routing this document.");
 
@@ -1586,6 +1601,43 @@ public class WorkflowUtilityTest extends KEWTestCase {
             result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
+    }
+
+    @Test public void testGetSearchableAttributeDateTimeValuesByKey() throws Exception {
+        String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
+        String userNetworkId = "ewestfal";
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("Respect my Authoritah");
+        workflowDocument.routeDocument("routing this document.");
+        userNetworkId = "rkirkend";
+        WorkflowDocument workflowDocument2 = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        workflowDocument2.setTitle("Routing Style");
+        workflowDocument2.routeDocument("routing this document.");
+
+        Timestamp[] timestamps = getWorkflowUtility().getSearchableAttributeDateTimeValuesByKey(workflowDocument.getRouteHeaderId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
+        assertNotNull("Timestamps should not be null", timestamps);
+        assertTrue("Timestamps should not be empty", 0 != timestamps.length);
+        verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, timestamps[0].getTime());
+
+        timestamps = getWorkflowUtility().getSearchableAttributeDateTimeValuesByKey(workflowDocument2.getRouteHeaderId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
+        assertNotNull("Timestamps should not be null", timestamps);
+        assertTrue("Timestamps should not be empty", 0 != timestamps.length);
+        verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, timestamps[0].getTime());
+    }
+    
+    protected void verifyTimestampToSecond(Long originalTimeInMillis, Long testTimeInMillis) throws Exception {
+        Calendar testDate = Calendar.getInstance();
+        testDate.setTimeInMillis(originalTimeInMillis);
+        testDate.set(Calendar.MILLISECOND, 0);
+        Calendar attributeDate = Calendar.getInstance();
+        attributeDate.setTimeInMillis(testTimeInMillis);
+        attributeDate.set(Calendar.MILLISECOND, 0);
+        assertEquals("The month value for the searchable attribute is wrong",testDate.get(Calendar.MONTH),attributeDate.get(Calendar.MONTH));
+        assertEquals("The date value for the searchable attribute is wrong",testDate.get(Calendar.DATE),attributeDate.get(Calendar.DATE));
+        assertEquals("The year value for the searchable attribute is wrong",testDate.get(Calendar.YEAR),attributeDate.get(Calendar.YEAR));
+        assertEquals("The hour value for the searchable attribute is wrong",testDate.get(Calendar.HOUR),attributeDate.get(Calendar.HOUR));
+        assertEquals("The minute value for the searchable attribute is wrong",testDate.get(Calendar.MINUTE),attributeDate.get(Calendar.MINUTE));
+        assertEquals("The second value for the searchable attribute is wrong",testDate.get(Calendar.SECOND),attributeDate.get(Calendar.SECOND));
     }
 
     private void ruleExceptionTest(RuleReportCriteriaDTO ruleReportCriteria, String message) {

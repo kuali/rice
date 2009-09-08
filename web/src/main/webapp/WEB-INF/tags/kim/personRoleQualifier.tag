@@ -32,6 +32,7 @@
 					<c:set var="attr" value="${attrDefn.value}" />
 					<c:set var="fieldName" value="${attr.name}" />
 					<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
+					<c:set var="attrDefinition" value="${role.definitionsKeyedByAttributeName[fieldName]}"/>
 			       	<td align="left" valign="middle">
 			       		<div align="center"> 
 			      		   <kul:htmlControlAttribute kimTypeId="${role.kimTypeId}" property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnlyRole}" />

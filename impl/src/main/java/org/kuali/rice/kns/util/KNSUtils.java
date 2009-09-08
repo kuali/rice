@@ -75,4 +75,16 @@ public class KNSUtils {
 
         return StringUtils.replace(formattedAmount, ",", "");
     }
+    
+	public static Integer getIntegerValue(String numberStr){
+		Integer numberInt = null;
+		try{
+			numberInt = new Integer(numberStr);
+		} catch(NumberFormatException nfe){
+			Double numberDbl = new Double(numberStr);
+			numberInt = new Integer(numberDbl.intValue());
+		}
+		return numberInt;
+	}
+
 }

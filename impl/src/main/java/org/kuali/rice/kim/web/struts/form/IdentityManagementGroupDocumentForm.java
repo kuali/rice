@@ -48,7 +48,6 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
     
 	public IdentityManagementGroupDocumentForm() {
         super();
-        this.setDocument(new IdentityManagementGroupDocument());
     }
 
 	public IdentityManagementGroupDocument getGroupDocument() {

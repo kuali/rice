@@ -133,6 +133,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     @SuppressWarnings("unchecked")
 	public KualiDocumentFormBase() {
         super();
+        
+        instantiateDocument();
         newNote = new Note();
         this.editingMode = new HashMap();
         //this.additionalScriptFiles = new AutoPopulatingList(String.class);
@@ -859,5 +861,21 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 			}
 		}
 	}
+	
+	protected String getDefaultDocumentTypeName() {
+		return "";
+	}
+	
+	protected void instantiateDocument() {
+		if (document != null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
+			Class<? extends Document> documentClass = KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
+			try {
+				Document document = documentClass.newInstance();
+				setDocument(document);
+			} catch (Exception e) {
+				LOG.error("Unable to instantiate document class " + documentClass.getName() + " document type " + getDefaultDocumentTypeName());
+				throw new RuntimeException(e);
+			}
+		}
+	}
 }
-

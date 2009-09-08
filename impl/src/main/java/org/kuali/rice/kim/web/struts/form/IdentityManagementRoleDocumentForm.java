@@ -80,7 +80,6 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 
 	public IdentityManagementRoleDocumentForm() {
         super();
-        this.setDocument(new IdentityManagementRoleDocument());
     }
 
 

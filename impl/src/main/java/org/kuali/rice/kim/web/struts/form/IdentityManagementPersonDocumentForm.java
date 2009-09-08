@@ -76,7 +76,6 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 	public IdentityManagementPersonDocumentForm() {
         super();
         //this.registerEditableProperty("methodToCall.approve.x");
-        this.setDocument(new IdentityManagementPersonDocument());
         this.setNewAffln(new PersonDocumentAffiliation());
         this.setNewAddress(new PersonDocumentAddress());
         this.setNewEmpInfo(new PersonDocumentEmploymentInfo());

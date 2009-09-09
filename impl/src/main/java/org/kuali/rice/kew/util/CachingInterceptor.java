@@ -33,6 +33,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * <p>The cache group name (see {@link #setCacheGroupName(String)}) in most instances should unique for each class that 
  * is proxied.
  * <p>Configuration should be done through Spring, probably using BeanNameAutoProxyCreator.
+ * <p>NOTE: One important assumption here is that the arguments for the methods being cached will all have 
+ * {@link Object#toString()} implementations such that o1.equals(o2) iff o1.toString().equals(o2.toString()).
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CachingInterceptor implements MethodInterceptor {
@@ -143,7 +145,7 @@ public class CachingInterceptor implements MethodInterceptor {
 			if (arg == null) {
 				return null;
 			}
-			sb.append(arg.toString());
+			sb.append((arg == null) ? "null" : arg.toString());
 		}
 		
 		return sb.toString();

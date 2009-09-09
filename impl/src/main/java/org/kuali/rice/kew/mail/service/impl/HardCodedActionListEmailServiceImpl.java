@@ -46,7 +46,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(HardCodedActionListEmailServiceImpl.class);
 
-	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "workflow@indiana.edu";
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "admin@localhost";
 
 	private static final String ACTION_LIST_REMINDER = "Action List Reminder";
 

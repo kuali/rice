@@ -40,7 +40,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseEmailContentServiceImpl implements EmailContentService {
-    protected String defaultEmailFromAddress = "workflow@indiana.edu";
+    protected String defaultEmailFromAddress = "admin@localhost";
     protected String deploymentEnvironment;
 
     public void setDefaultEmailFromAddress(String defaultEmailFromAddress) {

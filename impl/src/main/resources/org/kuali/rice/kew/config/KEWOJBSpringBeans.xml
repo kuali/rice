@@ -47,11 +47,42 @@
   <bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
-  
+
   <bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
   
+  <!-- wrap enActionRequestDAO in a caching proxy -->
+
+  <!-- configure the caching interceptor -->
+  <bean name="actionRequestDAOInterceptor" class="org.kuali.rice.kew.util.CachingInterceptor">
+    <property name="cacheGroupName" value="ActionRequestDAO"/>
+    <property name="clearCacheOnMethods">
+      <list>
+        <value>saveActionRequest</value>
+        <value>delete</value>
+        <value>deleteByRouteHeaderId</value>
+      </list>
+    </property>
+    <property name="cacheForMethods">
+      <list>
+        <value>findByStatusAndDocId</value>
+        <value>findAllByDocId</value>
+      </list>
+    </property>
+  </bean>
+  <!-- put our caching proxy in front of the target bean -->
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="beanNames">
+      <value>enActionRequestDAO</value>
+    </property>
+    <property name="interceptorNames">
+      <list>
+        <value>actionRequestDAOInterceptor</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="enBranchDAO" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>

@@ -33,6 +33,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
@@ -234,22 +235,41 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
 		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
-			for (MaintainableItemDefinition itemDefinition : sectionDefinition.getMaintainableItems()) {
-				if (itemDefinition instanceof MaintainableFieldDefinition) {
-			        if (getDataDictionaryService().isAttributeDefined(entry.getBusinessObjectClass(), itemDefinition.getName())) {
-			            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
-			            if (value != null && StringUtils.isNotBlank(value.toString())) {
-				            Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
-				            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-				                // check value format against dictionary
-			                    if (!TypeUtils.isTemporalClass(propertyType)) {
-			                        validateAttributeFormat(entry.getBusinessObjectClass().getName(), itemDefinition.getName(), value.toString(), itemDefinition.getName());
-			                    }
-				            }
+			validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
+		}
+	}
+	
+	protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject, List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
+		for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
+			if (itemDefinition instanceof MaintainableFieldDefinition) {
+		        if (getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName())) {
+		            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
+		            if (value != null && StringUtils.isNotBlank(value.toString())) {
+			            Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
+			            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+			                // check value format against dictionary
+		                    if (!TypeUtils.isTemporalClass(propertyType)) {
+		                        validateAttributeFormat(businessObject.getClass().getName(), itemDefinition.getName(), value.toString(), errorPrefix + itemDefinition.getName());
+		                    }
 			            }
-			        }
-				}
+		            }
+		        }
 			}
+			/*
+			TODO: reenable when we come up with a strategy to handle fields that are not editable
+			else if (itemDefinition instanceof MaintainableCollectionDefinition) {
+				MaintainableCollectionDefinition collectionDefinition = (MaintainableCollectionDefinition) itemDefinition;
+				Collection<BusinessObject> c = (Collection<BusinessObject>) ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
+				if (c != null) {
+					int i = 0;
+					for (BusinessObject o : c) {
+						String newErrorPrefix = errorPrefix + itemDefinition.getName() + "[" + i + "].";
+						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableCollections(), newErrorPrefix);
+						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableFields(), newErrorPrefix);
+						i++;
+					}
+				}
+			}*/
 		}
 	}
 

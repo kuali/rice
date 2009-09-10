@@ -76,7 +76,6 @@ public class CachingInterceptor implements MethodInterceptor {
 	 * </ul> 
 	 * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
 	 */
-	@Override
 	@SuppressWarnings("unchecked")
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 

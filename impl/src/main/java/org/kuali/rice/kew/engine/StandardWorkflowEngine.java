@@ -693,8 +693,10 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		Process process = document.getDocumentType().getPrimaryProcess();
 		if (process == null || process.getInitialRouteNode() == null) {
+		    if (process == null) {
+		        throw new IllegalArgumentException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
+		    }
 			return;
-		    //throw new IllegalArgumentException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
 		}
 		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), process.getInitialRouteNode());
 		nodeInstance.setActive(true);

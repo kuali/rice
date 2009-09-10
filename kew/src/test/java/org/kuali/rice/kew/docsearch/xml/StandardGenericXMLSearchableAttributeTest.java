@@ -479,19 +479,19 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "JACK", docType));
         result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertEquals("Search results should have one document.", 0, result.getSearchResults().size());
+        assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jAck", docType));
         result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertEquals("Search results should have one document.", 0, result.getSearchResults().size());
+        assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jacK", docType));
         result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertEquals("Search results should have one document.", 0, result.getSearchResults().size());
+        assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
     	key = "givenname_nocase";
         workflowDocument = new WorkflowDocument(new NetworkIdDTO(networkId), documentTypeName);

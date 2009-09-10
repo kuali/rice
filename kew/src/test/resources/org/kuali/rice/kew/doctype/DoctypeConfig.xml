@@ -204,6 +204,17 @@
 			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
 			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
 		</documentType>
+		<documentType>
+			<name>EmptyRoutePathDocumentType</name>
+			<description>EmptyRoutePathDocumentType</description>
+			<label>EmptyRoutePathDocumentType</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<docHandler>_blank</docHandler>
+			<routePaths />
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+		</documentType>
 
 		<!--  end save test document types-->
 

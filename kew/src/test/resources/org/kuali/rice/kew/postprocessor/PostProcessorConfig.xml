@@ -82,6 +82,16 @@
 				</start>
 			</routeNodes>
 		</documentType>
+		<documentType>
+			<name>testEmptyPostProcessor</name>
+			<label>testEmptyPostProcessor</label>
+			<postProcessorName>none</postProcessorName>
+			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<docHandler>none</docHandler>
+			<routePaths />
+		</documentType>
 	</documentTypes>
 
 </data>

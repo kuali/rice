@@ -48,20 +48,22 @@ public class FutureRequestDocumentStateManager {
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, String principalId)
     {
-    	for (BranchState state : document.getRootBranchState()) {
-    	    if (isStateForUser(state, principalId)) {
-    		if (isReceiveFutureRequests(state)) {
-    		    this.receiveFutureRequests = true;
-    		} else if (isDoNotReceiveFutureRequests(state)) {
-    		    this.doNotReceiveFutureRequests = true;
-    		} else if (isClearFutureRequests(state)) {
-    		    this.clearFutureRequestState = true;
-    		    this.receiveFutureRequests = false;
-    		    this.doNotReceiveFutureRequests = false;
-    		    break;
-    		}
-    	    }
-    	}
+        if (document.getRootBranch() != null) {
+        	for (BranchState state : document.getRootBranchState()) {
+        	    if (isStateForUser(state, principalId)) {
+            		if (isReceiveFutureRequests(state)) {
+            		    this.receiveFutureRequests = true;
+            		} else if (isDoNotReceiveFutureRequests(state)) {
+            		    this.doNotReceiveFutureRequests = true;
+            		} else if (isClearFutureRequests(state)) {
+            		    this.clearFutureRequestState = true;
+            		    this.receiveFutureRequests = false;
+            		    this.doNotReceiveFutureRequests = false;
+            		    break;
+            		}
+        	    }
+        	}
+        }
     	if (this.isClearFutureRequestState()) {
     	    this.clearStateFromDocument(document);
     	}

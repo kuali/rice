@@ -191,8 +191,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                 throw new RuntimeException("error populating documentHeader.workflowDocument", e);
             }
         } 
-        //Populate Document Header attributes
-        populateHeaderFields(workflowDocument);
+        if (workflowDocument != null) {
+	        //Populate Document Header attributes
+	        populateHeaderFields(workflowDocument);
+        }
     }
     
     private String getPersonInquiryUrlLink(Person user, String linkBody) {

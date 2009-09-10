@@ -869,7 +869,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	}
 	
 	protected void instantiateDocument() {
-		if (document != null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
+		if (document == null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
 			Class<? extends Document> documentClass = KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
 			try {
 				Document document = documentClass.newInstance();

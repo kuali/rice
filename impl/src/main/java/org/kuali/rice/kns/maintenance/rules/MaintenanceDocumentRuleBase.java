@@ -652,7 +652,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         maintDocDictionaryService.validateMaintainableCollectionsForDuplicateEntries(document);
 
         // run the DD DictionaryValidation (non-recursive)
-        dictionaryValidationService.validateBusinessObject(businessObject,false);
+        dictionaryValidationService.validateBusinessObjectOnMaintenanceDocument(businessObject,
+        		document.getDocumentHeader().getWorkflowDocument().getDocumentType());
 
         // do default (ie, mandatory) existence checks
         dictionaryValidationService.validateDefaultExistenceChecks(businessObject);

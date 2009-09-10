@@ -33,6 +33,10 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.document.Document;
@@ -225,6 +229,32 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObjectOnMaintenanceDocument(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+	 */
+	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
+		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
+			for (MaintainableItemDefinition itemDefinition : sectionDefinition.getMaintainableItems()) {
+				if (itemDefinition instanceof MaintainableFieldDefinition) {
+			        if (getDataDictionaryService().isAttributeDefined(entry.getBusinessObjectClass(), itemDefinition.getName())) {
+			            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
+			            if (value != null && StringUtils.isNotBlank(value.toString())) {
+				            Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
+				            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+				                // check value format against dictionary
+			                    if (!TypeUtils.isTemporalClass(propertyType)) {
+			                        validateAttributeFormat(entry.getBusinessObjectClass().getName(), itemDefinition.getName(), value.toString(), itemDefinition.getName());
+			                    }
+				            }
+			            }
+			        }
+				}
+			}
+		}
+	}
+
+
+	/**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.kns.bo.BusinessObject)
      */
     public boolean isBusinessObjectValid(BusinessObject businessObject) {

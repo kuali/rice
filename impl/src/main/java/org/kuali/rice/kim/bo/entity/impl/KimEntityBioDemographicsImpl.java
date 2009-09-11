@@ -48,34 +48,229 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	@Column(name = "GNDR_CD")
 	protected String genderCode;
 
-//	@Column(name = "DECEASED_DT")
-//	protected Date deceasedDate;
-//	
-//	@Column(name = "MARITAL_STATUS")
-//	protected String maritalStatusCode;
-//	
-//	@Column(name = "PRIM_LANG_CD")
-//	protected String primaryLanguageCode;
-//	
-//	@Column(name = "SEC_LANG_CD")
-//	protected String secondaryLanguageCode;
-//	
-//	@Column(name = "BIRTH_COUNTRY_CD")
-//	protected String countryOfBirthCode;
-//	
-//	@Column(name = "BIRTH_STATE")
-//	protected String stateOfBirth;
-//	
-//	@Column(name = "BIRTH_CITY")
-//	protected String cityOfBirth;
-//	
-//	@Column(name = "GEO_ORIGIN")
-//	protected String geographicOrigin;
+	@Column(name = "DECEASED_DT")
+	protected Date deceasedDate;
 
-	// TODO delyea - what else needs to be suppressed?
+	@Column(name = "MARITAL_STATUS")
+	protected String maritalStatusCode;
+
+	@Column(name = "PRIM_LANG_CD")
+	protected String primaryLanguageCode;
+
+	@Column(name = "SEC_LANG_CD")
+	protected String secondaryLanguageCode;
+
+	@Column(name = "BIRTH_CNTRY_CD")
+	protected String countryOfBirthCode;
+
+	@Column(name = "BIRTH_STATE_CD")
+	protected String birthStateCode;
+
+	@Column(name = "BIRTH_CITY")
+	protected String cityOfBirth;
+
+	@Column(name = "GEO_ORIGIN")
+	protected String geographicOrigin;
+
 	@Transient
-    protected Boolean suppressPersonal;
+	protected Boolean suppressPersonal;
 	
+	/**
+	 * @return the birthDate
+	 */
+	public Date getBirthDate() {
+		return this.birthDate;
+	}
+
+	/**
+	 * @return the deceasedDate
+	 */
+	public Date getDeceasedDate() {
+		return this.deceasedDate;
+	}
+
+	/**
+	 * @return the maritalStatusCode
+	 */
+	public String getMaritalStatusCode() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+		return this.maritalStatusCode;
+	}
+
+	/**
+	 * @return the primaryLanguageCode
+	 */
+	public String getPrimaryLanguageCode() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+		return this.primaryLanguageCode;
+	}
+
+	/**
+	 * @return the secondaryLanguageCode
+	 */
+	public String getSecondaryLanguageCode() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+		return this.secondaryLanguageCode;
+	}
+
+	/**
+	 * @return the countryOfBirthCode
+	 */
+	public String getCountryOfBirthCode() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+		return this.countryOfBirthCode;
+	}
+
+	/**
+	 * @return the birthStateCode
+	 */
+	public String getBirthStateCode() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+		return this.birthStateCode;
+	}
+
+	/**
+	 * @return the cityOfBirth
+	 */
+	public String getCityOfBirth() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+		return this.cityOfBirth;
+	}
+
+	/**
+	 * @return the geographicOrigin
+	 */
+	public String getGeographicOrigin() {
+	    if (isSuppressPersonal()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
+		return this.geographicOrigin;
+	}
+
+	/**
+	 * @return the maritalStatusCode
+	 */
+	public String getMaritalStatusCodeUnmasked() {
+		return this.maritalStatusCode;
+	}
+
+	/**
+	 * @return the primaryLanguageCode
+	 */
+	public String getPrimaryLanguageCodeUnmasked() {
+		return this.primaryLanguageCode;
+	}
+
+	/**
+	 * @return the secondaryLanguageCode
+	 */
+	public String getSecondaryLanguageCodeUnmasked() {
+		return this.secondaryLanguageCode;
+	}
+
+	/**
+	 * @return the countryOfBirthCode
+	 */
+	public String getCountryOfBirthCodeUnmasked() {
+		return this.countryOfBirthCode;
+	}
+
+	/**
+	 * @return the birthStateCode
+	 */
+	public String getBirthStateCodeUnmasked() {
+		return this.birthStateCode;
+	}
+
+	/**
+	 * @return the cityOfBirth
+	 */
+	public String getCityOfBirthUnmasked() {
+		return this.cityOfBirth;
+	}
+
+	/**
+	 * @return the geographicOrigin
+	 */
+	public String getGeographicOriginUnmasked() {
+		return this.geographicOrigin;
+	}
+
+	/**
+	 * @param birthDate the birthDate to set
+	 */
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	/**
+	 * @param deceasedDate the deceasedDate to set
+	 */
+	public void setDeceasedDate(Date deceasedDate) {
+		this.deceasedDate = deceasedDate;
+	}
+
+	/**
+	 * @param maritalStatusCode the maritalStatusCode to set
+	 */
+	public void setMaritalStatusCode(String maritalStatusCode) {
+		this.maritalStatusCode = maritalStatusCode;
+	}
+
+	/**
+	 * @param primaryLanguageCode the primaryLanguageCode to set
+	 */
+	public void setPrimaryLanguageCode(String primaryLanguageCode) {
+		this.primaryLanguageCode = primaryLanguageCode;
+	}
+
+	/**
+	 * @param secondaryLanguageCode the secondaryLanguageCode to set
+	 */
+	public void setSecondaryLanguageCode(String secondaryLanguageCode) {
+		this.secondaryLanguageCode = secondaryLanguageCode;
+	}
+
+	/**
+	 * @param countryOfBirthCode the countryOfBirthCode to set
+	 */
+	public void setCountryOfBirthCode(String countryOfBirthCode) {
+		this.countryOfBirthCode = countryOfBirthCode;
+	}
+
+	/**
+	 * @param birthStateCode the birthStateCode to set
+	 */
+	public void setBirthStateCode(String birthStateCode) {
+		this.birthStateCode = birthStateCode;
+	}
+
+	/**
+	 * @param cityOfBirth the cityOfBirth to set
+	 */
+	public void setCityOfBirth(String cityOfBirth) {
+		this.cityOfBirth = cityOfBirth;
+	}
+
+	/**
+	 * @param geographicOrigin the geographicOrigin to set
+	 */
+	public void setGeographicOrigin(String geographicOrigin) {
+		this.geographicOrigin = geographicOrigin;
+	}
+
 	/**
 	 * @return the entityId
 	 */
@@ -88,154 +283,6 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	 */
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
-	}
-
-	/**
-	 * @return the birthDate
-	 */
-	public Date getBirthDate() {
-		return this.birthDate;
-	}
-
-	/**
-	 * @param birthDate the birthDate to set
-	 */
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	/**
-	 * @return the deceasedDate
-	 */
-	public Date getDeceasedDate() {
-		return null;
-		//return this.deceasedDate;
-	}
-
-	/**
-	 * @param deceasedDate the deceasedDate to set
-	 */
-	public void setDeceasedDate(Date deceasedDate) {
-//		this.deceasedDate = deceasedDate;
-	}
-
-	/**
-	 * @return the maritalStatusCode
-	 */
-	public String getMaritalStatusCode() {
-		return null;
-		//		return this.maritalStatusCode;
-	}
-
-	/**
-	 * @param maritalStatusCode the maritalStatusCode to set
-	 */
-	public void setMaritalStatusCode(String maritalStatusCode) {
-//		this.maritalStatusCode = maritalStatusCode;
-	}
-
-	/**
-	 * @return the primaryLanguageCode
-	 */
-	public String getPrimaryLanguageCode() {
-		return null;
-		//		return this.primaryLanguageCode;
-	}
-
-	/**
-	 * @param primaryLanguageCode the primaryLanguageCode to set
-	 */
-	public void setPrimaryLanguageCode(String primaryLanguageCode) {
-//		this.primaryLanguageCode = primaryLanguageCode;
-	}
-
-	/**
-	 * @return the secondaryLanguageCode
-	 */
-	public String getSecondaryLanguageCode() {
-		return null;
-		//		return this.secondaryLanguageCode;
-	}
-
-	/**
-	 * @param secondaryLanguageCode the secondaryLanguageCode to set
-	 */
-	public void setSecondaryLanguageCode(String secondaryLanguageCode) {
-//		this.secondaryLanguageCode = secondaryLanguageCode;
-	}
-
-	/**
-	 * @return the countryOfBirthCode
-	 */
-	public String getCountryOfBirthCode() {
-		return null;
-		//		return this.countryOfBirthCode;
-	}
-
-	/**
-	 * @param countryOfBirthCode the countryOfBirthCode to set
-	 */
-	public void setCountryOfBirthCode(String countryOfBirthCode) {
-//		this.countryOfBirthCode = countryOfBirthCode;
-	}
-
-	/**
-	 * @return the stateOfBirth
-	 */
-	public String getStateOfBirth() {
-		return null;
-		//		return this.stateOfBirth;
-	}
-
-	/**
-	 * @param stateOfBirth the stateOfBirth to set
-	 */
-	public void setStateOfBirth(String stateOfBirth) {
-//		this.stateOfBirth = stateOfBirth;
-	}
-
-	/**
-	 * @return the cityOfBirth
-	 */
-	public String getCityOfBirth() {
-		return null;
-		//		return this.cityOfBirth;
-	}
-
-	/**
-	 * @param cityOfBirth the cityOfBirth to set
-	 */
-	public void setCityOfBirth(String cityOfBirth) {
-//		this.cityOfBirth = cityOfBirth;
-	}
-
-	/**
-	 * @return the geographicOrigin
-	 */
-	public String getGeographicOrigin() {
-		return null;
-		//		return this.geographicOrigin;
-	}
-
-	/**
-	 * @param geographicOrigin the geographicOrigin to set
-	 */
-	public void setGeographicOrigin(String geographicOrigin) {
-//		this.geographicOrigin = geographicOrigin;
-	}
-
-	/**
-	 * @return the suppressPersonal
-	 */
-	public Boolean getSuppressPersonal() {
-		return this.suppressPersonal;
-	}
-
-	/**
-	 * @param suppressPersonal the suppressPersonal to set
-	 */
-	public void setSuppressPersonal(Boolean suppressPersonal) {
-//		this.suppressPersonal = suppressPersonal;
 	}
 
 	/**
@@ -260,6 +307,20 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	}
 
 	/**
+	 * @return the suppressPersonal
+	 */
+	public Boolean getSuppressPersonal() {
+		return this.suppressPersonal;
+	}
+
+	/**
+	 * @param suppressPersonal the suppressPersonal to set
+	 */
+	public void setSuppressPersonal(Boolean suppressPersonal) {
+		this.suppressPersonal = suppressPersonal;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@Override
@@ -268,15 +329,14 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 		m.put("entityId", entityId);
 		m.put("birthDate", getBirthDate());
 		m.put("genderCode", getGenderCode());
-//		m.put("deceasedDate", getDeceasedDate());
-//		m.put("maritalStatusCode", getMaritalStatusCode());
-//		m.put("primaryLanguageCode", getPrimaryLanguageCode());
-//		m.put("secondaryLanguageCode", getSecondaryLanguageCode());
-//		m.put("countryOfBirthCode", getCountryOfBirthCode());
-//		m.put("stateOfBirth", getStateOfBirth());
-//		m.put("cityOfBirth", getCityOfBirth());
-//		m.put("geographicOrigin", getGeographicOrigin());
-		m.put("ethnicityCode", getEthnicityCode());
+		m.put("deceasedDate", getDeceasedDate());
+		m.put("maritalStatusCode", getMaritalStatusCode());
+		m.put("primaryLanguageCode", getPrimaryLanguageCode());
+		m.put("secondaryLanguageCode", getSecondaryLanguageCode());
+		m.put("countryOfBirthCode", getCountryOfBirthCode());
+		m.put("stateOfBirth", getBirthStateCode());
+		m.put("cityOfBirth", getCityOfBirth());
+		m.put("geographicOrigin", getGeographicOrigin());
 		return m;
 	}
 
@@ -291,35 +351,6 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
             suppressPersonal = privacy.isSuppressPersonal();
         } 
         return suppressPersonal.booleanValue();
-    }
-
-/*
- *  ALL OF BELOW SHOULD BE REMOVED ONCE KimEntityEthnicity IS APPROVED
- * 
- */
-    
-	@Column(name = "ETHNCTY_CD")
-	protected String ethnicityCode;
-
-	public void setEthnicityCode(String ethnicityCode) {
-		this.ethnicityCode = ethnicityCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getEthnicityCode()
-	 */
-	public String getEthnicityCode() {
-	    if (isSuppressPersonal()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return ethnicityCode;
-	}
-
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getEthnicityCodeUnmasked()
-     */
-    public String getEthnicityCodeUnmasked() {
-        return this.ethnicityCode;
     }
 
 }

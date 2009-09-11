@@ -27,21 +27,26 @@ public interface KimEntityBioDemographics {
 
 	String getEntityId();
 	Date getBirthDate();
-	String getGenderCode();
-	String getGenderCodeUnmasked();
 	Date getDeceasedDate();
+
+	String getGenderCode();
 	String getMaritalStatusCode();
 	String getPrimaryLanguageCode();
 	String getSecondaryLanguageCode();
 	String getCountryOfBirthCode();
-	String getStateOfBirth();
+	String getBirthStateCode();
 	String getCityOfBirth();
 	String getGeographicOrigin();
 
+	String getGenderCodeUnmasked();
+	String getMaritalStatusCodeUnmasked();
+	String getPrimaryLanguageCodeUnmasked();
+	String getSecondaryLanguageCodeUnmasked();
+	String getCountryOfBirthCodeUnmasked();
+	String getBirthStateCodeUnmasked();
+	String getCityOfBirthUnmasked();
+	String getGeographicOriginUnmasked();
+
 	boolean isSuppressPersonal();
 
-	// TODO delyea - to be removed once full KimEntityEthnicity is approved
-	String getEthnicityCode();
-	String getEthnicityCodeUnmasked();
-	
 }

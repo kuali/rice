@@ -48,7 +48,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @Entity
-@Table(name="KRIM_PRSN_CACHE_T")
+@Table(name="KRIM_ENTITY_CACHE_T")
 public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;

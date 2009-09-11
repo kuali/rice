@@ -26,9 +26,12 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 
 	private static final long serialVersionUID = -5660229079458643653L;
 
+	protected String id = "";
 	protected String entityId = "";
 	protected String ethnicityCode = "";
+	protected String ethnicityCodeUnmasked = "";
 	protected String subEthnicityCode = "";
+	protected String subEthnicityCodeUnmasked = "";
 	
 	protected boolean suppressPersonal;
 
@@ -39,53 +42,110 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	public KimEntityEthnicityInfo(KimEntityEthnicity kimEntityEthnicity) {
 		this();
 		if ( kimEntityEthnicity != null ) {
+			id = unNullify(kimEntityEthnicity.getId());
 			entityId = unNullify(kimEntityEthnicity.getEntityId());
 			ethnicityCode = unNullify(kimEntityEthnicity.getEthnicityCode());
+			ethnicityCodeUnmasked = unNullify(kimEntityEthnicity.getEthnicityCodeUnmasked());
 			subEthnicityCode = unNullify(kimEntityEthnicity.getSubEthnicityCode());
+			subEthnicityCodeUnmasked = unNullify(kimEntityEthnicity.getSubEthnicityCodeUnmasked());
 			suppressPersonal = kimEntityEthnicity.isSuppressPersonal();
 		}
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getId()
+	 * @return the id
+	 */
+	public String getId() {
+		return this.id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the entityId
 	 */
 	public String getEntityId() {
-		return entityId;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getEthnicityCode()
-	 */
-	public String getEthnicityCode() {
-		return ethnicityCode;
+		return this.entityId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getSubEthnicityCode()
+	 * @param entityId the entityId to set
 	 */
-	public String getSubEthnicityCode() {
-		return subEthnicityCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#isSuppressPersonal()
-	 */
-	public boolean isSuppressPersonal() {
-		return suppressPersonal;
-	}
-
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
 
+	/**
+	 * @return the ethnicityCode
+	 */
+	public String getEthnicityCode() {
+		return this.ethnicityCode;
+	}
+
+	/**
+	 * @param ethnicityCode the ethnicityCode to set
+	 */
 	public void setEthnicityCode(String ethnicityCode) {
 		this.ethnicityCode = ethnicityCode;
 	}
 
+	/**
+	 * @return the ethnicityCodeUnmasked
+	 */
+	public String getEthnicityCodeUnmasked() {
+		return this.ethnicityCodeUnmasked;
+	}
+
+	/**
+	 * @param ethnicityCodeUnmasked the ethnicityCodeUnmasked to set
+	 */
+	public void setEthnicityCodeUnmasked(String ethnicityCodeUnmasked) {
+		this.ethnicityCodeUnmasked = ethnicityCodeUnmasked;
+	}
+
+	/**
+	 * @return the subEthnicityCode
+	 */
+	public String getSubEthnicityCode() {
+		return this.subEthnicityCode;
+	}
+
+	/**
+	 * @param subEthnicityCode the subEthnicityCode to set
+	 */
 	public void setSubEthnicityCode(String subEthnicityCode) {
 		this.subEthnicityCode = subEthnicityCode;
 	}
 
+	/**
+	 * @return the subEthnicityCodeUnmasked
+	 */
+	public String getSubEthnicityCodeUnmasked() {
+		return this.subEthnicityCodeUnmasked;
+	}
+
+	/**
+	 * @param subEthnicityCodeUnmasked the subEthnicityCodeUnmasked to set
+	 */
+	public void setSubEthnicityCodeUnmasked(String subEthnicityCodeUnmasked) {
+		this.subEthnicityCodeUnmasked = subEthnicityCodeUnmasked;
+	}
+
+	/**
+	 * @return the suppressPersonal
+	 */
+	public boolean isSuppressPersonal() {
+		return this.suppressPersonal;
+	}
+
+	/**
+	 * @param suppressPersonal the suppressPersonal to set
+	 */
 	public void setSuppressPersonal(boolean suppressPersonal) {
 		this.suppressPersonal = suppressPersonal;
 	}

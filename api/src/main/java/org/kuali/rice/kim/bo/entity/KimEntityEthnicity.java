@@ -24,9 +24,12 @@ package org.kuali.rice.kim.bo.entity;
  */
 public interface KimEntityEthnicity {
 
+	String getId();
 	String getEntityId();
 	String getEthnicityCode();
+	String getEthnicityCodeUnmasked();
 	String getSubEthnicityCode();
+    String getSubEthnicityCodeUnmasked();
 
 	boolean isSuppressPersonal();
 }

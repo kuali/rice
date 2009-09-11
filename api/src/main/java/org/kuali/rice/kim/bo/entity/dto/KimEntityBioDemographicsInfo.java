@@ -33,20 +33,25 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	
 	protected String entityId = "";
 	protected Date birthDate;
-	protected String genderCode = "";
-	protected String genderCodeUnmasked = "";
 	protected Date deceasedDate;
+	protected String genderCode = "";
 	protected String maritalStatusCode = "";
 	protected String primaryLanguageCode = "";
 	protected String secondaryLanguageCode = "";
 	protected String countryOfBirthCode = "";
-	protected String stateOfBirth = "";
+	protected String birthStateCode = "";
 	protected String cityOfBirth = "";
 	protected String geographicOrigin = "";
+	protected String genderCodeUnmasked = "";
+	protected String genderCodeUnmaskedUnmasked = "";
+	protected String maritalStatusCodeUnmasked = "";
+	protected String primaryLanguageCodeUnmasked = "";
+	protected String secondaryLanguageCodeUnmasked = "";
+	protected String countryOfBirthCodeUnmasked = "";
+	protected String birthStateCodeUnmasked = "";
+	protected String cityOfBirthUnmasked = "";
+	protected String geographicOriginUnmasked = "";
 
-	private String ethnicityCode = "";
-	private String ethnicityCodeUnmasked = "";
-	
 	private boolean suppressPersonal = false;
 	
 	public KimEntityBioDemographicsInfo() {
@@ -58,19 +63,25 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 		if ( kimEntityBioDemographics != null ) {
 			entityId = unNullify(kimEntityBioDemographics.getEntityId());
 			birthDate = unNullify(kimEntityBioDemographics.getBirthDate());
-			genderCode = unNullify(kimEntityBioDemographics.getGenderCode());
-			genderCodeUnmasked = unNullify(kimEntityBioDemographics.getGenderCodeUnmasked());
 			deceasedDate = unNullify(kimEntityBioDemographics.getDeceasedDate());
+			genderCode = unNullify(kimEntityBioDemographics.getGenderCode());
 			maritalStatusCode = unNullify(kimEntityBioDemographics.getMaritalStatusCode());
 			primaryLanguageCode = unNullify(kimEntityBioDemographics.getPrimaryLanguageCode());
 			secondaryLanguageCode = unNullify(kimEntityBioDemographics.getSecondaryLanguageCode());
 			countryOfBirthCode = unNullify(kimEntityBioDemographics.getCountryOfBirthCode());
-			stateOfBirth = unNullify(kimEntityBioDemographics.getStateOfBirth());
+			birthStateCode = unNullify(kimEntityBioDemographics.getBirthStateCode());
 			cityOfBirth = unNullify(kimEntityBioDemographics.getCityOfBirth());
 			geographicOrigin = unNullify(kimEntityBioDemographics.getGeographicOrigin());
 
-			ethnicityCode = unNullify(kimEntityBioDemographics.getEthnicityCode());
-			ethnicityCodeUnmasked = unNullify(kimEntityBioDemographics.getEthnicityCodeUnmasked());
+			genderCodeUnmaskedUnmasked = unNullify(kimEntityBioDemographics.getGenderCodeUnmasked());
+			genderCodeUnmasked = unNullify(kimEntityBioDemographics.getGenderCodeUnmasked());
+			maritalStatusCodeUnmasked = unNullify(kimEntityBioDemographics.getMaritalStatusCodeUnmasked());
+			primaryLanguageCodeUnmasked = unNullify(kimEntityBioDemographics.getPrimaryLanguageCodeUnmasked());
+			secondaryLanguageCodeUnmasked = unNullify(kimEntityBioDemographics.getSecondaryLanguageCodeUnmasked());
+			countryOfBirthCodeUnmasked = unNullify(kimEntityBioDemographics.getCountryOfBirthCodeUnmasked());
+			birthStateCodeUnmasked = unNullify(kimEntityBioDemographics.getBirthStateCodeUnmasked());
+			cityOfBirthUnmasked = unNullify(kimEntityBioDemographics.getCityOfBirthUnmasked());
+			geographicOriginUnmasked = unNullify(kimEntityBioDemographics.getGeographicOriginUnmasked());
 			
 			suppressPersonal = kimEntityBioDemographics.isSuppressPersonal();
 		}
@@ -105,34 +116,6 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the genderCode
-	 */
-	public String getGenderCode() {
-		return this.genderCode;
-	}
-
-	/**
-	 * @param genderCode the genderCode to set
-	 */
-	public void setGenderCode(String genderCode) {
-		this.genderCode = genderCode;
-	}
-
-	/**
-	 * @return the genderCodeUnmasked
-	 */
-	public String getGenderCodeUnmasked() {
-		return this.genderCodeUnmasked;
-	}
-
-	/**
-	 * @param genderCodeUnmasked the genderCodeUnmasked to set
-	 */
-	public void setGenderCodeUnmasked(String genderCodeUnmasked) {
-		this.genderCodeUnmasked = genderCodeUnmasked;
-	}
-
-	/**
 	 * @return the deceasedDate
 	 */
 	public Date getDeceasedDate() {
@@ -144,6 +127,20 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 */
 	public void setDeceasedDate(Date deceasedDate) {
 		this.deceasedDate = deceasedDate;
+	}
+
+	/**
+	 * @return the genderCode
+	 */
+	public String getGenderCode() {
+		return this.genderCode;
+	}
+
+	/**
+	 * @param genderCode the genderCode to set
+	 */
+	public void setGenderCode(String genderCode) {
+		this.genderCode = genderCode;
 	}
 
 	/**
@@ -203,17 +200,17 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the stateOfBirth
+	 * @return the birthStateCode
 	 */
-	public String getStateOfBirth() {
-		return this.stateOfBirth;
+	public String getBirthStateCode() {
+		return this.birthStateCode;
 	}
 
 	/**
-	 * @param stateOfBirth the stateOfBirth to set
+	 * @param birthStateCode the birthStateCode to set
 	 */
-	public void setStateOfBirth(String stateOfBirth) {
-		this.stateOfBirth = stateOfBirth;
+	public void setBirthStateCode(String birthStateCode) {
+		this.birthStateCode = birthStateCode;
 	}
 
 	/**
@@ -245,31 +242,130 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the ethnicityCode
+	 * @return the genderCodeUnmasked
 	 */
-	public String getEthnicityCode() {
-		return this.ethnicityCode;
+	public String getGenderCodeUnmasked() {
+		return this.genderCodeUnmasked;
 	}
 
 	/**
-	 * @param ethnicityCode the ethnicityCode to set
+	 * @param genderCodeUnmasked the genderCodeUnmasked to set
 	 */
-	public void setEthnicityCode(String ethnicityCode) {
-		this.ethnicityCode = ethnicityCode;
+	public void setGenderCodeUnmasked(String genderCodeUnmasked) {
+		this.genderCodeUnmasked = genderCodeUnmasked;
 	}
 
 	/**
-	 * @return the ethnicityCodeUnmasked
+	 * @return the genderCodeUnmaskedUnmasked
 	 */
-	public String getEthnicityCodeUnmasked() {
-		return this.ethnicityCodeUnmasked;
+	public String getGenderCodeUnmaskedUnmasked() {
+		return this.genderCodeUnmaskedUnmasked;
 	}
 
 	/**
-	 * @param ethnicityCodeUnmasked the ethnicityCodeUnmasked to set
+	 * @param genderCodeUnmaskedUnmasked the genderCodeUnmaskedUnmasked to set
 	 */
-	public void setEthnicityCodeUnmasked(String ethnicityCodeUnmasked) {
-		this.ethnicityCodeUnmasked = ethnicityCodeUnmasked;
+	public void setGenderCodeUnmaskedUnmasked(String genderCodeUnmaskedUnmasked) {
+		this.genderCodeUnmaskedUnmasked = genderCodeUnmaskedUnmasked;
+	}
+
+	/**
+	 * @return the maritalStatusCodeUnmasked
+	 */
+	public String getMaritalStatusCodeUnmasked() {
+		return this.maritalStatusCodeUnmasked;
+	}
+
+	/**
+	 * @param maritalStatusCodeUnmasked the maritalStatusCodeUnmasked to set
+	 */
+	public void setMaritalStatusCodeUnmasked(String maritalStatusCodeUnmasked) {
+		this.maritalStatusCodeUnmasked = maritalStatusCodeUnmasked;
+	}
+
+	/**
+	 * @return the primaryLanguageCodeUnmasked
+	 */
+	public String getPrimaryLanguageCodeUnmasked() {
+		return this.primaryLanguageCodeUnmasked;
+	}
+
+	/**
+	 * @param primaryLanguageCodeUnmasked the primaryLanguageCodeUnmasked to set
+	 */
+	public void setPrimaryLanguageCodeUnmasked(String primaryLanguageCodeUnmasked) {
+		this.primaryLanguageCodeUnmasked = primaryLanguageCodeUnmasked;
+	}
+
+	/**
+	 * @return the secondaryLanguageCodeUnmasked
+	 */
+	public String getSecondaryLanguageCodeUnmasked() {
+		return this.secondaryLanguageCodeUnmasked;
+	}
+
+	/**
+	 * @param secondaryLanguageCodeUnmasked the secondaryLanguageCodeUnmasked to set
+	 */
+	public void setSecondaryLanguageCodeUnmasked(
+			String secondaryLanguageCodeUnmasked) {
+		this.secondaryLanguageCodeUnmasked = secondaryLanguageCodeUnmasked;
+	}
+
+	/**
+	 * @return the countryOfBirthCodeUnmasked
+	 */
+	public String getCountryOfBirthCodeUnmasked() {
+		return this.countryOfBirthCodeUnmasked;
+	}
+
+	/**
+	 * @param countryOfBirthCodeUnmasked the countryOfBirthCodeUnmasked to set
+	 */
+	public void setCountryOfBirthCodeUnmasked(String countryOfBirthCodeUnmasked) {
+		this.countryOfBirthCodeUnmasked = countryOfBirthCodeUnmasked;
+	}
+
+	/**
+	 * @return the birthStateCodeUnmasked
+	 */
+	public String getBirthStateCodeUnmasked() {
+		return this.birthStateCodeUnmasked;
+	}
+
+	/**
+	 * @param birthStateCodeUnmasked the birthStateCodeUnmasked to set
+	 */
+	public void setBirthStateCodeUnmasked(String birthStateCodeUnmasked) {
+		this.birthStateCodeUnmasked = birthStateCodeUnmasked;
+	}
+
+	/**
+	 * @return the cityOfBirthUnmasked
+	 */
+	public String getCityOfBirthUnmasked() {
+		return this.cityOfBirthUnmasked;
+	}
+
+	/**
+	 * @param cityOfBirthUnmasked the cityOfBirthUnmasked to set
+	 */
+	public void setCityOfBirthUnmasked(String cityOfBirthUnmasked) {
+		this.cityOfBirthUnmasked = cityOfBirthUnmasked;
+	}
+
+	/**
+	 * @return the geographicOriginUnmasked
+	 */
+	public String getGeographicOriginUnmasked() {
+		return this.geographicOriginUnmasked;
+	}
+
+	/**
+	 * @param geographicOriginUnmasked the geographicOriginUnmasked to set
+	 */
+	public void setGeographicOriginUnmasked(String geographicOriginUnmasked) {
+		this.geographicOriginUnmasked = geographicOriginUnmasked;
 	}
 
 	/**

@@ -17,94 +17,92 @@ package org.kuali.rice.kim.bo.entity.impl;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 
 /**
- * This is a description of what this class does - jimt don't forget to fill this in. 
+ * This class is used to store residency information about an entity. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 @Entity
-@Table(name = "KRIM_ENTITY_VISA_T")
+@Table(name = "KRIM_ENTITY_RESIDENCY_T")
 public class KimEntityResidencyImpl extends KimEntityDataBase implements KimEntityResidency {
 
 	private static final long serialVersionUID = 6577601907062646925L;
 
-//	@Id
-//	@Column(name = "ID")
-//	private String id;
-//
-//	@Column(name = "ENTITY_ID")
-//	private String entityId;
-//	
-//	@Column(name = "DETERMINATION_METHOD")
-//	private String determinationMethod;
-//	
-//	@Column(name = "IN_STATE")
-//	private String inStateFlag;
+	@Id
+	@Column(name = "ID")
+	private String id;
+
+	@Column(name = "ENTITY_ID")
+	private String entityId;
+	
+	@Column(name = "DETERMINATION_METHOD")
+	private String determinationMethod;
+	
+	@Column(name = "IN_STATE")
+	private String inStateFlag;
 	
 	/**
 	 * @param inStateFlag the inStateFlag to set
 	 */
 	public void setInStateFlag(String inStateFlag) {
-//		this.inStateFlag = inStateFlag;
+		this.inStateFlag = inStateFlag;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(String id) {
-//		this.id = id;
+		this.id = id;
 	}
 
 	/**
 	 * @param entityId the entityId to set
 	 */
 	public void setEntityId(String entityId) {
-//		this.entityId = entityId;
+		this.entityId = entityId;
 	}
 
 	/**
 	 * @param determinationMethod the determinationMethod to set
 	 */
 	public void setDeterminationMethod(String determinationMethod) {
-//		this.determinationMethod = determinationMethod;
+		this.determinationMethod = determinationMethod;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getDeterminationMethod()
 	 */
 	public String getDeterminationMethod() {
-		return null;
-		//		return determinationMethod;
+		return determinationMethod;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getEntityId()
 	 */
 	public String getEntityId() {
-		return null;
-		//		return entityId;
+		return entityId;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getId()
 	 */
 	public String getId() {
-		return null;
-		//		return id;
+		return id;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getInState()
 	 */
 	public String getInState() {
-		return null;
-		//		return inStateFlag;
+		return inStateFlag;
 	}
 
 	/**
@@ -113,10 +111,10 @@ public class KimEntityResidencyImpl extends KimEntityDataBase implements KimEnti
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap<String, String> m = new LinkedHashMap<String, String>();
-//		m.put("id", id);
-//		m.put("entityId", entityId);
-//		m.put("determinationMethod", determinationMethod);
-//		m.put("inStateFlag", inStateFlag);
+		m.put("id", id);
+		m.put("entityId", entityId);
+		m.put("determinationMethod", determinationMethod);
+		m.put("inStateFlag", inStateFlag);
 		return m;
 	}
 }

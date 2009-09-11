@@ -36,95 +36,90 @@ public class KimEntityVisaImpl extends KimEntityDataBase implements KimEntityVis
 	
 	private static final long serialVersionUID = 3067809653175495621L;
 
-//	@Id
-//	@Column(name = "ID")
-//	private String id;
-//
-//	@Column(name = "ENTITY_ID")
-//	private String entityId;
-//	
-//	@Column(name = "VISA_TYPE_KEY")
-//	private String visaTypeKey;
-//	
-//	@Column(name = "VISA_ENTRY")
-//	private String visaEntry;
-//	
-//	@Column(name = "VISA_ID")
-//	private String visaId;
+	@Id
+	@Column(name = "ID")
+	private String id;
+
+	@Column(name = "ENTITY_ID")
+	private String entityId;
+	
+	@Column(name = "VISA_TYPE_KEY")
+	private String visaTypeKey;
+	
+	@Column(name = "VISA_ENTRY")
+	private String visaEntry;
+	
+	@Column(name = "VISA_ID")
+	private String visaId;
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getId()
 	 */
 	public String getId() {
-		return null;
-		//		return id;
+		return id;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getEntityId()
 	 */
 	public String getEntityId() {
-		return null;
-		//		return entityId;
+		return entityId;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaEntry()
 	 */
 	public String getVisaEntry() {
-		return null;
-		//		return visaEntry;
+		return visaEntry;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaId()
 	 */
 	public String getVisaId() {
-		return null;
-		//		return visaId;
+		return visaId;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaTypeKey()
 	 */
 	public String getVisaTypeKey() {
-		return null;
-		//return visaTypeKey;
+		return visaTypeKey;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(String id) {
-//		this.id = id;
+		this.id = id;
 	}
 
 	/**
 	 * @param entityId the entityId to set
 	 */
 	public void setEntityId(String entityId) {
-//		this.entityId = entityId;
+		this.entityId = entityId;
 	}
 
 	/**
 	 * @param visaTypeKey the visaTypeKey to set
 	 */
 	public void setVisaTypeKey(String visaTypeKey) {
-//		this.visaTypeKey = visaTypeKey;
+		this.visaTypeKey = visaTypeKey;
 	}
 
 	/**
 	 * @param visaEntry the visaEntry to set
 	 */
 	public void setVisaEntry(String visaEntry) {
-//		this.visaEntry = visaEntry;
+		this.visaEntry = visaEntry;
 	}
 
 	/**
 	 * @param visaId the visaId to set
 	 */
 	public void setVisaId(String visaId) {
-//		this.visaId = visaId;
+		this.visaId = visaId;
 	}
 
 	/**
@@ -133,11 +128,11 @@ public class KimEntityVisaImpl extends KimEntityDataBase implements KimEntityVis
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap<String, String> m = new LinkedHashMap<String, String>();
-//		m.put("id", id);
-//		m.put("entityId", entityId);
-//		m.put("visaTypeKey", visaTypeKey);
-//		m.put("visaEntry", visaEntry);
-//		m.put("visaId", visaId);
+		m.put("id", id);
+		m.put("entityId", entityId);
+		m.put("visaTypeKey", visaTypeKey);
+		m.put("visaEntry", visaEntry);
+		m.put("visaId", visaId);
 		return m;
 	}
 }

@@ -1,4 +1,4 @@
-	<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  Copyright 2008-2009 The Kuali Foundation
  
@@ -27,11 +27,11 @@
 			<description>TestDoubleNodeDocumentType</description>
 			<label>TestDoubleNodeDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>${test.doctype.workgroup}</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">${test.doctype.workgroup}</superUserGroupName>
 			<docHandler>${test.base.url}/_blank</docHandler>
             <helpDefinitionURL>/_help</helpDefinitionURL>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>${test.doctype.workgroup}</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespce="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">${test.doctype.workgroup}</defaultExceptionGroupName>
 			<routePaths>
 				<routePath>
 					<start name="AdHoc" nextNode="Split1" />

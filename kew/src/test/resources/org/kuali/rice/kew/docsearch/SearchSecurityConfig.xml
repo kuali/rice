@@ -68,9 +68,9 @@
 			<label>SecurityDocument</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -123,7 +123,7 @@
 			<label>SecurityDoc_WorkgroupOnly</label>
 			<docHandler>_blank</docHandler>
 			<security>
-			    <workgroup>KR-WKFLW:Test_Security_Group</workgroup>
+			    <groupName namespace="KR-WKFLW">Test_Security_Group</groupName>
 			</security>
 		</documentType>
 		<documentType>

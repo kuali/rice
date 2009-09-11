@@ -47,7 +47,6 @@ public class RemoveReplaceForm extends KewRoutingKualiForm {
     private String replacementUserId;
     private String ruleDocumentTypeName;
     private String ruleRuleTemplate;
-    private String workgroupType;
 
     private String operation = RemoveReplaceDocument.REPLACE_OPERATION;
     private List<RemoveReplaceRule> rules = ListUtils.lazyList(new ArrayList<RemoveReplaceRule>(),
@@ -75,14 +74,6 @@ public class RemoveReplaceForm extends KewRoutingKualiForm {
 
     public RemoveReplaceForm() {
     }
-
-//    public static WorkgroupType createDefaultWorkgroupType() {
-//    	WorkgroupType workgroupType = new WorkgroupType();
-//    	workgroupType.setActive(true);
-//    	workgroupType.setLabel("Default");
-//    	workgroupType.setName("Default");
-//    	return workgroupType;
-//    }
 
     public String getMethodToCall() {
         return this.methodToCall;
@@ -179,22 +170,6 @@ public class RemoveReplaceForm extends KewRoutingKualiForm {
     public void setActionRequestCodes(Map actionRequestCodes) {
         this.actionRequestCodes = actionRequestCodes;
     }
-
-//    public String getWorkgroupType() {
-//        return this.workgroupType;
-//    }
-//
-//    public void setWorkgroupType(String workgroupType) {
-//        this.workgroupType = workgroupType;
-//    }
-
-//    public List<WorkgroupType> getWorkgroupTypes() {
-//        return this.workgroupTypes;
-//    }
-//
-//    public void setWorkgroupTypes(List<WorkgroupType> workgroupTypes) {
-//        this.workgroupTypes = workgroupTypes;
-//    }
 
     public RemoveReplaceDocument getDocument() {
         return this.document;

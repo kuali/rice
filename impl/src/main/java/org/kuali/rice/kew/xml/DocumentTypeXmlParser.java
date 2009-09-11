@@ -584,24 +584,38 @@ public class DocumentTypeXmlParser implements XmlConstants {
         documentType.setCurrentInd(Boolean.TRUE);
 
         // set up the default exception workgroup for the document type
-        String exceptionWg;
-        String exceptionWgName;
-        String exceptionWgNamespace;
+        String exceptionWg = null;
+        String exceptionWgName = null;
+        String exceptionWgNamespace = null;
         try {
-            exceptionWg = (String) getXPath().evaluate("./" + DEFAULT_EXCEPTION_WORKGROUP_NAME, documentTypeNode, XPathConstants.STRING);
+        	if (XmlHelper.pathExists(xpath, "./" + DEFAULT_EXCEPTION_GROUP_NAME, documentTypeNode)) {
+        		exceptionWgName = (String) getXPath().evaluate("./" + DEFAULT_EXCEPTION_GROUP_NAME, documentTypeNode, XPathConstants.STRING);
+        		exceptionWgNamespace = (String) getXPath().evaluate("./" + DEFAULT_EXCEPTION_GROUP_NAME + "/@" + NAMESPACE, documentTypeNode, XPathConstants.STRING);
+        		exceptionWg = exceptionWgName;
+        	} else {
+        		exceptionWg = (String) getXPath().evaluate("./" + DEFAULT_EXCEPTION_WORKGROUP_NAME, documentTypeNode, XPathConstants.STRING);
+        	}
         } catch (XPathExpressionException xpee) {
-            LOG.error("Error obtaining document type defaultExceptionWorkgroupName", xpee);
+            LOG.error("Error obtaining document type " + DEFAULT_EXCEPTION_GROUP_NAME, xpee);
             throw xpee;
         }
         // we don't need to take the isOverwrite into account here because this ingestion method is a shortcut to use the same workgroup in all route nodes
         if (StringUtils.isNotBlank(exceptionWg)) {
-            // allow core config parameter replacement in documenttype workgroups
-            exceptionWg = Utilities.substituteConfigParameters(exceptionWg);
-            exceptionWgName = Utilities.parseGroupName(exceptionWg);
-            exceptionWgNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
+        	if (StringUtils.isNotBlank(exceptionWgName)) { // Found a "defaultExceptionGroupName" element.
+        		// allow core config parameter replacement in documenttype workgroups
+        		exceptionWgName = Utilities.substituteConfigParameters(exceptionWgName).trim();
+        		exceptionWgNamespace = Utilities.substituteConfigParameters(exceptionWgNamespace).trim();
+        	} else { // Found a deprecated "defaultExceptionWorkgroupName" element.
+        		LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(DEFAULT_EXCEPTION_WORKGROUP_NAME).append(
+        				"', please use '").append(DEFAULT_EXCEPTION_GROUP_NAME).append("' instead.").toString());
+            	// allow core config parameter replacement in documenttype workgroups
+            	exceptionWg = Utilities.substituteConfigParameters(exceptionWg);
+            	exceptionWgName = Utilities.parseGroupName(exceptionWg);
+            	exceptionWgNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
+        	}
             Group exceptionGroup = getIdentityManagementService().getGroupByName(exceptionWgNamespace, exceptionWgName);
             if(exceptionGroup == null) {
-                throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
+               	throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
             }
             documentType.setDefaultExceptionWorkgroup(exceptionGroup);
             defaultExceptionWorkgroup = exceptionGroup;
@@ -662,24 +676,36 @@ public class DocumentTypeXmlParser implements XmlConstants {
              * - we disregard the isOverwrite because if the element tag does not exist in the ingestion
              * then the documentType should already carry the value from the previous document type
              */
-            if (XmlHelper.pathExists(xpath, "./" + SUPER_USER_WORKGROUP_NAME, documentTypeNode)) {
-                documentType.setSuperUserWorkgroupNoInheritence(retrieveValidKimGroup("./" + SUPER_USER_WORKGROUP_NAME, documentTypeNode));
+        	if (XmlHelper.pathExists(xpath, "./" + SUPER_USER_GROUP_NAME, documentTypeNode)) {
+        		documentType.setSuperUserWorkgroupNoInheritence(retrieveValidKimGroup("./" + SUPER_USER_GROUP_NAME, documentTypeNode, false));
+        	}
+        	else if (XmlHelper.pathExists(xpath, "./" + SUPER_USER_WORKGROUP_NAME, documentTypeNode)) {
+        		LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(SUPER_USER_WORKGROUP_NAME).append(
+					"', please use '").append(SUPER_USER_GROUP_NAME).append("' instead.").toString());
+                documentType.setSuperUserWorkgroupNoInheritence(retrieveValidKimGroup("./" + SUPER_USER_WORKGROUP_NAME, documentTypeNode, true));
             }
         } catch (XPathExpressionException xpee) {
-            LOG.error("Error obtaining document type superUserWorkgroupName", xpee);
+            LOG.error("Error obtaining document type " + SUPER_USER_GROUP_NAME, xpee);
             throw xpee;
         }
 
         // set the blanket approve workgroup name on the document type
         String blanketWorkGroup = null;
+        String blanketGroupName = null;
+        String blanketNamespace = null;
         String blanketApprovePolicy = null;
         try {
             // check if the blanket approve workgroup name element tag was set on the ingested document type and get value if it was
-            if (XmlHelper.pathExists(xpath, "./" + BLANKET_APPROVE_WORKGROUP_NAME, documentTypeNode)) {
-                blanketWorkGroup =(String) getXPath().evaluate("./" + BLANKET_APPROVE_WORKGROUP_NAME, documentTypeNode, XPathConstants.STRING);
+        	if (XmlHelper.pathExists(xpath, "./" + BLANKET_APPROVE_GROUP_NAME, documentTypeNode)) {
+        		blanketGroupName = (String) getXPath().evaluate("./" + BLANKET_APPROVE_GROUP_NAME, documentTypeNode, XPathConstants.STRING);
+        		blanketNamespace = (String) getXPath().evaluate("./" + BLANKET_APPROVE_GROUP_NAME + "/@" + NAMESPACE, documentTypeNode, XPathConstants.STRING);
+        		blanketWorkGroup = blanketGroupName;
+        	}
+        	else if (XmlHelper.pathExists(xpath, "./" + BLANKET_APPROVE_WORKGROUP_NAME, documentTypeNode)) {
+                blanketWorkGroup = (String) getXPath().evaluate("./" + BLANKET_APPROVE_WORKGROUP_NAME, documentTypeNode, XPathConstants.STRING);
             }
         } catch (XPathExpressionException xpee) {
-            LOG.error("Error obtaining document type " + BLANKET_APPROVE_WORKGROUP_NAME, xpee);
+            LOG.error("Error obtaining document type " + BLANKET_APPROVE_GROUP_NAME, xpee);
             throw xpee;
         }
         try {
@@ -700,7 +726,13 @@ public class DocumentTypeXmlParser implements XmlConstants {
                 // if overwrite mode is on we need to make sure we clear out the blanket approve policy in case that was the previous document type's method
                 documentType.setBlanketApprovePolicy(null);
             }
-            documentType.setBlanketApproveWorkgroup(retrieveValidKimGroupUsingGroupName(blanketWorkGroup, documentTypeNode));
+            if (StringUtils.isNotBlank(blanketGroupName)) { // Found a "blanketApproveGroupName" element.
+            	documentType.setBlanketApproveWorkgroup(retrieveValidKimGroupUsingGroupNameAndNamespace(blanketGroupName, blanketNamespace));
+            } else { // Found a deprecated "blanketApproveWorkgroupName" element.
+            	LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(BLANKET_APPROVE_WORKGROUP_NAME).append(
+					"', please use '").append(BLANKET_APPROVE_GROUP_NAME).append("' instead.").toString());
+            	documentType.setBlanketApproveWorkgroup(retrieveValidKimGroupUsingUnparsedGroupName(blanketWorkGroup));
+            }
         }
         else if (StringUtils.isNotBlank(blanketApprovePolicy)) {
             if (isOverwrite) {
@@ -712,11 +744,16 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         // set the reporting workgroup name on the document type
         try {
-            if (XmlHelper.pathExists(xpath, "./" + REPORTING_WORKGROUP_NAME, documentTypeNode)) {
-                documentType.setReportingWorkgroup(retrieveValidKimGroup("./" + REPORTING_WORKGROUP_NAME, documentTypeNode));
+        	if (XmlHelper.pathExists(xpath, "./" + REPORTING_GROUP_NAME, documentTypeNode)) {
+        		documentType.setReportingWorkgroup(retrieveValidKimGroup("./" + REPORTING_GROUP_NAME, documentTypeNode, false));
+        	}
+        	else if (XmlHelper.pathExists(xpath, "./" + REPORTING_WORKGROUP_NAME, documentTypeNode)) {
+        		LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(REPORTING_WORKGROUP_NAME).append(
+					"', please use '").append(REPORTING_GROUP_NAME).append("' instead.").toString());
+                documentType.setReportingWorkgroup(retrieveValidKimGroup("./" + REPORTING_WORKGROUP_NAME, documentTypeNode, true));
             }
         } catch (XPathExpressionException xpee) {
-            LOG.error("Error obtaining document type " + REPORTING_WORKGROUP_NAME, xpee);
+            LOG.error("Error obtaining document type " + REPORTING_GROUP_NAME, xpee);
             throw xpee;
         }
 
@@ -749,31 +786,47 @@ public class DocumentTypeXmlParser implements XmlConstants {
         return documentType;
     }
 
-    private Group retrieveValidKimGroup(String xpathExpression, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException {
-        String unparsedGroupName;
+    private Group retrieveValidKimGroup(String xpathExpression, Node documentTypeNode, boolean deprecatedGroupElement) throws XPathExpressionException, GroupNotFoundException {
+        String groupName;
+        String groupNamespace = null;
         try {
-            unparsedGroupName = (String) getXPath().evaluate(xpathExpression, documentTypeNode, XPathConstants.STRING);
+            groupName = (String) getXPath().evaluate(xpathExpression, documentTypeNode, XPathConstants.STRING);
+            // If not using the deprecated "namespaceCode:GroupName" format for group names, obtain the namespace from the element's "namespace" attribute.
+            if (!deprecatedGroupElement) {
+            	groupNamespace = (String) getXPath().evaluate(xpathExpression + "/@" + NAMESPACE, documentTypeNode, XPathConstants.STRING);
+            }
         } catch (XPathExpressionException xpee) {
             LOG.error("Error obtaining document type workgroup using xpath expression: " + xpathExpression, xpee);
             throw xpee;
         }
-        return retrieveValidKimGroupUsingGroupName(unparsedGroupName, documentTypeNode);
+        // Use the appropriate method to retrieve the group, based on whether or not the deprecated "namespaceCode:groupName" naming pattern is in use. 
+        return (deprecatedGroupElement) ?
+        		retrieveValidKimGroupUsingUnparsedGroupName(groupName) : retrieveValidKimGroupUsingGroupNameAndNamespace(groupName, groupNamespace);
     }
 
-    private Group retrieveValidKimGroupUsingGroupName(String unparsedGroupName, Node documentTypeNode) throws GroupNotFoundException {
-        String groupNamespace;
-        String groupName;
+    private Group retrieveValidKimGroupUsingGroupNameAndNamespace(String groupName, String groupNamespace) throws GroupNotFoundException {
+    	// allow core config parameter replacement in documenttype workgroups
+    	groupName = Utilities.substituteConfigParameters(groupName).trim();
+    	groupNamespace = Utilities.substituteConfigParameters(groupNamespace).trim();
+    	return retrieveValidKimGroupUsingProcessedGroupNameAndNamespace(groupName, groupNamespace);
+    }
+    
+    private Group retrieveValidKimGroupUsingUnparsedGroupName(String unparsedGroupName) throws GroupNotFoundException {
         // allow core config parameter replacement in documenttype workgroups
         unparsedGroupName = Utilities.substituteConfigParameters(unparsedGroupName);
-        groupName = Utilities.parseGroupName(unparsedGroupName);
-        groupNamespace = Utilities.parseGroupNamespaceCode(unparsedGroupName);
+        String groupName = Utilities.parseGroupName(unparsedGroupName);
+        String groupNamespace = Utilities.parseGroupNamespaceCode(unparsedGroupName);
+        return retrieveValidKimGroupUsingProcessedGroupNameAndNamespace(groupName, groupNamespace);
+    }
+
+    private Group retrieveValidKimGroupUsingProcessedGroupNameAndNamespace(String groupName, String groupNamespace) throws GroupNotFoundException {
         Group workgroup = getIdentityManagementService().getGroupByName(groupNamespace, groupName);
         if (workgroup == null) {
             throw new GroupNotFoundException("Valid Workgroup could not be found... Namespace: " + groupNamespace + "  Name: " + groupName);
         }
         return workgroup;
     }
-
+    
     public DocumentType generateNewDocumentTypeFromExisting(String documentTypeName) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, GroupNotFoundException, WorkflowException, TransformerException {
         // export the document type that exists in the database
         DocumentType docTypeFromDatabase = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
@@ -1045,13 +1098,29 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         Group exceptionWorkgroup = defaultExceptionWorkgroup;
 
-        String exceptionWg = (String) getXPath().evaluate("./exceptionWorkgroupName", node, XPathConstants.STRING);
-        String exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);
-        String exceptionWorkgroupNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
+        String exceptionWg = null;
+        String exceptionWorkgroupName = null;
+        String exceptionWorkgroupNamespace = null;
 
-        if (Utilities.isEmpty(exceptionWorkgroupName)) {
+        if (XmlHelper.pathExists(xpath, "./" + EXCEPTION_GROUP_NAME, node)) {
+        	exceptionWorkgroupName = Utilities.substituteConfigParameters(
+        			(String) getXPath().evaluate("./" + EXCEPTION_GROUP_NAME, node, XPathConstants.STRING)).trim();
+        	exceptionWorkgroupNamespace = Utilities.substituteConfigParameters(
+        			(String) getXPath().evaluate("./" + EXCEPTION_GROUP_NAME + "/@" + NAMESPACE, node, XPathConstants.STRING)).trim();
+        }
+        if (Utilities.isEmpty(exceptionWorkgroupName) && XmlHelper.pathExists(xpath, "./" + EXCEPTION_WORKGROUP_NAME, node)) {
+        	LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(EXCEPTION_WORKGROUP_NAME).append(
+				"', please use '").append(EXCEPTION_GROUP_NAME).append("' instead.").toString());
+        	// for backward compatibility we also need to be able to support exceptionWorkgroupName
+        	exceptionWg = Utilities.substituteConfigParameters((String) getXPath().evaluate("./" + EXCEPTION_WORKGROUP_NAME, node, XPathConstants.STRING));
+        	exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);
+        	exceptionWorkgroupNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
+        }
+        if (Utilities.isEmpty(exceptionWorkgroupName) && XmlHelper.pathExists(xpath, "./" + EXCEPTION_WORKGROUP, node)) {
+        	LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(EXCEPTION_WORKGROUP).append(
+				"', please use '").append(EXCEPTION_GROUP_NAME).append("' instead.").toString());
             // for backward compatibility we also need to be able to support exceptionWorkgroup
-            exceptionWg = (String) getXPath().evaluate("./exceptionWorkgroup", node, XPathConstants.STRING);
+            exceptionWg = Utilities.substituteConfigParameters((String) getXPath().evaluate("./" + EXCEPTION_WORKGROUP, node, XPathConstants.STRING));
             exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);
             exceptionWorkgroupNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
         }

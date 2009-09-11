@@ -15,6 +15,7 @@
  limitations under the License.
 -->
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:c="ns:workflow/common"
         targetNamespace="ns:workflow/common"
         attributeFormDefault="unqualified"
         elementFormDefault="qualified">
@@ -88,4 +89,18 @@
       <maxLength value="16384"/>
     </restriction>
   </simpleType>
+  
+  <complexType name="GroupNameType">
+    <simpleContent>
+      <extension base="c:ShortStringType">
+        <attribute name="namespace" type="c:ShortStringType" use="required">
+          <annotation>
+            <documentation>
+              Group Namespace
+            </documentation>
+          </annotation>
+        </attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
 </schema>

@@ -21,9 +21,9 @@
       <description>Office Of Affirmative Action Documents</description>
       <label>Offic Of Affirmative Action Documents</label>
       <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
-      <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
       <docHandler>${workflow.url}/EDocLite</docHandler>
       <active>true</active>
       <policies>

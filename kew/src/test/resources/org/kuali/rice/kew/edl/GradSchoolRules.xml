@@ -35,7 +35,7 @@
 			</ruleExtensions>
 			<responsibilities>
 			    <responsibility>
-        			<workgroup>KR-WKFLW:Group1</workgroup>
+        			<groupName namespace="KR-WKFLW">Group1</groupName>
         			<actionRequested>A</actionRequested>
         			<priority>1</priority>
 		    	</responsibility>
@@ -61,7 +61,7 @@
 			</ruleExtensions>
 			<responsibilities>
 				<responsibility>
-					<workgroup>KR-WKFLW:Group2</workgroup>
+					<groupName namespace="KR-WKFLW">Group2</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

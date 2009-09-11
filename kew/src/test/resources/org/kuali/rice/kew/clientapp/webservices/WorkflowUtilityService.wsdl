@@ -111,7 +111,6 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="members" nillable="true" type="impl:ArrayOf_tns1_UserVO"/>
      <element name="workgroupId" nillable="true" type="soapenc:long"/>
      <element name="workgroupName" nillable="true" type="soapenc:string"/>
-     <element name="workgroupType" nillable="true" type="soapenc:string"/>
     </sequence>
    </complexType>
    <complexType name="ActionRequestVO">

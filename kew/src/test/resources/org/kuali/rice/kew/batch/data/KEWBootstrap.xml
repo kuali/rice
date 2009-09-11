@@ -87,13 +87,6 @@
             <type>RuleAttribute</type>
         </ruleAttribute>
         <ruleAttribute>
-            <name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
-            <className>org.kuali.rice.kew.rule.RemoveReplaceWorkgroupTypeRoutingAttribute</className>
-            <label>RemoveReplaceWorkgroupTypeRoutingAttribute</label>
-            <description>An attribute for routing workgroups that have been changed via the Remove/Replace User document</description>
-            <type>RuleAttribute</type>
-        </ruleAttribute>
-        <ruleAttribute>
 			<name>RemoveReplaceRuleRoutingAttribute</name>
 			<className>org.kuali.rice.kew.rule.RemoveReplaceRuleRoutingAttribute</className>
 			<label>RemoveReplaceRuleRoutingAttribute</label>
@@ -122,16 +115,6 @@
             <name>Ack2Template</name>
             <description>Acknowledgement 2 Template</description>
         </ruleTemplate>
-        <ruleTemplate>
-			<name>RemoveReplaceWorkgroupTemplate</name>
-			<description>Remove/Replace Workgroup Routing</description>
-			<attributes>
-				<attribute>
-					<name>RemoveReplaceWorkgroupTypeRoutingAttribute</name>
-					<required>true</required>
-				</attribute>
-			</attributes>
-		</ruleTemplate>
         <ruleTemplate>
             <name>RemoveReplaceRuleTemplate</name>
             <description>Remove/Replace Rule Routing</description>
@@ -231,8 +214,7 @@
             <routingVersion>1</routingVersion>
             <routePaths>
                 <routePath>
-                    <start name="Adhoc Routing" nextNode="Workgroup Approval"/>
-                    <requests name="Workgroup Approval" nextNode="Rule Approval"/>
+                    <start name="Adhoc Routing" nextNode="Rule Approval"/>
                     <requests name="Rule Approval"/>
                 </routePath>
             </routePaths>
@@ -242,12 +224,6 @@
                     <mandatoryRoute>false</mandatoryRoute>
                     <finalApproval>false</finalApproval>
                 </start>
-                <requests name="Workgroup Approval">
-                    <activationType>P</activationType>
-                    <ruleTemplate>RemoveReplaceWorkgroupTemplate</ruleTemplate>
-                    <mandatoryRoute>false</mandatoryRoute>
-                    <finalApproval>false</finalApproval>
-                </requests>
                 <requests name="Rule Approval">
                     <activationType>P</activationType>
                     <ruleTemplate>RemoveReplaceRuleTemplate</ruleTemplate>

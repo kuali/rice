@@ -23,16 +23,6 @@
       <type>ExtensionAttribute</type>
     </ruleAttribute>
   </ruleAttributes>
-  <workgroupTypes xmlns="ns:workflow/WorkgroupType" xsi:schemaLocation="ns:workflow/WorkgroupType resource:WorkgroupType">
-    <workgroupType>
-      <name>ChartOrgWorkgroup</name>
-      <attributes>
-        <attribute>
-          <name>ChartOrgDataAttribute</name>
-        </attribute>
-      </attributes>
-    </workgroupType>
-  </workgroupTypes>
   <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
     <group>
       <name>WGWithExtData</name>

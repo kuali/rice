@@ -23,8 +23,8 @@
       <label>DocumentTypeXmlParserTestDoc_ValidPolicyNames_UpperCase</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -33,7 +33,7 @@
       </routePaths>
       <routeNodes>
         <start name="AdHoc">
-          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+          <exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
           <activationType>S</activationType>
         </start>
       </routeNodes>
@@ -67,8 +67,8 @@
       <label>DocumentTypeXmlParserTestDoc_ValidPolicyNames_LowerCase</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -77,7 +77,7 @@
       </routePaths>
       <routeNodes>
         <start name="AdHoc">
-          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+          <exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
           <activationType>S</activationType>
         </start>
       </routeNodes>

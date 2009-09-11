@@ -850,8 +850,6 @@ public class KEWConstants extends JSTLConstants {
 
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
 
-    public static final String LEGACY_DEFAULT_WORKGROUP_TYPE = "W";
-
     public static final String SIMPLE_DOCUMENT_ACTIONS_SECURITY = "simpleDocumentActionsService.security";
     public static final String DAILY_EMAIL_CRON_EXPRESSION = "dailyEmail.cronExpression";
     public static final String WEEKLY_EMAIL_CRON_EXPRESSION = "weeklyEmail.cronExpression";

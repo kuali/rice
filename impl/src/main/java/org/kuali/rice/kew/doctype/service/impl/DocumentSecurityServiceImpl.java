@@ -34,6 +34,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -109,11 +110,10 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     //  Workgroup Authorization
-    List<String> securityWorkgroups = security.getWorkgroups();
+    List<Group> securityWorkgroups = security.getWorkgroups();
     if (securityWorkgroups != null) {
-      for (String workgroupName : securityWorkgroups) {
-        //TODO Might want security to hold group Id instead of name
-        if (isWorkgroupAuthenticated(Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName), session)) {
+      for (Group securityWorkgroup : securityWorkgroups) {
+        if (isWorkgroupAuthenticated(securityWorkgroup.getNamespaceCode(), securityWorkgroup.getGroupName(), session)) {
         	return true;
         }
       }

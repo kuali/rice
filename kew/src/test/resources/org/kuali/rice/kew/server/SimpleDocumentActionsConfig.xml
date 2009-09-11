@@ -48,9 +48,9 @@
             <description>Services Test Request</description>
             <label>Services Test Request</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserWorkgroupName>TestAdhocWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestAdhocWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestAdhocWorkgroup</defaultExceptionWorkgroupName>
+            <superUserGroupName>TestAdhocWorkgroup</superUserGroupName>
+            <blanketApproveGroupName>TestAdhocWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName>TestAdhocWorkgroup</defaultExceptionGroupName>
             <docHandler>null</docHandler>
             <active>true</active>
             <policies>

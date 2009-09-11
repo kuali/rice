@@ -25,7 +25,7 @@
       </routePaths>
       <routeNodes>
         <start name="AdHoc">
-          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+          <exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
           <activationType>S</activationType>
         </start>
       </routeNodes>

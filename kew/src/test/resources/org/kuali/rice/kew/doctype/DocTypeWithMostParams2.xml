@@ -22,10 +22,10 @@
 			<description>Another test of most parameters.</description>
 			<label>AntoherTestWithMostParams</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-			<reportingWorkgroupName>KR-WKFLW:WorkflowAdmin</reportingWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<reportingGroupName namespace="KR-WKFLW">WorkflowAdmin</reportingGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>_nothing</docHandler>
 			<helpDefinitionURL>_nothing</helpDefinitionURL>
 			<notificationFromAddress>_nothing</notificationFromAddress>

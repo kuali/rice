@@ -45,17 +45,6 @@
             </div>
             <br>
             <table border="0" align="center" cellpadding="0" cellspacing="0" style="width:auto; background-color:#e4e4e4" class="nobord">
-
-              <tr>
-                <td class="nobord"style="width:auto; background-color:#e4e4e4"><div align="right"><strong>Workgroup Type:</strong></div></td>
-                <td class="nobord"style="width:auto; background-color:#e4e4e4">
-                <html-el:select property="workgroupType">
-    <c:set var="workgroupTypes" value="${RemoveReplaceForm.workgroupTypes}"/>
-	<html-el:option key="" value=""/>
-	<html-el:options collection="workgroupTypes" property="name" labelProperty="label"/>
-  </html-el:select></td>
-              </tr>
-
               <tr>
                 <td colspan="2" class="nobord"style="width:auto; background-color:#e4e4e4"><div align="center">
                     <html-el:image styleClass="nobord" styleId="imageField" src="images/tinybutton-choosewkgrps.gif" property="methodToCall.chooseWorkgroups"/>

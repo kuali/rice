@@ -21,10 +21,10 @@
       <label>ReportingWorkgroupName1</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
-      <reportingWorkgroupName>KR-WKFLW:WorkflowAdmin</reportingWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <reportingGroupName namespace="KR-WKFLW">WorkflowAdmin</reportingGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -42,9 +42,9 @@
       <label>ReportingWorkgroupName2</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>

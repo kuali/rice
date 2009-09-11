@@ -22,8 +22,8 @@
       <label>DocumentTypeXmlParserTestDoc_BadSuperUserWG</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>BOGUS_WORKGROUP</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+      <superUserGroupName>BOGUS_WORKGROUP</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -32,7 +32,7 @@
       </routePaths>
       <routeNodes>
         <start name="AdHoc">
-          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+          <exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
           <activationType>S</activationType>
         </start>
       </routeNodes>

@@ -181,7 +181,7 @@ public class DocumentTypeTest extends KEWTestCase {
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getDocumentTypes().add(parsedDocument);
-        String regex = "(?s).*<defaultExceptionWorkgroupName>" + KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE + ":TestWorkgroup</defaultExceptionWorkgroupName>.*";
+        String regex = "(?s).*<defaultExceptionGroupName namespace=\"" + KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE + "\">TestWorkgroup</defaultExceptionGroupName>.*";
         LOG.warn("Using regex: " + regex);
         assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches(regex));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());
@@ -688,11 +688,6 @@ public class DocumentTypeTest extends KEWTestCase {
     	KEWServiceLocator.getCacheAdministrator().flushGroup(DocumentTypeServiceImpl.DOCUMENT_TYPE_NAME_CACHE_GROUP);
     	KEWServiceLocator.getCacheAdministrator().flushEntry(DocumentTypeServiceImpl.CURRENT_ROOTS_IN_CACHE_KEY);
     }
-    
-    protected String getPrincipalIdForName(String principalName) {
-        return KEWServiceLocator.getIdentityHelperService()
-                .getIdForPrincipalName(principalName);
-    }
 
     private class LoadXml implements Runnable {
 
@@ -713,7 +708,7 @@ public class DocumentTypeTest extends KEWTestCase {
 		}
 
     }
-    
+
     private class Callback {
     	private String xmlFile;
     	private Throwable t;

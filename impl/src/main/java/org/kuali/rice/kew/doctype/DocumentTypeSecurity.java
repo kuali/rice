@@ -37,6 +37,9 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kew.xml.XmlConstants;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -49,12 +52,14 @@ public class DocumentTypeSecurity implements Serializable {
 
   private static final long serialVersionUID = -1886779857180381404L;
 
+  private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypeSecurity.class);
+  
   private Boolean active;
 
   private Boolean initiatorOk;
   private Boolean routeLogAuthenticatedOk;
   private List<KeyValue> searchableAttributes = new ArrayList<KeyValue>();
-  private List<String> workgroups = new ArrayList<String>();
+  private List<Group> workgroups = new ArrayList<Group>();
   private List<String> allowedRoles = new ArrayList<String>();
   private List<String> disallowedRoles = new ArrayList<String>();
   private List<SecurityAttribute> securityAttributes = new ArrayList<SecurityAttribute>();
@@ -127,11 +132,38 @@ public class DocumentTypeSecurity implements Serializable {
 
       NodeList workgroupNodes = (NodeList) xpath.evaluate("./workgroup", securityElement, XPathConstants.NODESET);
       if (workgroupNodes != null && workgroupNodes.getLength()>0) {
+    	LOG.warn("Document Type Security XML is using deprecated element 'workgroup', please use 'groupName' instead.");
         for (int i = 0; i < workgroupNodes.getLength(); i++) {
           Node workgroupNode = workgroupNodes.item(i);
           String value = workgroupNode.getTextContent().trim();
           if (!Utilities.isEmpty(value)) {
-            workgroups.add(value);
+        	value = Utilities.substituteConfigParameters(value);
+            String namespaceCode = Utilities.parseGroupNamespaceCode(value);
+            String groupName = Utilities.parseGroupName(value);
+        	Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+        	if (groupObject == null) {
+        		throw new WorkflowException("Could not find group: " + value);
+        	}
+            workgroups.add(groupObject);
+          }
+        }
+      }
+
+      NodeList groupNodes = (NodeList) xpath.evaluate("./groupName", securityElement, XPathConstants.NODESET);
+      if (groupNodes != null && groupNodes.getLength()>0) {
+        for (int i = 0; i < groupNodes.getLength(); i++) {
+          Node groupNode = groupNodes.item(i);
+          if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+        	String groupName = groupNode.getTextContent().trim();
+            if (!Utilities.isEmpty(groupName)) {
+              groupName = Utilities.substituteConfigParameters(groupName).trim();
+              String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
+              Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+                if (groupObject == null) {
+                  throw new WorkflowException("Could not find group with name '" + groupName + "' and namespace '" + namespaceCode + "'");
+                }
+              workgroups.add(groupObject);
+            }
           }
         }
       }
@@ -238,11 +270,11 @@ public class DocumentTypeSecurity implements Serializable {
 	this.searchableAttributes = searchableAttributes;
   }
 
-  public List<String> getWorkgroups() {
+  public List<Group> getWorkgroups() {
 	return workgroups;
   }
 
-  public void setWorkgroups(List<String> workgroups) {
+  public void setWorkgroups(List<Group> workgroups) {
 	this.workgroups = workgroups;
   }
 

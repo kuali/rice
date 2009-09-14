@@ -50,6 +50,11 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
         super();
     }
 
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementGroupDocument";
+	}
+	
 	public IdentityManagementGroupDocument getGroupDocument() {
         return (IdentityManagementGroupDocument) this.getDocument();
     }

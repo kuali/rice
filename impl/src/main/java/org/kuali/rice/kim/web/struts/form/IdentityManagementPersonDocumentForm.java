@@ -85,6 +85,11 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
         this.setNewDelegationMember(new RoleDocumentDelegationMember());
     }
 
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementPersonDocument";
+	}
+	
 	public IdentityManagementPersonDocument getPersonDocument() {
         return (IdentityManagementPersonDocument) this.getDocument();
     }

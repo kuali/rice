@@ -82,7 +82,11 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
         super();
     }
 
-
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementRoleDocument";
+	}
+	
 	public IdentityManagementRoleDocument getRoleDocument() {
         return (IdentityManagementRoleDocument) this.getDocument();
     }

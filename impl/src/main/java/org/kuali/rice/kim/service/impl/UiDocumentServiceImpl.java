@@ -1844,6 +1844,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimRole.setKimTypeId(identityManagementRoleDocument.getRoleTypeId());
 		kimRole.setNamespaceCode(identityManagementRoleDocument.getRoleNamespace());
 		kimRole.setRoleName(identityManagementRoleDocument.getRoleName());
+		kimRole.setRoleDescription(identityManagementRoleDocument.getRoleDescription());
 
 		if (origRole == null) {
 			origRole = new RoleImpl();

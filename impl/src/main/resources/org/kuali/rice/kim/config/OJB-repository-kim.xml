@@ -1029,6 +1029,7 @@
     <field-descriptor name="roleTypeId" column="role_typ_id" jdbc-type="VARCHAR"/>
     <field-descriptor name="roleNamespace" column="role_nmspc" jdbc-type="VARCHAR"  />
     <field-descriptor name="roleName" column="role_nm" jdbc-type="VARCHAR"  />
+    <field-descriptor name="roleDescription" column="desc_txt" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />

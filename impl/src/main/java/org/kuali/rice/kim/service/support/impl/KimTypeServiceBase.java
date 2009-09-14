@@ -55,6 +55,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
@@ -183,7 +184,8 @@ public class KimTypeServiceBase implements KimTypeService {
 		            	propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attr.getAttributeName());
 						if ( propertyDescriptor != null ) {
 							// set the value on the object so that it can be checked
-							propertyDescriptor.getWriteMethod().invoke( componentObject, attributes.get( attributeName ) );
+							Object attributeValue = getAttributeValue(propertyDescriptor, attributes.get(attributeName));
+							propertyDescriptor.getWriteMethod().invoke( componentObject, attributeValue);
 							attributeErrors = validateDataDictionaryAttribute(kimTypeId, attr.getComponentName(), componentObject, propertyDescriptor);
 						}
 		            }
@@ -213,6 +215,17 @@ public class KimTypeServiceBase implements KimTypeService {
 		return validationErrors;
 	}
 
+	private Object getAttributeValue(PropertyDescriptor propertyDescriptor, String attributeValue){
+		Object attributeValueObject = null;
+		if(propertyDescriptor!=null && attributeValue!=null){
+			Class<?> propertyType = propertyDescriptor.getPropertyType();
+			if(propertyType!=String.class){
+				attributeValueObject = KNSUtils.createObject(propertyType, new Class[]{String.class}, new Object[] {attributeValue});
+			} else
+				attributeValueObject = attributeValue;
+		}
+		return attributeValueObject;
+	}
 	
 	protected Map<String, List<String>> validateReferencesExistAndActive( KimTypeInfo kimType, AttributeSet attributes, Map<String, String> previousValidationErrors) {
 		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();

@@ -95,12 +95,12 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		// TODO: move this into the UI service - action should not be making ORM-layer calls
 		setKimType(kimTypeId, roleDocumentForm);
 
-		ActionForward forward = super.execute(mapping, roleDocumentForm, request, response);
-
 		KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
-		if (roleDocumentForm.getMemberRows() != null) {
+		if (roleDocumentForm.getRoleDocument()!=null && roleDocumentForm.getMemberRows() != null) {
 			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
 		}
+
+		ActionForward forward = super.execute(mapping, roleDocumentForm, request, response);
 
 		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
 		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDocumentForm.getRoleDocument().getKimType())) {

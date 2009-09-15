@@ -1,8 +1,24 @@
+/*
+ * Copyright 2007-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kew.util;
 
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -107,8 +123,6 @@ public class KEWConstants extends JSTLConstants {
     public static final String DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME = "showCloseButton";
     public static final String DISPLAY_CLOSE_BUTTON_TRUE_VALUE = "showCloseButton";
 
-    public static final String WORKFLOW_SUPER_USER_WORKGROUP_NAME = "WorkflowAdmin";
-
     public static final String DAILY_UNIT = "Daily";
     public static final String WEEKLY_UNIT = "Weekly";
     public static final String MONTHLY_UNIT = "Monthly";
@@ -117,7 +131,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
     public static final String APP_CODE = "en";
-    public static final String PROD_DEPLOYMENT_CODE = "prd";
+    public static final String PROD_DEPLOYMENT_CODE = "production.environment.code";
 
     public static final String YES_LABEL = "Yes";
     public static final String NO_LABEL = "No";
@@ -261,6 +275,17 @@ public class KEWConstants extends JSTLConstants {
         ACTION_LIST_COLOR_PALETTE.put("tan", "#E5E5B7");
     }
 
+    // This is just the above map, but with the keys in the place of the values and vice versa. This assumes the map above
+    // is a one-to-one correspondence; if it's not, then the static{} block below will need modification.
+    public static final Map<String, String> ACTION_LIST_COLOR_NAMES;
+    static {
+    	ACTION_LIST_COLOR_NAMES = new HashMap<String,String>();
+    	for (Iterator<Map.Entry<String,String>> iterator = ACTION_LIST_COLOR_PALETTE.entrySet().iterator(); iterator.hasNext();) {
+    		Map.Entry<String,String> colorEntry = iterator.next();
+    		ACTION_LIST_COLOR_NAMES.put(colorEntry.getValue(), colorEntry.getKey());
+    	}
+    }
+    
     public static final String HEADER_TAG = "ROUTE_HEADER";
     public static final String DOCTYPE_TAG = "DOCTYPE";
 
@@ -910,7 +935,6 @@ public class KEWConstants extends JSTLConstants {
     public static final String ACTION_LIST_DOCUMENT_POPUP_IND = "ACTION_LIST_DOCUMENT_POPUP_IND";
     public static final String ACTION_LIST_ROUTE_LOG_POPUP_IND  = "ACTION_LIST_ROUTE_LOG_POPUP_IND";
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND = "SEND_EMAIL_NOTIFICATION_IND";
-    public static final String APPLICATION_CONTEXT = "APPLICATION_CONTEXT";
     public static final String SHOW_BACK_DOOR_LOGIN_IND = "SHOW_BACK_DOOR_LOGIN_IND";
     public static final String RULE_DELEGATE_LIMIT = "DELEGATE_LIMIT";
     public static final String RULE_LOCKING_ON_IND = "RULE_LOCKING_ON_IND";

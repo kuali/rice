@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,20 +17,29 @@ package org.kuali.rice.kns.service;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl;
+import org.kuali.rice.kns.test.document.AccountRequestDocument;
+import org.kuali.rice.kns.test.document.AccountRequestDocument2;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.maintainable.AccountType2MaintainableImpl;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KNSTestCase;
@@ -271,5 +280,239 @@ public class PessimisticLockServiceTest extends KNSTestCase {
         // verify retrieved lock has lock descriptor set previously
         PessimisticLock savedLock = (PessimisticLock) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
         assertEquals("Lock descriptor is not correct from lock that was saved", lockDescriptor, savedLock.getLockDescriptor());
+    }
+    
+    /**
+     * This method tests the PessimisticLockService.establishLocks method and the PessimisticLockService.getDocumentActions method.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testEstablishLocks() throws Exception {
+    	PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
+    	AccountRequestDocument accountDoc = (AccountRequestDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest");
+    	assertTrue("The AccountRequestDocument should be using pessimistic locking",
+    			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
+    	
+    	// Have "quickstart" establish a pessimistic lock on the account request document.
+    	UserSession quickstartSession = new UserSession("quickstart");
+    	Person[] quickstartPerson = { quickstartSession.getPerson() };
+    	Map<String,String> editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	Map <?,?> finalModes = lockService.establishLocks(accountDoc, editMode, quickstartSession.getPerson());
+    	
+    	// Verify that the lock was actually established.
+    	assertCorrectLocksAreInPlace(true, finalModes, 1, accountDoc.getPessimisticLocks(), quickstartPerson, null);
+    	
+    	// Now check to make sure that a different user (such as "admin") cannot save, route, cancel, or blanket approve the document.
+    	UserSession adminSession = new UserSession("admin");
+    	Set<String> documentActions = new HashSet<String>(Arrays.asList(new String[] { KNSConstants.KUALI_ACTION_CAN_CANCEL,
+    			KNSConstants.KUALI_ACTION_CAN_SAVE, KNSConstants.KUALI_ACTION_CAN_ROUTE, KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE }));
+    	Set<?> finalActions = lockService.getDocumentActions(accountDoc, adminSession.getPerson(), documentActions);
+    	assertFalse("'admin' should not be able to cancel the locked document", finalActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL));
+    	assertFalse("'admin' should not be able to save the locked document", finalActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE));
+    	assertFalse("'admin' should not be able to route the locked document", finalActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE));
+    	assertFalse("'admin' should not be able to blanket approve the locked document", finalActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE));
+    	
+    	// Verify that "quickstart" can save, route, and cancel the document since he is the owner of the lock.
+    	documentActions = new HashSet<String>(Arrays.asList(new String[] {
+    			KNSConstants.KUALI_ACTION_CAN_CANCEL, KNSConstants.KUALI_ACTION_CAN_SAVE, KNSConstants.KUALI_ACTION_CAN_ROUTE }));
+    	finalActions = lockService.getDocumentActions(accountDoc, quickstartSession.getPerson(), documentActions);
+    	assertTrue("'quickstart' should have had cancel privileges", finalActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL));
+    	assertTrue("'quickstart' should have had save privileges", finalActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE));
+    	assertTrue("'quickstart' should have had route privileges", finalActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE));
+    	
+    	// Check that "admin" cannot establish a lock when one is already in place.
+    	editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	finalModes = lockService.establishLocks(accountDoc, editMode, adminSession.getPerson());
+    	assertCorrectLocksAreInPlace(false, finalModes, 1, accountDoc.getPessimisticLocks(), quickstartPerson, null);
+    	
+    	// Make sure that "quickstart" cannot create a second lock if custom lock descriptors are not in use.
+    	editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	finalModes = lockService.establishLocks(accountDoc, editMode, quickstartSession.getPerson());
+    	assertCorrectLocksAreInPlace(true, finalModes, 1, accountDoc.getPessimisticLocks(), quickstartPerson, null);
+    }
+    
+    /**
+     * This method tests the PessimistLockService's workflow pessimistic locking capabilities.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testWorkflowPessimisticLocking() throws Exception {
+    	PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
+    	AccountRequestDocument accountDoc = (AccountRequestDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest");
+    	assertTrue("The AccountRequestDocument should be using pessimistic locking",
+    			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
+    	
+    	// Have the system user create a workflow pessimistic lock.
+    	UserSession systemSession = new UserSession(KNSConstants.SYSTEM_USER);
+    	Person[] systemPerson = { systemSession.getPerson() };
+    	lockService.establishWorkflowPessimisticLocking(accountDoc);
+       	assertCorrectLocksAreInPlace(false, null, 1, accountDoc.getPessimisticLocks(), systemPerson, null);
+       	
+       	// Make sure that no other users can lock when the workflow lock is in place.
+       	UserSession adminSession = new UserSession("admin");
+    	Map<String,String> editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	Map<?,?> finalModes = lockService.establishLocks(accountDoc, editMode, adminSession.getPerson());
+    	assertCorrectLocksAreInPlace(false, finalModes, 1, accountDoc.getPessimisticLocks(), systemPerson, null);
+       	
+       	// Ensure that workflow pessimistic locks can also be released.
+       	lockService.releaseWorkflowPessimisticLocking(accountDoc);
+       	assertTrue("There should not be any pessimistic locks present on the document", accountDoc.getPessimisticLocks().isEmpty());
+    }
+    
+    /**
+     * This method tests the PessimisticLockService's ability to establish pessimistic locks for documents supporting custom lock descriptors.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testPessimisticLockingWithCustomDocumentLockDescriptors() throws Exception {
+       	AccountRequestDocument2 accountDoc2 = (AccountRequestDocument2) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest2");
+       	assertTrue("The AccountRequestDocument2 should be using pessimistic locking", KNSServiceLocator.getDataDictionaryService().getDataDictionary(
+       			).getDocumentEntry(accountDoc2.getClass().getName()).getUsePessimisticLocking());
+       	assertTrue("The AccountRequestDocument2 should be using custom lock descriptors", accountDoc2.useCustomLockDescriptors());
+       	
+       	// Perform the custom lock descriptor unit testing operations.
+       	assertCustomLockDescriptorsAreWorking(accountDoc2, AccountRequestDocument2.ACCT_REQ_DOC_2_EDITABLE_FIELDS,
+       			AccountRequestDocument2.EDIT_ALL_BUT_REASONS, AccountRequestDocument2.EDIT_REASONS_ONLY);
+    }
+    
+    /**
+     * This method tests the PessimisticLockService's ability to establish pessimistic locks for maintenance documents (via maintainables) that
+     * support custom lock descriptors.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testPessimisticLockingWithCustomMaintainableLockDescriptors() throws Exception {
+    	MaintenanceDocument maintDoc = (MaintenanceDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountType2MaintenanceDocument");
+    	assertTrue("The AccountType2MaintenanceDocument should be using pessimistic locking", KNSServiceLocator.getDataDictionaryService().getDataDictionary(
+			).getDocumentEntry(maintDoc.getNewMaintainableObject().getBoClass().getSimpleName() + "MaintenanceDocument").getUsePessimisticLocking());
+    	assertTrue("The AccountType2MaintenanceDocument should be using custom lock descriptors", maintDoc.useCustomLockDescriptors());
+    	assertTrue("The AccountType2MaintenanceDocument's new maintainable uses the wrong class",
+    			maintDoc.getNewMaintainableObject() instanceof AccountType2MaintainableImpl);
+    	AccountType2MaintainableImpl newMaint = (AccountType2MaintainableImpl) maintDoc.getNewMaintainableObject();
+    	assertTrue("The AccountType2MaintainableImpl should be using custom lock descriptors", newMaint.useCustomLockDescriptors());
+    	
+    	// Perform the custom lock descriptor unit testing operations.
+       	assertCustomLockDescriptorsAreWorking(maintDoc, AccountType2MaintainableImpl.ACCT_TYPE_2_MAINT_FIELDS_TO_EDIT,
+       			AccountType2MaintainableImpl.EDIT_CODE_ONLY, AccountType2MaintainableImpl.EDIT_NAME_ONLY);
+    }
+    
+    /**
+     * A convenience method for testing the custom lock descriptors of documents (and on the maintainables of maintenance documents).
+     * 
+     * @param testDoc The document to test pessimistic locking on (or the maintenance document with maintainables to test on).
+     * @param LOCK_KEY The UserSession object key to use for storing the lock descriptor's key.
+     * @param LOCK_VALUE1 One possible object to store in a UserSession for generating lock descriptors on the testDoc.
+     * @param LOCK_VALUE2 Another possible object to store in a UserSession for generating lock descriptors on the testDoc.
+     * 
+     * @throws Exception
+     */
+    private void assertCustomLockDescriptorsAreWorking(Document testDoc, final String LOCK_KEY, final Object LOCK_VALUE1,
+    		final Object LOCK_VALUE2) throws Exception {
+    	PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
+    	
+    	// Have "quickstart" establish a pessimistic lock on the document by using a custom lock descriptor that only locks part of the document.
+       	UserSession quickstartSession = new UserSession("quickstart");
+       	Person[] allPersons = { quickstartSession.getPerson(), null };
+    	Map<String,String> editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	GlobalVariables.getUserSession().addObject(LOCK_KEY, LOCK_VALUE1);
+    	String[] allDescriptors = { testDoc.getCustomLockDescriptor(quickstartSession.getPerson()), null };
+   		assertNotNull("The document should have generated a custom lock descriptor", allDescriptors[0]);
+    	Map <?,?> finalModes = lockService.establishLocks(testDoc, editMode, quickstartSession.getPerson());
+    	
+    	// Verify that the lock was actually established and that the expected custom lock descriptor was used.
+    	assertCorrectLocksAreInPlace(true, finalModes, 1, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
+    	
+    	// Attempt to establish the same lock again, which should change nothing since "quickstart" already has the lock.
+    	editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	GlobalVariables.getUserSession().addObject(LOCK_KEY, LOCK_VALUE1);
+    	lockService.establishLocks(testDoc, editMode, quickstartSession.getPerson());
+    	assertCorrectLocksAreInPlace(false, null, 1, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
+    	
+    	// Now check to make sure that a different user (such as "admin") cannot establish a lock using the same lock descriptor.
+    	UserSession adminSession = new UserSession("admin");
+    	editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+       	GlobalVariables.getUserSession().addObject(LOCK_KEY, LOCK_VALUE1);
+    	assertEquals("The document should have generated the same lock descriptors for both 'quickstart' and 'admin'",
+    			allDescriptors[0], testDoc.getCustomLockDescriptor(adminSession.getPerson()));
+    	finalModes = lockService.establishLocks(testDoc, editMode, adminSession.getPerson());
+    	assertCorrectLocksAreInPlace(false, finalModes, 1, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
+    	
+    	// Ensure that "admin" can establish a lock that has a different lock descriptor.
+    	allPersons[1] = adminSession.getPerson();
+    	editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	GlobalVariables.getUserSession().addObject(LOCK_KEY, LOCK_VALUE2);
+    	allDescriptors[1] = testDoc.getCustomLockDescriptor(adminSession.getPerson());
+    	assertNotNull("The document should have generated a custom lock descriptor", allDescriptors[1]);
+    	assertNotSame("'quickstart' and 'admin' should have different custom lock descriptors now", allDescriptors[0], allDescriptors[1]);
+    	finalModes = lockService.establishLocks(testDoc, editMode, adminSession.getPerson());
+    	assertCorrectLocksAreInPlace(true, finalModes, 2, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
+    	
+    	// Verify that "quickstart" cannot acquire the lock owned by "admin".
+    	editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	GlobalVariables.getUserSession().addObject(LOCK_KEY, LOCK_VALUE2);
+    	lockService.establishLocks(testDoc, editMode, quickstartSession.getPerson());
+    	assertCorrectLocksAreInPlace(false, null, 2, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
+    	
+    	// After "admin" releases his lock, check to make sure that "quickstart" can now acquire it.
+    	lockService.releaseAllLocksForUser(testDoc.getPessimisticLocks(), allPersons[1], allDescriptors[1]);
+    	testDoc.refreshPessimisticLocks();
+    	assertCorrectLocksAreInPlace(false, null, 1, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
+    	allPersons[1] = allPersons[0];
+    	editMode = new HashMap<String,String>();
+    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
+    	GlobalVariables.getUserSession().addObject(LOCK_KEY, LOCK_VALUE2);
+    	finalModes = lockService.establishLocks(testDoc, editMode, quickstartSession.getPerson());
+    	assertCorrectLocksAreInPlace(true, finalModes, 2, testDoc.getPessimisticLocks(), allPersons, allDescriptors);
+    	
+    	// Release all the locks when done.
+    	GlobalVariables.getUserSession().removeObject(LOCK_KEY);
+    	lockService.releaseAllLocksForUser(testDoc.getPessimisticLocks(), allPersons[0]);
+    	testDoc.refreshPessimisticLocks();
+    	assertTrue("There should not be any pessimistic locks present on the document", testDoc.getPessimisticLocks().isEmpty());
+    }
+    
+    /**
+     * A convenience method for checking to ensure that the proper pessimistic locks are in place.
+     * 
+     * @param latestUserHasFullEntry Indicates if the map returned by PessimisticLockService.establishLocks should have a true "fullEntry" parameter.
+     * @param finalModes The map returned by the call to PessimisticLockService.establishLocks. This parameter can be null if checking it is not needed.
+     * @param expectedLockQuantity The expected number of pessimistic locks.
+     * @param pessimisticLocks The list of pessimistic locks to check for proper quantity and proper state.
+     * @param expectedOwners The users who are expected to own the corresponding locks in the previous list.
+     * @param expectedDescriptors The expected lock descriptors for the corresponding locks in the other list. This parameter can be set to null if
+     * the pessimistic locks are not using custom lock descriptors or if custom lock descriptors are not the concern of the test.
+     * @throws Exception
+     */
+    private void assertCorrectLocksAreInPlace(boolean latestUserHasFullEntry, Map<?,?> finalModes, int expectedLockQuantity,
+    		List<PessimisticLock> pessimisticLocks, Person[] expectedOwners, String[] expectedDescriptors) throws Exception {
+    	// Ensure that the last user to attempt to establish locks has the expected finalModes entry (or lack of it).
+    	if (finalModes != null) {
+    		assertEquals("The last user that tried to establish locks does not have the expected status on their full entry privileges",
+    				latestUserHasFullEntry, KNSConstants.KUALI_DEFAULT_TRUE_VALUE.equals(finalModes.get(AuthorizationConstants.EditMode.FULL_ENTRY)));
+    	}
+    	// Ensure that the expected number of locks are present.
+    	assertEquals("The wrong number of pessimistic locks are in place", expectedLockQuantity, pessimisticLocks.size());
+    	// Verify that each lock has the expected owners.
+    	for (int i = pessimisticLocks.size() - 1; i > -1; i--) {
+    		assertTrue("The lock at index " + i + " did not have the expected owner of " + expectedOwners[i].getPrincipalName(),
+    			pessimisticLocks.get(i).isOwnedByUser(expectedOwners[i]));
+    		if (expectedDescriptors != null) {
+    			assertTrue("The lock at index " + i + " did not have the expected lock descriptor of " + expectedDescriptors[i],
+    					pessimisticLocks.get(i).getLockDescriptor().equals(expectedDescriptors[i]));
+    		}
+    	}
     }
 }

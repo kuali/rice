@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -227,7 +227,7 @@ public class LookupUtils {
      *
      */
     private static Integer getApplicationSearchResultsLimit() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        String limitString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -251,7 +251,7 @@ public class LookupUtils {
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
-        String limitString = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
+        String limitString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -381,6 +381,7 @@ public class LookupUtils {
                     field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
                     field.setFieldConversions(generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
                     field.setLookupParameters(generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null));
+                    field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
                     field.setImageSrc(businessObjectDictionaryService.getSearchIconOverride(businessObject.getClass()));
                 }
             }
@@ -394,16 +395,37 @@ public class LookupUtils {
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, nestedAttributePrefix ) );
+            field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
         } else {
             field.setQuickFinderClassNameImpl(relationship.getRelatedClass().getName());
             field.setFieldConversions( generateFieldConversions( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
             field.setLookupParameters( generateLookupParameters( businessObject, collectionPrefix, relationship, field.getPropertyPrefix(), displayedFieldNames, null ) );
+            field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
         }
         field.setImageSrc(businessObjectDictionaryService.getSearchIconOverride(businessObject.getClass()));
 
         return field;
     }
+    
+    public static String getBaseLookupUrl(boolean isMultipleValue) {
+    	String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+		String lookupUrl = riceBaseUrl;
+		if (!lookupUrl.endsWith("/")) {
+			lookupUrl = lookupUrl + "/";
+		}
+		lookupUrl += "kr/";
+		if (isMultipleValue) {
+			lookupUrl = lookupUrl + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+		}
+		else {
+			lookupUrl = lookupUrl + KNSConstants.LOOKUP_ACTION;
+		}
+		return lookupUrl;
+    }
 
+    public static String transformLookupUrlToMultiple(String lookupUrl) {
+    	return lookupUrl.replace("kr/" + KNSConstants.LOOKUP_ACTION, "kr/" + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION);
+    }
 
     /**
      * Sets whether a field should have direct inquiries enabled.  The direct inquiry is the functionality on a page such that if the primary key for
@@ -418,7 +440,7 @@ public class LookupUtils {
      */
     private static void setFieldDirectInquiry(Field field) {
         if (StringUtils.isNotBlank(field.getFieldConversions())) {
-            boolean directInquiriesEnabled = kualiConfigurationService.getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
+            boolean directInquiriesEnabled = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
             if (directInquiriesEnabled) {
                 if (StringUtils.isNotBlank(field.getFieldConversions())) {
                     String fieldConversions = field.getFieldConversions();

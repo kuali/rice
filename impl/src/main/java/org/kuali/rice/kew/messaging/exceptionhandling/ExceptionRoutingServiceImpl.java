@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,7 +58,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
         throwable = unwrapRouteManagerExceptionIfPossible(throwable);
         RouteContext routeContext = establishRouteContext(document, throwable);
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
-        MDC.put("docID", routeHeaderId);
+        MDC.put("docId", routeHeaderId);
         PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);
         try {
 
@@ -95,7 +95,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } finally {
             performanceLogger.log("Time to generate exception request.");
-            MDC.remove("docID");
+            MDC.remove("docId");
         }
     }
 

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -80,14 +82,20 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 
-@SuppressWarnings({"deprecation","unchecked"})
+@SuppressWarnings({"unchecked"})
+@WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
+        serviceName = KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME,
+        portName = KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_PORT,
+        targetNamespace = KEWWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     private static final Logger LOG = Logger.getLogger(WorkflowUtilityWebServiceImpl.class);
@@ -248,7 +256,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return actionItemVOs;
     }
 
-    public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
+    public ActionItemDTO[] getAllActionItems(Long routeHeaderId) throws WorkflowException {
         Collection actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(routeHeaderId);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
         int i = 0;
@@ -261,7 +269,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
         List<String> actionRequestedCds = Arrays.asList(actionRequestedCodes);
-        ActionItemDTO[] actionItems = getActionItems(routeHeaderId);
+        ActionItemDTO[] actionItems = getAllActionItems(routeHeaderId);
         List<ActionItemDTO> matchingActionitems = new ArrayList<ActionItemDTO>();
         for (int i = 0; i < actionItems.length; i++) {
             ActionItemDTO actionItemVO = actionItems[i];
@@ -278,7 +286,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return returnActionItems;
     }
 
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
+    public ActionRequestDTO[] getAllActionRequests(Long routeHeaderId) throws WorkflowException {
         return getActionRequests(routeHeaderId, null, null);
     }
 
@@ -337,7 +345,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         int i = 0;
         for (Iterator iter = actionsTaken.iterator(); iter.hasNext(); i++) {
             ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
-            actionTakenVOs[i] = DTOConverter.convertActionTaken(actionTaken);
+            actionTakenVOs[i] = DTOConverter.convertActionTakenWithActionRequests(actionTaken);
         }
         return actionTakenVOs;
     }
@@ -427,10 +435,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     public boolean isUserInRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
-    	return isUserInRouteLog(routeHeaderId, principalId, lookFuture, false);
+    	return isUserInRouteLogWithOptionalFlattening(routeHeaderId, principalId, lookFuture, false);
     }
     
-    public boolean isUserInRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
+    public boolean isUserInRouteLogWithOptionalFlattening(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -487,7 +495,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     /**
      * @see org.kuali.rice.kew.service.WorkflowUtility#getPrincipalIdsInRouteLog(java.lang.Long, boolean)
      */
-    public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
+    public String[] getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
         if (routeHeaderId == null) {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
@@ -511,7 +519,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             	principalIds.add(actionRequest.getPrincipalId());
             }
             if (!lookFuture) {
-                return principalIds;
+            	return principalIds.toArray(new String[]{});
             }
             SimulationEngine simulationEngine = new SimulationEngine();
             SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
@@ -524,15 +532,19 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         } catch (Exception ex) {
             LOG.warn("Problems getting principalIds in Route Log for routeHeaderId: "+routeHeaderId+". Exception:"+ex.getMessage(),ex);
         }
-        return principalIds;
+    	return principalIds.toArray(new String[]{});
     }
 
     /***
      * @see org.kuali.rice.kew.service.WorkflowUtility#getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(java.lang.String, java.lang.Long)
      */
-    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId){
-    	return KEWServiceLocator.getActionRequestService().
+    public String[] getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId){
+    	List<String> results = KEWServiceLocator.getActionRequestService().
     				getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    	if (ObjectUtils.isNull(results)) {
+    		return null;
+    	}
+    	return results.toArray(new String[]{});
     }
 
     private boolean actionRequestListHasPrincipal(KimPrincipal principal, List actionRequests) throws WorkflowException {
@@ -552,16 +564,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             }
         }
         return false;
-    }
-
-
-    /**
-     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
-     *
-     * @see org.kuali.rice.kew.service.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[])
-     */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) {
-        return documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, false);
     }
 
     /**
@@ -960,10 +962,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
-        return performDocumentSearch(null, criteriaVO);
+        return performDocumentSearchWithPrincipal(null, criteriaVO);
     }
 
-    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
+    public DocumentSearchResultDTO performDocumentSearchWithPrincipal(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         DocSearchCriteriaDTO criteria = DTOConverter.convertDocumentSearchCriteriaDTO(criteriaVO);
         criteria.setOverridingUserSession(true);
         if (principalId != null) {
@@ -1016,37 +1018,49 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 	 *
 	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeDateTimeValuesByKey(java.lang.Long, java.lang.String)
 	 */
-	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
+	public Timestamp[] getSearchableAttributeDateTimeValuesByKey(
 			Long documentId, String key) {
-		// TODO Garey - THIS METHOD NEEDS JAVADOCS
-		return null;
+		List<Timestamp> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(documentId, key);
+		if (ObjectUtils.isNull(results)) {
+			return null;
+		}
+		return results.toArray(new Timestamp[]{});
 	}
 
 	/**
 	 *
 	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeFloatValuesByKey(java.lang.Long, java.lang.String)
 	 */
-	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
-			Long documentId, String key) {
-		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeFloatValuesByKey(documentId, key);
+	public BigDecimal[] getSearchableAttributeFloatValuesByKey(Long documentId, String key) {
+		List<BigDecimal> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeFloatValuesByKey(documentId, key);
+		if (ObjectUtils.isNull(results)) {
+			return null;
+		}
+		return results.toArray(new BigDecimal[]{});
 	}
 
 	/**
 	 *
 	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeLongValuesByKey(java.lang.Long, java.lang.String)
 	 */
-	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
-			String key) {
-		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeLongValuesByKey(documentId, key);
+	public Long[] getSearchableAttributeLongValuesByKey(Long documentId, String key) {
+		List<Long> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeLongValuesByKey(documentId, key);
+		if (ObjectUtils.isNull(results)) {
+			return null;
+		}
+		return results.toArray(new Long[]{});
 	}
 
 	/**
 	 *
 	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeStringValuesByKey(java.lang.Long, java.lang.String)
 	 */
-	public List<String> getSearchableAttributeStringValuesByKey(
-			Long documentId, String key) {
-		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeStringValuesByKey(documentId, key);
+	public String[] getSearchableAttributeStringValuesByKey(Long documentId, String key) {
+		List<String> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeStringValuesByKey(documentId, key);
+		if (ObjectUtils.isNull(results)) {
+			return null;
+		}
+		return results.toArray(new String[]{});
 	}
 
     public String getFutureRequestsKey(String principalId) {
@@ -1087,4 +1101,29 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
     	return docType != null && docType.isActive();
     }
+
+	public DocumentDetailDTO getDocumentDetailFromAppId(
+			String documentTypeName, String appId) throws WorkflowException {
+        if (documentTypeName == null) {
+            LOG.error("null documentTypeName passed in.");
+            throw new RuntimeException("null documentTypeName passed in");
+        }
+        if (appId == null) {
+            LOG.error("null appId passed in.");
+            throw new RuntimeException("null appId passed in");
+        }
+        
+        Collection routeHeaderIds = KEWServiceLocator.getRouteHeaderService().findByDocTypeAndAppId(documentTypeName, appId);
+        
+        if(routeHeaderIds==null||routeHeaderIds.isEmpty()){
+            LOG.error("No RouteHeader Ids found for criteria");
+    		throw new WorkflowException("No RouteHeader Ids found for criteria");
+        }
+        if(routeHeaderIds.size()>1){
+            LOG.error("More than one RouteHeader Id found for criteria");
+    		throw new WorkflowException("More than one RouteHeader Id found for criteria");
+		}
+        
+        return getDocumentDetail((Long)routeHeaderIds.iterator().next());
+	}
 }

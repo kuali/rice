@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,13 +25,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.KimDelegation;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -67,9 +68,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationMemberImpl> members = new TypedArrayList(KimDelegationMemberImpl.class);
 
-	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
-	protected KimTypeImpl kimType; 
+	protected KimTypeInfo kimType; 
 	
 	/**
 	 * This overridden method ...
@@ -110,12 +109,8 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		this.kimTypeId = typeId;
 	}
 
-	public KimTypeImpl getKimType() {
+	public KimTypeInfo getKimType() {
 		return this.kimType;
-	}
-
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
 	}
 
 	public String getDelegationTypeCode() {
@@ -165,4 +160,20 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		this.members = members;
 	}
 	
+	public DelegateTypeInfo toSimpleInfo(){
+		DelegateTypeInfo delegateTypeInfo = new DelegateTypeInfo();
+		delegateTypeInfo.setActive(active);
+		delegateTypeInfo.setDelegationId(delegationId);
+		delegateTypeInfo.setDelegationTypeCode(delegationTypeCode);
+		//delegateTypeInfo.setKimType(kimType);
+		delegateTypeInfo.setKimTypeId(kimTypeId);
+		delegateTypeInfo.setRoleId(roleId);
+		delegateTypeInfo.setMembers(new ArrayList<DelegateMemberCompleteInfo>());
+		if(members!=null){
+			for(KimDelegationMemberImpl member: members)
+				delegateTypeInfo.getMembers().add(member.toSimpleInfo());
+		}
+		return delegateTypeInfo;
+	}
+
 }

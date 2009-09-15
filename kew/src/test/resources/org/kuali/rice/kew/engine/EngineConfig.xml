@@ -27,7 +27,11 @@
 					<display>
 						<type>text</type>
 					</display>
-					<quickfinder service="WorkGroupLookupableImplService" appliesTo="workgroupName" draw="true" />
+					<lookup businessObjectClass="not.a.real.package.WorkgroupLookupable">
+					  <fieldConversions>
+					    <fieldConversion lookupFieldName="workgroupName" localFieldName="wrkgrp_nm"/>
+					  </fieldConversions>
+					</lookup>
 					<fieldEvaluation>
 						<xpathexpression>//workgroup_name/value</xpathexpression>
 					</fieldEvaluation>

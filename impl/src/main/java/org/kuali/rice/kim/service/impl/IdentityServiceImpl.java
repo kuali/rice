@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
@@ -5,6 +20,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
@@ -27,12 +44,34 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
+import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
+import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
+import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Base implementation of the identity (entity) service.  This version assumes the KimEntity
@@ -40,6 +79,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+
+@WebService(endpointInterface = KIMWebServiceConstants.IdentityService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class IdentityServiceImpl implements IdentityService, IdentityUpdateService {
 
 	private BusinessObjectService businessObjectService;
@@ -131,15 +172,21 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		for ( KimPrincipalImpl p : entity.getPrincipals() ) {
 			principalInfo.add( new KimPrincipalInfo( p ) );
 		}
+		KimEntityPrivacyPreferencesInfo privacy = null;
+		if ( ObjectUtils.isNotNull( entity.getPrivacyPreferences() ) ) {
+            privacy = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+        }
+
+		info.setPrivacyPreferences(privacy);
 		info.setDefaultName( new KimEntityNameInfo( entity.getDefaultName() ) );
 		ArrayList<KimEntityEntityTypeDefaultInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeDefaultInfo>( entity.getEntityTypes().size() );
 		info.setEntityTypes( entityTypesInfo );
 		for ( KimEntityEntityType entityEntityType : entity.getEntityTypes() ) {
 			KimEntityEntityTypeDefaultInfo typeInfo = new KimEntityEntityTypeDefaultInfo();
 			typeInfo.setEntityTypeCode( entityEntityType.getEntityTypeCode() );
-			typeInfo.setDefaultAddress( new KimEntityAddressInfo( entityEntityType.getDefaultAddress() ) );
-			typeInfo.setDefaultEmailAddress( new KimEntityEmailInfo( entityEntityType.getDefaultEmailAddress() ) );
-			typeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo( entityEntityType.getDefaultPhoneNumber() ) );
+			typeInfo.setDefaultAddress( new KimEntityAddressInfo( entityEntityType.getDefaultAddress()) );
+			typeInfo.setDefaultEmailAddress( new KimEntityEmailInfo( entityEntityType.getDefaultEmailAddress()) );
+			typeInfo.setDefaultPhoneNumber( new KimEntityPhoneInfo( entityEntityType.getDefaultPhoneNumber()) );
 			entityTypesInfo.add( typeInfo );
 		}
 		
@@ -177,7 +224,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		if ( principal == null ) {
 			return null;
 		}
-		return new KimPrincipalInfo( getPrincipalImpl( principalId ) );
+		return new KimPrincipalInfo( principal );
 	}
 	
 	public KimPrincipalImpl getPrincipalImpl(String principalId) {
@@ -189,7 +236,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	public KimEntityImpl getEntityImpl(String entityId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-		return (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, criteria);
+        KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, criteria);
+        if(entityImpl!=null)
+        	entityImpl.refresh();
+        return entityImpl;
 	}
 	
 	/**
@@ -217,13 +267,16 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 */
 	@SuppressWarnings("unchecked")
 	public KimPrincipalInfo getPrincipalByPrincipalName(String principalName) {
-		 Map<String,Object> criteria = new HashMap<String,Object>(1);
-         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
-         Collection<KimPrincipalImpl> principals = (Collection<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
-         if (!principals.isEmpty() && principals.size() == 1) {
-             return new KimPrincipalInfo( principals.iterator().next() );
-         }
-         return null;
+		if ( StringUtils.isBlank(principalName) ) {
+			return null;
+		}
+		Map<String,Object> criteria = new HashMap<String,Object>(1);
+        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
+        Collection<KimPrincipalImpl> principals = (Collection<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
+        if (!principals.isEmpty() && principals.size() == 1) {
+            return new KimPrincipalInfo( principals.iterator().next() );
+        }
+        return null;
     }
 
 	/**
@@ -289,7 +342,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		for(String s : entityIds) {
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, s);
-			criteria.put("dflt", "Y");
+			criteria.put("DFLT_IND", "Y");
 			
 			KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
 			
@@ -314,16 +367,18 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 			criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, s);
 			KimPrincipalImpl principal = (KimPrincipalImpl) getBusinessObjectService().findByPrimaryKey(KimPrincipalImpl.class, criteria);
 			
-			namePrincipal.setPrincipalName(principal.getPrincipalName());
-			
-			criteria.clear();
-			criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, principal.getEntityId());
-			criteria.put("dflt", "Y");
-			KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
-			
-			namePrincipal.setDefaultEntityName( new KimEntityNameInfo( name ) );
-			
-			result.put(s, namePrincipal);
+			if (null != principal) {
+				namePrincipal.setPrincipalName(principal.getPrincipalName());
+				
+				criteria.clear();
+				criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, principal.getEntityId());
+				criteria.put("DFLT_IND", "Y");
+				KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
+				
+				namePrincipal.setDefaultEntityName( new KimEntityNameInfo( name ) );
+				
+				result.put(s, namePrincipal);
+			}
 		}
 		
 		return result;
@@ -349,5 +404,98 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		}
 		return businessObjectService;
 	}
+
+	public AddressTypeInfo getAddressType( String code ) {
+		AddressTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(AddressTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+	
+	public AffiliationTypeInfo getAffiliationType( String code ) {
+		AffiliationTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(AffiliationTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public CitizenshipStatusInfo getCitizenshipStatus( String code ) {
+		CitizenshipStatusImpl impl = getBusinessObjectService().findBySinglePrimaryKey(CitizenshipStatusImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EmailTypeInfo getEmailType( String code ) {
+		EmailTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmailTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EmploymentStatusInfo getEmploymentStatus( String code ) {
+		EmploymentStatusImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmploymentStatusImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EmploymentTypeInfo getEmploymentType( String code ) {
+		EmploymentTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EmploymentTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EntityNameTypeInfo getEntityNameType( String code ) {
+		EntityNameTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EntityNameTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public EntityTypeInfo getEntityType( String code ) {
+		EntityTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(EntityTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+
+	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
+		ExternalIdentifierTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(ExternalIdentifierTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+	
+	public PhoneTypeInfo getPhoneType( String code ) {
+		PhoneTypeImpl impl = getBusinessObjectService().findBySinglePrimaryKey(PhoneTypeImpl.class, code);
+		if ( impl == null ) {
+			return null;
+		}
+		return impl.toInfo();
+	}
+	
+//	protected static Map<String,ExternalIdentifierTypeInfo> externalIdentifierTypeInfoCache = new HashMap<String, ExternalIdentifierTypeInfo>();
+//	public ExternalIdentifierTypeInfo getExternalIdentifierType( String code ) {
+//		if ( !externalIdentifierTypeInfoCache.containsKey(code) ) {
+//			Map<String,String> pk = new HashMap<String, String>(1);
+//			pk.put("code", code);
+//			ExternalIdentifierTypeImpl impl = (ExternalIdentifierTypeImpl)getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, pk);
+//			if ( impl != null ) {
+//				externalIdentifierTypeInfoCache.put(code, impl.toInfo());
+//			}
+//		}
+//		return externalIdentifierTypeInfoCache.get(code);
+//	}
 	
 }

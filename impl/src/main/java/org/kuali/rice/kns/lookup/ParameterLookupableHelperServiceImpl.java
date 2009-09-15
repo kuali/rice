@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,17 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -70,70 +74,116 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
         List<? extends BusinessObject> results;
         
+        // get the DD detail types
         List<ParameterDetailType> ddDetailTypes = KNSServiceLocator.getParameterServerService().getNonDatabaseComponents();
         if (fieldValues.containsKey("parameterDetailType.parameterDetailTypeName") && !StringUtils.isBlank(fieldValues.get("parameterDetailType.parameterDetailTypeName"))) {
+        	final Set<ParameterDetailType> matchingDetailTypes = new HashSet<ParameterDetailType>();
             // perform a basic database lookup for detail types codes
-            Map<String, String> detailTypeCriteria = new HashMap<String, String>(2);
             String parameterNamespaceCode = fieldValues.get("parameterNamespaceCode");
             String parameterDetailTypeName = fieldValues.get("parameterDetailType.parameterDetailTypeName");
-            detailTypeCriteria.put("parameterNamespaceCode", parameterNamespaceCode);
-            detailTypeCriteria.put("parameterDetailTypeName", parameterDetailTypeName);
-            Collection<ParameterDetailType> databaseDetailTypes = getBusinessObjectService().findMatching(ParameterDetailType.class, detailTypeCriteria);
-            // get all detail types from the data dictionary and filter by their name
-            StringBuffer parameterDetailTypeCodeCriteria = new StringBuffer((databaseDetailTypes.size() + ddDetailTypes.size()) * 30);
 
-            Pattern nameRegex = null;
-            if (StringUtils.isNotBlank(parameterDetailTypeName)) {
-                String patternStr = parameterDetailTypeName.replace("*", ".*").toUpperCase();
-                try {
-                    nameRegex = Pattern.compile(patternStr);
-                }
-                catch (PatternSyntaxException ex) {
-                    LOG.error("Unable to parse parameterDetailTypeName pattern, ignoring.", ex);
-                }
-            }
-
-            // loop over matches from the DD, adding to a Lookup string
-            for (ParameterDetailType detailType : ddDetailTypes) {
+            List<ParameterDetailType> dbDetailTypes = 
+            	(List<ParameterDetailType>)getBusinessObjectService().findAll(ParameterDetailType.class);
+            List<ParameterDetailType> allDetailTypes = new ArrayList<ParameterDetailType>(ddDetailTypes.size() + dbDetailTypes.size());
+            allDetailTypes.addAll(dbDetailTypes);
+            allDetailTypes.addAll(ddDetailTypes);
+            
+            // add some error logging if there are duplicates
+            reportDuplicateDetailTypes(allDetailTypes);
+            
+            // filter all detail types by their name
+            Pattern nameRegex = getParameterDetailTypeNameRegex(parameterDetailTypeName);
+            for (ParameterDetailType detailType : allDetailTypes) {
                 if (StringUtils.isBlank(parameterNamespaceCode) || detailType.getParameterNamespaceCode().equals(parameterNamespaceCode)) {
                     if (nameRegex == null || (detailType.getParameterDetailTypeName() != null && nameRegex.matcher(detailType.getParameterDetailTypeName().toUpperCase()).matches())) {
-                        if (parameterDetailTypeCodeCriteria.length() > 0) {
-                            parameterDetailTypeCodeCriteria.append("|");
-                        }
-                        parameterDetailTypeCodeCriteria.append(detailType.getParameterDetailTypeCode());
+                    	matchingDetailTypes.add(detailType);
                     }
                 }
             }
-
-            // loop over matches from the database, adding to a Lookup string
-            for (ParameterDetailType detailType : databaseDetailTypes) {
-                if (parameterDetailTypeCodeCriteria.length() > 0) {
-                    parameterDetailTypeCodeCriteria.append("|");
-                }
-                parameterDetailTypeCodeCriteria.append(detailType.getParameterDetailTypeCode());
-            }
-
-            // remove the original parameter so it is not applied
+            // we're filtering in memory, so remove this criteria
             fieldValues.remove("parameterDetailType.parameterDetailTypeName");
-            // add the new detail type code criteria string to the lookup
-            fieldValues.put("parameterDetailTypeCode", parameterDetailTypeCodeCriteria.toString());
+            
             results = super.getSearchResults(fieldValues);
+            // attach the DD detail types to your results before we filter (else filtering won't work correctly)
+            attachDataDictionaryDetailTypes(results, ddDetailTypes);
+            // filter down to just results with matching parameter component (ParameterDetailType)
+            CollectionUtils.filter(results, new Predicate() {
+            	public boolean evaluate(Object object) {
+            		return matchingDetailTypes.contains(((Parameter)object).getParameterDetailType());
+            	}
+            });
         }
         else {
             results = super.getSearchResults(fieldValues);
+            attachDataDictionaryDetailTypes(results, ddDetailTypes);
         }
-        // attach the non-database parameterDetailTypes
+        return results;
+    }
+
+	/**
+	 * This method ...
+	 * 
+	 * @param allDetailTypes
+	 */
+	private void reportDuplicateDetailTypes(
+			List<ParameterDetailType> allDetailTypes) {
+		// check for duplicates between DD and DB 
+		Set<ParameterDetailType> dupCheck = new HashSet<ParameterDetailType>();
+		for (ParameterDetailType detailType : allDetailTypes) {
+			if (dupCheck.contains(detailType)) {
+				ParameterDetailType duplicate = null;
+				for (ParameterDetailType d : dupCheck) if (d.equals(detailType)) {
+					duplicate = d;
+					break;
+				}
+				LOG.error(ParameterDetailType.class.getSimpleName() + "found with duplicate keys: " + detailType + " and " + duplicate);
+			} else {
+				dupCheck.add(detailType);
+			}
+		}
+	}
+
+	/**
+	 * This method ...
+	 * 
+	 * @param parameterDetailTypeName
+	 * @return
+	 */
+	private Pattern getParameterDetailTypeNameRegex(
+			String parameterDetailTypeName) {
+		Pattern nameRegex = null;
+		if (StringUtils.isNotBlank(parameterDetailTypeName)) {
+		    String patternStr = parameterDetailTypeName.replace("*", ".*").toUpperCase();
+		    try {
+		        nameRegex = Pattern.compile(patternStr);
+		    }
+		    catch (PatternSyntaxException ex) {
+		        LOG.error("Unable to parse parameterDetailTypeName pattern, ignoring.", ex);
+		    }
+		}
+		return nameRegex;
+	}
+
+	/**
+	 * This method ...
+	 * 
+	 * @param parameters
+	 * @param ddDetailTypes
+	 */
+	private void attachDataDictionaryDetailTypes(
+			List<? extends BusinessObject> parameters,
+			List<ParameterDetailType> ddDetailTypes) {
+		// attach the non-database parameterDetailTypes
         Map<String, ParameterDetailType> ddDetailTypeMap = new HashMap<String, ParameterDetailType>(ddDetailTypes.size());
         for (ParameterDetailType detailType : ddDetailTypes) {
             ddDetailTypeMap.put(detailType.getParameterDetailTypeCode(), detailType);
         }
-        for (BusinessObject obj : results) {
+        for (BusinessObject obj : parameters) {
             if (ObjectUtils.isNull(((Parameter) obj).getParameterDetailType())) {
                 ((Parameter) obj).setParameterDetailType(ddDetailTypeMap.get(((Parameter) obj).getParameterDetailTypeCode()));
             }
         }
-        return results;
-    }
+	}
 
     public void setParameterService(ParameterService parameterService) {
         this.parameterService = parameterService;

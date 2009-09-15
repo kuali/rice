@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,8 +17,10 @@
 package org.kuali.rice.kew.service;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -38,7 +40,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-
 
 /**
  * Convenience class for client applications to query workflow.  This class is one of two
@@ -171,7 +172,7 @@ public class WorkflowInfo implements java.io.Serializable {
     
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getActionItems(routeHeaderId);
+            return getWorkflowUtility().getAllActionItems(routeHeaderId);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -194,7 +195,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
         try {
-            return getWorkflowUtility().getActionRequests(routeHeaderId);
+            return getWorkflowUtility().getAllActionRequests(routeHeaderId);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -270,7 +271,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
         try {
-            return getWorkflowUtility().isUserInRouteLog(routeHeaderId, principalId, lookFuture, flattenNodes);
+            return getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(routeHeaderId, principalId, lookFuture, flattenNodes);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -545,7 +546,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
         try {
-            return getWorkflowUtility().performDocumentSearch(principalId, criteriaVO);
+            return getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteriaVO);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -586,12 +587,10 @@ public class WorkflowInfo implements java.io.Serializable {
      * Returns names of nodes already traversed
      * @param documentId id of the document to check
      * @return names of nodes already traversed
-     * @throws RemoteException if an error occurs
      * @throws WorkflowException if an error occurs
      * @see WorkflowUtility#getPreviousRouteNodeNames(Long)
-     * TODO: RemoteException not thrown
      */
-    public String[] getPreviousRouteNodeNames(Long documentId) throws RemoteException, WorkflowException {
+    public String[] getPreviousRouteNodeNames(Long documentId) throws WorkflowException {
         try {
             return getWorkflowUtility().getPreviousRouteNodeNames(documentId);
         } catch (Exception e) {
@@ -624,7 +623,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException {
         try {
-            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes);
+        	return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, false);
         } catch (Exception e) {
             throw handleException(e);
         }
@@ -663,9 +662,13 @@ public class WorkflowInfo implements java.io.Serializable {
      * @return
      * @throws WorkflowException
      */
-    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
+	public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
     	try{
-    		return getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    		String[] results = getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    		if (ObjectUtils.equals(null, results)) {
+    			return null;
+    		}
+    		return (List<String>) Arrays.asList(results);
     	} catch (Exception e) {
             throw handleException(e);
         }
@@ -683,9 +686,13 @@ public class WorkflowInfo implements java.io.Serializable {
      * @return
      * @throws WorkflowException
      */
-    public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
+	public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
     	try{
-    		return getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+    		String[] results = getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+    		if (ObjectUtils.equals(null, results)) {
+    			return null;
+    		}
+    		return (List<String>) Arrays.asList(results);
     	} catch (Exception e) {
             throw handleException(e);
         }

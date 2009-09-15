@@ -1,7 +1,5 @@
 <config>
 
-	<param name="base.url">http://localhost/</param>
-
 	<!-- default note attribute to use when none is given -->
     <param name="default.kew.note.class">DefaultNoteAttribute</param>
 

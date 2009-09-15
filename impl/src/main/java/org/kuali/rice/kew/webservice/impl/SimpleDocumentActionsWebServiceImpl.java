@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.jws.WebService;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -31,8 +33,8 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.webservice.DocumentResponse;
 import org.kuali.rice.kew.webservice.ErrorResponse;
@@ -50,6 +52,10 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@WebService(endpointInterface = KEWWebServiceConstants.SimpleDocumentActionsWebService.INTERFACE_CLASS,
+        serviceName = KEWWebServiceConstants.SimpleDocumentActionsWebService.WEB_SERVICE_NAME,
+        portName = KEWWebServiceConstants.SimpleDocumentActionsWebService.WEB_SERVICE_PORT,
+        targetNamespace = KEWWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentActionsWebService {
 
 	/**
@@ -64,7 +70,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#acknowledge(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#acknowledge(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse acknowledge(String docId, String principalId, String annotation) {
         StandardResponse results;
@@ -96,7 +102,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#approve(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#approve(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse approve(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
@@ -133,7 +139,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#blanketApprove(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#blanketApprove(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse blanketApprove(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
@@ -163,8 +169,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param principalId principal id of the user who is canceling the document
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
-	 *
-	 * @see edu.cornell.kew.service.CornellKewService#cancel(java.lang.String, java.lang.String, java.lang.String)
+	 * 
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#cancel(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse cancel(String docId, String principalId, String annotation) {
 		//Map<String, Object> results;
@@ -195,7 +201,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param docTitle title for this document
 	 * @return Map including the standard set of return values and the docId of the newly created document
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#create(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#create(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public DocumentResponse create(String initiatorPrincipalId, String appDocId, String docType,
 			String docTitle) {
@@ -240,7 +246,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#disapprove(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#disapprove(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse disapprove(String docId, String principalId, String annotation) {
 //      Map<String, Object> results;
@@ -269,7 +275,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param principalId principal id of the user who is acknowledging the document
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#fyi(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#fyi(java.lang.String, java.lang.String)
 	 */
 	public StandardResponse fyi(String docId, String principalId) {
 //		Map<String, Object> results;
@@ -298,10 +304,10 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param docId KEW document id of the document to retrieve information about
 	 * @param principalId principal id of the user to retrieve the document for
 	 * @return Map including the standard set of return values, the xml document content,
-	 * the action requested ( Approve, Aknowledge, Fyi, Complete ) and an array of Maps
+	 * the action requested ( Approve, Acknowledge, Fyi, Complete ) and an array of Maps
 	 * containing the following for each Note (author, noteId, timestamp, noteText).
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#getDocument(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#getDocument(java.lang.String, java.lang.String)
 	 */
 	public DocumentResponse getDocument(String docId, String principalId) {
 //		Map<String, Object> results;
@@ -372,7 +378,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @return Map containing True/False for isUserInRouteLog and an error message if
 	 * a problem occured
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#isUserInRouteLog(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#isUserInRouteLog(java.lang.String, java.lang.String)
 	 */
 	public UserInRouteLogResponse isUserInRouteLog(String docId, String principalId) {
 		//Map<String, Object> results = new HashMap<String, Object>(6);
@@ -408,7 +414,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocAckToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#requestAdHocAckToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse requestAdHocAckToGroup(String docId, String principalId,
 			String recipientGroupId, String annotation) {
@@ -446,7 +452,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocApproveToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#requestAdHocApproveToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse requestAdHocApproveToGroup(String docId, String principalId,
 			String recipientGroupId, String annotation) {
@@ -485,7 +491,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#requestAdHocFyiToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#requestAdHocFyiToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse requestAdHocFyiToGroup(String docId, String principalId, String recipientGroupId, String annotation) {
 		return requestAdHocToGroup(docId, principalId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
@@ -575,7 +581,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#route(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#route(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public StandardResponse route(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
@@ -606,18 +612,17 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param docId KEW document id of the document to save
 	 * @param principalId principal id of the user who is saving the document
 	 * @param docTitle title for this document
+	 * @param docContent xml content for this document
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public StandardResponse save(String docId, String principalId, String docTitle, String annotation) {
-//		Map<String, Object> results;
-
+	public StandardResponse save(String docId, String principalId, String docTitle, String docContent, String annotation) {
 	    StandardResponse results;
 	    
 		try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
 			workflowDocument.saveDocument(annotation);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
@@ -627,7 +632,24 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		return results;
 	}
 
-    /**
+	/**
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#saveDocumentContent(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public StandardResponse saveDocumentContent(String docId, String principalId, String docTitle, String docContent) {
+	    StandardResponse results;
+	    
+		try {
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
+			workflowDocument.saveRoutingData();
+			results = createResults(workflowDocument);
+		} catch (WorkflowException e) {
+			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+		}
+
+		return results;
+	}
+
+	/**
      * Add a note to this KEW document.
      *
 	 * @param docId KEW document id of the document to add the note to
@@ -636,7 +658,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      * @return Map containing relevant note information (author, noteId, timestamp, noteText)
      * along with an error message (if any)
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#addNote(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#addNote(java.lang.String, java.lang.String, java.lang.String)
      */
     public NoteResponse addNote(String docId, String principalId, String noteText) {
 //		Map<String, Object> results = new HashMap<String, Object>(5);
@@ -700,7 +722,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      * @return Map containing relevant note information (author, noteId, timestamp, noteText)
      * along with an error message (if any)
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#updateNote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#updateNote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     public NoteResponse updateNote(String docId, String noteId, String principalId, String noteText) {
 //		Map<String, Object> results = new HashMap<String, Object>(5);
@@ -761,7 +783,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param principalId principal id of the user who is deleting the note
      * @return Map containing an error message if any
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#deleteNote(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#deleteNote(java.lang.String, java.lang.String, java.lang.String)
      */
     public ErrorResponse deleteNote(String docId, String noteId, String principalId) {
 		//Map<String, Object> results = new HashMap<String, Object>(1);
@@ -797,19 +819,37 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * Return a KEW document to a previous route node.  This method should
 	 * be used with caution.
 	 *
+	 * @param docId KEW document id of the document that is being returned
+	 * @param principalId principal id of the user who is returning the doc
 	 * @param annotation a comment associated with this request
      * @param nodeName name of the route node to return to
 	 * @return Map including the standard set of return values
 	 *
-	 * @see edu.cornell.kew.service.CornellKewService#returnToPreviousNode(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#returnToPreviousNode(java.lang.String, java.lang.String)
 	 */
     public StandardResponse returnToPreviousNode(String docId, String principalId, String annotation, String nodeName) {
-		//Map<String, Object> results;
+    	return returnToPreviousNodeWithUpdates(docId, principalId, annotation, nodeName, null, null);
+    }
 
+	/**
+	 * Return a KEW document to a previous route node.  This method should
+	 * be used with caution.
+	 *
+	 * @param docId KEW document id of the document that is being returned
+	 * @param principalId principal id of the user who is returning the doc
+	 * @param annotation a comment associated with this request
+     * @param nodeName name of the route node to return to
+	 * @param docTitle title for this document
+	 * @param docContent xml content for this document
+	 * @return Map including the standard set of return values
+	 *
+	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#returnToPreviousNode(java.lang.String, java.lang.String)
+	 */
+    public StandardResponse returnToPreviousNodeWithUpdates(String docId, String principalId, String annotation, String nodeName, String docTitle, String docContent) {
         StandardResponse results;
         
        	try {
-			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
+			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
 
 			workflowDocument.returnToPreviousNode(annotation, nodeName);
 			results = createResults(workflowDocument);
@@ -845,19 +885,6 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 */
 	private WorkflowDocument setupWorkflowDocument(String docId, String principalId) throws WorkflowException {
 		return setupWorkflowDocument(docId, principalId, null, null);
-	}
-
-	/**
-	 * Convenience method to setup workflow document without content.
-	 *
-	 * @param docId KEW document id for the document to setup
-	 * @param principalId KEW principal id for the user associated with this document
-	 * @param docTitle title for this document
-	 * @return populated WorkflowDocument object
-	 * @throws WorkflowException if something goes wrong
-	 */
-	private WorkflowDocument setupWorkflowDocument(String docId, String principalId, String docTitle) throws WorkflowException {
-		return setupWorkflowDocument(docId, principalId, docTitle, null);
 	}
 
 	/**
@@ -996,7 +1023,10 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				errorMessage += "Error: NULL Initiator; ";
 			} else {
 				initiatorPrincipalId = routeHeader.getInitiatorPrincipalId();
-				initiatorName = UserUtils.getDisplayableName(null, initiatorPrincipalId);
+				Person initiator = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+				if (initiator != null) {
+				    initiatorName = initiator.getName();
+				}
 			}
 
             if (routeHeader.getRoutedByPrincipalId() == null) {
@@ -1006,7 +1036,10 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
                 }
             } else {
                 routedByPrincipalId = routeHeader.getRoutedByPrincipalId();
-                routedByUserName = UserUtils.getDisplayableName(null, routedByPrincipalId);
+                Person routedByUser = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+                if (routedByUser != null) {
+                    routedByUserName = routedByUser.getName();
+                }
             }
 
 			if (routeHeader.getAppDocId() != null) {

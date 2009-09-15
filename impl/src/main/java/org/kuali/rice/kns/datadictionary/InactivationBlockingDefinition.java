@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,9 +28,9 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase implements InactivationBlockingMetadata {
 	private static final long serialVersionUID = -8765429636173190984L;
 	
-	protected  Class blockingReferenceBusinessObjectClass;
+	protected  Class<? extends BusinessObject> blockingReferenceBusinessObjectClass;
     protected  String blockedReferencePropertyName;
-    protected  Class blockedBusinessObjectClass;
+    protected  Class<? extends BusinessObject> blockedBusinessObjectClass;
     protected  String inactivationBlockingDetectionServiceBeanName;
     protected  String relationshipLabel;
     protected Class<? extends BusinessObject> businessObjectClass;
@@ -43,9 +43,8 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      * 
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        setBlockingReferenceBusinessObjectClass(rootBusinessObjectClass);
-        
+    @SuppressWarnings("unchecked")
+	public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
         	if (StringUtils.isBlank(blockedReferencePropertyName)) {
 	        	// the default inactivation blocking detection service (used when inactivationBlockingDetectionServiceBeanName is blank) requires that the property name be set
@@ -82,11 +81,7 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      * 
      * @see org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata#getBlockedBusinessObjectClass()
      */
-    public Class getBlockedBusinessObjectClass() {
-        if (StringUtils.isNotBlank(blockedReferencePropertyName) && blockedBusinessObjectClass == null) {
-            // if the user didn't specify a class name for the blocked reference, determine it here
-            blockedBusinessObjectClass = DataDictionary.getAttributeClass(businessObjectClass, blockedReferencePropertyName);
-        }
+    public Class<? extends BusinessObject> getBlockedBusinessObjectClass() {
         return this.blockedBusinessObjectClass;
     }
 
@@ -112,11 +107,11 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
      * 
      * @see org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata#getBlockingReferenceBusinessObjectClass()
      */
-    public Class getBlockingReferenceBusinessObjectClass() {
+    public Class<? extends BusinessObject> getBlockingReferenceBusinessObjectClass() {
         return this.blockingReferenceBusinessObjectClass;
     }
 
-    public void setBlockingReferenceBusinessObjectClass(Class blockingReferenceBusinessObjectClass) {
+    public void setBlockingReferenceBusinessObjectClass(Class<? extends BusinessObject> blockingReferenceBusinessObjectClass) {
         this.blockingReferenceBusinessObjectClass = blockingReferenceBusinessObjectClass;
     }
 
@@ -134,5 +129,12 @@ public class InactivationBlockingDefinition extends DataDictionaryDefinitionBase
 
 	public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
 		this.businessObjectClass = businessObjectClass;
+	}
+	
+	@Override
+	public String toString() {
+		return "InactivationBlockingDefinition: blockedClass=" + blockedBusinessObjectClass.getName() 
+				+ " /blockingReferenceProperty=" + blockedReferencePropertyName
+				+ " /blockingClass=" + blockingReferenceBusinessObjectClass.getName();
 	}
 }

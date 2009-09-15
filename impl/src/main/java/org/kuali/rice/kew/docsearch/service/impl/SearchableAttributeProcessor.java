@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,14 +16,9 @@
  */
 package org.kuali.rice.kew.docsearch.service.impl;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -32,11 +27,8 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
-import org.xml.sax.InputSource;
 
 
 /**
@@ -48,8 +40,6 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 
 	private static Logger LOG = Logger.getLogger(SearchableAttribute.class);
 
-	private static final String DONT_INDEX = "doNotExecuteSearchableAttributeIndexing";
-
 	public void indexDocument(Long documentId) {
 		indexDocument(documentId, true);
 	}
@@ -57,14 +47,11 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 	public void indexDocument(Long documentId, boolean useMostRecentDocType) {
 		LOG.info("Indexing document " + documentId + " for document search...");
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		try {
-			if (shouldIndex(document)) {
-				KEWServiceLocator.getRouteHeaderService().clearRouteHeaderSearchValues(document);
-				List<SearchableAttributeValue> attributes = buildSearchableAttributeValues(document.getDocumentType(), document, document.getDocContent(), useMostRecentDocType); 
-				document.setSearchableAttributeValues(attributes);
-				KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
-			}
+			DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
+			DocumentRouteHeaderValueContent docContent = KEWServiceLocator.getRouteHeaderService().getContent(documentId);
+			List<SearchableAttributeValue> attributes = buildSearchableAttributeValues(documentType, documentId, docContent.getDocumentContent(), useMostRecentDocType);
+			KEWServiceLocator.getRouteHeaderService().updateRouteHeaderSearchValues(documentId, attributes);
 		} catch (Exception e) {
 			String errorMsg = "Encountered an error when attempting to index searchable attributes, requeuing.";
 			LOG.error(errorMsg, e);
@@ -73,7 +60,7 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 		LOG.info("...finished indexing document " + documentId + " for document search.");
 	}
 
-	private List<SearchableAttributeValue> buildSearchableAttributeValues(DocumentType docType, DocumentRouteHeaderValue document, String docContent, boolean useMostRecentDocType) {
+	private List<SearchableAttributeValue> buildSearchableAttributeValues(DocumentType docType, Long documentId, String docContent, boolean useMostRecentDocType) {
 		if (useMostRecentDocType) {
 			docType = KEWServiceLocator.getDocumentTypeService().findByName(docType.getName());
 		}
@@ -82,27 +69,18 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 		for (Iterator iterator = docType.getSearchableAttributes().iterator(); iterator.hasNext();) {
 			SearchableAttribute searchableAttribute = (SearchableAttribute) iterator.next();
 			List searchStorageValues = searchableAttribute.getSearchStorageValues(
-					DocSearchUtils.getDocumentSearchContext(document.getRouteHeaderId().toString(), docType.getName(), docContent));
+					DocSearchUtils.getDocumentSearchContext(documentId.toString(), docType.getName(), docContent));
 			if (searchStorageValues != null) {
 				for (Iterator iterator2 = searchStorageValues.iterator(); iterator2.hasNext();) {
 					SearchableAttributeValue searchableAttributeValue = (SearchableAttributeValue) iterator2.next();
-					searchableAttributeValue.setRouteHeader(document);
+					searchableAttributeValue.setRouteHeaderId(documentId);
 					searchableAttributeValues.add(searchableAttributeValue);
+					searchableAttributeValue.setRouteHeader(null); // let the routeHeaderId we set represent this reference
 				}
 			}
 		}
 
 		return searchableAttributeValues;
-	}
-
-	protected boolean shouldIndex(DocumentRouteHeaderValue document) throws XPathExpressionException {
-		XPath xpath = XPathHelper.newXPath();
-		String documentContent = document.getDocumentContent().getDocumentContent();
-		if (Utilities.isEmpty(documentContent)) {
-		    // returning true since the 'do not index' variable does not exist in the doc content xml since there is no doc content xml
-		    return true;
-		}
-		return !(Boolean)xpath.evaluate("//"+DONT_INDEX, new InputSource(new StringReader(documentContent)), XPathConstants.BOOLEAN);
 	}
 
 }

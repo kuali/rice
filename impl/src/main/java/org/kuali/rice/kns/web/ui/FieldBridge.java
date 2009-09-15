@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Summarizable;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
@@ -133,7 +134,7 @@ public class FieldBridge {
 
             // for select fields, display the associated label (unless we've got a formatter from the reference found just above...)
             if (fieldControl != null && fieldControl.isSelect() && formatter == null) {
-                Class<KeyValuesFinder> keyValuesFinderName = (Class<KeyValuesFinder>)fieldControl.getValuesFinderClass();
+                Class<KeyValuesFinder> keyValuesFinderName = ClassLoaderUtils.getClass(fieldControl.getValuesFinderClass());
                 KeyValuesFinder finder = keyValuesFinderName.newInstance();
 
                 propValue = lookupFinderValue(fieldControl, prop, finder);
@@ -205,7 +206,7 @@ public class FieldBridge {
 
         // KULRICE-1808 : PersistableBusinessObjectValuesFinder is not working for inquiries that have child objects with ValuesFinder populated select lists
         if (finder instanceof PersistableBusinessObjectValuesFinder) {
-            ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(fieldControl.getBusinessObjectClass());
+            ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(ClassLoaderUtils.getClass(fieldControl.getBusinessObjectClass()));
             ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(fieldControl.getKeyAttribute());
             ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(fieldControl.getLabelAttribute());
             if (fieldControl.getIncludeBlankRow() != null) {

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,9 @@
  */
 package org.kuali.rice.kew.docsearch.service.impl;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +52,11 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 public class DocumentSearchServiceImpl implements DocumentSearchService {
@@ -60,10 +67,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private static final String LAST_SEARCH_ORDER_OPTION = "DocSearch.LastSearch.Order";
 	private static final String NAMED_SEARCH_ORDER_BASE = "DocSearch.NamedSearch.";
 	private static final String LAST_SEARCH_BASE_NAME = "DocSearch.LastSearch.Holding";
-
+	private static final String DOC_SEARCH_CRITERIA_DTO_CLASS = "org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO";
+	
+	private static DictionaryValidationService dictionaryValidationService;
+	private static DataDictionaryService dataDictionaryService;
+	private static KualiConfigurationService kualiConfigurationService;
+	
 	private DocumentSearchDAO docSearchDao;
 	private UserOptionsService userOptionsService;
-
+	
 	public void setDocumentSearchDAO(DocumentSearchDAO docSearchDao) {
 		this.docSearchDao = docSearchDao;
 	}
@@ -126,8 +138,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             } else {
                 docListResults = docSearchDao.getList(docSearchGenerator,criteria, principalId);
             }
-            searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, principalId);
-		} catch (Exception e) {
+            if (docSearchResultProcessor.isProcessFinalResults()) {
+                searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, principalId);
+            } else {
+                searchResult = new StandardDocumentSearchResultProcessor().processIntoFinalResults(docListResults, criteria, principalId);
+            }
+            
+        } catch (Exception e) {
 			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();
 			LOG.error("getList() " + errorMsg,e);
             throw new WorkflowServiceErrorException(errorMsg,new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));
@@ -170,7 +187,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
         errors.addAll(docSearchGenerator.validateSearchableAttributes(criteria));
-        if (!errors.isEmpty()) {
+        if (!errors.isEmpty() || !GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new WorkflowServiceErrorException("Document Search Validation Errors", errors);
         }
     }
@@ -228,8 +245,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         // validate any dates
         boolean compareDatePairs = true;
-        if (!validateDate(criteria.getFromDateCreated())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid create date", "docsearch.DocumentSearchService.dateCreated"));
+        if (!validateDate("fromDateCreated", criteria.getFromDateCreated(), "fromDateCreated")) {
             compareDatePairs = false;
         } else {
             if (criteria.getFromDateCreated() != null && !"".equals(criteria.getFromDateCreated().trim())) {
@@ -238,8 +254,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 compareDatePairs = false;
             }
         }
-        if (!validateDate(criteria.getToDateCreated())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid create date", "docsearch.DocumentSearchService.dateCreated"));
+        if (!validateDate("toDateCreated", criteria.getToDateCreated(), "toDateCreated")) {
             compareDatePairs = false;
         } else {
             if (criteria.getToDateCreated() != null && !"".equals(criteria.getToDateCreated().trim())) {
@@ -250,12 +265,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
         if (compareDatePairs) {
             if (!checkDateRanges(criteria.getFromDateCreated(), criteria.getToDateCreated())) {
-                errors.add(new WorkflowServiceErrorImpl("Invalid create date range", "docsearch.DocumentSearchService.dateCreatedRange"));
+            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
+            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated");
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated") + 
+            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateCreatedRange"));
             }
         }
         compareDatePairs = true;
-        if (!validateDate(criteria.getFromDateApproved())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid approved date", "docsearch.DocumentSearchService.dateApproved"));
+        if (!validateDate("fromDateApproved", criteria.getFromDateApproved(), "fromDateApproved")) {
             compareDatePairs = false;
         } else {
             if (criteria.getFromDateApproved() != null && !"".equals(criteria.getFromDateApproved().trim())) {
@@ -264,8 +282,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 compareDatePairs = false;
             }
         }
-        if (!validateDate(criteria.getToDateApproved())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid approved date", "docsearch.DocumentSearchService.dateApproved"));
+        if (!validateDate("toDateApproved", criteria.getToDateApproved(), "toDateApproved")) {
             compareDatePairs = false;
         } else {
             if (criteria.getToDateApproved() != null && !"".equals(criteria.getToDateApproved().trim())) {
@@ -276,12 +293,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
         if (compareDatePairs) {
             if (!checkDateRanges(criteria.getFromDateApproved(), criteria.getToDateApproved())) {
-                errors.add(new WorkflowServiceErrorImpl("Invalid approved date range", "docsearch.DocumentSearchService.dateApprovedRange"));
+            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
+            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved");
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved") + 
+            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateApprovedRange"));
             }
         }
         compareDatePairs = true;
-        if (!validateDate(criteria.getFromDateFinalized())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid finalized date", "docsearch.DocumentSearchService.dateFinalized"));
+        if (!validateDate("fromDateFinalized", criteria.getFromDateFinalized(), "fromDateFinalized")) {
             compareDatePairs = false;
         } else {
             if (criteria.getFromDateFinalized() != null && !"".equals(criteria.getFromDateFinalized().trim())) {
@@ -290,8 +310,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 compareDatePairs = false;
             }
         }
-        if (!validateDate(criteria.getToDateFinalized())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid finalized date", "docsearch.DocumentSearchService.dateFinalized"));
+        if (!validateDate("toDateFinalized", criteria.getToDateFinalized(), "toDateFinalized")) {
             compareDatePairs = false;
         } else {
             if (criteria.getToDateFinalized() != null && !"".equals(criteria.getToDateFinalized().trim())) {
@@ -302,12 +321,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
         if (compareDatePairs) {
             if (!checkDateRanges(criteria.getFromDateFinalized(), criteria.getToDateFinalized())) {
-                errors.add(new WorkflowServiceErrorImpl("Invalid finalized date range", "docsearch.DocumentSearchService.dateFinalizedRange"));
+            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
+            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized");
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized") + 
+            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateFinalizedRange"));
             }
         }
         compareDatePairs = true;
-        if (!validateDate(criteria.getFromDateLastModified())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid last modified date", "docsearch.DocumentSearchService.dateLastModified"));
+        if (!validateDate("fromDateLastModified", criteria.getFromDateLastModified(), "fromDateLastModified")) {
             compareDatePairs = false;
         } else {
             if (criteria.getFromDateLastModified() != null && !"".equals(criteria.getFromDateLastModified().trim())) {
@@ -316,8 +338,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 compareDatePairs = false;
             }
         }
-        if (!validateDate(criteria.getToDateLastModified())) {
-            errors.add(new WorkflowServiceErrorImpl("Invalid last modified date", "docsearch.DocumentSearchService.dateLastModified"));
+        if (!validateDate("toDateLastModified", criteria.getToDateLastModified(), "toDateLastModified")) {
             compareDatePairs = false;
         } else {
             if (criteria.getToDateLastModified() != null && !"".equals(criteria.getToDateLastModified().trim())) {
@@ -328,7 +349,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
         if (compareDatePairs) {
             if (!checkDateRanges(criteria.getFromDateLastModified(), criteria.getToDateLastModified())) {
-                errors.add(new WorkflowServiceErrorImpl("Invalid last modified date range", "docsearch.DocumentSearchService.dateLastModifiedRange"));
+            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
+            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified");
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified") + 
+            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateLastModifiedRange"));
             }
         }
         return errors;
@@ -346,8 +371,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 	}
 
-	private boolean validateDate(String date) {
-		return Utilities.validateDate(date, true);
+	private boolean validateDate(String dateFieldName, String dateFieldValue, String dateFieldErrorKey) {
+		// Validates the date format via the dictionary validation service. If validation fails, the validation service adds an error to the message map.
+		int oldErrorCount = GlobalVariables.getMessageMap().getErrorCount();
+		getDictionaryValidationService().validateAttributeFormat(DOC_SEARCH_CRITERIA_DTO_CLASS, dateFieldName, dateFieldValue, dateFieldErrorKey);
+		return (GlobalVariables.getMessageMap().getErrorCount() <= oldErrorCount);
+		//return Utilities.validateDate(date, true);
 	}
 
 	private boolean checkDateRanges(String fromDate, String toDate) {
@@ -662,7 +691,41 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 //		return searchableAttributes;
 //	}
 
-	private DocumentType getValidDocumentType(String documentTypeFullName) {
+	/**
+	 *
+	 * retrieve a document type. This is not a case sensitive search so "TravelRequest" == "Travelrequest"
+	 *
+	 * @param docTypeName
+	 * @return
+	 */
+   private static DocumentType getValidDocumentType(String docTypeName) {
+
+	   if (Utilities.isEmpty(docTypeName)) {
+			return null;
+		}
+   		DocumentType dTypeCriteria = new DocumentType();
+		dTypeCriteria.setName(docTypeName.trim());
+		dTypeCriteria.setActive(true);
+		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
+
+		// Return the first valid doc type.
+		DocumentType firstDocumentType = null;
+		if(docTypeList != null && !docTypeList.isEmpty()){
+			for(DocumentType dType: docTypeList){
+			    if (firstDocumentType == null) {
+                    firstDocumentType = dType;
+                }
+                if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
+                    return dType;
+                }
+            }
+            return firstDocumentType;
+		}else{
+			throw new RuntimeException("No Valid Document Type Found for document type name '" + docTypeName + "'");
+		}
+   }
+
+	private DocumentType getValidDocumentTypeOld(String documentTypeFullName) {
 		if (Utilities.isEmpty(documentTypeFullName)) {
 			return null;
 		}
@@ -726,4 +789,24 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return null;
 	}
 
+	public static DictionaryValidationService getDictionaryValidationService() {
+		if (dictionaryValidationService == null) {
+			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
+		}
+		return dictionaryValidationService;
+	}
+	
+	public static DataDictionaryService getDataDictionaryService() {
+		if (dataDictionaryService == null) {
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
+	
+	public static KualiConfigurationService getKualiConfigurationService() {
+		if (kualiConfigurationService == null) {
+			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+		}
+		return kualiConfigurationService;
+	}
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.lookup;
 
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -33,7 +35,8 @@ public class KimLookupableHelperServiceImpl extends KualiLookupableHelperService
 
 	private static final long serialVersionUID = 1L;
 	
-	private DocumentHelperService documentHelperService;
+	private static DocumentHelperService documentHelperService;
+	private static KimTypeInfoService typeInfoService;
 	
     @Override
 	public boolean allowsNewOrCopyAction(String documentTypeName) {
@@ -50,7 +53,13 @@ public class KimLookupableHelperServiceImpl extends KualiLookupableHelperService
 	    if ( documentHelperService == null ) {
 	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
-	    return this.documentHelperService;
+	    return documentHelperService;
 	}
 
+	protected KimTypeInfoService getTypeInfoService() {
+	    if ( typeInfoService == null ) {
+	    	typeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+	    return typeInfoService;
+	}
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ import java.util.HashMap;
  * 
  */
 
+@SuppressWarnings("unchecked")
 public class TypeUtils {
     private static final Class[] BOOLEAN_CLASSES = { Boolean.class, Boolean.TYPE };
     private static final Class[] INTEGRAL_CLASSES = { Byte.class, Byte.TYPE, Short.class, Short.TYPE, Integer.class, Integer.TYPE, Long.class, Long.TYPE, BigInteger.class, KualiInteger.class };
@@ -34,7 +35,7 @@ public class TypeUtils {
     private static final Class[] TEMPORAL_CLASSES = { java.util.Date.class, java.sql.Date.class, java.sql.Timestamp.class };
     private static final Class[] STRING_CLASSES = { String.class };
 
-    private static final HashMap<Class,Boolean> isBooleanCache = new HashMap<Class, Boolean>();  
+	private static final HashMap<Class,Boolean> isBooleanCache = new HashMap<Class, Boolean>();  
     private static final HashMap<Class,Boolean> isIntegralCache = new HashMap<Class, Boolean>();  
     private static final HashMap<Class,Boolean> isDecimalCache = new HashMap<Class, Boolean>();  
     private static final HashMap<Class,Boolean> isTemporalCache = new HashMap<Class, Boolean>();  
@@ -50,7 +51,9 @@ public class TypeUtils {
 	Boolean result = isBooleanCache.get(clazz); 
 	if ( result == null ) {
 	    result = isa(BOOLEAN_CLASSES, clazz);
-	    isBooleanCache.put( clazz, result );
+	    synchronized (isBooleanCache) {
+		    isBooleanCache.put( clazz, result );
+		}
 	}
         return result;
     }
@@ -64,7 +67,9 @@ public class TypeUtils {
 	Boolean result = isIntegralCache.get(clazz); 
 	if ( result == null ) {
 	    result = isa(INTEGRAL_CLASSES, clazz);
-	    isIntegralCache.put( clazz, result );
+	    synchronized (isIntegralCache) {
+	    	isIntegralCache.put( clazz, result );
+	    }
 	}
         return result;
     }
@@ -78,7 +83,9 @@ public class TypeUtils {
 	Boolean result = isDecimalCache.get(clazz); 
 	if ( result == null ) {
 	    result = isa(DECIMAL_CLASSES, clazz);
-	    isDecimalCache.put( clazz, result );
+	    synchronized (isDecimalCache) {
+	    	isDecimalCache.put( clazz, result );
+	    }
 	}
         return result;
     }
@@ -92,7 +99,9 @@ public class TypeUtils {
 	Boolean result = isTemporalCache.get(clazz); 
 	if ( result == null ) {
 	    result = isa(TEMPORAL_CLASSES, clazz);
-	    isTemporalCache.put( clazz, result );
+	    synchronized (isTemporalCache) {
+	    	isTemporalCache.put( clazz, result );
+	    }
 	}
         return result;
     }
@@ -106,7 +115,9 @@ public class TypeUtils {
 	Boolean result = isStringCache.get(clazz); 
 	if ( result == null ) {
 	    result = isa(STRING_CLASSES, clazz);
-	    isStringCache.put( clazz, result );
+	    synchronized (isStringCache) {
+	    	isStringCache.put( clazz, result );
+	    }
 	}
         return result;
     }
@@ -120,7 +131,9 @@ public class TypeUtils {
 	Boolean result = isSimpleCache.get(clazz); 
 	if ( result == null ) {
 	    result = isa(STRING_CLASSES, clazz) || isa(DECIMAL_CLASSES, clazz) || isa(INTEGRAL_CLASSES, clazz) || isa(BOOLEAN_CLASSES, clazz) || isa(TEMPORAL_CLASSES, clazz);
-	    isSimpleCache.put( clazz, result );
+	    synchronized (isSimpleCache) {
+	    	isSimpleCache.put( clazz, result );
+	    }
 	}
         return result;
     }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,12 @@
 
 package org.kuali.rice.kns.datadictionary.control;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionaryDefinitionBase;
+import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 
@@ -34,8 +37,8 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     
 	protected boolean datePicker;
     protected String script;
-    protected Class<? extends KeyValuesFinder> valuesFinderClass;
-    protected Class<? extends BusinessObject> businessObjectClass;
+    protected String valuesFinderClass;
+    protected String businessObjectClass;
     protected String keyAttribute;
     protected String labelAttribute;
     protected Boolean includeBlankRow;
@@ -181,7 +184,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#setKeyValuesFinder(java.lang.String)
      */
-    public void setValuesFinderClass(Class<? extends KeyValuesFinder> valuesFinderClass) {
+    public void setValuesFinderClass(String valuesFinderClass) {
         if (valuesFinderClass == null) {
             throw new IllegalArgumentException("invalid (null) valuesFinderClass");
         }
@@ -192,7 +195,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     /**
      * @return the businessObjectClass
      */
-    public Class<? extends BusinessObject> getBusinessObjectClass() {
+    public String getBusinessObjectClass() {
         return this.businessObjectClass;
     }
 
@@ -204,7 +207,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
      * 
      * @param businessObjectClass the businessObjectClass to set
      */
-    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
+    public void setBusinessObjectClass(String businessObjectClass) {
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
@@ -273,7 +276,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#getKeyValuesFinder()
      */
-    public Class<? extends KeyValuesFinder> getValuesFinderClass() {
+    public String getValuesFinderClass() {
         return valuesFinderClass;
     }
 
@@ -340,6 +343,26 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isMultiselect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()&& !isButton() && !isLink()) {
             throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: unknown control type in control definition (" + "" + ")");
+        }
+        if (valuesFinderClass != null) {
+        	try {
+        		Class valuesFinderClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(), getValuesFinderClass());
+        		if (!KeyValuesFinder.class.isAssignableFrom(valuesFinderClassObject)) {
+        			throw new ClassValidationException("valuesFinderClass is not a valid instance of " + KeyValuesFinder.class.getName() + " instead was: " + valuesFinderClassObject.getName());
+        		}
+        	} catch (ClassNotFoundException e) {
+        		throw new ClassValidationException("valuesFinderClass could not be found: " + getValuesFinderClass(), e);
+        	}
+        }
+        if (businessObjectClass != null) {
+        	try {
+        		Class businessObjectClassObject = ClassUtils.getClass(ClassLoaderUtils.getDefaultClassLoader(), getBusinessObjectClass());
+        		if (!BusinessObject.class.isAssignableFrom(businessObjectClassObject)) {
+        			throw new ClassValidationException("businessObjectClass is not a valid instance of " + BusinessObject.class.getName() + " instead was: " + businessObjectClassObject.getName());
+        		}
+        	} catch (ClassNotFoundException e) {
+        		throw new ClassValidationException("businessObjectClass could not be found: " + getBusinessObjectClass(), e);
+        	}
         }
     }
 

@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,7 @@ import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -48,6 +49,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -55,6 +57,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
@@ -97,7 +100,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	private String docFormKey;
 	private Map fieldConversions;
 	private LookupService lookupService;
-	private org.kuali.rice.kim.service.PersonService personService;
 	private List<Row> rows;
 	private String referencesToRefresh;
 	private SequenceAccessorService sequenceAccessorService;
@@ -276,17 +278,30 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 this.kualiInquirable = kualiInquirable;
 	 }
 
-	 private KualiConfigurationService kualiConfigurationService;
+    private KualiConfigurationService configurationService;
 
 	 public KualiConfigurationService getKualiConfigurationService() {
-		 if ( kualiConfigurationService == null ) {
-			 kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+    if ( configurationService == null ) {
+        configurationService = KNSServiceLocator.getKualiConfigurationService();
+    }
+        return configurationService;
+    }
+
+    public void setParameterService(KualiConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
+
+    private ParameterService parameterService;
+
+    public ParameterService getParameterService() {
+	if ( parameterService == null ) {
+	    parameterService = KNSServiceLocator.getParameterService();
 		 }
-		 return kualiConfigurationService;
+        return parameterService;
 	 }
 
-	 public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
-		 this.kualiConfigurationService = kualiConfigurationService;
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
 	 }
 
 	 /**
@@ -372,7 +387,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  */
 	 public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames){
 		 List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-		 if (StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
+        if (allowsMaintenanceEditAction(businessObject)) {
 			 htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
 		 }
 		 if (allowsMaintenanceNewOrCopyAction()) {
@@ -466,7 +481,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
 		 Properties parameters = new Properties();
 		 parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
-		 parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
+        // TODO: why is this not using the businessObject parmeter's class?
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
 		 parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
 		 return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
 	 }
@@ -663,7 +679,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 if (fieldDefinedMaxLength == null) {
 			 if ( RESULTS_DEFAULT_MAX_COLUMN_LENGTH == null ) {
 				 try {
-					 RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf( getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH) );
+    				RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf( getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH) );
 				 } catch ( NumberFormatException ex ) {
 					 LOG.error("Lookup field max length parameter not found and unable to parse default set in system parameters (RESULTS_DEFAULT_MAX_COLUMN_LENGTH).");
 				 }
@@ -801,9 +817,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			 if (fieldVal == null) {
 				 fieldVal = KNSConstants.EMPTY_STRING;
 			 }
-			 if (fieldConversions.containsKey(fieldNm)) {
-				 fieldNm = (String) fieldConversions.get(fieldNm);
-			 }
 
 			 if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
 				 try {
@@ -820,6 +833,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			 if (fieldVal instanceof Date) {
 				 DateFormatter dateFormatter = new DateFormatter();
 				 fieldVal = dateFormatter.format(fieldVal);
+            }
+
+            if (fieldConversions.containsKey(fieldNm)) {
+                fieldNm = (String) fieldConversions.get(fieldNm);
 			 }
 
 			 parameters.put(fieldNm, fieldVal.toString());
@@ -915,41 +932,65 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				 // check for required if field does not have value
 				 if (StringUtils.isBlank(attributeValue)) {
 					 if ((getBusinessObjectDictionaryService().getLookupAttributeRequired(getBusinessObjectClass(), attributeName)).booleanValue()) {
-						 GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+                        GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+                    }
+                }
+                validateSearchParameterWildcardAndOperators(attributeName, attributeValue);
+            }
+        }
+
+        if (GlobalVariables.getMessageMap().hasErrors()) {
+            throw new ValidationException("errors in search criteria");
 					 }
 				 }
-				 else if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
-					 if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-						 // encrypted values usually come from the DB, so we don't need to filter for wildcards
 
-						 // wildcards are not allowed on restricted fields, because they are typically encrypted, and wildcard searches cannot be performed without
-						 // decrypting every row, which is currently not supported by KNS
+    protected void validateSearchParameterWildcardAndOperators(String attributeName, String attributeValue) {
+    	if (StringUtils.isBlank(attributeValue))
+    		return;
 
-						 // following loop would be trivial if Constants.QUERY_CHARACTERS would implement CharSequence but not so
-						 // sure if that makes sense...
+    	// make sure a wildcard/operator is in the value
+    	boolean found = false;
 						 for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
 							 String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
 
 							 if (attributeValue.contains(queryCharacter)) {
-								 GlobalVariables.getErrorMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
+                found = true;
+            }
 							 }
+        if (!found)
+        	return;
+
+    	String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), attributeName);
+    	if (getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, attributeName)) {
+    		BusinessObject example = null;
+    		try {
+    			example = (BusinessObject) businessObjectClass.newInstance();
 						 }
+    		catch (Exception e) {
+    			LOG.error("Exception caught instantiating " + businessObjectClass.getName(), e);
+    			throw new RuntimeException("Cannot instantiate " + businessObjectClass.getName(), e);
 					 }
+
+    		Class propertyType = ObjectUtils.getPropertyType(example, attributeName, getPersistenceStructureService());
+    		if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+    			GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, attributeLabel);
 				 }
+    		if (TypeUtils.isStringClass(propertyType)) {
+    			GlobalVariables.getMessageMap().putInfo(attributeName, RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, attributeLabel);
 			 }
 		 }
+    	else {
+    		if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
+	        	if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+	        		// encrypted values usually come from the DB, so we don't need to filter for wildcards
 
-		 if (!GlobalVariables.getErrorMap().isEmpty()) {
-			 throw new ValidationException("errors in search criteria");
+	        		// wildcards are not allowed on restricted fields, because they are typically encrypted, and wildcard searches cannot be performed without
+	        		// decrypting every row, which is currently not supported by KNS
+
+                    GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
 		 }
 	 }
-
-	 protected org.kuali.rice.kim.service.PersonService getPersonService() {
-		 return personService != null ? personService : org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
 	 }
-
-	 public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
-		 this.personService = personService;
 	 }
 
 	 /**
@@ -968,8 +1009,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 		 // construct field object for each search attribute
 		 List fields = new ArrayList();
+        int numCols;
 		 try {
 			 fields = FieldUtils.createAndPopulateFieldsForLookup(lookupFieldAttributeList, getReadOnlyFieldsList(), getBusinessObjectClass());
+
+            BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
+            numCols = boe.getLookupDefinition().getNumOfColumns();
 
 		 }
 		 catch (InstantiationException e) {
@@ -978,7 +1023,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 catch (IllegalAccessException e) {
 			 throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
 		 }
-		 this.rows = FieldUtils.wrapFields(fields);
+        if(numCols == 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
+
+        this.rows = FieldUtils.wrapFields(fields, numCols);
 	 }
 
 	 public List<Row> getRows() {
@@ -1154,7 +1201,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				 String dateValue = (String)lookupFormFields.get(dateFieldName);
 				 String newPropValue = dateValue;//maybe clean above with ObjectUtils.clean(propertyValue)
 				 if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(dateValue)) {
-					 newPropValue = fromDateValue + ".." + dateValue;
+					newPropValue = fromDateValue + KNSConstants.BETWEEN_OPERATOR + dateValue;
 				 } else if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(dateValue)) {
 					 newPropValue = ">="+fromDateValue;
 				 } else if(StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {
@@ -1331,14 +1378,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 						 throw new RuntimeException("Error decrypting value for business object " + businessObjectClass + " attribute " + field.getPropertyName(), e);
 					 }
 					 if (attributeSecurity.isMask() && !getBusinessObjectAuthorizationService().canFullyUnmaskField(user,
-							 businessObjectClass, field.getPropertyName())) {
+							businessObjectClass, field.getPropertyName(),null)) {
 						 MaskFormatter maskFormatter = attributeSecurity.getMaskFormatter();
 						 field.setEncryptedValue(field.getPropertyValue());
 						 field.setDisplayMaskValue(maskFormatter.maskValue(decryptedValue));
 						 field.setSecure(true);
 					 }
 					 else if (attributeSecurity.isPartialMask() && !getBusinessObjectAuthorizationService().canPartiallyUnmaskField(user,
-							 businessObjectClass, field.getPropertyName())) {
+							businessObjectClass, field.getPropertyName(),null)) {
 						 MaskFormatter maskFormatter = attributeSecurity.getPartialMaskFormatter();
 						 field.setEncryptedValue(field.getPropertyValue());
 						 field.setDisplayMaskValue(maskFormatter.maskValue(decryptedValue));
@@ -1354,7 +1401,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				 }
 			 }
 		 } else {
-			 throw new RuntimeException("Cannot handle multiple value field types");    		
+			if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, field.getPropertyName())) {
+				LOG.error("Cannot handle multiple value field types that have field authorizations, please implement custom lookupable helper service");
+				throw new RuntimeException("Cannot handle multiple value field types that have field authorizations.");
+			}
 		 }
 	 }
 }

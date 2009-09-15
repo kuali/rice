@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,12 +27,10 @@ import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.support.KimTypeInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
@@ -41,6 +39,8 @@ import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -84,7 +84,8 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
     }
 
-    protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
+    @SuppressWarnings("unchecked")
+	protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
     	List<ResponsibilityAttributeDataImpl> responsibilityAttributeData = 
     		(List<ResponsibilityAttributeDataImpl>)ObjectUtils.getPropertyValue(businessObject, attributeName);
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
@@ -98,22 +99,17 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     	return new MultipleAnchorHtmlData(htmlData);
     }
 
-    protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
+    @SuppressWarnings("unchecked")
+	protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
     	ResponsibilityImpl responsibility = (ResponsibilityImpl)businessObject;
     	List<RoleImpl> assignedToRoles = responsibility.getAssignedToRoles();
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
-		List<String> primaryKeys = new ArrayList<String>();
-		primaryKeys.add(ROLE_ID);
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
+			List<String> primaryKeys = Collections.singletonList(ROLE_ID);
 			RoleService roleService = KIMServiceLocator.getRoleService();
-			KimTypeInternalService kimTypeInternalService = KIMServiceLocator.getTypeInternalService();
-			KimRoleInfo roleInfo;
-			KimTypeImpl kimType;
-			AnchorHtmlData inquiryHtmlData;
 			for(RoleImpl roleImpl: assignedToRoles){
-				roleInfo = roleService.getRole(roleImpl.getRoleId());
-				kimType = kimTypeInternalService.getKimType(roleInfo.getKimTypeId());
-				inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleImpl.class, roleInfo, primaryKeys, 
+				KimRoleInfo roleInfo = roleService.getRole(roleImpl.getRoleId());
+				AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleImpl.class, roleInfo, primaryKeys, 
         				roleInfo.getNamespaceCode()+" "+
         				roleInfo.getRoleName());
 				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
@@ -144,6 +140,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		return responsibilityService;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private ResponsibilityImpl getResponsibilitiesSearchResultsCopy(KimResponsibilityImpl responsibilitySearchResult){
 		ResponsibilityImpl responsibilitySearchResultCopy = new ResponsibilityImpl();
 		try{

@@ -1,10 +1,4 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:dd="http://rice.kuali.org/dd"
-    xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:dd="http://rice.kuali.org/dd" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="DocumentRouteHeaderValue" parent="DocumentRouteHeaderValue-parentBean" />
 
@@ -28,17 +22,12 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
           <property name="objectAttributeName" value="documentType" />
           <property name="primitiveAttributes" >
             <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="documentTypeId"
-                    p:targetName="documentTypeId" />
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="documentTypeId" p:targetName="documentTypeId"/>
             </list>
           </property>
           <property name="supportAttributes" >
             <list>
-              <bean parent="SupportAttributeDefinition"
-                    p:identifier="true"
-                    p:sourceName="documentType.name"
-                    p:targetName="name" />
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="documentType.name" p:targetName="name"/>
             </list>
           </property>
         </bean>
@@ -89,8 +78,7 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
       <bean parent="NumericValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
+      <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="name" value="routeHeaderId" />
     <property name="label" value="Document/Notification Id" />
@@ -119,8 +107,7 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
     <property name="label" value="Type" />
     <property name="shortLabel" value="Type" />
     <property name="control" >
-    	<bean parent="LookupReadonlyControlDefinition"
-    		p:size="20" />
+    	<bean parent="LookupReadonlyControlDefinition" p:size="20"/>
     </property>
   </bean>
 
@@ -173,8 +160,7 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
+      <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="name" value="docTitle" />
     <property name="label" value="Title" />
@@ -245,26 +231,22 @@ http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
 
   <bean id="DocumentRouteHeaderValue-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
     <property name="lookupableID" value="docRouteHeaderValueLookupable" />
-    <property name="instructions" value="Lookup a Document" />
+    
     <property name="defaultSort" >
       <bean parent="SortDefinition">
       </bean>
     </property>
     <property name="lookupFields" >
       <list>
-        <bean parent="FieldDefinition"
-              p:attributeName="documentType.name"
-              p:noDirectInquiry="true"/>      
+        <bean parent="FieldDefinition" p:attributeName="documentType.name" p:noDirectInquiry="true"/>      
         <!-- <bean parent="FieldDefinition"
               p:attributeName="initiatorWorkflowId" />
         
         <bean parent="FieldDefinition"
               p:attributeName="initiatorUser.authenticationUserId.authenticationId" />
         -->
-        <bean parent="FieldDefinition"
-        	p:attributeName="routeHeaderId" />
-        <bean parent="FieldDefinition"
-        	p:attributeName="createDate" />
+        <bean parent="FieldDefinition" p:attributeName="routeHeaderId"/>
+        <bean parent="FieldDefinition" p:attributeName="createDate"/>
      </list>
     </property>
     <property name="resultFields" >

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -80,52 +80,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     protected void loadTestData() throws Exception {
         loadXmlFile("XmlConfig.xml");
     }
-
-//    private StandardGenericXMLSearchableAttribute getAttribute(String name) {
-//        String attName = name;
-//        if (attName == null) {
-//            attName = "XMLSearchableAttribute";
-//        }
-//        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attName);
-//        StandardGenericXMLSearchableAttribute attribute = new StandardGenericXMLSearchableAttribute();
-//        attribute.setRuleAttribute(ruleAttribute);
-//        return attribute;
-//    }
-//
-//    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
-//    	String formKey = key;
-//    	String savedKey = key;
-//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-//    	Field field = getFieldByFormKey(docType, formKey);
-//    	if (field != null) {
-//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-//        	sacc.setRangeSearch(field.isMemberOfRange());
-//        	sacc.setAllowWildcards(field.isAllowingWildcards());
-//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-//        	sacc.setCaseSensitive(field.isCaseSensitive());
-//        	sacc.setSearchInclusive(field.isInclusive());
-//            sacc.setSearchable(field.isSearchable());
-//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-//    	}
-//    	return sacc;
-//    }
-//
-//    private Field getFieldByFormKey(DocumentType docType, String formKey) {
-//    	if (docType == null) {
-//    		return null;
-//    	}
-//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
-//			for (Row row : searchableAttribute.getSearchingRows()) {
-//				for (Field field : row.getFields()) {
-//					if (field.getPropertyName().equals(formKey)) {
-//						return field;
-//					}
-//				}
-//			}
-//		}
-//		return null;
-//    }
 
     @Test public void testXMLStandardSearchableAttributeWithInvalidValue() throws Exception {
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
@@ -210,7 +164,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
             } else if (attributeValue instanceof SearchableAttributeFloatValue) {
                 SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
                 assertEquals("The only Float attribute that should have been added has key '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
-                assertEquals("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE, realValue.getSearchableAttributeValue());
+                assertTrue("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE + "'", 0 == TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.compareTo(realValue.getSearchableAttributeValue()));
             } else if (attributeValue instanceof SearchableAttributeDateTimeValue) {
                 SearchableAttributeDateTimeValue realValue = (SearchableAttributeDateTimeValue) attributeValue;
                 assertEquals("The only DateTime attribute that should have been added has key '" + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
@@ -390,7 +344,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         } catch (WorkflowServiceErrorException wsee) {}
     }
 
-    @Ignore("See KULRICE-2988")
     @Test public void testDocumentSearchAttributeWildcarding() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
@@ -435,7 +388,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "ack", docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "*ack", docType));
         result = docSearchService.getList(user.getPrincipalId(), criteria);
         searchResults = result.getSearchResults();
 
@@ -501,7 +454,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         assertEquals("Search results should be empty trying to use assumed ending wildcard.", 0, searchResults.size());
     }
 
-    @Ignore("See KULRICE-2988")
     @Test public void testDocumentSearchAttributeCaseSensitivity() throws Exception {
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
     	String documentTypeName = "SearchDocTypeCaseSensitivity";
@@ -587,7 +539,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "aCk", docType));
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "*aCk", docType));
         result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
     }
@@ -931,7 +883,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     /*
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchStorageValues(String)'
      */
-    @Ignore("See KULRICE-2988")
     @Test public void testGetSearchStorageValues() {
     	String attributeName = "XMLSearchableAttribute";
     	String keyName = "givenname";
@@ -954,6 +905,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         keyName = "testLongKey";
         value = "123458";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, documentcontent);
         attribute = getAttribute(attributeName);
         values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
@@ -968,6 +920,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         keyName = "testLongKey";
         value = "123458";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + " " + value + " " + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, documentcontent);
         attribute = getAttribute(attributeName);
         values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
@@ -981,6 +934,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         keyName = "testFloatKey";
         value = "2568.204154796";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, documentcontent);
         attribute = getAttribute(attributeName);
         values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
@@ -990,38 +944,11 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
             assertEquals("Value of attribute is wrong",insertCommasIfNeeded(value, 3),searchAttValue.getSearchableAttributeDisplayValue());
         }
 
-        Map<String,String> currencyParameterMap = new HashMap<String,String>();
-        currencyParameterMap.put("displayFormatPattern", "#,###.00");
-        attributeName = "XMLSearchableAttributeStdCurrency";
-        keyName = "testCurrencyKey";
-        value = "2238.2";
-        documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
-        attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(context);
-        assertEquals("Number of search attribute values is wrong",1,values.size());
-        for (Iterator iter = values.iterator(); iter.hasNext();) {
-            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
-            assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
-            assertEquals("Value of attribute is wrong",insertCommasIfNeeded(value + "0", 3),searchAttValue.getSearchableAttributeDisplayValue(currencyParameterMap));
-        }
-
-        attributeName = "XMLSearchableAttributeStdCurrency";
-        keyName = "testCurrencyKey";
-        value = "2157238.2";
-        documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
-        attribute = getAttribute(attributeName);
-        values = attribute.getSearchStorageValues(context);
-        assertEquals("Number of search attribute values is wrong",1,values.size());
-        for (Iterator iter = values.iterator(); iter.hasNext();) {
-            SearchableAttributeValue searchAttValue = (SearchableAttributeValue) iter.next();
-            assertEquals("Key of attribute is wrong",keyName,searchAttValue.getSearchableAttributeKey());
-            assertEquals("Value of attribute is wrong",insertCommasIfNeeded(value + "0", 3),searchAttValue.getSearchableAttributeDisplayValue(currencyParameterMap));
-        }
-
     	attributeName = "XMLSearchableAttributeStdDateTime";
         keyName = "testDateTimeKey";
         value = DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE);
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, documentcontent);
         attribute = getAttribute(attributeName);
         values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());
@@ -1035,6 +962,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         value = "2007-02-20";
         String returnValue = "02/20/2007";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
+        context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, documentcontent);
         attribute = getAttribute(attributeName);
         values = attribute.getSearchStorageValues(context);
         assertEquals("Number of search attribute values is wrong",1,values.size());

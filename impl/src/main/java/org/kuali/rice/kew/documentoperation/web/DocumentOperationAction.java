@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -292,9 +292,9 @@ public class DocumentOperationAction extends KewKualiAction {
 		}
 
 		List routeNodeInstances=(List)(request.getSession().getAttribute("routeNodeInstances"));
-		String ids=docForm.getNodeStatesDelete().trim();
+		String ids = (docForm.getNodeStatesDelete() != null) ? docForm.getNodeStatesDelete().trim() : null;
 		List statesToBeDeleted=new ArrayList();
-		if(ids!=null||!ids.equals("")){
+		if(ids!=null && !ids.equals("")){
 		    StringTokenizer idSets=new StringTokenizer(ids);
 		    while (idSets.hasMoreTokens()) {
 		    	String id=idSets.nextToken().trim();
@@ -387,9 +387,9 @@ public class DocumentOperationAction extends KewKualiAction {
 
 
 		List branches=(List)(request.getSession().getAttribute("branches"));
-		String branchStateIds=docForm.getBranchStatesDelete().trim();
+		String branchStateIds = (docForm.getBranchStatesDelete() != null) ? docForm.getBranchStatesDelete().trim() : null;
 		List branchStatesToBeDeleted=new ArrayList();
-		if(branchStateIds!=null||!branchStateIds.equals("")){
+		if(branchStateIds!=null && !branchStateIds.equals("")){
 		    StringTokenizer idSets=new StringTokenizer(branchStateIds);
 		    while (idSets.hasMoreTokens()) {
 		    	String id=idSets.nextToken().trim();

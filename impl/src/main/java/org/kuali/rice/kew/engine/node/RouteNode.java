@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,6 +40,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -63,7 +64,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @Table(name="KREW_RTE_NODE_T")
 @Sequence(name="KREW_RTE_NODE_S", property="routeNodeId")
 @NamedQueries({
-	@NamedQuery(name="RouteNode.FindByRouteNodeId",query="select r from RouteNode as r where r.routeNodeId = :roudeNodeId"),
+	@NamedQuery(name="RouteNode.FindByRouteNodeId",query="select r from RouteNode as r where r.routeNodeId = :routeNodeId"),
 	@NamedQuery(name="RouteNode.FindRouteNodeByName", query="select r from RouteNode as r where r.routeNodeName = :routeNodeName and r.documentTypeId = :documentTypeId"),
 	@NamedQuery(name="RouteNode.FindApprovalRouteNodes", query="select r from RouteNode as r where r.documentTypeId = :documentTypeId and r.finalApprovalInd = :finalApprovalInd")
 })
@@ -312,7 +313,7 @@ public class RouteNode implements Serializable {
     	try {
     		return nodeType != null && NodeType.fromNode(this).isTypeOf(NodeType.ROLE);
     	} catch( ResourceUnavailableException ex ) {
-    		System.err.println( "isRoleNode(): Unable to determine node type: " + ex.getMessage() );
+    		Logger.getLogger( RouteNode.class ).info( "isRoleNode(): Unable to determine node type: " + ex.getMessage() );
     		return false;
     	}
     }

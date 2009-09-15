@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,8 +74,8 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		assertNotNull( "BusinessObjectEntry for TravelAccount should not be null", boe );
 		AttributeDefinition extAttrib = boe.getAttributeDefinition( "extension.accountTypeCode" );
 		assertNotNull( "AttributeDefinition for 'extension.accountType' should not be null", extAttrib );
-		assertEquals(PersistableBusinessObjectValuesFinder.class, extAttrib.getControl().getValuesFinderClass());
-		assertEquals(AccountType.class, extAttrib.getControl().getBusinessObjectClass());
+		assertEquals(PersistableBusinessObjectValuesFinder.class.getName(), extAttrib.getControl().getValuesFinderClass());
+		assertEquals(AccountType.class.getName(), extAttrib.getControl().getBusinessObjectClass());
 		assertEquals("accountTypeCode", extAttrib.getControl().getKeyAttribute());
 		assertEquals("name", extAttrib.getControl().getLabelAttribute());
 		assertEquals(true, extAttrib.getControl().getIncludeKeyInLabel());
@@ -152,11 +152,11 @@ public class ExtensionAttributeTest extends KNSTestCase {
         	failedAsExpected = true;
         }
         assertTrue( "validation should have failed", failedAsExpected );
-        System.out.println( "document errors: " + GlobalVariables.getErrorMap() );
-        assertTrue( "there should be errors", GlobalVariables.getErrorMap().getErrorCount() > 0 );
-	assertTrue("should be an error on the account type code", GlobalVariables.getErrorMap().containsKey(
+        System.out.println( "document errors: " + GlobalVariables.getMessageMap() );
+        assertTrue( "there should be errors", GlobalVariables.getMessageMap().getErrorCount() > 0 );
+	assertTrue("should be an error on the account type code", GlobalVariables.getMessageMap().containsKey(
 		"document.newMaintainableObject.extension.accountTypeCode"));
-	assertTrue("account type code should have an existence error", GlobalVariables.getErrorMap().fieldHasMessage(
+	assertTrue("account type code should have an existence error", GlobalVariables.getMessageMap().fieldHasMessage(
 		"document.newMaintainableObject.extension.accountTypeCode", "error.existence"));
 	}
 }

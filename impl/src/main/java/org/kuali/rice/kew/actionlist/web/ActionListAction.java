@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -112,17 +112,18 @@ public class ActionListAction extends KualiAction {
     private List<ExtraButton> getHeaderButtons(){
     	List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
     	ExtraButton eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-preferences.gif");
+    	String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
+    	eb.setExtraButtonSource( krBaseUrl + "/images/tinybutton-preferences.gif");
     	eb.setExtraButtonOnclick("Preferences.do?returnMapping=viewActionList");
 
     	headerButtons.add(eb);
     	eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-refresh.gif");
+    	eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-refresh.gif");
     	eb.setExtraButtonProperty("methodToCall.start");
 
     	headerButtons.add(eb);
     	eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-filter.gif");
+    	eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-filter.gif");
     	eb.setExtraButtonOnclick("javascript: window.open('ActionListFilter.do?methodToCall=start');");
     	headerButtons.add(eb);
 
@@ -220,11 +221,6 @@ public class ActionListAction extends KualiAction {
                 actionList = null;
             }
 
-            if (!StringUtils.isEmpty(form.getPrimaryDelegateId())) {
-                uSession.getActionListFilter().setPrimaryDelegateId(form.getPrimaryDelegateId());
-                actionList = null;
-            }
-
             // if the user has changed, we need to refresh the action list
             if (!principalId.equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
@@ -260,9 +256,6 @@ public class ActionListAction extends KualiAction {
                 Collection delegators = actionListSrv.findUserSecondaryDelegators(principalId);
                 form.setDelegators(getWebFriendlyRecipients(delegators));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
-                Collection delegates = actionListSrv.findUserPrimaryDelegations(principalId);
-                form.setPrimaryDelegates(getWebFriendlyRecipients(delegates));
-                form.setPrimaryDelegateId(uSession.getActionListFilter().getDelegatorId());
             }
 
             form.setFilterLegend(uSession.getActionListFilter().getFilterLegend());
@@ -401,7 +394,7 @@ public class ActionListAction extends KualiAction {
     			actionItem.initialize(preferences);
     			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = (DocumentRouteHeaderValueActionListExtension)actionItem.getRouteHeader();
     			routeHeaderExtension.setActionListInitiatorPrincipal(routeHeaderExtension.getInitiatorPrincipal());
-    			actionItem.setActionItemIndex(new Integer(index));
+    			actionItem.setActionItemIndex(Integer.valueOf(index));
     			//set background colors for document statuses
     			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
     				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
@@ -451,6 +444,7 @@ public class ActionListAction extends KualiAction {
     	boolean haveCancels = false;
     	boolean haveDisapproves = false;
     	boolean haveCustomActions = false;
+    	boolean haveDisplayParameters = false;
     	List customActionListProblemIds = new ArrayList();
     	SortOrderEnum sortOrder = parseSortOrder(sortDirection);
     	int startIndex = (page.intValue() - 1) * pageSize;
@@ -502,6 +496,7 @@ public class ActionListAction extends KualiAction {
     				haveDisapproves = haveDisapproves || itemHasDisapproves;
     				haveCancels = haveCancels || itemHasCancels;
     				haveCustomActions = haveCustomActions || itemHasCustomActions;
+    				haveDisplayParameters = haveDisplayParameters || (actionItem.getDisplayParameters() != null);
     			}
     		} catch (Exception e) {
     			// if there's a problem loading the custom action list attribute, let's go ahead and display the vanilla action item
@@ -539,6 +534,8 @@ public class ActionListAction extends KualiAction {
     		form.setDefaultActions(defaultActions);
     	}
 
+   		form.setHasDisplayParameters(haveDisplayParameters);
+    	
     	generateActionItemErrors(CUSTOMACTIONLIST_PROP, ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY, customActionListProblemIds);
     	return new PaginatedActionList(currentPage, actionList.size(), page.intValue(), pageSize, "actionList", sortCriterion, sortOrder);
     }
@@ -546,7 +543,7 @@ public class ActionListAction extends KualiAction {
     private void generateActionItemErrors(String propertyName, String errorKey, List documentIds) {
     	if (!documentIds.isEmpty()) {
     		String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
-    		GlobalVariables.getErrorMap().putError(propertyName, errorKey, documentIdsString);
+    		GlobalVariables.getMessageMap().putError(propertyName, errorKey, documentIdsString);
     	}
     }
     
@@ -560,10 +557,10 @@ public class ActionListAction extends KualiAction {
 //    		}
     		
     		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
-    			GlobalVariables.getErrorMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getActionItemId()+"");
+    			GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getActionItemId()+"");
     		}
     		if (actionItem.getDocTitle() == null) {
-    			GlobalVariables.getErrorMap().putError(DOCTITLE_PROP, ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY,actionItem.getActionItemId()+"");
+    			GlobalVariables.getMessageMap().putError(DOCTITLE_PROP, ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY,actionItem.getActionItemId()+"");
     			continue;
     		}
      	}
@@ -625,11 +622,11 @@ public class ActionListAction extends KualiAction {
         }
         catch (RiceRuntimeException rre)
         {
-        	GlobalVariables.getErrorMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
+        	GlobalVariables.getMessageMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
         }
         catch (NullPointerException npe)
         {
-        	GlobalVariables.getErrorMap().putError("null", HELPDESK_LOGIN_EMPTY_ERRKEY, name);
+        	GlobalVariables.getMessageMap().putError("null", HELPDESK_LOGIN_EMPTY_ERRKEY, name);
         }
     	actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");

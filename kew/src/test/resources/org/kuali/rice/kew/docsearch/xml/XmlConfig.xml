@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
@@ -12,7 +27,6 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition autoWildcardLocation="prefixonly"/>
 					<validation required="true">
 						<regex>^[a-zA-Z ]+$</regex>
 						<message>Invalid first name</message>
@@ -41,7 +55,7 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition autoWildcardLocation="prefixonly" caseSensitive="false"/>
+					<searchDefinition caseSensitive="false"/>
 					<validation required="true">
 						<regex>^[a-zA-Z ]+$</regex>
 						<message>Invalid first name</message>
@@ -70,7 +84,7 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition dataType="long" allowWildcards="true" autoWildcardLocation="suffixOnly"/>
+					<searchDefinition dataType="long"/>
 					<fieldEvaluation>
 						<xpathexpression>//putWhateverWordsIwantInsideThisTag/testLongKey/value</xpathexpression>
 					</fieldEvaluation>
@@ -119,7 +133,6 @@
 				<fieldDef name="testCurrencyKey" title="Dollars Here">
 					<display>
 						<type>text</type>
-                        <parameters name="displayFormatPattern">#.00</parameters>
 					</display>
 					<searchDefinition dataType="float"/>
 					<fieldEvaluation>
@@ -348,8 +361,12 @@
 					<display>
 						<type>text</type>
 					</display>
-					<!-- the service and appliesTo are completey fake here because we aren't actually going to render this thing -->
-					<quickfinder service="myLookuable" appliesTo="MyBean.data" draw="true" />
+					<!-- the businessObjectClass and lookupFieldName are completey fake here because we aren't actually going to render this thing -->
+					<lookup businessObjectClass="org.kuali.rice.kew.docsearch.xml.MyLookupable">
+					  <fieldConversions>
+					    <fieldConversion lookupFieldName="chart" localFieldName="MyBean.data"/>
+					  </fieldConversions>
+					</lookup>
 					<fieldEvaluation>
 						<xpathexpression>//chart</xpathexpression>
 					</fieldEvaluation>
@@ -374,7 +391,11 @@
 					<visibility>
 						<column visible="false"/>
 					</visibility>
-					<quickfinder service="ChartLookuable" appliesTo="chart" draw="true" />
+					<lookup businessObjectClass="Chart">
+					  <fieldConversions>
+					    <fieldConversion lookupFieldName="chart" localFieldName="chart" />
+					  </fieldConversions>
+					</lookup>
 					<fieldEvaluation>
 						<xpathexpression>//chart</xpathexpression>
 					</fieldEvaluation>

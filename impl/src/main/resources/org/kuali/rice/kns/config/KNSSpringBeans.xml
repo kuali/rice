@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2006-2007 The Kuali Foundation.
+	Copyright 2006-2007 The Kuali Foundation
 
-	Licensed under the Educational Community License, Version 1.0 (the "License");
+	Licensed under the Educational Community License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
 
-	http://www.opensource.org/licenses/ecl1.php
+	http://www.opensource.org/licenses/ecl2.php
 
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
 	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
@@ -154,12 +155,6 @@
 		<property name="dbPlatform" ref="dbPlatform" />
 	</bean>
 
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-	</bean>
-
 	<bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
 		<property name="name" value="scriptConfigurationFilePaths" />
 		<property name="listItem" value="classpath:org/kuali/rice/kns/dwr-core.xml" />
@@ -176,7 +171,7 @@
 		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
 	</bean>
 
-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<bean id="transactionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>
@@ -801,8 +796,9 @@
 
   <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.LookupDaoOjb">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
-		<property name="dateTimeService" ref="dateTimeService" />
-	</bean>
+    <property name="dateTimeService" ref="dateTimeService" />
+    <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
+  </bean>
 
   <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
     <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />
@@ -900,12 +896,10 @@
   <!-- Used for @Transactional so you don't have to wire services up in here-->
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
-        <idref local="NoResultExceptionInterceptor" />
+        <idref bean="NoResultExceptionInterceptor" />
       </list>
     </property>
     <property name="beanNames">

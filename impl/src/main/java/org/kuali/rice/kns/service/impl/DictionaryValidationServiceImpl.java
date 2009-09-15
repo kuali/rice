@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -40,17 +41,21 @@ import org.kuali.rice.kns.exception.InfrastructureException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.web.format.DateFormatter;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
@@ -153,12 +158,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	        }
 
 	        BusinessObject referenceBusinessObject = (BusinessObject) referenceObj;
-	        GlobalVariables.getErrorMap().addToErrorPath(referenceName);
+	        GlobalVariables.getMessageMap().addToErrorPath(referenceName);
 	        validateBusinessObject(referenceBusinessObject, validateRequired);
 	        if (maxDepth > 0) {
 	            validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
 	        }
-	        GlobalVariables.getErrorMap().removeFromErrorPath(referenceName);
+	        GlobalVariables.getMessageMap().removeFromErrorPath(referenceName);
 
 	    }
 	}
@@ -188,12 +193,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 			}
 			BusinessObject element = (BusinessObject) list.get(i);
 			
-			GlobalVariables.getErrorMap().addToErrorPath(errorPathAddition);
+			GlobalVariables.getMessageMap().addToErrorPath(errorPathAddition);
 			validateBusinessObject(element, validateRequired);
 			if (maxDepth > 0) {
 			    validateUpdatabableReferencesRecursively(element, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
 			}
-			GlobalVariables.getErrorMap().removeFromErrorPath(errorPathAddition);
+			GlobalVariables.getMessageMap().removeFromErrorPath(errorPathAddition);
 		    }
 		}
 	    }
@@ -231,7 +236,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
     public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
         boolean retval = false;
-        final ErrorMap errorMap = GlobalVariables.getErrorMap();
+        final MessageMap errorMap = GlobalVariables.getMessageMap();
         int originalErrorCount = errorMap.getErrorCount();
 
         errorMap.addToErrorPath(prefix);
@@ -269,44 +274,97 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
+                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
                 return;
             }
             Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
             if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
                 LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
 
-                if (!validationExpression.matcher(attributeValue).matches()) {
-                    boolean isError=true;
-                    // Calling formatter class
+            	if (!validationExpression.matcher(attributeValue).matches()) {
+            		// Retrieving formatter class
                     Class<?> formatterClass=getDataDictionaryService().getAttributeFormatter(
                             objectClassName, attributeName);
                     if (formatterClass != null) {
-                        try {
-                            Method validatorMethod=formatterClass.getDeclaredMethod(
-                                    VALIDATE_METHOD, new Class<?>[] {String.class});
-                            Object o=validatorMethod.invoke(
-                                    formatterClass.newInstance(), attributeValue);
-                            if (o instanceof Boolean) {
-                                isError=!((Boolean)o).booleanValue();
+                    	boolean valuesAreValid = true;
+                        String[] valuesToValidate = null;
+                        String[] errorKeyPrefix = null;
+                    	
+                        // For dates, remove the substrings "<=", ">=", and ".." from the date Strings before validating them. It is not necessary to
+                        // remove these substrings prior to the regex validation because custom date fields should be validated with the formatter anyway.
+                        if (DateFormatter.class.isAssignableFrom(formatterClass)) {
+                        	// Remove the substrings via logic resembling DocSearchCriteriaDTOLookupableHelperServiceImpl.getSearchableAttributeFieldValue.
+                        	if (StringUtils.contains(attributeValue, "..")) {
+                        	    // If a "From" and "To" date are embedded together, validate each one individually.
+                        	    String[] datesToTest = StringUtils.split(attributeValue, "..");
+                        	    valuesToValidate = new String[] { datesToTest[0], datesToTest[1] };
+                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX, "" };
+                        	} else if (StringUtils.contains(attributeValue, ">=")) {
+                        	    valuesToValidate = new String[] { StringUtils.split(attributeValue, ">=")[0] };
+                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX };
+                            } else if (StringUtils.contains(attributeValue, "<=")) {
+                                valuesToValidate = new String[] { StringUtils.split(attributeValue, "<=")[0] };
+                                errorKeyPrefix = new String [] { "" };
+                            } else {
+                                valuesToValidate = new String[] { attributeValue };
+                                errorKeyPrefix = new String [] { "" };
                             }
-                        } catch (Exception e) {
-                            LOG.debug(e.getMessage(), e);
+                        } else {
+                        	valuesToValidate = new String[] { attributeValue };
+                        	errorKeyPrefix = new String [] { "" };
                         }
-                    }
-                    if (isError) {
+                        
+                        // Loop twice if the field is a date field and both a "From" and "To" date were specified; otherwise, run once.
+                    	for (int i = 0; i < valuesToValidate.length; i++) {
+                    		boolean isError=true;
+                    		try {
+                    			Method validatorMethod=formatterClass.getDeclaredMethod(
+                    					VALIDATE_METHOD, new Class<?>[] {String.class});
+                        		Object o=validatorMethod.invoke(
+                        				formatterClass.newInstance(), valuesToValidate[i]);
+                        		if (o instanceof Boolean) {
+                        			isError = !((Boolean)o).booleanValue();
+                        		}
+                        		valuesAreValid &= !isError;
+                    		} catch (Exception e) {
+                    			LOG.debug(e.getMessage(), e);
+                    			valuesAreValid = false;
+                    		}
+                    		if (isError) {
+                    			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+                    			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+                    			GlobalVariables.getMessageMap().putError(errorKeyPrefix[i] + errorKey, errorMessageKey, errorMessageParameters);
+                    		}
+                    	}
+                        
+                        // If there were two dates validated and both were valid, ensure that the "From" date does not occur after the "To" date.
+                		if (valuesToValidate.length == 2 && valuesAreValid) {
+                			try {
+                				valuesAreValid &= Utilities.checkDateRanges(valuesToValidate[0], valuesToValidate[1]);
+                			} catch (Exception e) {
+                				LOG.debug(e.getMessage(), e);
+                				valuesAreValid = false;
+                			}
+                			if (!valuesAreValid) {
+                           		String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+                        		String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+                        		GlobalVariables.getMessageMap().putError(errorKeyPrefix[0] + errorKey, errorMessageKey + ".range", errorMessageParameters);
+                			}
+                		}
+                    } else {
                     	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                    	String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                        GlobalVariables.getErrorMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+            			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+            			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
                     }
                     return;
                 }
+
             }
             BigDecimal exclusiveMin = getDataDictionaryService().getAttributeExclusiveMin(objectClassName, attributeName);
             if (exclusiveMin != null) {
                 try {
                     if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
+                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, exclusiveMin.toString() });
                         return;
@@ -320,7 +378,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (inclusiveMax != null) {
                 try {
                     if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
-                        GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
+                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, inclusiveMax.toString() });
                         return;
@@ -346,7 +404,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
                 // get label of attribute for message
                 String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
-                GlobalVariables.getErrorMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
+                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
             }
         }
     }
@@ -366,9 +424,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (propertyDescriptor.getPropertyType() != null && PersistableBusinessObject.class.isAssignableFrom(propertyDescriptor.getPropertyType()) && ObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
                 BusinessObject bo = (BusinessObject) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
                 if (depth == 0) {
-                    GlobalVariables.getErrorMap().addToErrorPath(propertyDescriptor.getName());
+                    GlobalVariables.getMessageMap().addToErrorPath(propertyDescriptor.getName());
                     validateBusinessObject(bo);
-                    GlobalVariables.getErrorMap().removeFromErrorPath(propertyDescriptor.getName());
+                    GlobalVariables.getMessageMap().removeFromErrorPath(propertyDescriptor.getName());
                 }
                 else {
                     validateBusinessObjectsRecursively(bo, depth - 1);
@@ -384,9 +442,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 for (int j = 0; j < propertyList.size(); j++) {
                     if (propertyList.get(j) != null && propertyList.get(j) instanceof PersistableBusinessObject) {
                         if (depth == 0) {
-                            GlobalVariables.getErrorMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
+                            GlobalVariables.getMessageMap().addToErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                             validateBusinessObject((BusinessObject) propertyList.get(j));
-                            GlobalVariables.getErrorMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
+                            GlobalVariables.getMessageMap().removeFromErrorPath(StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" + (new Integer(j)).toString() + "]");
                         }
                         else {
                             validateBusinessObjectsRecursively((BusinessObject) propertyList.get(j), depth - 1);
@@ -634,13 +692,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 if (!(bo instanceof Inactivateable) || ((Inactivateable) bo).isActive()) {
                     active = validateReferenceIsActive(bo, referenceName);
                     if (!active) {
-                        GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
+                        GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
                         success &= false;
                     }
                 }
             }
             else {
-                GlobalVariables.getErrorMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE, displayFieldName);
+                GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE, displayFieldName);
                 success &= false;
             }
         }
@@ -742,9 +800,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
 
         String attrValueStr = attrValue.toString();
-        if (!configService.evaluateConstrainedValue(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(),attrValueStr)) {
+        if (!KNSServiceLocator.getParameterService().getParameterEvaluator(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(), attrValueStr).evaluationSucceeds()) {
+        //if (!configService.evaluateConstrainedValue(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(),attrValueStr)) {
             success &= false;
-            GlobalVariables.getErrorMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());
+            GlobalVariables.getMessageMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());
         }
 
         return success;

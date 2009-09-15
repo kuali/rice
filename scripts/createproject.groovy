@@ -32,7 +32,7 @@ PROJECT_PATH = PROJECT_DIR + '/' + PROJECT_NAME
 
 TEMPLATE_BINDING = [
 	"\${PROJECT_NAME}":"$PROJECT_NAME",
-	"\${RICE_VERSION}":"1.0.x-KC-SNAPSHOT",
+	"\${RICE_VERSION}":"1.0.0",
 	"\${USER_HOME}":System.getProperty('user.home'),
 	"\${bootstrap.spring.file}":"SpringBeans.xml"
 ] 
@@ -70,11 +70,11 @@ def springTemplateFile = null;
 
 if (SAMPLEAPP) {
 	// copy the Sample Application Files
-	ant.copy(todir:PROJECT_PATH + '/src/main/java/org') { 
-    	fileset(dir:RICE_DIR + '/web/src/test/java/org')
+	ant.copy(todir:PROJECT_PATH + '/src/main/java') { 
+    	fileset(dir:RICE_DIR + '/web/src/test/java')
 	}
-	ant.copy(todir:PROJECT_PATH + '/src/main/resources/org') {
-		fileset(dir:RICE_DIR + '/web/src/test/resources/org') 
+	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
+		fileset(dir:RICE_DIR + '/web/src/test/resources') 
 	}
 	
 	// copy sample-app-config.xml
@@ -86,11 +86,11 @@ if (SAMPLEAPP) {
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
     	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'configurationServiceData.xml, *Resources.properties, OJB-*.xml')
     }
-    
-	springTemplateFile = new File(RICE_DIR + '/scripts/templates/createproject.SampleAppBeans.template.xml')
+	
+	springTemplateFile = new File(RICE_DIR + '/config/templates/createproject.SampleAppBeans.template.xml')
 } else {
 	// copy an empty java file to /src/main/java
-	ant.copy(file:RICE_DIR + "/scripts/templates/PutJavaCodeHere.java",
+	ant.copy(file:RICE_DIR + "/config/templates/PutJavaCodeHere.java",
 		 tofile:PROJECT_PATH + "/src/main/java/PutJavaCodeHere.java")
 		 
 	// copy configuration files
@@ -101,7 +101,7 @@ if (SAMPLEAPP) {
     	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'KR-ApplicationResources.properties')
     }
     
-	springTemplateFile = new File(RICE_DIR + '/scripts/templates/createproject.SpringBeans.template.xml')
+	springTemplateFile = new File(RICE_DIR + '/config/templates/createproject.SpringBeans.template.xml')
 }
 
 // copy standard Rice Spring configuration files to project and rename
@@ -114,6 +114,9 @@ ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceSpri
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml")
 
 if (SAMPLEAPP) {
+    // [tbradford] TODO: There are some classes in the web portion of rice that
+    // need to be copied in addition, as they no longer seem to be bundled in 
+    // any of the Maven artifacts.
 	ant.copy(file:RICE_DIR + "/web/src/main/resources/SampleAppModuleBeans.xml",
 			 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-SampleAppModuleBeans.xml")
 }
@@ -123,12 +126,17 @@ new File(PROJECT_PATH + "/src/main/resources/SpringBeans.xml") << templateReplac
 
 // copy SQL and XML configuration files
 
-ant.copy(todir:PROJECT_PATH + '/src/main/config/sql') { 
-    fileset(dir:RICE_DIR + '/impl/src/main/config/sql', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
-}
-ant.copy(todir:PROJECT_PATH + '/src/main/config/xml') { 
-    fileset(dir:RICE_DIR + '/impl/src/main/config/xml', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
-}
+// [tbradford] TODO: Removed the config/ copy and need to figure out an
+// elegant way of directing people to the impex process for importing the
+// sample application data.
+
+// ant.copy(todir:PROJECT_PATH + '/src/main/config/sql') { 
+//     fileset(dir:RICE_DIR + '/impl/src/main/config/sql', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
+// }
+
+// ant.copy(todir:PROJECT_PATH + '/src/main/config/xml') { 
+//     fileset(dir:RICE_DIR + '/impl/src/main/config/xml', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
+// }
 
 // copy web application
 
@@ -136,11 +144,12 @@ ant.copy(todir:PROJECT_PATH + '/src/main/webapp') {
     fileset(dir:RICE_DIR + '/web/src/main/webapp', includes:'**/*', excludes:'.svn,CVS*,.cvs*') 
 }
 
-// if this isn't the sample application, copy the index.html which doesn't include the sample app links
-if (!SAMPLEAPP) {
-	ant.copy(file:RICE_DIR + "/web/src/main/config/index.html",
-		 tofile:PROJECT_PATH + "/src/main/webapp/index.html", overwrite:"true")
-}
+// [tbradford] There's already an index.jsp in the portal that redirects to portal.jsp
+// if this isn't the sample application, copy the index.jsp which doesn't include the sample app links
+// if (!SAMPLEAPP) {
+// 	ant.copy(file:RICE_DIR + "/web/src/main/config/index.jsp",
+// 		 tofile:PROJECT_PATH + "/src/main/webapp/index.jsp", overwrite:"true")
+// }
 
 // copy the keystore files
 ant.copy(todir:"${System.getProperty('user.home')}/kuali/main/dev") { 
@@ -179,28 +188,28 @@ config.delete()
 config = new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml")
 config << configtext
 
-// fix the links in index.html
+// fix the links in index.jsp
 
-index = new File(PROJECT_PATH + '/src/main/webapp/index.html')
+index = new File(PROJECT_PATH + '/src/main/webapp/index.jsp')
 indextext = ""
 index.eachLine { 
     line -> 
 	    line = line.replace('kr-dev', "${PROJECT_NAME}-dev")
-	    line = line.replace('-dev/portal.do', "-dev/index.html")
+	    line = line.replace('-dev/portal.do', "-dev/index.jsp")
     	indextext += line + "\n" 
 }
 index.delete()
-index = new File(PROJECT_PATH + "/src/main/webapp/index.html")
+index = new File(PROJECT_PATH + "/src/main/webapp/index.jsp")
 index << indextext
 
+// [tbradford] replaced by datasets that come from the master datasources
 // execute variable replacement on RiceSampleAppWorkflowBootstrap.xml
-
-ingest = new File(PROJECT_PATH + '/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml')
-ingesttext = ""
-ingest.eachLine { line -> ingesttext += line.replace('kr-dev', "${PROJECT_NAME}-dev") + "\n" }
-ingest.delete()
-ingest = new File(PROJECT_PATH + "/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml")
-ingest << ingesttext
+// ingest = new File(PROJECT_PATH + '/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml')
+// ingesttext = ""
+// ingest.eachLine { line -> ingesttext += line.replace('kr-dev', "${PROJECT_NAME}-dev") + "\n" }
+// ingest.delete()
+// ingest = new File(PROJECT_PATH + "/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml")
+// ingest << ingesttext
 
 if (maven) {
 	// execute the maven command to build eclipse classpath
@@ -284,15 +293,15 @@ def writeProcessOutput(process) {
 }
 
 def pomtext() {
-	return templateReplace(new File(RICE_DIR + '/scripts/templates/createproject.pom.template.xml'))
+	return templateReplace(new File(RICE_DIR + '/config/templates/createproject.pom.template.xml'))
 }
 
 def launchtext() {
-	return templateReplace(new File(RICE_DIR + '/scripts/templates/createproject.launch.template.xml'))
+	return templateReplace(new File(RICE_DIR + '/config/templates/createproject.launch.template.xml'))
 }
 
 def userhomeconfigtext() {
-	return templateReplace(new File(RICE_DIR + '/scripts/templates/createproject.config.template.xml'))
+	return templateReplace(new File(RICE_DIR + '/config/templates/createproject.config.template.xml'))
 }
 
 def templateReplace(file) {
@@ -316,16 +325,17 @@ def instructionstext() {
 2. Configure an M2_REPO classpath variable in Eclipse
 3. Update ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml 
    with application runtime database information.
-4. Run the /src/main/config/sql/rice_db_bootstrap.sql script if
-   you have a fresh database.  If you need to drop all tables first,
-   run the /src/main/config/sql/rice_db_destroy.sql script 
-   followed by the former.
-5. If you generated the project with the -sampleapp option, run 
-   the /src/main/config/sql/rice_sample_app.sql script.
+4. Configure an impex-build.properties file in your home directory
+   with application runtime database information, being sure to set
+   the torque.schema.dir property to the location of the rice
+   /database/demo-server-dataset directory.
+5. Run the impex tool under /database/impex-database.  If you require
+   a schema to be created for you, type: 'ant create-schema'.
+   To import the demonstration dataset, type: 'ant import'
 6. Start the application using the eclipse launch configuration.
    In the eclipse Run menu, choose 'Run...' and select the the
    configuration named 'Launch Web App'
-7. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.html
+7. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.jsp
 8. Finish bootstrapping by ingesting the workflow xml.  From the 
    start screen, go to the workflow portal and log in as quickstart.
    Go to the 'XML Ingester' link and ingest the following file: 

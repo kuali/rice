@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.reference.EntityType;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -65,6 +66,15 @@ public class EntityTypeImpl extends KimCodeBase implements EntityType {
 	 */
 	public void setEntityTypeName(String entityTypeName) {
 		setName(entityTypeName);
+	}
+	
+	public EntityTypeInfo toInfo() {
+		EntityTypeInfo info = new EntityTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
 	}
 
 }

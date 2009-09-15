@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2009 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,21 +36,22 @@ public class StateValuesFinder extends KeyValuesBase {
      */
     public List<KeyLabelPair> getKeyValues() {
     	if ( labels == null ) {
-    		List<State> codes = KNSServiceLocator.getStateService().findAllStates();
-
+    		List<State> baseCodes = KNSServiceLocator.getStateService().findAllStates();
+    		List<State> codes = new ArrayList<State>( baseCodes );
     		Collections.sort(codes, new Comparator<State> () {
 				public int compare(State o1, State o2) {
 					return o1.getPostalStateName().compareTo(o2.getPostalStateName());
 				}
     		});
     		
-	        labels = new ArrayList<KeyLabelPair>();
-	        labels.add(new KeyLabelPair("", ""));
+    		List<KeyLabelPair> newLabels = new ArrayList<KeyLabelPair>();
+	        newLabels.add(new KeyLabelPair("", ""));
 	        for (State state : codes) {
 	            if(state.isActive()) {
-	                labels.add(new KeyLabelPair(state.getPostalStateCode(), state.getPostalStateName()));
+	                newLabels.add(new KeyLabelPair(state.getPostalStateCode(), state.getPostalStateName()));
 	            }
 	        }
+	        labels = newLabels;
     	}
 
         return labels;

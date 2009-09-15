@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,8 +25,8 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
@@ -57,7 +57,6 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.format.FormatException;
@@ -245,11 +244,12 @@ public class FieldUtils {
 
             // for dropdown and radio, get instance of specified KeyValuesFinder and set field values
             if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType) || Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType) || Field.MULTISELECT.equals(fieldType)) {
-                Class keyFinderClassName = control.getValuesFinderClass();
+                String keyFinderClassName = control.getValuesFinderClass();
 
-                if (keyFinderClassName != null) {
+                if (!StringUtils.isBlank(keyFinderClassName)) {
                     try {
-                        KeyValuesFinder finder = (KeyValuesFinder) keyFinderClassName.newInstance();
+                    	Class keyFinderClass = ClassLoaderUtils.getClass(keyFinderClassName);
+                        KeyValuesFinder finder = (KeyValuesFinder) keyFinderClass.newInstance();
 
                         if (finder != null) {
                             if (finder instanceof ApcValuesFinder && control instanceof ApcSelectControlDefinition) {
@@ -257,7 +257,7 @@ public class FieldUtils {
                                 ((ApcValuesFinder) finder).setParameterDetailType(((ApcSelectControlDefinition) control).getParameterDetailType());
                                 ((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) control).getParameterName());
                             } else if (finder instanceof PersistableBusinessObjectValuesFinder) {
-                                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(control.getBusinessObjectClass());
+                                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(ClassLoaderUtils.getClass(control.getBusinessObjectClass()));
                                 ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(control.getKeyAttribute());
                                 ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(control.getLabelAttribute());
                                 if (control.getIncludeBlankRow() != null) {
@@ -371,9 +371,13 @@ public class FieldUtils {
 
         List<Row> rows = new ArrayList();
         List<Field> fieldOnlyList = new ArrayList();
+
+        List<Field> visableFields = getVisibleFields(fields);
+    	List<Field> nonVisableFields = getNonVisibleFields(fields);
+
         int fieldsPosition = 0;
-        for (Field element : fields) {
-            if (Field.SUB_SECTION_SEPARATOR.equals(element.getFieldType())) {
+        for (Field element : visableFields) {
+            if (Field.SUB_SECTION_SEPARATOR.equals(element.getFieldType()) || Field.CONTAINER.equals(element.getFieldType())) {
                 fieldsPosition = createBlankSpace(fieldOnlyList, rows, numberOfColumns, fieldsPosition);
                 List fieldList = new ArrayList();
                 fieldList.add(element);
@@ -393,7 +397,40 @@ public class FieldUtils {
             }
         }
         createBlankSpace(fieldOnlyList, rows, numberOfColumns, fieldsPosition);
+
+     // Add back the non Visible Rows
+    	if(nonVisableFields != null && !nonVisableFields.isEmpty()){
+    		Row nonVisRow = new Row();
+    		nonVisRow.setFields(nonVisableFields);
+    		rows.add(nonVisRow);
+    	}
+
+
         return rows;
+    }
+
+    private static List<Field> getVisibleFields(List<Field> fields){
+    	List<Field> rList = new ArrayList<Field>();
+
+   		for(Field f: fields){
+   			if(!Field.HIDDEN.equals(f.getFieldType()) &&  !Field.BLANK_SPACE.equals(f.getFieldType())){
+   				rList.add(f);
+   			}
+   		}
+
+    	return rList;
+    }
+
+    private static List<Field> getNonVisibleFields(List<Field> fields){
+    	List<Field> rList = new ArrayList<Field>();
+
+   		for(Field f: fields){
+   			if(Field.HIDDEN.equals(f.getFieldType()) || Field.BLANK_SPACE.equals(f.getFieldType())){
+   				rList.add(f);
+   			}
+   		}
+
+    	return rList;
     }
 
     /**
@@ -410,6 +447,8 @@ public class FieldUtils {
             for (int i = 0; i < (numberOfColumns - fieldOnlySize); i++) {
                 Field empty = new Field();
                 empty.setFieldType(Field.BLANK_SPACE);
+                // Must be set or AbstractLookupableHelperServiceImpl::preprocessDateFields dies
+                empty.setPropertyName(Field.BLANK_SPACE);
                 fieldOnlyList.add(empty);
             }
             rows.add(new Row(new ArrayList(fieldOnlyList)));
@@ -491,7 +530,7 @@ public class FieldUtils {
         	field.setPropertyValue(obj);
             // for user fields, attempt to pull the principal ID and person's name from the source object
             if ( field.getFieldType().equals(Field.KUALIUSER) ) {
-            	// this is supplemental, so catch and log any errors 
+            	// this is supplemental, so catch and log any errors
             	try {
             		if ( StringUtils.isNotBlank(field.getUniversalIdAttributeName()) ) {
             			Object principalId = ObjectUtils.getNestedValue(businessObject, field.getUniversalIdAttributeName());
@@ -617,13 +656,13 @@ public class FieldUtils {
      * @param propertyNamePrefix this value will be prepended to all property names in the returned unformattable values map
      * @return Cached Values from any formatting failures
      */
-    public static Map populateBusinessObjectFromMap(BusinessObject bo, Map fieldValues, String propertyNamePrefix) {
+    public static Map populateBusinessObjectFromMap(BusinessObject bo, Map<String, ?> fieldValues, String propertyNamePrefix) {
         Map cachedValues = new HashMap();
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
+        MessageMap errorMap = GlobalVariables.getMessageMap();
 
         try {
-            for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
-                String propertyName = (String) iter.next();
+            for (Iterator<String> iter = fieldValues.keySet().iterator(); iter.hasNext();) {
+                String propertyName = iter.next();
 
                 if (propertyName.endsWith(KNSConstants.CHECKBOX_PRESENT_ON_FORM_ANNOTATION)) {
                     // since checkboxes do not post values when unchecked, this code detects whether a checkbox was unchecked, and
@@ -651,9 +690,9 @@ public class FieldUtils {
                     try {
                     	//convert to upperCase based on data dictionary
                     	Class businessObjectClass = bo.getClass();
-                    	
+
                     	Object fieldValue = fieldValues.get(propertyName);
-                    	
+
                         ObjectUtils.setObjectProperty(bo, propertyName, type, fieldValue);
                     }
                     catch (FormatException e) {
@@ -849,7 +888,7 @@ public class FieldUtils {
                 if(KNSConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)){
                 	if((KEWConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus) || KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus))
                 		&& user.getPrincipalId().equals(documentInitiatorPrincipalId)){
-                		
+
                 		//user should be able to see the unmark value
                 	}else{
                 		if(fieldAuth.isPartiallyMasked()){
@@ -1143,11 +1182,11 @@ public class FieldUtils {
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
 
             if(field.isDatePicker()) {
-            	
+
             	Field newDate = createRangeDateField(field);
             	fields.add(newDate);
             }
-            
+
             BusinessObject newBusinessObjectInstance;
             if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
             	ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
@@ -1160,8 +1199,10 @@ public class FieldUtils {
             field = LookupUtils.setFieldQuickfinder(newBusinessObjectInstance, attributeName, field, lookupFieldAttributeList);
             field = LookupUtils.setFieldDirectInquiry(newBusinessObjectInstance, attributeName, field);
 
-            // overwrite maxLength to allow for wildcards and ranges in the select
-            field.setMaxLength(100);
+            // overwrite maxLength to allow for wildcards and ranges in the select, but only if it's not a mulitselect box, because maxLength determines the # of entries
+            if (!Field.MULTISELECT.equals(field.getFieldType())) {
+            	field.setMaxLength(100);
+            }
             fields.add(field);
 
             // if the attrib name is "active", and BO is Inactivatable, then set the default value to Y

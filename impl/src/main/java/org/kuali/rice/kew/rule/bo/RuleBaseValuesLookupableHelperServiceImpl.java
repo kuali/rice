@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,7 +77,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "ruleTemplate.name";
     private static final String RULE_ID_PROPERTY_NAME = "ruleBaseValuesId";
-    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleBaseValuesId";
+    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplateId";
     private static final String ACTIVE_IND_PROPERTY_NAME = "activeInd";
     private static final String DELEGATE_RULE_PROPERTY_NAME = "delegateRule";
     private static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";
@@ -242,7 +242,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 group = getIdentityManagementService().getGroupByName(groupNamespaceParam, groupNameParam.trim());
                 if (group == null) {
                     String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-                    GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
+                    GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
                 } else {
                     workgroupId = group.getGroupId();
                 }
@@ -276,12 +276,12 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 List<Row> searchRows = null;
                 if (attribute instanceof OddSearchAttribute) {
                     for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)((OddSearchAttribute)attribute).validateSearchData(fieldValues)) {
-                        GlobalVariables.getErrorMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
+                        GlobalVariables.getMessageMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
                     }
                     searchRows = ((OddSearchAttribute) attribute).getSearchRows();
                 } else {
                     for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)attribute.validateRuleData(fieldValues)) {
-                        GlobalVariables.getErrorMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
+                        GlobalVariables.getMessageMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
                     }
                     searchRows = attribute.getRuleRows();
                 }
@@ -386,19 +386,19 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
-            GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
         }
 
         if  (!Utilities.isEmpty(groupName) && Utilities.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-            GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
         }
 
         if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
             Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 String attributeLabel =  getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
-                GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
+                GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }
         }
 
@@ -406,10 +406,10 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             Person person = KIMServiceLocator.getPersonService().getPerson(personId);
             if (person == null) {
                 String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME);
-                GlobalVariables.getErrorMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
+                GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
             }
         }
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().isEmpty()) {
             throw new ValidationException("errors in search criteria");
         }
     }
@@ -571,12 +571,15 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             List pkNames) {
         RuleBaseValues ruleBaseValues = (RuleBaseValues)businessObject;
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
+        	if (allowsMaintenanceEditAction(businessObject)) {
+        		htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        	}
+        	if (allowsMaintenanceNewOrCopyAction()) {
+                htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+            }
         }
-        if (allowsMaintenanceNewOrCopyAction()) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
-        }
+        
         return htmlDataList;
     }
 

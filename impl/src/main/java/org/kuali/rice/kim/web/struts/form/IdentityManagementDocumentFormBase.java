@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,27 +48,6 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 	protected static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "methodToCall.changeMemberTypeCode";
 	protected static final String CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL = "methodToCall.changeDelegationRoleMember";
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#shouldMethodToCallParameterBeUsed(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
-     */
-    @Override
-    public boolean shouldMethodToCallParameterBeUsed(
-    		String methodToCallParameterName,
-    		String methodToCallParameterValue, HttpServletRequest request) {
-    	
-    	
-    	if ( methodToCallParameterName.startsWith( CHANGE_NAMESPACE_METHOD_TO_CALL )
-    			|| methodToCallParameterName.startsWith( CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL )
-    			|| methodToCallParameterName.startsWith( CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL ) ) {
-    		return true;
-    	}
-    	
-    	return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,
-    			methodToCallParameterValue, request);
-    }
-    
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#populate(javax.servlet.http.HttpServletRequest)
      */

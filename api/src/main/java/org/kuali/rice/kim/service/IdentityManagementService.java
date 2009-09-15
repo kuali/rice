@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kim.service;
 
 import java.util.List;
@@ -6,10 +21,18 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.CitizenshipStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmailTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
+import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
+import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -37,22 +60,27 @@ public interface IdentityManagementService {
 	// IdentityService
 	// *******************************
 	
-	KimEntityInfo getEntityByPrincipalId(String principalId);
-    KimEntityInfo getEntityByPrincipalName(String principalName);
-	KimEntityInfo getEntity(String entityId);
-
 	KimPrincipalInfo getPrincipal(String principalId);
 	KimPrincipalInfo getPrincipalByPrincipalName(String principalName);
 	KimPrincipalInfo getPrincipalByPrincipalNameAndPassword(String principalName, String password);
-
-//	List<KimEntity> lookupEntitys(Map<String,String> searchCriteria);
 
 	KimEntityDefaultInfo getEntityDefaultInfo( String entityId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId( String principalId );
 	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName( String principalName );
 	List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo( Map<String,String> searchCriteria, boolean unbounded );
 	int getMatchingEntityCount( Map<String,String> searchCriteria );
-	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
+	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
+
+	AddressTypeInfo getAddressType( String code );
+	AffiliationTypeInfo getAffiliationType( String code );
+	CitizenshipStatusInfo getCitizenshipStatus( String code );
+	EmailTypeInfo getEmailType( String code );
+	EmploymentStatusInfo getEmploymentStatus( String code );
+	EmploymentTypeInfo getEmploymentType( String code );
+	EntityNameTypeInfo getEntityNameType( String code );
+	EntityTypeInfo getEntityType( String code );
+	ExternalIdentifierTypeInfo getExternalIdentifierType( String code );
+	PhoneTypeInfo getPhoneType( String code );
 
 	// *******************************
 	// GroupService
@@ -89,19 +117,11 @@ public interface IdentityManagementService {
 	// *******************************
 	
 	String getAuthenticatedPrincipalName(HttpServletRequest request);
-    boolean authenticationServiceValidatesPassword();
     
 	// *******************************
 	// AuthorizationService
 	// *******************************
 	   
-    // --------------------
-    // Permission Data
-    // --------------------
-    
-//    KimPermission getPermission(String permissionId);
-//    KimPermission getPermissionByName( String permissionName );    
-
     // --------------------
     // Authorization Checks
     // --------------------

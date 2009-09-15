@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,17 +18,19 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.kns.bo.DocumentHeader;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 public class DocumentPresentationControllerBase implements DocumentPresentationController {
 //    private static Log LOG = LogFactory.getLog(DocumentPresentationControllerBase.class);
-    
+
+	private static transient ParameterService parameterService;
   
     public boolean canInitiate(String documentTypeName) {
     	return true;
@@ -139,8 +141,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * @return boolean (true if can perform route report)
      */
     protected boolean canPerformRouteReport(Document document){
-    	KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-        return kualiConfigurationService.getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
+        return getParameterService().getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
     
    
@@ -161,7 +162,27 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * @return boolean (true if can blanket approve the document)
      */
     protected boolean canBlanketApprove(Document document){
-    	return canEdit(document);
+    	// check system parameter - if Y, use default workflow behavior: allow a user with the permission
+    	// to perform the blanket approve action at any time
+    	try {
+	    	if ( getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND) ) {
+	    		return canEdit(document);
+	    	}
+    	} catch ( IllegalArgumentException ex ) {
+    		// do nothing, the parameter does not exist and defaults to "N"
+    	}
+    	// otherwise, limit the display of the blanket approve button to only the initiator of the document
+    	// (prior to routing)
+    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+    	if ( canRoute(document) && StringUtils.equals( workflowDocument.getInitiatorPrincipalId(), GlobalVariables.getUserSession().getPrincipalId() ) ) {
+    		return true;
+    	}
+    	// or to a user with an approval action request
+    	if ( workflowDocument.isApprovalRequested() ) {
+    		return true;
+    	}
+    	
+    	return false;
     }
     
     protected boolean canApprove(Document document) {
@@ -182,7 +203,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return true;
     }
     
-    protected boolean canEditDocumentOviewview(Document document){
+    protected boolean canEditDocumentOverview(Document document){
     	KualiWorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
     	return (kualiWorkflowDocument.stateIsInitiated() || kualiWorkflowDocument.stateIsSaved());
     }
@@ -245,11 +266,18 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	if(canSendNoteFyi(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
     	}
-    	if(this.canEditDocumentOviewview(document)){
+    	if(this.canEditDocumentOverview(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW);
     	}
     	return documentActions;
     }
+
+	protected ParameterService getParameterService() {
+		if ( parameterService == null ) {
+			parameterService = KNSServiceLocator.getParameterService();
+		}
+		return parameterService;
+	}
     
         
 }

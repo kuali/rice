@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.entity.KimEntityName;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -35,6 +36,8 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	protected String lastName = "";
 	protected String title = "";
 	protected String suffix = "";
+	
+	protected boolean suppressName = false;
 
 	/**
 	 * 
@@ -47,15 +50,16 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 */
 	public KimEntityNameInfo( KimEntityName name ) {
 		if ( name != null ) {
-			entityNameId = name.getEntityNameId();
-			nameTypeCode = name.getNameTypeCode();
-			firstName = name.getFirstName();
-			middleName = name.getMiddleName();
-			lastName = name.getLastName();
-			title = name.getTitle();
-			suffix = name.getSuffix();
-			active = name.isActive();
-			dflt = name.isDefault();
+		    this.entityNameId = name.getEntityNameId();
+		    this.nameTypeCode = name.getNameTypeCode();
+		    this.firstName = name.getFirstNameUnmasked();
+		    this.middleName = name.getMiddleNameUnmasked();
+		    this.lastName = name.getLastNameUnmasked();
+		    this.title = name.getTitleUnmasked();
+		    this.suffix = name.getSuffixUnmasked();
+		    this.active = name.isActive();
+		    this.dflt = name.isDefault();
+		    this.suppressName = name.isSuppressName();
 		}
 	}
 	
@@ -70,6 +74,9 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstName()
 	 */
 	public String getFirstName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return firstName;
 	}
 
@@ -77,6 +84,9 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastName()
 	 */
 	public String getLastName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return lastName;
 	}
 
@@ -84,6 +94,9 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleName()
 	 */
 	public String getMiddleName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return middleName;
 	}
 
@@ -98,6 +111,9 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffix()
 	 */
 	public String getSuffix() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return suffix;
 	}
 
@@ -105,6 +121,9 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitle()
 	 */
 	public String getTitle() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return title;
 	}
 
@@ -138,11 +157,61 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedName()
 	 */
 	public String getFormattedName() {
+	    if (isSuppressName()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
 	}
 
 	public void setEntityNameId(String entityNameId) {
 		this.entityNameId = unNullify( entityNameId );
 	}
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedFirstName()
+     */
+    public String getFirstNameUnmasked() {
+        return this.firstName;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedFormattedName()
+     */
+    public String getFormattedNameUnmasked() {
+        return this.lastName + ", " + this.firstName + (this.middleName==null?"":" " + this.middleName);
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedLastName()
+     */
+    public String getLastNameUnmasked() {
+        return this.lastName;
+    }
+
+    /** 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedMiddleName()
+     */
+    public String getMiddleNameUnmasked() {
+        return this.middleName;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedSuffix()
+     */
+    public String getSuffixUnmasked() {
+        return this.suffix;
+    }
+
+    /** 
+     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedTitle()
+     */
+    public String getTitleUnmasked() {
+        return this.title;
+    }
 	
+    public boolean isSuppressName() {
+        return suppressName;
+    }
 }

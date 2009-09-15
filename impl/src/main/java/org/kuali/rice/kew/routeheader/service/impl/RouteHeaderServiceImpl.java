@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -74,8 +75,15 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         return getRouteHeaderDAO().findPendingByResponsibilityIds(responsibilityIds);
     }
 
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader) {
-        getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeader);
+    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
+        getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeaderId);
+    }
+    
+    public void updateRouteHeaderSearchValues(Long routeHeaderId, List<SearchableAttributeValue> searchAttributes) {
+    	getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeaderId);
+    	for (SearchableAttributeValue searchAttribute : searchAttributes) {
+    		getRouteHeaderDAO().save(searchAttribute);
+    	}
     }
 
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader){
@@ -186,5 +194,10 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
 
 	public SearchableAttributeDAO getSearchableAttributeDAO() {
 		return searchableAttributeDAO;
+	}
+
+	public Collection findByDocTypeAndAppId(String documentTypeName,
+			String appId) {
+		return getRouteHeaderDAO().findByDocTypeAndAppId(documentTypeName, appId);
 	}
 }

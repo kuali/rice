@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,6 +50,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 	protected boolean hidden 	= false;
 	protected boolean readOnly 	= false;
 
+	protected boolean treatWildcardsAndOperatorsAsLiteral = false;
+	
     public FieldDefinition() {
     }
 
@@ -351,5 +353,22 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
+	}
+
+
+	/**
+	 * @return the treatWildcardsAndOperatorsAsLiteralOnLookups
+	 */
+	public boolean isTreatWildcardsAndOperatorsAsLiteral() {
+		return this.treatWildcardsAndOperatorsAsLiteral;
+	}
+
+
+	/**
+	 * @param treatWildcardsAndOperatorsAsLiteralOnLookups the treatWildcardsAndOperatorsAsLiteralOnLookups to set
+	 */
+	public void setTreatWildcardsAndOperatorsAsLiteral(
+			boolean treatWildcardsAndOperatorsAsLiteralOnLookups) {
+		this.treatWildcardsAndOperatorsAsLiteral = treatWildcardsAndOperatorsAsLiteralOnLookups;
 	}
 }

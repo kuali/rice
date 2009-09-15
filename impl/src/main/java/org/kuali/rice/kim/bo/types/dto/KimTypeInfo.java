@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,10 +20,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.KimType;
+import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimTypeInfo implements Serializable {
+public class KimTypeInfo extends TransientBusinessObjectBase implements KimType, Serializable {
 
 	private static final long serialVersionUID = 4229466320569714756L;
 	
@@ -57,7 +61,31 @@ public class KimTypeInfo implements Serializable {
 	public void setAttributeDefinitions(List<KimTypeAttributeInfo> attributeDefinitions) {
 		this.attributeDefinitions = attributeDefinitions;
 	}
+	
+	public KimTypeAttributeInfo getAttributeDefinition( String kimAttributeId ) {
+		if ( kimAttributeId == null || attributeDefinitions == null ) {
+			return null;
+		}
+		for ( KimTypeAttributeInfo def : attributeDefinitions ) {
+			if ( def.kimAttributeId.equals( kimAttributeId ) ) {
+				return def;
+			}
+		}
+		return null;
+	}
 
+	public KimTypeAttributeInfo getAttributeDefinitionByName( String attributeName ) {
+		if ( attributeName == null || attributeDefinitions == null ) {
+			return null;
+		}
+		for ( KimTypeAttributeInfo def : attributeDefinitions ) {
+			if ( StringUtils.equals(def.attributeName, attributeName) ) {
+				return def;
+			}
+		}
+		return null;
+	}
+	
 	public void setKimTypeServiceName(String kimTypeServiceName) {
 		this.kimTypeServiceName = kimTypeServiceName;
 	}
@@ -72,6 +100,7 @@ public class KimTypeInfo implements Serializable {
 		m.put( "kimTypeId", kimTypeId );
 		m.put( "name", name );
 		m.put( "kimTypeServiceName", kimTypeServiceName );
+		m.put( "attributeDefinitions",  attributeDefinitions );
 		return m.toString();
 	}
 
@@ -85,6 +114,17 @@ public class KimTypeInfo implements Serializable {
 
 	public void setKimTypeId(String kimTypeId) {
 		this.kimTypeId = kimTypeId;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		return null;
 	}
 
 }

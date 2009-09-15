@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kns.util.IncidentReportUtils;
 
 
 /**
@@ -52,6 +53,7 @@ public class EDLServlet extends HttpServlet {
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String documentId = null;
 		try {
 		    RequestParser requestParser = new RequestParser(request);
 		    String inputCommand = requestParser.getParameterValue("command");
@@ -63,8 +65,9 @@ public class EDLServlet extends HttpServlet {
 		        edlName = requestParser.getParameterValue("docTypeName");//this is for 'WorkflowQuicklinks'
 		    }
 		    EDLController edlController = null;
+		    
 		    if (edlName == null) {
-		        String documentId = requestParser.getParameterValue("docId");
+		        documentId = requestParser.getParameterValue("docId");
 		        if (documentId == null) {
 		            throw new WorkflowRuntimeException("No edl name or document id detected");
 		        }
@@ -80,13 +83,13 @@ public class EDLServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			LOG.error("Error processing EDL", e);
-			outputError(request, response, e);
+			outputError(request, response, e, documentId);
 		}
 	}
 
-	private void outputError(HttpServletRequest request, HttpServletResponse response, Exception e) throws ServletException, IOException {
-	        request.setAttribute("WORKFLOW_ERROR", e);
-	        RequestDispatcher rd = getServletContext().getRequestDispatcher(request.getServletPath() + "/../Error.do");
+	private void outputError(HttpServletRequest request, HttpServletResponse response, Exception exception, String documentId) throws ServletException, IOException {
+			IncidentReportUtils.populateRequestForIncidentReport(exception, ""+documentId, "eDoc Lite", request);
+	        RequestDispatcher rd = getServletContext().getRequestDispatcher(request.getServletPath() + "/../../kr/kualiExceptionIncidentReport.do");
 	        rd.forward(request, response);
 	}
 

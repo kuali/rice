@@ -16,7 +16,14 @@
     <param name="keystore.password">r1c3pw</param>
     <param name="keystore.file">${basedir}/src/test/resources/keystore/ricekeystore</param>
     <param name="keystore.location">${basedir}/src/test/resources/keystore/ricekeystore</param>
-
+    
+    <param name="useQuartzDatabase">false</param>
+    <param name="notification.quartz.autostartup">false</param>
+    
+    <param name="datasource.pool.minSize">5</param>
+	<param name="datasource.pool.maxSize">5</param> 
+	<param name="datasource.pool.maxWait">30000</param>
+	
     <param name="unittest.jetty.server1.port" override="false" random="true">10000-10999</param>
     <param name="unittest.jetty.server2.port" override="false" random="true">11000-11999</param>
     <param name="unittest.jetty.server3.port" override="false" random="true">12000-12999</param>

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,36 +16,11 @@
 package org.kuali.rice.kns.datadictionary;
 
 
+
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class KimNonDataDictionaryAttributeDefinition extends AttributeDefinition {
-	private static final long serialVersionUID = -1889598053944123008L;
-	
-	private String sortCode;
-	protected String kimAttrDefnId;
-
-	/**
-	 * @return the sortCode
-	 */
-	public String getSortCode() {
-		return this.sortCode;
-	}
-
-	/**
-	 * @param sortCode
-	 *            the sortCode to set
-	 */
-	public void setSortCode(String sortCode) {
-		this.sortCode = sortCode;
-	}
-
-	public String getKimAttrDefnId() {
-		return this.kimAttrDefnId;
-	}
-
-	public void setKimAttrDefnId(String kimAttrDefnId) {
-		this.kimAttrDefnId = kimAttrDefnId;
-	}
+public class KimNonDataDictionaryAttributeDefinition extends KimAttributeDefinition {
+	private static final long serialVersionUID = -1889598053944123010L;
 
 }

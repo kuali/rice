@@ -1,11 +1,11 @@
 /*
  * Copyright 2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -107,5 +108,18 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	 */
 	public void setForceAction(boolean forceAction) {
 		this.forceAction = forceAction;
+	}
+	
+	public RoleResponsibilityActionInfo toSimpleInfo(){
+		RoleResponsibilityActionInfo roleResponsibilityActionInfo = new RoleResponsibilityActionInfo();
+		roleResponsibilityActionInfo.setActionPolicyCode(actionPolicyCode);
+		roleResponsibilityActionInfo.setActionTypeCode(actionTypeCode);
+		roleResponsibilityActionInfo.setForceAction(forceAction);
+		roleResponsibilityActionInfo.setPriorityNumber(priorityNumber);
+		roleResponsibilityActionInfo.setRoleMemberId(roleMemberId);
+		roleResponsibilityActionInfo.setRoleResponsibilityInfo(roleResponsibility.toSimpleInfo());
+		roleResponsibilityActionInfo.setRoleResponsibilityActionId(roleResponsibilityActionId);
+		roleResponsibilityActionInfo.setRoleResponsibilityId(roleResponsibilityId);
+		return roleResponsibilityActionInfo;
 	}
 }

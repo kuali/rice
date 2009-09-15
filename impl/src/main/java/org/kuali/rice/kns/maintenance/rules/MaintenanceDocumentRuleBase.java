@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,12 +54,12 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -200,8 +200,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // from here on, it is in a default-success mode, and will route unless one of the
         // business rules stop it.
         boolean success = true;
-
-        Map primaryKeys = persistenceService.getPrimaryKeyFieldValues(newBo);
 
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()){
@@ -352,7 +350,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         String blockingUrl = UrlFactory.parameterizeUrl(KNSConstants.DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION, parameters);
 
         // post an error about the locked document
-        GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INACTIVATION_BLOCKED, blockingUrl);
+        GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INACTIVATION_BLOCKED, blockingUrl);
     }
 
     /**
@@ -402,7 +400,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putGlobalError(String errorConstant) {
         if (!errorAlreadyExists(KNSConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant);
         }
     }
 
@@ -417,7 +415,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putGlobalError(String errorConstant, String parameter) {
         if (!errorAlreadyExists(KNSConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant, parameter);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant, parameter);
         }
     }
 
@@ -432,7 +430,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putGlobalError(String errorConstant, String[] parameters) {
         if (!errorAlreadyExists(KNSConstants.DOCUMENT_ERRORS, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant, parameters);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KNSConstants.DOCUMENT_ERRORS, errorConstant, parameters);
         }
     }
 
@@ -448,7 +446,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putFieldError(String propertyName, String errorConstant) {
         if (!errorAlreadyExists(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant);
         }
     }
 
@@ -466,7 +464,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putFieldError(String propertyName, String errorConstant, String parameter) {
         if (!errorAlreadyExists(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant, parameter);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant, parameter);
         }
     }
 
@@ -484,7 +482,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putFieldError(String propertyName, String errorConstant, String[] parameters) {
         if (!errorAlreadyExists(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant, parameters);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(MAINTAINABLE_ERROR_PREFIX + propertyName, errorConstant, parameters);
         }
     }
 
@@ -514,7 +512,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putDocumentError(String propertyName, String errorConstant, String parameter) {
         if (!errorAlreadyExists(DOCUMENT_ERROR_PREFIX + propertyName, errorConstant)) {
-            GlobalVariables.getErrorMap().putError(DOCUMENT_ERROR_PREFIX + propertyName, errorConstant, parameter);
+            GlobalVariables.getMessageMap().putError(DOCUMENT_ERROR_PREFIX + propertyName, errorConstant, parameter);
         }
     }
 
@@ -531,7 +529,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      *
      */
     protected void putDocumentError(String propertyName, String errorConstant, String[] parameters) {
-        GlobalVariables.getErrorMap().putError(DOCUMENT_ERROR_PREFIX + propertyName, errorConstant, parameters);
+        GlobalVariables.getMessageMap().putError(DOCUMENT_ERROR_PREFIX + propertyName, errorConstant, parameters);
     }
 
     /**
@@ -547,7 +545,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     private boolean errorAlreadyExists(String propertyName, String errorConstant) {
 
-        if (GlobalVariables.getErrorMap().fieldHasMessage(propertyName, errorConstant)) {
+        if (GlobalVariables.getMessageMap().fieldHasMessage(propertyName, errorConstant)) {
             return true;
         }
         else {
@@ -565,7 +563,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putGlobalsError(String propertyName, String errorConstant) {
         if (!errorAlreadyExists(propertyName, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(propertyName, errorConstant);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(propertyName, errorConstant);
         }
     }
 
@@ -580,7 +578,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putGlobalsError(String propertyName, String errorConstant, String parameter) {
         if (!errorAlreadyExists(propertyName, errorConstant)) {
-            GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(propertyName, errorConstant, parameter);
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(propertyName, errorConstant, parameter);
         }
     }
 
@@ -597,10 +595,10 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected void clearErrorPath() {
 
         // add all the items from the global list to the local list
-        priorErrorPath.addAll(GlobalVariables.getErrorMap().getErrorPath());
+        priorErrorPath.addAll(GlobalVariables.getMessageMap().getErrorPath());
 
         // clear the global list
-        GlobalVariables.getErrorMap().getErrorPath().clear();
+        GlobalVariables.getMessageMap().getErrorPath().clear();
 
     }
 
@@ -616,7 +614,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected void resumeErrorPath() {
         // revert the global errorPath back to what it was when we entered this
         // class
-        GlobalVariables.getErrorMap().getErrorPath().addAll(priorErrorPath);
+        GlobalVariables.getMessageMap().getErrorPath().addAll(priorErrorPath);
     }
 
     /**
@@ -631,19 +629,19 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         LOG.debug("MaintenanceDocument validation beginning");
 
         // explicitly put the errorPath that the dictionaryValidationService requires
-        GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
+        GlobalVariables.getMessageMap().addToErrorPath("document.newMaintainableObject");
 
         // document must have a newMaintainable object
         Maintainable newMaintainable = document.getNewMaintainableObject();
         if (newMaintainable == null) {
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
             throw new ValidationException("Maintainable object from Maintenance Document '" + document.getDocumentTitle() + "' is null, unable to proceed.");
         }
 
         // document's newMaintainable must contain an object (ie, not null)
         PersistableBusinessObject businessObject = newMaintainable.getBusinessObject();
         if (businessObject == null) {
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject.");
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject.");
             throw new ValidationException("Maintainable's component business object is null.");
         }
 
@@ -664,7 +662,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
 
         // explicitly remove the errorPath we've added
-        GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
+        GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
 
         LOG.debug("MaintenanceDocument validation ending");
         return true;
@@ -1090,11 +1088,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     private void showErrorMap() {
 
-        if (GlobalVariables.getErrorMap().isEmpty()) {
+        if (GlobalVariables.getMessageMap().isEmpty()) {
             return;
         }
 
-        for (Iterator i = GlobalVariables.getErrorMap().entrySet().iterator(); i.hasNext();) {
+        for (Iterator i = GlobalVariables.getMessageMap().entrySet().iterator(); i.hasNext();) {
             Map.Entry e = (Map.Entry) i.next();
 
             TypedArrayList errorList = (TypedArrayList) e.getValue();
@@ -1240,7 +1238,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
 
         // apply the rule, see if it fails
-        if (!configService.evaluateConstrainedValue(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest)) {
+        if (!KNSServiceLocator.getParameterService().getParameterEvaluator(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest).evaluationSucceeds()) {
             success = false;
         }
 
@@ -1504,7 +1502,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         this.validateMaintenanceDocument( document );
 
         boolean success = true;
-        ErrorMap map = GlobalVariables.getErrorMap();
+        MessageMap map = GlobalVariables.getMessageMap();
         int errorCount = map.getErrorCount();
         map.addToErrorPath( MAINTAINABLE_ERROR_PATH );
         if ( LOG.isDebugEnabled() ) {
@@ -1550,7 +1548,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             List<String> existingIdentifierString = document.getNewMaintainableObject().getMultiValueIdentifierList(maintCollection, duplicateIdentifier);
             if (document.getNewMaintainableObject().hasBusinessObjectExisted(bo, existingIdentifierString, duplicateIdentifier)) {
     		    valid = false;
-    		    GlobalVariables.getErrorMap().putError(duplicateIdentifier.get(0), RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, "entries in ", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+    		    GlobalVariables.getMessageMap().putError(duplicateIdentifier.get(0), RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, "entries in ", document.getDocumentHeader().getWorkflowDocument().getDocumentType());
     	    }
     	}
     	return valid;

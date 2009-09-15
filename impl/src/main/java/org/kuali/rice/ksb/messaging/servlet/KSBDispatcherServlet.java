@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +18,14 @@ package org.kuali.rice.ksb.messaging.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
 import org.apache.cxf.Bus;
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.cxf.transport.servlet.ServletController;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.apache.log4j.Logger;
@@ -82,7 +84,7 @@ public class KSBDispatcherServlet extends DispatcherServlet {
         Bus bus = KSBServiceLocator.getCXFBus();
 		ServletTransportFactory servletTransportFactory = KSBServiceLocator.getCXFServletTransportFactory();
 				
-		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletContext(), bus);
+		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletConfig(), this.getServletContext(), bus);
 		
 		this.setPublishEvents(false);
 	}

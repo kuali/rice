@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -268,7 +268,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}
 		int maxSize = Integer.MAX_VALUE;
 		// try persistable reference first
-		if (PersistableBusinessObject.class.isAssignableFrom(boClass)) {
+		if (PersistableBusinessObject.class.isAssignableFrom(boClass) && persistenceStructureService.isPersistable(boClass) ) {			
 			Map<String, BusinessObjectRelationship> rels = persistenceStructureService
 					.getRelationshipMetadata(boClass, attributeName,
 							attributePrefix);
@@ -297,7 +297,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		// so that the logic for finding the relationships is similar to
 		// primitiveReference
 		if (ddReference != null
-				&& isLookupable(ddReference.getTargetClass()) 
+				&& isLookupable(ddReference.getTargetClass())
 				&& bo != null
 				&& ddReference.getPrimitiveAttributes().size() < maxSize ) {
 			relationship = new BusinessObjectRelationship(boClass,
@@ -511,7 +511,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}
 
 		Map<String, Class> referenceClasses = null;
-		if (PersistableBusinessObject.class.isAssignableFrom( boClass )) {
+		if (PersistableBusinessObject.class.isAssignableFrom( boClass ) && getPersistenceStructureService().isPersistable(boClass)) {
 			referenceClasses = getPersistenceStructureService().listReferenceObjectFields(boClass);
 		}
 		DataDictionaryEntry ddEntry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(boClass.getName());
@@ -578,7 +578,19 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		if (responsibleModuleService != null
 				&& responsibleModuleService.isExternalizable(clazz))
 			return responsibleModuleService.listPrimaryKeyFieldNames(clazz);
+
+		// give the option to declare primary keys in the dd.
+		// this is primarly used for transient objects that lack db persistence.
+		List<String> pks = dataDictionaryService.getDataDictionary()
+			.getBusinessObjectEntry(clazz.getName()).getPrimaryKeys();
+		if(pks != null && !pks.isEmpty())
+			return pks;
+
 		return new ArrayList();
+
+
+
+
 	}
 
 	public KualiModuleService getKualiModuleService() {
@@ -615,21 +627,24 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 	public String getForeignKeyFieldName(Class businessObjectClass, String attributeName, String targetName) {
 
 		String fkName = "";
-		if(PersistableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
-			fkName =
-				getPersistenceStructureService().getForeignKeyFieldName(businessObjectClass, attributeName, targetName);
-		} else {
-			RelationshipDefinition relationshipDefinition = getDDRelationship(businessObjectClass, attributeName);
 
-			if(relationshipDefinition!=null){
-				List<PrimitiveAttributeDefinition> primitives = relationshipDefinition.getPrimitiveAttributes();
-				for(PrimitiveAttributeDefinition primitiveAttributeDefinition: primitives){
-					if(primitiveAttributeDefinition.getTargetName().equals(targetName)){
-						fkName = primitiveAttributeDefinition.getSourceName();
-						break;
-					}
+		// first try DD-based relationships
+		RelationshipDefinition relationshipDefinition = getDDRelationship(businessObjectClass, attributeName);
+
+		if(relationshipDefinition!=null){
+			List<PrimitiveAttributeDefinition> primitives = relationshipDefinition.getPrimitiveAttributes();
+			for(PrimitiveAttributeDefinition primitiveAttributeDefinition: primitives){
+				if(primitiveAttributeDefinition.getTargetName().equals(targetName)){
+					fkName = primitiveAttributeDefinition.getSourceName();
+					break;
 				}
 			}
+		}
+
+		// if we can't find anything in the DD, then try the persistence service
+		if(StringUtils.isBlank(fkName) && PersistableBusinessObject.class.isAssignableFrom(businessObjectClass) && getPersistenceStructureService().isPersistable(businessObjectClass)) {
+			fkName =
+				getPersistenceStructureService().getForeignKeyFieldName(businessObjectClass, attributeName, targetName);
 		}
 		return fkName;
 	}

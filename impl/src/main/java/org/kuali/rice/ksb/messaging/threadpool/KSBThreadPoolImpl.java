@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,13 +41,13 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
     private boolean poolSizeSet;
 
     public KSBThreadPoolImpl() {
-	super(DEFAULT_POOL_SIZE, DEFAULT_POOL_SIZE, 60, TimeUnit.SECONDS, new PriorityBlockingQueue(1, new PriorityBlockingQueuePersistedMessageComparator()),  new KSBThreadFactory(ClassLoaderUtils.getDefaultClassLoader()), new ThreadPoolExecutor.AbortPolicy());
+    	super(DEFAULT_POOL_SIZE, DEFAULT_POOL_SIZE, 60, TimeUnit.SECONDS, new PriorityBlockingQueue(1, new PriorityBlockingQueuePersistedMessageComparator()),  new KSBThreadFactory(ClassLoaderUtils.getDefaultClassLoader()), new ThreadPoolExecutor.AbortPolicy());
     }
 
     public void setCorePoolSize(int corePoolSize) {
-	LOG.info("Setting core pool size to " + corePoolSize + " threads.");
-	super.setCorePoolSize(corePoolSize);
-	this.poolSizeSet = true;
+		LOG.info("Setting core pool size to " + corePoolSize + " threads.");
+		super.setCorePoolSize(corePoolSize);
+		this.poolSizeSet = true;
     }
 
     public long getKeepAliveTime() {
@@ -59,40 +59,35 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
     }
 
     public void start() throws Exception {
-
+    	loadSettings();
     }
 
     public void stop() throws Exception {
-	LOG.info("Shutting down KSB threadpool.");
-	if (isStarted()) {
-	    this.shutdownNow();
-	    this.started = false;
-	}
+		LOG.info("Shutting down KSB threadpool.");
+		if (isStarted()) {
+		    this.shutdownNow();
+		    this.started = false;
+		}
     }
 
     /**
          * Loads the thread pool settings from the DAO.
          */
     protected void loadSettings() {
-	ConfigContext.getCurrentContextConfig().getProperty(Config.THREAD_POOL_SIZE);
-
-	if (!this.poolSizeSet) {
-	    int poolSize;
-	    try {
-		poolSize = new Integer(ConfigContext.getCurrentContextConfig().getProperty(Config.THREAD_POOL_SIZE));
-	    } catch (NumberFormatException nfe) {
-		poolSize = -1;
-	    }
-	    if (poolSize == -1) {
-		poolSize = DEFAULT_POOL_SIZE;
-	    }
-	    setCorePoolSize(poolSize);
-	}
-
+		String threadPoolSizeStr = ConfigContext.getCurrentContextConfig().getProperty(Config.THREAD_POOL_SIZE);	
+		if (!this.poolSizeSet) {
+		    int poolSize = DEFAULT_POOL_SIZE;
+		    try {
+		    	poolSize = new Integer(threadPoolSizeStr);
+		    } catch (NumberFormatException nfe) {
+		    	LOG.error( "loadSettings(): Unable to parse the pool size: '"+threadPoolSizeStr+"'");
+		    }
+		    setCorePoolSize(poolSize);
+		}
     }
 
     public Object getInstance() {
-	return this;
+    	return this;
     }
 
     /**

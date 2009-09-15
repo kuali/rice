@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
@@ -70,29 +69,28 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
             String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
         	groupDocumentForm.setGroupId(groupId);
         }
+		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
+        setKimType(kimTypeId, groupDocumentForm);
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
 		if (groupDocumentForm.getMemberRows() != null) {
 		    memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
 		}
         forward = super.execute(mapping, groupDocumentForm, request, response);
-		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
-		// TODO: move this into the UI service - action should not be making ORM-layer calls
-		if ( StringUtils.isNotBlank(kimTypeId) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-	        groupDocumentForm.getGroupDocument().setGroupTypeId(kimTypeId);
-	        groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
-		} else if ( StringUtils.isNotBlank( groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-	        groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
-		}
 
 		groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
 		return forward;
     }
     
-
+    private void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
+		if ( StringUtils.isNotBlank(kimTypeId) ) {
+			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
+			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
+		} else if ( StringUtils.isNotBlank(groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
+			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(
+					groupDocumentForm.getGroupDocument().getGroupTypeId()));
+			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
+		}
+    }
     
     /**
      * This overridden method ...
@@ -103,8 +101,9 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     protected void loadDocument(KualiDocumentFormBase form)
     		throws WorkflowException {
     	super.loadDocument(form);
-
+    	
     	IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
+        setKimType(groupDocumentForm.getGroupId(), groupDocumentForm);
         groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
 
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
@@ -124,11 +123,10 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     	super.createDocument(form);
     	IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
     	if ( groupDocumentForm.getGroupId() == null ) {
+    		groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
     		groupDocumentForm.getGroupDocument().initializeDocumentForNewGroup();
     		groupDocumentForm.setGroupId( groupDocumentForm.getGroupDocument().getGroupId() );
-            Map<String, String> criteria = new HashMap<String, String>();
-            criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, groupDocumentForm.getGroupDocument().getGroupTypeId() );
-            groupDocumentForm.setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+    		setKimType(groupDocumentForm.getGroupDocument().getGroupTypeId(), groupDocumentForm);
     	} else {
     		loadGroupIntoDocument( groupDocumentForm.getGroupId(), groupDocumentForm );
     	}
@@ -188,17 +186,18 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 
     private boolean checkKimDocumentGroupMember(GroupDocumentMember newMember){
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
-        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
+        	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
     	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) && !validateRole((RoleImpl)member, "document.member.memberId", "Role")){
+        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
+        		&& !validateRole(newMember.getMemberId(), (RoleImpl)member, "document.member.memberId", "Role")){
         	return false;
         }
 
         if(member==null){
-        	GlobalVariables.getErrorMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+        	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
         			new String[] {newMember.getMemberId()});
         	return false;
 		}

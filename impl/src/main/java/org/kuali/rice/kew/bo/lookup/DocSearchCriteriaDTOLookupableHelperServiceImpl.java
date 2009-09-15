@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,7 @@ import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
@@ -53,11 +54,13 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.DateTimeService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -140,21 +143,18 @@ KualiLookupableHelperServiceImpl {
     	Collection displayList=null;
 
     	DocumentSearchResultComponents components = null;
-    	if (GlobalVariables.getErrorMap().hasNoErrors()) {
-        	try {
-        		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
-        	} catch (WorkflowServiceErrorException wsee) {
-        		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
-        			GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
-        		};
-        	}
+    	try {
+    		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
+    	} catch (WorkflowServiceErrorException wsee) {
+    		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
+    			GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+    		};
     	}
     	
-    	if (GlobalVariables.getErrorMap().hasErrors()) {
-            throw new ValidationException("errors in search criteria");
+    	if(!GlobalVariables.getMessageMap().hasNoErrors()) {
+        	throw new ValidationException("error with doc search");
         }
 
-    	//FIXME: for now if not set set the create date back from the criteria, however eventually we should convert all
     	for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
 				if(StringUtils.equals(field.getPropertyName(),"fromDateCreated") && StringUtils.isEmpty(field.getPropertyValue())) {
@@ -163,11 +163,10 @@ KualiLookupableHelperServiceImpl {
 			}
 		}
 
-    	displayList = new ArrayList<DocumentSearchResult>();
-        //displayList = result;
-        if (components != null) {
-            displayList = components.getSearchResults();
-        }
+    	List<DocumentSearchResult> result = components.getSearchResults();
+//    	for (DocumentSearchResult documentSearchResult : result) {
+			displayList = result;//.getResultContainers();
+//		}
 
 		//####BEGIN COPIED CODE#########
         setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
@@ -206,7 +205,11 @@ KualiLookupableHelperServiceImpl {
 
 //          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 //ADDED (4 lines)
-        for (Iterator iter = displayList.iterator(); iter.hasNext();) {
+        for (Iterator iter = result.iterator(); iter.hasNext();) {
+
+
+
+
 
         	DocumentSearchResult docSearchResult = (DocumentSearchResult)iter.next();
 //TODO: where to get these from?
@@ -275,9 +278,10 @@ KualiLookupableHelperServiceImpl {
                     	//ADDED 3
                     	if(prop!=null) {
                     		propertyTypes.put(propertyName, prop.getClass());
+                    		propClass = prop.getClass();
                     	}
 
-//                    	propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
+                    	//propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
 //                    	propertyTypes.put( col.getPropertyName(), propClass );
                     } catch (Exception e) {
 //                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
@@ -370,7 +374,7 @@ KualiLookupableHelperServiceImpl {
                         keyValue.setvalue(keyValue.getUserDisplayValue());
                         col.setEscapeXMLValue(false);
                 	} else if (StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, keyValue.getkey())) {
-                		anchor.setHref("../kr/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\" target=\"_blank\""));
+                		anchor.setHref(StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\" target=\"_blank\""));
                 		col.setMaxLength(100); //for now force this
                 	}
 
@@ -425,7 +429,11 @@ KualiLookupableHelperServiceImpl {
 			//if !superuser
 			Long routeHeaderId = doc.getRouteHeaderId();
 			link.setDisplayText(routeHeaderId+"");
-			String href = "../"+KEWConstants.APP_CODE + "/" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+
+			String href = ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/"+ KEWConstants.APP_CODE + "/" +
+			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" +
+			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+
 			link.setHref(href);
 
 			return link;
@@ -456,16 +464,16 @@ KualiLookupableHelperServiceImpl {
 
 
 		//###START LOOKUP ROW CODE Not sure if we need these but they may be valuable for eventually forcing all standard field customization in the xml
-		if (super.getRows() == null) {
+		if (getRows() == null) {
 		    super.setRows();
 		}
 		List<Row> lookupRows = new ArrayList<Row>();
 		//copy the current rows
-		for (Row row : super.getRows()) {
+		for (Row row : getRows()) {
 			lookupRows.add(row);
 		}
 		//clear out
-		super.getRows().clear();
+		getRows().clear();
 
         processor = new DocumentLookupCriteriaProcessorKEWAdapter();
 
@@ -510,9 +518,111 @@ KualiLookupableHelperServiceImpl {
 		//call get rows
 		List<Row> rows = processor.getRows(docType,lookupRows, detailed, superSearch);
 
-		super.getRows().addAll(rows);
+		BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
+        int numCols = boe.getLookupDefinition().getNumOfColumns();
+        if(numCols == 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
+
+		super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows),numCols ));
 
 	}
+
+	 private List<Field> getFields(List<Row> rows){
+	    	List<Field> rList = new ArrayList<Field>();
+
+	    	for(Row r: rows){
+	    		for(Field f: r.getFields()){
+	    			rList.add(f);
+	    		}
+	    	}
+
+	    	return rList;
+	    }
+
+	   private void setRowsAfterClear(DocSearchCriteriaDTO searchCriteria, Map<String,String[]> fieldValues) {
+	        // TODO chris - this method should call the criteria processor adapter which will
+	        //call the criteria processor (either standard or custom) and massage the data into the proper format
+	        //this is called by setbo in super(which is called by form) so should be called when the page needs refreshing
+
+	        //TODO: move over code that checks for doctype (actually should that be in the refresh, since that's where the doc type will be coming back to?)
+	       if (getRows() == null) {
+	            super.setRows();
+	        }
+	       List<Row> lookupRows = new ArrayList<Row>();
+	        //copy the current rows
+	        for (Row row : getRows()) {
+	            lookupRows.add(row);
+	        }
+	        super.getRows().clear();
+
+	        processor = new DocumentLookupCriteriaProcessorKEWAdapter();
+
+	        String docTypeName = searchCriteria.getDocTypeFullName();
+	        DocumentType docType = null;
+
+	        if(StringUtils.isNotEmpty(docTypeName)) {
+	            docType = getValidDocumentType(docTypeName);
+	        }
+
+	        DocumentLookupCriteriaProcessorKEWAdapter documentLookupCriteriaProcessorKEWAdapter = (DocumentLookupCriteriaProcessorKEWAdapter)processor;
+	        if(processor != null && documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor()!=null) {
+	            if(docType==null) {
+	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
+	            } else if(!StringUtils.equals(docTypeName, documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor().getDocSearchCriteriaDTO().getDocTypeFullName())){
+	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
+	            }
+	        } else {
+	            if(docType==null) {
+	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
+	            } else {
+	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
+	            }
+	        }
+	        //TODO: This should probably be moved into spring injection since it's a constant
+	        documentLookupCriteriaProcessorKEWAdapter.setDataDictionaryService(getDataDictionaryService());
+
+	        boolean detailed=false;
+	        if(this.getParameters().containsKey("isAdvancedSearch")) {
+	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
+	        } else if(fieldValues.containsKey("isAdvancedSearch")) {
+	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fieldValues.get("isAdvancedSearch")[0]);
+	        }
+
+	        boolean superSearch=false;
+	        if(this.getParameters().containsKey(("superUserSearch"))) {
+	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
+	        } else if(fieldValues.containsKey("superUserSearch")) {
+	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String)fieldValues.get("superUserSearch")[0]);
+	        }
+	        //call get rows
+	        List<Row> rows = documentLookupCriteriaProcessorKEWAdapter.getRows(docType, super.getRows(), detailed, superSearch);
+
+	        super.getRows().addAll(rows);
+
+	        //Set field values from DocSearchCriteria
+	        if(StringUtils.isNotEmpty(docTypeName)) {
+    	        for (Row row : super.getRows()) {
+    	            for (Field field : row.getFields()) {
+    	                //if from date, strip off prefix
+    	                String propertyName = null;
+    	                if(field.getPropertyName().startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+    	                    propertyName = StringUtils.remove(field.getPropertyName(), KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+    	                } else {
+    	                    propertyName = field.getPropertyName();
+    	                }
+    	                //We don't need to set field if it was already empty
+    	                if (fieldValues.get(propertyName) != null) {
+        	                Object value = this.getDocSearchCriteriaDTOFieldValue(searchCriteria, field.getPropertyName());
+        	                if (value instanceof String
+        	                        && StringUtils.isNotEmpty((String)value)) {
+        	                    field.setPropertyValue(value);
+        	                } else if (value instanceof List){
+        	                    field.setPropertyValues((String[])((List)value).toArray());
+        	                }
+    	                }
+    	            }
+    	        }
+	        }
+	    }
 
 
 	/**
@@ -520,65 +630,75 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	public void performClear(LookupForm lookupForm) {
-		Map<String,String[]> fieldsToClear = new HashMap<String,String[]>();
-		List<Field> critFields = new ArrayList<Field>();
+		//Map<String,String[]> fieldsToClear = new HashMap<String,String[]>();
 
-		for (Row row : this.getRows()) {
-			for (Field field : row.getFields()) {
-				String[] propertyValue = {};
-				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-					propertyValue = new String[]{field.getPropertyValue()};
-				} else {
-					propertyValue = field.getPropertyValues();
-				}
+		//for (Row row : this.getRows()) {
+		//	for (Field field : row.getFields()) {
+		//		String[] propertyValue = {};
+		//		if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+		//			propertyValue = new String[]{field.getPropertyValue()};
+		//		} else {
+		//			propertyValue = field.getPropertyValues();
+		//		}
+		//		fieldsToClear.put(field.getPropertyName(), propertyValue);
+		//	}
+		//}
 
-				fieldsToClear.put(field.getPropertyName(), propertyValue);
-				critFields.add(new Field(field.getPropertyName(),field.getFieldLabel()));
-			}
-		}
+	    Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
+        Map<String,String> changedDateFields = preprocessDateFields(lookupForm.getFieldsForLookup());
+        fixedParameters.putAll(this.getParameters());
+        for (Map.Entry<String,String> prop : changedDateFields.entrySet()) {
+            fixedParameters.remove(prop.getKey());
+            fixedParameters.put(prop.getKey(), new String[]{prop.getValue()});
+        }
 		//TODO: also check if standard here (maybe from object if use criteria)
-		String docTypeName = fieldsToClear.get("docTypeFullName")[0];
-		if(StringUtils.isEmpty(docTypeName)) {
-			super.performClear(lookupForm);
+		String docTypeName = fixedParameters.get("docTypeFullName")[0];
+
+		DocumentType docType = getValidDocumentType(docTypeName);
+
+		if(docType == null) {
+		    super.performClear(lookupForm);
 		} else {
-			DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsToClear);
-			//TODO: Chris - (2 stage clear) set the isOnlyDocTypeFilled, to true if only doc type coming in (besides hidden) and false otherwise)
-			docCriteria = getValidDocumentType(docTypeName).getDocumentSearchGenerator().clearSearch(docCriteria);
-			//TODO: Chris - (2 stage clear) reset the isOnlyDocTypeFilled
+    		DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fixedParameters);
+    		docCriteria = docType.getDocumentSearchGenerator().clearSearch(docCriteria);
+            if (docCriteria == null) {
+                docCriteria = new DocSearchCriteriaDTO();
+            }
 
-			FieldUtils.populateFieldsFromBusinessObject(critFields, docCriteria);
-			//TODO: we should probably do a set rows before doing the following so that the rows represent the doc type coming back from above (or none)
-			for (Row row : this.getRows()) {
-				for (Field field : row.getFields()) {
-					for (Field critField : critFields) {
-						if(StringUtils.equals(critField.getPropertyName(),field.getPropertyName())) {
-							if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-								field.setPropertyValue(critField.getPropertyValue());
-							} else {
-								//contains multivalue
-								field.setPropertyValues(critField.getPropertyValues());
-							}
-						}
-					}
-				}
-			}
+            this.setRowsAfterClear(docCriteria, fixedParameters);
 		}
-
 
 	}
 	/**
 	 *
-	 * retrieve a document type
+	 * retrieve a document type. This is not a case sensitive search so "TravelRequest" == "Travelrequest"
 	 *
 	 * @param docTypeName
 	 * @return
 	 */
     private static DocumentType getValidDocumentType(String docTypeName) {
-        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
-        if (documentType == null) {
-            throw new RuntimeException("Document Type invalid : " + docTypeName);
-        }
-        return documentType;
+    	if (StringUtils.isNotEmpty(docTypeName)) {
+            DocumentType dTypeCriteria = new DocumentType();
+    		dTypeCriteria.setName(docTypeName.trim());
+    		dTypeCriteria.setActive(true);
+    		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
+
+    		// Return the first valid doc type.
+    		DocumentType firstDocumentType = null;
+    		if(docTypeList != null){
+    			for(DocumentType dType: docTypeList){
+    			    if (firstDocumentType == null) {
+    			        firstDocumentType = dType;
+    			    }
+    			    if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
+    			        return dType;
+    			    }
+    			}
+    			return firstDocumentType;
+    		}
+    	}
+
+    	return null;
     }
 
 
@@ -708,16 +828,23 @@ KualiLookupableHelperServiceImpl {
 		else if(fieldValues.get("docTypeFullName")!=null) {
 			docTypeName = (String)fieldValues.get("docTypeFullName");
 		}
-
 		if(!StringUtils.isEmpty(docTypeName)) {
-		    DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
-            MessageMap messages = getValidDocumentType(docTypeName).getDocumentSearchGenerator().getMessageMap(criteria);
-            if (messages != null 
-                    && messages.hasMessages()) {
-                GlobalVariables.mergeErrorMap(messages);
+		    DocumentType dType = getValidDocumentType(docTypeName);
+
+            DocSearchCriteriaDTO criteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
+            if (dType != null) {
+	            MessageMap messages = getValidDocumentType(dType.getName()).getDocumentSearchGenerator().getMessageMap(criteria);
+	            if (messages != null
+	                    && messages.hasMessages()) {
+	                GlobalVariables.mergeErrorMap(messages);
+	            }
+	            setRows(fieldValues,dType.getName());
+	            return true;
             }
-		}
-		setRows(fieldValues,docTypeName);
+        }
+
+		setRows(fieldValues, docTypeName);
+
 		return true;
 	}
 
@@ -744,10 +871,10 @@ KualiLookupableHelperServiceImpl {
 		} catch (WorkflowServiceErrorException wsee) {
 			for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
 				//TODO: can we add something to this to get it to highlight the right field too?  Maybe in arg1
-				GlobalVariables.getErrorMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+				GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
 			};
 		}
-        if(!GlobalVariables.getErrorMap().hasNoErrors()) {
+        if(!GlobalVariables.getMessageMap().hasNoErrors()) {
         	throw new ValidationException("errors in search criteria");
         }
 
@@ -775,7 +902,7 @@ KualiLookupableHelperServiceImpl {
 		String savedSearchName = ((String[])getParameters().get("savedSearchName"))[0];
 		if(StringUtils.isEmpty(savedSearchName)||"*ignore*".equals(savedSearchName)) {
 			if(!ignoreErrors) {
-				GlobalVariables.getErrorMap().putError("savedSearchName", RiceKeyConstants.ERROR_CUSTOM, "You must select a saved search");
+				GlobalVariables.getMessageMap().putError("savedSearchName", RiceKeyConstants.ERROR_CUSTOM, "You must select a saved search");
 			} else {
 				//if we're ignoring errors and we got an error just return, no reason to continue.  Also set false to indicate not to perform lookup
 				return false;
@@ -792,7 +919,7 @@ KualiLookupableHelperServiceImpl {
 				}
 			}
 		}
-        if (!GlobalVariables.getErrorMap().hasNoErrors()) {
+        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
         }
 
@@ -880,6 +1007,78 @@ KualiLookupableHelperServiceImpl {
 		savedSearch.setFieldLabel("Saved Searches");
 		return savedSearch;
 
+	}
+
+	private Object getDocSearchCriteriaDTOFieldValue (DocSearchCriteriaDTO searchCriteria, String fieldName) {
+        Class<?> clazz = searchCriteria.getClass();
+        String propertyName = fieldName;
+        if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+            propertyName = StringUtils.remove(fieldName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+        }
+        try {
+            String methodName = new StringBuffer("get").append(propertyName.toUpperCase().charAt(0)).append(propertyName.substring(1)).toString();
+            java.lang.reflect.Method method = clazz.getMethod(methodName);
+            return method.invoke(searchCriteria);
+        } catch (SecurityException e) {
+            return null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        } catch (IllegalAccessException e) {
+            return null;
+        } catch (InvocationTargetException e) {
+            return null;
+        } catch (NoSuchMethodException e) {
+            return getSearchableAttributeFieldValue(searchCriteria, fieldName);
+        }
+    }
+
+	private Object getSearchableAttributeFieldValue(DocSearchCriteriaDTO searchCriteria, String fieldName) {
+	    Object valueToReturn = null;
+	    String propertyName = fieldName;
+	    boolean isDateTime = false;
+        if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+            propertyName = StringUtils.remove(fieldName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+        }
+	    if (searchCriteria.getSearchableAttributes() != null) {
+    	    for (SearchAttributeCriteriaComponent sa : searchCriteria.getSearchableAttributes()) {
+    	        if (StringUtils.equals(propertyName, sa.getFormKey())) {
+    	            if (StringUtils.equals(sa.getSearchableAttributeValue().getOjbConcreteClass(), "org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue")) {
+    	                isDateTime = true;
+    	            }
+    	            if (sa.isCanHoldMultipleValues()) {
+    	                valueToReturn = sa.getValues();
+    	            } else {
+    	                valueToReturn = sa.getValue();
+    	            }
+    	            break;
+    	        }
+    	    }
+	    }
+
+	    if (valueToReturn != null
+	            && valueToReturn instanceof String
+	            && isDateTime) {
+	        if(fieldName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+    	        if (StringUtils.contains((String)valueToReturn, "..")) {
+    	            valueToReturn = StringUtils.split((String)valueToReturn, "..")[0];
+    	        } else if (StringUtils.contains((String)valueToReturn, ">=")) {
+    	            valueToReturn = StringUtils.split((String)valueToReturn, ">=")[0];
+    	        } else {
+    	            valueToReturn = null;
+    	        }
+	        } else {
+	            if (StringUtils.contains((String)valueToReturn, "..")) {
+                    valueToReturn = StringUtils.split((String)valueToReturn, "..")[1];
+                } else if (StringUtils.contains((String)valueToReturn, ">=")) {
+                    valueToReturn = null;
+                } else if (StringUtils.contains((String)valueToReturn, "<=")) {
+                    valueToReturn = StringUtils.split((String)valueToReturn, "<=")[0];
+                }
+
+	        }
+	    }
+
+	    return valueToReturn;
 	}
 
 	/*

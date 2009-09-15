@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,10 +29,12 @@ import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
 import org.kuali.rice.kim.dao.KimGroupDao;
@@ -143,7 +145,6 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
 	@Override
 	public List<Row> getRows() {
-		List<Row> attributeRows = new ArrayList<Row>();
 		if (getGrpRows().isEmpty()) {
 			List<Row> rows = super.getRows();
 			List<Row> returnRows = new ArrayList<Row>();
@@ -345,14 +346,13 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         return displayList;
     }
 
-	@SuppressWarnings("unchecked")
 	private List<KeyLabelPair> getGroupTypeOptions() {
 		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
 		options.add(new KeyLabelPair("", ""));
 
-		List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocator.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all groups in the system
-        for (KimTypeImpl kimType : kimGroupTypes) {
+        for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
                 options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
@@ -374,16 +374,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 				if (!StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
-					Map<String,Object> pkMap = new HashMap<String,Object>();
-					pkMap.put(KIM_TYPE_ID_PROPERTY_NAME, field.getPropertyValue());
-					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
-					// TODO what if servicename is null.  also check other places that have similar issue
-					// use default_service ?
-					String serviceName = kimType.getKimTypeServiceName();
-					if (StringUtils.isBlank(serviceName)) {
-						serviceName = "kimTypeService";
-					}
-			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
+					KimTypeInfo kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
+					KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
 		            for (AttributeDefinition definition  : definitions.values()) {
@@ -396,7 +388,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 						typeField.setPropertyValue(fieldValues.get(typeField.getPropertyName()));
 						if (definition.getControl().isSelect()) {
 					        try {
-					            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+					            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
 						        typeField.setFieldValidValues(finder.getKeyValues());
 						        typeField.setFieldType(Field.DROPDOWN);
 					        }
@@ -414,7 +406,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 						    typeField.setFieldType(Field.TEXT);
 						} else if (definition.getControl().isRadio()) {
 						    try {
-                                KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+                                KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
                                 typeField.setFieldValidValues(finder.getKeyValues());
                                 typeField.setFieldType(Field.RADIO);
                             }

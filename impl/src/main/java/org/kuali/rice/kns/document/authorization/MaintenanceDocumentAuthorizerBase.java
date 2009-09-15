@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	// private static final org.apache.log4j.Logger LOG =
 	// org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
 
-	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	transient private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	@SuppressWarnings("unchecked")
 	public final boolean canCreate(Class boClass, Person user) {
@@ -95,32 +95,28 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		return new HashSet<String>();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void addRoleQualification(BusinessObject businessObject,
-			Map<String, String> attributes) {
+	protected void addRoleQualification(BusinessObject businessObject, Map<String, String> attributes) {
 		super.addRoleQualification(businessObject, attributes);
 		if (businessObject instanceof MaintenanceDocument) {
-			attributes
-					.putAll(KimCommonUtils
-							.getNamespaceAndComponentSimpleName(((MaintenanceDocument) businessObject)
-									.getNewMaintainableObject()
-									.getBusinessObject().getClass()));
+			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
+			if ( maintDoc.getNewMaintainableObject() != null ) {			
+				attributes.putAll(KimCommonUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void addPermissionDetails(BusinessObject businessObject,
-			Map<String, String> attributes) {
+	protected void addPermissionDetails(BusinessObject businessObject, Map<String, String> attributes) {
 		super.addPermissionDetails(businessObject, attributes);
 		if (businessObject instanceof MaintenanceDocument) {
-			attributes
-					.putAll(KimCommonUtils
-							.getNamespaceAndComponentSimpleName(((MaintenanceDocument) businessObject)
-									.getNewMaintainableObject()
-									.getBusinessObject().getClass()));
-			attributes.put(KNSConstants.MAINTENANCE_ACTN,
-					((MaintenanceDocument) businessObject)
-							.getNewMaintainableObject().getMaintenanceAction());
+			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
+			if ( maintDoc.getNewMaintainableObject() != null ) {			
+				attributes.putAll(KimCommonUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+				attributes.put(KNSConstants.MAINTENANCE_ACTN,maintDoc.getNewMaintainableObject().getMaintenanceAction());
+			}
 		}
 	}
 

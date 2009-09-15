@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,11 +24,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -64,6 +68,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	@ManyToOne(targetEntity=PhoneTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
 	protected PhoneType phoneType;
+	
+	@Transient
+    protected Boolean suppressPhone;
 
 	// Waiting until we pull in from KFS
 	// protected Country country;
@@ -72,6 +79,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCode()
 	 */
 	public String getCountryCode() {
+	    if (isSuppressPhone()) {
+            return "XX";
+        }
 		return countryCode;
 	}
 
@@ -86,6 +96,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumber()
 	 */
 	public String getExtensionNumber() {
+	    if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return extensionNumber;
 	}
 
@@ -93,6 +106,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
+	    if (isSuppressPhone()) {
+            return "000-000-0000";
+        }
 		return phoneNumber;
 	}
 
@@ -153,9 +169,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "entityPhoneId", entityPhoneId );
-		m.put( "phoneNumber", phoneNumber );
-		m.put( "extensionNumber", extensionNumber );
-		m.put( "countryCode", countryCode );
+		m.put( "phoneNumber", getPhoneNumber() );
+		m.put( "extensionNumber", getExtensionNumber() );
+		m.put( "countryCode", getCountryCode() );
 		return m;
 	}
 
@@ -180,6 +196,9 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	}
 
 	public String getFormattedPhoneNumber() {
+	    if (isSuppressPhone()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		StringBuffer sb = new StringBuffer( 30 );
 		
 		// TODO: get extension from country code table
@@ -192,4 +211,55 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 		
 		return sb.toString();
 	}
+
+    public boolean isSuppressPhone() {
+        if (suppressPhone != null) {
+            return suppressPhone.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressPhone = false;
+        if (privacy != null) {
+            suppressPhone = privacy.isSuppressPhone();
+        } 
+        return suppressPhone.booleanValue();
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCodeUnmasked()
+     */
+    public String getCountryCodeUnmasked() {
+        return this.countryCode;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumberUnmasked()
+     */
+    public String getExtensionNumberUnmasked() {
+        return this.extensionNumber;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getFormattedPhoneNumberUnmasked()
+     */
+    public String getFormattedPhoneNumberUnmasked() {
+        StringBuffer sb = new StringBuffer( 30 );
+        
+        // TODO: get extension from country code table
+        // TODO: append "+xxx" if country is not the default country
+        sb.append( this.phoneNumber );
+        if ( StringUtils.isNotBlank( this.extensionNumber ) ) {
+            sb.append( " x" );
+            sb.append( this.extensionNumber );
+        }
+        
+        return sb.toString();
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumberUnmasked()
+     */
+    public String getPhoneNumberUnmasked() {
+        return this.phoneNumber;
+    }
 }

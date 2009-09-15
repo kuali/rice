@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ package org.kuali.rice.kew.actionlist.web;
 import org.displaytag.decorator.TableDecorator;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.DisplayParameters;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -29,18 +30,17 @@ import org.kuali.rice.kew.actionlist.DisplayParameters;
 public class ActionListDecorator extends TableDecorator {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDecorator.class);
     
+    private int rowCounter = 0;
+    
+    @Override
     public String startRow() {
-        ActionItemActionListExtension actionItem = (ActionItemActionListExtension) getCurrentRowObject();
-        StringBuffer tbody = new StringBuffer();
-        tbody.append("<tbody bgcolor='" + actionItem.getRowStyleClass());
-        tbody.append("' onmouseover=\"this.className = 'over';\" "); 
-        tbody.append("onmouseout=\"this.className = this.className.replace('over', '');\">");
-        return tbody.toString();
+         return "";
     }
 
+    @Override
     public String finishRow() {
         ActionItemActionListExtension actionItem = (ActionItemActionListExtension) getCurrentRowObject();
-        String returnRow = "</tbody>";
+        String returnRow = "";
         try {
         	DisplayParameters displayParameters = actionItem.getDisplayParameters();
             if (displayParameters != null) {
@@ -71,4 +71,38 @@ public class ActionListDecorator extends TableDecorator {
         }
         return returnRow;
     }
+    
+    /**
+     * Adds a CSS class to the current row based on the value of the row object's rowStyleClass attribute.
+     * 
+     * @see org.displaytag.decorator.TableDecorator#addRowClass()
+     */
+    @Override
+    public String addRowClass() {
+    	ActionItemActionListExtension actionItem = (ActionItemActionListExtension) getCurrentRowObject();
+    	return "actionlist_" + KEWConstants.ACTION_LIST_COLOR_NAMES.get(actionItem.getRowStyleClass());
+    }
+
+	/**
+	 * Adds a unique ID to this row that allows JavaScript to add mouse event listeners at run-time. This is necessary because the action list's
+	 * display:table tag does not allow event handlers to be specified for the row elements.
+	 * 
+	 * @see org.displaytag.decorator.TableDecorator#addRowId()
+	 */
+	@Override
+	public String addRowId() {
+		return "actionlist_tr_" + rowCounter++;
+	}
+
+	/**
+	 * Resets the row index counter after all rows have been added to the table.
+	 * 
+	 * @see org.displaytag.decorator.TableDecorator#finish()
+	 */
+	@Override
+	public void finish() {
+		super.finish();
+		rowCounter = 0;
+	}
+    
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.util;
 
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -22,14 +23,21 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kim.bo.KimType;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -43,7 +51,10 @@ public class KimCommonUtils {
 
     private static KualiModuleService kualiModuleService;
     private static Map<String,KimTypeService> kimTypeServiceCache = new HashMap<String,KimTypeService>();
+    private static IdentityManagementService identityManagementService;
 
+	private KimCommonUtils() {}
+    
 	private static KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {
 			kualiModuleService = KNSServiceLocator.getKualiModuleService();
@@ -54,6 +65,9 @@ public class KimCommonUtils {
 	public static String getClosestParentDocumentTypeName(
 			DocumentType documentType,
 			Set<String> potentialParentDocumentTypeNames) {
+		if ( potentialParentDocumentTypeNames == null || documentType == null ) {
+			return null;
+		}
 		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
 			return documentType.getName();
 		} else {
@@ -135,14 +149,14 @@ public class KimCommonUtils {
     	return kimTypeServiceName;
 	}
 
-	public static KimTypeService getKimTypeService(KimTypeImpl kimTypeImpl){
-		if( kimTypeImpl == null ) {
-			LOG.warn( "null KimTypeImpl passed into getKimTypeService" );
+	public static KimTypeService getKimTypeService(KimType kimType){
+		if( kimType == null ) {
+			LOG.warn( "null KimType passed into getKimTypeService" );
 			return null;
 		}
-		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimTypeImpl.getKimTypeServiceName() ) );
+		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName() ) );
 	}
-
+	
 	public static KimTypeService getKimTypeService( String serviceName ) {
 		KimTypeService service = null;
 		if ( StringUtils.isNotBlank(serviceName) ) {
@@ -155,7 +169,9 @@ public class KimCommonUtils {
     				service = null;
     			}
     		}
-			kimTypeServiceCache.put(serviceName, service);
+	    	synchronized (kimTypeServiceCache) {
+				kimTypeServiceCache.put(serviceName, service);
+			}
     	} else {
     		LOG.warn( "Blank service name passed into getKimTypeService" );
     	}
@@ -187,4 +203,172 @@ public class KimCommonUtils {
     		path = path.replace(kimActionName, kimContext+kimActionName);
     	return path;
 	}
+	
+	public static String stripEnd(String toStripFrom, String toStrip){
+		String stripped;
+		if(toStripFrom==null) stripped = null;
+		if(toStrip==null) stripped = toStripFrom;
+		if(toStripFrom.endsWith(toStrip)){ 
+			StringBuffer buffer = new StringBuffer(toStripFrom);
+			buffer.delete(buffer.length()-toStrip.length(), buffer.length());
+			stripped = buffer.toString();
+		} else stripped = toStripFrom;
+		return stripped;
+	}
+
+	protected static boolean canOverrideEntityPrivacyPreferences( String principalId ){
+		return getIdentityManagementService().isAuthorized(
+				GlobalVariables.getUserSession().getPrincipalId(), 
+				KimConstants.NAMESPACE_CODE, 
+				KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
+				null,
+				new AttributeSet(KimAttributes.PRINCIPAL_ID, principalId) );
+	}
+	
+	public static boolean isSuppressName(String entityId) {
+	    KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
+	    UserSession userSession = GlobalVariables.getUserSession();
+
+        boolean suppressName = false;
+        if (privacy != null) {
+            suppressName = privacy.isSuppressName();
+        } 
+        if (	   suppressName
+        		&& userSession != null 
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
+            return true;
+        }
+        return false;
+	}
+  
+    public static boolean isSuppressEmail(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
+        UserSession userSession = GlobalVariables.getUserSession();
+
+        boolean suppressEmail = false;
+        if (privacy != null) {
+            suppressEmail = privacy.isSuppressEmail();
+        } 
+        if (	   suppressEmail
+        		&& userSession != null 
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
+            return true;
+        }
+        return false;
+    }
+   
+    public static boolean isSuppressAddress(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
+        UserSession userSession = GlobalVariables.getUserSession();
+
+        boolean suppressAddress = false;
+        if (privacy != null) {
+            suppressAddress = privacy.isSuppressAddress();
+        } 
+        if (	   suppressAddress
+    			&& userSession != null 
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
+            return true;
+        }
+        return false;
+    }
+   
+    public static boolean isSuppressPhone(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
+        UserSession userSession = GlobalVariables.getUserSession();
+
+        boolean suppressPhone = false;
+        if (privacy != null) {
+            suppressPhone = privacy.isSuppressPhone();
+        } 
+        if (	   suppressPhone
+        		&& userSession != null 
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean isSuppressPersonal(String entityId) {
+        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
+        if (entityInfo != null) {
+            privacy = entityInfo.getPrivacyPreferences();
+        }
+        UserSession userSession = GlobalVariables.getUserSession();
+
+        boolean suppressPersonal = false;
+        if (privacy != null) {
+            suppressPersonal = privacy.isSuppressPersonal();
+        } 
+        if (	   suppressPersonal
+        		&& userSession != null 
+                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
+            return true;
+        }
+        return false;
+    }
+
+	public static String encryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
+		Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
+			if(externalIdentifier != null){
+				try{
+					return KNSServiceLocator.getEncryptionService().encrypt(externalIdentifier);
+				}catch (GeneralSecurityException e) {
+		            LOG.error("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
+		            return externalIdentifier;
+		        }
+			}
+		}
+		return externalIdentifier;
+    }
+    
+    public static String decryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
+        Map<String, String> criteria = new HashMap<String, String>();
+	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
+			if(externalIdentifier != null){
+				try{
+					return KNSServiceLocator.getEncryptionService().decrypt(externalIdentifier);
+				}catch (GeneralSecurityException e) {
+		            LOG.error("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
+		            return externalIdentifier;
+		        }
+			}
+		}
+		return externalIdentifier;
+    }
+
+	public static IdentityManagementService getIdentityManagementService() {
+		if ( identityManagementService == null ) {
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+		}
+		return identityManagementService;
+	}
+    
 }

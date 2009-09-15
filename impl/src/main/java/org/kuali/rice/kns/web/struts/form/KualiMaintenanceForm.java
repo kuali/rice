@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,8 +61,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     private String businessObjectClassName;
     private String description;
     private boolean readOnly;
-    private Map oldMaintainableValues;
-    private Map newMaintainableValues;
+    private Map<String, String> oldMaintainableValues;
+    private Map<String, String> newMaintainableValues;
     private String maintenanceAction;
 
 	/**
@@ -179,8 +179,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
         // document type name is null on start, otherwise should be here
         if (StringUtils.isNotBlank(getDocTypeName())) {
-            Map localOldMaintainableValues = new HashMap();
-            Map localNewMaintainableValues = new HashMap();
+            Map<String, String> localOldMaintainableValues = new HashMap<String, String>();
+            Map<String, String> localNewMaintainableValues = new HashMap<String, String>();
             Map<String,String> localNewCollectionValues = new HashMap<String,String>();
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameter = (String) i.nextElement();
@@ -200,11 +200,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             
             // now, get all add lines and store them to a separate map
             // for use in a separate call to the maintainable
-            for ( Object obj : localNewMaintainableValues.entrySet() ) {
-                String key = (String)((Map.Entry)obj).getKey(); 
+            for ( Map.Entry<String, String> entry : localNewMaintainableValues.entrySet() ) {
+                String key = entry.getKey(); 
                 if ( key.startsWith( KNSConstants.MAINTENANCE_ADD_PREFIX ) ) {
                     localNewCollectionValues.put( key.substring( KNSConstants.MAINTENANCE_ADD_PREFIX.length() ),
-                            (String)((Map.Entry)obj).getValue() );
+                            entry.getValue() );
                 }
             }
             if ( LOG.isDebugEnabled() ) {
@@ -216,14 +216,14 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
             MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
 
-            GlobalVariables.getErrorMap().addToErrorPath("document.oldMaintainableObject");
-            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument);
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.oldMaintainableObject");
+            GlobalVariables.getMessageMap().addToErrorPath("document.oldMaintainableObject");
+            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument, getMethodToCall());
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.oldMaintainableObject");
 
-            GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
+            GlobalVariables.getMessageMap().addToErrorPath("document.newMaintainableObject");
             // update the main object
             Map cachedValues = 
-            	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument);
+            	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument, getMethodToCall());
             
             if(maintenanceDocument.getFileAttachment() != null) {
                 populateAttachmentPropertyForBO(maintenanceDocument);
@@ -231,11 +231,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             
             // update add lines
             localNewCollectionValues = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().resolvePrincipalNamesToPrincipalIds((BusinessObject)maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
-            cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues ) );
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
+            cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues, maintenanceDocument, getMethodToCall() ) );
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
 
             if (cachedValues.size() > 0) {
-                GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
+                GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
                 for (Iterator iter = cachedValues.keySet().iterator(); iter.hasNext();) {
                     String propertyName = (String) iter.next();
                     String value = (String) cachedValues.get(propertyName);

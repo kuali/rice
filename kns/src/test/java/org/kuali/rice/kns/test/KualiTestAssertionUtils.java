@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,6 +32,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -132,7 +133,7 @@ public class KualiTestAssertionUtils {
 
     private static void assertGlobalErrorMapContains(String message, String expectedFieldName, String expectedErrorKey, String[] expectedErrorParameters, boolean contains) {
         String header = message.length() == 0 ? "" : message + ": ";
-        ErrorMap map = GlobalVariables.getErrorMap();
+        MessageMap map = GlobalVariables.getMessageMap();
         assertEquals(header + "no error path (global error map path size)", 0, map.getErrorPath().size());
         assertEquals(header + "error property '" + expectedFieldName + "' has message key " + expectedErrorKey + ": " + map, contains, map.fieldHasMessage(expectedFieldName, expectedErrorKey));
 
@@ -180,7 +181,7 @@ public class KualiTestAssertionUtils {
 
     public static void assertGlobalErrorMapSize(String message, int expectedSize) {
         String header = message.length() == 0 ? "" : message + ": ";
-        ErrorMap map = GlobalVariables.getErrorMap();
+        MessageMap map = GlobalVariables.getMessageMap();
         assertEquals(header + "ThreadLocal ErrorMap size: " + map, expectedSize, map.size());
     }
 

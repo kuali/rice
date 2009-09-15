@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,8 +70,6 @@ public interface Config {
 
 	public static final String EMAIL_SECURITY_PATH = "email.security.path";
 
-	public static final String BASE_URL = "base.url";
-
 	public static final String ENVIRONMENT = "environment";
 
 	public static final String PLUGIN_DIR = "plugin.dir";
@@ -109,6 +107,26 @@ public interface Config {
 	public static final String DATASOURCE_PASSWORD = "datasource.password";
 
 	/**
+	 * Configuration key under which to specify the base url for workflow
+	 */
+	public static final String KEW_URL = "kew.url";
+
+	/**
+	 * Configuration key under which to specify the base url for rice
+	 */
+	public static final String KR_URL = "kr.url";
+
+	/**
+	 * Configuration key under which to specify the base url for kim
+	 */
+	public static final String KIM_URL = "kim.url";
+	
+	/**
+	 * Configuration key under which to specify the base url for kim
+	 */
+	public static final String KEN_URL = "ken.url";
+
+	/**
 	 * Use DEFAULT_KEW_NOTE_CLASS
 	 */
 	@Deprecated
@@ -139,6 +157,8 @@ public interface Config {
 	public static final String OUT_BOX_MODE = "actionlist.outbox";
 	public static final String OUT_BOX_DEFAULT_PREFERENCE_ON = "actionlist.outbox.default.preference.on";
 
+	public static final String PORTAL_SHOW_SAMPLE_APP = "portal.show.sample.app";
+	
 	public void parseConfig() throws IOException;
 
 	/**
@@ -178,6 +198,26 @@ public interface Config {
 	public String getClientWSDLFullPathAndFileName();
 
 	public String getWebServicesConnectRetry();
+	
+	/**
+	 * @return the base URL for KEW
+	 */
+	public String getKEWBaseURL();
+	
+	/**
+	 * @return the base URL for KIM
+	 */
+	public String getKIMBaseURL();
+	
+	/**
+	 * @return the base URL for KRice
+	 */
+	public String getKRBaseURL();
+
+	/**
+	 * @return the base URL for KEN
+	 */
+	public String getKENBaseURL();
 
 	public String getLog4jFileLocation();
 
@@ -186,8 +226,6 @@ public interface Config {
 	public String getTransactionTimeout();
 
 	public String getEmailConfigurationPath();
-
-	public String getBaseUrl();
 
 	public String getEnvironment();
 
@@ -221,6 +259,12 @@ public interface Config {
 
 	public String getDocumentLockTimeout();
 
+	/**
+	 * This has to be a string because BooleanS don't work when accessed through 
+	 * ConfigProperties like ${ConfigProperties.portal.show.sample.app} in JSPs.
+	 */
+	public String getPortalShowSampleApp();
+	
     public Boolean getEmailReminderLifecycleEnabled();
 
     public Boolean getXmlPipelineLifeCycleEnabled();
@@ -230,4 +274,5 @@ public interface Config {
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
 	public Boolean getOutBoxDefaultPreferenceOn();
+	
 }

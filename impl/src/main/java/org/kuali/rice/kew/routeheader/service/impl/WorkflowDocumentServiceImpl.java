@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -216,13 +216,13 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
 		}
 		if (routeHeader.getDocRouteLevel() == null) {
-			routeHeader.setDocRouteLevel(new Integer(KEWConstants.ADHOC_ROUTE_LEVEL));
+			routeHeader.setDocRouteLevel(Integer.valueOf(KEWConstants.ADHOC_ROUTE_LEVEL));
 		}
 		if (routeHeader.getCreateDate() == null) {
 			routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
 		}
 		if (routeHeader.getDocVersion() == null) {
-			routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
+			routeHeader.setDocVersion(Integer.valueOf(KEWConstants.CURRENT_DOCUMENT_VERSION));
 		}
 		if (routeHeader.getDocContent() == null) {
 			routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
@@ -242,15 +242,21 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue returnDocumentToPreviousRouteLevel(String principalId, DocumentRouteHeaderValue routeHeader, Integer destRouteLevel, String annotation)
-			throws InvalidActionTakenException {
-		RouteNode node = (destRouteLevel == null ? null : CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), destRouteLevel));
-		if (node == null && destRouteLevel != null) {
-			throw new InvalidActionTakenException("Could not locate node for route level " + destRouteLevel);
+	        throws InvalidActionTakenException {
+		DocumentRouteHeaderValue result = null;
+		
+		if (destRouteLevel != null) {
+			RouteNode node = CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), destRouteLevel);
+			if (node == null) {
+				throw new InvalidActionTakenException("Could not locate node for route level " + destRouteLevel);
+			}
+
+			KimPrincipal principal = loadPrincipal(principalId);
+			ReturnToPreviousNodeAction action = new ReturnToPreviousNodeAction(routeHeader, principal, annotation, node.getRouteNodeName(), true);
+			action.performAction();
+			result = finish(routeHeader);
 		}
-		KimPrincipal principal = loadPrincipal(principalId);
-		ReturnToPreviousNodeAction action = new ReturnToPreviousNodeAction(routeHeader, principal, annotation, node.getRouteNodeName(), true);
-		action.performAction();
-		return finish(routeHeader);
+		return result;
 	}
 
 	public DocumentRouteHeaderValue returnDocumentToPreviousNode(String principalId, DocumentRouteHeaderValue routeHeader, String destinationNodeName, String annotation)
@@ -288,7 +294,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	public void deleteDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
 		if (routeHeader.getRouteHeaderId() == null) {
-			LOG.info("Null Document id passed.");
+			LOG.debug("Null Document id passed.");
 			throw new WorkflowException("Document id must not be null.");
 		}
 		KEWServiceLocator.getRouteHeaderService().deleteRouteHeader(routeHeader);

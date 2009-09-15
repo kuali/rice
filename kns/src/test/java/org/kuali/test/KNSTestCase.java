@@ -1,10 +1,10 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -18,8 +18,8 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.TransactionalLifecycle;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
@@ -69,7 +69,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
-		GlobalVariables.setErrorMap(new ErrorMap());
+		GlobalVariables.setMessageMap(new MessageMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
 			transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
@@ -84,7 +84,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 		        transactionalLifecycle.stop();
 		    }
 		}
-		GlobalVariables.setErrorMap(new ErrorMap());
+		GlobalVariables.setMessageMap(new MessageMap());
 		super.tearDown();
 	}
 

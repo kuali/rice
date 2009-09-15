@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
@@ -42,12 +44,15 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
+import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
+import org.kuali.rice.kns.service.DocumentHeaderService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
@@ -76,7 +81,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public static final String OLD_MAINTAINABLE_TAG_NAME = "oldMaintainableObject";
     public static final String NEW_MAINTAINABLE_TAG_NAME = "newMaintainableObject";
     public static final String MAINTENANCE_ACTION_TAG_NAME = "maintenanceAction";
-
+    @Transient
+    transient private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    transient private static MaintenanceDocumentService maintenanceDocumentService;
+    transient private static DocumentHeaderService documentHeaderService;
+    
     @Transient
     protected Maintainable oldMaintainableObject;
     @Transient
@@ -124,13 +133,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     public MaintenanceDocumentBase(String documentTypeName) {
         this();
-        Class clazz = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableClass(documentTypeName);
+        Class clazz = getMaintenanceDocumentDictionaryService().getMaintainableClass(documentTypeName);
         try {
             oldMaintainableObject = (Maintainable) clazz.newInstance();
             newMaintainableObject = (Maintainable) clazz.newInstance();
 
             // initialize maintainable with a business object
-            Class boClazz = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getBusinessObjectClass(documentTypeName);
+            Class boClazz = getMaintenanceDocumentDictionaryService().getBusinessObjectClass(documentTypeName);
             oldMaintainableObject.setBusinessObject((PersistableBusinessObject) boClazz.newInstance());
             oldMaintainableObject.setBoClass(boClazz);
             newMaintainableObject.setBusinessObject((PersistableBusinessObject) boClazz.newInstance());
@@ -416,7 +425,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             //Attachment should be deleted from Maintenance Document attachment table
             deleteDocumentAttachment();  
             
-            KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(documentNumber);
+            getMaintenanceDocumentService().deleteLocks(documentNumber);
         }
 
         // unlock the document when its canceled or disapproved
@@ -425,7 +434,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             deleteDocumentAttachment();  
             
             String documentNumber = getDocumentHeader().getDocumentNumber();
-            KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(documentNumber);
+            getMaintenanceDocumentService().deleteLocks(documentNumber);
         }
     }
     
@@ -434,7 +443,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.kns.document.DocumentBase#getWorkflowEngineDocumentIdsToLock()
      */
 	public List<Long> getWorkflowEngineDocumentIdsToLock() {
-    	return getNewMaintainableObject().getWorkflowEngineDocumentIdsToLock();
+    	if ( newMaintainableObject != null ) {
+    		return newMaintainableObject.getWorkflowEngineDocumentIdsToLock();
+    	}
+    	return Collections.emptyList();
 	}
 
     /**
@@ -527,7 +539,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
 
@@ -562,13 +575,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.kns.document.Document#getAllowsCopy()
      */
     public boolean getAllowsCopy() {
-        Boolean allowsCopy = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsCopy(this);
-        if ( allowsCopy != null ) {
-            return allowsCopy.booleanValue();
-        }
-        else {
-            return false;
-        }
+        return getMaintenanceDocumentDictionaryService().getAllowsCopy(this);
     }
 
     /**
@@ -590,11 +597,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * Overridden to avoid serializing the xml twice, because of the xmlDocumentContents property of this object
      */
     public String serializeDocumentToXml() {
-	String tempXmlDocumentContents = xmlDocumentContents;
-	xmlDocumentContents = null;
-	String xmlForWorkflow = super.serializeDocumentToXml();
-	xmlDocumentContents = tempXmlDocumentContents;
-	return xmlForWorkflow;
+		String tempXmlDocumentContents = xmlDocumentContents;
+		xmlDocumentContents = null;
+		String xmlForWorkflow = super.serializeDocumentToXml();
+		xmlDocumentContents = tempXmlDocumentContents;
+		return xmlForWorkflow;
     }
 
     @Override
@@ -671,7 +678,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.kns.document.DocumentBase#validateBusinessRules(org.kuali.rice.kns.rule.event.KualiDocumentEvent)
      */
     public void validateBusinessRules(KualiDocumentEvent event) {
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().isEmpty()) {
             logErrors();
             throw new ValidationException("errors occured before business rule");
         }
@@ -683,10 +690,14 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         // Make sure the business object's version number matches that of the database's copy.
         if (newMaintainableObject != null) {
-        	PersistableBusinessObject pbObject = KNSServiceLocator.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
-        	if (pbObject != null && newMaintainableObject.getBusinessObject().getVersionNumber().longValue() != pbObject.getVersionNumber().longValue()) {
-        		GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);
-        		throw new ValidationException("Version mismatch between the local business object and the database business object");
+        	if ( KNSServiceLocator.getPersistenceStructureService().isPersistable( newMaintainableObject.getBusinessObject().getClass() ) ) {
+	        	PersistableBusinessObject pbObject = KNSServiceLocator.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
+	        	Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
+	        	Long newObjectVerNbr = newMaintainableObject.getBusinessObject().getVersionNumber();
+	        	if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
+	        		GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_VERSION_MISMATCH);
+	        		throw new ValidationException("Version mismatch between the local business object and the database business object");
+	        	}
         	}
         }
         
@@ -704,7 +715,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             // needed here
             throw new ValidationException("business rule evaluation failed");
         }
-        else if (!GlobalVariables.getErrorMap().isEmpty()) {
+        else if (!GlobalVariables.getMessageMap().isEmpty()) {
             logErrors();
             if (event instanceof SaveDocumentEvent) {
                 // for maintenance documents, we want to always actually do a save if the
@@ -744,8 +755,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         //to always do the delete and re-add...seems a bit inefficient though if nothing has changed, which is
         //most of the time...could also try to only add/update/delete what's changed, but this is easier
         if (!(event instanceof SaveDocumentEvent)) { //don't lock until they route
-            KNSServiceLocator.getMaintenanceDocumentService().deleteLocks(this.getDocumentNumber());
-            KNSServiceLocator.getMaintenanceDocumentService().storeLocks(this.getNewMaintainableObject().generateMaintenanceLocks());
+            getMaintenanceDocumentService().deleteLocks(this.getDocumentNumber());
+            getMaintenanceDocumentService().storeLocks(this.getNewMaintainableObject().generateMaintenanceLocks());
         }
     }
     
@@ -762,12 +773,30 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     @Override
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
-        MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
-        String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(this.newMaintainableObject.getBoClass());
-        DocumentEntry documentEntry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(docTypeName);
-        WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
-        WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();
-        return createPropertySerializabilityEvaluator(workflowProperties, workflowAttributes);
+    	String docTypeName = "";
+    	if ( newMaintainableObject != null ) {
+    		docTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(this.newMaintainableObject.getBoClass());
+    	} else { // I don't know why we aren't just using the header in the first place
+    			// but, in the case where we can't get it in the way above, attempt to get
+    			// it off the workflow document header
+    		if ( getDocumentHeader() != null && getDocumentHeader().getWorkflowDocument() != null ) {
+    			docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentType();
+    		}
+    	}
+    	if ( !StringUtils.isBlank(docTypeName) ) {
+	        DocumentEntry documentEntry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+	        if ( documentEntry != null ) {
+		        WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
+		        WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();
+		        return createPropertySerializabilityEvaluator(workflowProperties, workflowAttributes);
+	        } else {
+	        	LOG.error( "Unable to obtain DD DocumentEntry for document type: '" + docTypeName + "'" );
+	        }
+    	} else {
+        	LOG.error( "Unable to obtain document type name for this document: " + this );
+    	}
+    	LOG.error( "Returning null for the PropertySerializabilityEvaluator" );
+        return null;
     }
     
     public DocumentAttachment getAttachment() {
@@ -785,7 +814,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void afterDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        KNSServiceLocator.getDocumentHeaderService().deleteDocumentHeader(getDocumentHeader());
+        getDocumentHeaderService().deleteDocumentHeader(getDocumentHeader());
         super.afterDelete(persistenceBroker);
     }
 
@@ -796,7 +825,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        setDocumentHeader(KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderById(getDocumentNumber()));
+        setDocumentHeader(getDocumentHeaderService().getDocumentHeaderById(getDocumentNumber()));
         super.afterLookup(persistenceBroker);
     }
 
@@ -807,7 +836,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        KNSServiceLocator.getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
+        getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
         super.beforeInsert(persistenceBroker);
     }
 
@@ -818,7 +847,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        KNSServiceLocator.getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
+        getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
         super.beforeUpdate(persistenceBroker);
     }
     
@@ -831,5 +860,53 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public boolean isSessionDocument() {
         return SessionDocument.class.isAssignableFrom(this.getClass());
     }
+
+    /**
+     * Returns whether or not the new maintainable object supports custom lock descriptors. Will always return false if the new maintainable is null.
+     * 
+     * @see org.kuali.rice.kns.document.Document#useCustomLockDescriptors()
+     * @see org.kuali.rice.kns.maintenance.Maintainable#useCustomLockDescriptors()
+     */
+    @Override
+    public boolean useCustomLockDescriptors() {
+    	return (newMaintainableObject != null && newMaintainableObject.useCustomLockDescriptors());
+    }
+
+    /**
+     * Returns the custom lock descriptor generated by the new maintainable object, if defined. Will throw a PessimisticLockingException if
+     * the new maintainable is null.
+     * 
+     * @see org.kuali.rice.kns.document.Document#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.kns.maintenance.Maintainable#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+     */
+    @Override
+    public String getCustomLockDescriptor(Person user) {
+    	if (newMaintainableObject == null) {
+    		throw new PessimisticLockingException("Maintenance Document " + getDocumentNumber() +
+    			" is using pessimistic locking with custom lock descriptors, but no new maintainable object has been defined");
+    	}
+    	return newMaintainableObject.getCustomLockDescriptor(user);
+    }
+    
+	protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		if ( maintenanceDocumentDictionaryService == null ) {
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
+		return maintenanceDocumentDictionaryService;
+	}
+
+	protected MaintenanceDocumentService getMaintenanceDocumentService() {
+		if ( maintenanceDocumentService == null ) {
+			maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+		}
+		return maintenanceDocumentService;
+	}
+
+	protected DocumentHeaderService getDocumentHeaderService() {
+		if ( documentHeaderService == null ) {
+			documentHeaderService = KNSServiceLocator.getDocumentHeaderService();
+		}
+		return documentHeaderService;
+	}
 
 }

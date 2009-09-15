@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,13 +43,13 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 	public boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent) {
 		KimDocumentRoleResponsibility newResponsibility = addResponsibilityEvent.getResponsibility();
 		if(newResponsibility==null){
-			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
+			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
 			return false;
 		}
 
 		KimResponsibilityImpl kimResponsibilityImpl = newResponsibility.getKimResponsibility();
 		if(kimResponsibilityImpl==null){
-			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
+			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
 			return false;
 		}
 
@@ -64,20 +64,20 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 				KimConstants.PermissionTemplateNames.GRANT_RESPONSIBILITY, 
 				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 				responsibilityDetails, null)) {
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
             		new String[] {kimResponsibilityImpl.getNamespaceCode(), kimResponsibilityImpl.getTemplate().getName()});
             return false;
 		}
 		
 		if (newResponsibility == null || StringUtils.isBlank(newResponsibility.getResponsibilityId())) {
             rulePassed = false;
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Responsibility"});
         } else {
         	int i = 0;
 		    for (KimDocumentRoleResponsibility responsibility: document.getResponsibilities()) {
 		    	if (responsibility.getResponsibilityId().equals(newResponsibility.getResponsibilityId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError("document.responsibilities["+i+"].responsibilityId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Responsibility"});
+		            GlobalVariables.getMessageMap().putError("document.responsibilities["+i+"].responsibilityId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Responsibility"});
 		    	}
 		    	i++;
 		    }

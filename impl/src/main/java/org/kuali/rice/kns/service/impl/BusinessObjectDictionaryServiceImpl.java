@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -112,7 +112,7 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupable(java.lang.Class)
      */
     public Boolean isLookupable(Class businessObjectClass) {
-        Boolean isLookupable = null;
+        Boolean isLookupable = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
@@ -126,7 +126,7 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isInquirable(java.lang.Class)
      */
     public Boolean isInquirable(Class businessObjectClass) {
-        Boolean isInquirable = null;
+        Boolean isInquirable = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
@@ -140,7 +140,7 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isMaintainable(java.lang.Class)
      */
     public Boolean isMaintainable(Class businessObjectClass) {
-        Boolean isMaintainable = null;
+        Boolean isMaintainable = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
@@ -156,7 +156,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
 	 */
 	public Boolean isExportable(Class businessObjectClass) {
-		Boolean isExportable = null;
+		Boolean isExportable = Boolean.FALSE;
 		
 		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
@@ -211,21 +211,6 @@ public class BusinessObjectDictionaryServiceImpl implements
         return menubar;
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupInstructions(java.lang.Class)
-     */
-    public String getLookupInstructions(Class businessObjectClass) {
-        String instructions = "";
-
-        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-        if (lookupDefinition != null) {
-            if (lookupDefinition.hasInstructions()) {
-                instructions = lookupDefinition.getInstructions();
-            }
-        }
-
-        return instructions;
-    }
 
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonSource(java.lang.Class)
@@ -923,15 +908,21 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     public Boolean areNotesSupported(Class businessObjectClass) {
-        Boolean hasNotesSupport = null;
+        Boolean hasNotesSupport = Boolean.FALSE;
 
         BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
-            hasNotesSupport = Boolean.valueOf(entry.isBoNotesEnabled());
+            hasNotesSupport = entry.isBoNotesEnabled();
         }
 
         return hasNotesSupport;
     }
 
-
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupFieldTreatWildcardsAndOperatorsAsLiteral(java.lang.Class, java.lang.String)
+	 */
+	public boolean isLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class businessObjectClass, String attributeName) {
+		FieldDefinition lookupFieldDefinition = getLookupFieldDefinition(businessObjectClass, attributeName);
+		return lookupFieldDefinition != null && lookupFieldDefinition.isTreatWildcardsAndOperatorsAsLiteral();
+	}
 }

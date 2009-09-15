@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@ package org.kuali.rice.kim.test.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
@@ -199,9 +200,9 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		ArrayList<String> roleList = new ArrayList<String>( 1 );
 		roleList.add( role2Id );
 		
-		Collection memberPrincipalIds = roleService.getRoleMemberPrincipalIds(role2NamespaceCode, role2Name, null);
+		Collection<String> memberPrincipalIds = roleService.getRoleMemberPrincipalIds(role2NamespaceCode, role2Name, null);
 		assertNotNull(memberPrincipalIds);
-		assertEquals("RoleTwo should have 5 principal ids", 5, memberPrincipalIds.size());
+		assertEquals("RoleTwo should have 6 principal ids", 6, memberPrincipalIds.size());
 		assertTrue( "p3 must belong to role", memberPrincipalIds.contains(principal3Id) );
 		assertTrue( "p2 must belong to role (assigned via group)", memberPrincipalIds.contains(principal2Id) );
 		assertTrue( "p1 must belong to r2 (via r1)", memberPrincipalIds.contains(principal1Id) );
@@ -209,7 +210,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		Collection<RoleMembershipInfo> members = roleService.getRoleMembers( roleList, null );
 		assertNotNull( "returned list may not be null", members );
 		assertFalse( "list must not be empty", members.isEmpty() );
-		assertEquals("Returned list must have 3 members.", 3, members.size());
+		assertEquals("Returned list must have 4 members.", 4, members.size());
 		boolean foundP3 = false;
 		boolean foundG1 = false;
 		boolean foundR1 = false;
@@ -233,8 +234,9 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		roleList.add( role1Id );
 		members = roleService.getRoleMembers( roleList, null );
 		assertNotNull( "returned list may not be null", members );
-		assertEquals("Should have 1 member", 1, members.size());
-		assertEquals("Only member should be p1.", principal1Id, members.iterator().next().getMemberId());
+		assertEquals("Should have 2 members", 2, members.size());
+		Iterator<RoleMembershipInfo> iter = members.iterator();
+		assertTrue("One of those members should be p1.", principal1Id.equals(iter.next().getMemberId()) || principal1Id.equals(iter.next().getMemberId()));
 	}
 	
 //	@Test

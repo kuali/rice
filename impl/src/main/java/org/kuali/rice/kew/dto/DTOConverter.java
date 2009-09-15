@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -496,11 +496,15 @@ public class DTOConverter {
     }
 
     public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) {
+    	return convertActionRequest(actionRequest, true);
+    }
+
+    protected static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest, boolean includeActionTaken) {
         ActionRequestDTO actionRequestVO = new ActionRequestDTO();
         actionRequestVO.setActionRequested(actionRequest.getActionRequested());
         actionRequestVO.setActionRequestId(actionRequest.getActionRequestId());
 
-        if (actionRequest.getActionTaken() != null) {
+        if (includeActionTaken && (actionRequest.getActionTaken() != null)) {
             actionRequestVO.setActionTakenId(actionRequest.getActionTakenId());
             actionRequestVO.setActionTaken(convertActionTaken(actionRequest.getActionTaken()));
         }
@@ -526,6 +530,7 @@ public class DTOConverter {
         actionRequestVO.setGroupId(actionRequest.getGroupId());
         actionRequestVO.setDelegationType(actionRequest.getDelegationType());
         actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
+        actionRequestVO.setRequestLabel(actionRequest.getRequestLabel());
         ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
         int index = 0;
         for (ActionRequestValue childRequest : actionRequest.getChildrenRequests()) {
@@ -536,7 +541,15 @@ public class DTOConverter {
         return actionRequestVO;
     }
 
+    public static ActionTakenDTO convertActionTakenWithActionRequests(ActionTakenValue actionTaken) {
+    	return convertActionTaken(actionTaken, true);
+    }
+
     public static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken) {
+    	return convertActionTaken(actionTaken, false);
+    }
+
+    protected static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken, boolean fetchActionRequests) {
         if (actionTaken == null) {
             return null;
         }
@@ -550,6 +563,15 @@ public class DTOConverter {
         actionTakenVO.setPrincipalId(actionTaken.getPrincipalId());
         actionTakenVO.setDelegatorPrincpalId(actionTaken.getDelegatorPrincipalId());
         actionTakenVO.setDelegatorGroupId(actionTaken.getDelegatorGroupId());
+        if (fetchActionRequests) {
+	        ActionRequestDTO[] actionRequests = new ActionRequestDTO[actionTaken.getActionRequests().size()];
+	        int index = 0;
+	        for (Iterator iterator = actionTaken.getActionRequests().iterator(); iterator.hasNext();) {
+	            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+	            actionRequests[index++] = convertActionRequest(actionRequest, false);
+	        }
+	        actionTakenVO.setActionRequests(actionRequests);
+        }
         return actionTakenVO;
     }
 
@@ -649,7 +671,7 @@ public class DTOConverter {
     }
 
     // TODO: should this be private?  If so, rename to convertActionRequestDTO for consistency.
-    public static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestDTO, ActionRequestValue parentActionRequest,
+    protected static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestDTO, ActionRequestValue parentActionRequest,
     		RouteNodeInstanceLoader routeNodeInstanceLoader) {
         if (actionRequestDTO == null) {
             return null;

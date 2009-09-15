@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2006-2007 The Kuali Foundation.
+	Copyright 2006-2009 The Kuali Foundation
 
-	Licensed under the Educational Community License, Version 1.0 (the "License");
+	Licensed under the Educational Community License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
 
-	http://www.opensource.org/licenses/ecl1.php
+	http://www.opensource.org/licenses/ecl2.php
 
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,15 +26,27 @@
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-  <bean id="bamDao" class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDAOOjbImpl">
+  <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+
+	<bean id="ksbOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>ksbMessageDataSource</value>
+				<value>ksbRegistryDataSource</value>
+			</list>
+		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/ksb/config/OJB-repository-ksb.xml" />
+	</bean>
+	
+  <bean id="bamDao" class="org.kuali.rice.ksb.messaging.bam.dao.impl.BAMDAOOjbImpl" depends-on="ksbOjbConfigurer">
     <property name="jcdAlias" value="ksbRegistryDataSource" />
   </bean>
   
-  <bean id="messageQueueDao" class="org.kuali.rice.ksb.messaging.dao.impl.MessageQueueDAOOjbImpl">
+  <bean id="messageQueueDao" class="org.kuali.rice.ksb.messaging.dao.impl.MessageQueueDAOOjbImpl" depends-on="ksbOjbConfigurer">
     <property name="jcdAlias" value="ksbMessageDataSource" />
   </bean>
   
-  <bean id="serviceInfoDao" class="org.kuali.rice.ksb.messaging.dao.impl.ServiceInfoDAOOjbImpl">
+  <bean id="serviceInfoDao" class="org.kuali.rice.ksb.messaging.dao.impl.ServiceInfoDAOOjbImpl" depends-on="ksbOjbConfigurer">
     <property name="jcdAlias" value="ksbRegistryDataSource" />
   </bean>
 

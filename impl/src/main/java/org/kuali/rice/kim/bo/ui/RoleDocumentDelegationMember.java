@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -47,9 +49,15 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	@Id
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
+	protected String roleMemberMemberId;
+	protected String roleMemberMemberTypeCode;
 	protected String roleMemberName;
 	protected String roleMemberNamespaceCode;
 
+	private KimTypeAttributesHelper attributesHelper;
+	//For Person Document UI - flattening the delegation - delegation member hierarchy
+	protected RoleImpl roleImpl = new RoleImpl();
+	
 	@Id
 	@Column(name="DLGN_ID")
 	protected String delegationId;
@@ -257,5 +265,62 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	 */
 	public void setRoleMemberNamespaceCode(String roleMemberNamespaceCode) {
 		this.roleMemberNamespaceCode = roleMemberNamespaceCode;
+	}
+
+	/**
+	 * @return the roleImpl
+	 */
+	public RoleImpl getRoleImpl() {
+		return this.roleImpl;
+	}
+
+	/**
+	 * @param roleImpl the roleImpl to set
+	 */
+	public void setRoleImpl(RoleImpl roleImpl) {
+		this.roleImpl = roleImpl;
+		setAttributesHelper(new KimTypeAttributesHelper(roleImpl.getKimRoleType()));
+	}
+
+	/**
+	 * @return the attributesHelper
+	 */
+	public KimTypeAttributesHelper getAttributesHelper() {
+		return this.attributesHelper;
+	}
+
+	/**
+	 * @param attributesHelper the attributesHelper to set
+	 */
+	public void setAttributesHelper(KimTypeAttributesHelper attributesHelper) {
+		this.attributesHelper = attributesHelper;
+	}
+
+	/**
+	 * @return the roleMemberMemberId
+	 */
+	public String getRoleMemberMemberId() {
+		return this.roleMemberMemberId;
+	}
+
+	/**
+	 * @param roleMemberMemberId the roleMemberMemberId to set
+	 */
+	public void setRoleMemberMemberId(String roleMemberMemberId) {
+		this.roleMemberMemberId = roleMemberMemberId;
+	}
+
+	/**
+	 * @return the roleMemberMemberTypeCode
+	 */
+	public String getRoleMemberMemberTypeCode() {
+		return this.roleMemberMemberTypeCode;
+	}
+
+	/**
+	 * @param roleMemberMemberTypeCode the roleMemberMemberTypeCode to set
+	 */
+	public void setRoleMemberMemberTypeCode(String roleMemberMemberTypeCode) {
+		this.roleMemberMemberTypeCode = roleMemberMemberTypeCode;
 	}
 }

@@ -1,11 +1,11 @@
 <!--
-	Copyright 2006-2007 The Kuali Foundation.
+	Copyright 2006-2007 The Kuali Foundation
 
-	Licensed under the Educational Community License, Version 1.0 (the "License");
+	Licensed under the Educational Community License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
 
-	http://www.opensource.org/licenses/ecl1.php
+	http://www.opensource.org/licenses/ecl2.php
 
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
@@ -187,6 +187,7 @@
 		<field-descriptor name="parameterDescription" column="PARM_DESC_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterConstraintCode" column="CONS_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="parameterApplicationNamespaceCode" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 

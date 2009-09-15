@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,18 +25,17 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -71,10 +70,6 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
 
-	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	@Transient
-	protected KimTypeImpl kimRoleType; 
-	
 	protected String principalName;
 	protected String groupNamespaceCode;
 	protected String groupName;
@@ -267,17 +262,17 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 		return new HashCodeBuilder( -460627871, 746615189 ).append( this.roleId ).toHashCode();
 	}
 
-	public KimTypeImpl getKimRoleType() {
-		if (StringUtils.isNotBlank(this.kimTypeId) && this.kimRoleType == null) {
-			this.refreshReferenceObject("kimRoleType");
+	public KimTypeInfo getKimRoleType() {
+		return getTypeInfoService().getKimType(kimTypeId);
+	}
+	private transient static KimTypeInfoService kimTypeInfoService;
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
 		}
-		return this.kimRoleType;
+		return kimTypeInfoService;
 	}
 
-	public void setKimRoleType(KimTypeImpl kimRoleType) {
-		this.kimRoleType = kimRoleType;
-	}
-	
 	public KimRoleInfo toSimpleInfo() {
 		KimRoleInfo dto = new KimRoleInfo();
 		
@@ -302,6 +297,7 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
     public String toStringBuilder(LinkedHashMap mapper) {
         if(getKimRoleType() != null){

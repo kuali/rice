@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import java.util.Properties;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -250,25 +251,27 @@ public class KualiInquirableImpl implements Inquirable {
 
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inquiryBusinessObjectClass.getName());
 
-        /*
-        List keys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass);
+
+        // listPrimaryKeyFieldNames returns an unmodifiable list.  So a copy is necessary.
+        List<String> keys = new ArrayList<String>(getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(inquiryBusinessObjectClass));
+
         if (keys == null) {
         	keys = Collections.emptyList();
         }
-         */
-        if(attributeRefName == null || "".equals(attributeRefName)){
-        	return hRef;
-        }
-        BusinessObjectRelationship businessObjectRelationship =
-    		getBusinessObjectMetaDataService().getBusinessObjectRelationship(
-    				businessObject, attributeRefName);
-    	List<String> keys = new ArrayList<String>();
-    	if (businessObjectRelationship != null && businessObjectRelationship.getParentToChildReferences() != null) {
-	    	for (String targetNamePrimaryKey : businessObjectRelationship.getParentToChildReferences().values()) {
-	    		keys.add(targetNamePrimaryKey);
-	    	}
-    	}
 
+        BusinessObjectRelationship businessObjectRelationship = null;
+
+        if(attributeRefName != null && !"".equals(attributeRefName)){
+	        businessObjectRelationship =
+	    		getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+	    				businessObject, attributeRefName);
+
+	    	if (businessObjectRelationship != null && businessObjectRelationship.getParentToChildReferences() != null) {
+		    	for (String targetNamePrimaryKey : businessObjectRelationship.getParentToChildReferences().values()) {
+		    		keys.add(targetNamePrimaryKey);
+		    	}
+	    	}
+        }
         // build key value url parameters used to retrieve the business object
         String keyName = null;
         String keyConversion = null;
@@ -325,9 +328,10 @@ public class KualiInquirableImpl implements Inquirable {
                 keyValue = keyValue.toString();
             }
 
-            // Encrypt value if it is a field that has any restriction, because we don't want the browser history to store the restricted attribute's value
+            // Encrypt value if it is a field that has restriction that prevents a value from being shown to user,
+            // because we don't want the browser history to store the restricted attribute's value in the URL
             AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(businessObject.getClass().getName(), keyName);
-            if(attributeSecurity != null && attributeSecurity.hasAnyRestriction()){
+            if(attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI()){
             	try {
                     keyValue = getEncryptionService().encrypt(keyValue);
                 }

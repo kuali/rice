@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -97,8 +97,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         return (DocumentRouteHeaderValueContent)query.getSingleResult();
     }
 
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader) {
-    	Long routeHeaderId = routeHeader.getRouteHeaderId();
+    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
     	List<SearchableAttributeValue> searchableAttributeValues = findSearchableAttributeValues(routeHeaderId);
     	for (SearchableAttributeValue searchableAttributeValue:searchableAttributeValues){
     		entityManager.remove(searchableAttributeValue);
@@ -261,5 +260,38 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
 		return document.getDocRouteStatus();
     }
+    
+    public void save(SearchableAttributeValue searchableAttributeValue) {   	
+    	if (searchableAttributeValue.getSearchableAttributeValueId() == null){
+    		entityManager.persist(searchableAttributeValue);
+    	} else {
+    		entityManager.merge(searchableAttributeValue);
+    	}
+    }
+
+    //FIXME might need to convert result lcollection to Longs
+	public Collection findByDocTypeAndAppId(String documentTypeName,
+			String appId) {
+    	try {
+            String sql = 
+        	 	"SELECT DISTINCT " +
+        		"    (docHdr.doc_hdr_id) " +
+        		"FROM " +
+        		"    KREW_DOC_HDR_T docHdr, " +
+        		"    KREW_DOC_TYP_T docTyp " +
+        		"WHERE " +
+        		"    docHdr.APP_DOC_ID     = ? " +
+        		"    AND docHdr.DOC_TYP_ID = docTyp.DOC_TYP_ID " +
+        		"    AND docTyp.DOC_TYP_NM = ?";
+        	
+            Query query = entityManager.createNativeQuery(sql);
+            query.setParameter(1, appId);
+            query.setParameter(2, documentTypeName);
+            return query.getResultList();
+    	} catch (EntityNotFoundException enfe) {
+    		throw new WorkflowRuntimeException(enfe.getMessage());
+		}
+	}
+
 
 }

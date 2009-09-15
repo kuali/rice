@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,9 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -36,8 +38,12 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  * 
  */
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
-	DocumentTypeService documentTypeService;
-
+	protected transient DocumentTypeService documentTypeService;
+	
+	{
+		requiredAttributes.add( KimAttributes.DOCUMENT_TYPE_NAME );
+		checkRequiredAttributes = true;
+	}
 	/**
 	 * Loops over the given permissions and returns the most specific permission that matches.
 	 * 
@@ -47,10 +53,10 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet, java.util.List)
 	 */
 	@Override
-	public List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
+	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
 		// pull all the potential parent doc type names from the permission list
-		List<String> permissionDocTypeNames = new ArrayList<String>( permissionsList.size() );
+		Set<String> permissionDocTypeNames = new HashSet<String>( permissionsList.size() );
 		for ( KimPermissionInfo kpi : permissionsList ) {
 			String docTypeName = kpi.getDetails().get( KimAttributes.DOCUMENT_TYPE_NAME );
 			if ( StringUtils.isNotBlank( docTypeName ) ) {
@@ -59,15 +65,15 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		}
 		// find the parent documents which match
 		DocumentType docType = getDocumentTypeService().findByName(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME));
-		List<String> matchingDocTypeNames = isParentDocument( docType, permissionDocTypeNames, null );
+		String matchingDocTypeName = KimCommonUtils.getClosestParentDocumentTypeName(docType, permissionDocTypeNames);
 		// re-loop over the permissions and build a new list of the ones which have the
 		// matching document type names in their details
-		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>( matchingDocTypeNames.size() );
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
 		for ( KimPermissionInfo kpi : permissionsList ) {
 			String docTypeName = kpi.getDetails().get( KimAttributes.DOCUMENT_TYPE_NAME );
 			// only allow a match on the "*" type if no matching document types were found
-			if( (matchingDocTypeNames.isEmpty() && StringUtils.equals(docTypeName,"*")) 
-					|| matchingDocTypeNames.contains( docTypeName ) ) {
+			if((StringUtils.isEmpty(matchingDocTypeName) && StringUtils.equals(docTypeName,"*")) 
+				|| (StringUtils.isNotEmpty(matchingDocTypeName) && matchingDocTypeName.equals(docTypeName))) {
 				matchingPermissions.add( kpi );
 			}
 		}
@@ -75,38 +81,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		return matchingPermissions;
 	}
 	
-	/**
-	 * 
-	 * This method traverses the document type hierarchy
-	 * 
-	 * @param currentDocType
-	 * @param parentDocTypeName
-	 * @return
-	 */
-	private List<String> isParentDocument(DocumentType currentDocType,
-			List<String> parentDocTypeNames, List<String> matchingParentDocTypeNames ) {
-		if ( matchingParentDocTypeNames == null ) {
-			matchingParentDocTypeNames = new ArrayList<String>();
-		}
-		if (currentDocType != null) {
-			if ( parentDocTypeNames.contains( currentDocType.getName() ) ) {
-				matchingParentDocTypeNames.add( currentDocType.getName() );
-				// a match has been found - abort - we only want to use the most specific permission
-				return matchingParentDocTypeNames;
-			} 
-			if (currentDocType.getDocTypeParentId() != null
-					&& !currentDocType.getDocumentTypeId().equals(
-							currentDocType.getDocTypeParentId())) {
-			    // there is a parent document type, recurse into that one
-			    // above if statement prevents problems if there is a circular relationship
-	            return isParentDocument(currentDocType.getParentDocType(),
-	                    parentDocTypeNames, matchingParentDocTypeNames);
-			}
-		}
-		return matchingParentDocTypeNames;
-	}
-	
-	public DocumentTypeService getDocumentTypeService() {
+	protected DocumentTypeService getDocumentTypeService() {
 		if ( documentTypeService == null ) {
 			documentTypeService = KEWServiceLocator.getDocumentTypeService();
 		}

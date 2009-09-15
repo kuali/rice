@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,15 +53,12 @@ public class RuleAttributeXmlParser implements XmlConstants {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeXmlParser.class);
 
     
-    private static final String XPATH_RULE_ATTRIBUTES = "//ruleAttributes/ruleAttribute";
+    private static final String XPATH_RULE_ATTRIBUTES = "//" + RULE_ATTRIBUTES + "/" + RULE_ATTRIBUTE;
 	private static final String NAME = "name";
 	private static final String CLASS_NAME = "className";
 	private static final String LABEL = "label";
 	private static final String DESCRIPTION = "description";
 	private static final String TYPE = "type";
-	private static final String ROUTING_CONFIG = "routingConfig";
-	private static final String SEARCHING_CONFIG = "searchingConfig";
-	private static final String SEARCH_RESULT_CONFIG = "searchResultConfig";
 	private static final String CONFIG = "configuration";
 	
 	public List parseRuleAttributes(InputStream input) throws IOException, InvalidXmlException {
@@ -123,7 +120,7 @@ public class RuleAttributeXmlParser implements XmlConstants {
 			} else if(TYPE.equals(childNode.getNodeName())){
 				type = childNode.getFirstChild().getNodeValue();
 			} else if(ROUTING_CONFIG.equals(childNode.getNodeName()) || SEARCHING_CONFIG.equals(childNode.getNodeName()) || 
-					SEARCH_RESULT_CONFIG.equals(childNode.getNodeName()) ||
+					SEARCH_RESULT_CONFIG.equals(childNode.getNodeName()) || RESOLVER_CONFIG.equals(childNode.getNodeName()) ||
 					CONFIG.equals(childNode.getNodeName())){
 				xmlConfig = childNode;
 			} else if (SERVICE_NAMESPACE.equals(childNode.getNodeName())) {

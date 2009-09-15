@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,24 +15,15 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.config.spring.ConfigFactoryBean;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.test.web.HtmlUnitUtil;
 
 /**
  * 
@@ -70,7 +61,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
 		KimEntityEntityType eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityEntityType Must not be null", eet );
 		assertEquals( "there should be 1 email address", 1, eet.getEmailAddresses().size() );
-		assertEquals( "email address does not match", "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddress() );
+		assertEquals( "email address does not match", "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
 	}
 
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -55,6 +57,19 @@ public class AttributeValidationHelper {
     	return attributeImpl;
     }
     
+	public AttributeSet convertAttributesToMap(List<? extends KimAttributeDataImpl> attributes) {
+		AttributeSet m = new AttributeSet();
+		for(KimAttributeDataImpl data: attributes) {
+			KimAttributeImpl attrib = getAttributeDefinition(data.getKimAttributeId());
+			if(attrib != null){
+				m.put(attrib.getAttributeName(), data.getAttributeValue());
+			} else {
+				LOG.error("Unable to get attribute name for ID:" + data.getKimAttributeId());
+			}
+		}
+		return m;
+	}
+    
 	public AttributeSet convertQualifiersToMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		AttributeSet m = new AttributeSet();
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
@@ -68,6 +83,19 @@ public class AttributeValidationHelper {
 		return m;
 	}
 
+	public AttributeSet getBlankValueQualifiersMap(List<KimTypeAttributeInfo> attributes) {
+		AttributeSet m = new AttributeSet();
+		for(KimTypeAttributeInfo attribute: attributes){
+			KimAttributeImpl attrib = getAttributeDefinition(attribute.getKimAttributeId());
+			if ( attrib != null ) {
+				m.put( attrib.getAttributeName(), "" );
+			} else {
+				LOG.error("Unable to get attribute name for ID:" + attribute.getKimAttributeId());
+			}
+		}
+		return m;
+	}
+	
 	public AttributeSet convertQualifiersToAttrIdxMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		AttributeSet m = new AttributeSet();
 		int i = 0;
@@ -96,7 +124,7 @@ public class AttributeValidationHelper {
 		for ( String key : validationErrors.keySet() ) {
     		String[] errorMsg = StringUtils.split(validationErrors.get( key ), ":");
     		
-			GlobalVariables.getErrorMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
+			GlobalVariables.getMessageMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
 		}
     }
 

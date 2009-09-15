@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,13 +24,14 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.exception.ValidationException;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Contains common properties and methods for data dictionary entries.
  * 
  * 
  */
-abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
+abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, InitializingBean {
 
     protected List<AttributeDefinition> attributes;
     protected List<CollectionDefinition> collections;
@@ -278,19 +279,6 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
             
      */
     public void setRelationships(List<RelationshipDefinition> relationships) {
-        relationshipMap.clear();
-        for ( RelationshipDefinition relationship : relationships ) {            
-            if (relationship == null) {
-                throw new IllegalArgumentException("invalid (null) relationshipDefinition");
-            }
-            String relationshipName = relationship.getObjectAttributeName();
-            if (StringUtils.isBlank(relationshipName)) {
-                throw new ValidationException("invalid (blank) relationshipName");
-            }
-            relationship.setSourceClass(getEntryClass());
-            relationshipMap.put(relationshipName, relationship);
-        }
-        
         this.relationships = relationships;
     }
 
@@ -305,4 +293,26 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry {
     public Set<String> getRelationshipNames() {
         return relationshipMap.keySet();
     }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+     */
+    public void afterPropertiesSet() throws Exception {
+    	if ( relationships != null ) {
+            relationshipMap.clear();
+            for ( RelationshipDefinition relationship : relationships ) {            
+                if (relationship == null) {
+                    throw new IllegalArgumentException("invalid (null) relationshipDefinition");
+                }
+                String relationshipName = relationship.getObjectAttributeName();
+                if (StringUtils.isBlank(relationshipName)) {
+                    throw new ValidationException("invalid (blank) relationshipName");
+                }
+                relationship.setSourceClass(getEntryClass());
+                relationshipMap.put(relationshipName, relationship);
+            }
+    	}
+   	}
 }

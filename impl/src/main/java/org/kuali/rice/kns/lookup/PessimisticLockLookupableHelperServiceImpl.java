@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,8 +21,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -32,6 +35,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -45,6 +49,8 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PessimisticLockLookupableHelperServiceImpl.class);
 
     private static final long serialVersionUID = -5839142187907211804L;
+    private static final String OWNER_PRINCIPAL_ID_PROPERTY_NAME = "ownedByPrincipalIdentifier";
+    private static final String OWNER_PRINCIPAL_NAME_PROPERTY_NAME = "ownedByUser.principalName";
 
     private List<Row> localRows;
 
@@ -113,12 +119,24 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
             fieldValues.put(KNSPropertyConstants.OWNED_BY_PRINCIPAL_ID,GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
 
+        //set owner's principal id and remove owner principal name field 
+        String principalName = fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
+        if (!StringUtils.isEmpty(principalName)) {
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+            if (principal != null) { 
+                fieldValues.put(OWNER_PRINCIPAL_ID_PROPERTY_NAME, principal.getPrincipalId());
+            }
+            fieldValues.remove(OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
+        }
+        
         setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
         setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
         setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
         if (LOG.isInfoEnabled()) {
         	LOG.info("Search Criteria: " + fieldValues);
         }
+        
+        //replace principal name with principal id in fieldValues
         List searchResults;
         searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), fieldValues, true);
         // sort list if default sort column given
@@ -127,6 +145,18 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
             Collections.sort(searchResults, new BeanPropertyComparator(getDefaultSortColumns(), true));
         }
         return searchResults;
+    }
+
+    @Override
+    public void validateSearchParameters(Map fieldValues) {
+        super.validateSearchParameters(fieldValues);
+        if (StringUtils.isNotEmpty((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME))) {
+            Person person = KIMServiceLocator.getPersonService().getPerson((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME));
+            if (person == null) {
+                String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
+                GlobalVariables.getMessageMap().putError(OWNER_PRINCIPAL_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_EXISTENCE, attributeLabel);
+            } 
+        }
     }
 
 }

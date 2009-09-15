@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Mar 21, 2007
 
 package org.kuali.rice.kew.mail.service.impl;
 
@@ -375,7 +374,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             addObjectXML(doc, person, root, "actionItemPerson");
             addTextElement(doc, root, "actionItemPrincipalId", person.getPrincipalId());
             addTextElement(doc, root, "actionItemPrincipalName", person.getPrincipalName());
-            addObjectXML(doc, header, root, "doc");
+            addDocumentHeaderXML(doc, header, root, "doc");
             addObjectXML(doc, header.getInitiatorPrincipal(), root, "docInitiator");
             addTextElement(doc, root, "docInitiatorDisplayName", header.getInitiatorDisplayName());
             addObjectXML(doc, header.getDocumentType(), root, "documentType");
@@ -387,6 +386,33 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             throw new WorkflowRuntimeException(e);
         }
         return generateEmailContent(styleSheet, doc);
+    }
+    
+    /**
+     * This method handles converting the DocumentRouteHeaderValue into an XML representation.  The reason we can't just use
+     * propertiesToXml like we have elsewhere is because the doc header has a String attached to it that has the XML document
+     * content in it.  The default serialization of this will serialize this as a String so we will end up with escaped XML
+     * in our output which we won't be able to process with the email stylesheet.  So we need to read the xml content from
+     * the document and parse it into a DOM object so it can be appended to our output.
+     */
+    protected void addDocumentHeaderXML(Document document, DocumentRouteHeaderValue documentHeader, Node node, String elementName) throws Exception {
+    	Element element = XmlHelper.propertiesToXml(document, documentHeader, elementName);
+    	// now we need to "fix" the xml document content because it's going to be in there as escaped XML
+    	Element docContentElement = (Element)element.getElementsByTagName("docContent").item(0);
+    	String documentContent = docContentElement.getTextContent();
+    	Document documentContentXML = XmlHelper.readXml(documentContent);
+    	Element documentContentElement = documentContentXML.getDocumentElement();
+    	documentContentElement = (Element)document.importNode(documentContentElement, true);
+    	
+    	// remove the old, bad text content
+    	docContentElement.removeChild(docContentElement.getFirstChild());
+    	
+    	// replace with actual XML
+    	docContentElement.appendChild(documentContentElement);
+    	
+        LOG.debug(XmlHelper.jotNode(element));
+
+        node.appendChild(element);
     }
 
     public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems) {

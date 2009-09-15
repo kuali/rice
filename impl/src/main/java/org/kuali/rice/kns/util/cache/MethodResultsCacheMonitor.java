@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ import com.opensymphony.oscache.base.events.CacheEntryEvent;
  * 
  * 
  */
+@SuppressWarnings("unchecked")
 public class MethodResultsCacheMonitor extends OSCacheMonitor {
     private static final Log LOG = LogFactory.getLog(MethodResultsCacheMonitor.class);
 
@@ -42,16 +43,20 @@ public class MethodResultsCacheMonitor extends OSCacheMonitor {
     /**
      * @see org.kuali.rice.kns.util.cache.OSCacheMonitor#cacheEntryAdded(com.opensymphony.oscache.base.events.CacheEntryEvent)
      */
-    public void cacheEntryAdded(CacheEntryEvent event) {
+	public void cacheEntryAdded(CacheEntryEvent event) {
         super.cacheEntryAdded(event);
 
         CacheEntry ce = event.getEntry();
         CopiedObject co = (CopiedObject) ce.getContent();
-        LOG.debug("cached entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("cached entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        }
 
         entryCount++;
         byteSize += co.getSize();
-        LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        }
     }
 
     /**
@@ -62,11 +67,15 @@ public class MethodResultsCacheMonitor extends OSCacheMonitor {
 
         CacheEntry ce = event.getEntry();
         CopiedObject co = (CopiedObject) ce.getContent();
-        LOG.debug("flushed entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("flushed entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        }
 
         entryCount--;
         byteSize -= co.getSize();
-        LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        }
     }
 
     /**
@@ -77,11 +86,15 @@ public class MethodResultsCacheMonitor extends OSCacheMonitor {
 
         CacheEntry ce = event.getEntry();
         CopiedObject co = (CopiedObject) ce.getContent();
-        LOG.debug("removed entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("removed entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        }
 
         entryCount--;
         byteSize -= co.getSize();
-        LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        }
     }
 
     /**
@@ -92,10 +105,14 @@ public class MethodResultsCacheMonitor extends OSCacheMonitor {
 
         CacheEntry ce = event.getEntry();
         CopiedObject co = (CopiedObject) ce.getContent();
-        LOG.debug("updated entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("updated entry for key '" + ce.getKey() + "', size " + co.getSize() + " bytes");
+        }
 
         byteSize -= co.getOldSize();
         byteSize += co.getSize();
-        LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("cache size now " + entryCount + " entries, " + byteSize + " bytes");
+        }
     }
 }

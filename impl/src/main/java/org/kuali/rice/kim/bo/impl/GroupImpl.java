@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,10 +16,8 @@
 package org.kuali.rice.kim.bo.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,11 +38,10 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -88,10 +85,7 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	private List<Person> memberPersons;
 	@Transient
 	private List<GroupInfo> memberGroups;
-	@Transient
-	private KimTypeImpl kimTypeImpl;
 
-	protected KimTypeImpl kimGroupType; 
 	protected AttributeSet attributes;
 	
 	/**
@@ -121,19 +115,6 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
-	}
-
-	public KimTypeImpl getKimGroupType() {
-		if (kimGroupType == null) {
-			Map<String,String> pkMap = new HashMap<String,String>();
-			pkMap.put("kimTypeId", kimTypeId);
-			setKimGroupType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap));			
-		}
-		return this.kimGroupType;
-	}
-
-	public void setKimGroupType(KimTypeImpl kimGroupType) {
-		this.kimGroupType = kimGroupType;
 	}
 
 	/**
@@ -224,13 +205,6 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	 */
 	public void setGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {
 		this.groupAttributes = groupAttributes;
-	}
-
-	/**
-	 * @param kimTypeImpl the kimTypeImpl to set
-	 */
-	public void setKimTypeImpl(KimTypeImpl kimTypeImpl) {
-		this.kimTypeImpl = kimTypeImpl;
 	}
 
 	/**
@@ -347,8 +321,8 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	    return null;
 	}
 
-    public KimTypeImpl getKimTypeImpl() {
-        return KIMServiceLocator.getTypeInternalService().getKimType(this.kimTypeId);
+    public KimTypeInfo getKimTypeInfo() {
+        return KIMServiceLocator.getTypeInfoService().getKimType(this.kimTypeId);
     }
 
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,8 @@ import org.kuali.rice.kns.util.Guid;
  */
 @MappedSuperclass
 public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);
+    private static final long serialVersionUID = 1451642350593233282L;
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);
     @Version
     @Column(name="VER_NBR")
     protected Long versionNumber;
@@ -57,7 +58,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     @Transient
     private transient Boolean thisNotesSupport;
     @Transient
-    private transient static Map notesSupport;
+    private transient static Map<Class<? extends PersistableBusinessObjectBase>,Boolean> notesSupportCache = new HashMap<Class<? extends PersistableBusinessObjectBase>,Boolean>();
     
     // This is only a flag if a @Sequence is used and is set up explicitly on Maint Doc creation
     @Transient
@@ -69,23 +70,23 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     
     public boolean isBoNotesSupport() {
         if (thisNotesSupport == null) {
-            if (notesSupport == null) {
-                notesSupport = new HashMap();
-            }
-
-            thisNotesSupport = (Boolean) notesSupport.get(getClass());
+            thisNotesSupport = notesSupportCache.get(getClass());
             if (thisNotesSupport == null) { // not cached
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("querying service for notesSupport state: " + getClass().getName());
                 }
-                thisNotesSupport = supportsBoNotes();
-                if (thisNotesSupport == null)
-                    thisNotesSupport = Boolean.FALSE;
-                notesSupport.put(getClass(), thisNotesSupport);
+                // protect against concurrent modification to the cached map
+                synchronized ( notesSupportCache ) {
+                    thisNotesSupport = supportsBoNotes();
+                    if (thisNotesSupport == null) {
+                        thisNotesSupport = Boolean.FALSE;
+                    }
+                    notesSupportCache.put(getClass(), thisNotesSupport);
+				}
             }
         }
 
-        return thisNotesSupport.booleanValue();
+        return thisNotesSupport;
     }
 
     protected Boolean supportsBoNotes() {

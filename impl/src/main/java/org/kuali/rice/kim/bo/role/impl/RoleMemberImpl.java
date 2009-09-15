@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -24,7 +25,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -36,6 +45,8 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_ROLE_MBR_T")
 public class RoleMemberImpl extends KimAbstractMemberImpl {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name="ROLE_MBR_ID")
@@ -83,12 +94,27 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 		this.attributes = attributes;
 	}
 
+	protected transient AttributeSet qualifierAsAttributeSet = null;
+
 	public AttributeSet getQualifier() {
-		AttributeSet m = new AttributeSet();
-		for ( RoleMemberAttributeDataImpl data : getAttributes() ) {
-			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+		if ( qualifierAsAttributeSet == null ) {
+			KimRoleInfo role = getRoleService().getRole(roleId);
+			KimTypeInfo kimType = getTypeInfoService().getKimType( role.getKimTypeId() );
+			AttributeSet m = new AttributeSet();
+			for ( RoleMemberAttributeDataImpl data : getAttributes() ) {
+				KimTypeAttributeInfo attribute = null;
+				if ( kimType != null ) {
+					attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+				}
+				if ( attribute != null ) {
+					m.put( attribute.getAttributeName(), data.getAttributeValue() );
+				} else {
+					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+				}
+			}
+			qualifierAsAttributeSet = m;
 		}
-		return m;
+		return qualifierAsAttributeSet;
 	}
 	
 	public boolean hasQualifier() {
@@ -106,6 +132,39 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	 */
 	public void setRoleRspActions(List<RoleResponsibilityActionImpl> roleRspActions) {
 		this.roleRspActions = roleRspActions;
+	}
+
+	private transient static KimTypeInfoService kimTypeInfoService;
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return kimTypeInfoService;
+	}
+	private transient static RoleService roleService;
+	protected RoleService getRoleService() {
+		if(roleService == null){
+			roleService = KIMServiceLocator.getRoleManagementService();
+		}
+		return roleService;
+	}
+
+	public RoleMemberCompleteInfo toSimpleInfo(){
+		RoleMemberCompleteInfo roleMemberCompleteInfo = new RoleMemberCompleteInfo();
+		roleMemberCompleteInfo.setRoleId(roleId);
+		roleMemberCompleteInfo.setRoleMemberId(roleMemberId);
+		roleMemberCompleteInfo.setActiveFromDate(activeFromDate);
+		roleMemberCompleteInfo.setActiveToDate(activeToDate);
+		roleMemberCompleteInfo.setMemberId(memberId);
+		roleMemberCompleteInfo.setMemberTypeCode(memberTypeCode);
+		roleMemberCompleteInfo.setQualifier(getQualifier());
+		roleMemberCompleteInfo.setRoleRspActions(new ArrayList<RoleResponsibilityActionInfo>());
+		if(roleRspActions!=null){
+			for(RoleResponsibilityActionImpl roleResponsibilityActionImpl: roleRspActions){
+				roleMemberCompleteInfo.getRoleRspActions().add(roleResponsibilityActionImpl.toSimpleInfo());
+			}
+		}
+		return roleMemberCompleteInfo;
 	}
 
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,10 +16,12 @@
 package org.kuali.rice.kns.document;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
@@ -276,8 +278,27 @@ public interface Document extends PersistableBusinessObject{
      * 
      * If no wrappers are necessary, then this object may return "this"
      * 
-     * @return a wrapper object (most likely containing a refrernce to "this"), or "this" itself.
+     * @return a wrapper object (most likely containing a reference to "this"), or "this" itself.
      * @see KualiDocumentXmlMaterializer
      */
     public Object wrapDocumentWithMetadataForXmlSerialization();
+    
+    /**
+     * This method returns whether or not this document supports custom lock descriptors for pessimistic locking.
+     * 
+     * @return True if the document can generate custom lock descriptors, false otherwise.
+     * @see #getCustomLockDescriptor(Map, Person)
+     */
+    public boolean useCustomLockDescriptors();
+    
+    /**
+     * Generates a custom lock descriptor for pessimistic locking. This method should not be called unless {@link #useCustomLockDescriptors()} returns true.
+     * 
+     * @param user The user trying to establish the lock.
+     * @return A String representing the lock descriptor.
+     * @see #useCustomLockDescriptors()
+     * @see org.kuali.rice.kns.service.PessimisticLockService
+     * @see org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl
+     */
+    public String getCustomLockDescriptor(Person user);
 }

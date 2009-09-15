@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation
+ * Copyright 2008-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,11 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -32,85 +27,82 @@ import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class KimEntityDefaultInfo extends KimInactivatableInfo implements ExternalizableBusinessObject {
+public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 7930630152792502380L;
 	protected String entityId;
-	protected KimEntityName defaultName;
-	protected List<? extends KimPrincipal> principals;
+	protected KimEntityNameInfo defaultName;
+	protected List<KimPrincipalInfo> principals;
 	protected List<KimEntityEntityTypeDefaultInfo> entityTypes;
-	protected List<? extends KimEntityAffiliation> affiliations;
-	protected KimEntityAffiliation defaultAffiliation;
-	protected KimEntityEmploymentInformation primaryEmployment;
-	protected List<? extends KimEntityExternalIdentifier> externalIdentifiers;
+	protected List<KimEntityAffiliationInfo> affiliations;
+	protected KimEntityAffiliationInfo defaultAffiliation;
+	protected KimEntityEmploymentInformationInfo primaryEmployment;
+	protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
+	protected KimEntityPrivacyPreferencesInfo privacyPreferences;
 	
 	public String getEntityId() {
-		return unNullify(this.entityId);
+		return this.entityId;
 	}
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-	public KimEntityName getDefaultName() {
-		return unNullify(this.defaultName, KimEntityNameInfo.class);
+	public KimEntityNameInfo getDefaultName() {
+		return this.defaultName;
 	}
 	public void setDefaultName(KimEntityName defaultName) {
-		this.defaultName = defaultName;
+		this.defaultName = new KimEntityNameInfo(defaultName);
 	}
 	public List<KimEntityEntityTypeDefaultInfo> getEntityTypes() {
-		return unNullify(this.entityTypes);
+		return this.entityTypes;
 	}
 	public void setEntityTypes(List<KimEntityEntityTypeDefaultInfo> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
-	public List<? extends KimEntityAffiliation> getAffiliations() {
-		return unNullify(this.affiliations);
+	public List<KimEntityAffiliationInfo> getAffiliations() {
+		return this.affiliations;
 	}
-	public void setAffiliations(List<? extends KimEntityAffiliation> affiliations) {
+	public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
 		this.affiliations = affiliations;
 	}
-	public KimEntityAffiliation getDefaultAffiliation() {
-		return unNullify(this.defaultAffiliation, KimEntityAffiliationInfo.class);
+	public KimEntityAffiliationInfo getDefaultAffiliation() {
+		return this.defaultAffiliation;
 	}
 	public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
-		this.defaultAffiliation = defaultAffiliation;
+		this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
 	}
-	public KimEntityEmploymentInformation getPrimaryEmployment() {
-		return unNullify(this.primaryEmployment, KimEntityEmploymentInformationInfo.class);
+	public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
+		return this.primaryEmployment;
 	}
 	public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
-		this.primaryEmployment = primaryEmployment;
+		this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
 	}
-	public List<? extends KimEntityExternalIdentifier> getExternalIdentifiers() {
-		return unNullify(this.externalIdentifiers);
+	public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
+		return this.externalIdentifiers;
 	}
-	public void setExternalIdentifiers(List<? extends KimEntityExternalIdentifier> externalIdentifiers) {
+	public void setExternalIdentifiers(List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
-	public List<? extends KimPrincipal> getPrincipals() {
-		return unNullify(this.principals);
+	public List<KimPrincipalInfo> getPrincipals() {
+		return this.principals;
 	}
-	public void setPrincipals(List<? extends KimPrincipal> principals) {
+	public void setPrincipals(List<KimPrincipalInfo> principals) {
 		this.principals = principals;
 	}
 	
 	public KimEntityEntityTypeDefaultInfo getEntityType(String entityTypeCode) {
-		for ( KimEntityEntityTypeDefaultInfo entType : this.getEntityTypes() ) {
+		for ( KimEntityEntityTypeDefaultInfo entType : entityTypes ) {
 			if ( entType.getEntityTypeCode().equals( entityTypeCode ) ) {
 				return entType;
 			}
 		}
-		return new KimEntityEntityTypeDefaultInfo();
+		return null;
 	}
-	
-	/** {@inheritDoc} */
-    public void refresh(){
-    	
+    public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
+        return this.privacyPreferences;
     }
-    
-    /** {@inheritDoc} */
-    public void prepareForWorkflow(){
-    	
+    public void setPrivacyPreferences(
+            KimEntityPrivacyPreferencesInfo privacyPreferences) {
+        this.privacyPreferences = privacyPreferences;
     }
 	
 }

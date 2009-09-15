@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +44,7 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
+import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -58,8 +58,8 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.ParameterConstants;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -76,6 +76,11 @@ public class WebUtils {
 
     private static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
     private static final String IMAGE_COORDINATE_CLICKED_Y_EXTENSION = ".y";
+    
+    /**
+     * A request attribute name that indicates that a {@link FileUploadLimitExceededException} has already been thrown for the request.
+     */
+    public static final String FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN = "fileUploadLimitExceededExceptionAlreadyThrown";
     
     /**
      * Checks for methodToCall parameter, and picks off the value using set dot notation. Handles the problem of image submits.
@@ -311,7 +316,7 @@ public class WebUtils {
         return key;
     }
 
-    public static void getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form) {
+    public static void getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form, ActionMapping mapping) {
         Map params = new HashMap();
 
         // Get the ActionServletWrapper from the form bean
@@ -319,7 +324,7 @@ public class WebUtils {
         boolean isMultipart = false;
         try {
             // Obtain a MultipartRequestHandler
-            MultipartRequestHandler multipartHandler = getMultipartHandler(request, form);
+        	KualiMultipartRequestHandler multipartHandler = getMultipartHandler(request, form);
 
             if (multipartHandler != null) {
                 isMultipart = true;
@@ -335,7 +340,14 @@ public class WebUtils {
                 // stop here if the maximum length has been exceeded
                 Boolean maxLengthExceeded = (Boolean) request.getAttribute(MultipartRequestHandler.ATTRIBUTE_MAX_LENGTH_EXCEEDED);
                 if ((maxLengthExceeded != null) && (maxLengthExceeded.booleanValue())) {
-                    throw new FileUploadLimitExceededException("");
+                	Boolean fileUploadLimitExceededExceptionAlreadyThrown = (Boolean) request.getAttribute(FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN);
+                	if (fileUploadLimitExceededExceptionAlreadyThrown != null && fileUploadLimitExceededExceptionAlreadyThrown) {
+                		request.setAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY, new HashMap());
+                		return;
+                	}
+                	request.setAttribute(FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN, Boolean.TRUE);
+                	ModuleConfig mc = (ModuleConfig) request.getAttribute(Globals.MODULE_KEY);
+                    throw new FileUploadLimitExceededException("Uploaded file was too large.  Maximum size is " + multipartHandler.getSizeMax(mc) + " bytes.", form, mapping);
                 }
                 // get file elements for kualirequestprocessor
                 if (servletWrapper == null) {
@@ -348,7 +360,7 @@ public class WebUtils {
         }
     }
 
-    private static MultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
+    private static KualiMultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
         KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
         if (form instanceof PojoFormBase) {
             multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
@@ -434,13 +446,18 @@ public class WebUtils {
     
     public static boolean isPropertyEditable(Set<String> editableProperties, String propertyName){
     	if (LOG.isDebugEnabled()) {
-    		LOG.debug("editableProperties: "+editableProperties);
+    		LOG.debug("isPropertyEditable("+ propertyName+")");
     	}
     	
     	boolean returnVal =  editableProperties.contains(propertyName) ||
     			(getIndexOfCoordinateExtension(propertyName)==-1?false:
     				editableProperties.contains(
     						propertyName.substring(0, getIndexOfCoordinateExtension(propertyName))));
+    	if ( !returnVal ) {
+        	if (LOG.isDebugEnabled()) {
+        		LOG.debug("isPropertyEditable("+propertyName+") == false / editableProperties: "+editableProperties);
+        	}
+    	}
     	return returnVal;
     }
     
@@ -488,28 +505,36 @@ public class WebUtils {
     	return displayMaskValue;
     }
     
-    public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName) {
+    public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName, KualiForm form ) {
 		    Class businessObjClass = null;
 		    try{
 		    	businessObjClass = Class.forName(businessObjectClassName);
-		    	
 		    }catch(Exception e){
-		    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+		    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 		    }
-		    return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
-		  			   businessObjClass, fieldName);
+		    if ( form instanceof KualiDocumentFormBase ) {
+		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+		    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
+		    } else {
+		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+		    			businessObjClass, fieldName, null);
+		    }
     }
     
-    public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName) {
+    public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName, KualiForm form ) {
 	    Class businessObjClass = null;
 	    try{
-	    	businessObjClass = Class.forName(businessObjectClassName);
-	    	
+	    	businessObjClass = Class.forName(businessObjectClassName);	    	
 	    }catch(Exception e){
-	    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+	    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 	    }
-	    return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
-	  			   businessObjClass, fieldName);
+	    if ( form instanceof KualiDocumentFormBase ) {
+	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+	    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
+	    } else {
+	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+	    			businessObjClass, fieldName, null);
+	    }
     }
     
     public static boolean canAddNoteAttachment(Document document) {
@@ -542,20 +567,20 @@ public class WebUtils {
     }
     
     public static void reuseErrorMapFromPreviousRequest(KualiDocumentFormBase kualiDocumentFormBase) {
-    	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == null) {
+    	if (kualiDocumentFormBase.getMessageMapFromPreviousRequest() == null) {
     		LOG.error("Error map from previous request is null!");
     		return;
     	}
-    	ErrorMap errorMapFromGlobalVariables = GlobalVariables.getErrorMap();
-    	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == errorMapFromGlobalVariables) {
+    	MessageMap errorMapFromGlobalVariables = GlobalVariables.getMessageMap();
+    	if (kualiDocumentFormBase.getMessageMapFromPreviousRequest() == errorMapFromGlobalVariables) {
     		// if we've switched them already, then return early and do nothing
     		return;
     	}
     	if (!errorMapFromGlobalVariables.isEmpty()) {
     		throw new RuntimeException("Cannot replace error map because it is not empty");
     	}
-    	GlobalVariables.setErrorMap(kualiDocumentFormBase.getErrorMapFromPreviousRequest());
-    	GlobalVariables.getErrorMap().clearErrorPath();
+    	GlobalVariables.setMessageMap(kualiDocumentFormBase.getMessageMapFromPreviousRequest());
+    	GlobalVariables.getMessageMap().clearErrorPath();
     }
     
     /**
@@ -619,8 +644,8 @@ public class WebUtils {
     	if (StringUtils.isBlank(fieldValue)) {
     		return false;
     	}
-    	KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
-    	List<String> sensitiveDataPatterns = kualiConfigurationService.getParameterValues(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT, 
+    	ParameterService parameterService = KNSServiceLocator.getParameterService();
+    	List<String> sensitiveDataPatterns = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT, 
     			KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
     	for (String pattern : sensitiveDataPatterns){
     		if (Pattern.compile(pattern).matcher(fieldValue).find()) {

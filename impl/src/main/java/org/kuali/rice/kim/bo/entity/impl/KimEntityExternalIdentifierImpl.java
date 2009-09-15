@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.security.GeneralSecurityException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,9 +29,7 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
-import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -42,7 +37,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 @Entity
 @Table(name = "KRIM_ENTITY_EXT_ID_T")
 public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implements KimEntityExternalIdentifier {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimEntityExternalIdentifierImpl.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -131,112 +125,39 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 		this.externalIdentifierType = externalIdentifierType;
 	}
 	
+    @Override
 	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeInsert(persistenceBroker);
-		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
-	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
-			if(this.externalId != null){
-				try{
-					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
-				}catch (GeneralSecurityException e) {
-					LOG.error("Caught Exception attempting to encrypt external id", e);
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
-		        }
-
-			}
-		}
-		
+		externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
 	}
 	
+	@Override
 	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeUpdate(persistenceBroker);
-		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
-	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
-			if(this.externalId != null){
-				try{
-					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
-				}catch (GeneralSecurityException e) {
-					LOG.error("Caught Exception attempting to encrypt external id", e);
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
-		        }
-
-			}
-		}
+        externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
 	}
 	
+	@Override
 	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
         super.afterLookup(persistenceBroker);
-        Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
-	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
-			if(this.externalId != null){
-				try{
-					externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
-				}catch (GeneralSecurityException e) {
-					LOG.error("Caught Exception attempting to decrypt external id", e);
-		            throw new RuntimeException("Unable to decrypt value : " + e.getMessage(), e);
-		        }
-
-			}
-		}
+        externalId = KimCommonUtils.decryptExternalIdentifier(externalId, externalIdentifierTypeCode);
 	}
 	
+	@Override
 	public void beforeInsert() {
 		super.beforeInsert();
-		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
-	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
-			if(this.externalId != null){
-				try{
-					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
-				}catch (GeneralSecurityException e) {
-					LOG.error("Caught Exception attempting to encrypt external id", e);
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
-		        }
-
-			}
-		}
+		externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
     }
 
+	@Override
 	public void beforeUpdate() {
 		super.beforeUpdate();
-		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
-	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
-			if(this.externalId != null){
-				try{
-					externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
-				}catch (GeneralSecurityException e) {
-					LOG.error("Caught Exception attempting to encrypt external id", e);
-		            throw new RuntimeException("Unable to encrypt value : " + e.getMessage(), e);
-		        }
-
-			}
-		}
+        externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
 	}
 	
 	@javax.persistence.PostLoad 
 	public void afterLookup(){
-		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode);
-	    ExternalIdentifierType externalIdentifierType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierType!= null && externalIdentifierType.isEncryptionRequired()){
-				if(this.externalId != null){
-					try{
-						externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
-					}catch (GeneralSecurityException e) {
-						LOG.error("Caught Exception attempting to decrypt external id", e);
-			            throw new RuntimeException("Unable to decrypt value : " + e.getMessage(), e);
-			        }
-
-				}
-			}
+        externalId = KimCommonUtils.decryptExternalIdentifier(externalId, externalIdentifierTypeCode);
 	}
+
 }

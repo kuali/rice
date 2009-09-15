@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -207,6 +207,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 
 		model.put("userRecipients", request.getParameter("userRecipients"));
 		model.put("workgroupRecipients", request.getParameter("workgroupRecipients"));
+		model.put("workgroupNamespaceCodes", request.getParameter("workgroupNamespaceCodes"));
 
 		return model;
 	}
@@ -278,7 +279,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 
 			// This ain't pretty, but it gets the job done for now.
 			ErrorList el = new ErrorList();
-			el.addError("Notifcation(s) sent.");
+			el.addError("Notification(s) sent.");
 			model.put("errors", el);
 
 		} catch (ErrorList el) {
@@ -405,6 +406,9 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 		// workgroup recipient names
 		String[] workgroupRecipients = parseWorkgroupRecipients(request);
 
+		// workgroup namespace codes
+		String[] workgroupNamespaceCodes = parseWorkgroupNamespaceCodes(request);
+		
 		// title
 		String title = request.getParameter("title");
 		if (!StringUtils.isEmpty(title)) {
@@ -477,14 +481,25 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 
 		if (workgroupRecipients != null && workgroupRecipients.length > 0) {
 			recipientsExist = true;
-			for (String workgroupRecipientId : workgroupRecipients) {
-				if (isWorkgroupRecipientValid(workgroupRecipientId, errors)) {
-					NotificationRecipient recipient = new NotificationRecipient();
-					recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
-					recipient.setRecipientId(workgroupRecipientId);
-					notification.addRecipient(recipient);
+			if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
+				if (workgroupNamespaceCodes.length == workgroupRecipients.length) {
+					for (int i = 0; i < workgroupRecipients.length; i++) {
+						if (isWorkgroupRecipientValid(workgroupRecipients[i], workgroupNamespaceCodes[i], errors)) {
+							NotificationRecipient recipient = new NotificationRecipient();
+							recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+							recipient.setRecipientId(
+									getIdentityManagementService().getGroupByName(workgroupNamespaceCodes[i], workgroupRecipients[i]).getGroupId());
+							notification.addRecipient(recipient);
+						}
+					}
+				} else {
+					errors.addError("The number of groups must match the number of namespace codes");
 				}
+			} else {
+				errors.addError("You must specify a namespace code for every group name");
 			}
+		} else if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
+			errors.addError("You must specify a group name for every namespace code");
 		}
 
 		// check to see if there were any errors

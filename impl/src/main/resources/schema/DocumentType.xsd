@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
         xmlns:c="ns:workflow/common"
         xmlns:dt="ns:workflow/DocumentType"
@@ -620,7 +635,13 @@ Definitions are applied to the names in the routeNodes section.
               		</documentation>
               	</annotation>
               </element>
-
+			  <element name="role" type="dt:PathNodeType">
+        		<annotation>
+        		  <documentation>
+        		    Generate request to a Role
+        		  </documentation>
+        		</annotation>
+        	  </element>
               <!-- I don't know what this type of route path node is. It is present in EngineConfig.xml in the engine test package. -->
               <element name="simple" type="dt:PathNodeType">
               	<annotation>
@@ -637,6 +658,31 @@ Definitions are applied to the names in the routeNodes section.
               		</documentation>
               	</annotation>
               </element>
+              
+              <element name="process" type="dt:PathNodeType">
+        		<annotation>
+        			<documentation>
+        		 	Group other nodes together.
+        			</documentation>
+        		</annotation>
+        	</element>
+
+        	<element name="split" type="dt:SplitType">
+        		<annotation>
+        			<documentation>
+        		 	Cause branches in the routing path.
+        			</documentation>
+        		</annotation>
+        	</element>
+
+        	<!-- not quite sure what exactly it means to have an orphan join -->
+        	<element name="join" type="dt:NamedElementType">
+        		<annotation>
+        			<documentation>
+        		 	Join branches back together.
+        			</documentation>
+        		</annotation>
+        	</element>
             </choice>
           </sequence>
         </extension>

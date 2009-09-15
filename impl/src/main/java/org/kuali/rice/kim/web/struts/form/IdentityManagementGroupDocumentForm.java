@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,12 +17,14 @@ package org.kuali.rice.kim.web.struts.form;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -39,7 +41,8 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	}
 	
 	protected boolean canAssignGroup = true;
-	protected KimTypeImpl kimType;
+	
+	protected KimTypeInfo kimType;
 	protected GroupDocumentMember member = new GroupDocumentMember();
 	protected String groupId;
     
@@ -89,15 +92,10 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
-		return this.kimType;
-	}
-
-	/**
-	 * @param kimType the kimType to set
-	 */
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
+	public KimTypeInfo getKimType() {
+		if(StringUtils.isNotBlank(getGroupDocument().getGroupTypeId()))
+			return KIMServiceLocator.getTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
+		else return kimType;
 	}
 
 	/**
@@ -151,6 +149,13 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	 */
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	/**
+	 * @param kimType the kimType to set
+	 */
+	public void setKimType(KimTypeInfo kimType) {
+		this.kimType = kimType;
 	}
 
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +24,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.EmailType;
 import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -57,11 +62,17 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
 	protected EmailType emailType;
+	
+	@Transient
+	protected Boolean suppressEmail;
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
 	 */
 	public String getEmailAddress() {
+	    if (isSuppressEmail()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return emailAddress;
 	}
 
@@ -138,5 +149,25 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 	public void setEmailType(EmailType emailType) {
 		this.emailType = emailType;
 	}
+
+    public boolean isSuppressEmail() {
+        if (suppressEmail != null) {
+            return suppressEmail.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressEmail = false;
+        if (privacy != null) {
+            suppressEmail = privacy.isSuppressEmail();
+        } 
+        return suppressEmail.booleanValue();
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddressUnmasked()
+     */
+    public String getEmailAddressUnmasked() {
+        return this.emailAddress;
+    }
 
 }

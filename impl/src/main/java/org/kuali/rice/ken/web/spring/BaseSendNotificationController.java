@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,9 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.bo.Namespace;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.NamespaceService;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 /**
@@ -40,15 +43,24 @@ public class BaseSendNotificationController extends MultiActionController {
 
     private static final String USER_RECIPS_PARAM = "userRecipients";
     private static final String WORKGROUP_RECIPS_PARAM = "workgroupRecipients";
+    private static final String WORKGROUP_NAMESPACE_CODES_PARAM = "workgroupNamespaceCodes";
     private static final String SPLIT_REGEX = "(%2C|,)";
     
     private static IdentityManagementService identityManagementService;
+    private static NamespaceService namespaceService;
 
     protected static IdentityManagementService getIdentityManagementService() {
         if ( identityManagementService == null ) {
             identityManagementService = KIMServiceLocator.getIdentityManagementService();
         }
         return identityManagementService;
+    }
+    
+    protected static NamespaceService getNamespaceService() {
+        if ( namespaceService == null ) {
+            namespaceService = KNSServiceLocator.getNamespaceService();
+        }
+        return namespaceService;
     }
     
     protected String[] parseUserRecipients(HttpServletRequest request) {
@@ -59,6 +71,10 @@ public class BaseSendNotificationController extends MultiActionController {
         return parseCommaSeparatedValues(request, WORKGROUP_RECIPS_PARAM);
     }
 
+    protected String[] parseWorkgroupNamespaceCodes(HttpServletRequest request) {
+    	return parseCommaSeparatedValues(request, WORKGROUP_NAMESPACE_CODES_PARAM);
+    }
+    
     protected String[] parseCommaSeparatedValues(HttpServletRequest request, String param) {
         String vals = request.getParameter(param);
         if (vals != null) {
@@ -86,16 +102,20 @@ public class BaseSendNotificationController extends MultiActionController {
         return valid;
     }
 
-    protected boolean isWorkgroupRecipientValid(String group, ErrorList errors) {
-        // FIXME: this will probably need to split the given group name
-        // on some delimiter to separate the namespace and group name
-        // or switch to using the group ID number
-        Group i = getIdentityManagementService().getGroupByName("", group);
-        if (i == null) {
-            errors.addError( group + " is not a valid group name");
-            return false;
-        } else {
-            return true;
-        }
+    protected boolean isWorkgroupRecipientValid(String groupName, String namespaceCode, ErrorList errors) {
+    	Namespace nSpace = getNamespaceService().getNamespace(namespaceCode);
+    	if (nSpace == null) {
+    		errors.addError((new StringBuilder()).append('\'').append(namespaceCode).append("' is not a valid namespace code").toString());
+    		return false;
+    	} else {
+    		Group i = getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+       		if (i == null) {
+       			errors.addError((new StringBuilder()).append('\'').append(groupName).append(
+       					"' is not a valid group name for namespace code '").append(namespaceCode).append('\'').toString());
+       			return false;
+       		} else {
+       			return true;
+       		}
+    	}
     }
 }

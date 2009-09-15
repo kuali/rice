@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.RoleResponsibility;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -112,6 +113,15 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 
 	public void setKimResponsibility(KimResponsibilityImpl kimResponsibility) {
 		this.kimResponsibility = kimResponsibility;
+	}
+
+	public RoleResponsibilityInfo toSimpleInfo() {
+		RoleResponsibilityInfo roleResponsibilityInfo = new RoleResponsibilityInfo();
+		roleResponsibilityInfo.setRoleId(getRoleId());
+		roleResponsibilityInfo.setResponsibilityId(getResponsibilityId());
+		roleResponsibilityInfo.setRoleResponsibilityId(getRoleResponsibilityId());
+		roleResponsibilityInfo.setKimResponsibilityInfo(getKimResponsibility().toSimpleInfo());
+		return roleResponsibilityInfo;
 	}
 
 }

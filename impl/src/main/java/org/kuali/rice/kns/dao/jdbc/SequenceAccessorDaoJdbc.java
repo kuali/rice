@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ import org.springmodules.orm.ojb.OjbFactoryUtils;
 public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements SequenceAccessorDao {
 	private KualiModuleService kualiModuleService;
 	
-	public Long getNextAvailableSequenceNumber(String sequenceName, 
+	private Long nextAvailableSequenceNumber(String sequenceName, 
 			Class<? extends BusinessObject> clazz) {
 		
         ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
@@ -62,7 +62,7 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         } 
     	else {
     		PBKey key = new PBKey(dataSourceName);
-    		PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, true);
+    		PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, false);
     		if ( broker != null )
     			return getDbPlatform().getNextValSQL(sequenceName, broker);
     		else
@@ -70,12 +70,30 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         }
 	}
 	
+	public Long getNextAvailableSequenceNumber(String sequenceName, 
+			Class<? extends BusinessObject> clazz) {
+		
+		// There are situations where a module hasn't been configured with
+		// a dataSource.  In these cases, this method would have previously
+		// thrown an error.  Instead, we've opted to factor out the code,
+		// catch any configuration-related exceptions, and if one occurs,
+		// attempt to use the dataSource associated with KNS. -- tbradford
+		
+		try {
+			return nextAvailableSequenceNumber(sequenceName, clazz);
+		}
+		catch ( ConfigurationException e  ) {
+	    	// Use DocumentHeader to get the dataSourceName associated with KNS			
+			return nextAvailableSequenceNumber(sequenceName, DocumentHeader.class);			
+		}
+	}
+	
     /**
      * @see org.kuali.rice.kns.dao.SequenceAccessorDao#getNextAvailableSequenceNumber(java.lang.String)
      */
     public Long getNextAvailableSequenceNumber(String sequenceName) {
     	// Use DocumentHeader to get the dataSourceName associated with KNS
-    	return getNextAvailableSequenceNumber(sequenceName, DocumentHeader.class);
+    	return nextAvailableSequenceNumber(sequenceName, DocumentHeader.class);
     }
     
     private KualiModuleService getKualiModuleService() {

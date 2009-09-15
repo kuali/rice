@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,7 @@ package org.kuali.rice.kew.docsearch;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,15 +37,15 @@ import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * Helper class Used for building a Document Search criteria for the lookup
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public class DocumentLookupCriteriaBuilder  {
-	
+
 	/**
 	 * This method populates the criteria given a map of fields from the lookup
-	 * 
+	 *
 	 * @param lookupForm
 	 * @return constructed criteria
 	 */
@@ -57,7 +58,7 @@ public class DocumentLookupCriteriaBuilder  {
 				fieldsToSet.put(formKey, fieldsForLookup.get(formKey));
 			}
 		}
-    	for (String fieldToSet : fieldsToSet.keySet()) {	
+    	for (String fieldToSet : fieldsToSet.keySet()) {
     		String valueToSet = fieldsToSet.get(fieldToSet)[0];
 			try {
 				PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
@@ -70,6 +71,10 @@ public class DocumentLookupCriteriaBuilder  {
 				//				e.printStackTrace();
 			}
 		}
+
+    	// This will make sure that the docType is case insensitive after this point.
+    	criteria.setDocTypeFullName(getValidDocumentTypeName(criteria.getDocTypeFullName()));
+
     	if(StringUtils.isNotEmpty(criteria.getDocTypeFullName())) {
     		addSearchableAttributesToCriteria(criteria, fieldsForLookup);
     	}
@@ -79,7 +84,7 @@ public class DocumentLookupCriteriaBuilder  {
 	/**
 	 * TODO: Chris, Should be reevaluated in whole after released for KFS
 	 * This method ...
-	 * 
+	 *
 	 * @param criteria
 	 * @param propertyFields
 	 */
@@ -101,11 +106,12 @@ public class DocumentLookupCriteriaBuilder  {
 								SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
 								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
 								sacc.setRangeSearch(dsField.isMemberOfRange());
-								
+								sacc.setCaseSensitive(!dsField.isUpperCase());
+
 								//FIXME: don't force this when dd changes are in, instead delete line 1 row below and uncomment one two lines below
 								sacc.setAllowInlineRange(true);
 //								sacc.setAllowInlineRange(dsField.isAllowInlineRange());
-								
+
 								sacc.setSearchInclusive(dsField.isInclusive());
 								sacc.setLookupableFieldType(dsField.getFieldType());
 								sacc.setSearchable(dsField.isIndexedForSearch());
@@ -147,18 +153,28 @@ public class DocumentLookupCriteriaBuilder  {
 		}
 	}
 
-	/**
-	 * 
-	 * This method is taken from DocSearch to retrieve a document type
-	 * 
-	 * @param docTypeName
-	 * @return
-	 */
-    private static DocumentType getValidDocumentType(String docTypeName) {
-        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
-        if (documentType == null) {
-            throw new RuntimeException("Document Type invalid : " + docTypeName);
-        }
-        return documentType;
+	private static String getValidDocumentTypeName(String docTypeName) {
+    	if (StringUtils.isNotEmpty(docTypeName)) {
+    	    DocumentType dTypeCriteria = new DocumentType();
+    		dTypeCriteria.setName(docTypeName.trim());
+    		dTypeCriteria.setActive(true);
+    		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
+    
+    		String firstDocTypeName = null;
+    		// Return the first valid doc type.
+    		if(docTypeList != null){
+    			for(DocumentType dType: docTypeList){
+    			    if (StringUtils.isEmpty(firstDocTypeName)) {
+    			        firstDocTypeName = dType.getName();
+    			    }
+    			    if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
+    			        return dType.getName();
+    			    }
+    			}
+    			return firstDocTypeName;
+    		}
+    	}
+
+    	return null;
     }
 }

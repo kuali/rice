@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,6 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
-
 /**
  * Tests distributed Queue scenarios
  * 
@@ -36,12 +35,14 @@ import org.kuali.rice.ksb.test.KSBTestCase;
  */
 public class DistributedQueueTest extends KSBTestCase {
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DistributedQueueTest.class);
+    
     public boolean startClient1() {
-	return true;
+        return true;
     }
 
     public boolean startClient2() {
-	return true;
+        return true;
     }
 
     /**
@@ -49,47 +50,51 @@ public class DistributedQueueTest extends KSBTestCase {
      * 
      * @throws Exception
      */
-	@Test
-	public void testSuccessfullyCallingQueueOnce() throws Exception {
-
-	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
-
-	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
-	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
-	verifyServiceCalls(serviceName);
+    @Test
+    public void testSuccessfullyCallingQueueOnce() throws Exception {
+        QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
+        KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+        testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+        verifyServiceCalls(serviceName);
 
     }
-    
-	@Test
-	public void testCallingQueueAsnyc() throws Exception {
-	KSBTestUtils.setMessagingToAsync();
-	
-	QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
-	SimpleCallback callback = new SimpleCallback();
-	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
-	synchronized (callback) {
-	    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
-	    callback.waitForAsyncCall();
-	}
-	verifyServiceCalls(serviceName);
+
+    @Test
+    public void testCallingQueueAsnyc() throws Exception {
+        KSBTestUtils.setMessagingToAsync();
+        // Execute this 100 times, previously when only running a single iteration, this test would pass most of the
+        // time but then would occasionally fail, it was possible to reproduce the failure every time by adding
+        // these iterations, this allowed us to fix the underlying problem (an issue with KSB callbacks)
+        for (int i = 0; i < 100; i++) {
+            LOG.info("testCallingQueueAsnyc, iteration: " + i);
+            QName serviceName = new QName("testAppsSharedQueue", "sharedQueue");
+            SimpleCallback callback = new SimpleCallback();
+            KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
+            synchronized (callback) {
+                testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+                callback.waitForAsyncCall();
+            }
+            verifyServiceCalls(serviceName);
+            KSBServiceLocator.getBAMService().clearBAMTables();
+        }
     }
 
     private void verifyServiceCalls(QName serviceName) throws Exception {
-	BAMService bamService = KSBServiceLocator.getBAMService();
-	List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);
-	assertTrue("No service call recorded", bamCalls.size() > 0);
-	boolean foundClientCall = false;
-	boolean foundServiceCall = false;
-	for (BAMTargetEntry bamEntry : bamCalls) {
-	    if (bamEntry.getServerInvocation()) {
-		foundServiceCall = true;
-	    } else {
-		foundClientCall = true;
-	    }
-	}
-	assertTrue("No client call recorded", foundClientCall);
-	assertTrue("No service call recorded", foundServiceCall);
-	assertEquals("Wrong number of calls recorded", 2, bamCalls.size());
+        BAMService bamService = KSBServiceLocator.getBAMService();
+        List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);
+        assertTrue("No service call recorded", bamCalls.size() > 0);
+        boolean foundClientCall = false;
+        boolean foundServiceCall = false;
+        for (BAMTargetEntry bamEntry : bamCalls) {
+            if (bamEntry.getServerInvocation()) {
+                foundServiceCall = true;
+            } else {
+                foundClientCall = true;
+            }
+        }
+        assertTrue("No client call recorded", foundClientCall);
+        assertTrue("No service call recorded", foundServiceCall);
+        assertEquals("Wrong number of calls recorded", 2, bamCalls.size());
     }
 
 }

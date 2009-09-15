@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,16 +18,20 @@ package org.kuali.rice.kim.web.struts.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
@@ -35,6 +39,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase;
+import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
@@ -97,6 +102,27 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     	return KimCommonUtils.getPathWithKimContext(returnLocation, getActionName());
     }
 
+    protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
+        ActionForward dest = null;
+        if (form.isReturnToActionList()) {
+            String workflowBase = getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
+            String actionListUrl = workflowBase + "/ActionList.do";
+
+            dest = new ActionForward(actionListUrl, true);
+        }
+        else {
+        	dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
+            ActionForward newDest = new ActionForward();
+            KimCommonUtils.copyProperties(newDest, dest);
+            newDest.setPath(getBasePath(request));
+            return newDest;
+        }
+
+        setupDocumentExit();
+        return dest;
+    }
+    
+	
 	@Override
 	public ActionForward close(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionForward dest = super.close(mapping, form, request, response);
@@ -151,16 +177,38 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), idmForm.getMemberRows().size(), idmForm.getRecordsPerPage());
     }
 
-    protected boolean validateRole(RoleImpl roleImpl, String propertyName, String message){
-    	boolean valid = true;
+    protected boolean validateRole( String roleId, RoleImpl roleImpl, String propertyName, String message){
+    	if ( roleImpl == null ) {
+        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
+    		return false;
+    	}
     	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
-        	GlobalVariables.getErrorMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, new String[] {message});
-        	valid = false;
+        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, message);
+        	return false;
         }
-    	return valid;
+    	return true;
     }
  
     public ActionForward changeNamespace(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return refresh(mapping, form, request, response);
     }
+
+    protected KimTypeService getKimTypeService( KimTypeInfo typeInfo ) {
+		String serviceName = typeInfo.getKimTypeServiceName();
+		if ( StringUtils.isNotBlank(serviceName) ) {
+			try {
+				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+				if ( service != null && service instanceof KimRoleTypeService ) {
+					return (KimRoleTypeService)service;
+				} else {
+					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+				}
+			} catch ( Exception ex ) {
+//				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
+				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+			}
+		}
+		return null;
+    }
+
 }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -253,9 +253,9 @@ public class SuperUserAction extends KewKualiAction {
 
     private void saveDocumentMessage(String messageKey, HttpServletRequest request, String subVariable1, String subVariable2) {
         if (subVariable2 == null) {
-            GlobalVariables.getErrorMap().putInfo("document", messageKey, subVariable1);
+            GlobalVariables.getMessageMap().putInfo("document", messageKey, subVariable1);
         } else {
-            GlobalVariables.getErrorMap().putInfo("document", messageKey, subVariable1, subVariable2);
+            GlobalVariables.getMessageMap().putInfo("document", messageKey, subVariable1, subVariable2);
         }
     }
 
@@ -283,7 +283,7 @@ public class SuperUserAction extends KewKualiAction {
         // Make sure that the requested action is still available.
         superUserForm.establishVisibleActionRequestCds();
         if (superUserForm.getAppSpecificRouteActionRequestCds().get(recipient.getActionRequested()) == null) {
-        	GlobalVariables.getErrorMap().putError("appSpecificRouteRecipient" +
+        	GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient" +
             		((KEWConstants.WORKGROUP.equals(recipient.getType())) ? "2" : "") + ".id", "appspecificroute.actionrequested.invalid");
 
         	throw new ValidationException("The requested action of '" + recipient.getActionRequested() + "' is no longer available for this document");
@@ -386,7 +386,7 @@ public class SuperUserAction extends KewKualiAction {
 
     protected void validateAppSpecificRoute(AppSpecificRouteRecipient recipient) {
         if (recipient.getId() == null || recipient.getId().trim().equals("")) {
-            GlobalVariables.getErrorMap().putError("appSpecificRouteRecipient" +
+            GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient" +
             		((KEWConstants.WORKGROUP.equals(recipient.getType())) ? "2" : "") + ".id", "appspecificroute.recipient.required");
         }
         else {
@@ -394,17 +394,17 @@ public class SuperUserAction extends KewKualiAction {
         		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
         		if (principal == null) {
         			LOG.error("App Specific user recipient not found");
-        			GlobalVariables.getErrorMap().putError("appSpecificRouteRecipient.id", "appspecificroute.user.invalid");
+        			GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient.id", "appspecificroute.user.invalid");
         		}
         	}
         	else if (KEWConstants.WORKGROUP.equals(recipient.getType())) {
         		//if (getIdentityManagementService().getGroup(recipient.getId()) == null) {
         		if (getIdentityManagementService().getGroupByName(recipient.getNamespaceCode(), recipient.getId()) == null) {
-        			GlobalVariables.getErrorMap().putError("appSpecificRouteRecipient2.id", "appspecificroute.workgroup.invalid");
+        			GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient2.id", "appspecificroute.workgroup.invalid");
         		}
         	}
         }
-        if (GlobalVariables.getErrorMap().hasErrors()) {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("AppSpecific Route validation Errors");
         }
 

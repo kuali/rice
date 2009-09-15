@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,13 +33,17 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.service.Demonstration;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -68,8 +72,9 @@ import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 public abstract class KualiAction extends DispatchAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiAction.class);
 
-    private static KualiModuleService kualiModuleService;
-
+    private static KualiModuleService kualiModuleService = null;
+    private static BusinessObjectAuthorizationService businessObjectAuthorizationService = null;
+    private static EncryptionService encryptionService = null;
     private static Boolean OUTPUT_ENCRYPTION_WARNING = null;
     
     private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
@@ -134,7 +139,7 @@ public abstract class KualiAction extends DispatchAction {
         // check if demonstration encryption is enabled
         if ( LOG.isEnabledFor(Level.WARN) ) {
 	        if ( OUTPUT_ENCRYPTION_WARNING == null ) {
-	        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration; 
+	        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration; 
 	        }
 	        if ( OUTPUT_ENCRYPTION_WARNING.booleanValue() ) {
 	            LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
@@ -378,28 +383,36 @@ public abstract class KualiAction extends DispatchAction {
      * in the request to determine wheter the appropriate value exists as a request parameter.  If not, it will attempt to look through the form object to find
      * the property.
      * 
+     * @param boClass a class implementing boClass, representing the BO that will be looked up
      * @param parameterName the name of the parameter
      * @param parameterValuePropertyName the property (relative to the form object) where the value to be passed into the lookup/inquiry may be found
      * @param form
      * @param request
      * @return
      */
-    protected String retrieveLookupParameterValue(String parameterName, String parameterValuePropertyName, ActionForm form, HttpServletRequest request) {
+    protected String retrieveLookupParameterValue(Class<? extends BusinessObject> boClass, String parameterName, String parameterValuePropertyName, ActionForm form, HttpServletRequest request) throws Exception {
+    	String value;
     	if (StringUtils.contains(parameterValuePropertyName, "'")) {
-    		return StringUtils.replace(parameterValuePropertyName, "'", "");
+    		value = StringUtils.replace(parameterValuePropertyName, "'", "");
     	}
     	else if (request.getParameterMap().containsKey(parameterValuePropertyName)) {
-    		return request.getParameter(parameterValuePropertyName);
+    		value = request.getParameter(parameterValuePropertyName);
     	}
     	else {
     		if (form instanceof KualiForm) {
-    			return ((KualiForm) form).retrieveFormValueForLookupInquiryParameters(parameterName, parameterValuePropertyName);
+    			value = ((KualiForm) form).retrieveFormValueForLookupInquiryParameters(parameterName, parameterValuePropertyName);
+    		} else {
+	    		if (LOG.isDebugEnabled()) {
+	    			LOG.debug("Unable to retrieve lookup/inquiry parameter value for parameter name " + parameterName + " parameter value property " + parameterValuePropertyName);
+	    		}
+	    		value = null;
     		}
-    		if (LOG.isDebugEnabled()) {
-    			LOG.debug("Unable to retrieve lookup/inquiry parameter value for parameter name " + parameterName + " parameter value property " + parameterValuePropertyName);
-    		}
-    		return null;
     	}
+    	
+    	if (value != null && boClass != null && getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, parameterName)) {
+    		value = getEncryptionService().encrypt(value) + EncryptionService.ENCRYPTION_POST_PREFIX;
+    	}
+    	return value;
     }
     
     /**
@@ -424,12 +437,24 @@ public abstract class KualiAction extends DispatchAction {
         kualiForm.registerEditableProperty(KNSConstants.DISPATCH_REQUEST_PARAMETER);
         kualiForm.registerNextMethodToCallIsRefresh(true);
         
+        // parse out the baseLookupUrl if there is one
+        String baseLookupUrl = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM14_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM14_RIGHT_DEL);
+        
         // parse out business object class name for lookup
         String boClassName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);
         if (StringUtils.isBlank(boClassName)) {
             throw new RuntimeException("Illegal call to perform lookup, no business object class name specified.");
         }
-
+        Class boClass = null;
+		try{
+			boClass = Class.forName(boClassName);
+		} catch(ClassNotFoundException cnfex){
+			// we must have a valid boClass that can be loaded unless baseLookupUrl is defined
+			if (StringUtils.isBlank(baseLookupUrl)) {
+				throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class.");
+			}
+		}
+		
         // build the parameters for the lookup url
         Properties parameters = new Properties();
         String conversionFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
@@ -458,7 +483,7 @@ public abstract class KualiAction extends DispatchAction {
             for (int i = 0; i < lookupParams.length; i++) {
                 String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
 
-                String lookupParameterValue = retrieveLookupParameterValue(keyValue[1], keyValue[0], form, request);
+                String lookupParameterValue = retrieveLookupParameterValue(boClass, keyValue[1], keyValue[0], form, request);
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
                 	parameters.put(keyValue[1], lookupParameterValue);
                 }
@@ -500,10 +525,12 @@ public abstract class KualiAction extends DispatchAction {
         String lookupAction = KNSConstants.LOOKUP_ACTION;
 
         // is this a multi-value return?
+        boolean isMultipleValue = false;
         String multipleValues = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
         if ((new Boolean(multipleValues).booleanValue())) {
             parameters.put(KNSConstants.MULTIPLE_VALUE, multipleValues);
             lookupAction = KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+            isMultipleValue = true;
         }
 
         // the name of the collection being looked up (primarily for multivalue lookups
@@ -559,24 +586,27 @@ public abstract class KualiAction extends DispatchAction {
 			}
     	}
 
-		Class boClass = null;
-		try{
-			boClass = Class.forName(boClassName);
-		} catch(ClassNotFoundException cnfex){
-			throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class.");
-		}
-    	ModuleService responsibleModuleService = getKualiModuleService().getResponsibleModuleService(boClass);
-		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
-			Map<String, String> parameterMap = new HashMap<String, String>();
-			Enumeration<Object> e = parameters.keys();
-			while (e.hasMoreElements()) {
-				String paramName = (String) e.nextElement();
-				parameterMap.put(paramName, parameters.getProperty(paramName));
-			}
-			return new ActionForward(responsibleModuleService.getExternalizableBusinessObjectLookupUrl(boClass, parameterMap), true);
-		}
+    	if (boClass != null) {
+    		ModuleService responsibleModuleService = getKualiModuleService().getResponsibleModuleService(boClass);
+    		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
+    			Map<String, String> parameterMap = new HashMap<String, String>();
+    			Enumeration<Object> e = parameters.keys();
+    			while (e.hasMoreElements()) {
+    				String paramName = (String) e.nextElement();
+    				parameterMap.put(paramName, parameters.getProperty(paramName));
+    			}
+    			return new ActionForward(responsibleModuleService.getExternalizableBusinessObjectLookupUrl(boClass, parameterMap), true);
+    		}
+    	}
 		
-        String lookupUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + lookupAction, parameters);
+    	if (StringUtils.isBlank(baseLookupUrl)) {
+    		baseLookupUrl = getBasePath(request) + "/kr/" + lookupAction;
+    	} else {
+    		if (isMultipleValue) {
+    			LookupUtils.transformLookupUrlToMultiple(baseLookupUrl);
+    		}
+    	}
+    	String lookupUrl = UrlFactory.parameterizeUrl(baseLookupUrl, parameters);
         return new ActionForward(lookupUrl, true);
     }
 
@@ -589,7 +619,8 @@ public abstract class KualiAction extends DispatchAction {
         }
     }
     
-    public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @SuppressWarnings("unchecked")
+	public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         // parse out the important strings from our methodToCall parameter
         String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
@@ -625,10 +656,11 @@ public abstract class KualiAction extends DispatchAction {
             if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "inquiryParams: " + inquiryParams );
             }
+            Class<? extends BusinessObject> boClass = (Class<? extends BusinessObject>) Class.forName(boClassName);
             for (int i = 0; i < inquiryParams.length; i++) {
                 String[] keyValue = inquiryParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
 
-                String inquiryParameterValue = retrieveLookupParameterValue(keyValue[1], keyValue[0], form, request);
+                String inquiryParameterValue = retrieveLookupParameterValue(boClass, keyValue[1], keyValue[0], form, request);
                 if (inquiryParameterValue == null) {
                 	parameters.put(keyValue[1], "directInquiryKeyNotSpecified");
                 }
@@ -820,7 +852,7 @@ public abstract class KualiAction extends DispatchAction {
         String headerTabDispatch = getHeaderTabDispatch(request);
         if (StringUtils.isNotEmpty(headerTabDispatch)) {
             ActionForward forward = dispatchMethod(mapping, form, request, response, headerTabDispatch);
-            if (GlobalVariables.getErrorMap().getNumberOfPropertiesWithErrors() > 0) {
+            if (GlobalVariables.getMessageMap().getNumberOfPropertiesWithErrors() > 0) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
             this.hideAllTabs(mapping, form, request, response);
@@ -1040,5 +1072,19 @@ public abstract class KualiAction extends DispatchAction {
      */
     protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
     	
+    }
+    
+    protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+    	if (businessObjectAuthorizationService == null) {
+    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    	}
+    	return businessObjectAuthorizationService;
+    }
+    
+    protected EncryptionService getEncryptionService() {
+    	if (encryptionService == null) {
+    		encryptionService = KNSServiceLocator.getEncryptionService();
+    	}
+    	return encryptionService;
     }
 }

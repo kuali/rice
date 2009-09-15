@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,6 +42,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.format.DateFormatter;
 
 
 /**
@@ -80,7 +81,7 @@ public class Utilities {
     }
     
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
         if (parameter == null) {
             return null;
         }
@@ -92,7 +93,7 @@ public class Utilities {
     }
     
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
-        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
         if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
             return defaultValue;
         }
@@ -274,14 +275,14 @@ public class Utilities {
 
     public static boolean checkDateRanges(String fromDate, String toDate) {
         try {
-            Date parsedDate = RiceConstants.getDefaultDateFormat().parse(fromDate.trim());
+            Date parsedDate = DateFormatter.getDateTimeService().convertToDate(fromDate.trim());
             Calendar fromCalendar = Calendar.getInstance();
             fromCalendar.setTime(parsedDate);
             fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
             fromCalendar.set(Calendar.MINUTE, 0);
             fromCalendar.set(Calendar.SECOND, 0);
             fromCalendar.set(Calendar.MILLISECOND, 0);
-            parsedDate = RiceConstants.getDefaultDateFormat().parse(toDate.trim());
+            parsedDate = DateFormatter.getDateTimeService().convertToDate(toDate.trim());
             Calendar toCalendar = Calendar.getInstance();
             toCalendar.setTime(parsedDate);
             toCalendar.set(Calendar.HOUR_OF_DAY, 0);

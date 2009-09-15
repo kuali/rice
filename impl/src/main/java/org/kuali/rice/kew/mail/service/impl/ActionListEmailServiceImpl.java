@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -146,7 +146,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 			if (isProduction()) {
 				KEWServiceLocator.getEmailService().sendEmail(
 						getEmailFrom(documentType),
-						new EmailTo(user.getEmailAddress()), subject, body,
+						new EmailTo(user.getEmailAddressUnmasked()), subject, body,
 						false);
 			} else {
 				KEWServiceLocator
@@ -212,7 +212,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected boolean isProduction() {
-		return KEWConstants.PROD_DEPLOYMENT_CODE.equals(getDeploymentEnvironment());
+		return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(getDeploymentEnvironment());
 	}
 
 	public void sendDailyReminder() {
@@ -229,7 +229,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 				} catch (Exception e) {
 					LOG.error(
 							"Error sending daily action list reminder to user: "
-									+ user.getEmailAddress(), e);
+									+ user.getEmailAddressUnmasked(), e);
 				}
 			}
 		}
@@ -251,7 +251,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 				} catch (Exception e) {
 					LOG.error(
 							"Error sending weekly action list reminder to user: "
-									+ user.getEmailAddress(), e);
+									+ user.getEmailAddressUnmasked(), e);
 				}
 			}
 		}
@@ -626,14 +626,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected String getActionListUrl() {
-		return ConfigContext.getCurrentContextConfig().getBaseUrl()
-				+ Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
+		return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY)
 				+ "/" + "ActionList.do";
 	}
 
 	protected String getPreferencesUrl() {
-		return ConfigContext.getCurrentContextConfig().getBaseUrl()
-				+ Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT)
+		return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY)
 				+ "/" + "Preferences.do";
 	}
 }

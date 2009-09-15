@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 /*
+ * Copyright 2005-2009 The Kuali Foundation
+ *
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
  * Copyright 2005-2006 The Kuali Foundation.
  *
  *
@@ -160,28 +173,28 @@ public class ActionListFilterForm extends KualiForm {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getCreateDateFrom());
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(CREATE_DATE_FROM, "general.error.fieldinvalid", "Create Date From");
+                GlobalVariables.getMessageMap().putError(CREATE_DATE_FROM, "general.error.fieldinvalid", "Create Date From");
             }
         }
         if (getCreateDateTo() != null && getCreateDateTo().length() != 0) {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getCreateDateTo());
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(CREATE_DATE_TO, "general.error.fieldinvalid", "Create Date To");
+                GlobalVariables.getMessageMap().putError(CREATE_DATE_TO, "general.error.fieldinvalid", "Create Date To");
             }
         }
         if (getLastAssignedDateFrom() != null && getLastAssignedDateFrom().length() != 0) {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateFrom());
             } catch (ParseException e1) {
-                GlobalVariables.getErrorMap().putError(LAST_ASSIGNED_DATE_FROM, "general.error.fieldinvalid", "Last Assigned Date From");
+                GlobalVariables.getMessageMap().putError(LAST_ASSIGNED_DATE_FROM, "general.error.fieldinvalid", "Last Assigned Date From");
             }
         }
         if (getLastAssignedDateTo() != null && getLastAssignedDateTo().length() != 0) {
             try {
                 RiceConstants.getDefaultDateFormat().parse(getLastAssignedDateTo());
             } catch (ParseException e1) {
-                GlobalVariables.getErrorMap().putError(LAST_ASSIGNED_DATE_TO, "general.error.fieldinvalid", "Last Assigned Date To");
+                GlobalVariables.getMessageMap().putError(LAST_ASSIGNED_DATE_TO, "general.error.fieldinvalid", "Last Assigned Date To");
             }
         }
     }

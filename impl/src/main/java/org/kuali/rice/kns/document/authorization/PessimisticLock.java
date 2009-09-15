@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,8 +18,15 @@ package org.kuali.rice.kns.document.authorization;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.PersonImpl;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
@@ -31,6 +38,9 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  * 
  */
+
+@Entity
+@Table(name="KRNS_PESSIMISTIC_LOCK_T")
 public class PessimisticLock extends PersistableBusinessObjectBase {
     
     private static final long serialVersionUID = -5210762282545093555L;
@@ -38,14 +48,26 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     public static final String DEFAULT_LOCK_DESCRIPTOR = null;
     
     // id is sequence number and primary key
+    @Id
+    @Column(name="PESSIMISTIC_LOCK_ID")
     private Long id;
+    
+    @Column(name="PRNCPL_ID")
     private String ownedByPrincipalIdentifier;
+    
+    @Column(name="LOCK_DESC_TXT")
     private String lockDescriptor; // this will be defaulted to the value of DEFAULT_LOCK_DESCRIPTOR constant above
+    
+    @Column(name="GNRT_DT")
     private Timestamp generatedTimestamp;
+    
+    @Column(name="DOC_HDR_ID")
     private String documentNumber; // foreign key to document
-
+    
+    @Transient
     private Person ownedByUser;
 
+    
     /**
      * This constructs an empty lock using the logged in user and default lock descriptor type
      * but will NOT assign a document number.  Use another constructor.
@@ -169,6 +191,5 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
         m.put("documentNumber", this.documentNumber);
         return m;
     }
-
 }
 

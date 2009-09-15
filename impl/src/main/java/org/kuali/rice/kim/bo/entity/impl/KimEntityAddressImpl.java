@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +24,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.AddressType;
 import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -75,6 +79,9 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	@ManyToOne(targetEntity=AddressTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
 	protected AddressType addressType;
+	
+	@Transient
+    protected Boolean suppressAddress;
 
 	// Waiting until we pull in from KFS
 	// protected State state;
@@ -92,15 +99,24 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCityName()
 	 */
 	public String getCityName() {
+	    if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return cityName;
 	}
+	
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCountryCode()
 	 */
 	public String getCountryCode() {
+	    if (isSuppressAddress()) {
+            return "XX";
+        }
 		return countryCode;
 	}
+	
+	
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getEntityAddressId()
@@ -113,6 +129,9 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine1()
 	 */
 	public String getLine1() {
+	    if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return line1;
 	}
 
@@ -120,6 +139,9 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine2()
 	 */
 	public String getLine2() {
+	    if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return line2;
 	}
 
@@ -127,15 +149,19 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine3()
 	 */
 	public String getLine3() {
+	    if (isSuppressAddress()) {
+            return KimConstants.RESTRICTED_DATA_MASK;
+        }
 		return line3;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getPostalCode()
 	 */
 	public String getPostalCode() {
+	    if (isSuppressAddress()) {
+            return "00000";
+        }
 		return postalCode;
 	}
 
@@ -143,6 +169,9 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getStateCode()
 	 */
 	public String getStateCode() {
+	    if (isSuppressAddress()) {
+            return "XX";
+        }
 		return stateCode;
 	}
 
@@ -239,6 +268,7 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
@@ -248,4 +278,68 @@ public class KimEntityAddressImpl extends KimDefaultableEntityDataBase implement
 		return m;
 	}
 
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#isSuppressAddress()
+     */
+    public boolean isSuppressAddress() {
+        if (suppressAddress != null) {
+            return suppressAddress.booleanValue();
+        }
+        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+
+        suppressAddress = false;
+        if (privacy != null) {
+            suppressAddress = privacy.isSuppressAddress();
+        } 
+        return suppressAddress.booleanValue();
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCityNameUnmasked()
+     */
+    public String getCityNameUnmasked() {
+        return this.cityName;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCountryCodeUnmasked()
+     */
+    public String getCountryCodeUnmasked() {
+        return this.countryCode;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine1Unmasked()
+     */
+    public String getLine1Unmasked() {
+        return this.line1;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine2Unmasked()
+     */
+    public String getLine2Unmasked() {
+        return this.line2;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine3Unmasked()
+     */
+    public String getLine3Unmasked() {
+        return this.line3;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getPostalCodeUnmasked()
+     */
+    public String getPostalCodeUnmasked() {
+        return this.postalCode;
+    }
+
+    /**
+     * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getStateCodeUnmasked()
+     */
+    public String getStateCodeUnmasked() {
+        return this.stateCode;
+    }
 }

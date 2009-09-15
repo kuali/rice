@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -24,7 +25,9 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -49,8 +52,28 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
     protected PersonDocumentEmail newEmail;
     protected PersonDocumentGroup newGroup;
     protected PersonDocumentRole newRole;
+    protected RoleDocumentDelegationMember newDelegationMember = new RoleDocumentDelegationMember();
+    protected String newDelegationMemberRoleId = null;
+    protected boolean delegationMemberLookup = false;
+    protected boolean canModifyEntity = false;
+    protected boolean canOverrideEntityPrivacyPreferences = false;
+    protected boolean userSameAsPersonEdited = false;
     
-    public IdentityManagementPersonDocumentForm() {
+	/**
+	 * @return the canModifyEntity
+	 */
+	public boolean isCanModifyEntity() {
+		return this.canModifyEntity;
+	}
+
+	/**
+	 * @param canModifyEntity the canModifyEntity to set
+	 */
+	public void setCanModifyEntity(boolean canModifyEntity) {
+		this.canModifyEntity = canModifyEntity;
+	}
+
+	public IdentityManagementPersonDocumentForm() {
         super();
         //this.registerEditableProperty("methodToCall.approve.x");
         this.setDocument(new IdentityManagementPersonDocument());
@@ -60,6 +83,7 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
         this.setNewName(new PersonDocumentName());
         this.setNewPhone(new PersonDocumentPhone());
         this.setNewEmail(new PersonDocumentEmail());
+        this.setNewDelegationMember(new RoleDocumentDelegationMember());
     }
 
 	public IdentityManagementPersonDocument getPersonDocument() {
@@ -146,5 +170,82 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 		this.principalId = principalId;
 	}
 
+	/**
+	 * @return the newDelegationMember
+	 */
+	public RoleDocumentDelegationMember getNewDelegationMember() {
+		return this.newDelegationMember;
+	}
+
+	/**
+	 * @param newDelegationMember the newDelegationMember to set
+	 */
+	public void setNewDelegationMember(
+			RoleDocumentDelegationMember newDelegationMember) {
+		this.newDelegationMember = newDelegationMember;
+	}
+
+	/**
+	 * @return the delegationMemberLookup
+	 */
+	public boolean isDelegationMemberLookup() {
+		return this.delegationMemberLookup;
+	}
+
+	/**
+	 * @param delegationMemberLookup the delegationMemberLookup to set
+	 */
+	public void setDelegationMemberLookup(boolean delegationMemberLookup) {
+		this.delegationMemberLookup = delegationMemberLookup;
+	}
+
+	/**
+	 * @return the newDelegationMemberRoleId
+	 */
+	public String getNewDelegationMemberRoleId() {
+		return this.newDelegationMemberRoleId;
+	}
+
+	/**
+	 * @param newDelegationMemberRoleId the newDelegationMemberRoleId to set
+	 */
+	public void setNewDelegationMemberRoleId(String newDelegationMemberRoleId) {
+		this.newDelegationMemberRoleId = newDelegationMemberRoleId;
+		if(StringUtils.isNotEmpty(newDelegationMemberRoleId)){
+			newDelegationMember.getRoleImpl().setRoleId(newDelegationMemberRoleId);
+		}
+	}
+
+	/**
+	 * @return the canOverrideEntityPrivacyPreferences
+	 */
+	public boolean isCanOverrideEntityPrivacyPreferences() {
+		return this.canOverrideEntityPrivacyPreferences || isUserSameAsPersonEdited();
+	}
+
+	/**
+	 * @param canOverrideEntityPrivacyPreferences the canOverrideEntityPrivacyPreferences to set
+	 */
+	public void setCanOverrideEntityPrivacyPreferences(
+			boolean canOverrideEntityPrivacyPreferences) {
+		this.canOverrideEntityPrivacyPreferences = canOverrideEntityPrivacyPreferences;
+	}
+
+	/**
+	 * @return the userSameAsPersonEdited
+	 */
+	public boolean isUserSameAsPersonEdited() {
+		if(StringUtils.isNotEmpty(getPrincipalId())){
+			userSameAsPersonEdited = StringUtils.equals(GlobalVariables.getUserSession().getPrincipalId(), getPrincipalId());
+		}
+		return this.userSameAsPersonEdited;
+	}
+
+	/**
+	 * @param userSameAsPersonEdited the userSameAsPersonEdited to set
+	 */
+	public void setUserSameAsPersonEdited(boolean userSameAsPersonEdited) {
+		this.userSameAsPersonEdited = userSameAsPersonEdited;
+	}
 
 }

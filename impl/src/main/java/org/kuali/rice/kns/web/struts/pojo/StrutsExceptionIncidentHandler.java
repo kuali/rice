@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,23 +15,18 @@
  */
 package org.kuali.rice.kns.web.struts.pojo;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ExceptionHandler;
 import org.apache.struts.config.ExceptionConfig;
-import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.exception.KualiExceptionIncident;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
@@ -44,12 +39,7 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 public class StrutsExceptionIncidentHandler extends ExceptionHandler {
     private static final Logger LOG=
         Logger.getLogger(StrutsExceptionIncidentHandler.class);
-    /**
-     * Key to define the attribute stores exception properties such as
-     * user email, user name, component name, etc.
-     * <p>Value is exceptionProperties
-     */
-    public static final String EXCEPTION_PROPERTIES="exceptionProperties";
+    
     /**
      * This is defined in struts-config.xml for forwarding this exception to a specified
      * exception handler.
@@ -83,9 +73,6 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
         
         LOG.error("Exception being handled by Exception Handler", exception);
 
-        // Create properties of form and user for additional information
-        // to be displayed or passing through JSP
-        Map<String, String> properties=new HashMap<String, String>();
         String documentId="";
         if (form instanceof KualiDocumentFormBase) {
             KualiDocumentFormBase docForm=(KualiDocumentFormBase)form;
@@ -93,34 +80,8 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
             	documentId=docForm.getDocument().getDocumentNumber();
             }
         }
-        properties.put(KualiExceptionIncident.DOCUMENT_ID, documentId);
-        String userEmail="";
-        String userName="";
-        String uuid = "";
-        // No specific forward for the caught exception, use default logic
-        // Get user information
-        UserSession userSession = (UserSession)
-        request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-        Person sessionUser=null;
-        if (userSession != null) {
-            sessionUser=userSession.getPerson();
-        }
-        if (sessionUser != null) {
-            userEmail=sessionUser.getEmailAddress();
-            userName=sessionUser.getName();
-            uuid = sessionUser.getPrincipalName();
-        }
-        properties.put(KualiExceptionIncident.USER_EMAIL, userEmail);
-        properties.put(KualiExceptionIncident.USER_NAME, userName);
-        properties.put(KualiExceptionIncident.UUID, uuid);
-        properties.put(KualiExceptionIncident.COMPONENT_NAME,
-                form.getClass().getSimpleName());
-        properties.put(KualiExceptionIncident.CUSTOM_CONTEXTUAL_INFO, "?");
-
-        // Reset the exception so the forward action can read it
-        request.setAttribute(Globals.EXCEPTION_KEY, exception);
-        // Set exception current information
-        request.setAttribute(EXCEPTION_PROPERTIES, properties);
+        
+        Map<String, String> properties = IncidentReportUtils.populateRequestForIncidentReport(exception, documentId, form.getClass().getSimpleName(), request);
         
         ActionForward forward=mapping.findForward(EXCEPTION_INCIDENT_HANDLER);
         

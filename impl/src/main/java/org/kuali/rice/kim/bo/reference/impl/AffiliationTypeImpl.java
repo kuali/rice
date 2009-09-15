@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
+import org.kuali.rice.kim.bo.reference.dto.AffiliationTypeInfo;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -70,11 +72,22 @@ public class AffiliationTypeImpl extends KimCodeBase implements AffiliationType 
 	}
 
 	public boolean isEmploymentAffiliationType() {
+		if(ObjectUtils.isNull(this.employmentAffiliationType))
+			return false;
 		return this.employmentAffiliationType;
 	}
 
 	public void setEmploymentAffiliationType(boolean employmentAffiliationType) {
 		this.employmentAffiliationType = employmentAffiliationType;
+	}
+	
+	public AffiliationTypeInfo toInfo() {
+		AffiliationTypeInfo info = new AffiliationTypeInfo();
+		info.setCode(code);
+		info.setName(name);
+		info.setDisplaySortCode(displaySortCode);
+		info.setActive(active);
+		return info;
 	}
 	
 }

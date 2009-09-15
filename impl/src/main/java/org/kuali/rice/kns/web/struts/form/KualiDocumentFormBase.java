@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,7 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
@@ -38,9 +39,11 @@ import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -96,7 +99,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
      * Stores the error map from previous requests, so that we can continue to display error messages displayed during a previous request
      */
-    private ErrorMap errorMapFromPreviousRequest;
+    private MessageMap errorMapFromPreviousRequest;
     
 	/***
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -194,17 +197,21 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         StringBuffer urlBuffer = new StringBuffer();
         
         if(user != null && StringUtils.isNotEmpty(linkBody) ) {
-            AnchorHtmlData inquiryHref = (AnchorHtmlData)KNSServiceLocator.getKualiInquirable().getInquiryUrl(user, KimAttributes.PRINCIPAL_ID, false);
-            String inquiryUrlSection = inquiryHref.getHref();
-            urlBuffer.append("<a href='");
-            urlBuffer.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
-            urlBuffer.append("/kr/");
-            urlBuffer.append(inquiryUrlSection);
-            urlBuffer.append("' ");
-            urlBuffer.append("target='_blank'");
-            urlBuffer.append("title='" + inquiryHref.getTitle() + "'>");
-            urlBuffer.append(linkBody);
-            urlBuffer.append("</a>");
+        	ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(Person.class);
+        	Map<String, String[]> parameters = new HashMap<String, String[]>();
+        	parameters.put(KimAttributes.PRINCIPAL_ID, new String[] { user.getPrincipalId() });
+        	String inquiryUrl = moduleService.getExternalizableBusinessObjectInquiryUrl(Person.class, parameters);
+            if(!StringUtils.equals(KimConstants.EntityTypes.SYSTEM, user.getEntityTypeCode())){
+	            urlBuffer.append("<a href='");
+	            urlBuffer.append(inquiryUrl);
+	            urlBuffer.append("' ");
+	            urlBuffer.append("target='_blank'");
+	            urlBuffer.append("title='Person Inquiry'>");
+	            urlBuffer.append(linkBody);
+	            urlBuffer.append("</a>");
+            } else{
+            	urlBuffer.append(linkBody);
+            }
         }
         
         return urlBuffer.toString();
@@ -311,7 +318,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         setAnnotation(StringUtils.stripToNull(getAnnotation()));
         int diff = StringUtils.defaultString(getAnnotation()).length() - KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH;
         if (diff > 0) {
-            GlobalVariables.getErrorMap().putError("annotation", RiceKeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
+            GlobalVariables.getMessageMap().putError("annotation", RiceKeyConstants.ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED, new String[] { Integer.toString(KNSConstants.DOCUMENT_ANNOTATION_MAX_LENGTH), Integer.toString(diff) });
         }
         return super.validate(mapping, request);
     }
@@ -762,7 +769,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     @Override
     protected void customInitMaxUploadSizes() {
         super.customInitMaxUploadSizes();
-        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
+        addMaxUploadSize(KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
     }
 
     
@@ -810,14 +817,24 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     /**
 	 * @return the errorMapFromPreviousRequest
 	 */
+	@Deprecated
 	public ErrorMap getErrorMapFromPreviousRequest() {
+		return new ErrorMap(getMessageMapFromPreviousRequest());
+	}
+	
+	public MessageMap getMessageMapFromPreviousRequest() {
 		return this.errorMapFromPreviousRequest;
 	}
-
+	
 	/**
 	 * @param errorMapFromPreviousRequest the errorMapFromPreviousRequest to set
 	 */
+	@Deprecated
 	public void setErrorMapFromPreviousRequest(ErrorMap errorMapFromPreviousRequest) {
+		setMessageMapFromPreviousRequest(errorMapFromPreviousRequest);
+	}
+	
+	public void setMessageMapFromPreviousRequest(MessageMap errorMapFromPreviousRequest) {
 		this.errorMapFromPreviousRequest = errorMapFromPreviousRequest;
 	}
 	

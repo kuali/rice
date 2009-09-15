@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
@@ -27,7 +28,7 @@ import org.springframework.orm.ObjectRetrievalFailureException;
  * Helper object to deal with persisting collections.
  */
 public class OjbCollectionHelper {
-
+	private static final Logger LOG = Logger.getLogger(OjbCollectionHelper.class);
     /**
      * OJB RemovalAwareLists do not survive through the response/request lifecycle. This method is a work-around to forcibly remove
      * business objects that are found in Collections stored in the database but not in memory.
@@ -122,7 +123,11 @@ public class OjbCollectionHelper {
         if (unwantedItems.size() > 0) {
             Iterator iter = unwantedItems.iterator();
             while (iter.hasNext()) {
-                template.getPersistenceBrokerTemplate().delete(iter.next());
+            	Object obj = iter.next();
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug( "cleansing " + obj);
+            	}
+                template.getPersistenceBrokerTemplate().delete(obj);
             }
         }
 

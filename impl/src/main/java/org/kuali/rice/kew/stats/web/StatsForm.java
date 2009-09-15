@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,9 +22,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
@@ -64,10 +67,27 @@ public class StatsForm extends KualiForm {
     private Date beginningDate;
     private Date endingDate;
 
-    public StatsForm() {
+    // KULRICE-3137: Added a backLocation parameter similar to the one from lookups.
+    private String backLocation;
+    
+	public StatsForm() {
         stats = new Stats();
     }
 
+	/**
+	 * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public void populate(HttpServletRequest request) {
+		super.populate(request);
+		
+        if (getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER) != null) {
+            setBackLocation(getParameter(request, KNSConstants.RETURN_LOCATION_PARAMETER));
+        }
+	}
+	
     public void determineBeginDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT);
 
@@ -140,14 +160,14 @@ public class StatsForm extends KualiForm {
             try {
                 new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT).parse(getBegDate().trim()+END_DAY_TIME);
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(BEGIN_DATE, "general.error.fieldinvalid", "Begin Date");
+                GlobalVariables.getMessageMap().putError(BEGIN_DATE, "general.error.fieldinvalid", "Begin Date");
             }
         }
         if (getEndDate() != null && getEndDate().length() != 0) {
             try {
                 new SimpleDateFormat(DATE_FORMAT + TIME_FORMAT).parse(getEndDate().trim()+END_DAY_TIME);
             } catch (ParseException e) {
-                GlobalVariables.getErrorMap().putError(END_DATE, "general.error.fieldinvalid", "End Date");
+                GlobalVariables.getMessageMap().putError(END_DATE, "general.error.fieldinvalid", "End Date");
             }
         }
     }
@@ -259,4 +279,12 @@ public class StatsForm extends KualiForm {
         return YEAR_TIME_UNIT;
     }
 
+	public String getBackLocation() {
+		return this.backLocation;
+	}
+
+	public void setBackLocation(String backLocation) {
+		this.backLocation = backLocation;
+	}
+    
 }

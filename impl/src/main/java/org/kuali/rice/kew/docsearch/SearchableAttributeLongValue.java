@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +36,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
@@ -116,27 +113,13 @@ public class SearchableAttributeLongValue implements WorkflowPersistable, Search
 		this.setSearchableAttributeValue(resultSet.getLong(columnName));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue()
-	 */
-    public String getSearchableAttributeDisplayValue() {
-        return getSearchableAttributeDisplayValue(new HashMap<String,String>());
-    }
-
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
      */
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
+    public String getSearchableAttributeDisplayValue() {
         NumberFormat format = DecimalFormat.getInstance();
-        ((DecimalFormat)format).applyPattern(getFormatPatternToUse(displayParameters.get(DISPLAY_FORMAT_PATTERN_MAP_KEY)));
+        ((DecimalFormat)format).applyPattern(DEFAULT_FORMAT_PATTERN);
         return format.format(getSearchableAttributeValue().longValue());
-    }
-
-    private String getFormatPatternToUse(String parameterFormatPattern) {
-        if (StringUtils.isNotBlank(parameterFormatPattern)) {
-            return parameterFormatPattern;
-        }
-        return DEFAULT_FORMAT_PATTERN;
     }
 
 	/* (non-Javadoc)

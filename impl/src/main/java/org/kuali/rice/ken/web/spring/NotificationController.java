@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -152,20 +152,6 @@ public class NotificationController extends MultiActionController {
         return new ModelAndView(view, model);
     }
 
-    /**
-     * Logs out a user
-     * @param request : a servlet request
-     * @param response : a servlet response
-     * @throws ServletException : an exception
-     * @throws IOException : an exception
-     * @return RedirectView
-     */   
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().invalidate();
-
-        Map<String, Object> model = new HashMap<String, Object>(); 
-        return new ModelAndView(new RedirectView("HomePage.form"), model);
-    }
 
     /**
      * This method retrieves the NotificationMessageDelivery given an HttpServletRequest which

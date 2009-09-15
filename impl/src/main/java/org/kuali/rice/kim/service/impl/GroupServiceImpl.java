@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
@@ -9,7 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebService;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
@@ -19,17 +38,23 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
+import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
+@WebService(endpointInterface = KIMWebServiceConstants.GroupService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.GroupService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.GroupService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
 	private BusinessObjectService businessObjectService;
+	private LookupService lookupService;
 
 	/**
      * @see org.kuali.rice.kim.service.GroupService#getGroupInfo(java.lang.String)
@@ -101,7 +126,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      */
     public List<String> getGroupIdsForPrincipalByNamespace(String principalId, String namespaceCode) {
         List<String> result = new ArrayList<String>();
-        
+
         if (principalId != null) {
             List<GroupInfo> groupList = getGroupsForPrincipalByNamespace(principalId, namespaceCode);
 
@@ -220,19 +245,22 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      * @see org.kuali.rice.kim.service.GroupService#lookupGroupIds(java.util.Map)
      */
     public List<String> lookupGroupIds(Map<String, String> searchCriteria) {
-        List<GroupImpl> groupList = lookupGroups(searchCriteria);
+        List<? extends Group> groupList = this.lookupGroups(searchCriteria);
         List<String> result = new ArrayList<String>();
 
-        for (GroupImpl group : groupList) {
+        for (Group group : groupList) {
             result.add(group.getGroupId());
         }
 
         return result;
     }
 
-	@SuppressWarnings("unchecked")
-	protected List<GroupImpl> lookupGroups(Map<String, String> searchCriteria) {
-		return (List<GroupImpl>) getBusinessObjectService().findMatching(GroupImpl.class, searchCriteria);
+    /**
+	 * @see org.kuali.rice.kim.service.GroupService#lookupGroups(java.util.Map)
+	 */
+    @SuppressWarnings("unchecked")
+	public List<? extends Group> lookupGroups(Map<String, String> searchCriteria) {
+		return this.toGroupInfo((List<GroupImpl>)this.getLookupService().findCollectionBySearchHelper(GroupImpl.class, searchCriteria, true));
 	}
 
 	/**
@@ -476,7 +504,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 		return false;
 	}
 
-	public BusinessObjectService getBusinessObjectService() {
+	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
@@ -554,7 +582,9 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         criteria.put(KIMPropertyConstants.Group.GROUP_ID, group.getGroupId());
         getBusinessObjectService().deleteMatching(GroupAttributeDataImpl.class, criteria);
 
+
         saveGroup(group);
+        getIdentityManagementNotificationService().groupUpdated();
 
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
@@ -576,7 +606,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         getBusinessObjectService().save(groupMember);
         KIMServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
-
+        getIdentityManagementNotificationService().groupUpdated();
         return true;
     }
 
@@ -595,7 +625,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         	GroupMemberImpl member = groupMemberList.iterator().next();
             getBusinessObjectService().delete(member);
             KIMServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
-
+            getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
 
@@ -620,6 +650,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         groupMember.setMemberId(childId);
 
         getBusinessObjectService().save(groupMember);
+        getIdentityManagementNotificationService().groupUpdated();
 
         return true;
     }
@@ -635,7 +666,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         if(getBusinessObjectService().countMatching(GroupMemberImpl.class, criteria) == 1) {
             getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
-
+            getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
 
@@ -652,6 +683,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
         getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
+        getIdentityManagementNotificationService().groupUpdated();
     }
 
     protected GroupInfo toGroupInfo(GroupImpl kimGroup) {
@@ -673,6 +705,20 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return info;
     }
 
+    protected List<GroupInfo> toGroupInfo(List<GroupImpl> kimGroups){
+    	List<GroupInfo> lRet = null;
+
+    	if(kimGroups != null){
+    		lRet = new ArrayList<GroupInfo>();
+
+    		for(GroupImpl gi: kimGroups){
+    			lRet.add(this.toGroupInfo(gi));
+    		}
+    	}
+
+    	return lRet;
+    }
+
     protected GroupImpl copyInfoToGroup(GroupInfo info, GroupImpl group) {
         group.setActive(info.isActive());
         group.setGroupDescription(info.getGroupDescription());
@@ -688,7 +734,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
 
         // TODO: fix this to use the KimTypeInfoService to get the attribute information rather than selecting from the database
-        
+
         for(String key : infoMap.keySet()) {
             Map<String,String> criteria = new HashMap<String,String>();
             criteria.put("attributeName", key);
@@ -711,26 +757,32 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
     }
 
     public Collection<GroupMembershipInfo> getGroupMembers( List<String> groupIds ) {
+		if ( groupIds == null ) {
+			return Collections.emptyList();
+		}
     	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
     	for (String groupId : groupIds) {
-    		for (GroupMemberImpl groupMember : getGroupMembers(groupId)) {
-    			if (groupMember != null && groupMember.isActive()) {
-    				groupMembers.add(toGroupMemberInfo(groupMember));
-    			}
-    		}
+    		groupMembers.addAll( getGroupMembersOfGroup(groupId) );
     	}
     	return groupMembers;
     }
 
 
 	@SuppressWarnings("unchecked")
-	protected List<GroupMemberImpl> getGroupMembers( String groupId) {
+	public Collection<GroupMembershipInfo> getGroupMembersOfGroup( String groupId ) {
 		if ( groupId == null ) {
 			return Collections.emptyList();
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 1 );
 		criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
-		return (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+    	List<GroupMemberImpl> groupMemberImpls = (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+    	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>( groupMemberImpls.size() );
+		for (GroupMemberImpl groupMember : groupMemberImpls) {
+			if (groupMember != null && groupMember.isActive()) {
+				groupMembers.add(toGroupMemberInfo(groupMember));
+			}
+		}
+		return groupMembers;
 	}
 
     protected GroupMembershipInfo toGroupMemberInfo(GroupMemberImpl kimGroupMember) {
@@ -744,5 +796,17 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return groupMemberinfo;
     }
 
+    protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
+        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+    }
 
+    /**
+	 * @return the lookupService
+	 */
+    protected LookupService getLookupService() {
+		if(lookupService == null) {
+			lookupService = KNSServiceLocator.getLookupService();
+		}
+		return lookupService;
+	}
 }

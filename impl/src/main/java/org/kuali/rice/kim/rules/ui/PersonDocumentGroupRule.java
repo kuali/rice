@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,19 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
-import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -40,17 +44,18 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		IdentityManagementPersonDocument document = (IdentityManagementPersonDocument)addGroupEvent.getDocument();
 		PersonDocumentGroup newGroup = addGroupEvent.getGroup();
 	    boolean rulePassed = true;
+	    rulePassed = validAssignGroup(document, newGroup);
 //    	List<String> groupIds = KIMServiceLocator.getUiDocumentService().getPopulatableGroupIds();
 
         if (newGroup == null || StringUtils.isBlank(newGroup.getGroupId())) {
             rulePassed = false;
-            GlobalVariables.getErrorMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
+            GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Group"});
         	
         } else {
 		    for (PersonDocumentGroup group : document.getGroups()) {
 		    	if (group.getGroupId().equals(newGroup.getGroupId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
+		            GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group"});
 		    		
 		    	}
 		    }
@@ -67,13 +72,20 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		return rulePassed;
 	} 
 
-	private boolean validateActiveDate(Timestamp activeFromDate, Timestamp activeToDate) {
-		// TODO : do not have detail bus rule yet, so just check this for now.
-		boolean valid = true;
-		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
-	        GlobalVariables.getErrorMap().putError(NEW_GROUP+".activeToDate", RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
-            valid = false;			
+	private boolean validAssignGroup(IdentityManagementPersonDocument document, PersonDocumentGroup newGroup){
+        boolean rulePassed = true;
+        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
+        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, newGroup.getNamespaceCode());
+        additionalPermissionDetails.put(KimAttributes.GROUP_NAME, newGroup.getGroupName());
+		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+				document, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
+				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
+    		GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, 
+    				RiceKeyConstants.ERROR_ASSIGN_GROUP, 
+    				new String[] {newGroup.getNamespaceCode(), newGroup.getGroupName()});
+            rulePassed = false;
 		}
-		return valid;
+		return rulePassed;
 	}
+	
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -807,49 +807,51 @@ public class ObjectUtils {
         }
 
         // get the list of reference objects hanging off the parent BO
-        Map<String, Class> references = KNSServiceLocator.getPersistenceStructureService().listReferenceObjectFields(bo);
-
-        // initialize our in-loop objects
-        String referenceName = "";
-        Class referenceClass = null;
-        Object referenceValue = null;
-        Object realReferenceValue = null;
-
-        // for each reference object on the parent bo
-        for (Iterator iter = references.keySet().iterator(); iter.hasNext();) {
-            referenceName = (String) iter.next();
-            referenceClass = references.get(referenceName);
-
-            // if its a proxy, replace it with a non-proxy
-            referenceValue = getPropertyValue(bo, referenceName);
-            if (referenceValue != null) {
-                if (ProxyHelper.isProxy(referenceValue)) {
-                    realReferenceValue = ProxyHelper.getRealObject(referenceValue);
-                    if (realReferenceValue != null) {
-                        try {
-                            setObjectProperty(bo, referenceName, referenceClass, realReferenceValue);
-                        }
-                        catch (FormatException e) {
-                            throw new RuntimeException("FormatException: could not set the property '" + referenceName + "'.", e);
-                        }
-                        catch (IllegalAccessException e) {
-                            throw new RuntimeException("IllegalAccessException: could not set the property '" + referenceName + "'.", e);
-                        }
-                        catch (InvocationTargetException e) {
-                            throw new RuntimeException("InvocationTargetException: could not set the property '" + referenceName + "'.", e);
-                        }
-                        catch (NoSuchMethodException e) {
-                            throw new RuntimeException("NoSuchMethodException: could not set the property '" + referenceName + "'.", e);
-                        }
-                    }
-                }
-
-                // recurse down through this reference object
-                if (realReferenceValue instanceof PersistableBusinessObject && depth > 1) {
-                    materializeSubObjectsToDepth((PersistableBusinessObject) realReferenceValue, depth - 1);
-                }
-            }
-
+        if ( KNSServiceLocator.getPersistenceStructureService().isPersistable( bo.getClass() ) ) {
+	        Map<String, Class> references = KNSServiceLocator.getPersistenceStructureService().listReferenceObjectFields(bo);
+	
+	        // initialize our in-loop objects
+	        String referenceName = "";
+	        Class referenceClass = null;
+	        Object referenceValue = null;
+	        Object realReferenceValue = null;
+	
+	        // for each reference object on the parent bo
+	        for (Iterator iter = references.keySet().iterator(); iter.hasNext();) {
+	            referenceName = (String) iter.next();
+	            referenceClass = references.get(referenceName);
+	
+	            // if its a proxy, replace it with a non-proxy
+	            referenceValue = getPropertyValue(bo, referenceName);
+	            if (referenceValue != null) {
+	                if (ProxyHelper.isProxy(referenceValue)) {
+	                    realReferenceValue = ProxyHelper.getRealObject(referenceValue);
+	                    if (realReferenceValue != null) {
+	                        try {
+	                            setObjectProperty(bo, referenceName, referenceClass, realReferenceValue);
+	                        }
+	                        catch (FormatException e) {
+	                            throw new RuntimeException("FormatException: could not set the property '" + referenceName + "'.", e);
+	                        }
+	                        catch (IllegalAccessException e) {
+	                            throw new RuntimeException("IllegalAccessException: could not set the property '" + referenceName + "'.", e);
+	                        }
+	                        catch (InvocationTargetException e) {
+	                            throw new RuntimeException("InvocationTargetException: could not set the property '" + referenceName + "'.", e);
+	                        }
+	                        catch (NoSuchMethodException e) {
+	                            throw new RuntimeException("NoSuchMethodException: could not set the property '" + referenceName + "'.", e);
+	                        }
+	                    }
+	                }
+	
+	                // recurse down through this reference object
+	                if (realReferenceValue instanceof PersistableBusinessObject && depth > 1) {
+	                    materializeSubObjectsToDepth((PersistableBusinessObject) realReferenceValue, depth - 1);
+	                }
+	            }
+	
+	        }
         }
     }
 
@@ -971,7 +973,7 @@ public class ObjectUtils {
 				return clazz.newInstance();
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Error occured while trying to create a new instance for class " + clazz);
+			throw new RuntimeException("Error occured while trying to create a new instance for class " + clazz,e);
 		}
     }
 

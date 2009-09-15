@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,16 +27,13 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiExceptionIncidentService;
+import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm;
-import org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler;
 
 /**
  * This is the struts action class for handling the exception for Kuali
@@ -170,7 +167,7 @@ public class KualiExceptionHandlerAction extends Action {
 				.getKualiExceptionIncidentService();
 		// Get exception properties from the Http Request
 		Map<String, String> properties = (Map<String, String>) request
-				.getAttribute(StrutsExceptionIncidentHandler.EXCEPTION_PROPERTIES);
+				.getAttribute(IncidentReportUtils.EXCEPTION_PROPERTIES);
 		// Construct the exception incident object
 		KualiExceptionIncident ei = reporterService.getExceptionIncident(
 				exception, properties);

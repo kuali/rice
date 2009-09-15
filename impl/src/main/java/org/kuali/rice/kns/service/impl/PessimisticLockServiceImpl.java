@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,8 +54,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PessimisticLockServiceImpl implements PessimisticLockService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PessimisticLockServiceImpl.class);
-
-    public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
 
     private PersonService<Person> personService;
     private BusinessObjectService businessObjectService;
@@ -189,13 +187,15 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     public Set getDocumentActions(Document document, Person user, Set<String> documentActions){
     	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_CANCEL) && !hasPreRouteEditAuthorization(document, user) ){
     		documentActions.remove(KNSConstants.KUALI_ACTION_CAN_CANCEL);
-
     	}
     	if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SAVE)  && !hasPreRouteEditAuthorization(document, user)){
     		documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SAVE);
     	}
         if(documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ROUTE) && !hasPreRouteEditAuthorization(document, user)){
         	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
+        }
+        if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE) && !hasPreRouteEditAuthorization(document, user)){
+        	documentActions.remove(KNSConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
         }
     	return documentActions;
     }
@@ -212,6 +212,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      *         {@link #hasInitiateAuthorization(Document, Person)}.
      */
     protected boolean hasPreRouteEditAuthorization(Document document, Person user) {
+    	if (document.getPessimisticLocks().isEmpty()) {
+    		return true;
+    	}
     	for (Iterator iterator = document.getPessimisticLocks().iterator(); iterator.hasNext();) {
     		PessimisticLock lock = (PessimisticLock) iterator.next();
     		if (lock.isOwnedByUser(user)) {
@@ -265,7 +268,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
     /**
      * This implementation will check the given document, editMode map, and user object to verify Pessimistic Locking. If the
-     * given edit mode map contains an 'entry type' edit mode then the system will check the locks already in existance on
+     * given edit mode map contains an 'entry type' edit mode then the system will check the locks already in existence on
      * the document. If a valid lock for the given user is found the system will return the given edit mode map. If a valid
      * lock is found but is owned by another user the edit mode map returned will have any 'entry type' edit modes removed. If the
      * given document has no locks and the edit mode map passed in has at least one 'entry type' mode then a new
@@ -302,7 +305,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
             if ( (lockDescriptorUsers.containsKey(givenUserLockDescriptor)) && (lockDescriptorUsers.get(givenUserLockDescriptor).size() > 0) ) {
                 Set<Person> users = lockDescriptorUsers.get(givenUserLockDescriptor);
                 if ( (users.size() != 1) || (!getWorkflowPessimisticLockOwnerUser().getPrincipalId().equals(users.iterator().next().getPrincipalId())) ) {
-                    String descriptorText = (useCustomLockDescriptors()) ? " using lock descriptor '" + givenUserLockDescriptor + "'" : "";
+                    String descriptorText = (document.useCustomLockDescriptors()) ? " using lock descriptor '" + givenUserLockDescriptor + "'" : "";
                     String errorMsg = "Found an invalid lock status on document number " + document.getDocumentNumber() + "with current user and other user both having locks" + descriptorText + " concurrently";
                     LOG.debug(errorMsg);
                     throw new PessimisticLockingException(errorMsg);
@@ -321,9 +324,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
                 editModeMap.putAll(editMode);
             } else {
                 // at least one other user has at least one other lock... adjust edit mode for read only
-                if (useCustomLockDescriptors()) {
+                if (document.useCustomLockDescriptors()) {
                     // check to see if the custom lock descriptor is already in use
-                    String customLockDescriptor = getCustomLockDescriptor(document, editMode, user);
+                    String customLockDescriptor = document.getCustomLockDescriptor(user);
                     if (lockDescriptorUsers.containsKey(customLockDescriptor)) {
                         // at least one other user has this descriptor locked... remove editable edit modes
                         editModeMap = getEditModeWithEditableModesRemoved(editMode);
@@ -340,9 +343,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
             }
         } else {
             // given user already has at least one lock descriptor
-            if (useCustomLockDescriptors()) {
+            if (document.useCustomLockDescriptors()) {
                 // get the custom lock descriptor and check to see if if the given user has a lock with that descriptor
-                String customLockDescriptor = getCustomLockDescriptor(document, editMode, user);
+                String customLockDescriptor = document.getCustomLockDescriptor(user);
                 if (givenUserLockDescriptors.contains(customLockDescriptor)) {
                     // user already has lock that is required
                     editModeMap.putAll(editMode);
@@ -429,7 +432,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
         // check for FULL_ENTRY edit mode set to default true value
         if (AuthorizationConstants.EditMode.FULL_ENTRY.equals(entry.getKey())) {
             String fullEntryEditModeValue = (String)entry.getValue();
-            return ( (ObjectUtils.isNotNull(fullEntryEditModeValue)) && (EDIT_MODE_DEFAULT_TRUE_VALUE.equals(fullEntryEditModeValue)) );
+            return ( (ObjectUtils.isNotNull(fullEntryEditModeValue)) && (KNSConstants.KUALI_DEFAULT_TRUE_VALUE.equals(fullEntryEditModeValue)) );
         }
         return false;
     }
@@ -442,14 +445,14 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      */
     protected Map getEntryEditModeReplacementMode(Map.Entry entry) {
         Map editMode = new HashMap();
-        editMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, EDIT_MODE_DEFAULT_TRUE_VALUE);
+        editMode.put(AuthorizationConstants.EditMode.VIEW_ONLY, KNSConstants.KUALI_DEFAULT_TRUE_VALUE);
         return editMode;
     }
 
     /**
-     * This method creates a new {@link PessimisticLock} object using the given document and user. If the
-     * {@link #useCustomLockDescriptors()} method returns true then the new lock will also have a custom lock descriptor
-     * value set to the return value of {@link #getCustomLockDescriptor(Document, Map, Person)}.
+     * This method creates a new {@link PessimisticLock} object using the given document and user. If the document's
+     * useCustomLockDescriptors() method returns true then the new lock will also have a custom lock descriptor
+     * value set to the return value of the document's getCustomLockDescriptor(Person) method.
      *
      * @param document -
      *            document to place the lock on
@@ -460,40 +463,12 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @return the newly created lock object
      */
     protected PessimisticLock createNewPessimisticLock(Document document, Map editMode, Person user) {
-        if (useCustomLockDescriptors()) {
-            return generateNewLock(document.getDocumentNumber(), getCustomLockDescriptor(document, editMode, user), user);
+        if (document.useCustomLockDescriptors()) {
+            return generateNewLock(document.getDocumentNumber(), document.getCustomLockDescriptor(user), user);
         } else {
             return generateNewLock(document.getDocumentNumber(), user);
         }
     }
-
-    /**
-     * This method should be overriden by groups requiring the lock descriptor field in the {@link PessimisticLock} objects.
-     * If it is not overriden and {@link #useCustomLockDescriptors()} returns true then this method will throw a
-     * {@link PessimisticLockingException}
-     *
-     * @param document - document being checked for locking
-     * @param editMode - editMode generated for passed in user
-     * @param user - user attempting to establish locks
-     * @return a {@link PessimisticLockingException} will be thrown as the default implementation
-     */
-    protected String getCustomLockDescriptor(Document document, Map editMode, Person user) {
-        throw new PessimisticLockingException("Document " + document.getDocumentNumber() + " is using Pessimistic Locking with lock descriptors but the authorizer class has not defined the getCustomLockDescriptor() method");
-    }
-
-    /**
-     * This method should be used to define Document Authorizer classes which will use custom lock descriptors in the
-     * {@link PessimisticLock} objects NOTE: if this method is overriden to return true then the method
-     * {@link #getCustomLockDescriptor(Document, Map, Person)} must be overriden
-     *
-     * @return false if the document will not be using lock descriptors or true if the document will use lock descriptors.
-     *         The default return value is false
-     */
-    protected boolean useCustomLockDescriptors() {
-        return false;
-    }
-
-
 
     public PersonService getPersonService() {
         if ( personService == null ) {

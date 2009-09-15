@@ -1,3 +1,18 @@
+<%--
+ Copyright 2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+--%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="documentTypeAttributes" value="${DataDictionary.DocumentType.attributes}" scope="request" />
@@ -19,6 +34,7 @@ tr.overridden td a {
 
 <kul:page headerTitle="Document Configuration - ${documentType.name}" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="DocumentConfigurationView" docTitle="Document Configuration - ${documentType.name}">
+	<html-el:hidden property="documentTypeName" />
     <c:if test="${empty documentType}">
         Unknown Document Type - <c:out value="${KualiForm.documentTypeName}" />
     </c:if>
@@ -113,6 +129,7 @@ tr.overridden td a {
 	 	</div>
    	    <kul:tab tabTitle="Permissions" defaultOpen="true">
 			<div class="tab-container" style="width:auto;">
+			 Gray lines that are stricken through represent inherited permissions that have been overridden by a more specific permission.
 			 <%-- loop over the document types, going up the hierarchy --%>
                 <c:forEach var="permDocTypeName" items="${KualiForm.docTypeHierarchyList}">
 				  <c:choose>
@@ -132,8 +149,8 @@ tr.overridden td a {
  	    </kul:tab>
 
  	    <kul:tab tabTitle="Workflow / Responsibilities" defaultOpen="true" >
- 	      <%-- TODO: need separate section for the exception routing --%>
  	  		<div class="tab-container" style="width:auto;">
+             Gray lines that are stricken through represent inherited responsibilities that have been overridden by a more specific responsibilities.
  	  			<kul:subtab width="100%" subTabTitle="Exception Routing" noShowHideButton="true">
 				  <c:set var="responsibilities" value="${KualiForm.exceptionResponsibilities}" scope="request" />
 	           	  <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
@@ -148,8 +165,8 @@ tr.overridden td a {
 	            </c:forEach>
  	  		</div>
  	    </kul:tab>
+ 	  </kul:tabTop>
  	  <kul:panelFooter />
-	  </kul:tabTop>
   </c:if>
 	
 </kul:page>

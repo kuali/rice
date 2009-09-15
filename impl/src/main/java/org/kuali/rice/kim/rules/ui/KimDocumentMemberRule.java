@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,39 +54,40 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    boolean rulePassed = true;
 
         if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
             return false;
         }
     	if(!validAssignRole(newMember, document))
     		return false;
-		List<AttributeSet> attributeSetListToValidate = new ArrayList<AttributeSet>();
-		AttributeSet attributeSetToValidate;
 		AttributeSet validationErrors = new AttributeSet();
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( document.getKimType() );
 
-		for(KimDocumentRoleMember roleMember: document.getMembers()) {
-			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-			attributeSetListToValidate.add(attributeSetToValidate);
-    	}
 		boolean attributesUnique;
-
+		AttributeSet errorsAttributesAgainstExisting;
 	    int i = 0;
+	    AttributeSet newMemberQualifiers;
+	    AttributeSet oldMemberQualifiers;
 	    for (KimDocumentRoleMember member: document.getMembers()){
+	    	newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers());
+	    	oldMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(member.getQualifiers());
+	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
+	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
+			validationErrors.putAll( 
+					attributeValidationHelper.convertErrorsForMappedFields("member.memberId", errorsAttributesAgainstExisting));
+
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
-					document.getKimType().getKimTypeId(), 
-					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
-					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));
+	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
 	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
 	            rulePassed = false;
-	            GlobalVariables.getErrorMap().putError("member.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            GlobalVariables.getMessageMap().putError("member.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	            break;
 	    	}
 	    	i++;
 	    }
 	    
         if ( kimTypeService != null ) {
-    		AttributeSet localErrors = kimTypeService.validateAttributes( attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+    		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
     	if (!validationErrors.isEmpty()) {
@@ -109,7 +110,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 					KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
 					GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 					roleDetails, null)){
-	            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, 
+	            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, 
 	            		new String[] {document.getRoleNamespace(), document.getRoleName()});
 	            rulePassed = false;
 			}

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,12 +76,7 @@ public interface BusinessObjectDictionaryService {
      * menu bar html defined for the business object.
      */
     public String getLookupMenuBar(Class businessObjectClass);
-
-
-    /**
-     * the text to be displayed for the instructions of business object lookup.
-     */
-    public String getLookupInstructions(Class businessObjectClass);
+    
 
     /**
      * source for optional extra button
@@ -247,4 +242,12 @@ public interface BusinessObjectDictionaryService {
 
     public Boolean areNotesSupported(Class businessObjectClass);
 
+    /**
+     * returns whether on a lookup, field/attribute values with wildcards and operators should treat them as literal characters
+     * 
+     * @param businessObjectClass
+     * @param attributeName
+     * @return
+     */
+    public boolean isLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class businessObjectClass, String attributeName);
 }

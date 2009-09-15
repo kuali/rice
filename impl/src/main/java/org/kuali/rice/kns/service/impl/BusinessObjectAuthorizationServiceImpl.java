@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,10 +44,10 @@ import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquiryCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
@@ -64,6 +64,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -79,7 +80,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			BusinessObject businessObject, Person user) {
 		BusinessObjectRestrictions businessObjectRestrictions = new BusinessObjectRestrictionsBase();
 		considerBusinessObjectFieldUnmaskAuthorization(businessObject, user,
-				businessObjectRestrictions, "");
+				businessObjectRestrictions, "", null);
 		return businessObjectRestrictions;
 	}
 
@@ -94,7 +95,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		InquiryAuthorizer inquiryAuthorizer = getBusinessObjectDictionaryService()
 				.getInquiryAuthorizer(businessObject.getClass());
 		considerBusinessObjectFieldUnmaskAuthorization(businessObject, user,
-				inquiryRestrictions, "");
+				inquiryRestrictions, "", null);
 		considerBusinessObjectFieldViewAuthorization(businessObjectEntry,
 				businessObject, null, user, inquiryAuthorizer, inquiryRestrictions,
 				"");
@@ -135,7 +136,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				.getDocumentAuthorizer(maintenanceDocument);
 		considerBusinessObjectFieldUnmaskAuthorization(maintenanceDocument
 				.getNewMaintainableObject().getBusinessObject(), user,
-				maintenanceDocumentRestrictions, "");
+				maintenanceDocumentRestrictions, "", maintenanceDocument );
 		considerBusinessObjectFieldViewAuthorization(businessObjectEntry,
 				maintenanceDocument.getNewMaintainableObject().getBusinessObject(),
 				null, user, maintenanceDocumentAuthorizer,
@@ -172,7 +173,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	protected void considerBusinessObjectFieldUnmaskAuthorization(
 			BusinessObject businessObject, Person user,
 			BusinessObjectRestrictions businessObjectRestrictions,
-			String propertyPrefix) {
+			String propertyPrefix, Document document ) {
 		BusinessObjectEntry businessObjectEntry = getDataDictionaryService()
 				.getDataDictionary().getBusinessObjectEntry(
 						businessObject.getClass().getName());
@@ -182,14 +183,14 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			if (attributeDefinition.getAttributeSecurity() != null) {
 				if (attributeDefinition.getAttributeSecurity().isMask()
 						&& !canFullyUnmaskField(user,
-								businessObject.getClass(), attributeName)) {
+								businessObject.getClass(), attributeName, document)) {
 					businessObjectRestrictions.addFullyMaskedField(
 							propertyPrefix + attributeName, attributeDefinition
 									.getAttributeSecurity().getMaskFormatter());
 				}
 				if (attributeDefinition.getAttributeSecurity().isPartialMask()
 						&& !canPartiallyUnmaskField(user, businessObject
-								.getClass(), attributeName)) {
+								.getClass(), attributeName, document)) {
 					businessObjectRestrictions.addPartiallyMaskedField(
 							propertyPrefix + attributeName, attributeDefinition
 									.getAttributeSecurity()
@@ -418,6 +419,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void addInquirableItemRestrictions(Collection sectionDefinitions,
 			InquiryAuthorizer authorizer, InquiryRestrictions restrictions,
 			BusinessObject primaryBusinessObject,
@@ -440,7 +442,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 						BusinessObject collectionItemBusinessObject = iterator.next();
 						considerBusinessObjectFieldUnmaskAuthorization(
 								collectionItemBusinessObject, user, restrictions,
-								newPropertyPrefix);
+								newPropertyPrefix, null);
 						considerBusinessObjectFieldViewAuthorization(
 								collectionBusinessObjectEntry, primaryBusinessObject, collectionItemBusinessObject,
 								user, authorizer, restrictions, newPropertyPrefix);
@@ -465,6 +467,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void addMaintainableItemRestrictions(List<? extends MaintainableItemDefinition> itemDefinitions,
 			MaintenanceDocumentAuthorizer authorizer,
 			MaintenanceDocumentRestrictions restrictions,
@@ -488,7 +491,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 						BusinessObject collectionBusinessObject = iterator.next();
 						considerBusinessObjectFieldUnmaskAuthorization(
 								collectionBusinessObject, user, restrictions,
-								newPropertyPrefix);
+								newPropertyPrefix, maintenanceDocument);
 						considerBusinessObjectFieldViewAuthorization(
 								collectionBusinessObjectEntry, maintenanceDocument, collectionBusinessObject, user,
 								authorizer, restrictions, newPropertyPrefix);
@@ -520,23 +523,48 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 	
 	public <T extends BusinessObject> boolean canFullyUnmaskField(Person user,
-			Class<T> businessObjectClass, String fieldName) {
-		return getIdentityManagementService().isAuthorizedByTemplateName(
-				user.getPrincipalId(),
-				KNSConstants.KNS_NAMESPACE,
-				KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
-				new AttributeSet(getFieldPermissionDetails(businessObjectClass,
-						fieldName)), null);
+			Class<T> businessObjectClass, String fieldName, Document document) {
+		Boolean result = null;
+		if (document != null) { // if a document was passed, evaluate the permission in the context of a document
+			try { // try/catch and fallthrough is a fix for KULRICE-3365
+				result = getDocumentHelperService().getDocumentAuthorizer( document )
+				.isAuthorizedByTemplate( document, 
+						KNSConstants.KNS_NAMESPACE, 
+						KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, 
+						user.getPrincipalId(), getFieldPermissionDetails(businessObjectClass, fieldName), null  );
+			} catch (IllegalArgumentException e) { 
+				// document didn't have needed metadata
+				// TODO: this requires intimate knowledge of DocumentHelperServiceImpl 
+			} 
+		}
+		if (result == null) { 
+			result = getIdentityManagementService().isAuthorizedByTemplateName(
+					user.getPrincipalId(),
+					KNSConstants.KNS_NAMESPACE,
+					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
+					new AttributeSet(getFieldPermissionDetails(businessObjectClass, fieldName)), 
+					null);
+		}
+		return result; // should be safe to return Boolean here since the only circumstances that
+		               // will leave it null will result in an exception being thrown above.
 	}
 
 	public <T extends BusinessObject> boolean canPartiallyUnmaskField(
-			Person user, Class<T> businessObjectClass, String fieldName) {
-		return getIdentityManagementService().isAuthorizedByTemplateName(
-				user.getPrincipalId(),
-				KNSConstants.KNS_NAMESPACE,
-				KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
-				new AttributeSet(getFieldPermissionDetails(businessObjectClass,
-						fieldName)), null);
+			Person user, Class<T> businessObjectClass, String fieldName, Document document) {
+		if ( document == null ) {
+			return getIdentityManagementService().isAuthorizedByTemplateName(
+					user.getPrincipalId(),
+					KNSConstants.KNS_NAMESPACE,
+					KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
+					new AttributeSet(getFieldPermissionDetails(businessObjectClass,fieldName)), 
+					null);
+		} else { // if a document was passed, evaluate the permission in the context of a document
+			return getDocumentHelperService().getDocumentAuthorizer( document )
+					.isAuthorizedByTemplate( document, 
+											 KNSConstants.KNS_NAMESPACE, 
+											 KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD, 
+											 user.getPrincipalId(), getFieldPermissionDetails(businessObjectClass, fieldName), null  );
+		}
 	}
 	
 	public <T extends BusinessObject> boolean canCreate(Class<T> boClass, Person user, String docTypeName){
@@ -658,7 +686,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			Class<? extends BusinessObject> businessObjectClass,
 			String attributeName) {
 		AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), attributeName);
-		return attributeSecurity != null && (attributeSecurity.isHide() || attributeSecurity.isMask() || attributeSecurity.isPartialMask() || attributeSecurity.isReadOnly());
+		return attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI();
 	}
 	
 }

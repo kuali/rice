@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -97,8 +97,6 @@ public class Field implements java.io.Serializable {
     private Boolean rangeFieldInclusive;
     private boolean memberOfRange = false;
     private boolean allowInlineRange = false;
-    //FIXME: can this go away?  only seems to be used on column
-    private Map<String, String> displayParameters;
 
     //FIXME: these next two are iffy, need to reevaluate whether really used by doc search
     // below boolean used by criteria processor to hide field without removing classic 'field type' variable
@@ -128,6 +126,7 @@ public class Field implements java.io.Serializable {
 
     private List<KeyLabelPair> fieldValidValues;
     private String quickFinderClassNameImpl;
+    private String baseLookupUrl;
 
     private boolean clear;
     private boolean dateField;
@@ -1549,14 +1548,6 @@ public class Field implements java.io.Serializable {
         this.propertyValues = propertyValues;
     }
     
-    public Map<String, String> getDisplayParameters() {
-        return this.displayParameters;
-    }
-
-    public void setDisplayParameters(Map<String, String> displayParameters) {
-        this.displayParameters = displayParameters;
-    }
-
 	/**
 	 * @return the skipBlankValidValue
 	 */
@@ -1600,6 +1591,16 @@ public class Field implements java.io.Serializable {
 	public void setPersonNameValue(String personNameValue) {
 		this.personNameValue = personNameValue;
 	}
-    
+
+	public String getBaseLookupUrl() {
+		return this.baseLookupUrl;
+	}
+
+	public void setBaseLookupUrl(String baseLookupURL) {
+		this.baseLookupUrl = baseLookupURL;
+	}
+
+	
+	
     //#END DOC SEARCH RELATED
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,12 +17,12 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
@@ -48,6 +48,8 @@ import org.kuali.rice.kns.util.KNSUtils;
 public abstract class ParameterServiceBase implements ParameterService {
 	protected DataDictionaryService dataDictionaryService;
 	protected KualiModuleService kualiModuleService;
+	protected static final String PARAMETER_CACHE_PREFIX = "Parameter:";
+    protected static final String PARAMETER_CACHE_GROUP_NAME = "SystemParameter";
 
 	/**
 	 * This constructs a ...
@@ -77,6 +79,20 @@ public abstract class ParameterServiceBase implements ParameterService {
 	public boolean getIndicatorParameter(Class componentClass, String parameterName) {
 	    return "Y".equals(getParameter(componentClass, parameterName).getParameterValue());
 	}
+	
+	/**
+     * This method provides a convenient way to access the value of indicator parameters with Y/N values. Y is translated to true
+     * and N is translated to false.
+     * 
+     * @param namespaceCode
+     * @param detailTypeCode 
+     * @param parameterName
+     * @return boolean value of Yes/No indicator parameter
+     */
+    @SuppressWarnings("unchecked")
+    public boolean getIndicatorParameter(String namespaceCode, String detailTypeCode, String parameterName) {
+        return "Y".equals(getParameter(namespaceCode, detailTypeCode, parameterName).getParameterValue());
+    }
 
 	/**
 	 * @see org.kuali.kfs.sys.service.ParameterService#getParameterValue(java.lang.Class componentClass, java.lang.String parameterName)
@@ -85,6 +101,14 @@ public abstract class ParameterServiceBase implements ParameterService {
 	public String getParameterValue(Class componentClass, String parameterName) {
 	    return getParameter(componentClass, parameterName).getParameterValue();
 	}
+	
+	/**
+     * @see org.kuali.kfs.sys.service.ParameterService#getParameterValue(java.lang.Class componentClass, java.lang.String parameterName)
+     */
+    @SuppressWarnings("unchecked")
+    public String getParameterValue(String namespaceCode, String detailTypeCode, String parameterName) {
+        return getParameter(namespaceCode, detailTypeCode, parameterName).getParameterValue();
+    }
 
 	/**
 	 * This will look for constrainingValue=<value to return> within the parameter text and return that if it is found. Otherwise,
@@ -117,6 +141,19 @@ public abstract class ParameterServiceBase implements ParameterService {
 	public List<String> getParameterValues(Class componentClass, String parameterName) {
 	    return Collections.unmodifiableList( getParameterValues(getParameter(componentClass, parameterName)) );
 	}
+	
+	/**
+     * This method can be used to parse the value of a parameter by splitting on a semi-colon.
+     * 
+     * @param namespaceCode
+     * @param detailTypeCode 
+     * @param parameterName
+     * @return parsed List of String parameter values
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getParameterValues(String namespaceCode, String detailTypeCode, String parameterName) {
+        return Collections.unmodifiableList( getParameterValues(getParameter(namespaceCode, detailTypeCode, parameterName)) );
+    }
 
 	/**
 	 * This method looks for constrainingValue=<some text> within the parameter text and splits that text on a comma to generate
@@ -145,6 +182,21 @@ public abstract class ParameterServiceBase implements ParameterService {
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String parameterName) {
 	    return getParameterEvaluator(getParameter(componentClass, parameterName));
 	}
+	
+	/**
+     * This method will return an instance of the parameterEvaluator bean defined in Spring, initialized with the Parameter
+     * corresponding to the specified componentClass and parameterName and the values of the Parameter.
+     * 
+     * @param namespaceCode
+     * @param detailTypeCode 
+     * @param parameterName
+     * @return ParameterEvaluator instance initialized with the Parameter corresponding to the specified componentClass and
+     *         parameterName and the values of the Parameter
+     */
+    @SuppressWarnings("unchecked")
+    public ParameterEvaluator getParameterEvaluator(String namespaceCode, String detailTypeCode, String parameterName) {
+        return getParameterEvaluator(getParameter(namespaceCode, detailTypeCode, parameterName));
+    }
 
 	/**
 	 * This method will return an instance of the parameterEvaluator bean defined in Spring, initialized with the Parameter
@@ -162,6 +214,21 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    return getParameterEvaluator(getParameter(componentClass, parameterName), constrainedValue);
 	}
 
+	/**
+     * This method will return an instance of the parameterEvaluator bean defined in Spring, initialized with the Parameter
+     * corresponding to the specified componentClass and parameterName and the values of the Parameter.
+     * 
+     * @param namespaceCode
+     * @param detailTypeCode 
+     * @param parameterName
+     * @return ParameterEvaluator instance initialized with the Parameter corresponding to the specified componentClass and
+     *         parameterName and the values of the Parameter
+     */
+    @SuppressWarnings("unchecked")
+    public ParameterEvaluator getParameterEvaluator(String namespaceCode, String detailTypeCode, String parameterName, String constrainedValue) {
+        return getParameterEvaluator(getParameter(namespaceCode, detailTypeCode, parameterName), constrainedValue);
+    }
+    
 	/**
 	 * This method will return an instance of the parameterEvaluator bean defined in Spring, initialized with the Parameter
 	 * corresponding to the specified componentClass and parameterName, the values of the Parameter that correspond to the specified
@@ -315,10 +382,10 @@ public abstract class ParameterServiceBase implements ParameterService {
 
 	protected ParameterEvaluatorImpl getParameterEvaluator(Parameter parameter, String constrainingValue,
 			String constrainedValue) {
-			    ParameterEvaluatorImpl parameterEvaluator = getParameterEvaluator(parameter, constrainedValue);
-			    parameterEvaluator.setValues(getParameterValues(parameter, constrainingValue));
-			    return parameterEvaluator;
-			}
+	    ParameterEvaluatorImpl parameterEvaluator = getParameterEvaluator(parameter, constrainedValue);
+	    parameterEvaluator.setValues(getParameterValues(parameter, constrainingValue));
+	    return parameterEvaluator;
+	}
 
 	@SuppressWarnings("unchecked")
 	protected ParameterDetailType getParameterDetailType(Class documentOrStepClass) {
@@ -346,33 +413,29 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    return Arrays.asList(parameter.getParameterValue().split(";"));
 	}
 
-    private ThreadLocal<Map<String,Parameter>> parameterCache = new ThreadLocal<Map<String,Parameter>>();
-
     /**
      * @see org.kuali.kfs.sys.service.ParameterService#clearCache()
      */
     public void clearCache() {
-        parameterCache.set(null);
+        //parameterCache = new ThreadLocal<Map<String,Parameter>>();
+        KEWServiceLocator.getCacheAdministrator().flushGroup(PARAMETER_CACHE_GROUP_NAME);
     }
  
     @SuppressWarnings("unchecked")
 	protected Parameter getParameter(Class componentClass, String parameterName) {
         String key = componentClass.toString() + ":" + parameterName;
         Parameter parameter = null;
-        if (parameterCache.get() == null) {
-            parameterCache.set(new HashMap<String,Parameter>());
-        }
-        else {
-            parameter = parameterCache.get().get(key);
-            if (parameter != null) {
-                return parameter;
-            }
-        }
+        //String namespaceCode = getNamespace(componentClass);
+        //String detailTypeCode = getDetailType(componentClass);
+        //parameter = fetchFromCache(namespaceCode, detailTypeCode, parameterName);
+        //if (parameter != null) {
+        //    return parameter;
+        //}
         parameter = getParameter(getNamespace(componentClass), getDetailType(componentClass), parameterName);
         if (parameter == null) {
             throw new IllegalArgumentException("The getParameter method of ParameterServiceImpl requires a componentClass and parameterName that correspond to an existing parameter.  Was passed: " + componentClass.getName() + "/" + parameterName);
         }
-        parameterCache.get().put(key, parameter);
+        //insertIntoCache(parameter);
         return parameter;
     }
     
@@ -387,6 +450,46 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    return param;
 	}
 
+    /**
+     * Fetches the Parameter from the cache with the given parameter namespace and name.  If there is no entry in the cache for the given
+     * namespace and name, null is returned.
+     */
+    protected Parameter fetchFromCache(String namespaceCode, String detailTypeCode, String name) {
+        return (Parameter)KEWServiceLocator.getCacheAdministrator().getFromCache(getParameterCacheKey(namespaceCode, detailTypeCode, name));
+    }
+    
+    /**
+     * Inserts the given Parameter into the cache.  If the Parameter is already in the cache,
+     * these entries should  be overwritten.
+     */
+    protected void insertIntoCache(Parameter parameter) {
+        if (parameter == null) {
+            return;
+        }
+        KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, PARAMETER_CACHE_GROUP_NAME);
+    }
+    
+    /**
+     * Inserts the given Parameter into the cache.  If the Parameter is already in the cache,
+     * these entries should  be overwritten.
+     */
+    //protected void insertIntoCache(Parameter parameter, String applicationNamespaceCodeOverride) {
+    //    if (parameter == null) {
+    //        return;
+    //    }
+    //    KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName(), applicationNamespaceCodeOverride), parameter, PARAMETER_CACHE_GROUP_NAME);
+    //}
+    
+    protected void flushParameterFromCache(String namespaceCode, String detailTypeCode, String name) {
+        KEWServiceLocator.getCacheAdministrator().flushEntry(getParameterCacheKey(namespaceCode, detailTypeCode, name));
+    }
+    /**
+     * Returns the cache key for the given parameter.
+     */
+    protected String getParameterCacheKey(String namespaceCode, String detailTypeCode, String name) {
+        return PARAMETER_CACHE_PREFIX + namespaceCode + "-" + detailTypeCode + "-" + name;
+    }
+    
 	private boolean constraintIsAllow(Parameter parameter) {
 	    return KNSConstants.APC_ALLOWED_OPERATOR.equals(parameter.getParameterConstraintCode());
 	}

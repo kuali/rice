@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
@@ -79,7 +79,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
 
         if (group.getKimTypeId() != null) {
             Element typeElement = renderer.renderElement(groupElement, TYPE);
-            KimTypeImpl kimType = KIMServiceLocator.getTypeInternalService().getKimType(group.getKimTypeId());
+            KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(group.getKimTypeId());
             renderer.renderTextElement(typeElement, NAMESPACE, kimType.getNamespaceCode());
             renderer.renderTextElement(typeElement, NAME, kimType.getName());
         }

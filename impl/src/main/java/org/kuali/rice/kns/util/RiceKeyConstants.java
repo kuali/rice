@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -169,6 +169,7 @@ public class RiceKeyConstants {
     public static final String ERROR_MEMBERID_MEMBERTYPE_MISMATCH = "error.memberid.membertype.mismatch";
     public static final String ERROR_PRIORITY_NUMBER_RANGE = "error.prioritynumber.range";
     public static final String ERROR_CANT_ADD_DERIVED_ROLE = "error.cant.add.derived.role";
+    public static final String ERROR_INVALID_ROLE = "error.invalid.role";
     public static final String ERROR_REQUIRED_CONDITIONALLY = "error.required.conditionally";
     public static final String ERROR_CANT_BE_MODIFIED = "error.unmodifiable.attribute";
     public static final String ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION = "error.delegation.notassociatedwith.rolemember";
@@ -178,5 +179,8 @@ public class RiceKeyConstants {
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
     
     public static final String ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA = "error.document.fieldContainsPossibleSensitiveData";
+    
+    public static final String ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD = "error.wildcards.and.operators.not.allowed.on.field";
+    public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
 }
 

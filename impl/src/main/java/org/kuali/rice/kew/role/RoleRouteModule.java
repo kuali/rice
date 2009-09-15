@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,13 +17,13 @@ package org.kuali.rice.kew.role;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -48,6 +48,7 @@ import org.kuali.rice.kim.service.ResponsibilityService;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class RoleRouteModule implements RouteModule {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleRouteModule.class);
 	
 	protected static final String QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
 	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
@@ -72,6 +73,9 @@ public class RoleRouteModule implements RouteModule {
 		String responsibilityTemplateName = loadResponsibilityTemplateName(context);
 		String namespaceCode = loadNamespace(context);
 		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
+		if (LOG.isDebugEnabled()) {
+			logQualifierCheck(namespaceCode, responsibilityTemplateName, responsibilityDetails, qualifiers);
+		}
 		if ( qualifiers != null ) {
 			for (AttributeSet qualifier : qualifiers) {
 				if ( qualifier.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
@@ -80,8 +84,14 @@ public class RoleRouteModule implements RouteModule {
 					responsibilityDetails.remove( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
 				}
 				List<ResponsibilityActionInfo> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Found " + responsibilities.size() + " responsibilities from ResponsibilityService");
+				}
 				// split the responsibility list defining characteristics (per the ResponsibilitySet.matches() method)
 				List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Found " + responsibilitySets.size() + " responsibility sets from ResponsibilityActionInfo list");
+				}
 				for (ResponsibilitySet responsibilitySet : responsibilitySets) {
 					String approvePolicy = responsibilitySet.getApprovePolicy();
 					// if all must approve, add the responsibilities individually so that the each get their own approval graph
@@ -89,8 +99,8 @@ public class RoleRouteModule implements RouteModule {
 						for (ResponsibilityActionInfo responsibility : responsibilitySet.getResponsibilities()) {
 							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
 						}
-					} else { // first-approve policy, pass as groups to the ActionRequestFactory so that a single
-						// approval per set will clear the action request
+					} else {
+						// first-approve policy, pass as groups to the ActionRequestFactory so that a single approval per set will clear the action request
 						arFactory.addRoleResponsibilityRequest(responsibilitySet.getResponsibilities(), approvePolicy);
 					}
 				}
@@ -101,7 +111,32 @@ public class RoleRouteModule implements RouteModule {
 		return actionRequests;
 	}
 	
-	/**
+    protected void logQualifierCheck(String namespaceCode, String responsibilityName, AttributeSet responsibilityDetails, List<AttributeSet> qualifiers ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(  '\n' );
+		sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
+		sb.append( "             Details:\n" );
+		if ( responsibilityDetails != null ) {
+			sb.append( responsibilityDetails.formattedDump( 25 ) );
+		} else {
+			sb.append( "                         [null]\n" );
+		}
+		sb.append( "             Qualifiers:\n" );
+		for (AttributeSet qualification : qualifiers) {
+			if ( qualification != null ) {
+				sb.append( qualification.formattedDump( 25 ) );
+			} else {
+				sb.append( "                         [null]\n" );
+			}
+		}
+		if (LOG.isTraceEnabled()) { 
+			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+		} else {
+			LOG.debug(sb.toString());
+		}
+    }
+
+    /**
 	 * Walks the ActionRequest graph and disables responsibility resolution on those ActionRequests.
 	 * Because of the fact that it's not possible to tell if an ActionRequest was generated by
 	 * KIM once it's been saved in the database, we want to disable responsibilityId
@@ -141,6 +176,9 @@ public class RoleRouteModule implements RouteModule {
 		}
 		if (resolver == null) {
 			resolver = new NullQualifierResolver();
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Resolver class being returned: " + resolver.getClass().getName());
 		}
 		return resolver;
 	}

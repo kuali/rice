@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.bo.types.dto;
 
 import java.io.Serializable;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -31,6 +33,7 @@ public class KimTypeAttributeInfo implements Serializable {
 	protected String attributeLabel;
 	protected String componentName;
 	protected String applicationUrl;
+	protected String kimAttributeId;
 
 	public String getSortCode() {
 		return this.sortCode;
@@ -68,4 +71,25 @@ public class KimTypeAttributeInfo implements Serializable {
 	public void setApplicationUrl(String applicationUrl) {
 		this.applicationUrl = applicationUrl;
 	}
+	public String getKimAttributeId() {
+		return this.kimAttributeId;
+	}
+	public void setKimAttributeId(String kimAttributeId) {
+		this.kimAttributeId = kimAttributeId;
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("attributeName", this.attributeName)
+				.append("componentName",this.componentName)
+				.append("kimAttributeId",this.kimAttributeId)
+				.append("namespaceCode", this.namespaceCode)
+				.append("sortCode",this.sortCode)
+				.append("attributeLabel",this.attributeLabel)
+				.append("applicationUrl",this.applicationUrl)
+				.toString();
+	}
+	
 }

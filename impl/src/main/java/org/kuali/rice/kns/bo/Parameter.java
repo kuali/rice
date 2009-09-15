@@ -1,11 +1,18 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation. Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Copyright 2006-2009 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
@@ -21,6 +28,8 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * 
@@ -43,6 +52,10 @@ public class Parameter extends PersistableBusinessObjectBase {
 	@Id
 	@Column(name="PARM_NM")
 	private String parameterName;
+	
+	@Id
+    @Column(name="APPL_NMSPC_CD")
+    private String parameterApplicationNamespaceCode;
 
 	@Column(name="TXT")
 	private String parameterValue;
@@ -78,7 +91,15 @@ public class Parameter extends PersistableBusinessObjectBase {
 		this.parameterName = parameterName;
 		this.parameterValue = parameterValue;
 		this.parameterConstraintCode = parameterConstraintCode;
+		this.parameterApplicationNamespaceCode = KNSConstants.DEFAULT_APPLICATION_CODE;
 	}
+	
+	public Parameter( String parameterName, String parameterValue, String parameterConstraintCode, String parameterApplicationNamespaceCode ) {
+        this.parameterName = parameterName;
+        this.parameterValue = parameterValue;
+        this.parameterConstraintCode = parameterConstraintCode;
+        this.parameterApplicationNamespaceCode = parameterApplicationNamespaceCode;
+    }
 	
 	
 	public String getParameterName() {
@@ -129,6 +150,7 @@ public class Parameter extends PersistableBusinessObjectBase {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "parameterNamespaceCode", this.parameterNamespaceCode );
 		m.put( "parameterDetailTypeCode", this.parameterDetailTypeCode );
+		m.put( "parameterApplicationNamespaceCode", this.parameterApplicationNamespaceCode );
 		m.put( "parameterName", this.parameterName );
 		m.put( "parameterValue", this.parameterValue );
 		m.put( "parameterConstraintCode", this.getParameterConstraintCode() );
@@ -174,6 +196,14 @@ public class Parameter extends PersistableBusinessObjectBase {
 	public void setParameterDetailType(ParameterDetailType parameterDetailType) {
 		this.parameterDetailType = parameterDetailType;
 	}
+
+    public String getParameterApplicationNamespaceCode() {
+        return this.parameterApplicationNamespaceCode;
+    }
+
+    public void setParameterApplicationNamespaceCode(String parameterApplicationNamespaceCode) {
+        this.parameterApplicationNamespaceCode = parameterApplicationNamespaceCode;
+    }
 
 }
 

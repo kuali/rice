@@ -36,7 +36,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -47,7 +46,6 @@ import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.EncryptionFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 
 /**
  * This class is the base form which implements the PojoForm interface.
@@ -173,14 +171,14 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	                    ObjectUtils.setObjectProperty(formatter, this, keypath, type, param);
 	                	}
 	                catch (FormatException e1) {
-	                    GlobalVariables.getErrorMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
+	                    GlobalVariables.getMessageMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
 	                    cacheUnconvertedValue(keypath, param);
 	                }
 	                catch (InvocationTargetException e1) {
 	                    if (e1.getTargetException().getClass().equals(FormatException.class)) {
 	                        // Handle occasional case where FormatException is wrapped in an InvocationTargetException
 	                        FormatException formatException = (FormatException) e1.getTargetException();
-	                        GlobalVariables.getErrorMap().putError(keypath, formatException.getErrorKey(), formatException.getErrorArgs());
+	                        GlobalVariables.getMessageMap().putError(keypath, formatException.getErrorKey(), formatException.getErrorArgs());
 	                        cacheUnconvertedValue(keypath, param);
 	                    }
 	                    else {
@@ -384,7 +382,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
             return Formatter.isSupportedType(type) ? formatter.formatForPresentation(value) : value;
         }
         catch (FormatException e) {
-            GlobalVariables.getErrorMap().putError(keypath, e.getErrorKey(), e.getErrorArgs());
+            GlobalVariables.getMessageMap().putError(keypath, e.getErrorKey(), e.getErrorArgs());
             return value.toString();
         }
     }
@@ -486,7 +484,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	    customInitMaxUploadSizes();
     	    // if it's still empty, add the default
     	    if ( maxUploadFileSizes.isEmpty() ) {
-    	        addMaxUploadSize(KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.MAX_UPLOAD_SIZE_PARM_NM));
+    	        addMaxUploadSize(KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.MAX_UPLOAD_SIZE_PARM_NM));
     	    }
     	}	
     }
@@ -506,6 +504,9 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     
     public void registerEditableProperty(String editablePropertyName){
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "KualiSessionId: " + GlobalVariables.getUserSession().getKualiSessionId() + " -- Registering Property: " + editablePropertyName );
+    	}
     	editableProperties.add(editablePropertyName);
     }
     
@@ -514,6 +515,9 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     
     public void clearEditablePropertyInformation(){
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "KualiSessionId: " + GlobalVariables.getUserSession().getKualiSessionId() + " -- Clearing Editable Properties" );
+    	}
     	editableProperties = new HashSet<String>();
     }
     
@@ -586,6 +590,9 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#switchEditablePropertiesToEditablePropertiesFromPreviousRequest()
 	 */
 	public void switchEditablePropertyInformationToPreviousRequestInformation() {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "KualiSessionId: " + GlobalVariables.getUserSession().getKualiSessionId() + " -- switchEditablePropertyInformationToPreviousRequestInformation " );
+    	}
 		editablePropertiesFromPreviousRequest = editableProperties;
 	}
 	

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -108,11 +108,11 @@ public class PersonServiceImplTest extends KIMTestCase {
 		Person p = personService.getPerson( "KULUSER" );
 		assertNotNull( "person object must not be null", p );
 		assertEquals( "class must match implementation class defined on service", personService.getPersonImplementationClass(), p.getClass() );
-		assertEquals( "person name does not match", "KULUSER", p.getFirstName() );
+		assertEquals( "person name does not match", "KULUSER", p.getFirstNameUnmasked() );
 		assertEquals( "principal name does not match", "kuluser", p.getPrincipalName() );
-		assertEquals( "KULUSER should have no address record", "", p.getAddressLine1() );
+		assertEquals( "KULUSER should have no address record", "", p.getAddressLine1Unmasked() );
 		assertEquals( "KULUSER should have no campus code", "", p.getCampusCode() );
-		assertEquals( "KULUSER should have no email address", "", p.getEmailAddress() );
+		assertEquals( "KULUSER should have no email address", "", p.getEmailAddressUnmasked() );
 		assertNotNull( "entity ID should be set", p.getEntityId() );
 		assertNotNull( "principal ID should be set", p.getPrincipalId() );
 		

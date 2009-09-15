@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,7 @@ public class KimConstants {
 	public static final String KIM_TYPE_DEFAULT_NAME = "Default";
 	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KUALI";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
+	public static final String RESTRICTED_DATA_MASK = "Xxxxxx";
 
 	//Kim services constants for API
 	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
@@ -79,7 +80,6 @@ public class KimConstants {
 
     	public static final String USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
 
-    	public static final String MODIFY_ENTITY = "Modify Entity";
     	public static final String POPULATE_GROUP = "Populate Group";
     	public static final String ASSIGN_ROLE = "Assign Role";
     	public static final String GRANT_PERMISSION = "Grant Permission";
@@ -89,8 +89,6 @@ public class KimConstants {
     	public static final String INQUIRE_INTO_RECORDS = "Inquire Into Records";
     	public static final String USE_SCREEN = "Use Screen";
 
-    	public static final String UPLOAD_BATCH_INPUT_FILES = "Upload Batch Input File(s)";
-    	public static final String MODIFY_BATCH_JOB = "Modify Batch Job";
     	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
     	public static final String MAINTAIN_SYSTEM_PARAMETER = "Maintain System Parameter";
     	public static final String SEND_AD_HOC_REQUEST ="Send Ad Hoc Request";
@@ -99,6 +97,8 @@ public class KimConstants {
 	public static class PermissionNames {
 		public static final String LOG_IN = "Log In";
 		public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
+		public static final String OVERRIDE_ENTITY_PRIVACY_PREFERENCES = "Override Entity Privacy Preferences";
+    	public static final String MODIFY_ENTITY = "Modify Entity";
 	}
 
 	public static class KimUIConstants {
@@ -129,6 +129,7 @@ public class KimConstants {
 		public static final String KIM_ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
 		public static final String KIM_GROUP_DOCUMENT_TYPE_NAME = "IdentityManagementGroupDocument";
 		public static final String KIM_PERSON_DOCUMENT_TYPE_NAME = "IdentityManagementPersonDocument";
+		public static final String KIM_REVIEW_RESPONSIBILITY_DOCUMENT_TYPE_NAME = "IdentityManagementReviewResponsibilityMaintenanceDocument";
 		public static final String KIM_ROLE_DOCUMENT_SHORT_KEY = "IMRD";
 		public static final String KIM_GROUP_DOCUMENT_SHORT_KEY = "IMGD";
 		public static final String KIM_PERSON_DOCUMENT_SHORT_KEY = "IMPD";
@@ -169,6 +170,10 @@ public class KimConstants {
 	    	return delegationTypesMap;
 	    }
 
+	    public static final String ROLE_LOOKUPABLE_IMPL = "roleLookupable";
+	    public static final String KIM_DOCUMENT_ROLE_MEMBER_LOOKUPABLE_IMPL = "kimDocumentRoleMemberLookupable";
+	    public static final String ROLE_MEMBER_LOOKUPABLE_IMPL = "roleMemberImplLookupable";
+	    public static final String ROLE_MEMBERS_COLLECTION_NAME = "roleMembers";
 	}
 
 	public static class PrimaryKeyConstants {
@@ -189,7 +194,7 @@ public class KimConstants {
 		public static final String ROLE_RESPONSIBILITY_ACTION_ID = "roleResponsibilityActionId";
 		public static final String KIM_PERMISSION_REQUIRED_ATTR_ID = "kimPermissionRequiredAttributeId";
 		public static final String KIM_ATTRIBUTE_ID = "kimAttributeId";
-		public static final String EXTERNAL_IDENTIFIER_TYPE_CODE ="code";
+		public static final String KIM_TYPE_CODE ="code";
 	}
 
 	public static class UniqueKeyConstants {
@@ -204,6 +209,8 @@ public class KimConstants {
 	}
 
 	public static class SequenceNames {
+		public static final String KRIM_PRNCPL_ID_S = "KRIM_PRNCPL_ID_S";
+		public static final String KRIM_ENTITY_ID_S = "KRIM_ENTITY_ID_S";
 		public static final String KRIM_ROLE_ID_S = "KRIM_ROLE_ID_S";
 		public static final String KRIM_GROUP_ID_S = "KRIM_GRP_ID_S";
 		public static final String KRIM_ROLE_PERM_ID_S = "KRIM_ROLE_PERM_ID_S";
@@ -212,6 +219,8 @@ public class KimConstants {
 		public static final String KRIM_DLGN_MBR_ID_S = "KRIM_DLGN_MBR_ID_S";
 		public static final String KRIM_ROLE_RSP_ACTN_ID_S = "KRIM_ROLE_RSP_ACTN_ID_S";
 		public static final String KRIM_DLGN_ID_S = "KRIM_DLGN_ID_S";
+		public static final String KRIM_PERM_ID_S = "KRIM_PERM_ID_S";
+		public static final String KRIM_RSP_ID_S = "KRIM_RSP_ID_S";
 		public static final String KRIM_ATTR_DATA_ID_S = "KRIM_ATTR_DATA_ID_S";
 	}
 

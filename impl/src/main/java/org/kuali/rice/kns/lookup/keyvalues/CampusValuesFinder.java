@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class CampusValuesFinder extends KeyValuesBase {
 
-	List<KeyLabelPair> campusCache = null;
+	protected static List<KeyLabelPair> campusCache = null;
 	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
@@ -39,15 +39,18 @@ public class CampusValuesFinder extends KeyValuesBase {
     @SuppressWarnings("unchecked")
 	public List<KeyLabelPair> getKeyValues() {
     	if ( campusCache == null ) {
-	        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-	        Collection<Campus> codes = (Collection<Campus>)boService.findAll(Campus.class);
-	        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
-	        labels.add(new KeyLabelPair("", ""));
-	        for ( Campus campus : codes ) {
-	            labels.add(new KeyLabelPair(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
-	        }
-	
-	        campusCache = labels;
+    		synchronized ( this.getClass() ) {
+				
+		        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+		        Collection<Campus> codes = (Collection<Campus>)boService.findAll(Campus.class);
+		        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
+		        labels.add(new KeyLabelPair("", ""));
+		        for ( Campus campus : codes ) {
+		            labels.add(new KeyLabelPair(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
+		        }
+		
+		        campusCache = labels;
+			}
     	}
     	return campusCache;
     }

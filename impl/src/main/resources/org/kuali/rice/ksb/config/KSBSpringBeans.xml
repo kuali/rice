@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2006-2007 The Kuali Foundation.
+  Copyright 2006-2007 The Kuali Foundation
 
-  Licensed under the Educational Community License, Version 1.0 (the "License");
+  Licensed under the Educational Community License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-  http://www.opensource.org/licenses/ecl1.php
+  http://www.opensource.org/licenses/ecl2.php
 
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,17 +32,7 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
-	
-	<bean id="ksbOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
-		<property name="jcdAliases">
-			<list>
-				<value>ksbMessageDataSource</value>
-				<value>ksbRegistryDataSource</value>
-			</list>
-		</property>
-		<property name="metadataLocation" value="classpath:org/kuali/rice/ksb/config/OJB-repository-ksb.xml" />
-	</bean>
-	
+
 	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
 		<property name="preferredDataSourceParams">
 			<list>
@@ -87,40 +77,10 @@
 		<property name="serverDataSource" value="false"/>
 	</bean>
 
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-	</bean>
-
-	<!-- Proxy for rollback on all exceptions -->
-
-	<bean id="matchAllWithPropReqCheckedException" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource"
-		lazy-init="true">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED,-Exception</value>
-		</property>
-	</bean>
-
-	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED</value>
-		</property>
-	</bean>
-
-	<bean id="matchAllTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributeSource">
-			<ref bean="matchAllWithPropReq" />
-		</property>
-	</bean>
-
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">
 			<list>
-				<idref local="matchAllTxInterceptor" />
+				<idref bean="matchAllTxInterceptor" />
 			</list>
 		</property>
 		<property name="beanNames">
@@ -223,8 +183,6 @@
   <!-- Used for @Transactional so you don't have to wire services up in here -->
   <tx:annotation-driven transaction-manager="transactionManager"/>
   
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
   <!-- 
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">

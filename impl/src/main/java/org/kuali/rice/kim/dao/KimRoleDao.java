@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,8 +19,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
+import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -40,7 +42,7 @@ public interface KimRoleDao {
 	 */
 	List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId );
 	
-	List<GroupMemberImpl> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId );
+	List<GroupMembershipInfo> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId );
 	
 	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds );
 	
@@ -64,5 +66,10 @@ public interface KimRoleDao {
 	
     List<RoleImpl> getRoles(Map<String,String> fieldValues);
 
+	List<GroupMembershipInfo> getGroupMembers(Collection<String> groupIds);
+	
+	List<RoleMembershipInfo> getRoleMembers(Map<String,String> fieldValues);
+
+	List<RoleMemberCompleteInfo> getRoleMembersCompleteInfo(Map<String,String> fieldValues);
 
 }

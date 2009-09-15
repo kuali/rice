@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,21 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * 
+ * This service acts as a facade on the entity information that is provided
+ * through the IdentityService and provides a "person-centric" view of that 
+ * entity data.
+ * 
+ * <p>In general, the Person object flattens out the various related pieces of
+ * entity data into a denormalized view on that data.  In many cases, that
+ * data will have a defined "default" value in the entity data model.  This
+ * default data is what the Person object will be constructed with.  For
+ * example, an entity can have more than one name, but one of those names
+ * is flagged as the default.
+ * 
+ * <p>This service will do it's best to construct valid Person objects even
+ * for entities that don't have an entity type of "PERSON".  In those cases
+ * not all of the attributes on the Person object will be populated.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -92,4 +106,9 @@ public interface PersonService<T extends Person> {
 	 */
 	boolean hasPersonProperty(Class<? extends BusinessObject> businessObjectClass, Map<String,String> fieldValues);
 	
+	
+	/**
+     * Flush all of the role-related caches.
+     */
+    void flushPersonCaches();
 }

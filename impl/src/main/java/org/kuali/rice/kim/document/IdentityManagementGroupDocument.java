@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,21 +16,18 @@
 package org.kuali.rice.kim.document;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -93,21 +90,15 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
-		if ( kimType == null || !StringUtils.equals(kimType.getKimTypeId(), getGroupTypeId() ) ) {
-	        Map<String, String> criteria = new HashMap<String, String>();
-	        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, getGroupTypeId());
-	        kimType = (KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria);
-		}
-		return kimType;
+	public KimTypeInfo getKimType() {
+		return KIMServiceLocator.getTypeInfoService().getKimType(getGroupTypeId());
 	}
 	
 	/**
 	 * @param members the members to set
 	 */
 	public GroupDocumentMember getBlankMember() {
-		GroupDocumentMember member = new GroupDocumentMember();
-       	return member;
+		return new GroupDocumentMember();
 	}
 
 	/**
@@ -146,15 +137,17 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		}
 		int index = 0;
 		// this needs to be checked - are all qualifiers present?
-		for(String key : getDefinitions().keySet()) {
-			if ( getQualifiers().size() > index ) {
-				GroupDocumentQualifier qualifier = getQualifiers().get(index);
-				qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-				qualifier.setKimTypId(getKimType().getKimTypeId());
-				qualifier.setGroupId(groupId);
-			}
-			index++;
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+				if ( getQualifiers().size() > index ) {
+					GroupDocumentQualifier qualifier = getQualifiers().get(index);
+					qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+					qualifier.setKimTypId(getKimType().getKimTypeId());
+					qualifier.setGroupId(groupId);
+				}
+				index++;
+	        }
+		}
 	}
 
 	public void initializeDocumentForNewGroup() {
@@ -292,11 +285,13 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		if(getQualifiers()==null || getQualifiers().size()<1){
 			GroupDocumentQualifier qualifier;
 			setQualifiers(new ArrayList<GroupDocumentQualifier>());
-			for(String key : getDefinitions().keySet()) {
-				qualifier = new GroupDocumentQualifier();
-	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-	        	getQualifiers().add(qualifier);
-	        }
+			if(getDefinitions()!=null){
+				for(String key : getDefinitions().keySet()) {
+					qualifier = new GroupDocumentQualifier();
+		        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+		        	getQualifiers().add(qualifier);
+		        }
+			}
 		}
 	}
 
@@ -314,4 +309,11 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		this.editing = editing;
 	}
 
+	public void setKimType(KimTypeInfo kimType) {
+		super.setKimType(kimType);
+		if (kimType != null){
+			setGroupTypeId(kimType.getKimTypeId());
+			setGroupTypeName(kimType.getName());
+		}
+	}
 }

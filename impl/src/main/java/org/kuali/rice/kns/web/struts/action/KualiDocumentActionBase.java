@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -82,6 +82,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiRuleService;
 import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -117,6 +118,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private DocumentHelperService documentHelperService;
     private DocumentService documentService;
     private KualiConfigurationService kualiConfigurationService;
+    private ParameterService parameterService;
     private PessimisticLockService pessimisticLockService;
     private KualiRuleService kualiRuleService;
     private IdentityManagementService identityManagementService;
@@ -158,7 +160,7 @@ public class KualiDocumentActionBase extends KualiAction {
             Throwable cause = ooe.getCause();
             if (cause instanceof OptimisticLockException) {
                 OptimisticLockException ole = (OptimisticLockException) cause;
-                GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_OPTIMISTIC_LOCK);
+                GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_OPTIMISTIC_LOCK);
                 logOjbOptimisticLockException(ole);
             }
             else {
@@ -168,7 +170,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         finally {
         	if (form instanceof KualiDocumentFormBase) {
-                ((KualiDocumentFormBase) form).setErrorMapFromPreviousRequest(GlobalVariables.getErrorMap());
+                ((KualiDocumentFormBase) form).setMessageMapFromPreviousRequest(GlobalVariables.getMessageMap());
         	}
         }
 
@@ -244,7 +246,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
                 setupPessimisticLockMessages(document, request);
                 if (!document.getPessimisticLocks().isEmpty()) {
-                    String warningMinutes = getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
+                    String warningMinutes = getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
                     request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MINUTES, warningMinutes);
                     request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MILLISECONDS, (request.getSession().getMaxInactiveInterval() - (Integer.valueOf(warningMinutes) * 60)) * 1000);
                 }
@@ -548,6 +550,7 @@ public class KualiDocumentActionBase extends KualiAction {
 //        	userSession.removeObject(kualiDocumentFormBase.getFormKey());;
 //            }
 //        }
+
         return actionForward;
     }
 
@@ -601,7 +604,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if (isFormRepresentingLockObject(kualiDocumentFormBase)) {
             String idValue = request.getParameter(KNSPropertyConstants.ID);
             getPessimisticLockService().delete(idValue);
-            return returnToSender(mapping, kualiDocumentFormBase);
+            return returnToSender(request, mapping, kualiDocumentFormBase);
         }
         throw buildAuthorizationException(KNSConstants.DELETE_METHOD, kualiDocumentFormBase.getDocument());
     }
@@ -725,7 +728,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().blanketApproveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -751,7 +754,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().approveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -817,7 +820,7 @@ public class KualiDocumentActionBase extends KualiAction {
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
         kualiDocumentFormBase.setAnnotation("");
 
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -851,7 +854,7 @@ public class KualiDocumentActionBase extends KualiAction {
         doProcessingAfterPost( kualiDocumentFormBase, request );
         getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
 
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -887,7 +890,7 @@ public class KualiDocumentActionBase extends KualiAction {
             }
         }
 
-        return returnToSender(mapping, docForm);
+        return returnToSender(request, mapping, docForm);
     }
 
     protected boolean canSave(ActionForm form){
@@ -915,7 +918,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().clearDocumentFyi(kualiDocumentFormBase.getDocument(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_FYIED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -934,7 +937,7 @@ public class KualiDocumentActionBase extends KualiAction {
         getDocumentService().acknowledgeDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_ACKNOWLEDGED);
         kualiDocumentFormBase.setAnnotation("");
-        return returnToSender(mapping, kualiDocumentFormBase);
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -1185,7 +1188,7 @@ public class KualiDocumentActionBase extends KualiAction {
         
         FormFile attachmentFile = kualiDocumentFormBase.getAttachmentFile();
         if (attachmentFile == null) {
-            GlobalVariables.getErrorMap().putError(
+            GlobalVariables.getMessageMap().putError(
                     String.format("%s.%s",
                             KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
                             KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
@@ -1212,7 +1215,7 @@ public class KualiDocumentActionBase extends KualiAction {
         Attachment attachment = null;
         if (attachmentFile != null && !StringUtils.isBlank(attachmentFile.getFileName())) {
             if (attachmentFile.getFileSize() == 0) {
-                GlobalVariables.getErrorMap().putError(
+                GlobalVariables.getMessageMap().putError(
                         String.format("%s.%s",
                                 KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
                                 KNSConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
@@ -1237,7 +1240,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if(entry.getDisplayTopicFieldInNotes()) {
             String topicText = kualiDocumentFormBase.getNewNote().getNoteTopicText();
             if(StringUtils.isBlank(topicText)) {
-                GlobalVariables.getErrorMap().putError(
+                GlobalVariables.getMessageMap().putError(
                         String.format("%s.%s",
                                 KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
                                 KNSConstants.NOTE_TOPIC_TEXT_PROPERTY_NAME),
@@ -1374,7 +1377,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return a value from {@link KEWConstants}
      */
     protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
-        return getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
+        return getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
     }
 
     public ActionForward sendNoteWorkflowNotification(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1387,7 +1390,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // verify recipient was specified
         if (StringUtils.isBlank(note.getAdHocRouteRecipient().getId())) {
-            GlobalVariables.getErrorMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT);
+            GlobalVariables.getMessageMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT);
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
         // check recipient is valid
@@ -1408,7 +1411,7 @@ public class KualiDocumentActionBase extends KualiAction {
             GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL);
         }
         else {
-            GlobalVariables.getErrorMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS);
+            GlobalVariables.getMessageMap().putError(KNSPropertyConstants.NEW_DOCUMENT_NOTE, RiceKeyConstants.ERROR_SEND_NOTE_NOTIFICATION_DOCSTATUS);
         }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -1535,7 +1538,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @param form
      * @return
      */
-    protected ActionForward returnToSender(ActionMapping mapping, KualiDocumentFormBase form) {
+    protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
         ActionForward dest = null;
         if (form.isReturnToActionList()) {
             String workflowBase = getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
@@ -1579,10 +1582,10 @@ public class KualiDocumentActionBase extends KualiAction {
         if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, GlobalVariables.getUserSession().getPerson())) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
         }
-        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
+        if (!document.getDocumentHeader().getWorkflowDocument().stateIsFinal() && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
         }
-        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
+        if (!(document.getDocumentHeader().getWorkflowDocument().stateIsApproved() || document.getDocumentHeader().getWorkflowDocument().stateIsProcessed() || document.getDocumentHeader().getWorkflowDocument().stateIsFinal()) && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         }
         
@@ -1633,6 +1636,13 @@ public class KualiDocumentActionBase extends KualiAction {
 		return this.kualiConfigurationService;
 	}
 
+	protected ParameterService getParameterService() {
+        if ( parameterService == null ) {
+            parameterService = KNSServiceLocator.getParameterService();
+        }
+        return this.parameterService;
+    }
+	
 	protected PessimisticLockService getPessimisticLockService() {
 		if ( pessimisticLockService == null ) {
 			pessimisticLockService = KNSServiceLocator.getPessimisticLockService();
@@ -1734,7 +1744,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		}
 		return super.toggleTab(mapping, form, request, response);
 	}
-	
+
 	protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
 		super.doProcessingAfterPost(form, request);
 		if ( form instanceof KualiDocumentFormBase ) {
@@ -1742,6 +1752,6 @@ public class KualiDocumentActionBase extends KualiAction {
 	        
 	        getBusinessObjectService().linkUserFields(document);
 		}
-    }
+	}
 }
 

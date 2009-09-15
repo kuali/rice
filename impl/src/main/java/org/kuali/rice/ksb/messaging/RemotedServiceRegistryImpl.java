@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;
 import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.web.servlet.mvc.Controller;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
@@ -52,14 +54,14 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	private Map<QName, ServerSideRemotedServiceHolder> publishedTempServices = Collections.synchronizedMap(new HashMap<QName, ServerSideRemotedServiceHolder>());
 
 	/**
-	 * A service URL to service QName mapper for published services, to provide ability to lookup services by URL.
+	 * lookup QNameS of published services from request URLs
 	 */
-	private Map<String, QName> publishedServicesURLMapper = Collections.synchronizedMap(new HashMap<String, QName>());
+	private ServiceNameFinder publishedServiceNameFinder = new ServiceNameFinder();
 
 	/**
-	 * A service URL to service QName mapper for published temp services, to provide ability to lookup services by URL.
+	 * lookup QNameS of published temp services from request URLs
 	 */
-	private Map<String, QName> publishedTempServicesURLMapper = Collections.synchronizedMap(new HashMap<String, QName>());
+	private ServiceNameFinder publishedTempServiceNameFinder = new ServiceNameFinder();
 
 	private boolean started;
 
@@ -76,8 +78,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	private void registerService(ServiceInfo entry, Object serviceImpl) throws Exception {
 		ServerSideRemotedServiceHolder serviceHolder = ServiceExporterFactory.getServiceExporter(entry, serviceLocator).getServiceExporter(serviceImpl);
 		this.publishedServices.put(entry.getQname(), serviceHolder);
-		this.publishedServicesURLMapper.put(entry.getEndpointUrl(), entry.getQname());
-
+		this.publishedServiceNameFinder.put(entry.getEndpointUrl(), entry.getQname());
 	}
 
 	private ServiceInfo getForwardHandlerServiceInfo(ServiceDefinition serviceDef) {
@@ -129,7 +130,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			ServerSideRemotedServiceHolder serviceHolder = 
 				ServiceExporterFactory.getServiceExporter(serviceInfo, serviceLocator).getServiceExporter(service);
 			this.publishedTempServices.put(serviceInfo.getQname(), serviceHolder);
-			this.publishedTempServicesURLMapper.put(serviceInfo.getEndpointUrl(), serviceInfo.getQname());
+			this.publishedTempServiceNameFinder.put(serviceInfo.getEndpointUrl(), serviceInfo.getQname());
+			
 			LOG.debug("Registered temp service " + serviceDefinition.getServiceName());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -148,7 +150,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		}
 
 		serviceHolder = this.publishedTempServices.get(qName);
-		if (serviceHolder != null && serviceHolder.getServiceInfo().equals(url)) {
+		if (serviceHolder != null && serviceHolder.getServiceInfo().getEndpointUrl().equals(url)) {
 			return serviceHolder.getInjectedPojo();
 		}
 
@@ -186,19 +188,22 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 * @return the service
 	 */
 	public QName getServiceName(String url){
-		QName qname = this.publishedServicesURLMapper.get(url.toString());
-		if (qname == null){
-			qname = this.publishedTempServicesURLMapper.get(url.toString());
+		QName qname = null;
+		qname = this.publishedServiceNameFinder.get(url);
+
+		// try temp services map
+		if (qname == null) {
+			qname = this.publishedTempServiceNameFinder.get(url);
 		}
-		
+			
 		return qname;
 	}
-	
+
 	public void removeRemoteServiceFromRegistry(QName serviceName) {
 		ServerSideRemotedServiceHolder serviceHolder;
 		serviceHolder = this.publishedTempServices.remove(serviceName);
 		if (serviceHolder != null){
-			this.publishedTempServicesURLMapper.remove(serviceHolder.getServiceInfo().getEndpointUrl());
+			this.publishedTempServiceNameFinder.remove(serviceHolder.getServiceInfo().getEndpointUrl());
 		}
 	}
 
@@ -258,7 +263,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			} catch (Exception e) {
 				LOG.error("Encountered error registering service " + serviceInfo.getQname(), e);
 				this.publishedServices.remove(serviceInfo.getQname());
-				this.publishedServicesURLMapper.remove(serviceInfo.getEndpointUrl());
+				this.publishedServiceNameFinder.remove(serviceInfo.getEndpointUrl());
 				continue;
 			}
 		}
@@ -354,6 +359,79 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 */
 	public void setServiceLocator(KSBContextServiceLocator serviceLocator) {
 		this.serviceLocator = serviceLocator;
+	}
+	
+	
+	/**
+	 * Looks up service QNameS based on URL StringS.  API is Map-like, but non-service specific portions of the
+	 * URL are trimmed prior to accessing its internal Map.
+	 * 
+	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 *
+	 */
+	private static class ServiceNameFinder {
+		
+		/**
+		 * A service path to service QName map
+		 */
+		private Map<String, QName> servicePathToQName = Collections.synchronizedMap(new HashMap<String, QName>());
+		
+		/**
+		 * This method trims the endpoint url base ({@link Config#getEndPointUrl()}) base off of the full service URL, e.g.
+		 * "http://kuali.edu/kr-dev/remoting/SomeService" -> "SomeService".  It makes an effort to do so even if the host
+		 * and ip don't match what is in {@link Config#getEndPointUrl()} by stripping host/port info.
+		 * 
+		 * @param url
+		 * @return the service specific suffix.  If fullServiceUrl doesn't contain the endpoint url base,
+		 * fullServiceUrl is returned unmodified.  
+		 */
+		private String trimServiceUrlBase(String url) {
+			String trimmedUrl = 
+				StringUtils.removeStart(url, ConfigContext.getCurrentContextConfig().getEndPointUrl());
+			
+			if (trimmedUrl.length() == url.length()) { // it didn't contain the endpoint url base.
+				// Perhaps the incoming url has a different host (or the ip) or a different port.
+				// Trim off the host & port, then trim off the common base.
+				URI serviceUri = URI.create(url);
+				URI endpointUrlBase = URI.create(ConfigContext.getCurrentContextConfig().getEndPointUrl());
+				
+				String reqPath = serviceUri.getPath();
+				String basePath = endpointUrlBase.getPath();
+				
+				trimmedUrl = StringUtils.removeStart(reqPath, basePath);
+			}
+			return trimmedUrl;
+		}
+		
+		/**
+		 * adds a mapping from the service specific portion of the service URL to the service name.
+		 * 
+		 * @param serviceUrl
+		 * @param serviceName
+		 */
+		public void put(String serviceUrl, QName serviceName) {
+			servicePathToQName.put(trimServiceUrlBase(serviceUrl), serviceName);
+		}
+		
+		/**
+		 * removes the mapping (if one exists) for the service specific portion of this url.
+		 * 
+		 * @param serviceUrl
+		 */
+		public void remove(String serviceUrl) {
+			servicePathToQName.remove(trimServiceUrlBase(serviceUrl));
+		}
+		
+		/**
+		 * gets the QName for the service
+		 * 
+		 * @param serviceUrl
+		 * @return
+		 */
+		public QName get(String serviceUrl) {
+			return servicePathToQName.get(trimServiceUrlBase(serviceUrl));
+		}
+
 	}
 
 }

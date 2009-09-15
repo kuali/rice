@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,13 +47,15 @@ public interface KimTypeService {
 	 * This method can be used to perform compound validations across multiple
 	 * attributes attached to an object.
 	 */
-	AttributeSet validateAttributes(AttributeSet attributes);
-	
+	AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes);
+
+	AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
+    
 	AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes);
 	
 	boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
 	
-    List<KeyLabelPair> getAttributeValidValues(String attributeName);
+//    List<KeyLabelPair> getAttributeValidValues(String attributeName);
     
     AttributeDefinitionMap getAttributeDefinitions(String kimTypeId);
     

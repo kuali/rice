@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,25 +15,20 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -44,11 +39,12 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 public class IdentityManagementTypeAttributeTransactionalDocument extends IdentityManagementKimDocument {
 
+	private static final long serialVersionUID = -9064436454008712125L;
+	
 	private transient KimTypeService kimTypeService;
-	protected KimTypeImpl kimType = new KimTypeImpl();
+	protected KimTypeInfo kimType;
 	protected List<? extends KimAttributes> attributes;
 	
-	private transient SequenceAccessorService sequenceAccessorService;
 	private transient AttributeDefinitionMap definitions;
 	private transient Map<String,Object> attributeEntry;
 	
@@ -67,13 +63,13 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
+	public KimTypeInfo getKimType() {
 		return this.kimType;
 	}
 	/**
 	 * @param kimType the kimType to set
 	 */
-	public void setKimType(KimTypeImpl kimType) {
+	public void setKimType(KimTypeInfo kimType) {
 		this.kimType = kimType;
 	}
 
@@ -123,11 +119,11 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		this.definitions = definitions;
 	}
 
-	public KimTypeService getKimTypeService(KimTypeImpl kimType){
-		if(this.kimTypeService==null){
-	    	this.kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+	protected KimTypeService getKimTypeService(KimTypeInfo kimType){
+		if( kimTypeService==null){
+	    	kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 		}
-		return this.kimTypeService;
+		return kimTypeService;
 	}
 
 	protected SequenceAccessorService getSequenceAccessorService(){
@@ -136,14 +132,5 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		}
 		return this.sequenceAccessorService;
 	}
-
-    public String getKimAttributeDefnId(AttributeDefinition definition){
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} else {
-    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	}
-    }
-    
 
 }

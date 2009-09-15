@@ -1,11 +1,11 @@
 /*
  * Copyright 2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,16 +18,50 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * This service provides operations for evaluating permissions and querying for permission data.
+ * 
+ * <p>A permission is the ability to perform an action.  All permissions have a permission template.
+ * Both permissions and permission templates are uniquely identified by a namespace code plus a name.
+ * The permission template defines the course-grained permission and specifies what additional
+ * permission details need to be collected on permissions that use that template.  For example, a
+ * permission template might have a name of "Initiate Document" which requires a permission detail
+ * specifying the document type that can be initiated.  A permission created from the "Initiate Document"
+ * template would define the name of the specific Document Type that can be initiated as a permission
+ * detail.
+ * 
+ * <p>The isAuthorized and isAuthorizedByTemplateName operations
+ * on this service are used to execute authorization checks for a principal against a
+ * permission.  Permissions are always assigned to roles (never directly to a principal or
+ * group).  A particular principal will be authorized for a given permission if the permission
+ * evaluates to true (according to the permission evaluation logic and based on any supplied
+ * permission details) and that principal is assigned to a role which has been granted the permission.
+ * 
+ * <p>The actual logic for how permission evaluation logic is defined and executed is dependent upon
+ * the permission service implementation.  However, it will typically be associated with the permission
+ * template used on the permission. 
+ * 
+ * <p>This service provides read-only operations.  For write operations, see
+ * {@link PermissionUpdateService}.
+ * 
+ * @see PermissionUpdateService
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
+@WebService(name = KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionService {
             
     // --------------------
@@ -46,7 +80,10 @@ public interface PermissionService {
 	 * It can also be used when the client application KNOWS that this is a role which
 	 * is never qualified.
      */
-    boolean hasPermission( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails );
+    boolean hasPermission( @WebParam(name="principalId") String principalId,
+    					   @WebParam(name="namespaceCode") String namespaceCode,
+    					   @WebParam(name="permissionName") String permissionName,
+    					   @WebParam(name="permissionDetails") AttributeSet permissionDetails );
 
     /**
      * Checks whether the given qualified permission is granted to the principal given
@@ -62,7 +99,11 @@ public interface PermissionService {
      * is called for each permission with the given permissionName to see if the 
      * permissionDetails matches its details.
      */
-    boolean isAuthorized( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification  );
+    boolean isAuthorized( @WebParam(name="principalId") String principalId,
+    					  @WebParam(name="namespaceCode") String namespaceCode,
+    					  @WebParam(name="permissionName") String permissionName,
+    					  @WebParam(name="permissionDetails") AttributeSet permissionDetails,
+    					  @WebParam(name="qualification") AttributeSet qualification  );
 
     /**
      * Checks whether the principal has been granted a permission matching the given details
@@ -76,7 +117,10 @@ public interface PermissionService {
 	 * It can also be used when the client application KNOWS that this is a role which
 	 * is never qualified.
      */
-    boolean hasPermissionByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails );
+    boolean hasPermissionByTemplateName( @WebParam(name="principalId") String principalId,
+    									 @WebParam(name="namespaceCode") String namespaceCode,
+    									 @WebParam(name="permissionTemplateName") String permissionTemplateName,
+    									 @WebParam(name="permissionDetails") AttributeSet permissionDetails );
     
     /**
      * Checks whether the given qualified permission is granted to the principal given
@@ -92,7 +136,11 @@ public interface PermissionService {
      * is called for each permission with the given permissionName to see if the 
      * permissionDetails matches its details.
      */
-    boolean isAuthorizedByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification  );
+    boolean isAuthorizedByTemplateName( @WebParam(name="principalId") String principalId,
+    									@WebParam(name="namespaceCode") String namespaceCode,
+    									@WebParam(name="permissionTemplateName") String permissionTemplateName,
+    									@WebParam(name="permissionDetails") AttributeSet permissionDetails,
+    									@WebParam(name="qualification") AttributeSet qualification  );
     
     
     /**
@@ -106,7 +154,10 @@ public interface PermissionService {
      * in the given context (qualification), the permissions are examined.
      * 
      */
-    List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
+    List<PermissionAssigneeInfo> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
+    													 @WebParam(name="permissionName") String permissionName,
+    													 @WebParam(name="permissionDetails") AttributeSet permissionDetails,
+    													 @WebParam(name="qualification") AttributeSet qualification );
 
     /**
      * Get the list of principals/groups who have a given permission that match the given 
@@ -120,17 +171,24 @@ public interface PermissionService {
      * in the given context (qualification), the permissions are examined.
      * 
      */
-    List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
+    List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
+    																	@WebParam(name="permissionTemplateName") String permissionTemplateName,
+    																	@WebParam(name="permissionDetails") AttributeSet permissionDetails,
+    																	@WebParam(name="qualification") AttributeSet qualification );
     
     /**
      * Returns true if the given permission is defined on any Roles.
      */
-    boolean isPermissionDefined( String namespaceCode, String permissionName, AttributeSet permissionDetails );
+    boolean isPermissionDefined( @WebParam(name="namespaceCode") String namespaceCode,
+    							 @WebParam(name="permissionName") String permissionName,
+    							 @WebParam(name="permissionDetails") AttributeSet permissionDetails );
     
     /**
      * Returns true if the given permission template is defined on any Roles.
      */
-    boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails );
+    boolean isPermissionDefinedForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
+    											@WebParam(name="permissionTemplateName") String permissionTemplateName,
+    											@WebParam(name="permissionDetails") AttributeSet permissionDetails );
     
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -151,7 +209,11 @@ public interface PermissionService {
      * the role's type service. 
      * 
      */
-    List<KimPermissionInfo> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification );
+    List<KimPermissionInfo> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
+    												  @WebParam(name="namespaceCode") String namespaceCode,
+    												  @WebParam(name="permissionName") String permissionName,
+    												  @WebParam(name="permissionDetails") AttributeSet permissionDetails,
+    												  @WebParam(name="qualification") AttributeSet qualification );
 
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -172,7 +234,11 @@ public interface PermissionService {
      * the role's type service. 
      * 
      */
-    List<KimPermissionInfo> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification );
+    List<KimPermissionInfo> getAuthorizedPermissionsByTemplateName( @WebParam(name="principalId") String principalId,
+    																@WebParam(name="namespaceCode") String namespaceCode,
+    																@WebParam(name="permissionTemplateName") String permissionTemplateName,
+    																@WebParam(name="permissionDetails") AttributeSet permissionDetails,
+    																@WebParam(name="qualification") AttributeSet qualification );
 
     // --------------------
     // Permission Data
@@ -181,40 +247,50 @@ public interface PermissionService {
     /**
      * Get the permission object with the given ID.
      */
-    KimPermissionInfo getPermission(String permissionId);
+    KimPermissionInfo getPermission( @WebParam(name="permissionId") String permissionId );
    
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission template name.
 	 */
-    List<KimPermissionInfo> getPermissionsByTemplateName( String namespaceCode, String permissionTemplateName );
+    List<KimPermissionInfo> getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
+    													  @WebParam(name="permissionTemplateName") String permissionTemplateName );
 
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission name.
 	 */
-    List<KimPermissionInfo> getPermissionsByName( String namespaceCode, String permissionName );
+    List<KimPermissionInfo> getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
+			    											  @WebParam(name="permissionName") String permissionName );
     
+    KimPermissionTemplateInfo getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );
+
+    KimPermissionTemplateInfo getPermissionTemplateByName( @WebParam(name="namespaceCode") String namespaceCode,
+			  											   @WebParam(name="permissionTemplateName") String permissionTemplateName );
+    public List<KimPermissionTemplateInfo> getAllTemplates();
     /**
      * Search for permissions using arbitrary search criteria.  JavaBeans property syntax 
      * should be used to reference the properties.
      * 
      * If the searchCriteria parameter is null or empty, an empty list will be returned.
      */
-    List<KimPermissionInfo> lookupPermissions(Map<String,String> searchCriteria, boolean unbounded);
+    List<KimPermissionInfo> lookupPermissions( @WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> searchCriteria,
+    										   @WebParam(name="unbounded") boolean unbounded);
     
     /**
      * Get the role IDs for the given permission.
      */
-    List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails);
+    List<String> getRoleIdsForPermission( @WebParam(name="namespaceCode") String namespaceCode,
+    									  @WebParam(name="permissionName") String permissionName,
+    									  @WebParam(name="permissionDetails") AttributeSet permissionDetails);
     
     /**
      * Get the role IDs for the given list of permissions.
      */
-    List<String> getRoleIdsForPermissions( List<KimPermissionInfo> permissions );
+    List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<KimPermissionInfo> permissions );
     
     /**
-     * 
+     * Returns the label of the permission detail for the given permissionId, kimType and attributeName. 
      */
     public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName);
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,44 +66,6 @@ public class LookupDaoJpa implements LookupDao {
 	public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
 		this.persistenceStructureService = persistenceStructureService;
 	}
-
-	// TODO: Add the JPA implementation
-	// TODO WARNING: this does not support nested joins, because i don't have a
-	// test case
-	public Collection findCollectionBySearchHelperWithPersonJoin(Class businessObjectClass, Map nonPersonSearchCriteria, Map personSearchCriteria, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
-		PersistableBusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
-		Criteria criteria = null;
-		/*
-		if (usePrimaryKeyValuesOnly) {
-			criteria = getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, nonPersonSearchCriteria);
-		} else {
-			criteria = getCollectionCriteriaFromMap(businessObject, nonPersonSearchCriteria);
-			Iterator personReferenceItr = personSearchCriteria.keySet().iterator();
-			Person personExample = new org.kuali.rice.kim.bo.impl.PersonImpl();
-			while (personReferenceItr.hasNext()) {
-				String institutionalIdSourcePrimitivePropertyName = (String) personReferenceItr.next();
-				Map personReferenceSearchCriteria = (Map) personSearchCriteria.get(institutionalIdSourcePrimitivePropertyName);
-				Iterator personReferenceSearchCriterionItr = personReferenceSearchCriteria.keySet().iterator();
-				Criteria personSubCriteria = new Criteria();
-				while (personReferenceSearchCriterionItr.hasNext()) {
-					String personSearchFieldName = (String) personReferenceSearchCriterionItr.next();
-					Boolean caseInsensitive = Boolean.FALSE;
-					if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(businessObjectClass, personSearchFieldName)) {
-						caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(Person.class, personSearchFieldName);
-					}
-					if (caseInsensitive == null) {
-						caseInsensitive = Boolean.FALSE;
-					}
-					createCriteria(personExample, (String) personReferenceSearchCriteria.get(personSearchFieldName), personSearchFieldName, caseInsensitive, personSubCriteria);
-				}
-				ReportQueryByCriteria personSubQuery = QueryFactory.newReportQuery(Person.class, personSubCriteria);
-				personSubQuery.setAttributes(new String[] { "principalId" });
-				criteria.addIn(institutionalIdSourcePrimitivePropertyName, personSubQuery);
-			}
-		}
-		*/
-		return executeSearch(businessObjectClass, criteria, unbounded);
-	}
 	
     public Long findCountByMap(Object example, Map formProps) {
 		Criteria criteria = new Criteria(example.getClass().getName());
@@ -132,8 +94,10 @@ public class LookupDaoJpa implements LookupDao {
 				caseInsensitive = Boolean.TRUE;
 			}
 
+			boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+					getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName); 
 			// build criteria
-			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, criteria);
+			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria);
 		}
 
 		// execute query and return result list
@@ -162,29 +126,24 @@ public class LookupDaoJpa implements LookupDao {
 		Iterator propsIter = formProps.keySet().iterator();
 		while (propsIter.hasNext()) {
 			String propertyName = (String) propsIter.next();
+			Boolean caseInsensitive = Boolean.TRUE;
+			if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
+				caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
+			}
+			if (caseInsensitive == null) {
+				caseInsensitive = Boolean.TRUE;
+			}
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+    				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
 			if (formProps.get(propertyName) instanceof Collection) {
 				Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
 				while (iter.hasNext()) {
-					Boolean caseInsensitive = Boolean.TRUE;
-					if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
-						caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
-					}
-					if (caseInsensitive == null) {
-						caseInsensitive = Boolean.TRUE;
-					}
-					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, criteria)) {
+					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria)) {
 						throw new RuntimeException("Invalid value in Collection");
 					}
 				}
 			} else {
-				Boolean caseInsensitive = Boolean.TRUE;
-				if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
-					caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
-				}
-				if (caseInsensitive == null) {
-					caseInsensitive = Boolean.TRUE;
-				}
-				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, criteria)) {
+				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria)) {
 					continue;
 				}
 			}
@@ -206,7 +165,9 @@ public class LookupDaoJpa implements LookupDao {
 			} else if (StringUtils.indexOfAny(pkValue, KNSConstants.QUERY_CHARACTERS) != -1) {
 				throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
 			}
-			createCriteria(businessObject, pkValue, pkFieldName, false, criteria);
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+    				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, pkFieldName);
+			createCriteria(businessObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
 		}
 		return criteria;
 	}
@@ -335,10 +296,10 @@ public class LookupDaoJpa implements LookupDao {
 	}
 
 	public boolean createCriteria(Object example, String searchValue, String propertyName, Object criteria) {
-		return createCriteria(example, searchValue, propertyName, false, criteria);
+		return createCriteria(example, searchValue, propertyName, false, false, criteria);
 	}
 
-	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, Object criteria) {
+	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria) {
 		// if searchValue is empty and the key is not a valid property ignore
 		if (!(criteria instanceof Criteria) || StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
 			return false;
@@ -351,7 +312,7 @@ public class LookupDaoJpa implements LookupDao {
 		}
 
 		// build criteria
-		addCriteria(propertyName, searchValue, propertyType, caseInsensitive, (Criteria)criteria);
+		addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, (Criteria)criteria);
 		return true;
 	}
 
@@ -389,13 +350,13 @@ public class LookupDaoJpa implements LookupDao {
 		return new QueryByCriteria(entityManager, jpaCriteria).toQuery().getSingleResult();
 	}
 
-	private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
-		if (StringUtils.contains(propertyValue, KNSConstants.OR_LOGICAL_OPERATOR)) {
+	private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Criteria criteria) {
+		if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KNSConstants.OR_LOGICAL_OPERATOR)) {
 			addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
 			return;
 		}
 
-		if (StringUtils.contains(propertyValue, KNSConstants.AND_LOGICAL_OPERATOR)) {
+		if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KNSConstants.AND_LOGICAL_OPERATOR)) {
 			addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
 			return;
 		}
@@ -409,17 +370,20 @@ public class LookupDaoJpa implements LookupDao {
 				propertyName = "UPPER(__JPA_ALIAS__." + propertyName + ")";
 				propertyValue = propertyValue.toUpperCase();
 			}
-			if (StringUtils.contains(propertyValue,
+			if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue,
 					KNSConstants.NOT_LOGICAL_OPERATOR)) {
 				addNotCriteria(propertyName, propertyValue, propertyType,
 						caseInsensitive, criteria);
             } else if (
-            		propertyValue != null && (
-            				StringUtils.contains(propertyValue, "..") 
+            		!treatWildcardsAndOperatorsAsLiteral && propertyValue != null && (
+            				StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR) 
             				|| propertyValue.startsWith(">")
             				|| propertyValue.startsWith("<") ) ) {
 				addStringRangeCriteria(propertyName, propertyValue, criteria);
 			} else {
+				if (treatWildcardsAndOperatorsAsLiteral) {
+					propertyValue = StringUtils.replace(propertyValue, "*", "\\*");
+				}
 				criteria.like(propertyName, propertyValue);
 			}
 		} else if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType)) {
@@ -449,7 +413,8 @@ public class LookupDaoJpa implements LookupDao {
 		// if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
 		if (strLength > 1) {
 			String expandedNot = "!" + StringUtils.join(splitPropVal, KNSConstants.AND_LOGICAL_OPERATOR + KNSConstants.NOT_LOGICAL_OPERATOR);
-			addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, criteria);
+			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
+			addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, false, criteria);
 		} else {
 			// only one so add a not like
 			criteria.notLike(propertyName, splitPropVal[0]);
@@ -462,8 +427,8 @@ public class LookupDaoJpa implements LookupDao {
 		Criteria subCriteria = new Criteria("N/A");
 		for (int i = 0; i < splitPropVal.length; i++) {
 			Criteria predicate = new Criteria("N/A");
-
-			addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, predicate);
+			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
+			addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, false, predicate);
 			if (splitValue == KNSConstants.OR_LOGICAL_OPERATOR) {
 				subCriteria.or(predicate);
 			}
@@ -486,8 +451,8 @@ public class LookupDaoJpa implements LookupDao {
 
 	private void addDateRangeCriteria(String propertyName, String propertyValue, Criteria criteria) {
 
-		if (StringUtils.contains(propertyValue, "..")) {
-			String[] rangeValues = StringUtils.split(propertyValue, "..");
+		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+			String[] rangeValues = StringUtils.split(propertyValue, KNSConstants.BETWEEN_OPERATOR);
 			criteria.between(propertyName, parseDate(ObjectUtils.clean(rangeValues[0])), parseDate(ObjectUtils.clean(rangeValues[1])));
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, parseDate(ObjectUtils.clean(propertyValue)));
@@ -520,15 +485,15 @@ public class LookupDaoJpa implements LookupDao {
 		try {
 			return new BigDecimal(cleanedValue);
 		} catch (NumberFormatException ex) {
-			GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
+			GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Numeric Input: " + value });
 			return null;
 		}
 	}
 
 	private void addNumericRangeCriteria(String propertyName, String propertyValue, Criteria criteria) {
 
-		if (StringUtils.contains(propertyValue, "..")) {
-			String[] rangeValues = StringUtils.split(propertyValue, "..");
+		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+			String[] rangeValues = StringUtils.split(propertyValue, KNSConstants.BETWEEN_OPERATOR);
 			criteria.between(propertyName, cleanNumeric(rangeValues[0]), cleanNumeric(rangeValues[1]));
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, cleanNumeric(propertyValue));
@@ -545,8 +510,8 @@ public class LookupDaoJpa implements LookupDao {
 
 	private void addStringRangeCriteria(String propertyName, String propertyValue, Criteria criteria) {
 
-		if (StringUtils.contains(propertyValue, "..")) {
-			String[] rangeValues = StringUtils.split(propertyValue, "..");
+		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+			String[] rangeValues = StringUtils.split(propertyValue, KNSConstants.BETWEEN_OPERATOR);
 			criteria.between(propertyName, rangeValues[0], rangeValues[1]);
 		} else if (propertyValue.startsWith(">=")) {
 			criteria.gte(propertyName, ObjectUtils.clean(propertyValue));

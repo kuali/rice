@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation.
+ * Copyright 2008-2009 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,12 +21,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.service.CountryService;
-import org.kuali.rice.kns.service.StateService;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.StateService;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class StateServiceImpl implements StateService {
     private static Logger LOG = Logger.getLogger(StateServiceImpl.class);
@@ -47,7 +46,7 @@ public class StateServiceImpl implements StateService {
      */
     public State getByPrimaryId(String postalCountryCode, String postalStateCode) {
         if (StringUtils.isBlank(postalCountryCode) || StringUtils.isBlank(postalStateCode)) {
-            LOG.info("neither postalCountryCode nor postalStateCode can be empty String.");
+            LOG.debug("neither postalCountryCode nor postalStateCode can be empty String.");
             return null;
         }
 
@@ -58,21 +57,13 @@ public class StateServiceImpl implements StateService {
         return kualiModuleService.getResponsibleModuleService(State.class).getExternalizableBusinessObject(State.class, postalStateMap);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.StateService#getByPrimaryIdIfNecessary(org.kuali.rice.kns.bo.BusinessObject, java.lang.String,
-     *      org.kuali.kfs.sys.businessobject.State)
-     */
-    public State getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalStateCode, State existingState) {
+    public State getByPrimaryIdIfNecessary(String postalStateCode, State existingState) {
         String postalCountryCode = countryService.getDefaultCountry().getPostalCountryCode();
 
-        return this.getByPrimaryIdIfNecessary(businessObject, postalCountryCode, postalStateCode, existingState);
+        return this.getByPrimaryIdIfNecessary(postalCountryCode, postalStateCode, existingState);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.StateService#getByPrimaryIdIfNecessary(org.kuali.rice.kns.bo.BusinessObject, java.lang.String,
-     *      java.lang.String, org.kuali.kfs.sys.businessobject.State)
-     */
-    public State getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, String postalStateCode, State existingState) {
+    public State getByPrimaryIdIfNecessary(String postalCountryCode, String postalStateCode, State existingState) {
         if (existingState != null) {
             String existingCountryCode = existingState.getPostalCountryCode();
             String existingPostalStateCode = existingState.getPostalStateCode();

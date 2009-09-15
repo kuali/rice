@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
@@ -44,13 +45,20 @@ public interface RouteHeaderService {
     public Long getNextRouteHeaderId();
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader);
     public Collection findPendingByResponsibilityIds(Set responsibilityIds);
-
+    public Collection findByDocTypeAndAppId(String documentTypeName, String appId);
+    
     /**
      * Removes all SearchableAttributeValues associated with the RouteHeader.
      * @param routeHeader
      */
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader);
+    public void clearRouteHeaderSearchValues(Long routeHeaderId);
 
+    /**
+     * Updates the searchable attribute values for the document with the given id to the given values.
+     * This method will clear existing search attribute values and replace with the ones given.
+     */
+    public void updateRouteHeaderSearchValues(Long routeHeaderId, List<SearchableAttributeValue> searchAttributes);
+    
     /**
      * Returns the Service Namespace of the {@link DocumentType} for the Document with the given ID.
      */

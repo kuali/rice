@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,10 +64,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
         if (field != null) {
             sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
             sacc.setRangeSearch(field.isMemberOfRange());
-//            sacc.setAllowWildcards(field.isAllowingWildcards());
-//            sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-//            sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-//            sacc.setCaseSensitive(field.isCaseSensitive());
+            sacc.setCaseSensitive(!field.isUpperCase());
             sacc.setSearchInclusive(field.isInclusive());
             sacc.setSearchable(field.isIndexedForSearch());
             sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));

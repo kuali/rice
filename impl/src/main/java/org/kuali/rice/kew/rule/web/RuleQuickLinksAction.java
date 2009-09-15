@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
@@ -107,17 +108,25 @@ public class RuleQuickLinksAction extends KewKualiAction {
     }
 
     public ActionForward addDelegationRule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	ActionForward result = null;
+    	
         Long ruleTemplateId = new Long(request.getParameter("delegationRuleBaseValues.ruleTemplate.ruleTemplateId"));
         String docTypeName = request.getParameter("delegationRuleBaseValues.documentType.name");
         List rules = getRuleService().search(docTypeName, null, ruleTemplateId, "", null, null, Boolean.FALSE, Boolean.TRUE, new HashMap(), null);
+        
         if (rules.size() == 1) {
             RuleBaseValues rule = (RuleBaseValues)rules.get(0);
-            String url = "../kew/DelegateRule.do?methodToCall=start" +
+            String url = ConfigContext.getCurrentContextConfig().getKEWBaseURL() + 
+                "/DelegateRule.do?methodToCall=start" +
             	"&parentRuleId=" + rule.getRuleBaseValuesId();
-            return new ActionForward(url, true);
+            result = new ActionForward(url, true);
+        } else {
+        	makeLookupPathParam(mapping, request);
+        	result = new ActionForward(ConfigContext.getCurrentContextConfig().getKRBaseURL() + 
+        			"/lookup.do?methodToCall=start&"+ stripMethodToCall(request.getQueryString()), true);
         }
-        makeLookupPathParam(mapping, request);
-        return new ActionForward("../kr/lookup.do?methodToCall=start&"+ stripMethodToCall(request.getQueryString()), true);
+        
+        return result;
     }
 
 	private List getDocumentTypeDataStructure(List rootDocuments) {

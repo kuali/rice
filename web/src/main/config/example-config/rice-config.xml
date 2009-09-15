@@ -1,10 +1,25 @@
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <config>
 
 	<!-- Please fill in a value for this parameter! -->
-	<param name="application.url">http://yourserver:yourport/webapp-context-root</param>
+	<param name="app.context.name">kr-${environment}</param>
+	<param name="application.url">http://yourserver:yourport/${app.context.name}</param>
 
-	<param name="notification.basewebappurl">${application.url}/ken</param>
-	<param name="workflow.url">${application.url}/en</param>
+	<param name="workflow.url">${application.url}/kew</param>
 
 	<param name="plugin.dir">/usr/local/rice/plugins</param>
 
@@ -35,6 +50,8 @@
 	
 	<param name="attachment.dir.location">/usr/local/rice/kew_attachments</param>
 
+    <param name="mail.smtp.host">localhost</param>
+
 	<!-- log4j settings -->
 	<param name="log4j.settings.path">/usr/local/rice/log4j.properties</param>
 	<param name="log4j.settings.reloadInterval">5</param>
@@ -47,5 +64,8 @@
 	<!-- Dummy Login Filter - use if you don't want to go through CAS -->
 	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
 	<param name="filtermapping.login.1">/*</param>
+
+    <!-- Sample Application Flag -->
+    <param name="sample.enabled">false</param>
 
 </config>

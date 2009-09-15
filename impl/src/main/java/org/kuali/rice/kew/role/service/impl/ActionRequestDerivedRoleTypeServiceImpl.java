@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,6 +42,11 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
 
+	{
+		requiredAttributes.add( KimAttributes.DOCUMENT_NUMBER );
+		checkRequiredAttributes = true;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
@@ -59,11 +64,14 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 		return members;
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
 	@Override
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
 			AttributeSet qualification) {
+		validateRequiredAttributesAgainstReceived(qualification);
 		try {
 			if ( qualification != null && StringUtils.isNumeric( qualification.get(KimAttributes.DOCUMENT_NUMBER) ) ) {
 				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(Long

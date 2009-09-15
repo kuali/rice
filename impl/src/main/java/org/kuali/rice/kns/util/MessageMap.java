@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,6 +43,15 @@ public class MessageMap implements Serializable {
     private Map<String, TypedArrayList> warningMessages = new LinkedHashMap<String, TypedArrayList>();
     private Map<String, TypedArrayList> infoMessages = new LinkedHashMap<String, TypedArrayList>();
 
+    public MessageMap() {}
+    
+    public MessageMap(MessageMap messageMap) {
+    	this.errorPath = messageMap.errorPath;
+    	this.errorMessages = messageMap.errorMessages;
+    	this.warningMessages = messageMap.warningMessages;
+    	this.infoMessages = messageMap.infoMessages;
+    }
+    
     /**
      * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
      * error key with any value in the errorPath list. This should be used when you do not want to add the error with the prepend
@@ -371,7 +380,7 @@ public class MessageMap implements Serializable {
      * Clears the errorPath.
      */
     public void clearErrorPath() {
-        errorPath = new ArrayList<String>();
+        errorPath.clear();
     }
 
     /**

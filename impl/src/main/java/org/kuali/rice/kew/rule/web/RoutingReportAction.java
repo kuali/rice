@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -116,7 +116,7 @@ public class RoutingReportAction extends KewKualiAction {
 		List errors = new ArrayList();
 
 		if (getDocumentTypeService().findByName(routingForm.getDocumentType()) == null) {
-		    GlobalVariables.getErrorMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
+		    GlobalVariables.getMessageMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
 		}
 		Timestamp date = null;
 		if (!Utilities.isEmpty(routingForm.getDateRef())) {
@@ -130,11 +130,11 @@ public class RoutingReportAction extends KewKualiAction {
 				date = new Timestamp(calendar.getTimeInMillis());
 			} catch (Exception e) {
 				LOG.error("error parsing date", e);
-				GlobalVariables.getErrorMap().putError("Invalid date.", "routereport.effectiveDate.invalid");
+				GlobalVariables.getMessageMap().putError("Invalid date.", "routereport.effectiveDate.invalid");
 			}
 		}
 
-		if (!GlobalVariables.getErrorMap().isEmpty()) {
+		if (!GlobalVariables.getMessageMap().isEmpty()) {
             throw new ValidationException("Errors populating rule attributes.");
         }
 
@@ -198,7 +198,7 @@ public class RoutingReportAction extends KewKualiAction {
                 }
             }
 
-            if (!GlobalVariables.getErrorMap().isEmpty()) {
+            if (!GlobalVariables.getMessageMap().isEmpty()) {
                 throw new ValidationException("errors in search criteria");
             }
 
@@ -244,11 +244,11 @@ public class RoutingReportAction extends KewKualiAction {
 
 		if (numberOfActionRequests == 0) {
 			if (numberOfRules == 0) {
-			    GlobalVariables.getErrorMap().putError("*", "routereport.noRules");
+			    GlobalVariables.getMessageMap().putError("*", "routereport.noRules");
 			} else {
-			    GlobalVariables.getErrorMap().putError("*", "routereport.noMatchingRules");
+			    GlobalVariables.getMessageMap().putError("*", "routereport.noMatchingRules");
 			}
-			if (GlobalVariables.getErrorMap().hasErrors()) {
+			if (GlobalVariables.getMessageMap().hasErrors()) {
 	            throw new ValidationException("errors in search criteria");
 	        }
 		}

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +62,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 @Entity
-@Sequence(name="KREW_RTE_NODE_S", property="actionTakenId")
+@Sequence(name="KREW_ACTN_TKN_S", property="actionTakenId")
 @Table(name="KREW_ACTN_TKN_T")
 public class ActionTakenValue implements WorkflowPersistable {
 
@@ -113,8 +113,7 @@ public class ActionTakenValue implements WorkflowPersistable {
 
     public String getPrincipalDisplayName() {
     	// TODO this stinks to have to have a dependency on UserSession here
-    	UserSession userSession = UserSession.getAuthenticatedUser();
-    	return UserUtils.getDisplayableName(userSession, getPrincipal());
+    	return KEWServiceLocator.getIdentityHelperService().getPerson(getPrincipalId()).getName();
     }
 
     public KimPrincipal getDelegatorPrincipal() {
@@ -148,8 +147,7 @@ public class ActionTakenValue implements WorkflowPersistable {
         }
         if (getDelegatorPrincipalId() != null) {
         	// TODO this stinks to have to have a dependency on UserSession here
-        	UserSession userSession = UserSession.getAuthenticatedUser();
-        	return UserUtils.getDisplayableName(userSession, getDelegatorPrincipal());
+        	return KEWServiceLocator.getIdentityHelperService().getPerson(this.getDelegatorPrincipalId()).getName();
         } else {
             return getDelegatorGroup().getGroupName();
       }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,19 +28,23 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiExceptionIncidentService;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -55,6 +59,8 @@ public class MaintenanceUtils {
     private static WorkflowDocumentService workflowDocumentService;
     private static KualiConfigurationService kualiConfigurationService;
     private static KualiExceptionIncidentService kualiExceptionIncidentService; 
+    private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    private static DataDictionaryService dataDictionaryService;
     
     /**
      * Returns the field templates defined in the maint dictionary xml files. Field templates are used in multiple value lookups.
@@ -149,7 +155,7 @@ public class MaintenanceUtils {
         if (maintainableFieldDefinition.getOverrideLookupClass() != null && StringUtils.isNotBlank(maintainableFieldDefinition.getOverrideFieldConversions())) {
             field.setQuickFinderClassNameImpl(maintainableFieldDefinition.getOverrideLookupClass().getName());
             field.setFieldConversions(maintainableFieldDefinition.getOverrideFieldConversions());
-            
+            field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
             field.setReferencesToRefresh(LookupUtils.convertReferencesToSelectCollectionToString(
                     srr.getAffectedReferencesFromLookup(businessObject, attributeName, "")));
             return field;
@@ -177,7 +183,7 @@ public class MaintenanceUtils {
                 
                 String prefixedFieldConversions = prefixFieldConversionsDestinationsWithCollectionPrefix(maintainableFieldDefinition.getOverrideFieldConversions(), collectionPrefix);
                 field.setFieldConversions(prefixedFieldConversions);
-                
+                field.setBaseLookupUrl(LookupUtils.getBaseLookupUrl(false));
                 field.setReferencesToRefresh(LookupUtils.convertReferencesToSelectCollectionToString(
                         maintainable.getAffectedReferencesFromLookup(businessObject, attributeName, collectionPrefix)));
             }
@@ -380,12 +386,12 @@ public class MaintenanceUtils {
         // If specified, add an error to the ErrorMap and throw an exception; otherwise, just add a warning to the ErrorMap instead.
         if (throwExceptionIfLocked) {
         	// post an error about the locked document
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
+            GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_MAINTENANCE_LOCKED, errorParameters);
             throw new ValidationException("Maintenance Record is locked by another document.");
         }
         else {
         	// Post a warning about the locked document.
-        	GlobalVariables.getErrorMap().putWarning(KNSConstants.GLOBAL_MESSAGES, RiceKeyConstants.WARNING_MAINTENANCE_LOCKED, errorParameters);
+        	GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, RiceKeyConstants.WARNING_MAINTENANCE_LOCKED, errorParameters);
         }
     }
 
@@ -462,4 +468,52 @@ public class MaintenanceUtils {
 		return kualiExceptionIncidentService;
 	}
     
+	private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		if ( maintenanceDocumentDictionaryService == null ) {
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
+		return maintenanceDocumentDictionaryService;
+	}
+	
+	private static DataDictionaryService getDataDictionaryService() {
+		if ( dataDictionaryService == null ) {
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
+	public static Map<String, AttributeSecurity> retrievePropertyPathToAttributeSecurityMappings(String docTypeName) {
+		Map<String, AttributeSecurity> results = new HashMap<String, AttributeSecurity>();
+		MaintenanceDocumentEntry entry = getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+		String className = entry.getBusinessObjectClass().getName();
+		
+		for (MaintainableSectionDefinition section : entry.getMaintainableSections()) {
+			for (MaintainableItemDefinition item : section.getMaintainableItems()) {
+				if (item instanceof MaintainableFieldDefinition) {
+					MaintainableFieldDefinition field = (MaintainableFieldDefinition) item;
+					AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(className, field.getName());
+					if (attributeSecurity != null) {
+						results.put(field.getName(), attributeSecurity);
+					}
+				}
+				else if (item instanceof MaintainableCollectionDefinition) {
+					addMaintenanceDocumentCollectionPathToSecurityMappings(results, "", (MaintainableCollectionDefinition) item);
+				}
+			}
+		}
+		return results;
+	}
+	
+	private static void addMaintenanceDocumentCollectionPathToSecurityMappings(Map<String, AttributeSecurity> mappings, String propertyPathPrefix, MaintainableCollectionDefinition collectionDefinition) {
+		propertyPathPrefix = propertyPathPrefix + collectionDefinition.getName() + ".";
+		String boClassName = collectionDefinition.getBusinessObjectClass().getName();
+		for (MaintainableFieldDefinition field : collectionDefinition.getMaintainableFields()) {
+			AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(boClassName, field.getName());
+			if (attributeSecurity != null) {
+				mappings.put(propertyPathPrefix + field.getName(), attributeSecurity);
+			}
+		}
+		for (MaintainableCollectionDefinition nestedCollection : collectionDefinition.getMaintainableCollections()) {
+			addMaintenanceDocumentCollectionPathToSecurityMappings(mappings, propertyPathPrefix, nestedCollection);
+		}
+	}
 }

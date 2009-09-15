@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -304,8 +303,8 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 	 * 
 	 * @see org.kuali.core.datadictionary.AttributeDefinition#getFormatterClass()
 	 */
-	public Class getFormatterClass() {
-		Class formatterClass = super.getFormatterClass();
+	public String getFormatterClass() {
+		String formatterClass = super.getFormatterClass();
 		if (formatterClass == null) {
 			formatterClass = getDelegate().getFormatterClass();
 		}
@@ -343,10 +342,10 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 					"invalid (blank) sourceAttributeName for attribute '"
 							+ rootObjectClass.getName() + "." + getName() + "'");
 		}
-
-		getDelegate(); // forces validation
-		super.completeValidation(rootObjectClass, otherObjectClass);
-
+		if ( DataDictionary.validateEBOs ) {
+			getDelegate(); // forces validation
+			super.completeValidation(rootObjectClass, otherObjectClass);
+		}
 	}
 
 	/**

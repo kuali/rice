@@ -1,11 +1,11 @@
 <%--
- Copyright 2005-2007 The Kuali Foundation.
+ Copyright 2005-2007 The Kuali Foundation
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,10 @@
     <c:set var="headerMenu" value="${KualiForm.lookupable.createNewUrl}   ${KualiForm.lookupable.htmlMenuBar}" />
 </c:if>
 
+<c:set var="numberOfColumns" value="${KualiForm.numColumns}" />
+<c:set var="headerColspan" value="${numberOfColumns * 2}" />
+
+
 <kul:page lookup="true" showDocumentInfo="false"
 	headerMenuBar="${headerMenu}"
 	headerTitle="Lookup" docTitle="" transactionalDocument="false"
@@ -30,6 +34,7 @@
     var kualiForm = document.forms['KualiForm'];
     var kualiElements = kualiForm.elements;
   </SCRIPT>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/DocumentTypeService.js"></script>
 
 	<div class="headerarea-small" id="headerarea-small">
 		<h1><c:out value="${KualiForm.lookupable.title}" /><kul:help
@@ -110,10 +115,10 @@
 				<c:set var="IsLookupDisplay" value="true" scope="request" />
 				<c:set var="cellWidth" value="50%" scope="request" />
 
-                <kul:rowDisplay rows="${FieldRows}" skipTheOldNewBar="true" />
+                <kul:rowDisplay rows="${FieldRows}" skipTheOldNewBar="true" numberOfColumns="${numberOfColumns}" />
 
 				<tr align=center>
-					<td height="30" colspan=2 class="infoline"><html:image
+					<td height="30" colspan="${headerColspan}"  class="infoline"><html:image
 						property="methodToCall.search" value="search"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif" styleClass="tinybutton"
 						alt="search" title="search" border="0" /> <html:image
@@ -157,15 +162,7 @@
 
 			<br>
 			<br>
-			<div class="right"><logic-el:present name="KualiForm"
-				property="formKey">
-				<c:if
-					test="${KualiForm.formKey!='' && KualiForm.hideReturnLink != true && !KualiForm.multipleValues}">
-					<a
-						href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" />' title="return with no value">
-					return with no value</a>
-				</c:if>
-			</logic-el:present></div>
+
 			<c:if test="${reqSearchResultsActualSize>0}">
 				<c:out value="${reqSearchResultsActualSize}" /> items found.  Please refine your search criteria to narrow down your search.
           </c:if>

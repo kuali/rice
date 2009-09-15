@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -341,7 +341,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched));
                 }
         	}
-        } else {
+        } else {        	
             boolean usingWildcards = false;
         	StringBuffer prefix = new StringBuffer("");
         	StringBuffer suffix = new StringBuffer("");
@@ -349,43 +349,29 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         		prefix.append("'");
         		suffix.insert(0,"'");
         	}
-        	if (criteriaComponent.isAllowWildcards() && criteriaComponent.getSearchableAttributeValue().allowsWildcards()) {
-                if (!Utilities.isEmpty(attributeValuesSearched)) {
-                    List<String> newList = new ArrayList<String>();
-                    for (String attributeValueEntered : attributeValuesSearched) {
-                        newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
-                        usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
-                    }
-                    attributeValuesSearched = newList;
-                } else {
-                    attributeValueSearched = attributeValueSearched.trim().replace('*', DATABASE_WILDCARD_CHARACTER);
-                    usingWildcards |= (attributeValueSearched.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
-                }
-                if (criteriaComponent.isAutoWildcardBeginning()) {
-                    usingWildcards |= true;
-                	if (prefix.length() == 0) {
-                    	prefix.append("'" + DATABASE_WILDCARD_CHARACTER_STRING);
-                	} else {
-                    	prefix.append(DATABASE_WILDCARD_CHARACTER_STRING);
-                	}
-                }
-                if (criteriaComponent.isAutoWildcardEnd()) {
-                    usingWildcards |= true;
-                	if (suffix.length() == 0) {
-                		suffix.insert(0,DATABASE_WILDCARD_CHARACTER_STRING + "'");
-                	} else {
-                		suffix.insert(0,DATABASE_WILDCARD_CHARACTER_STRING);
-                	}
-                }
+        	// apply wildcarding if wildcard character is specified
+        	// after conversion of doc search to lookup, wildcards are always allowed
+        	if (!Utilities.isEmpty(attributeValuesSearched)) {
+        		List<String> newList = new ArrayList<String>();
+        		for (String attributeValueEntered : attributeValuesSearched) {
+        			newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
+        			usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
+        		}
+        		attributeValuesSearched = newList;
+        	} else {
+        		attributeValueSearched = attributeValueSearched.trim().replace('*', DATABASE_WILDCARD_CHARACTER);
+        		usingWildcards |= (attributeValueSearched.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
         	}
-        	String prefixToUse = prefix.toString();
+            String prefixToUse = prefix.toString();
         	String suffixToUse = suffix.toString();
+        	
         	if (addCaseInsensitivityForValue) {
             	queryTableColumnName = "upper(" + queryTableColumnName + ")";
             	prefixToUse = "upper(" + prefix.toString();
             	suffixToUse = suffix.toString() + ")";
         	}
-            if (!Utilities.isEmpty(attributeValuesSearched)) {
+
+        	if (!Utilities.isEmpty(attributeValuesSearched)) {
                 // for a multivalue search we need multiple 'or' clause statements entered
                 whereSqlTemp.append(initialClauseStarter).append(" (");
                 boolean firstValue = true;
@@ -802,11 +788,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             fromSQL.append(", KREW_ACTN_TKN_T ");
         }
 
-        String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
-        if (!("".equals(docTypeFullNameSql))) {
-            possibleSearchableAttributesExist |= true;
-            whereSQL.append(docTypeFullNameSql);
-        }
+        
 
         String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocTypeFullName(), criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!"".equals(docRouteNodeSql)) {
@@ -845,6 +827,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	calendar.add(Calendar.DATE, defaultCreateDateDaysAgoValue.intValue());
         	criteria.setFromDateCreated(RiceConstants.getDefaultDateFormat().format(calendar.getTime()));
             whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
+        }
+        
+        String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
+        if (!("".equals(docTypeFullNameSql))) {
+            possibleSearchableAttributesExist |= true;
+            whereSQL.append(docTypeFullNameSql);
         }
         whereSQL.append(getDocRouteStatusSql(criteria.getDocRouteStatus(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getGeneratedPredicatePrefix(whereSQL.length())).append(" DOC_HDR.DOC_TYP_ID = DOC1.DOC_TYP_ID ");
@@ -981,7 +969,31 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
             Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
             String principalId = person.getPrincipalId();
-            returnSql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + principalId + "'";
+            returnSql = whereClausePredicatePrefix + "( (DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.PRNCPL_ID = '" + principalId + "' )";
+
+        	List<String> viewerGroupIds = null;
+
+        	if(viewer != null)
+        		viewerGroupIds = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+        	
+        	// Documents routed to users as part of a workgoup should be returned.
+            if (viewerGroupIds != null && !viewerGroupIds.isEmpty()) {
+
+            	returnSql += " or ( " +
+            		"DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +            		
+            		"and KREW_ACTN_RQST_T.GRP_ID in (";
+
+            	boolean first = true;
+            	for(String groupId: viewerGroupIds){
+            		if(!first){
+            			returnSql += ",";
+            		}
+            		returnSql += "'" + groupId + "'";
+            		first = false;
+            	}
+            	returnSql += "))";
+            }
+            returnSql += ")";
         }
         return returnSql;
     }

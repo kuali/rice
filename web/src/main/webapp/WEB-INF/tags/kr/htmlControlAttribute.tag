@@ -1,11 +1,11 @@
 <%--
- Copyright 2005-2007 The Kuali Foundation.
+ Copyright 2005-2007 The Kuali Foundation
 
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,10 +31,13 @@
 			  the main property.  The readOnlyBody attribute takes precedence." %>
 <%@ attribute name="readOnlyAlternateDisplay" required="false"
               description="when readOnly, you can specify a String value to display instead of
-              the main property.  The readOnlyBody and extraReadOnlyProperty attributes take precedence." %>
+              the main property.  The readOnlyBody and extraReadOnlyProperty attributes take precedence.
+              THIS VALUE WILL BE DISPLAYED WITHOUT ANY XML FILTERING/ESCAPING, AND NEEDS TO BE PROPERLY ESCAPED TO PREVENT CROSS-SITE SCRIPTING VULNERABILITIES" %>
 <%@ attribute name="encryptValue" required="false"
 			  description="when readOnly or hidden field, boolean to indicate whether the value should
 			  be encrypted and display masked. Defaults to false." %>
+<%@ attribute name="displayMask" required="false"
+              description="Specify whether to mask the given field using the displayMaskValue rather than showing the actual value." %>
 <%@ attribute name="displayMaskValue" required="false"
 			  description="when a field is not to be displayed in clear text and encrypted as hidden, the
 			  string to display." %>
@@ -48,21 +51,30 @@
 <%@ attribute name="kimTypeName" required="false" %>
 <!-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) -->
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
+<c:if test="${empty readOnly}">
+    <c:set var="readOnly" value="false"/>
+</c:if>
+
 <c:if test="${!empty attributeEntry.attributeSecurityMask && attributeEntry.attributeSecurityMask == true  }">
 	<c:set var="className" value ="${attributeEntry.fullClassName}" />
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
-	<c:set var="readOnly" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
-	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName)? 'false' : 'true'}" />
-	<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
+	<c:set var="readOnly" value="${displayMask || readOnly}" />
+	<c:if test="${displayMask || encryptValue}">
+		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+	</c:if>
 </c:if>
 
 
 <c:if test="${!displayMask && !empty attributeEntry.attributeSecurityPartialMask && attributeEntry.attributeSecurityPartialMask == true  }">
 	<c:set var="className" value ="${attributeEntry.fullClassName}" />
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
-	<c:set var="readOnly" value="${kfunc:canPartiallyUnmaskField(attributeEntry.fullClassName, attributeEntry.name) ? 'false' : 'true'}"/>
-    <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName)? 'false' : 'true'}" />
+    <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
+	<c:set var="readOnly" value="${displayMask || readOnly}"/>
 	<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
+	<c:if test="${displayMask || encryptValue}">
+		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+	</c:if>
 </c:if>
 
 
@@ -214,7 +226,7 @@
        	<logic:iterate name="KualiForm" property="${methodAndParms}" id="KeyValue">
        		<c:set var="accessibleRadioTitle" value="${accessibleTitle} - ${KeyValue.label}"/>
             <html:radio property="${property}" style="${textStyle}" title="${accessibleRadioTitle}" tabindex="${tabindex}"
-            	value="key" idName="KeyValue" disabled="${disableField}" onchange="${onchange}"
+            	value="key" idName="KeyValue" disabled="${disableField}" onclick="${onchange}"
             	styleClass="${styleClass}"/>${KeyValue.label}
         </logic:iterate>
     </c:when>

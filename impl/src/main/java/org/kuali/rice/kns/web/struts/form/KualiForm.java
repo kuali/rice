@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -125,7 +125,7 @@ public class KualiForm extends PojoFormBase {
      */
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
     	if ( ENABLE_FIELD_LEVEL_HELP_IND == null ) {
-    		ENABLE_FIELD_LEVEL_HELP_IND = KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE,
+    		ENABLE_FIELD_LEVEL_HELP_IND = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE,
     	        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND);
     	}
     	setFieldLevelHelpEnabled( ENABLE_FIELD_LEVEL_HELP_IND.booleanValue() );
@@ -372,7 +372,9 @@ public class KualiForm extends PojoFormBase {
 	}
     
     public boolean shouldMethodToCallParameterBeUsed(String methodToCallParameterName, String methodToCallParameterValue, HttpServletRequest request) {
-    	
+    	if ("GET".equalsIgnoreCase(request.getMethod())) {
+    		return true;
+    	}
     	if (shouldPropertyBePopulatedInForm(methodToCallParameterName, request)) {
     		return true;
     	}

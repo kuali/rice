@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -311,10 +311,6 @@ public abstract class BaseConfig implements Config {
         return getProperty(EMAIL_SECURITY_PATH);
     }
 
-    public String getBaseUrl() {
-        return getProperty(BASE_URL);
-    }
-
     public String getEnvironment() {
         return getProperty(ENVIRONMENT);
     }
@@ -389,36 +385,72 @@ public abstract class BaseConfig implements Config {
         return getProperty(Config.DOCUMENT_LOCK_TIMEOUT);
     }
     
+    public String getPortalShowSampleApp() {
+    	return getProperty(Config.PORTAL_SHOW_SAMPLE_APP);
+    }
+    
     public Boolean getEmailReminderLifecycleEnabled() {
-        return new Boolean(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
+        return Boolean.valueOf(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
     }
 
     public Boolean getXmlPipelineLifeCycleEnabled() {
-        return new Boolean(getProperty(ENABLE_XML_PIPELINE_LIFECYCLE));
+        return Boolean.valueOf(getProperty(ENABLE_XML_PIPELINE_LIFECYCLE));
     }
 
     public Boolean getDevMode() {
-        return new Boolean(getProperty(DEV_MODE));
+        return Boolean.valueOf(getProperty(DEV_MODE));
     }
 
     public Boolean getStoreAndForward() {
-        return new Boolean(getProperty(Config.STORE_AND_FORWARD));
+        return Boolean.valueOf(getProperty(Config.STORE_AND_FORWARD));
     }
 
     public Boolean getOutBoxOn() {
         if (getProperty(Config.OUT_BOX_MODE) == null) {
             return true;
         } 
-        return new Boolean(getProperty(Config.OUT_BOX_MODE));
+        return Boolean.valueOf(getProperty(Config.OUT_BOX_MODE));
     }
 
     public Boolean getOutBoxDefaultPreferenceOn() {
         if (getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON) == null) {
             return true;
         }
-        return new Boolean(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
+        return Boolean.valueOf(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
     }
     
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKEWBaseURL()
+     */
+    public String getKEWBaseURL() {
+    	return getProperty(Config.KEW_URL);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKIMBaseURL()
+     */
+    public String getKIMBaseURL() {
+    	return getProperty(Config.KIM_URL);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKRBaseURL()
+     */
+    public String getKRBaseURL() {
+    	return getProperty(Config.KR_URL);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKENBaseURL()
+     */
+    public String getKENBaseURL() {
+    	return getProperty(Config.KEN_URL);
+    }
+
     public String toString() {
         return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();
     }

@@ -1,3 +1,18 @@
+-- 
+-- Copyright 2009 The Kuali Foundation
+-- 
+-- Licensed under the Educational Community License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+-- 
+-- http://www.opensource.org/licenses/ecl2.php
+-- 
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- 
 INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,GRP_ID,LBL,POST_PRCSR,RTE_VER_NBR,VER_NBR,OBJ_ID)
   VALUES (1,'1',0,'docHandler is now mandatory...','Workflow Maintenance Document',2010,'EDENSERVICE-DOCS',0,'1','Workflow Maintenance Document','none','2',6,'B169E3D4890B4A9293E46CE58385B522');
 INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,GRP_ID,LBL,PARNT_ID,POST_PRCSR,RTE_VER_NBR,VER_NBR,OBJ_ID)
@@ -25,9 +40,9 @@ INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_
 INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,GRP_ID,LBL,POST_PRCSR,RTE_VER_NBR,VER_NBR,OBJ_ID)
   VALUES (1,'1',1,'${kr.url}/maintenance.do?methodToCall=docHandler','Create or Update a Group Type',2022,'KIMGroupTypeMaintenanceDocument',0,'1','KIM Group Type Maintenance Document','org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor','1',1,'B169E3D4890B4A9293E46CE58385B52E');
 INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,GRP_ID,LBL,POST_PRCSR,RTE_VER_NBR,VER_NBR,OBJ_ID)
-  VALUES (1,'1',1,'${notification.basewebappurl}/DetailView.form','This is the re-usable notification document type that will be used for delivering all notifications with KEW.',2023,'KualiNotification',0,'2000','Notification','org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor','1',1,'B169E3D4890B4A9293E46CE58385B52F');
+  VALUES (1,'1',1,'${ken.url}/DetailView.form','This is the re-usable notification document type that will be used for delivering all notifications with KEW.',2023,'KualiNotification',0,'2000','Notification','org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor','1',1,'B169E3D4890B4A9293E46CE58385B52F');
 INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,GRP_ID,LBL,POST_PRCSR,RTE_VER_NBR,VER_NBR,OBJ_ID)
-  VALUES (1,'1',1,'${notification.basewebappurl}/AdministerNotificationRequest.form','Create a New Notification Request',2024,'SendNotificationRequest',0,'1','Send Notification Request','org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor','2',1,'B169E3D4890B4A9293E46CE58385B530');
+  VALUES (1,'1',1,'${ken.url}/AdministerNotificationRequest.form','Create a New Notification Request',2024,'SendNotificationRequest',0,'1','Send Notification Request','org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor','2',1,'B169E3D4890B4A9293E46CE58385B530');
 INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,GRP_ID,LBL,POST_PRCSR,RTE_VER_NBR,VER_NBR,OBJ_ID)
   VALUES (1,'1',1,'${kr.url}/maintenance.do?methodToCall=docHandler','Create or Update a Organization',2025,'KualiOrganizationMaintenanceDocument',0,'1','Kuali Organization Maintenance Document','org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor','1',1,'B169E3D4890B4A9293E46CE58385B531');
 INSERT INTO KREW_DOC_TYP_T (ACTV_IND,BLNKT_APPR_GRP_ID,CUR_IND,DOC_HDLR_URL,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,GRP_ID,LBL,POST_PRCSR,RTE_VER_NBR,VER_NBR,OBJ_ID)

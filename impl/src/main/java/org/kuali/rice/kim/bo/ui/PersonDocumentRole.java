@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,10 +29,11 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -44,6 +45,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_PND_ROLE_MT")
 public class PersonDocumentRole extends KimDocumentBoBase {
+	private static final long serialVersionUID = 4908044213007222739L;
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	protected String kimTypeId;
@@ -51,7 +53,7 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	protected RoleImpl roleImpl;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
-	protected KimTypeImpl kimRoleType;
+	protected KimTypeInfo kimRoleType;
 	protected List<? extends KimAttributes> attributes;
 	protected transient AttributeDefinitionMap definitions;
 	protected transient Map<String,Object> attributeEntry;
@@ -59,6 +61,8 @@ public class PersonDocumentRole extends KimDocumentBoBase {
     protected KimDocumentRoleMember newRolePrncpl;
 	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 
+    protected boolean isEditable = true;
+    
 	public PersonDocumentRole() {
 		attributes = new ArrayList<KimAttributes>();	
 		rolePrncpls = new ArrayList<KimDocumentRoleMember>();	
@@ -108,12 +112,27 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 		this.attributes = attributes;
 	}
 
-	public KimTypeImpl getKimRoleType() {
-		return this.kimRoleType;
+	public KimTypeInfo getKimRoleType() {
+		if ( kimRoleType == null ) {
+			kimRoleType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		}
+		return kimRoleType;
 	}
 
-	public void setKimRoleType(KimTypeImpl kimRoleType) {
+	@Deprecated // for testing only
+	public void setKimRoleType(KimTypeInfo kimRoleType) {
 		this.kimRoleType = kimRoleType;
+	}
+
+	public AttributeDefinitionMap getDefinitionsKeyedByAttributeName() {
+		AttributeDefinitionMap definitionsKeyedBySortCode = getDefinitions();
+		AttributeDefinitionMap returnValue = new AttributeDefinitionMap();
+		if (definitionsKeyedBySortCode != null) {
+			for (AttributeDefinition definition : definitionsKeyedBySortCode.values()) {
+				returnValue.put(definition.getName(), definition);
+			}
+		}
+		return returnValue;
 	}
 
 	public AttributeDefinitionMap getDefinitions() {
@@ -194,6 +213,20 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	 */
 	public void setRoleImpl(RoleImpl roleImpl) {
 		this.roleImpl = roleImpl;
+	}
+
+	/**
+	 * @return the isEditable
+	 */
+	public boolean isEditable() {
+		return this.isEditable;
+	}
+
+	/**
+	 * @param isEditable the isEditable to set
+	 */
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 
 }

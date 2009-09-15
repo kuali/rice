@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,6 @@
 package org.kuali.rice.kns.service;
 
 import java.sql.Timestamp;
-
-import javax.servlet.http.HttpServletRequest;
-
 
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -43,7 +40,7 @@ public interface SessionDocumentService {
      * @throws
      */
 	
-	public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, HttpServletRequest request);
+	public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
 	
 	/**
      * Delete KualiDocumentFormBase from session and database.
@@ -53,7 +50,7 @@ public interface SessionDocumentService {
      * @param userSession
      * @throws
      */
-	public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, HttpServletRequest request); 
+	public void purgeDocumentForm(String documentNumber, String docFormKey, UserSession userSession, String ipAddress); 
 	
 	/**
      * Store KualiDocumentFormBase into session and database.
@@ -62,7 +59,7 @@ public interface SessionDocumentService {
      * @param userSession
      * @throws
      */
-	public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, HttpServletRequest request);
+	public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, String ipAddress);
 	
 	
 	//public void purgeAllSessionDocumentsFromMemory(); 

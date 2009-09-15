@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 	    boolean rulePassed = true;
 
         if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Member"});
             return false;
         }
     	if(!validAssignGroup(newMember, document))
@@ -53,9 +53,9 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 
 	    int i = 0;
 	    for (GroupDocumentMember member: document.getMembers()){
-	    	if (member.getMemberId().equals(newMember.getMemberId())){
+	    	if (member.getMemberId().equals(newMember.getMemberId()) && member.getMemberTypeCode().equals(newMember.getMemberTypeCode())){
 	            rulePassed = false;
-	            GlobalVariables.getErrorMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            GlobalVariables.getMessageMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	    	}
 	    	i++;
 	    }
@@ -74,7 +74,7 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 					KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 					GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 					roleDetails, null)){
-	            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_GROUP, 
+	            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_GROUP, 
 	            		new String[] {document.getGroupNamespace(), document.getGroupName()});
 	            rulePassed = false;
 			}

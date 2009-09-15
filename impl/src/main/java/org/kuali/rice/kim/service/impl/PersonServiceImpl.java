@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,9 @@ import java.lang.ref.SoftReference;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +79,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	protected int personCacheMaxSize = 3000;
 	protected int personCacheMaxAgeSeconds = 3600;
 
-	protected HashMap<String,MaxAgeSoftReference<PersonImpl>> personCache = new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize );
+	protected Map<String,MaxAgeSoftReference<PersonImpl>> personCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize ) );
 	// PERSON/ENTITY RELATED METHODS
 
 	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
@@ -211,12 +213,17 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	
 	protected void addPersonImplToCache( PersonImpl person ) {
 		if ( person != null ) {
-			personCache.put( "principalName="+person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
-			personCache.put( "principalId="+person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
-			personCache.put( "employeeId="+person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+			synchronized (personCache) {
+				personCache.put( "principalName="+person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "principalId="+person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "employeeId="+person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+			}
 		}
 	}
 	
+	public void flushPersonCaches() {
+	    personCache.clear();
+	}
 	
 	
 	/**
@@ -258,7 +265,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		}
 		
 		Map<String,String> criteria = new HashMap<String,String>( 1 );
-		criteria.put( "employeeId", employeeId );
+		criteria.put( KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId );
 		List<PersonImpl> people = findPeople( criteria ); 
 		if ( !people.isEmpty() ) {
 			person = people.get(0);
@@ -270,7 +277,6 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#findPeople(Map)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<PersonImpl> findPeople(Map<String, String> criteria) {
 		return findPeople(criteria, true);
 	}
@@ -280,37 +286,67 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	 */
 	public List<PersonImpl> findPeople(Map<String, String> criteria, boolean unbounded) {
 		List<PersonImpl> people = null;
+		// protect from NPEs
+		if ( criteria == null ) {
+			criteria = Collections.emptyMap();
+		}
+		// make a copy so it can be modified safely in this method
+		criteria = new HashMap<String, String>( criteria );
+		
 		// extract the role lookup parameters and then remove them since later code will not know what to do with them
 		String roleName = criteria.get( "lookupRoleName" );
 		String namespaceCode = criteria.get( "lookupRoleNamespaceCode" );
 		criteria.remove("lookupRoleName");
 		criteria.remove("lookupRoleNamespaceCode");
 		if ( StringUtils.isNotBlank(namespaceCode) && StringUtils.isNotBlank(roleName) ) {
+			int searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug("Performing Person search including role filter: " + namespaceCode + "/" + roleName );
 			}
-			if ( !criteria.isEmpty() ) { // i.e., person criteria are specified
+			if ( criteria.size() == 1 && criteria.containsKey(KIMPropertyConstants.Person.ACTIVE) ) { // if only active is specified
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug( "Only active criteria specified, running role search first" );
+				}
+				// in this case, run the role lookup first and pass those results to the person lookup
+				Collection<String> principalIds = getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
+				StringBuffer sb = new StringBuffer(principalIds.size()*15);
+				Iterator<String> pi = principalIds.iterator();
+				while ( pi.hasNext() ) {
+					sb.append( pi.next() );
+					if ( pi.hasNext() ) sb.append( '|' );
+				}
+				// add the list of principal IDs to the lookup so that only matching Person objects are returned
+				criteria.put( KIMPropertyConstants.Person.PRINCIPAL_ID, sb.toString() );
+				people = findPeopleInternal(criteria, false); // can allow internal method to filter here since no more filtering necessary				
+			} else if ( !criteria.isEmpty() ) { // i.e., person criteria are specified
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "Person criteria also specified, running that search first" );
 				}
 				// run the person lookup first
-				people = findPeopleInternal(criteria, false); // get all, since may need to be filtered
+				people = findPeopleInternal(criteria, true); // get all, since may need to be filtered
 				// TODO - now check if these people have the given role
 				// build a principal list
 				List<String> principalIds = peopleToPrincipalIds( people );
 				// get sublist of principals that have the given roles
 				principalIds = getRoleManagementService().getPrincipalIdSubListWithRole(principalIds, namespaceCode, roleName, null);
-				// re-convert into people objects
-				people = getPeople(principalIds);
+				// re-convert into people objects, wrapping in CollectionIncomplete if needed
+				if ( !unbounded && principalIds.size() > searchResultsLimit ) {
+					int actualResultSize = principalIds.size();
+					// trim the list down before converting to people
+					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimit); // yes, this is a little wasteful
+					people = getPeople(principalIds); // convert the results to people
+					people = new CollectionIncomplete<PersonImpl>( people.subList(0, searchResultsLimit), new Long(actualResultSize) );
+				} else {
+					people = getPeople(principalIds);
+				}
 			} else { // only role criteria specified
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "No Person criteria specified - only using role service." );
 				}
 				// run the role criteria to get the principals with the role
 				Collection<String> principalIds = getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
-				int searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
 				if ( !unbounded && principalIds.size() > searchResultsLimit ) {
-					int actualResultSize = people.size();
+					int actualResultSize = principalIds.size();
 					// trim the list down before converting to people
 					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimit); // yes, this is a little wasteful
 					people = getPeople(principalIds); // convert the results to people
@@ -380,7 +416,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 						String extIdTypeCode = criteria.get(KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE);
 						if ( StringUtils.isNotBlank(extIdTypeCode) ) {
 							// if found, load that external ID Type via service
-							ExternalIdentifierTypeInfo extIdType = KIMServiceLocator.getTypeInfoService().getExternalIdentifierType(extIdTypeCode);
+							ExternalIdentifierTypeInfo extIdType = getIdentityManagementService().getExternalIdentifierType(extIdTypeCode);
 							// if that type needs to be encrypted, encrypt the value in the criteria map
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {
@@ -591,14 +627,19 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 
     private boolean isPersonProperty(BusinessObject bo, String propertyName) {
         try {
-            return ObjectUtils.isNestedAttribute( propertyName ) // is a nested property
-            		&& !StringUtils.contains(propertyName, "add.") // exclude add line properties (due to path parsing problems in PropertyUtils.getPropertyType)
-            		// property type indicates a Person object
-            		&& Person.class.isAssignableFrom( PropertyUtils.getPropertyType(bo, ObjectUtils.getNestedAttributePrefix( propertyName )));
-        }
-        catch (Exception ex) {
+        	if ( ObjectUtils.isNestedAttribute( propertyName ) // is a nested property
+            		&& !StringUtils.contains(propertyName, "add.") ) {// exclude add line properties (due to path parsing problems in PropertyUtils.getPropertyType)
+        		Class<?> type = PropertyUtils.getPropertyType(bo, ObjectUtils.getNestedAttributePrefix( propertyName ));
+        		// property type indicates a Person object
+        		if ( type != null ) {
+        			return Person.class.isAssignableFrom(type);
+        		} else {
+        			LOG.warn( "Unable to determine type of nested property: " + bo.getClass().getName() + " / " + propertyName );
+        		}
+        	}
+        } catch (Exception ex) {
         	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug("Unable to determine if property belongs to a person object" + propertyName, ex );
+        		LOG.debug("Unable to determine if property on " + bo.getClass().getName() + " to a person object: " + propertyName, ex );
         	}
         }
         return false;

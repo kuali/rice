@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2006-2007 The Kuali Foundation.
+	Copyright 2006-2008 The Kuali Foundation
 
-	Licensed under the Educational Community License, Version 1.0 (the "License");
+	Licensed under the Educational Community License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
 
-	http://www.opensource.org/licenses/ecl1.php
+	http://www.opensource.org/licenses/ecl2.php
 
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,51 +32,11 @@
        </property>
     </bean>
     
-    <bean name="properties" class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer">
-        <property name="properties">
-            <props>
-                <prop key="kcb.url">KCBSpringBeans.xml default kcb.url</prop>
-                <prop key="coo">localhost</prop>
-                <prop key="kcb.messaging.synchronous">false</prop>
-                <prop key="kcb.messageprocessing.startDelayMS">50000</prop>
-                <prop key="kcb.messageprocessing.repeatIntervalMS">30000</prop>
-                <prop key="kcb.quartz.group">KCB-Delivery</prop>
-                <prop key="kcb.quartz.job.name">MessageProcessingJobDetail</prop>
-                <prop key="kcb.maxProcessAttempts">3</prop>
-                <prop key="kcb.messaging.synchronous">false</prop>
-                <prop key="message.delivery">asynchronous</prop>
-                <prop key="message.persistence">true</prop>
-                <!-- TODO: Put the actual value of kcb.smtp.host here  -->
-                <prop key="kcb.smtp.host">kcb.smtp.host</prop>
-                <prop key="Routing.ImmediateExceptionRouting">false</prop>
-            
-                <prop key="notification.resolveMessageDeliveriesJob.startDelayMS">5000</prop>
-                <prop key="notification.resolveMessageDeliveriesJob.intervalMS">10000</prop>
-            
-                <prop key="notification.processUndeliveredJob.startDelayMS">10000</prop>
-                <prop key="notification.processUndeliveredJob.intervalMS">10000</prop>
-            
-                <prop key="notification.processAutoRemovalJob.startDelayMS">60000</prop>
-                <prop key="notification.processAutoRemovalJob.intervalMS">60000</prop>
-            
-                <prop key="notification.quartz.autostartup">true</prop>
-                <prop key="notification.concurrent.jobs">true</prop>
-            
-                <!-- Turn off KEW use of quartz db to avoid db clear issues -->
-                <prop key="useQuartzDatabase">false</prop>   
-
-            </props>
-        </property>
-    </bean>
-
+    <bean id="properties" class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
 
 	<bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
 
 	<bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean" lazy-init="true" />
-
-	<bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
-		<property name="transactionManager" ref="jtaTransactionManager" />
-	</bean>
 
 	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
 		<property name="userTransaction">
@@ -86,5 +46,36 @@
 			<ref local="jtaTransactionManager" />
 		</property>
 	</bean>
+	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+	</bean>
+	
+		<!-- Proxy for rollback on all exceptions -->
+	<bean id="matchAllWithPropReqCheckedException" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource"
+		lazy-init="true">
+		<property name="transactionAttribute">
+			<value>PROPAGATION_REQUIRED,-Exception</value>
+		</property>
+	</bean>
+
+	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" lazy-init="true">
+		<property name="transactionAttribute">
+			<value>PROPAGATION_REQUIRED</value>
+		</property>
+	</bean>
+
+	<bean id="matchAllTxInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor" lazy-init="true">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributeSource">
+			<ref bean="matchAllWithPropReq" />
+		</property>
+	</bean>
+	
+	<bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
 
 </beans>

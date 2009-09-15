@@ -1,12 +1,12 @@
 /*
- * Copyright 2006 The Kuali Foundation.
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Copyright 2006-2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,6 +16,8 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.ojb.broker.metadata.ClassDescriptor;
@@ -65,9 +67,16 @@ public class PersistenceServiceStructureImplBase {
 	protected DescriptorRepository getDescriptorRepository() {
 		return descriptorRepository;
 	}
-    
+
 	/**
-	 * @see org.kuali.rice.kns.service.PersistenceMetadataExplorerService#listPrimaryKeyFieldNames(java.lang.Class)
+	 *
+	 * This method returns a list of primary key field names.  This method uses the CacheNoCopy caching method.
+	 * "NoCopy" is the faster of the caching annotations, but because it does not make a copy the list that is
+	 * returned must not be modified.  To enforce this the returned list is wrapped in a Collections.unmodifiableList
+	 * method.  This will cause an exception to be thrown if the list is altered.
+	 *
+	 * @param clazz
+	 * @return unmodifiableList of field names.  Any attempt to alter list will result in an UnsupportedOperationException
 	 */
 	@CacheNoCopy
 	public List listPrimaryKeyFieldNames(Class clazz) {
@@ -90,7 +99,7 @@ public class PersistenceServiceStructureImplBase {
 				fieldNamesLegacy.add(keyDescriptor.getAttributeName());
 			}
 			return fieldNamesLegacy;
-		}		
+		}
 	}
 
 	/* Not used anywhere... need to check KFS and batch stuff */
@@ -126,7 +135,6 @@ public class PersistenceServiceStructureImplBase {
 	 *             if the given Class is unknown to OJB
 	 */
 	// Legacy OJB - no need for JPA equivalent
-	@CacheNoCopy
 	protected ClassDescriptor getClassDescriptor(Class persistableClass) {
 		if (persistableClass == null) {
 			throw new IllegalArgumentException("invalid (null) object");
@@ -167,7 +175,7 @@ public class PersistenceServiceStructureImplBase {
 			if (objectDescriptor != null) {
 				attributeClass = objectDescriptor.getTargetEntity();
 			}
-			
+
 			// recurse if necessary
 			if (subAttributeString != null) {
 				attributeClass = getBusinessObjectAttributeClass(attributeClass, subAttributeString);
@@ -179,18 +187,18 @@ public class PersistenceServiceStructureImplBase {
 			Class attributeClassLegacy = null;
 			ClassDescriptor classDescriptor = this.getClassDescriptor(clazz);
 			ObjectReferenceDescriptor refDescriptor = classDescriptor.getObjectReferenceDescriptorByName(baseAttributeName);
-	
+
 			if (refDescriptor != null) {
 				attributeClassLegacy = refDescriptor.getItemClass();
 			}
-	
+
 			// recurse if necessary
 			if (subAttributeString != null) {
 				attributeClassLegacy = getBusinessObjectAttributeClass(attributeClassLegacy, subAttributeString);
 			}
-			
+
 			return attributeClassLegacy;
-		}		
+		}
 	}
 
 }

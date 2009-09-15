@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
-
+    
     public static final String KNS_NAMESPACE = "KR-NS";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
@@ -155,6 +155,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";
     public static final String LOOKUP_AUTO_SEARCH = "autoSearch";
+    public static final String SEARCH_METHOD = "search";
 //    public static final String DEFAULT_RETURN_LOCATION = "lookup.do";
     public static final String DELETE_LINE_METHOD = "deleteLine";
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
@@ -183,6 +184,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String FIELD_CONVERSION_PAIR_SEPARATOR = ":";
     public static final String FIELD_CONVERSIONS_SEPARATOR = ",";
     public static final String REFERENCES_TO_REFRESH_SEPARATOR = ",";
+    public static final String RESTRICTED_DATA_MASK = "xxxxxx";
 //    public static final String GENERIC_FIELD_NAME = "Field";
 //    public static final String GENERIC_CODE_PROPERTY_NAME = "code";
 //    public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";
@@ -262,7 +264,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
 
-//    public static final String KUALI_WORKFLOW_APPLICATION_CODE = "kuali";
+    public static final String DEFAULT_APPLICATION_CODE = "KUALI";
+    public static final String APPLICATION_CODE = "app.namespace";
     public static final String LOOKUP_ACTION = "lookup.do";
     public static final String MULTIPLE_VALUE_LOOKUP_ACTION = "multipleValueLookup.do";
     public static final String LOOKUP_RESULTS_SEQUENCE_NUMBER = "lookupResultsSequenceNumber";
@@ -340,8 +343,12 @@ public class KNSConstants extends JSTLConstants {
     // below 2 fields used in rowDisplay.tag file
     public static final String METHOD_TO_CALL_PARM13_LEFT_DEL = "(:::;";
     public static final String METHOD_TO_CALL_PARM13_RIGHT_DEL = ";:::)";
+    // used for baseLookupURL
+    public static final String METHOD_TO_CALL_PARM14_LEFT_DEL = "(::::;";
+    public static final String METHOD_TO_CALL_PARM14_RIGHT_DEL = ";::::)";
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
-
+    
+    
     // Pessimistic Locking Constants
     public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
     public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";
@@ -460,10 +467,11 @@ public class KNSConstants extends JSTLConstants {
     public static final String AND_LOGICAL_OPERATOR = "&&";
     public static final String OR_LOGICAL_OPERATOR = "|";
     public static final String NOT_LOGICAL_OPERATOR = "!";
+    public static final String BETWEEN_OPERATOR = "..";
 //    // add AND operator to thest if it is uncommented below
 //    public static final String[] LOGICAL_OPERATORS = {OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR};
-    public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", "..", OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
-    public static final String[] RANGE_CHARACTERS = {">=","<=",">","<",".."};
+    public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", BETWEEN_OPERATOR, OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
+    public static final String[] RANGE_CHARACTERS = {">=","<=",">","<",BETWEEN_OPERATOR};
     public static final String AUDIT_ERRORS = "AuditErrors";
 
     // Header Tab navigation constant values
@@ -500,7 +508,7 @@ public class KNSConstants extends JSTLConstants {
 //        public static final String MULTIPLE_VALUE_LOOKUP_RESULTS_EXPIRATION_AGE = "MULTIPLE_VALUE_RESULTS_EXPIRATION_SECONDS";
 
         public static final String DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND = "DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND";
-
+        public static final String ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND = "ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND";
         /**
          * Used to indicate whether field level help is enabled. Depending on the namespace this parameter is in, it may
          * affect either lookups (i.e. the search criteria fields) or maintenance documents.
@@ -557,5 +565,9 @@ public class KNSConstants extends JSTLConstants {
 
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
 
+    public class Config {
+    	public static final String APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK = "rice.kns.illegalBusinessObjectsForSave.applyCheck";
+    	public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.kns.illegalBusinessObjectsForSave";
+    }
    
 }

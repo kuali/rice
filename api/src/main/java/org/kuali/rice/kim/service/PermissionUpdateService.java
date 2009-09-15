@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,29 @@
  */
 package org.kuali.rice.kim.service;
 
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
+
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * This service provides operations for creating and updating permissions. 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
  */
+@WebService(name = KIMWebServiceConstants.PermissionUpdateService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionUpdateService {
 
+	void savePermission( @WebParam(name="permissionId") String permissionId, 
+			 @WebParam(name="permissionTemplateId") String permissionTemplateId, 
+			 @WebParam(name="namespaceCode") String namespaceCode,
+			 @WebParam(name="name") String name,
+			 @WebParam(name="description") String description,
+			 @WebParam(name="active") boolean active,
+			 @WebParam(name="permissionDetails") AttributeSet permissionDetails );
+	
 }

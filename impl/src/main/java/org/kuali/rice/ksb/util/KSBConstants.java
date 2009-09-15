@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,29 +26,21 @@ public class KSBConstants extends JSTLConstants {
 
     private static final long serialVersionUID = -958108423493026266L;
 
+    /**
+     * Configuration Parameters, please use the Config inner class when referencing these.
+     */
+    
     public static final String SERVICE_NAMESPACE = "service.namespace";
     public static final String MESSAGE_PERSISTENCE = "message.persistence";
     public static final String MESSAGING_OFF = "message.off";
     public static final String MESSAGE_DELIVERY = "message.delivery";
-    public static final String MESSAGING_SYNCHRONOUS = "synchronous";
     public static final String INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY = "message.injected.scheduler";
     public static final String FIXED_POOL_SIZE = "ksb.fixedPoolSize";
-
-    // message queue constants
-    public static final String ROUTE_QUEUE_QUEUED = "Q";
-    public static final String ROUTE_QUEUE_EXCEPTION = "E";
-    public static final String ROUTE_QUEUE_ROUTING = "R";
-    public static final String ROUTE_QUEUE_EXCEPTION_LABEL = "EXCEPTION";
-    public static final String ROUTE_QUEUE_ROUTING_LABEL = "ROUTING";
-    public static final String ROUTE_QUEUE_QUEUED_LABEL = "QUEUED";
     public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY = "RouteQueue.maxRetryAttempts";
     public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY = "RouteQueue.maxRetryAttemptsOverride";
     public static final String ROUTE_QUEUE_TIME_INCREMENT_KEY = "RouteQueue.timeIncrement";
     public static final String IMMEDIATE_EXCEPTION_ROUTING = "Routing.ImmediateExceptionRouting";
-    public static final Integer ROUTE_QUEUE_DEFAULT_PRIORITY = new Integer(5);
-
-    public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
-
+    
     public static final String KSB_ALLOW_SELF_SIGNED_SSL = "rice.ksb.config.allowSelfSignedSSL";
     public static final String KSB_MESSAGE_DATASOURCE = "ksbMessage.datasource";
     public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE = "ksbMessage.nonTransactional.datasource";
@@ -60,6 +52,42 @@ public class KSBConstants extends JSTLConstants {
     public static final String KSB_ALTERNATE_ENDPOINTS = "ksb.alternateEndpoints";
     public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = "ksb.alternateEndpointLocations";
     public static final String LOAD_KNS_MODULE_CONFIGURATION = "rice.ksb.loadKNSModuleConfiguration";
+    
+    public class Config {
+    	public static final String SERVICE_NAMESPACE = KSBConstants.SERVICE_NAMESPACE;
+        public static final String MESSAGE_PERSISTENCE = KSBConstants.MESSAGE_PERSISTENCE;
+        public static final String MESSAGING_OFF = KSBConstants.MESSAGING_OFF;
+        public static final String MESSAGE_DELIVERY = KSBConstants.MESSAGE_DELIVERY;
+        public static final String INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY = KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY;
+        public static final String FIXED_POOL_SIZE = KSBConstants.FIXED_POOL_SIZE;
+        public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY = KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY;
+        public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY = KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY;
+        public static final String ROUTE_QUEUE_TIME_INCREMENT_KEY = KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY;
+        public static final String IMMEDIATE_EXCEPTION_ROUTING = KSBConstants.IMMEDIATE_EXCEPTION_ROUTING;
+        public static final String KSB_ALLOW_SELF_SIGNED_SSL = KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL;
+        public static final String KSB_MESSAGE_DATASOURCE = KSBConstants.KSB_MESSAGE_DATASOURCE;
+        public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE = KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE;
+        public static final String KSB_REGISTRY_DATASOURCE = KSBConstants.KSB_REGISTRY_DATASOURCE;
+        public static final String KSB_MESSAGE_DATASOURCE_JNDI = KSBConstants.KSB_MESSAGE_DATASOURCE_JNDI;
+        public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI = KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI;
+        public static final String KSB_REGISTRY_DATASOURCE_JNDI = KSBConstants.KSB_REGISTRY_DATASOURCE_JNDI;
+        public static final String USE_QUARTZ_DATABASE = KSBConstants.USE_QUARTZ_DATABASE;
+        public static final String KSB_ALTERNATE_ENDPOINTS = KSBConstants.KSB_ALTERNATE_ENDPOINTS;
+        public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS;
+        public static final String LOAD_KNS_MODULE_CONFIGURATION = KSBConstants.LOAD_KNS_MODULE_CONFIGURATION;
+    }
+    
+    // messaging constants
+    
+    public static final String MESSAGING_SYNCHRONOUS = "synchronous";
+    public static final String ROUTE_QUEUE_QUEUED = "Q";
+    public static final String ROUTE_QUEUE_EXCEPTION = "E";
+    public static final String ROUTE_QUEUE_ROUTING = "R";
+    public static final String ROUTE_QUEUE_EXCEPTION_LABEL = "EXCEPTION";
+    public static final String ROUTE_QUEUE_ROUTING_LABEL = "ROUTING";
+    public static final String ROUTE_QUEUE_QUEUED_LABEL = "QUEUED";    
+    public static final Integer ROUTE_QUEUE_DEFAULT_PRIORITY = new Integer(5);
+    public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
 
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";

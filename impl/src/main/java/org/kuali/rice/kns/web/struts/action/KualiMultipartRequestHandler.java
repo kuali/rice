@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,16 +45,12 @@ public class KualiMultipartRequestHandler extends CommonsMultipartRequestHandler
         return convertSizeToBytes( sizeMax, super.getSizeMax(mc) );
     }
 
-    public long getSizeMax() {
-        return convertSizeToBytes( sizeMax, 0L );
-    }    
-
     public String getSizeMaxString() {
         return sizeMax;
     }    
 
     public void setSizeMax( String sizeString ) {
-	this.sizeMax = sizeString;
+    	this.sizeMax = sizeString;
     }
     
 //    public long convertSizeToBytes(String sizeString, long defaultSize) {

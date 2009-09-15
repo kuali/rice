@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.lookup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -24,11 +25,13 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -92,7 +95,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
         		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
-        //anchorHtmlData.setTarget("blank");
         return anchorHtmlData;
     }
 
@@ -122,14 +124,13 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         return baseLookup;
     }
 
-	@SuppressWarnings("unchecked")
 	private List<KeyLabelPair> getRoleTypeOptions() {
 		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
 		options.add(new KeyLabelPair("", ""));
 
-		List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocator.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all roles in the system
-        for (KimTypeImpl kimType : kimGroupTypes) {
+        for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasRoleTypeService(kimType)) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
                 options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
@@ -152,9 +153,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 										
-					Map<String,Object> pkMap = new HashMap<String,Object>();
-					pkMap.put("kimTypeId", field.getPropertyValue());
-					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
+					KimTypeInfo kimType = getTypeInfoService().getKimType(field.getPropertyValue() );
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
 			        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
@@ -174,7 +173,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 								typeField.setPropertyName(definition.getName()+"."+attrDefnId);
 								if (definition.getControl().isSelect()) {
 							        try {
-							            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+							            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
 								        typeField.setFieldValidValues(finder.getKeyValues());
 								        typeField.setFieldType(Field.DROPDOWN);
 							        }
@@ -350,14 +349,11 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	static String getCustomRoleInquiryHref(String backLocation, String href){
         Properties parameters = new Properties();
         String hrefPart = "";
-//    	String docTypeName = "";
     	String docTypeAction = "";
     	if(StringUtils.isBlank(backLocation) || backLocation.contains(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION)
     			|| !backLocation.contains(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION)){
-//    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
     		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
     	} else{
-//    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
 		if (StringUtils.isNotBlank(href) && href.indexOf(ROLE_ID_URL_KEY)!=-1) {
@@ -367,8 +363,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		    	idx2 = href.length();
 		    }
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-//	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-//	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
 		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters)+hrefPart;

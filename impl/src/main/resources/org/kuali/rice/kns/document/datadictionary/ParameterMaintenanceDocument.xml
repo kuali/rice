@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 
   <bean id="ParameterMaintenanceDocument" parent="ParameterMaintenanceDocument-parentBean"/>
 
   <bean id="ParameterMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Parameter"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.document.ParameterMaintainable"/>
     <property name="maintainableSections">
       <list>
         <ref bean="ParameterMaintenanceDocument-EditParameter"/>
@@ -20,6 +35,7 @@
       <list>
         <value>parameterNamespaceCode</value>
         <value>parameterDetailTypeCode</value>
+        <value>parameterApplicationNamespaceCode</value>
         <value>parameterName</value>
       </list>
     </property>
@@ -47,8 +63,9 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterNamespaceCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterDetailTypeCode"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterApplicationNamespaceCode" p:defaultValue="KUALI"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterName"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterValue"/>
+        <bean parent="MaintainableFieldDefinition" p:required="false" p:name="parameterValue"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterDescription"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterTypeCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterConstraintCode"/>

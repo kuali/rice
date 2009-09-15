@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -52,6 +53,7 @@ public class StandardDocumentSearchResultProcessor implements
 	private Map<String, String> labelsByKey = new HashMap<String, String>();
 	private DocSearchCriteriaDTO searchCriteria;
 	private String searchingUser;
+	private boolean processFinalResults = true;
 //FIXME: Chris get rid of all sortable references!
 	/**
 	 * @return the searchCriteria
@@ -96,14 +98,6 @@ public class StandardDocumentSearchResultProcessor implements
 					if (field instanceof Field) {
 						Field dsField = (Field) field;
 						dsColumn.setFormatter((Formatter)dsField.getFormatter());
-//FIXME: Chris - either get rid of this
-//						if ((dsField.getPropertyName().equals(dsColumn
-//								.getPropertyName()))
-//								&& (dsColumn.getDisplayParameters().isEmpty())) {
-//
-//							dsColumn.setDisplayParameters(dsField
-//									.getDisplayParameters());
-//						}
 					} else {
 						throw new RiceRuntimeException(
 								"field must be of type org.kuali.rice.kew.docsearch.Field");
@@ -487,19 +481,9 @@ public class StandardDocumentSearchResultProcessor implements
 					Object sortValue = sortValuesByColumnKey.get(columnKeyName);
 					sortFieldValue = (sortValue != null) ? sortValue
 							: searchAttribute.getSortValue();
-					attributeValue = searchAttribute
-							.getSearchableAttributeValue();
-//					if ((column.getDisplayParameters() != null)
-//							&& (!column.getDisplayParameters().isEmpty())) {
-//						fieldValue = new DisplayValues();
-//						fieldValue.htmlValue = searchAttribute
-//								.getSearchableAttributeValue()
-//								.getSearchableAttributeDisplayValue(
-//										column.getDisplayParameters());
-//					} else {
-						fieldValue = new DisplayValues();
-						fieldValue.htmlValue = searchAttribute.getValue();
-//					}
+					attributeValue = searchAttribute.getSearchableAttributeValue();
+					fieldValue = new DisplayValues();
+					fieldValue.htmlValue = searchAttribute.getValue();
 					break;
 				}
 			}
@@ -545,8 +529,10 @@ public class StandardDocumentSearchResultProcessor implements
 	public DisplayValues getInitiatorFieldDisplayValue(
 			String fieldLinkTextValue, String initiatorWorkflowId) {
 		DisplayValues dv = new DisplayValues();
-		dv.htmlValue = "<a href=\"../kr/inquiry.do?businessObjectClassName=org.kuali.rice.kim.bo.impl.PersonImpl&methodToCall=continueWithInquiry&principalId="
-				+ initiatorWorkflowId
+		
+		dv.htmlValue = "<a href=\""+ ConfigContext.getCurrentContextConfig().getKRBaseURL() +
+		"/inquiry.do?businessObjectClassName=org.kuali.rice.kim.bo.impl.PersonImpl&" +
+		"methodToCall=continueWithInquiry&principalId="+ initiatorWorkflowId
 				+ "\" target=\"_blank\">"
 				+ fieldLinkTextValue + "</a>";
 		dv.userDisplayValue = fieldLinkTextValue;
@@ -699,33 +685,23 @@ public class StandardDocumentSearchResultProcessor implements
 				null, null);
 	}
 
-	public void addColumnUsingKey(List<Column> columns,
-			Map<String, String> displayParameters, String key, String label) {
+	public void addColumnUsingKey(List<Column> columns, String key, String label) {
 		this.addColumnUsingKey(columns, key, label, null);
 	}
 
-	public void addColumnUsingKey(List<Column> columns,
-			Map<String, String> displayParameters, String key, Boolean sortable) {
+	public void addColumnUsingKey(List<Column> columns, String key, Boolean sortable) {
 		this.addColumnUsingKey(columns, key, null, sortable);
 	}
 
-	public void addColumnUsingKey(List<Column> columns,String key, String label,
+	public void addColumnUsingKey(List<Column> columns, String key, String label,
 			Boolean sortable) {
 		columns.add(this.constructColumnUsingKey(key, label,
 				sortable));
 	}
 
 	public void addSearchableAttributeColumnUsingKey(
-			List<Column> columns, String key, String label,
-			Boolean sortableOverride, Boolean defaultSortable) {
-		addSearchableAttributeColumnUsingKey(columns,
-				new HashMap<String, String>(), key, label, sortableOverride,
-				defaultSortable);
-	}
-
-	public void addSearchableAttributeColumnUsingKey(
 			List<Column> columns,
-			Map<String, String> displayParameters, String key, String label,
+			String key, String label,
 			Boolean sortableOverride, Boolean defaultSortable) {
 		columns.add(this
 				.constructColumnUsingKey(key, label,
@@ -814,4 +790,22 @@ public class StandardDocumentSearchResultProcessor implements
 			return "</a>";
 		}
 	}
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#setProcessResultSet(boolean)
+     */
+    public void setProcessFinalResults(boolean isProcessFinalResults) {
+       this.processFinalResults = isProcessFinalResults;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#isProcessResultSet()
+     */
+    public boolean isProcessFinalResults() {
+        return this.processFinalResults;
+    }
 }

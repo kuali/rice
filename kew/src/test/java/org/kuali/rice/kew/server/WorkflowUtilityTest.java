@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,6 @@ package org.kuali.rice.kew.server;
 
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -45,22 +44,15 @@ import org.kuali.rice.kew.dto.RuleDTO;
 import org.kuali.rice.kew.dto.RuleExtensionDTO;
 import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RuleResponsibilityDTO;
-import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.SimpleSplitNode;
-import org.kuali.rice.kew.engine.node.SplitResult;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
@@ -71,48 +63,100 @@ import org.kuali.rice.kns.util.KNSConstants;
 public class WorkflowUtilityTest extends KEWTestCase {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowUtilityTest.class);
 
-    private WorkflowUtility utility;
+    private WorkflowUtility workflowUtility;
 
-    protected void loadTestData() throws Exception {
+    @Override
+	public void setUp() throws Exception {
+		super.setUp();
+		setWorkflowUtility(KEWServiceLocator.getWorkflowUtilityService());
+	}
+
+	protected void loadTestData() throws Exception {
         loadXmlFile("WorkflowUtilityConfig.xml");
     }
 
-    protected void setUpAfterDataLoad() throws Exception {
-        super.setUpAfterDataLoad();
-        utility = KEWServiceLocator.getWorkflowUtilityService();
-    }
+	public WorkflowUtility getWorkflowUtility() {
+		return this.workflowUtility;
+	}
 
+	public void setWorkflowUtility(WorkflowUtility workflowUtility) {
+		this.workflowUtility = workflowUtility;
+	}
+
+	@Test
+    public void testFindByAppId() throws WorkflowException{
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        document.setAppDocId("123456789");
+        document.routeDocument("");
+    	DocumentDetailDTO doc=getWorkflowUtility().getDocumentDetailFromAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
+    	
+    	assertNotNull(doc);
+    	
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        document.setAppDocId("123456789");
+        document.routeDocument("");
+
+        try{
+        	getWorkflowUtility().getDocumentDetailFromAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
+        	assertTrue(false);
+        }catch(WorkflowException e){
+        	assertTrue(true);
+        }
+        
+        try{
+        	getWorkflowUtility().getDocumentDetailFromAppId("notExist", "wrong");
+        	assertTrue(false);
+        }catch(WorkflowException e){
+        	assertTrue(true);
+        }
+        
+        try{
+        	getWorkflowUtility().getDocumentDetailFromAppId("notExist", null);
+        	assertTrue(false);
+        }catch(RuntimeException e){
+        	assertTrue(true);
+        }
+    	
+        try{
+        	getWorkflowUtility().getDocumentDetailFromAppId(null, null);
+        	assertTrue(false);
+        }catch(RuntimeException e){
+        	assertTrue(true);
+        }
+        
+    }
+    
     @Test public void testIsUserInRouteLog() throws Exception {
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
 
         // test that we can run isUserInRouteLog on a SAVED document
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.saveDocument("");
         assertTrue(document.stateIsSaved());
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), false));
-        assertFalse("User should not be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), false));
+        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), false));
 
         // now look all up in the future of this saved document
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("temay"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
     }
 
     @Test public void testIsUserInRouteLogAfterReturnToPrevious() throws Exception {
@@ -126,13 +170,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue(document.isApprovalRequested());
 
         // bmcgough and rkirkend should be in route log
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("User should NOT be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
         // Phil of the future
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         document.returnToPreviousNode("", "AdHoc");
@@ -150,12 +194,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // now verify that is route log authenticated still works
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("User should NOT be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
 
         // let's look at the revoked node instances
 
@@ -173,24 +217,24 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         TestUtilities.assertAtNode(document, "WorkflowDocument2");
         assertTrue(document.isApprovalRequested());
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
 
         // now return back to WorkflowDocument
         document.returnToPreviousNode("", "WorkflowDocument");
         document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
         // Phil should no longer be non-future route log authenticated
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("User should NOT be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
-        assertTrue("User should be authenticated.", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), false));
+        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), true));
     }
     
     @Test
@@ -210,34 +254,34 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "BeforeSplit");
         
         // now let's run some simulations
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
-        assertFalse("should NOT be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("user1"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
+        assertFalse("should NOT be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("user1"), true));
         
         // now let's activate only the left branch and make sure the split is properly executed
         TestSplitNode.setRightBranch(false);
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertFalse("should NOT be in route log because right branch is not active", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertFalse("should NOT be in route log because right branch is not active", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
         
         // now let's do a flattened evaluation, it should hit both branches
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true, true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true, true));
-        assertTrue("should be in route log because we've flattened nodes", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true, true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true, true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true, true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true, true));
+        assertTrue("should be in route log because we've flattened nodes", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true, true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true, true));
         
         // now let's switch to the right branch
         TestSplitNode.setRightBranch(true);
         TestSplitNode.setLeftBranch(false);
         
-        assertFalse("should NOT be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("should NOT be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
+        assertFalse("should NOT be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("should NOT be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
 
         // now let's switch back to the left branch and approve it
         TestSplitNode.setLeftBranch(true);
@@ -252,47 +296,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("should have an approve request", document.isApprovalRequested());
         
         // now let's run the simulation so we can test running from inside a split branch
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
-        assertFalse("should NOT be in route log because right branch is not active", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", utility.isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), true));
+        assertFalse("should NOT be in route log because right branch is not active", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getRouteHeaderId(), getPrincipalIdForName("natjohns"), true));
     }
     
-    public static class TestSplitNode extends SimpleSplitNode {
-
-    	private static boolean leftBranch = true;
-    	private static boolean rightBranch = true;
-    	
-		@Override
-		public SplitResult process(RouteContext routeContext,
-				RouteHelper routeHelper) throws Exception {
-			return new SplitResult(getBranchNames());
-		}
-		
-		public List<String> getBranchNames() {
-			List<String> branchNames = new ArrayList<String>();
-			if (isLeftBranch()) {
-				branchNames.add("Left");
-			}
-			if (isRightBranch()) {
-				branchNames.add("Right");
-			}
-			return branchNames;
-		}
-		public static void setLeftBranch(boolean leftBranch) {
-			TestSplitNode.leftBranch = leftBranch;
-		}
-		public static boolean isLeftBranch() {
-			return TestSplitNode.leftBranch;
-		}
-		public static void setRightBranch(boolean rightBranch) {
-			TestSplitNode.rightBranch = rightBranch;
-		}		
-		public static boolean isRightBranch() {
-			return TestSplitNode.rightBranch;
-		}  	
-    }
-
     public abstract interface ReportCriteriaGenerator { public abstract ReportCriteriaDTO buildCriteria(WorkflowDocument workflowDoc) throws Exception; public boolean isCriteriaRouteHeaderBased();}
 
     private class ReportCriteriaGeneratorUsingXML implements ReportCriteriaGenerator {
@@ -347,9 +356,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ReportCriteriaDTO reportCriteriaDTO = generator.buildCriteria(new WorkflowDocument(getPrincipalIdForName("ewestfal"), documentType));
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("bmcgough"));
-        assertTrue("Document should have at least one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertTrue("Document should have at least one unfulfilled approve/complete request",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
         reportCriteriaDTO.setTargetPrincipalIds(new String[]{getPrincipalIdForName("bmcgough")});
-        assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(new WorkflowDocument(getPrincipalIdForName("ewestfal"), documentType));
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument4");
@@ -358,7 +367,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument3");
         actionsToTake[1] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("jitrue"),"WorkflowDocument4");
         reportCriteriaDTO.setActionsToTake(actionsToTake);
-        assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(new WorkflowDocument(getPrincipalIdForName("ewestfal"), documentType));
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("pmckown"));
@@ -367,38 +376,38 @@ public class WorkflowUtilityTest extends KEWTestCase {
         actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument3");
         actionsToTake[1] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("jitrue"),"WorkflowDocument4");
         reportCriteriaDTO.setActionsToTake(actionsToTake);
-        assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentType);
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("rkirkend"));
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument");
-        assertFalse("Document should not have any approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("rkirkend"));
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
-        assertFalse("Document should not have any approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("rkirkend"));
         reportCriteriaDTO.setTargetPrincipalIds(new String[]{getPrincipalIdForName("rkirkend")});
-        assertFalse("Document should not have any approve/complete requests for user rkirkend",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any approve/complete requests for user rkirkend",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         document.routeDocument("");
         assertEquals("Document should be enroute", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         assertEquals("Document route node is incorrect", "WorkflowDocument3", document.getNodeNames()[0]);
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument4");
-        assertTrue("At least one unfulfilled approve/complete request should have been generated",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertTrue("At least one unfulfilled approve/complete request should have been generated",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetPrincipalIds(new String[]{getPrincipalIdForName("rkirkend")});
-        assertTrue("At least one unfulfilled approve/complete request should have been generated for rkirkend",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertTrue("At least one unfulfilled approve/complete request should have been generated for rkirkend",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument4");
-        assertTrue("At least one unfulfilled approve/complete request should have been generated",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertTrue("At least one unfulfilled approve/complete request should have been generated",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         // if rkirkend approvers the document here it will move to last route node and no more simulations need to be run
         document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
@@ -425,9 +434,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
 //        ReportCriteriaDTO reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("bmcgough"));
-        assertTrue("Document should have one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertTrue("Document should have one unfulfilled approve/complete request",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
         reportCriteriaDTO.setTargetPrincipalIds(new String[]{getPrincipalIdForName("bmcgough")});
-        assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
@@ -436,7 +445,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 //        actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument");
         actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("pmckown"),"WorkflowDocument2");
         reportCriteriaDTO.setActionsToTake(actionsToTake);
-        assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
@@ -445,7 +454,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         actionsToTake[1] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument");
         reportCriteriaDTO.setActionsToTake(actionsToTake);
         reportCriteriaDTO.setRoutingPrincipalId(getPrincipalIdForName("pmckown"));
-        assertFalse("Document should not have any unfulfilled approve/complete requests",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), documentType);
         document.routeDocument("");
@@ -459,7 +468,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("WorkflowDocument2");
-        assertTrue("Document should have one unfulfilled approve/complete request",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertTrue("Document should have one unfulfilled approve/complete request",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         document.approve("");
@@ -467,13 +476,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("Acknowledge1");
-        assertFalse("Document should not have any unfulfilled approve/complete requests when in processed status",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests when in processed status",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}, false));
 
         reportCriteriaDTO = generator.buildCriteria(document);
         reportCriteriaDTO.setTargetNodeName("Acknowledge1");
-        assertTrue("Document should have one unfulfilled Ack request when in final status",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}, false));
+        assertTrue("Document should have one unfulfilled Ack request when in final status",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}, false));
         if (generator.isCriteriaRouteHeaderBased()) {
-            assertFalse("Document should have no unfulfilled Ack request generated when in final status",utility.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}, true));
+            assertFalse("Document should have no unfulfilled Ack request generated when in final status",getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}, true));
         }
 
         // if temay acknowledges the document here it will move to processed and no more simulations would need to be tested
@@ -488,22 +497,22 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.saveRoutingData();
 
         // the initial "route level" should have no requests initially so it should return false
-        assertFalse("Should not be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), new Integer(0)));
-        assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.ADHOC_NODE));
+        assertFalse("Should not be last approver.", getWorkflowUtility().isLastApproverInRouteLevel(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), new Integer(0)));
+        assertFalse("Should not be last approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.ADHOC_NODE));
 
         // app specific route a request to a workgroup at the initial node (TestWorkgroup)
 		String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
         document.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", groupId, "", false);
-        assertTrue("Should be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), new Integer(0)));
-        assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.ADHOC_NODE));
+        assertTrue("Should be last approver.", getWorkflowUtility().isLastApproverInRouteLevel(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), new Integer(0)));
+        assertTrue("Should be last approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.ADHOC_NODE));
 
         // app specific route a request to a member of the workgroup (jitrue)
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", getPrincipalIdForName("jitrue"), "", false);
         // member of the workgroup with the user request should be last approver
-        assertTrue("Should be last approver.", utility.isLastApproverInRouteLevel(document.getRouteHeaderId(), getPrincipalIdForName("jitrue"), new Integer(0)));
-        assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("jitrue"), SeqSetup.ADHOC_NODE));
+        assertTrue("Should be last approver.", getWorkflowUtility().isLastApproverInRouteLevel(document.getRouteHeaderId(), getPrincipalIdForName("jitrue"), new Integer(0)));
+        assertTrue("Should be last approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("jitrue"), SeqSetup.ADHOC_NODE));
         // other members of the workgroup will not be last approvers because they don't satisfy the individuals request (ewestfal)
-        assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.ADHOC_NODE));
+        assertFalse("Should not be last approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.ADHOC_NODE));
 
         // route the document, should stay at the adhoc node until those requests have been completed
         document.routeDocument("");
@@ -518,14 +527,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         // since there are two requests, neither should be last approver
-        assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        assertFalse("Should not be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Should not be last approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Should not be last approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         document.approve("");
 
         // request to rirkend has been satisfied, now request to bmcgough is only request remaining at level so he should be last approver
         document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
-        assertTrue("Should be last approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertTrue("Should be last approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
         document.approve("");
 
     }
@@ -538,9 +547,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
      * Tests the fix to issue http://fms.dfa.cornell.edu:8080/browse/KULWF-366
      */
     @Test public void testIsLastApproverActivation() throws Exception {
-        // first test without the constant set
-        //ApplicationConstant appConstant = KEWServiceLocator.getApplicationConstantsService().findByName(KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST);
-        Parameter lastApproverActivateParameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        // first test without the parameter set
+        Parameter lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
         assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getParameterValue()));
         String originalParameterValue = lastApproverActivateParameter.getParameterValue();
@@ -582,9 +590,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Did not find request to ewestfal.", foundEwestfalRequest);
 
         // at this point, neither bmcgough, rkirkend nor ewestfal should be the last approver
-        assertFalse("Bmcgough should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Bmcgough should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Rkirkend should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Ewestfal should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
         // approve as bmcgough
         document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
@@ -592,8 +600,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // still, neither rkirkend nor ewestfal should be "final approver"
         // at this point, neither bmcgough, rkirkend nor ewestfal should be the last approver
-        assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Rkirkend should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Ewestfal should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
         // approve as rkirkend
         document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
@@ -606,7 +614,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Should be activated.", actionRequest.isActive());
 
         // ewestfal should now be the final approver
-        assertTrue("Ewestfal should be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertTrue("Ewestfal should be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
         // approve as ewestfal to send to next node
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
@@ -618,8 +626,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // at this node there should be two requests, one to ewestfal with forceAction=false and one to pmckown,
         // since we haven't set the application constant, the non-force action request won't be activated first so pmckown
         // will not be the final approver
-        assertFalse("Pmckown should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
-        assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
+        assertFalse("Pmckown should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
+        assertFalse("Ewestfal should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should be 2 action requests.", 2, actionRequests.size());
 
@@ -628,36 +636,46 @@ public class WorkflowUtilityTest extends KEWTestCase {
         lastApproverActivateParameter.setParameterValue(parameterValue);
         KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
 
-        lastApproverActivateParameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
         assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getParameterValue());
 
 
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.routeDocument("");
+        
+        // on this document type approval progression will go as follows:
+        // Workflow Document   (Sequential): bmcgough (1, fa=false),  rkirkend (2, fa=false), ewestfal (3, fa=true)
+        // Workflow Document 2 (Sequential): pmckown (1, fa=false), ewestfal (2, fa=false)
 
         // at this point, neither bmcgough, rkirkend nor ewestfal should be the last approver
-        assertFalse("Bmcgough should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Bmcgough should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Rkirkend should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Ewestfal should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
         // approve as bmcgough
         document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         document.approve("");
 
         // now there is just a request to rkirkend and ewestfal, since ewestfal is force action true, neither should be final approver
-        assertFalse("Rkirkend should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
-        assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Rkirkend should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        assertFalse("Ewestfal should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
-        // approve as ewestfal
+        // verify that ewestfal does not have permissions to approve the document yet since his request has not yet been activated
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        assertFalse("Ewestfal should not have permissions to approve", document.isApprovalRequested());
+        
+        // approve as rkirkend
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         document.approve("");
 
-        // rkirkend should now be the final approver
-        assertTrue("Rkirkend should now be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        assertTrue("Ewestfal should now have permission to approve", document.isApprovalRequested());
+        
+        // ewestfal should now be the final approver
+        assertTrue("Ewestfal should now be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
-        // approve as rkirkend to send it to the next node
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        // approve as ewestfal to send it to the next node
         document.approve("");
 
         TestUtilities.assertAtNode(document, SeqSetup.WORKFLOW_DOCUMENT_2_NODE);
@@ -667,8 +685,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // now, there are requests to pmckown and ewestfal here, the request to ewestfal is forceAction=false and since ewestfal
         // routed the document, this request should be auto-approved.  However, it's priority is 2 so it is activated after the
         // request to pmckown which is the situation we are testing
-        assertTrue("Pmckown should be the last approver at this node.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
-        assertFalse("Ewestfal should not be the final approver.", utility.isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
+        assertTrue("Pmckown should be the last approver at this node.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("pmckown"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
+        assertFalse("Ewestfal should not be the final approver.", getWorkflowUtility().isLastApproverAtNode(document.getRouteHeaderId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_2_NODE));
 
         // if we approve as pmckown, the document should go into acknowledgement and become processed
         document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
@@ -676,8 +694,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Document should be processed.", document.stateIsProcessed());
 
         // set parameter value back to it's original value
-        
-        lastApproverActivateParameter.setParameterValue("N");
+        lastApproverActivateParameter.setParameterValue("");
         KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
     }
 
@@ -705,7 +722,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Should have approve request.", document.isApprovalRequested());
 
         // bmcgough is not the final approver
-        assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough")));
+        assertFalse("Should not be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("bmcgough")));
         // approve as bmcgough
         document.approve("");
 
@@ -713,20 +730,20 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
-        assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend")));
+        assertFalse("Should not be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("rkirkend")));
         document.approve("");
 
         // should be to Phil now, who *IS* the final approver on the document
         document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         assertTrue("Should have approve request.", document.isApprovalRequested());
-        assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
+        assertTrue("Should be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
 
         // now adhoc an approve to temay, phil should no longer be the final approver
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
                 "", getPrincipalIdForName("temay"), "", true);
-        assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
-        assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("temay")));
+        assertFalse("Should not be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
+        assertFalse("Should not be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("temay")));
 
         // now approve as temay and then adhoc an ack to jeremy
         document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
@@ -734,15 +751,15 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.approve("");
 
         // phil should be final approver again
-        assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
+        assertTrue("Should be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, SeqSetup.WORKFLOW_DOCUMENT_2_NODE,
                 "", getPrincipalIdForName("jhopf"), "", true);
         document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
         assertTrue("Should have acknowledge request.", document.isAcknowledgeRequested());
 
         // now there should be an approve to phil and an ack to jeremy, so phil should be the final approver and jeremy should not
-        assertTrue("Should be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
-        assertFalse("Should not be final approver.", utility.isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("jhopf")));
+        assertTrue("Should be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("pmckown")));
+        assertFalse("Should not be final approver.", getWorkflowUtility().isFinalApprover(document.getRouteHeaderId(), getPrincipalIdForName("jhopf")));
 
         // after approving as phil, the document should go processed
         document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
@@ -751,16 +768,15 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testRoutingReportOnDocumentType() throws Exception {
-    	WorkflowInfo info = new WorkflowInfo();
     	ReportCriteriaDTO criteria = new ReportCriteriaDTO("SeqDocType");
     	criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate" });
-    	DocumentDetailDTO documentDetail = info.routingReport(criteria);
+    	DocumentDetailDTO documentDetail = getWorkflowUtility().routingReport(criteria);
     	assertNotNull(documentDetail);
     	assertEquals("Should have been 2 requests generated.", 2, documentDetail.getActionRequests().length);
 
     	// let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
     	criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });
-    	documentDetail = info.routingReport(criteria);
+    	documentDetail = getWorkflowUtility().routingReport(criteria);
     	assertEquals("Should have been 3 requests generated.", 3, documentDetail.getActionRequests().length);
 
     	boolean foundRkirkend = false;
@@ -788,18 +804,17 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
     @Test public void testRoutingReportOnRouteHeaderId() throws Exception {
         WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), "SeqDocType");
-        WorkflowInfo info = new WorkflowInfo();
 
         ReportCriteriaDTO criteria = new ReportCriteriaDTO(doc.getRouteHeaderId());
         criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate" });
-        DocumentDetailDTO documentDetail = info.routingReport(criteria);
+        DocumentDetailDTO documentDetail = getWorkflowUtility().routingReport(criteria);
         assertNotNull(documentDetail);
         assertEquals("Route header id returned should be the same as the one passed in", doc.getRouteHeaderId(), documentDetail.getRouteHeaderId());
         assertEquals("Wrong number of action requests generated", 2, documentDetail.getActionRequests().length);
 
         // let's try doing both WorkflowDocumentTemplate and WorkflowDocumentTemplate2 together
         criteria.setRuleTemplateNames(new String[] { "WorkflowDocumentTemplate", "WorkflowDocument2Template" });
-        documentDetail = info.routingReport(criteria);
+        documentDetail = getWorkflowUtility().routingReport(criteria);
         assertEquals("Should have been 3 requests generated.", 3, documentDetail.getActionRequests().length);
 
         boolean foundRkirkend = false;
@@ -824,35 +839,38 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Did not find request for pmckown", foundPmckown);
 
     }
+    
+    protected void verifyEmptyArray(String qualifier, Object[] array) {
+    	assertNotNull("Array should not be empty", array);
+        assertEquals("Number of " + qualifier + "s Returned Should be 0",0,array.length);
+    }
 
     @Test public void testRuleReportGeneralFunction() throws Exception {
-        WorkflowInfo info = new WorkflowInfo();
-
         RuleReportCriteriaDTO ruleReportCriteria = null;
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in null RuleReportCriteriaDTO should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in null RuleReportCriteriaDTO should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in empty RuleReportCriteriaDTO should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in empty RuleReportCriteriaDTO should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setResponsiblePrincipalId("hobo_man");
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid principle ID should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in an invalid principle ID should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setResponsibleGroupId("-1234567");
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in an invalid Workgroup ID should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in an invalid Workgroup ID should throw Exception");
 
         ruleReportCriteria = new RuleReportCriteriaDTO();
         RuleExtensionDTO ruleExtensionVO = new RuleExtensionDTO("key","value");
         ruleReportCriteria.setRuleExtensionVOs(new RuleExtensionDTO[]{ruleExtensionVO});
-        this.ruleExceptionTest(info, ruleReportCriteria, "Sending in one or more RuleExtentionVO objects with no Rule Template Name should throw Exception");
+        this.ruleExceptionTest(ruleReportCriteria, "Sending in one or more RuleExtentionVO objects with no Rule Template Name should throw Exception");
 
         RuleDTO[] rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setConsiderWorkgroupMembership(Boolean.FALSE);
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 3",3,rules.length);
 
         rules = null;
@@ -862,8 +880,8 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("temay"));
-        rules = info.ruleReport(ruleReportCriteria);
-        assertEquals("Number of Rules Returned Should be 0",0,rules.length);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
+        verifyEmptyArray("Rule", rules);
 
         rules = null;
         ruleReportCriteria = new RuleReportCriteriaDTO();
@@ -871,7 +889,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setConsiderWorkgroupMembership(Boolean.FALSE);
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 1",1,rules.length);
         // check the rule returned
         RuleDTO ruleVO = rules[0];
@@ -904,7 +922,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("temay"));
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules returned is not correct",2,rules.length);
         for (int i = 0; i < rules.length; i++) {
             ruleVO = rules[i];
@@ -950,7 +968,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsibleGroupId(RuleTestGeneralSetup.RULE_TEST_GROUP_ID);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 1",1,rules.length);
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -970,7 +988,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of Rules Returned Should be 1",1,rules.length);
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -990,13 +1008,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
      */
     @Test public void testRuleReportOrgReviewTest() throws Exception {
         loadXmlFile("WorkflowUtilityRuleReportConfig.xml");
-        WorkflowInfo info = new WorkflowInfo();
         RuleReportCriteriaDTO ruleReportCriteria = new RuleReportCriteriaDTO();
         ruleReportCriteria.setDocumentTypeName(RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setRuleTemplateName(RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        RuleDTO[] rules = info.ruleReport(ruleReportCriteria);
+        RuleDTO[] rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
 
         ruleReportCriteria = null;
@@ -1007,7 +1024,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
         ruleReportCriteria.setConsiderWorkgroupMembership(Boolean.FALSE);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",1,rules.length);
 
         ruleReportCriteria = null;
@@ -1020,7 +1037,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         RuleExtensionDTO[] ruleExtensionVOs = new RuleExtensionDTO[] {ruleExtensionVO,ruleExtensionVO2};
         ruleReportCriteria.setRuleExtensionVOs(ruleExtensionVOs);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
 
         ruleReportCriteria = null;
@@ -1033,7 +1050,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setRuleTemplateName(RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("ewestfal"));
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",1,rules.length);
         RuleDTO ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -1071,7 +1088,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleReportCriteria.setRuleTemplateName(RuleTestOrgReviewSetup.RULE_TEST_TEMPLATE);
         ruleReportCriteria.setResponsiblePrincipalId(getPrincipalIdForName("user1"));
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",2,rules.length);
 
         ruleReportCriteria = null;
@@ -1089,7 +1106,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleExtensionVOs = new RuleExtensionDTO[] {ruleExtensionVO,ruleExtensionVO2};
         ruleReportCriteria.setRuleExtensionVOs(ruleExtensionVOs);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE);
-        rules = info.ruleReport(ruleReportCriteria);
+        rules = getWorkflowUtility().ruleReport(ruleReportCriteria);
         assertEquals("Number of rules returned is incorrect",1,rules.length);
         ruleVO = rules[0];
         assertEquals("Rule Document Type is not " + RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME,ruleVO.getDocTypeName());
@@ -1104,21 +1121,20 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testGetUserActionItemCount() throws Exception {
-        WorkflowInfo info = new WorkflowInfo();
         String principalId = getPrincipalIdForName("ewestfal");
         WorkflowDocument document = new WorkflowDocument(principalId, SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
 
         TestUtilities.assertAtNode(document, "WorkflowDocument");
         document.returnToPreviousNode("", "AdHoc");
@@ -1128,18 +1144,18 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
         // expect one action item for approval request
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertFalse(document.isApprovalRequested());
         assertTrue(document.isFYIRequested());
         // expect one action item for fyi action request
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertFalse(document.isApprovalRequested());
         // expect no action items
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
 
         principalId = getPrincipalIdForName("ewestfal");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
@@ -1150,15 +1166,15 @@ public class WorkflowUtilityTest extends KEWTestCase {
         principalId = getPrincipalIdForName("ewestfal");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertFalse(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = new WorkflowDocument(principalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), info.getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
     }
 
     @Test public void testGetActionItems() throws Exception {
@@ -1168,7 +1184,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String initiatorPrincipalId = getPrincipalIdForName(initiatorNetworkId);
         String user1PrincipalId = getPrincipalIdForName(user1NetworkId);
         String user2PrincipalId = getPrincipalIdForName(user2NetworkId);
-        WorkflowInfo info = new WorkflowInfo();
         String principalId = getPrincipalIdForName(initiatorNetworkId);
         String docTitle = "this is the doc title";
         WorkflowDocument document = new WorkflowDocument(principalId, SeqSetup.DOCUMENT_TYPE_NAME);
@@ -1176,7 +1191,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId());
+        ActionItemDTO[] actionItems = getWorkflowUtility().getAllActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1191,7 +1206,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = info.getActionItems(document.getRouteHeaderId());
+        actionItems = getWorkflowUtility().getAllActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
@@ -1210,7 +1225,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = info.getActionItems(document.getRouteHeaderId());
+        actionItems = getWorkflowUtility().getAllActionItems(document.getRouteHeaderId());
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1226,7 +1241,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String initiatorPrincipalId = getPrincipalIdForName(initiatorNetworkId);
         String user1PrincipalId = getPrincipalIdForName(user1NetworkId);
         String user2PrincipalId = getPrincipalIdForName(user2NetworkId);
-        WorkflowInfo info = new WorkflowInfo();
         String principalId = getPrincipalIdForName(initiatorNetworkId);
         String docTitle = "this is the doc title";
         WorkflowDocument document = new WorkflowDocument(principalId, SeqSetup.DOCUMENT_TYPE_NAME);
@@ -1234,9 +1248,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.routeDocument("");
         assertTrue(document.stateIsEnroute());
 
-        ActionItemDTO[] actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        ActionItemDTO[] actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
+        verifyEmptyArray("Action Item", actionItems);
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1251,13 +1265,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
+        verifyEmptyArray("Action Item", actionItems);
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ});
         assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
@@ -1278,9 +1292,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        assertEquals("Incorrect number of action items returned",0,actionItems.length);
-        actionItems = info.getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
+        verifyEmptyArray("Action Item", actionItems);
+        actionItems = getWorkflowUtility().getActionItems(document.getRouteHeaderId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
         assertEquals("Incorrect number of action items returned",2,actionItems.length);
         for (ActionItemDTO actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
@@ -1312,8 +1326,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testPerformDocumentSearch_WithUser_CustomThreshold() throws Exception {
-    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
-        UserSession.setAuthenticatedUser(new UserSession(user));
         runTestPerformDocumentSearch_CustomThreshold(getPrincipalIdForName("user2"));
     }
 
@@ -1328,7 +1340,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
@@ -1336,15 +1348,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setThreshold(Integer.valueOf(threshold));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         assertTrue("Search results should signify search went over the given threshold: " + threshold, result.isOverThreshold());
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", threshold, searchResults.size());
     }
 
     @Test public void testPerformDocumentSearch_WithUser_BasicCriteria() throws Exception {
-    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
-        UserSession.setAuthenticatedUser(new UserSession(user));
         runTestPerformDocumentSearch_BasicCriteria(getPrincipalIdForName("user2"));
     }
 
@@ -1353,8 +1363,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     private void runTestPerformDocumentSearch_BasicCriteria(String principalId) throws Exception {
-    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
-        UserSession.setAuthenticatedUser(new UserSession(user));
         String documentTypeName = SeqSetup.DOCUMENT_TYPE_NAME;
         String docTitle = "Routing Style";
         setupPerformDocumentSearchTests(documentTypeName, null, docTitle);
@@ -1367,25 +1375,25 @@ public class WorkflowUtilityTest extends KEWTestCase {
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocTitle(docTitle);
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setInitiator("rkirkend");
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setInitiator("user1");
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 3, searchResults.size());
         // now verify that the search returned the proper document id
@@ -1403,8 +1411,6 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     @Test public void testPerformDocumentSearch_WithUser_RouteNodeSearch() throws Exception {
-    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
-        UserSession.setAuthenticatedUser(new UserSession(user));
         runTestPerformDocumentSearch_RouteNodeSearch(getPrincipalIdForName("user2"));
     }
 
@@ -1420,7 +1426,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocRouteNodeName(SeqSetup.ADHOC_NODE);
         try {
-            utility.performDocumentSearch(principalId, criteria);
+            getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Exception should have been thrown when specifying a route node name but no document type name");
         } catch (Exception e) {}
 
@@ -1429,7 +1435,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName("Yo homes, smell ya later!");
         try {
-            utility.performDocumentSearch(principalId, criteria);
+            getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Exception should have been thrown when specifying a route node name that does not exist on the specified document type name");
         } catch (Exception e) {}
 
@@ -1452,14 +1458,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
         criteria.findDocsAtExactSpecifiedRouteNode();
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking default node qualifier.", countAtNode, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking docs at exact node.", countAtNode, searchResults.size());
 
@@ -1467,7 +1473,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
         criteria.findDocsBeforeSpecifiedRouteNode();
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking docs before node.", countBeforeNode, searchResults.size());
 
@@ -1475,14 +1481,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setDocRouteNodeName(routeNodeName);
         criteria.findDocsAfterSpecifiedRouteNode();
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Wrong number of search results when checking docs after node.", countAfterNode, searchResults.size());
     }
 
     @Test public void testPerformDocumentSearch_WithUser_SearchAttributes() throws Exception {
-    	KimPrincipal user = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
-        UserSession.setAuthenticatedUser(new UserSession(user));
     	runTestPerformDocumentSearch_SearchAttributes(getPrincipalIdForName("user2"));
     }
 
@@ -1498,14 +1502,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE)}));
-        DocumentSearchResultDTO result = utility.performDocumentSearch(principalId, criteria);
+        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,"fred")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1513,21 +1517,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeproperty", "doesntexist")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString())}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1535,21 +1539,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeymcfakefake", "99999999")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString())}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1557,21 +1561,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeylostington", "9999.9999")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)))}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979")}));
-        result = utility.performDocumentSearch(principalId, criteria);
+        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
@@ -1579,14 +1583,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("lastingsfakerson","07/06/2007")}));
         try {
-            result = utility.performDocumentSearch(principalId, criteria);
+            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
     }
 
-    private void ruleExceptionTest(WorkflowInfo info, RuleReportCriteriaDTO ruleReportCriteria, String message) {
+    private void ruleExceptionTest(RuleReportCriteriaDTO ruleReportCriteria, String message) {
         try {
-            info.ruleReport(ruleReportCriteria);
+            getWorkflowUtility().ruleReport(ruleReportCriteria);
             fail(message);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,7 +32,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.springframework.dao.DataAccessException;
 
@@ -49,6 +47,13 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	private PersistenceStructureService persistenceStructureService;
 
 	private OjbCollectionHelper ojbCollectionHelper;
+
+	/**
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
+	 */
+	public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey) {
+		return (PersistableBusinessObject) entityManager.find(clazz, primaryKey);
+	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class,

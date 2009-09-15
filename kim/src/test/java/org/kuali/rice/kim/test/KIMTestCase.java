@@ -1,10 +1,10 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -24,15 +24,15 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.test.service.ServiceTestUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
-import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 
 /**
  * This is test base that should be used for all KIM unit tests. All non-web unit tests for KIM should extend this base
@@ -106,8 +106,8 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		return KIM_MODULE_NAME;
 	}
 	
-	protected KimTypeImpl getDefaultKimType() {
-		KimTypeImpl type = KIMServiceLocator.getTypeInternalService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+	protected KimTypeInfo getDefaultKimType() {
+		KimTypeInfo type = KIMServiceLocator.getTypeInfoService().getKimType("1");
 		if (type == null) {
 			fail("Failed to locate the default Kim Type.");
 		}
@@ -141,4 +141,25 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		Long sequenceId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
 		return "" + sequenceId;
 	}
+
+	protected Lifecycle getJettyServerLifecycle() {
+		// using BaseLifecycle so config properties are loaded prior to retrieval
+		return new BaseLifecycle() {
+			JettyServerLifecycle lifecycle = null;
+			@Override
+			public void start() throws Exception { 
+				lifecycle = new JettyServerLifecycle(ServiceTestUtils.getConfigIntProp("kim.test.port"), "/" + ServiceTestUtils.getConfigProp("app.context.name"), "/../kim/src/test/webapp");
+				lifecycle.start();
+				super.start();
+			}
+			@Override
+			public void stop() throws Exception {
+				if ((lifecycle != null) && lifecycle.isStarted()) {
+					lifecycle.stop();
+				}
+				super.stop();
+			}
+		};
+	}
+
 }

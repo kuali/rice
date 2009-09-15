@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -49,7 +49,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	protected String dmrmi;
 	protected boolean canAssignRole = true;
 	protected boolean canModifyAssignees = true;
-	protected KimTypeImpl kimType;
+	protected KimTypeInfo kimType;
 	protected KimDocumentRoleMember member;
 	{
 		member = new KimDocumentRoleMember();
@@ -184,14 +184,14 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
+	public KimTypeInfo getKimType() {
 		return this.kimType;
 	}
 
 	/**
 	 * @param kimType the kimType to set
 	 */
-	public void setKimType(KimTypeImpl kimType) {
+	public void setKimType(KimTypeInfo kimType) {
 		this.kimType = kimType;
 		if ( kimType != null && getRoleDocument() != null ) {
 			getRoleDocument().setKimType(kimType);

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,55 +39,69 @@ public interface Person extends ExternalizableBusinessObject {
 	 * The first name from the default name record for the entity.
 	 */
 	String getFirstName();
+	String getFirstNameUnmasked();
 	String getMiddleName();
+	String getMiddleNameUnmasked();
 	String getLastName();
+	String getLastNameUnmasked();
 	
 	/*
 	 * Method which composites the first, middle and last names.
 	 */
 	String getName();
+	String getNameUnmasked();
 
 	String getEmailAddress();
+	String getEmailAddressUnmasked();
 	
 	/**
 	 * Returns line1 of the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested. 
 	 */
 	String getAddressLine1();
+	String getAddressLine1Unmasked();
 	/**
 	 * Returns line2 of the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested. 
 	 */
 	String getAddressLine2();
+	String getAddressLine2Unmasked();
+	
 	/**
 	 * Returns line3 of the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested. 
 	 */
 	String getAddressLine3();
+	String getAddressLine3Unmasked();
 	/**
 	 * Returns the city name from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested. 
 	 */
 	String getAddressCityName();
+	String getAddressCityNameUnmasked();
 	/**
 	 * Returns the state code from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested. 
 	 */
 	String getAddressStateCode();
+	String getAddressStateCodeUnmasked();
 	/**
 	 * Returns the postal code from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested. 
 	 */
 	String getAddressPostalCode();
+	String getAddressPostalCodeUnmasked();
 	/**
 	 * Returns the country code from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested. 
 	 */
 	String getAddressCountryCode();
+	String getAddressCountryCodeUnmasked();
 	
 	/** Returns the default phone number for the entity.
 	 */
 	String getPhoneNumber();
+	String getPhoneNumberUnmasked();
 
 	String getCampusCode();
 		

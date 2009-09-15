@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,8 +18,8 @@ package org.kuali.rice.kns.service;
 import org.junit.Test;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.test.document.AccountRequestDocument;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.test.KNSTestCase;
 
 /**
@@ -36,13 +36,13 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         GlobalVariables.setUserSession(new UserSession("quickstart"));
     }
 
     @Override
     public void tearDown() throws Exception {
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         GlobalVariables.setUserSession(null);
         super.tearDown();
     }
@@ -60,13 +60,13 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         travelDocument.setReason2("reason2");
         travelDocument.setRequester("requester");
 
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
-        int recursiveZeroErrorMapSize = errorMap.size();
+        MessageMap errorMap = GlobalVariables.getMessageMap();
+        int recursiveZeroMessageMapSize = errorMap.size();
 
         // errors should be 'account type code' and 'request type' both being required
-        assertEquals("Number of errors found is incorrect", 2, recursiveZeroErrorMapSize);
+        assertEquals("Number of errors found is incorrect", 2, recursiveZeroMessageMapSize);
     }
 
     /**
@@ -82,17 +82,17 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         travelDocument.setReason2("reason2");
         travelDocument.setRequester("requester");
 
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
-        int recursiveZeroErrorMapSize = errorMap.size();
+        MessageMap errorMap = GlobalVariables.getMessageMap();
+        int recursiveZeroMessageMapSize = errorMap.size();
 
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 5, true);
-        ErrorMap errorMap2 = GlobalVariables.getErrorMap();
-        int recursiveFiveErrorMapSize = errorMap2.size();
+        MessageMap errorMap2 = GlobalVariables.getMessageMap();
+        int recursiveFiveMessageMapSize = errorMap2.size();
 
-        assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveZeroErrorMapSize, recursiveFiveErrorMapSize);
+        assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveZeroMessageMapSize, recursiveFiveMessageMapSize);
     }
 
 }

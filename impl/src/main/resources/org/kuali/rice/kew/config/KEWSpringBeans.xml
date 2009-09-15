@@ -14,15 +14,6 @@
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
-	<bean id="kewOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
-		<property name="jcdAliases">
-			<list>
-				<value>enWorkflowDataSource</value>
-			</list>
-		</property>
-		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/config/OJB-repository-kew.xml" />
-	</bean>
-
 	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>
@@ -37,42 +28,10 @@
 		<property name="serverDataSource" value="true"/>
     </bean>
 
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-	</bean>
-
-
-	<bean id="matchAllWithPropReqCheckedException" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED,-Exception</value>
-		</property>
-	</bean>
-
-
-	<!-- Proxy for rollback on only runtime exceptions -->
-
-	<!-- PROPAGATION REQUIRED TX DECLARATIONS -->
-	<bean id="matchAllWithPropReq" class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
-		<property name="transactionAttribute">
-			<value>PROPAGATION_REQUIRED</value>
-		</property>
-	</bean>
-
-	<bean id="matchAllTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributeSource">
-			<ref bean="matchAllWithPropReq" />
-		</property>
-	</bean>
-
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
 			<list>
-				<idref local="matchAllTxInterceptor" />
+				<idref bean="matchAllTxInterceptor" />
 			</list>
 		</property>
 		<property name="beanNames">
@@ -397,7 +356,7 @@
 		</property>
 	</bean>
 
-  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>
@@ -454,6 +413,7 @@
         <value>enRuleService</value>
         <value>enRuleDelegationService</value>
         <value>enHelpService</value>
+        <value>enEDocLiteService</value>
         <value>enStyleService</value>
       </list>
     </property>
@@ -552,14 +512,14 @@
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
-          <property name="service">
-            <ref bean="enWorkflowUtilityService" />
-          </property>
+          <property name="service" ref="enWorkflowUtilityService" />
+          <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew"/>
           <property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.service.WorkflowUtility" />
+          <property name="jaxWsService" value="true" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
-          <!-- Should we change the security for SOAP? -->
-          <property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
+          <property name="busSecurity" value="${secure.workflowutility.soapservice.endpoint}"/>
         </bean>
           </property>
           <property name="propertyName" value="WorkflowUtilityServiceSOAP.expose"/>
@@ -569,11 +529,11 @@
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
       <property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
-          <property name="service">
-            <ref bean="simpleDocumentActionsService" />
-          </property>
-          <!-- <property name="serviceNameSpaceURI" value=""/> -->
+          <property name="service" ref="simpleDocumentActionsService" />
+          <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew"/>
           <property name="localServiceName" value="simpleDocumentActionsService" />
+          <property name="serviceInterface" value="org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService" />
+          <property name="jaxWsService" value="true" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
           <property name="busSecurity" value="${simpleDocumentActionsService.security}"/>

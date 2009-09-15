@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,7 +34,6 @@ import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.apache.ojb.broker.metadata.SuperReferenceDescriptor;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.exception.IntrospectionException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
@@ -313,62 +312,59 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		
 		// make sure the attribute designated is listed as a
 		// reference-descriptor on the clazz specified, otherwise 
-		// throw an exception (OJB); Person objects
-		// will be excluded from this
-		if (!Person.class.equals(attributeClass)) {
-			ClassDescriptor classDescriptor = getClassDescriptor(clazz);
-			ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(attributeName);
-			if (referenceDescriptor == null) {
-				throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + attributeName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + clazz.getName() + "'");
+		// throw an exception (OJB); 
+		ClassDescriptor classDescriptor = getClassDescriptor(clazz);
+		ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(attributeName);
+		if (referenceDescriptor == null) {
+			throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + attributeName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + clazz.getName() + "'");
+		}
+
+		// special case when the attributeClass passed in doesnt match the
+		// class of the reference-descriptor as defined in ojb-repository.
+		// Currently
+		// the only case of this happening is ObjectCode vs.
+		// ObjectCodeCurrent.
+		if (!attributeClass.equals(referenceDescriptor.getItemClass())) {
+
+			if (referenceConversionMap.containsKey(attributeClass)) {
+				attributeClass = referenceConversionMap.get(attributeClass);
+			} else {
+				throw new RuntimeException("The Class of the Java member [" + attributeClass.getName() + "] '" + attributeName + "' does not match the class of the " + "reference-descriptor [" + referenceDescriptor.getItemClass().getName() + "]. " + "This is an unhandled special case for which special code needs to be written " + "in this class.");
+			}
+		}
+
+		// get the list of the foreign-keys for this reference-descriptor
+		// (OJB)
+		Vector fkFields = referenceDescriptor.getForeignKeyFields();
+		Iterator fkIterator = fkFields.iterator();
+
+		// get the list of the corresponding pk fields on the other side of
+		// the relationship
+		List pkFields = getPrimaryKeys(attributeClass);
+		Iterator pkIterator = pkFields.iterator();
+
+		// make sure the size of the pkIterator is the same as the
+		// size of the fkIterator, otherwise this whole thing is borked
+		if (pkFields.size() != fkFields.size()) {
+			throw new RuntimeException("KualiPersistenceStructureService Error: The number of " + "foreign keys doesnt match the number of primary keys.  This may be a " + "result of misconfigured OJB-repository files.");
+		}
+
+		// walk through the list of the foreign keys, get their types
+		while (fkIterator.hasNext()) {
+			// if there is a next FK but not a next PK, then we've got a big
+			// problem,
+			// and cannot continue
+			if (!pkIterator.hasNext()) {
+				throw new RuntimeException("The number of foriegn keys dont match the number of primary " + "keys for the reference '" + attributeName + "', on BO of type '" + clazz.getName() + "'.  " + "This should never happen under normal circumstances, as it means that the OJB repository " + "files are misconfigured.");
 			}
 
-			// special case when the attributeClass passed in doesnt match the
-			// class of the reference-descriptor as defined in ojb-repository.
-			// Currently
-			// the only case of this happening is ObjectCode vs.
-			// ObjectCodeCurrent.
-			if (!attributeClass.equals(referenceDescriptor.getItemClass())) {
+			// get the field name of the fk & pk field
+			String fkFieldName = (String) fkIterator.next();
+			String pkFieldName = (String) pkIterator.next();
 
-				if (referenceConversionMap.containsKey(attributeClass)) {
-					attributeClass = referenceConversionMap.get(attributeClass);
-				} else {
-					throw new RuntimeException("The Class of the Java member [" + attributeClass.getName() + "] '" + attributeName + "' does not match the class of the " + "reference-descriptor [" + referenceDescriptor.getItemClass().getName() + "]. " + "This is an unhandled special case for which special code needs to be written " + "in this class.");
-				}
-			}
-
-			// get the list of the foreign-keys for this reference-descriptor
-			// (OJB)
-			Vector fkFields = referenceDescriptor.getForeignKeyFields();
-			Iterator fkIterator = fkFields.iterator();
-
-			// get the list of the corresponding pk fields on the other side of
-			// the relationship
-			List pkFields = getPrimaryKeys(attributeClass);
-			Iterator pkIterator = pkFields.iterator();
-
-			// make sure the size of the pkIterator is the same as the
-			// size of the fkIterator, otherwise this whole thing is borked
-			if (pkFields.size() != fkFields.size()) {
-				throw new RuntimeException("KualiPersistenceStructureService Error: The number of " + "foreign keys doesnt match the number of primary keys.  This may be a " + "result of misconfigured OJB-repository files.");
-			}
-
-			// walk through the list of the foreign keys, get their types
-			while (fkIterator.hasNext()) {
-				// if there is a next FK but not a next PK, then we've got a big
-				// problem,
-				// and cannot continue
-				if (!pkIterator.hasNext()) {
-					throw new RuntimeException("The number of foriegn keys dont match the number of primary " + "keys for the reference '" + attributeName + "', on BO of type '" + clazz.getName() + "'.  " + "This should never happen under normal circumstances, as it means that the OJB repository " + "files are misconfigured.");
-				}
-
-				// get the field name of the fk & pk field
-				String fkFieldName = (String) fkIterator.next();
-				String pkFieldName = (String) pkIterator.next();
-
-				// add the fieldName and fieldType to the map
-				fkMap.put(fkFieldName, pkFieldName);
-			}
-		}		
+			// add the fieldName and fieldType to the map
+			fkMap.put(fkFieldName, pkFieldName);
+		}
 		
 		return fkMap;
 	}
@@ -534,53 +530,49 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		// make sure the attribute designated is listed as a
 		// reference-descriptor
 		// on the clazz specified, otherwise throw an exception (OJB);
-		// Person objects
-		// will be excluded from this
 
 		ClassDescriptor classDescriptor = getClassDescriptor(bo.getClass());
 
 		// This block is a combination of legacy and jpa
-		if (!Person.class.equals(referenceClass)) {
-			ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(referenceName);
-			if (referenceDescriptor == null) {
-				throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");
+		ObjectReferenceDescriptor referenceDescriptor = classDescriptor.getObjectReferenceDescriptorByName(referenceName);
+		if (referenceDescriptor == null) {
+			throw new ReferenceAttributeNotAnOjbReferenceException("Attribute requested (" + referenceName + ") is not listed " + "in OJB as a reference-descriptor for class: '" + bo.getClass().getName() + "'");
+		}
+
+		// get the list of the foreign-keys for this reference-descriptor
+		Vector fkFieldsLegacy = referenceDescriptor.getForeignKeyFields();
+		Iterator fkIteratorLegacy = fkFieldsLegacy.iterator();
+
+		// walk through the list of the foreign keys, get their types
+		while (fkIteratorLegacy.hasNext()) {
+
+			// get the field name of the fk & pk field
+			String fkFieldName = (String) fkIteratorLegacy.next();
+
+			// get the value for the fk field
+			Object fkFieldValue = null;
+			try {
+				fkFieldValue = PropertyUtils.getSimpleProperty(bo, fkFieldName);
 			}
 
-			// get the list of the foreign-keys for this reference-descriptor
-			Vector fkFieldsLegacy = referenceDescriptor.getForeignKeyFields();
-			Iterator fkIteratorLegacy = fkFieldsLegacy.iterator();
+			// abort if the value is not retrievable
+			catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 
-			// walk through the list of the foreign keys, get their types
-			while (fkIteratorLegacy.hasNext()) {
-
-				// get the field name of the fk & pk field
-				String fkFieldName = (String) fkIteratorLegacy.next();
-
-				// get the value for the fk field
-				Object fkFieldValue = null;
-				try {
-					fkFieldValue = PropertyUtils.getSimpleProperty(bo, fkFieldName);
-				}
-
-				// abort if the value is not retrievable
-				catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-
-				// test the value
-				if (fkFieldValue == null) {
+			// test the value
+			if (fkFieldValue == null) {
+				allFieldsPopulated = false;
+				unpopulatedFields.add(fkFieldName);
+			} else if (fkFieldValue instanceof String) {
+				if (StringUtils.isBlank((String) fkFieldValue)) {
 					allFieldsPopulated = false;
 					unpopulatedFields.add(fkFieldName);
-				} else if (fkFieldValue instanceof String) {
-					if (StringUtils.isBlank((String) fkFieldValue)) {
-						allFieldsPopulated = false;
-						unpopulatedFields.add(fkFieldName);
-					} else {
-						anyFieldsPopulated = true;
-					}
 				} else {
 					anyFieldsPopulated = true;
 				}
+			} else {
+				anyFieldsPopulated = true;
 			}
 		}
 

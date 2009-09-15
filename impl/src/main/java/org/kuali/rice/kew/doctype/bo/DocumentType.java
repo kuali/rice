@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,6 +79,8 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
 
@@ -983,24 +985,44 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.defaultExceptionWorkgroup = defaultExceptionWorkgroup;
     }
 
+    
     public DocumentSearchGenerator getDocumentSearchGenerator() {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
-    	if (objDef == null) {
-    		if (getParentDocType() != null) {
-    			return getParentDocType().getDocumentSearchGenerator();
-    		} else {
-                DocumentSearchGenerator generator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
-    	    	generator.setSearchableAttributes(getSearchableAttributes());
-    	    	return generator;
-    		}
-    	}
-        Object searchGenerator = GlobalResourceLoader.getObject(objDef);
-        if (searchGenerator == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
+        DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getName());
+        Class<? extends DocumentSearchGenerator> docSearchGeneratorClass = null;
+        if (documentEntry != null) {
+            docSearchGeneratorClass = documentEntry.getDocumentSearchGeneratorClass();
         }
-        DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
-        docSearchGenerator.setSearchableAttributes(getSearchableAttributes());
-        return docSearchGenerator;
+        
+        if (docSearchGeneratorClass == null) {
+            ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
+        	if (objDef == null) {
+        		if (getParentDocType() != null) {
+        			return getParentDocType().getDocumentSearchGenerator();
+        		} else {
+                    DocumentSearchGenerator generator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
+        	    	return generator;
+        		}
+        	}
+            Object searchGenerator = GlobalResourceLoader.getObject(objDef);
+
+            if (searchGenerator == null) {
+                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
+            }
+            DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
+            return docSearchGenerator;
+        } else {
+            try {
+                DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)docSearchGeneratorClass.newInstance();
+                return docSearchGenerator;
+            } catch (InstantiationException e) {
+                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator defined in data dictionary " );
+            } catch (IllegalAccessException e) {
+                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator defined in data dictionary " );
+            }
+        }
+        
+        
+        
     }
 
     public DocumentSearchCriteriaProcessor getDocumentSearchCriteriaProcessor() {
@@ -1544,6 +1566,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
-		active = new Boolean(active);
+		this.active = Boolean.valueOf(active);
 	}
 }

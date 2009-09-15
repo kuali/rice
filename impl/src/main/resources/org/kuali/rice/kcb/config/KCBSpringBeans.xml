@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 	
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
@@ -37,49 +53,23 @@
 		<property name="scheduler" ref="ksbScheduler"></property>
     </bean>
 
-    <!-- Applies a transaction template to the actual transaction manager bean -->
-    <!-- This is needed to recognize services as transactions -->
-    <bean id="transactionTemplate"
-        class="org.springframework.transaction.support.TransactionTemplate">
-        <property name="transactionManager">
-            <ref bean="transactionManager" />
-        </property>
-    </bean>
-
-    <!-- PROPAGATION REQUIRED TX DECLARATIONS -->
-    <!-- Sets up pattern matching for transaction recognition -->
-    <!-- This is needed to recognize services as transactions -->
-    <bean id="matchAllWithPropReq"
-        class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
-        <property name="transactionAttribute">
-            <value>PROPAGATION_REQUIRED</value>
-        </property>
-    </bean>
-
-    <!-- Applys the pattern matching to the transaction manager bean -->
-    <!-- This is needed to recognize servi ces as transactions -->
-    <bean id="matchAllTxInterceptor"
-        class="org.springframework.transaction.interceptor.TransactionInterceptor">
-        <property name="transactionManager">
-            <ref bean="transactionManager" />
-        </property>
-        <property name="transactionAttributeSource">
-            <ref bean="matchAllWithPropReq" />
-        </property>
-    </bean>
-
     <!-- All of the beans listed in the beanNames/list section are considered transactional -->
-    <bean id="autoProxyCreator"
-        class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
         <property name="interceptorNames">
             <list>
-                <idref local="matchAllTxInterceptor" />
+                <idref bean="matchAllTxInterceptor" />
             </list>
         </property>
         <property name="beanNames">
             <list>
-                <value>*Service</value>
-                <value>genericDao</value>
+                <value>messagingService</value>
+                <value>messageService</value>
+                <value>messageDeliveryService</value>
+                <value>messageDelivererRegistryService</value>
+                <value>recipientPreferenceService</value>
+                <value>emailService</value>
+                <value>kenIntegrationService</value>
+                <value>kcbGenericDao</value>
             </list>
         </property>
     </bean>
@@ -97,44 +87,25 @@
     </bean>
 
     <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
-        <property name="genericDao"><ref local="genericDao"/></property>
+        <property name="genericDao"><ref local="kcbGenericDao"/></property>
     </bean>
 
     <bean id="messageDeliveryService" class="org.kuali.rice.kcb.service.impl.MessageDeliveryServiceImpl">
-        <property name="genericDao"><ref local="genericDao"/></property>
+        <property name="genericDao"><ref local="kcbGenericDao"/></property>
         <property name="maxProcessAttempts"><value>${kcb.maxProcessAttempts}</value></property>
     </bean>
 
     <bean id="messageDelivererRegistryService" class="org.kuali.rice.kcb.service.impl.MessageDelivererRegistryServiceImpl"/>
 
     <bean id="recipientPreferenceService" class="org.kuali.rice.kcb.service.impl.RecipientPreferenceServiceImpl">
-        <property name="genericDao"><ref local="genericDao"/></property>
+        <property name="genericDao"><ref local="kcbGenericDao"/></property>
     </bean>
 
     <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
         <property name="weburl" value="${kcb.url}"/>
         <property name="smtpHost" value="${kcb.smtp.host}"/>
     </bean>
-<!-- 
-    <bean id="sendNotificationKewXmlService" class="org.kuali.rice.ken.service.impl.SendNotificationServiceKewXmlImpl">
-      <constructor-arg><ref local="notificationService"/></constructor-arg>
-    </bean>
-    
-    <bean id="notificationMessageDeliveryService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryServiceImpl">
-      <constructor-arg><ref local="genericDao"/></constructor-arg>
-    </bean>
-    
-    <bean id="notificationMessageDelivererRegistryService" class="org.kuali.rice.ken.service.impl.NotificationMessageDelivererRegistryServiceImpl" />
 
-    <bean id="notificationEmailService" class="org.kuali.rice.ken.service.impl.NotificationEmailServiceImpl" >
-       <property name="weburl"><value>${notification.basewebappurl}</value></property>
-       <property name="smtpHost"><value>${emailDeliverer.smtp.host}</value></property>
-    </bean>
-     -->
-
-<!--  
-    <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceAPIImpl"/>
--->
     <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceDirectImpl">
         <property name="dataSource" ref="kcbDataSource"/>
     </bean>
@@ -143,7 +114,7 @@
 
     <!-- DAOS -->
 
-    <bean id="genericDao" class="org.kuali.rice.core.dao.impl.GenericDaoOjb">
+    <bean id="kcbGenericDao" class="org.kuali.rice.core.dao.impl.GenericDaoOjb">
         <property name="jcdAlias">
             <value>kcbDataSource</value>
         </property>

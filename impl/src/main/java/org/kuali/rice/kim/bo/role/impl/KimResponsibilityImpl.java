@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -27,10 +28,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -102,6 +107,17 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return name;
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.bo.role.KimResponsibility#getName()
+	 */
+	public String getNameToDisplay() {
+		if(template!=null && StringUtils.equals(template.getName(), name)){
+			return name;
+		} else{
+			return template.getName()+" "+name;
+		}
+	}
+
 	public void setDescription(String responsibilityDescription) {
 		this.description = responsibilityDescription;
 	}
@@ -149,17 +165,24 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return !detailObjects.isEmpty();
 	}
 	
-	protected AttributeSet detailsAsAttributeSet = null;
+	protected transient AttributeSet detailsAsAttributeSet = null;
 	
-	/**
-	 * @see org.kuali.rice.kim.bo.role.ResponsibilityDetails#getDetails()
-	 */
 	public AttributeSet getDetails() {
 		if ( detailsAsAttributeSet == null ) {
-			detailsAsAttributeSet = new AttributeSet();
-			for (ResponsibilityAttributeDataImpl data : detailObjects) {
-				detailsAsAttributeSet.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
+			KimTypeInfo kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
+			AttributeSet m = new AttributeSet();
+			for ( ResponsibilityAttributeDataImpl data : getDetailObjects() ) {
+				KimTypeAttributeInfo attribute = null;
+				if ( kimType != null ) {
+					attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+				}
+				if ( attribute != null ) {
+					m.put( attribute.getAttributeName(), data.getAttributeValue() );
+				} else {
+					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+				}
 			}
+			detailsAsAttributeSet = m;
 		}
 		return detailsAsAttributeSet;
 	}
@@ -210,35 +233,35 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 
 	public String getDetailObjectsValues(){
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
-		for(ResponsibilityAttributeDataImpl responsibilityAttributeData: detailObjects){
-			detailObjectsToDisplay.append(responsibilityAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		Iterator<ResponsibilityAttributeDataImpl> respIter = getDetailObjects().iterator();
+		while ( respIter.hasNext() ) {
+			ResponsibilityAttributeDataImpl responsibilityAttributeData = respIter.next();
+			detailObjectsToDisplay.append( responsibilityAttributeData.getAttributeValue() );
+			if ( respIter.hasNext() ) {
+				detailObjectsToDisplay.append( KimConstants.KimUIConstants.COMMA_SEPARATOR );
+			}
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
-
 		return detailObjectsToDisplay.toString();
 	}
 
 	public String getDetailObjectsToDisplay() {
+		KimTypeInfo kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
-		for(ResponsibilityAttributeDataImpl responsibilityAttributeData: detailObjects){
-			detailObjectsToDisplay.append(getAttributeDetailToDisplay(responsibilityAttributeData));
+		Iterator<ResponsibilityAttributeDataImpl> respIter = getDetailObjects().iterator();
+		while ( respIter.hasNext() ) {
+			ResponsibilityAttributeDataImpl responsibilityAttributeData = respIter.next();
+			detailObjectsToDisplay.append( getKimAttributeLabelFromDD(kimType.getAttributeDefinition(responsibilityAttributeData.getKimAttributeId())));
+			detailObjectsToDisplay.append( KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
+			detailObjectsToDisplay.append( responsibilityAttributeData.getAttributeValue() );
+			if ( respIter.hasNext() ) {
+				detailObjectsToDisplay.append( KimConstants.KimUIConstants.COMMA_SEPARATOR );
+			}
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
-
 		return detailObjectsToDisplay.toString();
 	}
-
-	public String getAttributeDetailToDisplay(ResponsibilityAttributeDataImpl responsibilityAttributeData){
-		return getKimAttributeLabelFromDD(responsibilityAttributeData.getKimAttribute().getAttributeName())+
-				KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
-				responsibilityAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
-	}
 	
-	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
-	protected String getKimAttributeLabelFromDD(String attributeName){
-    	return getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
+	protected String getKimAttributeLabelFromDD( KimTypeAttributeInfo attribute ){
+    	return getDataDictionaryService().getAttributeLabel(attribute.getComponentName(), attribute.getAttributeName() );
     }
 
 	transient private DataDictionaryService dataDictionaryService;
@@ -249,4 +272,11 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 		return dataDictionaryService;
 	}
 
+	private transient static KimTypeInfoService kimTypeInfoService;
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return kimTypeInfoService;
+	}
 }

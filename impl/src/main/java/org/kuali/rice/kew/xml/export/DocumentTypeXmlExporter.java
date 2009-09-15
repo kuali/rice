@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,7 +59,7 @@ import org.kuali.rice.kim.bo.Group;
 public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
-    
+
     private XmlRenderer renderer = new XmlRenderer(DOCUMENT_TYPE_NAMESPACE);
 
     public Element export(ExportDataSet dataSet) {
@@ -211,11 +211,22 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
     }
 
     private void exportProcess(Element parent, Process process) {
-        exportNodeGraph(parent, process.getInitialRouteNode(), null);
+    	exportNodeGraph(parent, process.getInitialRouteNode(), null);
     }
 
     private void exportNodeGraph(Element parent, RouteNode node, SplitJoinContext splitJoinContext) {
-        NodeType nodeType = getNodeTypeForNode(node);
+        NodeType nodeType = null;
+
+        String contentFragment = node.getContentFragment();
+        // some of the older versions of rice do not have content fragments
+        if(contentFragment == null || "".equals(contentFragment)){
+        	nodeType = getNodeTypeForNode(node);
+        }else{
+        	// I'm not sure if this should be the default implementation because
+        	// it uses a string comparison instead of a classpath check.
+        	nodeType = this.getNodeTypeForNodeFromFragment(node);
+        }
+
         if (nodeType.isAssignableFrom(NodeType.SPLIT)) {
             exportSplitNode(parent, node, nodeType, splitJoinContext);
         } else if (nodeType.isAssignableFrom(NodeType.JOIN)) {
@@ -345,11 +356,44 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
     private NodeType getNodeTypeForNode(RouteNode node) {
         NodeType nodeType = null;
         String errorMessage = "Could not determine proper XML element for the given node type: " + node.getNodeType();
+
         try {
             nodeType = NodeType.fromClassName(node.getNodeType());
         } catch (ResourceUnavailableException e) {
             throw new WorkflowRuntimeException(errorMessage, e);
         }
+        if (nodeType == null) {
+            throw new WorkflowRuntimeException(errorMessage);
+        }
+        return nodeType;
+    }
+
+    /**
+     *
+     * This method will find the base node type via the content fragment of the node.
+     * Basically, it reads the node type, start, split, join, etc and then assigns
+     * the base type to it.  This is necessary becuase there are cases where the
+     * passed in nodeType will no be in the classpath. It should, in theory do
+     * the same thing as getNodeTypeForNode.
+     *
+     * @param node
+     * @return
+     */
+    private NodeType getNodeTypeForNodeFromFragment(RouteNode node) {
+        NodeType nodeType = null;
+        String contentFragment = node.getContentFragment();
+        String errorMessage = "Could not determine proper XML element for the given node type: " + node.getNodeType();
+
+        for (Iterator<NodeType> iterator = NodeType.getTypeList().iterator(); iterator.hasNext();) {
+        	NodeType nType = iterator.next();
+        	// checks for something like <start
+        	// or <split
+        	// we may want to switch this out for something a little more robust.
+        	if(contentFragment.startsWith("<" + nType.getName())){
+           		nodeType = nType;
+           	}
+        }
+
         if (nodeType == null) {
             throw new WorkflowRuntimeException(errorMessage);
         }

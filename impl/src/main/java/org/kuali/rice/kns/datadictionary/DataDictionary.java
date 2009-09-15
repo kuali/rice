@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,7 +67,6 @@ public class DataDictionary {
 	// keyed by documentTypeName
 	private Map<String, DocumentEntry> documentEntries;
 	// keyed by other things
-	private Map<Class, DocumentEntry> documentEntriesByDocumentClass;
 	private Map<Class, DocumentEntry> documentEntriesByBusinessObjectClass;
 	private Map<Class, DocumentEntry> documentEntriesByMaintainableClass;
 	private Map<String, DataDictionaryEntry> entriesByJstlKey;
@@ -181,7 +180,6 @@ public class DataDictionary {
         documentEntries = new HashMap<String, DocumentEntry>();
 
         // alternate indices
-        documentEntriesByDocumentClass = new HashMap<Class, DocumentEntry>();
         documentEntriesByBusinessObjectClass = new HashMap<Class, DocumentEntry>();
         documentEntriesByMaintainableClass = new HashMap<Class, DocumentEntry>();
         entriesByJstlKey = new HashMap<String, DataDictionaryEntry>();
@@ -189,15 +187,19 @@ public class DataDictionary {
         // loop over all beans in the context
         Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
         for ( BusinessObjectEntry entry : boBeans.values() ) {
-            String entryName = entry.getBusinessObjectClass().getName();
+            //String entryName = (entry.getBaseBusinessObjectClass() != null) ? entry.getBaseBusinessObjectClass().getName() : entry.getBusinessObjectClass().getName();
             if ((businessObjectEntries.get(entry.getJstlKey()) != null) 
                     && !((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass().equals(entry.getBusinessObjectClass())) {
                 throw new DataDictionaryException(new StringBuffer("Two business object classes may not share the same jstl key: this=").append(entry.getBusinessObjectClass()).append(" / existing=").append(((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass()).toString());
             }
 
-
-            businessObjectEntries.put(entryName, entry);
+            businessObjectEntries.put(entry.getBusinessObjectClass().getName(), entry);
             businessObjectEntries.put(entry.getBusinessObjectClass().getSimpleName(), entry);
+            // If a "base" class is defined for the entry, index the entry by that class as well.
+            if (entry.getBaseBusinessObjectClass() != null) {
+                businessObjectEntries.put(entry.getBaseBusinessObjectClass().getName(), entry);
+                businessObjectEntries.put(entry.getBaseBusinessObjectClass().getSimpleName(), entry);
+            }
             entriesByJstlKey.put(entry.getJstlKey(), entry);
         }
         Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
@@ -218,14 +220,20 @@ public class DataDictionary {
             }
 
             documentEntries.put(entryName, entry);
-            documentEntries.put(entry.getFullClassName(), entry);
+            //documentEntries.put(entry.getFullClassName(), entry);
+            documentEntries.put(entry.getDocumentClass().getName(), entry);
+            if (entry.getBaseDocumentClass() != null) {
+            	documentEntries.put(entry.getBaseDocumentClass().getName(), entry);
+            }
             entriesByJstlKey.put(entry.getJstlKey(), entry);
 
             if (entry instanceof TransactionalDocumentEntry) {
                 TransactionalDocumentEntry tde = (TransactionalDocumentEntry) entry;
 
-                documentEntriesByDocumentClass.put(tde.getDocumentClass(), entry);
                 documentEntries.put(tde.getDocumentClass().getSimpleName(), entry);
+                if (tde.getBaseDocumentClass() != null) {
+                	documentEntries.put(tde.getBaseDocumentClass().getSimpleName(), entry);
+                }
             }
             if (entry instanceof MaintenanceDocumentEntry) {
                 MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) entry;
@@ -237,7 +245,22 @@ public class DataDictionary {
         }
     }
     
+    static boolean validateEBOs = true;
+    
+    public void validateDD( boolean validateEbos ) {
+    	DataDictionary.validateEBOs = validateEbos;
+        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
+        for ( BusinessObjectEntry entry : boBeans.values() ) {
+            entry.completeValidation();
+        }
+        Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
+        for ( DocumentEntry entry : docBeans.values() ) {
+            entry.completeValidation();
+        }
+    }
+    
     public void validateDD() {
+    	DataDictionary.validateEBOs = true;
         Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
         for ( BusinessObjectEntry entry : boBeans.values() ) {
             entry.completeValidation();

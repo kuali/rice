@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,23 +68,23 @@ public class RuleAction extends KewKualiAction {
 
     protected boolean validateCreateRule(RuleForm form) {
         if (Utilities.isEmpty(form.getRuleTemplateName())) {
-            GlobalVariables.getErrorMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
+            GlobalVariables.getMessageMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
         } else {
             RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(form.getRuleTemplateName().trim());
             if (ruleTemplate == null) {
-                GlobalVariables.getErrorMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
+                GlobalVariables.getMessageMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
             }
         }
 
         if (Utilities.isEmpty(form.getDocumentTypeName())) {
-            GlobalVariables.getErrorMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
+            GlobalVariables.getMessageMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
         } else {
             DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(form.getDocumentTypeName());
             if (docType == null) {
-                GlobalVariables.getErrorMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
+                GlobalVariables.getMessageMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
             }
         }
 
-        return GlobalVariables.getErrorMap().isEmpty();
+        return GlobalVariables.getMessageMap().isEmpty();
     }
 }

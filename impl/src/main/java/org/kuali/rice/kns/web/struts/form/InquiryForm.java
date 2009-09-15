@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -174,11 +174,7 @@ public class InquiryForm extends KualiForm {
             DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
             BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
             BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
-
-            // List of encrypted fields - Change for KFSMI-1374 -
-            // Getting rid of encryptionValues and fetching the list of fields, that should be encrypted, from DataDictionary
-            List encryptedFieldsList = dataDictionaryService.getEncryptedFieldsList(boClassName);
-
+            
             Class businessObjectClass = Class.forName(boClassName);
 
             // build list of key values from request, if all keys not given throw error
@@ -206,16 +202,11 @@ public class InquiryForm extends KualiForm {
 
 	                	inquiryPrimaryKeys.put(realPkFieldName, parameter);
 	                    if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, realPkFieldName)) {
-	                        // This PK field needs to be encrypted coming in from the request, if it was decrypt it, if not, throw exception
-
-	                        // this check prevents a brute-force attacker from passing in an unencrypted PK value that's supposed to be encrypted and determining whether
-	                        // a record with that guessed PK value exists in the DB, effectively bypassing encryption
-	                        if (encryptedFieldsList.contains(realPkFieldName)) {
+                            try {
 	                            inquiryDecryptedPrimaryKeys.put(realPkFieldName, encryptionService.decrypt(parameter));
-	                        }
-	                        else {
-	                            LOG.error("All PK fields that are specified as encrypted in the DD must be encrypted when passed into the inquiry page.  Field not encrypted is " + realPkFieldName);
-	                            throw new RuntimeException("All PK fields that are specified as encrypted in the DD must be encrypted when passed into the inquiry page");
+							} catch (GeneralSecurityException e) {
+								LOG.error("BO class " + businessObjectClassName + " property " + realPkFieldName + " should have been encrypted, but there was a problem decrypting it.");
+								throw e;
 	                        }
 	                    }
 	                    else {

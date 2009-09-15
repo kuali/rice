@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -245,13 +245,11 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
    	}
 	
     public String getInitiatorDisplayName() {
-    	UserSession userSession = UserSession.getAuthenticatedUser();
-    	return UserUtils.getDisplayableName(userSession, getInitiatorPrincipal());
+        return KEWServiceLocator.getIdentityHelperService().getPerson(getInitiatorWorkflowId()).getName();
     }
 
     public String getRoutedByDisplayName() {
-    	UserSession userSession = UserSession.getAuthenticatedUser();
-    	return UserUtils.getDisplayableName(userSession, getRoutedByPrincipal());
+    	return KEWServiceLocator.getIdentityHelperService().getPerson(getRoutedByUserWorkflowId()).getName();
     }
 	
     public String getCurrentRouteLevelName() {

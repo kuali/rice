@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,13 +18,14 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -96,10 +97,10 @@ public interface UiDocumentService {
 
 	public BusinessObject getMember(String memberTypeCode, String memberId);
 	
-//	public String getMemberName(String memberTypeCode, String memberId);
-//	
-//	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
-//
+	public String getMemberName(String memberTypeCode, String memberId);
+	
+	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
+
 	public String getMemberName(String memberTypeCode, BusinessObject member);
 	
 	public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member);
@@ -110,9 +111,16 @@ public interface UiDocumentService {
 	
 	public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId);
 	
-	public RoleDocumentDelegationMember getRoleDocumentDelegationMember(String memberTypeCode, String memberId, String roleId, String delegationTypeCode);
-
 	public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName);
 
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
+	
+	public RoleMemberImpl getRoleMember(String roleMemberId);
+	
+	public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues);
+	
+	public boolean canModifyEntity( String principalId );
+	public boolean canOverrideEntityPrivacyPreferences( String principalId );
+
+	public List<KimEntityEmploymentInformationInfo> getEntityEmploymentInformationInfo(String entityId);
 }

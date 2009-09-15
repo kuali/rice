@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,8 +18,6 @@ package org.kuali.rice.kns.service.impl;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -51,8 +49,14 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
     /**
      * @see org.kuali.rice.kns.service.InactivationBlockingDetectionService#listAllBlockerRecords(org.kuali.rice.kns.datadictionary.InactivationBlockingDefinition)
      */
-    public Collection<BusinessObject> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
+    @SuppressWarnings("unchecked")
+	public Collection<BusinessObject> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
     	Map<String, Object> queryMap = buildInactivationBlockerQueryMap(blockedBo, inactivationBlockingMetadata);
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Checking for blocker records for object: " + blockedBo );
+    		LOG.debug("    With Metadata: " + inactivationBlockingMetadata );
+    		LOG.debug("    Resulting Query Map: " + queryMap );
+    	}
     	if (queryMap != null) {
     		return businessObjectService.findMatching(inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass(), queryMap);
     	}
@@ -111,8 +115,9 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
      * @param inactivationBlockingMetadata
      * @return the active indicator field name
      */
-    protected String retrieveActiveIndicatorFieldName(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
-        Class blockingBoClass = inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass();
+    @SuppressWarnings("unchecked")
+	protected String retrieveActiveIndicatorFieldName(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
+        Class<? extends BusinessObject> blockingBoClass = inactivationBlockingMetadata.getBlockingReferenceBusinessObjectClass();
         if (Inactivateable.class.isAssignableFrom(blockingBoClass) && persistenceStructureService.listFieldNames(blockingBoClass).contains(KNSPropertyConstants.ACTIVE)) {
             return KNSPropertyConstants.ACTIVE;
         }

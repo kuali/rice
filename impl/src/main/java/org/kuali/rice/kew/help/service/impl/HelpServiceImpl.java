@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,18 +70,18 @@ public class HelpServiceImpl implements HelpService {
     	LOG.debug("Enter validateXMLHelpEntry(..)");
 
         if (helpEntry.getHelpName() == null || "".equals(helpEntry.getHelpName().trim())) {
-            GlobalVariables.getErrorMap().putError(HELP_NAME_KEY, NAME_EMPTY);
+            GlobalVariables.getMessageMap().putError(HELP_NAME_KEY, NAME_EMPTY);
         }
         if (helpEntry.getHelpText() == null || "".equals(helpEntry.getHelpText().trim())) {
-            GlobalVariables.getErrorMap().putError(HELP_TEXT_KEY, TEXT_EMPTY);
+            GlobalVariables.getMessageMap().putError(HELP_TEXT_KEY, TEXT_EMPTY);
         } else {
             helpEntry.setHelpText(helpEntry.getHelpText().trim());
         }
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
-            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_EMPTY);
+            GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_EMPTY);
         } else if (helpEntry.getHelpKey().indexOf("'") >= 0) {
-            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
+            GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());
             HelpEntry entry1=findByKey(helpEntry.getHelpKey());
@@ -95,7 +95,7 @@ public class HelpServiceImpl implements HelpService {
         }
 
         LOG.debug("Exit validateXmlHelpEntry(..)");
-        if (GlobalVariables.getErrorMap().hasErrors()) {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("errors in help");
         }
         return helpEntry;
@@ -107,27 +107,27 @@ public class HelpServiceImpl implements HelpService {
         List errors = new ArrayList();
 
         if (helpEntry.getHelpName() == null || "".equals(helpEntry.getHelpName().trim())) {
-            GlobalVariables.getErrorMap().putError(HELP_NAME_KEY, NAME_EMPTY);
+            GlobalVariables.getMessageMap().putError(HELP_NAME_KEY, NAME_EMPTY);
         }
         if (helpEntry.getHelpText() == null || "".equals(helpEntry.getHelpText().trim())) {
-            GlobalVariables.getErrorMap().putError(HELP_TEXT_KEY, TEXT_EMPTY);
+            GlobalVariables.getMessageMap().putError(HELP_TEXT_KEY, TEXT_EMPTY);
         } else {
             helpEntry.setHelpText(helpEntry.getHelpText().trim());
         }
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
-            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_EMPTY);
+            GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_EMPTY);
         } else if (helpEntry.getHelpKey().indexOf("'") >= 0){
-            GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
+            GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());
             if(helpEntry.getHelpId() == null && findByKey(helpEntry.getHelpKey()) != null){
-                GlobalVariables.getErrorMap().putError(HELP_KEY_KEY, KEY_EXIST, helpEntry.getHelpKey());
+                GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_EXIST, helpEntry.getHelpKey());
             }
         }
 
         LOG.debug("Exit validateHelpEntry(..)");
-        if (GlobalVariables.getErrorMap().hasErrors()) {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("errors in help");
         }
     }
@@ -149,9 +149,9 @@ public class HelpServiceImpl implements HelpService {
 
     public List search(HelpEntry helpEntry){
         if(helpEntry.getHelpId() != null && helpEntry.getHelpId().longValue() == 0){
-            GlobalVariables.getErrorMap().putError(HELP_ID_KEY, ID_INVALID);
+            GlobalVariables.getMessageMap().putError(HELP_ID_KEY, ID_INVALID);
         }
-        if (GlobalVariables.getErrorMap().hasErrors()) {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("errors in help");
         }
 

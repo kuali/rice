@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -134,7 +134,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         role.setRoleDescription("");
         role.setRoleName("RoleRouteModuleTestRole");
         role.setActive(true);
-        role.setKimRoleType(kimType);
         role.setKimTypeId(kimType.getKimTypeId());
 
         String roleMemberId1 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
@@ -178,7 +177,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataBL.setAttributeValue("BL");
         chartDataBL.setKimAttribute(chartAttribute);
         chartDataBL.setKimAttributeId(chartAttribute.getKimAttributeId());
-        chartDataBL.setKimType(kimType);
         chartDataBL.setKimTypeId(kimType.getKimTypeId());
         chartDataBL.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
 
@@ -188,7 +186,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataBL2.setAttributeValue("BL");
         chartDataBL2.setKimAttribute(chartAttribute);
         chartDataBL2.setKimAttributeId(chartAttribute.getKimAttributeId());
-        chartDataBL2.setKimType(kimType);
         chartDataBL2.setKimTypeId(kimType.getKimTypeId());
         chartDataBL2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
 
@@ -198,7 +195,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataBUS.setAttributeValue("BUS");
         orgDataBUS.setKimAttribute(orgAttribute);
         orgDataBUS.setKimAttributeId(orgAttribute.getKimAttributeId());
-        orgDataBUS.setKimType(kimType);
         orgDataBUS.setKimTypeId(kimType.getKimTypeId());
         orgDataBUS.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
 
@@ -208,7 +204,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataBUS2.setAttributeValue("BUS");
         orgDataBUS2.setKimAttribute(orgAttribute);
         orgDataBUS2.setKimAttributeId(orgAttribute.getKimAttributeId());
-        orgDataBUS2.setKimType(kimType);
         orgDataBUS2.setKimTypeId(kimType.getKimTypeId());
         orgDataBUS2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
 
@@ -219,7 +214,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataIN.setAttributeValue("IN");
         chartDataIN.setKimAttribute(chartAttribute);
         chartDataIN.setKimAttributeId(chartAttribute.getKimAttributeId());
-        chartDataIN.setKimType(kimType);
         chartDataIN.setKimTypeId(kimType.getKimTypeId());
         chartDataIN.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
 
@@ -229,7 +223,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataMED.setAttributeValue("MED");
         orgDataMED.setKimAttribute(orgAttribute);
         orgDataMED.setKimAttributeId(orgAttribute.getKimAttributeId());
-        orgDataMED.setKimType(kimType);
         orgDataMED.setKimTypeId(kimType.getKimTypeId());
         orgDataMED.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
 
@@ -344,7 +337,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeDetail.setAttributeValue("RoleRouteModuleTest1");
         documentTypeDetail.setKimAttribute(documentTypeAttribute);
         documentTypeDetail.setKimAttributeId(documentTypeAttribute.getKimAttributeId());
-        documentTypeDetail.setKimType(kimRespType);
         documentTypeDetail.setKimTypeId(kimRespType.getKimTypeId());
         documentTypeDetail.setResponsibilityId(responsibilityId);
 
@@ -354,7 +346,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         nodeNameDetail.setAttributeValue("Role1");
         nodeNameDetail.setKimAttribute(nodeNameAttribute);
         nodeNameDetail.setKimAttributeId(nodeNameAttribute.getKimAttributeId());
-        nodeNameDetail.setKimType(kimRespType);
         nodeNameDetail.setKimTypeId(kimRespType.getKimTypeId());
         nodeNameDetail.setResponsibilityId(responsibilityId);
 
@@ -457,7 +448,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         documentTypeDetail.setAttributeValue("RoleRouteModuleTest2");
         documentTypeDetail.setKimAttribute(documentTypeAttribute);
         documentTypeDetail.setKimAttributeId(documentTypeAttribute.getKimAttributeId());
-        documentTypeDetail.setKimType(kimRespType);
         documentTypeDetail.setKimTypeId(kimRespType.getKimTypeId());
         documentTypeDetail.setResponsibilityId(responsibilityId);
 
@@ -467,7 +457,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
         nodeNameDetail.setAttributeValue("Role1");
         nodeNameDetail.setKimAttribute(nodeNameAttribute);
         nodeNameDetail.setKimAttributeId(nodeNameAttribute.getKimAttributeId());
-        nodeNameDetail.setKimType(kimRespType);
         nodeNameDetail.setKimTypeId(kimRespType.getKimTypeId());
         nodeNameDetail.setResponsibilityId(responsibilityId);
 
@@ -565,7 +554,6 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		delegate.setDelegationId(id);
 		delegate.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
 		delegate.setActive(true);
-		delegate.setKimType(kimDlgnType);
 		delegate.setKimTypeId("" + kimDlgnTypeId);
 		/*
 		 * Assign it a role that was created above.  This should mean that every

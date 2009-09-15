@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation
+ * Copyright 2008-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,6 +45,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
@@ -115,7 +116,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			// just skip - and don't display links
         	LOG.error( "Unable to check Permission initiation permission for "+ permissionDocumentType, ex );
 		}
-    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimPermissionImpl.class);
+    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimResponsibilityImpl.class);
         try {
             if ((responsibilityDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(responsibilityDocumentType).canInitiate(responsibilityDocumentType, GlobalVariables.getUserSession().getPerson())) {
                 form.setCanInitiateResponsibilityDocument( true );
@@ -274,6 +275,17 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		form.setResponsibilityRoles( respToRoleMap );
 	}
 	
+	/**
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// Repopulating the form is necessary when toggling tab states on the server side.
+		ActionForward actionForward = super.toggleTab(mapping, form, request, response);
+		populateForm( (DocumentConfigurationViewForm)form );
+		return actionForward;
+	}
+
 	/**
 	 * Internal delegate class to wrap a responsibility and add an overridden flag.
 	 */

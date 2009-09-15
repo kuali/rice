@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -264,13 +264,18 @@ public class UserSession implements Serializable {
         this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         if (this.preferences.isRequiresSave()) {
             LOG.info("Detected that user preferences require saving.");
-            KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
+            try {
+            	KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
+            } catch (Exception e) {
+            	LOG.warn("Failed to save preferences for user!  Likely user tried to log in from more than one browser at the same time.  Reloading preferences.");
+            }
             this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         }
     }
 
     protected boolean isProductionEnvironment() {
-    	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
+    	return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
+    			ConfigContext.getCurrentContextConfig().getEnvironment());
     }
 
     public String addObject(Object object) {
@@ -292,7 +297,7 @@ public class UserSession implements Serializable {
     }
 
     public String getEmailAddress() {
-    	return getPerson().getEmailAddress();
+    	return getPerson().getEmailAddressUnmasked();
     }
 
     public int getNextObjectKey() {
@@ -311,7 +316,7 @@ public class UserSession implements Serializable {
         this.objectMap = objectMap;
     }
     public String getDisplayName() {
-    	return UserUtils.getDisplayableName(this, getPrincipal());
+        return getPersonService().getPerson(getPrincipalId()).getNameUnmasked();
     }
 
     /**
@@ -328,7 +333,7 @@ public class UserSession implements Serializable {
 
     public void removeAuthentication(Authentication authentication) {
     	getAuthentications().remove(authentication);
-    }
+    } 
 
     public boolean hasRole(String role) {
     	for (Iterator iterator = getAuthentications().iterator(); iterator.hasNext();) {

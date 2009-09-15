@@ -1,10 +1,10 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -59,7 +59,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
             //dataDictionaryService.getDataDictionary().forceCompleteDataDictionaryLoad();
             for (BusinessObjectEntry businessObjectEntry : dataDictionaryService.getDataDictionary().getBusinessObjectEntries().values()) {
                 try {
-                    ParameterDetailType parameterDetailType = getParameterDetailType(businessObjectEntry.getBusinessObjectClass());
+                    ParameterDetailType parameterDetailType = getParameterDetailType((businessObjectEntry.getBaseBusinessObjectClass() != null) ? businessObjectEntry.getBaseBusinessObjectClass() : businessObjectEntry.getBusinessObjectClass());
                     uniqueParameterDetailTypeMap.put(parameterDetailType.getParameterDetailTypeCode(), parameterDetailType);
                 }
                 catch (Exception e) {
@@ -69,11 +69,12 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
             for (DocumentEntry documentEntry : dataDictionaryService.getDataDictionary().getDocumentEntries().values()) {
                 if (documentEntry instanceof TransactionalDocumentEntry) {
                     try {
-                        ParameterDetailType parameterDetailType = getParameterDetailType(documentEntry.getDocumentClass());
+                        ParameterDetailType parameterDetailType = getParameterDetailType((documentEntry.getBaseDocumentClass() != null) ? documentEntry.getBaseDocumentClass() : documentEntry.getDocumentClass());
                         uniqueParameterDetailTypeMap.put(parameterDetailType.getParameterDetailTypeCode(), parameterDetailType);
                     }
                     catch (Exception e) {
-                        LOG.error("The getNonDatabaseDetailTypes method of ParameterServiceImpl encountered an exception while trying to create the detail type for transactional document class: " + documentEntry.getDocumentClass(), e);
+                        LOG.error("The getNonDatabaseDetailTypes method of ParameterServiceImpl encountered an exception while trying to create the detail type for transactional document class: " +
+                        		((documentEntry.getBaseDocumentClass() != null) ? documentEntry.getBaseDocumentClass() : documentEntry.getDocumentClass()), e);
                     }
                 }
             }

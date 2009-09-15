@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,8 +18,13 @@ package org.kuali.rice.kew.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
 
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.kuali.rice.core.jaxb.SqlTimestampAdapter;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -36,177 +41,339 @@ import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
-
 /**
- * A remotable service which provides an API for performing various queries
- * and other utilities on KEW.
- *
+ * A remotable service which provides an API for performing various queries and
+ * other utilities on KEW.
+ * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
+@WebService(name = KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME, targetNamespace = KEWWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface WorkflowUtility {
-    public RouteHeaderDTO getRouteHeaderWithPrincipal(String principalId, Long documentId) throws WorkflowException;
-    public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException;
-    public DocumentDetailDTO getDocumentDetail(Long documentId) throws WorkflowException;
-    public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException;
-    public DocumentTypeDTO getDocumentType(Long documentTypeId) throws WorkflowException;
-    public DocumentTypeDTO getDocumentTypeByName(String documentTypeName) throws WorkflowException;
-    public Long getNewResponsibilityId() throws WorkflowException;
-    public Integer getUserActionItemCount(String principalId) throws WorkflowException;
-    public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException;
-    public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException;
-    public ActionRequestDTO[] getActionRequests(Long documentId) throws WorkflowException;
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException;
-    public ActionTakenDTO[] getActionsTaken(Long documentId) throws WorkflowException;
-    public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definition) throws WorkflowException;
-    public boolean isUserInRouteLog(Long documentId, String principalId, boolean lookFuture) throws WorkflowException;
-    public boolean isUserInRouteLog(Long documentId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException;
-    public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
-    public void reResolveRoleByDocumentId(Long documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
-    public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException;
-    //public RouteHeaderDetailVO routingSimulation(RouteHeaderDetailVO detail, ActionTakenVO[] actionsToTake) throws WorkflowException;
-    public boolean isFinalApprover(Long documentId, String principalId) throws WorkflowException;
-    public boolean isSuperUserForDocumentType(String principalId, Long documentTypeId) throws WorkflowException;
-    public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
-    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException;
 
-    // new in 2.3
+    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
 
-    public RuleDTO[] ruleReport(RuleReportCriteriaDTO ruleReportCriteria) throws WorkflowException;
+	public RouteHeaderDTO getRouteHeaderWithPrincipal(
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
 
-    // deprecated as of 2.1
+	public RouteHeaderDTO getRouteHeader(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
 
-    /**
-     * @deprecated use isLastApproverAtNode instead
-     */
-    public boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException;
+	public DocumentDetailDTO getDocumentDetail(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
 
-    /**
-     * @deprecated use routeNodeHasApproverActionRequest instead
-     */
-    public boolean routeLevelHasApproverActionRequest(String docType, String docContent, Integer routeLevel) throws WorkflowException;
+	public RouteNodeInstanceDTO getNodeInstance(
+			@WebParam(name = "nodeInstanceId") Long nodeInstanceId)
+			throws WorkflowException;
 
-    // new in 2.1
+	public DocumentTypeDTO getDocumentType(
+			@WebParam(name = "documentTypeId") Long documentTypeId)
+			throws WorkflowException;
 
-    public boolean isLastApproverAtNode(Long documentId, String principalId, String nodeName) throws WorkflowException;
-    public boolean routeNodeHasApproverActionRequest(String docType, String docContent, String nodeName) throws WorkflowException;
-    public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(Long documentId) throws WorkflowException;
-    public RouteNodeInstanceDTO[] getActiveNodeInstances(Long documentId) throws WorkflowException;
-    public RouteNodeInstanceDTO[] getTerminalNodeInstances(Long documentId) throws WorkflowException;
-    public DocumentContentDTO getDocumentContent(Long routeHeaderId) throws WorkflowException;
+	public DocumentTypeDTO getDocumentTypeByName(
+			@WebParam(name = "documentTypeName") String documentTypeName)
+			throws WorkflowException;
 
-    //2.2
-    public String[] getPreviousRouteNodeNames(Long documentId) throws WorkflowException;
+	public Long getNewResponsibilityId() throws WorkflowException;
 
-    // 2.4
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests);
+	public Integer getUserActionItemCount(
+			@WebParam(name = "principalId") String principalId)
+			throws WorkflowException;
 
-    /**
-     * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
-     *
-     * This method assumes both existing and generated requests should be taken into account
-     */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes);
+	public ActionItemDTO[] getAllActionItems(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
 
-    /**
-     * @since 0.9.1
-     */
-    public String getDocumentStatus(Long documentId) throws WorkflowException;
-    public RouteNodeInstanceDTO[] getCurrentNodeInstances(Long documentId) throws WorkflowException;
+	public ActionItemDTO[] getActionItems(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes)
+			throws WorkflowException;
 
+	public ActionRequestDTO[] getAllActionRequests(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
 
-    // added for KS per Scott
-    ActionItemDTO[] getActionItemsForPrincipal(String principalId) throws WorkflowException;
+	public ActionRequestDTO[] getActionRequests(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "nodeName") String nodeName,
+			@WebParam(name = "principalId") String principalId)
+			throws WorkflowException;
 
-    /**
-     *
-     * This method gets a list of ids of all principals who have a pending action request for a document.
-     *
-     * @param actionRequestedCd
-     * @param routeHeaderId
-     * @return
-     * @throws WorkflowException
-     */
-    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
-    		String actionRequestedCd, Long routeHeaderId) throws WorkflowException;
+	public ActionTakenDTO[] getActionsTaken(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
 
-    /**
-     * This method gets a list of ids of all principals in the route log -
-     * - initiators,
-     * - people who have taken action,
-     * - people with a pending action request,
-	 * - people who will receive an action request for the document in question
-     *
-     * @param routeHeaderId
-     * @param lookFuture
-     * @return
-     * @throws WorkflowException
-     */
-    public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException;
+	// TODO delyea
+	public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(
+			@WebParam(name = "definition") WorkflowAttributeDefinitionDTO definition)
+			throws WorkflowException;
 
-    /**
-     * Returns the principal ID of the initiator of the given document.  <b>null</b> if the document can not be found.
-     *
-     * @throws WorkflowException
-     */
-    public String getDocumentInitiatorPrincipalId( Long routeHeaderId ) throws WorkflowException;
+	public boolean isUserInRouteLog(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "lookFuture") boolean lookFuture)
+			throws WorkflowException;
 
-    /**
-     * Returns the principal ID of the user who routed the given document.  <b>null</b> if the document can not be found.
-     *
-     * @throws WorkflowException
-     */
-    public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException;
+	public boolean isUserInRouteLogWithOptionalFlattening(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "lookFuture") boolean lookFuture,
+			@WebParam(name = "flattenNodes") boolean flattenNodes)
+			throws WorkflowException;
 
-    public AttributeSet getActionsRequested(String principalId, Long documentId);
-    
-    /**
-     *
-     * This method does a direct search for the searchableAttribute without going through the doc search.
-     *
-     * @param documentId
-     * @param key
-     * @return
-     */
-    public List<String> getSearchableAttributeStringValuesByKey(Long documentId, String key);
-    /**
-     *
-     * This method does a direct search for the searchableAttribute without going through the doc search.
-     *
-     * @param documentId
-     * @param key
-     * @return
-     */
-    public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(Long documentId, String key);
-    /**
-     *
-     * This method does a direct search for the searchableAttribute without going through the doc search.
-     *
-     * @param documentId
-     * @param key
-     * @return
-     */
-    public List<BigDecimal> getSearchableAttributeFloatValuesByKey(Long documentId, String key);
-    /**
-     *
-     * This method does a direct search for the searchableAttribute without going through the doc search.
-     *
-     * @param documentId
-     * @param key
-     * @return
-     */
-    public List<Long> getSearchableAttributeLongValuesByKey(Long documentId, String key);
+	public void reResolveRole(
+			@WebParam(name = "documentTypeName") String documentTypeName,
+			@WebParam(name = "roleName") String roleName,
+			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
+			throws WorkflowException;
 
-    public String getFutureRequestsKey(String principalId);
+	public void reResolveRoleByDocumentId(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "roleName") String roleName,
+			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
+			throws WorkflowException;
 
-    public String getReceiveFutureRequestsValue();
+	// TODO delyea
+	public DocumentDetailDTO routingReport(
+			@WebParam(name = "reportCriteria") ReportCriteriaDTO reportCriteria)
+			throws WorkflowException;
 
-    public String getDoNotReceiveFutureRequestsValue();
+	public boolean isFinalApprover(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "principalId") String principalId)
+			throws WorkflowException;
 
-    public String getClearFutureRequestsValue();
-    
-    public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException;
-    
-    public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException;
+	public boolean isSuperUserForDocumentType(
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "documentTypeId") Long documentTypeId)
+			throws WorkflowException;
+
+	// TODO delyea
+	public DocumentSearchResultDTO performDocumentSearch(
+			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
+			throws WorkflowException;
+
+	// TODO delyea
+	public DocumentSearchResultDTO performDocumentSearchWithPrincipal(
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
+			throws WorkflowException;
+
+	// new in 2.3
+
+	// TODO delyea
+	public RuleDTO[] ruleReport(
+			@WebParam(name = "ruleReportCriteria") RuleReportCriteriaDTO ruleReportCriteria)
+			throws WorkflowException;
+
+	// deprecated as of 2.1
+
+	/**
+	 * @deprecated use isLastApproverAtNode instead
+	 */
+	public boolean isLastApproverInRouteLevel(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "routeLevel") Integer routeLevel)
+			throws WorkflowException;
+
+	/**
+	 * @deprecated use routeNodeHasApproverActionRequest instead
+	 */
+	public boolean routeLevelHasApproverActionRequest(
+			@WebParam(name = "docType") String docType,
+			@WebParam(name = "docContent") String docContent,
+			@WebParam(name = "routeLevel") Integer routeLevel)
+			throws WorkflowException;
+
+	// new in 2.1
+
+	public boolean isLastApproverAtNode(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "nodeName") String nodeName)
+			throws WorkflowException;
+
+	public boolean routeNodeHasApproverActionRequest(
+			@WebParam(name = "docType") String docType,
+			@WebParam(name = "docContent") String docContent,
+			@WebParam(name = "nodeName") String nodeName)
+			throws WorkflowException;
+
+	public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	public RouteNodeInstanceDTO[] getActiveNodeInstances(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	public RouteNodeInstanceDTO[] getTerminalNodeInstances(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	public DocumentContentDTO getDocumentContent(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	// 2.2
+	public String[] getPreviousRouteNodeNames(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	// 2.4
+	// TODO delyea
+	public boolean documentWillHaveAtLeastOneActionRequest(
+			@WebParam(name = "reportCriteriaDTO") ReportCriteriaDTO reportCriteriaDTO,
+			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes,
+			@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);
+
+	/**
+	 * @since 0.9.1
+	 */
+	public String getDocumentStatus(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	public RouteNodeInstanceDTO[] getCurrentNodeInstances(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	// added for KS per Scott
+	ActionItemDTO[] getActionItemsForPrincipal(
+			@WebParam(name = "principalId") String principalId)
+			throws WorkflowException;
+
+	/**
+	 * 
+	 * This method gets a list of ids of all principals who have a pending
+	 * action request for a document.
+	 * 
+	 * @param actionRequestedCd
+	 * @param documentId
+	 * @return
+	 * @throws WorkflowException
+	 */
+	public String[] getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
+			@WebParam(name = "actionRequestedCd") String actionRequestedCd,
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	/**
+	 * This method gets a list of ids of all principals in the route log - -
+	 * initiators, - people who have taken action, - people with a pending
+	 * action request, - people who will receive an action request for the
+	 * document in question
+	 * 
+	 * @param documentId
+	 * @param lookFuture
+	 * @return
+	 * @throws WorkflowException
+	 */
+	public String[] getPrincipalIdsInRouteLog(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "lookFuture") boolean lookFuture)
+			throws WorkflowException;
+
+	/**
+	 * Returns the principal ID of the initiator of the given document.
+	 * <b>null</b> if the document can not be found.
+	 * 
+	 * @throws WorkflowException
+	 */
+	public String getDocumentInitiatorPrincipalId(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	/**
+	 * Returns the principal ID of the user who routed the given document.
+	 * <b>null</b> if the document can not be found.
+	 * 
+	 * @throws WorkflowException
+	 */
+	public String getDocumentRoutedByPrincipalId(
+			@WebParam(name = "documentId") Long documentId)
+			throws WorkflowException;
+
+	public AttributeSet getActionsRequested(
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "documentId") Long documentId);
+
+	/**
+	 * 
+	 * This method does a direct search for the searchableAttribute without
+	 * going through the doc search.
+	 * 
+	 * @param documentId
+	 * @param key
+	 * @return
+	 */
+	public String[] getSearchableAttributeStringValuesByKey(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "key") String key);
+
+	/**
+	 * 
+	 * This method does a direct search for the searchableAttribute without
+	 * going through the doc search.
+	 * 
+	 * @param documentId
+	 * @param key
+	 * @return
+	 */
+	@XmlJavaTypeAdapter(value = SqlTimestampAdapter.class)
+	public Timestamp[] getSearchableAttributeDateTimeValuesByKey(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "key") String key);
+
+	/**
+	 * 
+	 * This method does a direct search for the searchableAttribute without
+	 * going through the doc search.
+	 * 
+	 * @param documentId
+	 * @param key
+	 * @return
+	 */
+	public BigDecimal[] getSearchableAttributeFloatValuesByKey(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "key") String key);
+
+	/**
+	 * 
+	 * This method does a direct search for the searchableAttribute without
+	 * going through the doc search.
+	 * 
+	 * @param documentId
+	 * @param key
+	 * @return
+	 */
+	public Long[] getSearchableAttributeLongValuesByKey(
+			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "key") String key);
+
+	public String getFutureRequestsKey(
+			@WebParam(name = "principalId") String principalId);
+
+	public String getReceiveFutureRequestsValue();
+
+	public String getDoNotReceiveFutureRequestsValue();
+
+	public String getClearFutureRequestsValue();
+
+	public boolean hasRouteNode(
+			@WebParam(name = "documentTypeName") String documentTypeName,
+			@WebParam(name = "routeNodeName") String routeNodeName)
+			throws WorkflowException;
+
+	public boolean isCurrentActiveDocumentType(
+			@WebParam(name = "documentTypeName") String documentTypeName)
+			throws WorkflowException;
 }

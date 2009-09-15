@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation.
+ * Copyright 2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,6 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
 
@@ -64,9 +63,9 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return null;
     }
 
-    public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
-        return new ArrayList<KeyLabelPair>(0);
-    }
+//    public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
+//        return new ArrayList<KeyLabelPair>(0);
+//    }
 
     public String getWorkflowDocumentTypeName() {
         return null;
@@ -87,7 +86,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return inputAttributeSet;
     }
 
-    public AttributeSet validateAttributes(AttributeSet attributes) {
+    public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
         return null;
     }
     
@@ -122,4 +121,8 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return new ArrayList<String>();
     }
     
+	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+		return new AttributeSet();
+	}
+
 }

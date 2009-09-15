@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -38,7 +36,6 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -58,6 +55,8 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	protected String roleTypeName;
 	protected String roleNamespace = "";
 	protected String roleName = "";
+	protected String roleDescription = "";
+
 	protected boolean active = true;
 
 	protected boolean editing;
@@ -109,6 +108,20 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	}
 
 	/**
+	 * @return the roleDescription
+	 */
+	public String getRoleDescription() {
+		return this.roleDescription;
+	}
+
+	/**
+	 * @param roleDescription the roleDescription to set
+	 */
+	public void setRoleDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
+	}
+
+	/**
 	 * @return the roleNamespace
 	 */
 	public String getRoleNamespace() {
@@ -144,9 +157,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			if ( kimType != null ) {
 				roleTypeName = kimType.getName();
 			} else if ( roleTypeId != null ) {
-		        Map<String, String> criteria = new HashMap<String, String>();
-		        criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, roleTypeId);
-		        setKimType((KimTypeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, criteria));
+				setKimType( KIMServiceLocator.getTypeInfoService().getKimType(roleTypeId) );
 		        if ( kimType != null ) {
 		        	roleTypeName = kimType.getName();
 		        }
@@ -267,11 +278,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public KimDocumentRoleMember getBlankMember() {
 		KimDocumentRoleMember member = new KimDocumentRoleMember();
 		KimDocumentRoleQualifier qualifier;
-		for(String key : getDefinitions().keySet()) {
-        	qualifier = new KimDocumentRoleQualifier();
-        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-        	member.getQualifiers().add(qualifier);
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+	        	qualifier = new KimDocumentRoleQualifier();
+	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+	        	member.getQualifiers().add(qualifier);
+	        }
+		}
        	setupMemberRspActions(member);
        	return member;
 	}
@@ -282,11 +295,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public RoleDocumentDelegationMember getBlankDelegationMember() {
 		RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 		RoleDocumentDelegationMemberQualifier qualifier;
-		for(String key : getDefinitions().keySet()) {
-			qualifier = new RoleDocumentDelegationMemberQualifier();
-			setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
-        	member.getQualifiers().add(qualifier);
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+				qualifier = new RoleDocumentDelegationMemberQualifier();
+				setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
+	        	member.getQualifiers().add(qualifier);
+	        }
+		}
        	return member;
 	}
 
@@ -316,10 +331,12 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     }
     
     public void setupMemberRspActions(KimDocumentRoleResponsibility roleResp, KimDocumentRoleMember member) {
-    	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+    	if ((member.getRoleRspActions()==null || member.getRoleRspActions().size()<1) && getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
     		KimDocumentRoleResponsibilityAction action = new KimDocumentRoleResponsibilityAction();
     		action.setRoleResponsibilityId("*");
     		action.setRoleMemberId(member.getRoleMemberId());
+    		if(member.getRoleRspActions()==null)
+    			member.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());
     		member.getRoleRspActions().add(action);
     	}        	
     }
@@ -464,54 +481,6 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			}
 		}
 	}
-
-	private void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
-		RoleDocumentDelegation delegation;
-		if(KEWConstants.DELEGATION_PRIMARY.equals(delegationMember.getDelegationTypeCode())){
-			delegation = getPrimaryDelegation();
-		} else{
-			delegation = getSecondaryDelegation();
-		}
-		delegationMember.setDelegationId(delegation.getDelegationId());
-		delegation.getMembers().add(delegationMember);
-	}
-
-	private RoleDocumentDelegation getPrimaryDelegation(){
-		RoleDocumentDelegation primaryDelegation = null;
-		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationPrimary())
-				primaryDelegation = delegation;
-		}
-		if(primaryDelegation==null){
-			primaryDelegation = new RoleDocumentDelegation();
-			primaryDelegation.setDelegationId(getDelegationId());
-			primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
-			getDelegations().add(primaryDelegation);
-		}
-		return primaryDelegation;
-	}
-
-	private String getDelegationId(){
-		SequenceAccessorService sas = getSequenceAccessorService();
-		Long nextSeq = sas.getNextAvailableSequenceNumber(
-				KimConstants.SequenceNames.KRIM_DLGN_ID_S, this.getClass());
-		return nextSeq.toString();
-	}
-	
-	private RoleDocumentDelegation getSecondaryDelegation(){
-		RoleDocumentDelegation secondaryDelegation = null;
-		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationSecondary())
-				secondaryDelegation = delegation;
-		}
-		if(secondaryDelegation==null){
-			secondaryDelegation = new RoleDocumentDelegation();
-			secondaryDelegation.setDelegationId(getDelegationId());
-			secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
-			getDelegations().add(secondaryDelegation);
-		}
-		return secondaryDelegation;
-	}
 	
     public ResponsibilityService getResponsibilityService() {
     	if ( responsibilityService == null ) {
@@ -548,7 +517,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		this.delegations = delegations;
 	}
 	
-	public void setKimType(KimTypeImpl kimType) {
+	public void setKimType(KimTypeInfo kimType) {
 		super.setKimType(kimType);
 		if (kimType != null){
 			setRoleTypeId(kimType.getKimTypeId());

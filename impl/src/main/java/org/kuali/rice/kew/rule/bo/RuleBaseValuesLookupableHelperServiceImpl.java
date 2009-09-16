@@ -231,6 +231,13 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             docTypeSearchName = "%" + docTypeSearchName.trim() + "%";
         }
 
+        if (!Utilities.isEmpty(networkIdParam)) {
+        	Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam);
+        	if (person != null) {
+        		workflowId = person.getPrincipalId();
+        	}
+        }
+        
         if (!Utilities.isEmpty(groupIdParam) || !Utilities.isEmpty(groupNameParam)) {
             Group group = null;
             if (groupIdParam != null && !"".equals(groupIdParam)) {

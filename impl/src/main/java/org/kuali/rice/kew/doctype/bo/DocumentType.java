@@ -162,7 +162,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Transient
     private Group defaultExceptionWorkgroup;
 
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="documentType")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="documentTypeId")
     @Fetch(value=FetchMode.SUBSELECT)
     private Collection<DocumentTypePolicy> policies;
     @Transient

@@ -29,6 +29,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
@@ -155,6 +156,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @return the privacyPreferences
 	 */
 	public KimEntityPrivacyPreferencesImpl getPrivacyPreferences() {
+	    if (ObjectUtils.isNull(this.privacyPreferences)) {
+	        return null;
+	    }
 		return this.privacyPreferences;
 	}
 
@@ -170,6 +174,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @return the bioDemographics
 	 */
 	public KimEntityBioDemographicsImpl getBioDemographics() {
+	    if (ObjectUtils.isNull(this.bioDemographics)) {
+            return null;
+        }
 		return this.bioDemographics;
 	}
 

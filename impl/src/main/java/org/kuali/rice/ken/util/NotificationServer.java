@@ -24,7 +24,7 @@ import org.mortbay.jetty.deployer.WebAppDeployer;
  * webapp dir location), generate a Quickstart in dist/ before running
  * this class.
  * Implementation derived from this discussion: http://www.nabble.com/Re:-Embedded-Jetty6-with-AXIS2-p8960637.html
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationServer {
     public static void main(String[] args) throws Exception {

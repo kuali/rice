@@ -38,7 +38,7 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 /**
  * Struts form for action ActionListAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListForm extends KualiForm {
 

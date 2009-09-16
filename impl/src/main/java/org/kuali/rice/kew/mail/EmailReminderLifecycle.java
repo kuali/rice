@@ -28,7 +28,7 @@ import org.quartz.Scheduler;
  * A {@link Lifecycle} which is initialized on system startup that sets up
  * the daily and weekly email reminders.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailReminderLifecycle implements Lifecycle {
 

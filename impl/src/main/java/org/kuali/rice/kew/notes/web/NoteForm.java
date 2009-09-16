@@ -28,7 +28,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 /**
  * Struts ActionForm for {@link NoteAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NoteForm extends KualiForm {
 
@@ -89,10 +89,6 @@ public class NoteForm extends KualiForm {
 
     public void setShowEdit(String showEdit) {
         this.showEdit = showEdit;
-    }
-
-    public String getInstructionForCreateNew() {
-        return Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.NOTE_DETAIL_TYPE, KEWConstants.NOTE_CREATE_NEW_INSTRUCTION);
     }
 
     public Long getDocId() {

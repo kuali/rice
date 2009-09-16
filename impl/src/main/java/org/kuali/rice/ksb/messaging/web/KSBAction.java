@@ -45,7 +45,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * An abstract super class for all Struts Actions in KEW.  Adds some custom
  * dispatch behavior by extending the Struts DispatchAction.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class KSBAction extends DispatchAction {
 

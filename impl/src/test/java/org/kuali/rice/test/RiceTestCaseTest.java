@@ -25,7 +25,7 @@ import org.kuali.rice.test.RiceTestCase;
 /**
  * Verifies that the RiceTestCase starts up cleanly.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceTestCaseTest extends RiceTestCase {
 

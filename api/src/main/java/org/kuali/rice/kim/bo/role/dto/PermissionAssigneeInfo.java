@@ -21,13 +21,17 @@ import java.util.List;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PermissionAssigneeInfo {
 	protected String principalId;
 	protected String groupId;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
+	
+	// for jax-ws service construction
+	@SuppressWarnings("unused")
+	private PermissionAssigneeInfo() {}
 	
 	public PermissionAssigneeInfo(String principalId, String groupId, List<DelegateInfo> delegates) {
 		this.principalId = principalId;

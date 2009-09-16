@@ -33,7 +33,7 @@ import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 /**
  * Represents the current context of a Document being processed by the engine.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteContext implements Serializable {
 

@@ -21,6 +21,10 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -106,13 +110,14 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						user.getPrincipalId())) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ROUTE);
 		}
-		if (canTakeRequestedAction(document,
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE) 
+				&& !canTakeRequestedAction(document,
 				KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)) {
-			documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
 		}
-		if (canTakeRequestedAction(document,
-				KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
-			documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
+		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_FYI) &&
+				!canTakeRequestedAction(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_FYI);
 		}
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_APPROVE)
 				|| documentActions
@@ -141,6 +146,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				&& !canSendAnyTypeAdHocRequests(document, user) ) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
 		}
+		
 		
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
 				&& !documentActions
@@ -240,6 +246,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	
 	private final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)){
+		    DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(Long.parseLong(document.getDocumentNumber()));
+	        if (routeHeader.getRootBranch() == null) {
+	            return false;
+	        }
 			return true;
 		}else if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)){
 			return true;
@@ -296,6 +306,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	private boolean isDocumentInitiator(Document document, Person user) {
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
+    }
+	
+	private RouteHeaderService getRouteHeaderService() {
+        return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 
 }

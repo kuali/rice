@@ -23,7 +23,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * Sequential activation means that only a single request on a node will get activated at a time.
  * Parallel activation means that all requests on a node will be activated.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ActivationTypeEnum {
     /** Routing should process the associated ActionRequests in sequence */

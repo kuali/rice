@@ -28,7 +28,7 @@ import org.kuali.rice.kns.document.Document;
 /**
  * This interface defines methods that a Note service must provide
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NoteService {
     /**

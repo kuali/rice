@@ -286,7 +286,7 @@
         	</annotation>
         </element>
 
-        <element name="groupName" type="rc:GroupNameType">
+        <element name="groupName" type="c:GroupNameType">
             <annotation>
         		<documentation>
         		 Assign the responsibility to a group with the given name
@@ -350,20 +350,6 @@
     </simpleContent>
   </complexType>
   
-  <complexType name="GroupNameType">
-    <simpleContent>
-      <extension base="c:ShortStringType">
-        <attribute name="namespace" type="c:ShortStringType" use="required">
-          <annotation>
-            <documentation>
-              Group Namespace
-            </documentation>
-          </annotation>
-        </attribute>
-      </extension>
-    </simpleContent>
-  </complexType>
-
   <!-- below is everything for rule delegations -->
 
   <element name="ruleDelegations">
@@ -434,7 +420,7 @@
         	  </annotation>
             </element>
 
-            <element name="groupName" type="rc:GroupNameType">
+            <element name="groupName" type="c:GroupNameType">
               <annotation>
         		<documentation>The group name of the responsibility from which to delegate</documentation>
         	  </annotation>

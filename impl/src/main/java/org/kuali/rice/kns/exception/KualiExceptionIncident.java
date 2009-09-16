@@ -22,7 +22,7 @@ import java.util.Map;
  * session user. It is constructed and saved into the HTTP Request for passing to the
  * jsp when an exception occurs. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KualiExceptionIncident {
@@ -86,11 +86,6 @@ public interface KualiExceptionIncident {
      * <p>Value is componentName
      */
      public static final String COMPONENT_NAME="componentName";
-     /**
-     * A custom contextual information obtained from an attribute of GlobalVariables
-     * <p>Value is customContextualInfo
-     */
-     public static final String CUSTOM_CONTEXTUAL_INFO="customContextualInfo";
 
     /**
      * This method return list of {key,value} pairs that each key is the constants
@@ -106,7 +101,6 @@ public interface KualiExceptionIncident {
      * exceptionMessage, Error message from exception
      * displayMessage, Either exception error message or generic exception error message
      * stackTrace, Exception stack trace here
-     * customContextualInfo, ?
      * </code>
      * 
      */

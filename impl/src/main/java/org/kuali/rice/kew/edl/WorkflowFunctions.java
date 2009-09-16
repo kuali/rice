@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * A collection of handy workflow queries to be used from style sheets.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WorkflowFunctions {

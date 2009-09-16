@@ -59,8 +59,8 @@
             <label>Workflow Maintenance Document</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
             <active>true</active>
             <policies>
                   <policy>
@@ -76,11 +76,11 @@
             </routePaths>
             <routeNodes>
                 <start name="adhoc">
-                    <exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
+                    <exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
                     <activationType>S</activationType>
                 </start>
                 <requests name="Workflow Document Routing">
-                    <exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
+                    <exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
                     <activationType>S</activationType>
                     <ruleTemplate>DocumentTypeRouting</ruleTemplate>
                     <mandatoryRoute>true</mandatoryRoute>
@@ -94,8 +94,8 @@
             <description>Rule Maintenance Document Type Document</description>
             <label>Rule Maintenance Document Type Document</label>
             <postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+            <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
             <docHandler>http://localhost:8080/en-dev/Rule.do?methodToCall=docHandler</docHandler>
             <active>true</active>
             <policies>
@@ -112,11 +112,11 @@
             </routePaths>
             <routeNodes>
                 <start name="adhoc">
-                    <exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
+                    <exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
                     <activationType>S</activationType>
                 </start>
                 <requests name="RuleRouting">
-                    <exceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</exceptionWorkgroupName>
+                    <exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
                     <activationType>S</activationType>
                     <ruleTemplate>RuleRouting</ruleTemplate>
                     <!--
@@ -129,10 +129,10 @@
         <documentType>
             <name>AddDelegationTest_DocType</name>
             <label>AddDelegationTest_DocType</label>
-            <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+            <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
             <docHandler>_blank</docHandler>
-            <blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
             <serviceNamespace>KEW</serviceNamespace>
             <policies>
                <policy>

@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport object for document type.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeDTO implements Serializable {
     static final long serialVersionUID = 5266872451859573823L;

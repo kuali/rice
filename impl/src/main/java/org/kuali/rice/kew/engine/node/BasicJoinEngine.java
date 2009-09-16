@@ -31,7 +31,7 @@ import org.kuali.rice.kew.util.Utilities;
  * A basic implementation of the JoinEngine which handles join setup and makes determinations
  * as to when a join condition has been satisfied.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BasicJoinEngine implements JoinEngine {
 

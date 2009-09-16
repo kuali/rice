@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoleMembershipInfo implements Serializable {
@@ -38,6 +38,10 @@ public class RoleMembershipInfo implements Serializable {
 	protected String roleSortingCode; // value which can be used to sort the role members into a meaningful order
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
+	
+	// for jax-ws client proxy creation
+	@SuppressWarnings("unused")
+	private RoleMembershipInfo() {}
 	
 	public RoleMembershipInfo(String roleId, String roleMemberId, String memberId, String memberTypeCode,
 			AttributeSet qualifier) {
@@ -135,6 +139,4 @@ public class RoleMembershipInfo implements Serializable {
 	public void setRoleSortingCode(String roleSortingCode) {
 		this.roleSortingCode = roleSortingCode;
 	}
-	
-	
 }

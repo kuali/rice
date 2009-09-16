@@ -33,7 +33,7 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
  * This class is the exception handler for the base exception class java.lang.Throwable
  * and is defined as global exception in the struts-config.xml. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class StrutsExceptionIncidentHandler extends ExceptionHandler {

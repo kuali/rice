@@ -31,7 +31,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 /**
  * Test case that tests setting and getting variables, both programmatically
  * and via the "SetVar" node; stolen directly from ApproveActionTest.testPreapprovals
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class VariablesTest extends KEWTestCase {
 

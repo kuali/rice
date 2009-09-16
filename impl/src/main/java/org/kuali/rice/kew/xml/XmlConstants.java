@@ -21,7 +21,7 @@ import org.jdom.Namespace;
 /**
  * Constants for various XML namespaces, elements and attributes for the various parsers.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlConstants {
 
@@ -71,10 +71,14 @@ public interface XmlConstants {
     public static final String SERVICE_NAMESPACE = "serviceNamespace";
     public static final String POST_PROCESSOR_NAME = "postProcessorName";
     public static final String SUPER_USER_WORKGROUP_NAME = "superUserWorkgroupName";
+    public static final String SUPER_USER_GROUP_NAME = "superUserGroupName";
     public static final String BLANKET_APPROVE_WORKGROUP_NAME = "blanketApproveWorkgroupName";
+    public static final String BLANKET_APPROVE_GROUP_NAME = "blanketApproveGroupName";
     public static final String BLANKET_APPROVE_POLICY = "blanketApprovePolicy";
     public static final String REPORTING_WORKGROUP_NAME = "reportingWorkgroupName";
+    public static final String REPORTING_GROUP_NAME = "reportingGroupName";
     public static final String DEFAULT_EXCEPTION_WORKGROUP_NAME = "defaultExceptionWorkgroupName";
+    public static final String DEFAULT_EXCEPTION_GROUP_NAME = "defaultExceptionGroupName";
     public static final String DOC_HANDLER = "docHandler";
     public static final String HELP_DEFINITION_URL = "helpDefinitionURL";
     public static final String NOTIFICATION_FROM_ADDRESS = "notificationFromAddress";
@@ -90,6 +94,8 @@ public interface XmlConstants {
     public static final String ROUTE_NODES = "routeNodes";
     public static final String BRANCH = "branch";
     public static final String EXCEPTION_WORKGROUP_NAME = "exceptionWorkgroupName";
+    public static final String EXCEPTION_WORKGROUP = "exceptionWorkgroup";
+    public static final String EXCEPTION_GROUP_NAME = "exceptionGroupName";
     public static final String ACTIVATION_TYPE = "activationType";
     public static final String FINAL_APPROVAL = "finalApproval";
     public static final String MANDATORY_ROUTE = "mandatoryRoute";
@@ -141,10 +147,6 @@ public interface XmlConstants {
     public static final String GROUP_ID = "groupId";
     public static final String GROUP_NAME = "groupName";
 
-    // workgroup types
-    public static final String WORKGROUP_TYPES = "workgroupTypes";
-    public static final String WORKGROUP_TYPE = "workgroupType";
-
     // rule templates
     public static final String RULE_TEMPLATES = "ruleTemplates";
     public static final String RULE_TEMPLATE = "ruleTemplate";
@@ -168,6 +170,8 @@ public interface XmlConstants {
     public static final String SEARCHING_CONFIG = "searchingConfig";
 	public static final String SEARCH_RESULT_CONFIG = "searchResultConfig";
     public static final String RESOLVER_CONFIG = "resolverConfig";
+    public static final String IS_MEMBER_OF_WORKGROUP = "isMemberOfWorkgroup";
+    public static final String IS_MEMBER_OF_GROUP = "isMemberOfGroup";
 
     // help
     public static final String HELP_ENTRIES = "helpEntries";

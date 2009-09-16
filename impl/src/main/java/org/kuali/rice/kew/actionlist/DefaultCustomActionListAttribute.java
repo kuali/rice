@@ -25,7 +25,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 /**
  * The default implementation of a CustomActionListAttribute.  Shows only FYI actions.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefaultCustomActionListAttribute implements CustomActionListAttribute {
 

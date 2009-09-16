@@ -137,9 +137,9 @@ version of the parent document type.  Taken from real life UGS edoclite document
 			<description>UGSDocumentType</description>
 			<label>UGSDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>https://es-nd.ucs.indiana.edu:9000/en-cnv/EDocLite</docHandler>
 			<active>true</active>
 			<attributes>
@@ -158,9 +158,9 @@ version of the parent document type.  Taken from real life UGS edoclite document
 			<description>Course Remonstrance Process</description>
 			<label>Course Change Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>https://es-nd.ucs.indiana.edu:9000/en-cnv/EDocLite</docHandler>
 			<active>true</active>
 			<attributes>
@@ -179,9 +179,9 @@ version of the parent document type.  Taken from real life UGS edoclite document
 			<description>New Course Request</description>
 			<label>New Course Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>https://es-nd.ucs.indiana.edu:9000/en-cnv/EDocLite</docHandler>
 			<active>true</active>
 
@@ -201,9 +201,9 @@ version of the parent document type.  Taken from real life UGS edoclite document
 			<description>Delete Course Request</description>
 			<label>Delete Course Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>https://es-nd.ucs.indiana.edu:9000/en-cnv/EDocLite</docHandler>
 			<active>true</active>
 

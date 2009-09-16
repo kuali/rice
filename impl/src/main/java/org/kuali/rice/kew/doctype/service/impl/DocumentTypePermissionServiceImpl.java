@@ -43,7 +43,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * Implementation of the DocumentTypePermissionService. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentTypePermissionServiceImpl implements DocumentTypePermissionService {
@@ -265,20 +265,40 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		return qualifiers;
 	}
 	
-	protected List<AttributeSet> buildDocumentTypePermissionDetails(DocumentType documentType, List<String> routeNodeNames, String documentStatus) {
+	/**
+	 * This method generates the permission details for the given document.  Note that this has to match the reqired
+	 * data defined in krim_typ_attr_t for the krim_typ_t with 
+	 * srvc_nm='documentTypeAndNodeOrStatePermissionTypeService'.  
+     * TODO: See KULRICE-3490, make assembly of permission details dynamic based on db config
+	 * 
+	 * @param documentType
+	 * @param routeNodeNames
+	 * @param documentStatus
+	 * @return
+	 */
+	protected List<AttributeSet> buildDocumentTypePermissionDetails(DocumentType documentType, 
+			List<String> routeNodeNames, String documentStatus) {
 		List<AttributeSet> detailList = new ArrayList<AttributeSet>();
+
 		for (String routeNodeName : routeNodeNames) {
 			AttributeSet details = buildDocumentTypePermissionDetails(documentType);
-			if (!StringUtils.isBlank(routeNodeName)) {
+			if (KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus) || 
+					KEWConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus)) {
+				details.put(KEWConstants.ROUTE_NODE_NAME_DETAIL, DocumentAuthorizerBase.PRE_ROUTING_ROUTE_NAME);
+			} else if (!StringUtils.isBlank(routeNodeName)) {
 				details.put(KEWConstants.ROUTE_NODE_NAME_DETAIL, routeNodeName);
 			}
 			if (!StringUtils.isBlank(documentStatus)) {
 				details.put(KEWConstants.DOCUMENT_STATUS_DETAIL, documentStatus);
 			}
+			if (null != documentType) {
+				details.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
+			}
 			detailList.add(details);
 		}
 		return detailList;
 	}
+
 	
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
 		Parameter kimPriorityParam = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
@@ -321,7 +341,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	
 	private void validateRouteNodeNames(List<String> routeNodeNames) {
 		if (routeNodeNames.isEmpty()) {
-			throw new IllegalArgumentException("List of route node names was empty.");
+		    return;
+			//throw new IllegalArgumentException("List of route node names was empty.");
 		}
 		for (String routeNodeName : routeNodeNames) {
 			if (StringUtils.isBlank(routeNodeName)) {

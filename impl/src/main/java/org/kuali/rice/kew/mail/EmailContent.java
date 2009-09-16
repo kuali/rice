@@ -20,7 +20,7 @@ package org.kuali.rice.kew.mail;
 /**
  * Class representing customizable content of an email message
  * TODO: supercede this with Spring framework and/or JavaMail mail classes
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailContent {
     private String subject;

@@ -45,7 +45,7 @@ import org.xml.sax.SAXException;
  * override them. Also, can do token replace based on values already parsed
  * using ${ } to denote tokens.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class HierarchicalConfigParser {
     private static final Logger LOG = Logger.getLogger(HierarchicalConfigParser.class);

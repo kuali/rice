@@ -31,7 +31,7 @@ import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 /**
  * Checks for plugins added to or removed from the configured plugin directories.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HotDeployer implements Runnable {
 	private static final Logger LOG = Logger.getLogger(HotDeployer.class);

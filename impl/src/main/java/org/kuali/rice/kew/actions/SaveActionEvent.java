@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.List;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -35,7 +37,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * Saves a document.  Puts the document in the persons action list that saved the document.
  * This can currently only be done by the initiator of the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SaveActionEvent extends ActionTakenEvent {
@@ -114,15 +116,19 @@ public class SaveActionEvent extends ActionTakenEvent {
     }
 
     protected ActionRequestValue generateSaveRequest() {
-	RouteNodeInstance intialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(
-		getRouteHeaderId()).get(0);
-	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), intialNode);
-	ActionRequestValue saveRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
-		new Integer(0), new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
-		Boolean.TRUE, annotation);
-	//      this.getActionRequestService().saveActionRequest(saveRequest);
-	this.getActionRequestService().activateRequest(saveRequest);
-	return saveRequest;
+        RouteNodeInstance initialNode = null;
+        List initialNodes = KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getRouteHeaderId());
+    	if (!initialNodes.isEmpty()) {
+    	    initialNode = (RouteNodeInstance)initialNodes.get(0);
+    	}
+        //RouteNodeInstance initialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getRouteHeaderId()).get(0);
+    	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), initialNode);
+    	ActionRequestValue saveRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
+    		new Integer(0), new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
+    		Boolean.TRUE, annotation);
+    	//      this.getActionRequestService().saveActionRequest(saveRequest);
+    	this.getActionRequestService().activateRequest(saveRequest);
+    	return saveRequest;
     }
 
 }

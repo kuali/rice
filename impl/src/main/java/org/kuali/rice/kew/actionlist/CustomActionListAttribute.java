@@ -28,10 +28,10 @@ import org.kuali.rice.kew.web.session.UserSession;
  * Mass Actions and an internal frame for displaying a summary view of the
  * document on each row in the Action List.
  *
- * @see ActionListActionOld
+ * @see ActionListAction
  * @see DefaultCustomActionListAttribute
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface CustomActionListAttribute extends Serializable {
 

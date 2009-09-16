@@ -49,7 +49,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * if the 'use.use.clearDatabaseLifecycle' configuration property is defined, and is
  * not 'true'.  If the property is omitted the lifecycle runs as normal.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  *
  */

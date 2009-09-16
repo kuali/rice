@@ -31,7 +31,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 /**
  * OJB implementation of the {@link ActionTakenDAO}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionTakenDAO {
 

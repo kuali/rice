@@ -89,7 +89,7 @@ import org.kuali.rice.kns.web.format.FormatException;
  * can construct {@link ObjectDefinition} objects correctly to account for ServiceNamespace inheritance.
  * Can also navigate parent hierarchy when getting data/components.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")
@@ -685,6 +685,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 
     public PostProcessor getPostProcessor() {
         String pname = getPostProcessorName();
+
+        if (StringUtils.equals(pname, KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE)) { 
+            return new DefaultPostProcessor();    
+        }
         if (StringUtils.isBlank(pname)) {
             if (getParentDocType() != null) {
                 return getParentDocType().getPostProcessor();
@@ -695,6 +699,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 
         ObjectDefinition objDef = getObjectDefinition(pname);
         Object postProcessor = GlobalResourceLoader.getObject(objDef);
+        
         if (postProcessor == null) {
             throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
         }

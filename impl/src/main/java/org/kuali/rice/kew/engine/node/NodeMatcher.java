@@ -19,7 +19,7 @@ package org.kuali.rice.kew.engine.node;
 /**
  * Used when searching for nodes to determine whether a node "matches" the search criteria.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NodeMatcher {
 

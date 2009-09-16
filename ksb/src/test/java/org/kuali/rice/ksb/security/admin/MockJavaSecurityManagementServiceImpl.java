@@ -28,7 +28,7 @@ import org.kuali.rice.ksb.security.admin.service.impl.JavaSecurityManagementServ
 /**
  * This is a mock class used by the KSB test harness to supplant the {@link JavaSecurityManagementServiceImpl} class
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MockJavaSecurityManagementServiceImpl extends JavaSecurityManagementServiceImpl implements MockJavaSecurityManagementService {

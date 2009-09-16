@@ -50,7 +50,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * Various static utility methods for helping with Searcha.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocSearchUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocSearchUtils.class);
@@ -347,13 +347,10 @@ public class DocSearchUtils {
         List<SearchAttributeCriteriaComponent> searchableAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
         Map criteriaComponentsByKey = new HashMap();
 
-        if (!Utilities.isEmpty(documentTypeName)) {
-            DocumentType docType = getDocumentType(documentTypeName);
-            if (docType == null) {
-                String errorMsg = "Cannot find document type for given name '" + documentTypeName + "'";
-                LOG.error("buildSearchableAttributesFromString() " + errorMsg);
-                throw new RuntimeException(errorMsg);
-            }
+        DocumentType docType = getDocumentType(documentTypeName);
+
+        if (docType != null) {
+
             for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
             	//KFSMI-1466 - DocumentSearchContext
                 for (Row row : searchableAttribute.getSearchingRows(

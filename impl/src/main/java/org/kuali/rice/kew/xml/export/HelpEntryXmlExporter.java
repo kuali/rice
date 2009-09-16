@@ -30,7 +30,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  *
  * @see HelpEntry
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HelpEntryXmlExporter implements XmlExporter, XmlConstants {
 

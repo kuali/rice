@@ -66,13 +66,13 @@ import org.quartz.Trigger;
  * KEW configuration parameters, 'immediate.reminder.email.message' and 'immediate.reminder.email.subject'.
  * The immediate reminder email message key should specify a MessageFormat string.  See code for the parameters
  * to this MessageFormat.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListEmailServiceImpl implements ActionListEmailService {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(ActionListEmailServiceImpl.class);
 
-	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "workflow@indiana.edu";
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "admin@localhost";
 
 	private static final String ACTION_LIST_REMINDER = "Action List Reminder";
 

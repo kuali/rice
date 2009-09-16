@@ -22,7 +22,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CustomDocumentSearchGenerator extends StandardDocumentSearchGenerator {
 	

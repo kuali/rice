@@ -28,7 +28,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * Subclass of MockHttpServletRequest that initializes the request with a user session
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowServletRequest extends MockHttpServletRequest {
     public WorkflowServletRequest() {

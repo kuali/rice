@@ -36,7 +36,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * A servlet which can be used to retrieve attachments from Notes.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttachmentServlet extends HttpServlet {
 	

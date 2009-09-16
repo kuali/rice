@@ -22,10 +22,10 @@
 			<description>A test of doc type parameters.</description>
 			<label>TestWithMostParams1</label>
 			<postProcessorName>mocks.MockPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<blanketApprovePolicy>any</blanketApprovePolicy>
-			<reportingWorkgroupName>KR-WKFLW:TestWorkgroup</reportingWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<reportingGroupName namespace="KR-WKFLW">TestWorkgroup</reportingGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<helpDefinitionURL>_blank</helpDefinitionURL>
 			<notificationFromAddress>_blank</notificationFromAddress>

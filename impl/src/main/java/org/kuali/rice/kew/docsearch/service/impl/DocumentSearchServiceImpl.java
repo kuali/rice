@@ -114,13 +114,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) {
 		DocumentSearchGenerator docSearchGenerator = null;
 		DocumentSearchResultProcessor docSearchResultProcessor = null;
-		if (!Utilities.isEmpty(criteria.getDocTypeFullName())) {
-	        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocTypeFullName());
-	        if (documentType == null) {
-	        	String errorMsg = "Document Type '" + criteria.getDocTypeFullName() + "' is invalid";
-	        	LOG.error("getList() " + errorMsg + " and not found via DocumentTypeService");
-	            throw new WorkflowServiceErrorException(errorMsg,new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));
-	        }
+
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocTypeFullName());
+		if (documentType != null ) {
 	        docSearchGenerator = documentType.getDocumentSearchGenerator();
 	        docSearchResultProcessor = documentType.getDocumentSearchResultProcessor();
 		} else {

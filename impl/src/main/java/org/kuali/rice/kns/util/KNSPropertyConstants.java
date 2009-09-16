@@ -20,7 +20,7 @@ import org.kuali.rice.core.util.JSTLConstants;
 /**
  * Constants for the KNS module that describer object property fields
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KNSPropertyConstants extends JSTLConstants {
 

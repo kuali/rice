@@ -33,7 +33,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * This class is used to handle session timeouts where {@link PessimisticLock} objects should
  * be removed from a document 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiHttpSessionListener implements HttpSessionListener {

@@ -136,7 +136,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.debug("Fetching DocumentRouteHeaderValue [id="+documentId+", user="+principalId+"]");
         }
         DocumentRouteHeaderValue document = loadDocument(documentId);
-        return KEWServiceLocator.getActionRequestService().getActionsRequested(document, principalId);
+        return KEWServiceLocator.getActionRequestService().getActionsRequested(document, principalId, true);
     }
 
     public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException {

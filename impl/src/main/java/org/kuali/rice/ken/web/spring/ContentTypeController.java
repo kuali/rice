@@ -34,7 +34,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 /**
  * Controller that manages ContentTypes (add/update)
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ContentTypeController extends MultiActionController {
    

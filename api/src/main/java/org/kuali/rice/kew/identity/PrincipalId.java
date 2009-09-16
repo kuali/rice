@@ -20,7 +20,7 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 /**
  * The primary ID of a Principal in KIM
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PrincipalId extends WorkflowUserId {

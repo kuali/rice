@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 /**
  * Superinterface of UserId and GroupId
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Id extends Serializable {
     /**

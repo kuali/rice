@@ -24,7 +24,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IfExistsFactoryBean extends AbstractFactoryBean implements BeanFactoryAware {

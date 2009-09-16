@@ -26,7 +26,7 @@ import org.kuali.rice.core.ojb.BaseOjbConfigurer;
  * This class handles the Spring based KCB configuration that is part of the Rice Configurer that must 
  * exist in all Rice based systems and clients.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBConfigurer extends ModuleConfigurer {
     private static final String MODULE_NAME = "kcb";

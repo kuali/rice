@@ -38,7 +38,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Tests email content generation
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailMessageTest extends KEWTestCase {
     private ActionListEmailServiceImpl actionListEmailService = new ActionListEmailServiceImpl();

@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.messaging;
 import org.kuali.rice.core.config.ConfigurationException;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 public class SOAPServiceDefinition extends ServiceDefinition {
@@ -64,7 +64,6 @@ public class SOAPServiceDefinition extends ServiceDefinition {
 	public void validate() {
 
 		super.validate();
-
 		// if interface is null grab the first one and use it
 		if (getServiceInterface() == null) {
 			if (this.getService().getClass().getInterfaces().length == 0) {
@@ -73,6 +72,18 @@ public class SOAPServiceDefinition extends ServiceDefinition {
 			}
 			setServiceInterface(this.getService().getClass().getInterfaces()[0]
 					.getName());
+		} else {
+			// Validate that the service interface set is an actual interface
+			// that exists
+			try {
+				if (!Class.forName(getServiceInterface()).isInterface()) {
+					throw new ConfigurationException(
+							"Service interface class '" + getServiceInterface() + "' must be a Java interface"); 
+				}
+			} catch (ClassNotFoundException e) {
+				throw new ConfigurationException(
+						"Service interface class '" + getServiceInterface() + "' could not be found in the classpath");
+			}
 		}
 		if (getBusSecurity() == null) {
 			setBusSecurity(false);

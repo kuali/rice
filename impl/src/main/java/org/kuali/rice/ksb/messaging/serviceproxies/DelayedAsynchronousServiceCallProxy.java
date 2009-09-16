@@ -46,7 +46,7 @@ import org.quartz.Trigger;
 /**
  * A proxy which schedules a service to be executed asynchronously after some delay period.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler implements TargetedInvocationHandler {
 

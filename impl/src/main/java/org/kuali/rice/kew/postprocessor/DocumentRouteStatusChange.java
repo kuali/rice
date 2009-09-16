@@ -33,7 +33,7 @@ package org.kuali.rice.kew.postprocessor;
  * Company: UIS - Indiana University
  * </p>
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentRouteStatusChange implements IDocumentEvent {
 

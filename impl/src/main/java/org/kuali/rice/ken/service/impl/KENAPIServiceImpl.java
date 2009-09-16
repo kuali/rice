@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * KEN API service implementation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KENAPIServiceImpl implements KENAPIService {
     private NotificationChannelService channelService;

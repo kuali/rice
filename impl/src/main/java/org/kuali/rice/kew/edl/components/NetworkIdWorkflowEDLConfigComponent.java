@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
 /**
  * Matches network ID param to UserService to validate network Id.  Returns error message if networkId does NOT match.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NetworkIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {
 	

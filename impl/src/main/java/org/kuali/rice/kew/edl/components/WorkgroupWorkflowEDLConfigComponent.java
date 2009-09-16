@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
 /**
  * Looks up workgroup param to validate workgroup exists and is active.  Returns error message if workgroup is does not exist or is not active.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkgroupWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {
 	

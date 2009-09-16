@@ -39,7 +39,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 /**
  * This class represents an instace of a notification message that is received by the overall 
  * system.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_NTFCTN_T")

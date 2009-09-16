@@ -32,7 +32,7 @@ import java.util.List;
  *   <li>Digestion: XmlDigesterService</li>
  * </ol>
  * @see org.kuali.rice.kew.batch.XmlDigesterService
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlIngesterService {
     /**

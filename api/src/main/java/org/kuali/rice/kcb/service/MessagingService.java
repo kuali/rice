@@ -23,7 +23,7 @@ import org.kuali.rice.kcb.exception.MessageDismissalException;
  * The KCB MessagingService provides an API to deliver messages
  * to arbitrary multiple endpoints. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MessagingService {
     /**

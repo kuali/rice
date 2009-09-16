@@ -25,7 +25,7 @@ import org.displaytag.properties.SortOrderEnum;
  * Implements the display tags paginated list to provide effecient paging for the action list.  
  * This allows us not to have to fetch an entire action list each time a user pages their list.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PaginatedActionList implements PaginatedList {
 

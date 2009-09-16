@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  * in the order in which they are encountered.  This class relies on Spring for resource
  * loading and Apache Commons Lang for variable replacement.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigParserImpl implements ConfigParser {
     // keep the same random
@@ -63,7 +63,7 @@ public class ConfigParserImpl implements ConfigParser {
     /**
      * A StrLookup implementation that delegates to System properties if the key is not
      * found in the supplied map.
-     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static class SystemPropertiesDelegatingStrLookup extends StrLookup {
         private final Map map;

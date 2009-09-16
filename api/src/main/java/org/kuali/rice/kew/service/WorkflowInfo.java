@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.service;
 
-import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,7 +48,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * determine how to connect to KEW.  To use this API, simply create a new instance using the
  * empty constructor.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowInfo implements java.io.Serializable {
 
@@ -76,12 +75,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getRouteHeaderWithUser(String, Long)
      */
     public RouteHeaderDTO getRouteHeader(String principalId, Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-
+    	return getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, routeHeaderId);
     }
     
     public AttributeSet getActionsRequested(String principalId, Long documentId) throws WorkflowException {
@@ -96,11 +90,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getRouteHeader(Long)
      */
     public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getRouteHeader(documentId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getRouteHeader(documentId);
     }
 
     /**
@@ -111,11 +101,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * if the given document ID is null.
      */
     public String getDocumentStatus(Long documentId) throws WorkflowException {
-	try {
-	    return getWorkflowUtility().getDocumentStatus(documentId);
-	} catch (Exception e) {
-	    throw handleException(e);
-	}
+    	return getWorkflowUtility().getDocumentStatus(documentId);
     }
 
     /**
@@ -126,11 +112,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getDocumentType(Long)
      */
     public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocumentType(documentTypeId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentType(documentTypeId);
     }
 
     /**
@@ -141,11 +123,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getDocumentTypeByName(String)
      */
     public DocumentTypeDTO getDocType(String documentTypeName) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocumentTypeByName(documentTypeName);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentTypeByName(documentTypeName);
     }
 
     /**
@@ -155,35 +133,19 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getNewResponsibilityId()
      */
     public Long getNewResponsibilityId() throws WorkflowException {
-        try {
-            return getWorkflowUtility().getNewResponsibilityId();
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getNewResponsibilityId();
     }
 
     public Integer getUserActionItemCount(String principalId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getUserActionItemCount(principalId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getUserActionItemCount(principalId);
     }
     
     public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getAllActionItems(routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getAllActionItems(routeHeaderId);
     }
 
     public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getActionItems(routeHeaderId, actionRequestedCodes);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getActionItems(routeHeaderId, actionRequestedCodes);
     }
 
     /**
@@ -194,11 +156,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getActionRequests(Long)
      */
     public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getAllActionRequests(routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getAllActionRequests(routeHeaderId);
     }
 
    /**
@@ -213,11 +171,7 @@ public class WorkflowInfo implements java.io.Serializable {
     * @see WorkflowUtility#getActionRequests(Long)
     */
    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
-       try {
-           return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
-       } catch (Exception e) {
-           throw handleException(e);
-       }
+	   return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
    }
 
    /**
@@ -231,11 +185,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getActionsTaken(Long)
      */
     public ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getActionsTaken(routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getActionsTaken(routeHeaderId);
     }
 
     /**
@@ -249,11 +199,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#isUserInRouteLog(Long, String, boolean)
      */
     public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
-        try {
-            return getWorkflowUtility().isUserInRouteLog(routeHeaderId, principalId, lookFuture);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().isUserInRouteLog(routeHeaderId, principalId, lookFuture);
     }
     
     /**
@@ -270,11 +216,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#isUserInRouteLog(Long, String, boolean)
      */
     public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
-        try {
-            return getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(routeHeaderId, principalId, lookFuture, flattenNodes);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(routeHeaderId, principalId, lookFuture, flattenNodes);
     }
 
     /**
@@ -286,11 +228,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#isFinalApprover(Long, String)
      */
     public boolean isFinalApprover(Long routeHeaderId, String principalId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().isFinalApprover(routeHeaderId, principalId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().isFinalApprover(routeHeaderId, principalId);
     }
 
     /**
@@ -305,21 +243,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO)
      */
     public WorkflowAttributeValidationErrorDTO[] validAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) throws WorkflowException {
-        try {
-            return getWorkflowUtility().validateWorkflowAttributeDefinitionVO(attributeDefinition);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-    }
-
-    /**
-     * Helper to prevent us from needlessly wrapping a WorkflowException in another WorkflowException.
-     */
-    private WorkflowException handleException(Exception e) {
-    	if (e instanceof WorkflowException) {
-    		return (WorkflowException)e;
-    	}
-    	return new WorkflowException(e);
+    	return getWorkflowUtility().validateWorkflowAttributeDefinitionVO(attributeDefinition);
     }
 
     // WORKFLOW 2.3: new methods
@@ -331,11 +255,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#ruleReport(RuleReportCriteriaDTO)
      */
     public RuleDTO[] ruleReport(RuleReportCriteriaDTO ruleReportCriteria) throws WorkflowException {
-        try {
-            return getWorkflowUtility().ruleReport(ruleReportCriteria);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().ruleReport(ruleReportCriteria);
     }
 
     // WORKFLOW 2.1: new methods
@@ -349,11 +269,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getDocumentDetail(Long)
      */
     public DocumentDetailDTO getDocumentDetail(Long documentId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocumentDetail(documentId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentDetail(documentId);
     }
 
     /**
@@ -364,11 +280,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getNodeInstance(Long)
      */
     public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getNodeInstance(nodeInstanceId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getNodeInstance(nodeInstanceId);
     }
 
     /**
@@ -380,11 +292,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getDocumentRouteNodeInstances(Long)
      */
     public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocumentRouteNodeInstances(routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentRouteNodeInstances(routeHeaderId);
     }
 
     /**
@@ -395,11 +303,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getActiveNodeInstances(Long)
      */
     public RouteNodeInstanceDTO[] getActiveNodeInstances(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getActiveNodeInstances(routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getActiveNodeInstances(routeHeaderId);
     }
 
     /**
@@ -410,11 +314,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getTerminalNodeInstances(Long)
      */
     public RouteNodeInstanceDTO[] getTerminalNodeInstances(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getTerminalNodeInstances(routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getTerminalNodeInstances(routeHeaderId);
     }
     
     /**
@@ -426,11 +326,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getCurrentNodeInstances(Long)
      */
     public RouteNodeInstanceDTO[] getCurrentNodeInstances(Long routeHeaderId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getCurrentNodeInstances(routeHeaderId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getCurrentNodeInstances(routeHeaderId);
     }
     
     /**
@@ -442,16 +338,12 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getCurrentNodeInstances(Long)
      */
     public String[] getCurrentNodeNames(Long documentId) throws WorkflowException {
-        try {
-            RouteNodeInstanceDTO[] currentNodeInstances = getWorkflowUtility().getCurrentNodeInstances(documentId);
-            String[] nodeNames = new String[(currentNodeInstances == null ? 0 : currentNodeInstances.length)];
-            for (int index = 0; index < currentNodeInstances.length; index++) {
-                nodeNames[index] = currentNodeInstances[index].getName();
-            }
-            return nodeNames;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	RouteNodeInstanceDTO[] currentNodeInstances = getWorkflowUtility().getCurrentNodeInstances(documentId);
+    	String[] nodeNames = new String[(currentNodeInstances == null ? 0 : currentNodeInstances.length)];
+    	for (int index = 0; index < currentNodeInstances.length; index++) {
+    		nodeNames[index] = currentNodeInstances[index].getName();
+    	}
+    	return nodeNames;
     }
 
     /**
@@ -463,11 +355,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#reResolveRole(String, String, String)
      */
     public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-        try {
-            getWorkflowUtility().reResolveRole(documentTypeName, roleName, qualifiedRoleNameLabel);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	getWorkflowUtility().reResolveRole(documentTypeName, roleName, qualifiedRoleNameLabel);
     }
 
     /**
@@ -479,11 +367,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#reResolveRoleByDocumentId(Long, String, String)
      */
     public void reResolveRole(Long documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-        try {
-            getWorkflowUtility().reResolveRoleByDocumentId(documentId, roleName, qualifiedRoleNameLabel);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	getWorkflowUtility().reResolveRoleByDocumentId(documentId, roleName, qualifiedRoleNameLabel);
     }
 
     /**
@@ -493,11 +377,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#routingReport(ReportCriteriaDTO)
      */
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException {
-        try {
-            return getWorkflowUtility().routingReport(reportCriteria);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().routingReport(reportCriteria);
     }
 
     /**
@@ -510,11 +390,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#isLastApproverAtNode(Long, String, String)
      */
     public boolean isLastApproverAtNode(Long routeHeaderId, String principalId, String nodeName) throws WorkflowException {
-        try {
-            return getWorkflowUtility().isLastApproverAtNode(routeHeaderId, principalId, nodeName);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().isLastApproverAtNode(routeHeaderId, principalId, nodeName);
     }
 
     /**
@@ -527,11 +403,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#routeNodeHasApproverActionRequest(String, String, String)
      */
     public boolean routeNodeHasApproverActionRequest(String docType, String docContent, String nodeName) throws WorkflowException {
-        try {
-            return getWorkflowUtility().routeNodeHasApproverActionRequest(docType, docContent, nodeName);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().routeNodeHasApproverActionRequest(docType, docContent, nodeName);
     }
 
     /**
@@ -541,15 +413,10 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param userId - user to use when executing the search (for security filtering purposes)
      * @param criteriaVO - criteria to use for the search
      * @return a {@link DocumentSearchResultDTO} object containing a list of search result columns and data rows
-     * @throws RemoteException
      * @throws WorkflowException
      */
-    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
-        try {
-            return getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteriaVO);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    public DocumentSearchResultDTO performDocumentSearch(String principalId, DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
+    	return getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteriaVO);
     }
 
     /**
@@ -557,15 +424,10 @@ public class WorkflowInfo implements java.io.Serializable {
      * 
      * @param criteriaVO - criteria to use for the search
      * @return a {@link DocumentSearchResultDTO} object containing a list of search result columns and data rows
-     * @throws RemoteException
      * @throws WorkflowException
      */
-    public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws RemoteException, WorkflowException {
-        try {
-            return getWorkflowUtility().performDocumentSearch(criteriaVO);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
+    	return getWorkflowUtility().performDocumentSearch(criteriaVO);
     }
 
     /**
@@ -576,11 +438,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getDocumentContent(Long)
      */
     public DocumentContentDTO getDocumentContent(Long routeHeaderId) throws WorkflowException {
-    	try {
-    		return getWorkflowUtility().getDocumentContent(routeHeaderId);
-    	} catch (Exception e) {
-    		throw handleException(e);
-    	}
+    	return getWorkflowUtility().getDocumentContent(routeHeaderId);
     }
 
     /**
@@ -591,11 +449,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#getPreviousRouteNodeNames(Long)
      */
     public String[] getPreviousRouteNodeNames(Long documentId) throws WorkflowException {
-        try {
-            return getWorkflowUtility().getPreviousRouteNodeNames(documentId);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getPreviousRouteNodeNames(documentId);
     }
 
     /**
@@ -609,11 +463,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @see WorkflowUtility#documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) throws WorkflowException {
-        try {
-            return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, ignoreCurrentActionRequests);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, ignoreCurrentActionRequests);
     }
 
     /**
@@ -622,11 +472,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * This method assumes both existing and generated requests should be taken into account
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException {
-        try {
-        	return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, false);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, actionRequestedCodes, false);
     }
 
     // DEPRECATED: as of Workflow 2.1
@@ -635,22 +481,14 @@ public class WorkflowInfo implements java.io.Serializable {
      * @deprecated use {@link #isLastApproverAtNode(Long, String, String) instead
      */
     protected boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException {
-        try {
-            return getWorkflowUtility().isLastApproverInRouteLevel(routeHeaderId, principalId, routeLevel);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().isLastApproverInRouteLevel(routeHeaderId, principalId, routeLevel);
     }
 
     /**
      * @deprecated use {@link #routeNodeHasApproverActionRequest(String, String, String)}
      */
     protected boolean routeLevelHasApproverActionRequest(String docType, String docContent, Integer routeLevel) throws WorkflowException {
-        try {
-            return getWorkflowUtility().routeLevelHasApproverActionRequest(docType, docContent, routeLevel);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().routeLevelHasApproverActionRequest(docType, docContent, routeLevel);
     }
     
     /**
@@ -663,15 +501,11 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException
      */
 	public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
-    	try{
-    		String[] results = getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
-    		if (ObjectUtils.equals(null, results)) {
-    			return null;
-    		}
-    		return (List<String>) Arrays.asList(results);
-    	} catch (Exception e) {
-            throw handleException(e);
-        }
+		String[] results = getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+		if (ObjectUtils.equals(null, results)) {
+			return null;
+		}
+		return (List<String>) Arrays.asList(results);
     }
 
     /**
@@ -687,46 +521,26 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException
      */
 	public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
-    	try{
-    		String[] results = getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
-    		if (ObjectUtils.equals(null, results)) {
-    			return null;
-    		}
-    		return (List<String>) Arrays.asList(results);
-    	} catch (Exception e) {
-            throw handleException(e);
-        }
+		String[] results = getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+		if (ObjectUtils.equals(null, results)) {
+			return null;
+		}
+		return (List<String>) Arrays.asList(results);
     }
     
     public String getDocumentInitiatorPrincipalId( Long routeHeaderId ) throws WorkflowException {
-    	try{
-    		return getWorkflowUtility().getDocumentInitiatorPrincipalId(routeHeaderId);
-    	} catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentInitiatorPrincipalId(routeHeaderId);
     }
     public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException {
-    	try{
-    		return getWorkflowUtility().getDocumentRoutedByPrincipalId(routeHeaderId);
-    	} catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentRoutedByPrincipalId(routeHeaderId);
     }
     
     public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException {
-    	try{
-    		return getWorkflowUtility().hasRouteNode(documentTypeName, routeNodeName);
-    	} catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().hasRouteNode(documentTypeName, routeNodeName);
     }
     
     public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {
-    	try{
-    		return getWorkflowUtility().isCurrentActiveDocumentType(documentTypeName);
-    	} catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().isCurrentActiveDocumentType(documentTypeName);
     }
     
 }

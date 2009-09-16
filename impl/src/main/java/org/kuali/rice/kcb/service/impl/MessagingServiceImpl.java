@@ -44,7 +44,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * MessagingService implementation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessagingServiceImpl implements MessagingService {
     private static final Logger LOG = Logger.getLogger(MessagingServiceImpl.class);

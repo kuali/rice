@@ -25,7 +25,7 @@ import javax.persistence.Table;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRIM_ATTR_DEFN_T")
@@ -46,8 +46,6 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 	protected boolean active;
 	@Column(name="CMPNT_NM")
 	protected String componentName;
-	@Column(name="APPL_URL")
-	protected String applicationUrl;
 	
 	public String getKimAttributeId() {
 		return kimAttributeId;
@@ -95,14 +93,6 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 
 	public void setComponentName(String componentName) {
 		this.componentName = componentName;
-	}
-
-	public String getApplicationUrl() {
-		return this.applicationUrl;
-	}
-
-	public void setApplicationUrl(String applicationUrl) {
-		this.applicationUrl = applicationUrl;
 	}
 
 	/**

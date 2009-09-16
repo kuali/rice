@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 
 /**
  * Tests the script framework against a trivial TestServlet. 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestServletTest extends TestCase {
     public void test() throws Exception {

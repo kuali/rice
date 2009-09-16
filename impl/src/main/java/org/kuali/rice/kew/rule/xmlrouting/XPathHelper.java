@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
  * Provides utilities for obtaining XPath instances which are "good-to-go" with access to the Workflow
  * namespace and custom XPath functions.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XPathHelper {
 

@@ -18,7 +18,7 @@ package org.kuali.rice.kns.bo;
 /**
  * Campus Externalizable Business Object 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface Campus extends ExternalizableBusinessObject {

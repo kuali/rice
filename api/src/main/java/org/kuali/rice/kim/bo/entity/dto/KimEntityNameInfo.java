@@ -20,10 +20,9 @@ import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityName, Serializable {
 
@@ -32,186 +31,264 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	protected String entityNameId = "";
 	protected String nameTypeCode = "";
 	protected String firstName = "";
+	protected String firstNameUnmasked = "";
 	protected String middleName = "";
+	protected String middleNameUnmasked = "";
 	protected String lastName = "";
+	protected String lastNameUnmasked = "";
 	protected String title = "";
+	protected String titleUnmasked = "";
 	protected String suffix = "";
+	protected String suffixUnmasked = "";
 	
 	protected boolean suppressName = false;
+	
+	protected String formattedName = "";
+	protected String formattedNameUnmasked = "";
 
 	/**
 	 * 
 	 */
 	public KimEntityNameInfo() {
+		super();
+		active = true;
 	}
 	
 	/**
 	 * 
 	 */
 	public KimEntityNameInfo( KimEntityName name ) {
+		this();
 		if ( name != null ) {
-		    this.entityNameId = name.getEntityNameId();
-		    this.nameTypeCode = name.getNameTypeCode();
-		    this.firstName = name.getFirstNameUnmasked();
-		    this.middleName = name.getMiddleNameUnmasked();
-		    this.lastName = name.getLastNameUnmasked();
-		    this.title = name.getTitleUnmasked();
-		    this.suffix = name.getSuffixUnmasked();
+		    this.entityNameId = unNullify(name.getEntityNameId());
+		    this.nameTypeCode = unNullify(name.getNameTypeCode());
+		    this.firstName = unNullify(name.getFirstName());
+		    this.firstNameUnmasked = unNullify(name.getFirstNameUnmasked());
+		    this.middleName = unNullify(name.getMiddleName());
+		    this.middleNameUnmasked = unNullify(name.getMiddleNameUnmasked());
+		    this.lastName = unNullify(name.getLastName());
+		    this.lastNameUnmasked = unNullify(name.getLastNameUnmasked());
+		    this.title = unNullify(name.getTitle());
+		    this.titleUnmasked = unNullify(name.getTitleUnmasked());
+		    this.suffix = unNullify(name.getSuffix());
+		    this.suffixUnmasked = unNullify(name.getSuffixUnmasked());
 		    this.active = name.isActive();
 		    this.dflt = name.isDefault();
 		    this.suppressName = name.isSuppressName();
+		    
+		    this.formattedName = unNullify(name.getFormattedName());
+		    this.formattedNameUnmasked = unNullify(name.getFormattedNameUnmasked());
 		}
 	}
-	
+
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getEntityNameId()
+	 * @return the entityNameId
 	 */
 	public String getEntityNameId() {
-		return entityNameId;
+		return this.entityNameId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstName()
+	 * @param entityNameId the entityNameId to set
 	 */
-	public String getFirstName() {
-	    if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return firstName;
+	public void setEntityNameId(String entityNameId) {
+		this.entityNameId = entityNameId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastName()
-	 */
-	public String getLastName() {
-	    if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return lastName;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleName()
-	 */
-	public String getMiddleName() {
-	    if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return middleName;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getNameTypeCode()
+	 * @return the nameTypeCode
 	 */
 	public String getNameTypeCode() {
-		return nameTypeCode;
+		return this.nameTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffix()
+	 * @param nameTypeCode the nameTypeCode to set
 	 */
-	public String getSuffix() {
-	    if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return suffix;
+	public void setNameTypeCode(String nameTypeCode) {
+		this.nameTypeCode = nameTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitle()
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	/**
+	 * @return the firstNameUnmasked
+	 */
+	public String getFirstNameUnmasked() {
+		return this.firstNameUnmasked;
+	}
+
+	/**
+	 * @param firstNameUnmasked the firstNameUnmasked to set
+	 */
+	public void setFirstNameUnmasked(String firstNameUnmasked) {
+		this.firstNameUnmasked = firstNameUnmasked;
+	}
+
+	/**
+	 * @return the middleName
+	 */
+	public String getMiddleName() {
+		return this.middleName;
+	}
+
+	/**
+	 * @param middleName the middleName to set
+	 */
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	/**
+	 * @return the middleNameUnmasked
+	 */
+	public String getMiddleNameUnmasked() {
+		return this.middleNameUnmasked;
+	}
+
+	/**
+	 * @param middleNameUnmasked the middleNameUnmasked to set
+	 */
+	public void setMiddleNameUnmasked(String middleNameUnmasked) {
+		this.middleNameUnmasked = middleNameUnmasked;
+	}
+
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	/**
+	 * @return the lastNameUnmasked
+	 */
+	public String getLastNameUnmasked() {
+		return this.lastNameUnmasked;
+	}
+
+	/**
+	 * @param lastNameUnmasked the lastNameUnmasked to set
+	 */
+	public void setLastNameUnmasked(String lastNameUnmasked) {
+		this.lastNameUnmasked = lastNameUnmasked;
+	}
+
+	/**
+	 * @return the title
 	 */
 	public String getTitle() {
-	    if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return title;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = unNullify( firstName );
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = unNullify( lastName );
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = unNullify( middleName );
-	}
-
-	public void setNameTypeCode(String nameTypeCode) {
-		this.nameTypeCode = unNullify( nameTypeCode );
-	}
-
-	public void setSuffix(String suffix) {
-		this.suffix = unNullify( suffix );
-	}
-
-	public void setTitle(String title) {
-		this.title = unNullify( title );
+		return this.title;
 	}
 
 	/**
-	 * This default implementation formats the name as LAST, FIRST MIDDLE.
-	 * 
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedName()
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * @return the titleUnmasked
+	 */
+	public String getTitleUnmasked() {
+		return this.titleUnmasked;
+	}
+
+	/**
+	 * @param titleUnmasked the titleUnmasked to set
+	 */
+	public void setTitleUnmasked(String titleUnmasked) {
+		this.titleUnmasked = titleUnmasked;
+	}
+
+	/**
+	 * @return the suffix
+	 */
+	public String getSuffix() {
+		return this.suffix;
+	}
+
+	/**
+	 * @param suffix the suffix to set
+	 */
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
+	}
+
+	/**
+	 * @return the suffixUnmasked
+	 */
+	public String getSuffixUnmasked() {
+		return this.suffixUnmasked;
+	}
+
+	/**
+	 * @param suffixUnmasked the suffixUnmasked to set
+	 */
+	public void setSuffixUnmasked(String suffixUnmasked) {
+		this.suffixUnmasked = suffixUnmasked;
+	}
+
+	/**
+	 * @return the suppressName
+	 */
+	public boolean isSuppressName() {
+		return this.suppressName;
+	}
+
+	/**
+	 * @param suppressName the suppressName to set
+	 */
+	public void setSuppressName(boolean suppressName) {
+		this.suppressName = suppressName;
+	}
+
+	/**
+	 * @return the formattedName
 	 */
 	public String getFormattedName() {
-	    if (isSuppressName()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
+		return this.formattedName;
 	}
 
-	public void setEntityNameId(String entityNameId) {
-		this.entityNameId = unNullify( entityNameId );
+	/**
+	 * @param formattedName the formattedName to set
+	 */
+	public void setFormattedName(String formattedName) {
+		this.formattedName = formattedName;
 	}
 
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedFirstName()
-     */
-    public String getFirstNameUnmasked() {
-        return this.firstName;
-    }
+	/**
+	 * @return the formattedNameUnmasked
+	 */
+	public String getFormattedNameUnmasked() {
+		return this.formattedNameUnmasked;
+	}
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedFormattedName()
-     */
-    public String getFormattedNameUnmasked() {
-        return this.lastName + ", " + this.firstName + (this.middleName==null?"":" " + this.middleName);
-    }
+	/**
+	 * @param formattedNameUnmasked the formattedNameUnmasked to set
+	 */
+	public void setFormattedNameUnmasked(String formattedNameUnmasked) {
+		this.formattedNameUnmasked = formattedNameUnmasked;
+	}
 
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedLastName()
-     */
-    public String getLastNameUnmasked() {
-        return this.lastName;
-    }
-
-    /** 
-     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedMiddleName()
-     */
-    public String getMiddleNameUnmasked() {
-        return this.middleName;
-    }
-
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedSuffix()
-     */
-    public String getSuffixUnmasked() {
-        return this.suffix;
-    }
-
-    /** 
-     * @see org.kuali.rice.kim.bo.entity.KimEntityName#getUnmaskedTitle()
-     */
-    public String getTitleUnmasked() {
-        return this.title;
-    }
-	
-    public boolean isSuppressName() {
-        return suppressName;
-    }
 }

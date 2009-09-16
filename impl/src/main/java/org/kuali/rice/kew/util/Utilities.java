@@ -48,7 +48,7 @@ import org.kuali.rice.kns.web.format.DateFormatter;
 /**
  * Various static utility methods.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Utilities {
     /**
@@ -207,7 +207,7 @@ public class Utilities {
         public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
             int value = ar1.getPriority().compareTo(ar2.getPriority());
             if (value == 0) {
-                value = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested());
+                value = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested(), true);
                 if (value == 0) {
                     if ( (ar1.getActionRequestId() != null) && (ar2.getActionRequestId() != null) ) {
                         value = ar1.getActionRequestId().compareTo(ar2.getActionRequestId());

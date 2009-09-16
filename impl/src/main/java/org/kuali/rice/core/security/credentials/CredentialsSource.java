@@ -20,7 +20,7 @@ package org.kuali.rice.core.security.credentials;
  * Inteface for abstracting out how we obtain credentials to access secure
  * applications across the bus.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 public interface CredentialsSource {

@@ -85,7 +85,7 @@ import org.xml.sax.InputSource;
  *       to validate the field value (given by the param map)</li>
  * </ol>
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute, WorkflowAttributeXmlValidator {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardGenericXMLRuleAttribute.class);

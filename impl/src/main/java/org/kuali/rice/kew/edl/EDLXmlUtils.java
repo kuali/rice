@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
 /**
  * Contains a bunch of dom utility methods.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDLXmlUtils {

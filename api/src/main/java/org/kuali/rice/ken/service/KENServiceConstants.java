@@ -18,7 +18,7 @@ package org.kuali.rice.ken.service;
 /**
  * Names of services published on the bus 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KENServiceConstants {
     public static final String KENAPI_SERVICE = "KEN-KENAPIService";

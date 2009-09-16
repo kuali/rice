@@ -27,7 +27,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
  * Returned by a call to {@link WorkflowAttributeXmlValidator#validateClientRoutingData()}
  * and {@link SearchableAttribute#validateUserSearchInputs(Map)}
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowAttributeValidationError implements Serializable {
 

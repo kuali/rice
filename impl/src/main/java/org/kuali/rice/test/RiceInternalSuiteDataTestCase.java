@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
  * A TestCase superclass to be used internally by Rice for tests that need to
  * load all of the Rice suite-level test data.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 

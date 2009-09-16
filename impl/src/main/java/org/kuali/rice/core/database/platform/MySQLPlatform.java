@@ -20,7 +20,7 @@ package org.kuali.rice.core.database.platform;
 /**
  * Use {@link MySQLDatabasePlatform} instead.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
 public class MySQLPlatform extends MySQLDatabasePlatform {}

@@ -21,7 +21,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * Represents a route level
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  * @deprecated use RouteNodeVO instead
  */

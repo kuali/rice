@@ -32,7 +32,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * This class is responsible for interacting with KEW - this is the default implementation that leverages the KEW client API.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationWorkflowDocumentServiceImpl implements NotificationWorkflowDocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

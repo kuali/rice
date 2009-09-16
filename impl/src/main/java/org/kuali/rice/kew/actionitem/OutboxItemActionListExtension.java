@@ -24,7 +24,7 @@ import javax.persistence.Table;
 /**
  * Outbox item.  An extension of {@link ActionItemActionListExtension} for OJB.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity

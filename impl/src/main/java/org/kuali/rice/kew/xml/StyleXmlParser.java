@@ -41,7 +41,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * Parser for Style content type, managed by StyleService
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleXmlParser {
 	private static final Logger LOG = Logger.getLogger(StyleXmlParser.class);

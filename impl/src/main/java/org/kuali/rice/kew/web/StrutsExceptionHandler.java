@@ -47,7 +47,7 @@ import org.kuali.rice.kns.exception.AuthorizationException;
  * exceptions are logged and directed to the mapped jsp according to the
  * exception handler mapping.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StrutsExceptionHandler extends ExceptionHandler {
 

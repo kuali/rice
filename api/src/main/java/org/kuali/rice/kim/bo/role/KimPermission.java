@@ -25,7 +25,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * Permissions are attached to roles.  All authorization checks should be done against permissions,
  * never against roles or groups.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimPermission extends Inactivateable {

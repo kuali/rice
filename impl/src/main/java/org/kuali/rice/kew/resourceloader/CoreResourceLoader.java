@@ -31,7 +31,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * A resource loader which is responsible for loading resources from the Workflow ConfigContext.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CoreResourceLoader extends BaseWrappingResourceLoader {
 

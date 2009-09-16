@@ -22,7 +22,7 @@ import java.util.Calendar;
 /**
  * A transport object representing an ActionTakenValue
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class ActionTakenDTO implements Serializable {

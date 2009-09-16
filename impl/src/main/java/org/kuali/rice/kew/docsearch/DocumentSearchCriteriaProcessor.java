@@ -24,7 +24,7 @@ import org.kuali.rice.kns.web.ui.Row;
  * This interface is used to define pre document search screen display processes for
  * a particular document type.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface DocumentSearchCriteriaProcessor {

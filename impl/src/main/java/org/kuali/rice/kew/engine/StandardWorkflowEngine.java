@@ -58,7 +58,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Document, processing nodes on the document until the document is completed or a node halts the
  * processing.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardWorkflowEngine implements WorkflowEngine {
 
@@ -528,8 +528,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	private boolean hasContactedPostProcessor(RouteContext context, DocumentRouteStatusChange event) {
 		// get the initial node instance, the root branch is where we will store
 		// the state
-		RouteNodeInstance initialInstance = (RouteNodeInstance) context.getDocument().getInitialRouteNodeInstance(0);
-		Branch rootBranch = initialInstance.getBranch();
+		Branch rootBranch = context.getDocument().getRootBranch();
 		String key = null;
 		if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(event.getNewRouteStatus())) {
 			key = KEWConstants.POST_PROCESSOR_PROCESSED_KEY;
@@ -538,7 +537,12 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		} else {
 			return false;
 		}
-		BranchState branchState = rootBranch.getBranchState(key);
+		BranchState branchState = null;
+		if (rootBranch != null) {
+		    branchState = rootBranch.getBranchState(key);
+		} else {
+		    return false;
+		}
 		if (branchState == null) {
 			branchState = new BranchState(key, "true");
 			rootBranch.addBranchState(branchState);
@@ -695,7 +699,10 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		Process process = document.getDocumentType().getPrimaryProcess();
 		if (process == null || process.getInitialRouteNode() == null) {
-			throw new IllegalArgumentException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
+		    if (process == null) {
+		        throw new IllegalArgumentException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
+		    }
+			return;
 		}
 		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), process.getInitialRouteNode());
 		nodeInstance.setActive(true);

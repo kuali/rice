@@ -36,7 +36,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * A login filter which forwards to a login page that allows for the desired
  * authentication ID to be entered without the need for a password.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DummyLoginFilter implements Filter {
     private String loginPath;

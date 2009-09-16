@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for a configuring the one time (per suite) test data.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Documented
 @Target({ ElementType.TYPE, ElementType.METHOD })

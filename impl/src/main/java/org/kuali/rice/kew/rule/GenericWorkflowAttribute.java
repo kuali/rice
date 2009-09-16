@@ -52,7 +52,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
  * This implementation does not (yet!) implement a generic internal map of properties, so it is up to subclasses
  * to expose specific named getters/setters to set data on an attribute of this ancestry.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute {
     protected final Logger log = Logger.getLogger(getClass());

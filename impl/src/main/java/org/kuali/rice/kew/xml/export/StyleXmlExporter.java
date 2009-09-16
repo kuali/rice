@@ -36,7 +36,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  * @see org.kuali.rice.kew.xml.StyleXmlParser
  * @see EDocLiteStyle
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleXmlExporter implements XmlExporter, XmlConstants {
 	private static final Logger LOG = Logger.getLogger(StyleXmlExporter.class);

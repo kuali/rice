@@ -27,7 +27,7 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
  * A service that is registered as a queue for both the client apps.  Used to test queue 
  * call scenarios.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ClientApp1SharedQueue implements KSBJavaService {

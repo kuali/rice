@@ -25,7 +25,7 @@ import org.kuali.rice.kcb.service.MessageService;
 /**
  * MessageService implementation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MessageServiceImpl extends BusinessObjectServiceImpl implements MessageService {

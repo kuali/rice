@@ -18,7 +18,7 @@ package org.kuali.rice.core.config.event;
 /**
  * A simple marker interface to define events that might occur during RiceConfigurer initialization and shutdown
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RiceConfigEvent {
 

@@ -33,7 +33,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 /**
  * Unit tests for RouteLogAction -- very incomplete, only tests populateRouteLogFutureRequests
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RouteLogActionTest extends KEWTestCase

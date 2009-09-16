@@ -23,7 +23,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 /**
  * Service locator for KIM.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public final class KIMServiceLocator {

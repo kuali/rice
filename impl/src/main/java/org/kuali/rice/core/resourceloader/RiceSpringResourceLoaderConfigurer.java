@@ -29,7 +29,7 @@ import org.springframework.beans.factory.InitializingBean;
  * Wraps {@link BeanFactory} in {@link BeanFactoryResourceLoader} and places the {@link ResourceLoader} 
  * at the top of the {@link GlobalResourceLoader} stack.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RiceSpringResourceLoaderConfigurer implements BeanFactoryAware, InitializingBean {

@@ -24,7 +24,7 @@ import org.kuali.rice.test.MethodAware;
  * A Runner which sets up Rice unit tests appropriately. 
  * 1) It invokes setName() on the Test (if the method exists) and sets it to the name of the test method being invoked. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 public class RiceUnitTestClassRunner extends JUnit4ClassRunner {

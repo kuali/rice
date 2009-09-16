@@ -29,7 +29,7 @@ import org.kuali.rice.kew.test.FakeServiceImpl.Invocation;
 
 /**
  * Tests that a groovy expression in a rule can invoke an arbitrary service on the KSB 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ServiceInvocationRuleTest extends KEWTestCase {
     protected void loadTestData() throws Exception {

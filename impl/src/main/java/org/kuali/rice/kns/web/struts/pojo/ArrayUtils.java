@@ -22,7 +22,7 @@ import java.lang.reflect.Array;
  * begin Kuali Foundation modification
  * This class sets the value of an element of an array of primitives at the supplied index.
  * end Kuali Foundation modification
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ArrayUtils {
 

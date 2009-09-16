@@ -23,7 +23,7 @@ import org.kuali.rice.kew.test.web.framework.ScriptState;
 
 /**
  * A property scheme that just returns the literal value of the locator portion
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class LiteralScheme implements PropertyScheme {
     public String getName() {

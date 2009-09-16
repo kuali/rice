@@ -18,7 +18,7 @@ package org.kuali.rice.ken.core;
 /**
  * An abstract superclass to aid in implementing lifeycles.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseLifecycle implements Lifecycle {
 

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * A ColumnDecorator for columns in a Lookup which adds an extra non-breaking space if the column
  * is an empty String.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LookupColumnDecorator implements DisplaytagColumnDecorator {
 

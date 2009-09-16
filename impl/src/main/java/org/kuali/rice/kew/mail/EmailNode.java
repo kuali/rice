@@ -48,7 +48,7 @@ import com.thoughtworks.xstream.XStream;
 /**
  * A node which will send emails using the configured stylesheet to generate the email content.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailNode implements SimpleNode {
 

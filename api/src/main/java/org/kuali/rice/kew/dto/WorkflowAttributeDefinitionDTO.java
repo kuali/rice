@@ -39,7 +39,7 @@ import java.util.Map;
  * or GenerixXMLSearchableAttribute, then the properties will also be set explicitly in the <code>paramMap</code>
  * by the workflow server. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowAttributeDefinitionDTO implements Serializable {
     

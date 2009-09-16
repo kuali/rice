@@ -21,7 +21,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 /**
  * Service for accessing and managing KEW primary cache
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RiceCacheAdministrator extends Lifecycle {
 	

@@ -22,7 +22,7 @@ import java.io.Serializable;
  * Transport object for State.  Essentially an empty "marker" subclass of state to use as a VO
  * Inherits all functionality.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StateDTO extends KeyValueDTO implements Serializable {
     

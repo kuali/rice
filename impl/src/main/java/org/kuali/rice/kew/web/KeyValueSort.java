@@ -26,7 +26,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
  * tasks. Right now it is used to hold information that will be display on a jsp
  * for drop down boxes.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KeyValueSort extends KeyValue {
 

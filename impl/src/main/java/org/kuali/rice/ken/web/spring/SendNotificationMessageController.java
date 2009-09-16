@@ -55,7 +55,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This class is the controller for sending Simple notification messages via an end user interface.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SendNotificationMessageController extends BaseSendNotificationController {
 	/** Logger for this class and subclasses */

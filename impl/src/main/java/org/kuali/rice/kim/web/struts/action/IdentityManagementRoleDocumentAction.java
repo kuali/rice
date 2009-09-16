@@ -58,7 +58,7 @@ import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementRoleDocumentAction extends IdentityManagementDocumentActionBase {
@@ -86,7 +86,6 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ActionForward forward = null;
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         if ( roleDocumentForm.getRoleId() == null ) {
             String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
@@ -97,10 +96,11 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		setKimType(kimTypeId, roleDocumentForm);
 
 		KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
-		if (roleDocumentForm.getMemberRows() != null) {
-		    memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+		if (roleDocumentForm.getRoleDocument()!=null && roleDocumentForm.getMemberRows() != null) {
+			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
 		}
-        forward = super.execute(mapping, roleDocumentForm, request, response);
+
+		ActionForward forward = super.execute(mapping, roleDocumentForm, request, response);
 
 		roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
 		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDocumentForm.getRoleDocument().getKimType())) {
@@ -165,11 +165,13 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     private void setKimType(String kimTypeId, IdentityManagementRoleDocumentForm roleDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
             roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
-            roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
-		} else if ( StringUtils.isNotBlank( roleDocumentForm.getRoleDocument().getRoleTypeId() ) ) {
+            if (roleDocumentForm.getRoleDocument() != null) {
+            	roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
+            }
+		} else if ( roleDocumentForm.getRoleDocument() != null && StringUtils.isNotBlank( roleDocumentForm.getRoleDocument().getRoleTypeId() ) ) {
             roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(
             		roleDocumentForm.getRoleDocument().getRoleTypeId()));
-            roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
+        	roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
 		}
     }
     

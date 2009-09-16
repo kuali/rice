@@ -15,6 +15,7 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
 /**
  * This interface defines methods that a KualiConfiguration Service must provide. Provides methods for getting string
@@ -27,12 +28,36 @@ public interface RiceApplicationConfigurationService {
      * @param parameterName
      * @return String associated with the given parameterName
      */
-    public String getConfigurationParameter( String parameterName ); 
+    String getConfigurationParameter( String parameterName ); 
     
     /**
      * This method can be used to supplement the list of ParameterDetailTypes defined in the database from other sources.
      * 
      * @return List<ParameterDetailedType> containing the detailed types configured in non-database sources
      */
-    public List<ParameterDetailType> getNonDatabaseComponents();
+    List<ParameterDetailType> getNonDatabaseComponents();
+    
+    /**
+     * Checks whether this application is responsible for the package given.  It will
+     * ensure that it falls within a set of configured parent packages.
+     */
+    boolean isResponsibleForPackage( String packageName );
+    
+    /**
+     * Checks whether this application supports the given business object (whether
+     * it is defined in the data dictionary) 
+     */
+    boolean supportsBusinessObjectClass( String businessObjectClassName );
+    
+    /**
+	 * This method will return the attribute definition from the local data dictionary.  It assumes that
+	 * the #supportsBusinessObjectClass(java.lang.String) method has already been checked to make sure that
+	 * this service will handle that class.  If not present, this method will return null.
+	 * 
+	 * This method also returns null if the given attribute definition can not be found on the business object.
+     */
+    AttributeDefinition getBusinessObjectAttributeDefinition( String businessObjectClassName, String attributeName );
+    
+    String getBaseLookupUrl( String businessObjectClassName );
+    String getBaseInquiryUrl( String businessObjectClassName );
 }

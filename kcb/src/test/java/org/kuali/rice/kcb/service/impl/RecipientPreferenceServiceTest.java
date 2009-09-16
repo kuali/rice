@@ -33,7 +33,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 /**
  * Tests {@link RecipientPreferenceService}
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public class RecipientPreferenceServiceTest extends KCBTestCase {

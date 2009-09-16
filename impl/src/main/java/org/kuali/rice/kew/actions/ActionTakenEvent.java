@@ -48,7 +48,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  * {@link ActionTakenValue} action taken (once saved), {@link KimPrincipal} principal
  * that has taken the action
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ActionTakenEvent {
 
@@ -164,6 +164,7 @@ public abstract class ActionTakenEvent {
 				LOG.warn(report.getMessage(), report.getProcessException());
 				throw new InvalidActionTakenException(report.getMessage());
 			}
+
 		} catch (Exception ex) {
 			LOG.warn(ex, ex);
 			throw new WorkflowRuntimeException(ex.getMessage(), ex);

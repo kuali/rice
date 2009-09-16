@@ -35,7 +35,7 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
  * Implementations of this Interface are potentially remotable, so this Interface uses 
  * value objects. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PostProcessorRemote {
   

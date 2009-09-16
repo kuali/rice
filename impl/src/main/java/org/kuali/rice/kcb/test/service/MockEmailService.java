@@ -24,7 +24,7 @@ import org.kuali.rice.kcb.service.EmailService;
  * Interface for MockEmailServiceImpl to allow unit test code to grab
  * the mailboxes through Spring proxying 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MockEmailService extends EmailService {
     public Map<String, List<Map<String, String>>> getMailBoxes();

@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  * }
  * </tt>
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConcurrencyDetector {
     // keeps track of whether the last enter (in the thread) was able to acquire

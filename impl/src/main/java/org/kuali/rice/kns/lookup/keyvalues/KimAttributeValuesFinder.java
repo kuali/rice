@@ -19,46 +19,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.support.KimTypeService;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimAttributeValuesFinder extends KeyValuesBase {
 
-	private String kimTypeName;
-	private String kimAttributeName; 
+	private static final Logger LOG = Logger.getLogger( KimAttributeValuesFinder.class );
+	
+	protected String kimTypeId;
+	protected String kimAttributeName; 
 	
 	/**
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
 	public List<KeyLabelPair> getKeyValues() {
-		Logger.getLogger(getClass()).warn("KimAttributeValueFinder is not implemented - code is never used.");
-//		Map<String,String> criteria = new HashMap<String,String>();
-//        criteria.put("name", kimTypeName);
-//        Collection<KimTypeInfo> typeList = KIMServiceLocator.getTypeInfoService().getKimTypeByName(namespaceCode, kimTypeName);
-//        if ( !typeList.isEmpty() ) {
-//	        KimTypeInfo kimType = typeList.iterator().next();
-//	        KimTypeService service = KimCommonUtils.getKimTypeService(kimType);
-//	        if ( service != null ) {
-//				return service.getAttributeValidValues(kimAttributeName);
-//	        }
-//        }
+        KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+        if ( kimType != null ) {
+	        KimTypeService service = KimCommonUtils.getKimTypeService(kimType);
+	        if ( service != null ) {
+				return service.getAttributeValidValues(kimTypeId,kimAttributeName);
+	        } else {
+	        	LOG.error( "Unable to get type service " + kimType.getKimTypeServiceName() );
+	        }
+        } else {
+        	LOG.error( "Unable to obtain KIM type for kimTypeId=" + kimTypeId );
+        }
         return new ArrayList<KeyLabelPair>(0);
-	}
-
-	/**
-	 * @return the kimTypeName
-	 */
-	public String getKimTypeName() {
-		return this.kimTypeName;
-	}
-
-	/**
-	 * @param kimTypeName the kimTypeName to set
-	 */
-	public void setKimTypeName(String kimTypeName) {
-		this.kimTypeName = kimTypeName;
 	}
 
 	/**
@@ -73,6 +65,20 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
 	 */
 	public void setKimAttributeName(String kimAttributeName) {
 		this.kimAttributeName = kimAttributeName;
+	}
+
+	/**
+	 * @return the kimTypeId
+	 */
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+
+	/**
+	 * @param kimTypeId the kimTypeId to set
+	 */
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
 	}
 
 }

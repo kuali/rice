@@ -34,7 +34,7 @@ import org.kuali.rice.kns.util.IncidentReportUtils;
 /**
  * Takes edl web requests.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDLServlet extends HttpServlet {

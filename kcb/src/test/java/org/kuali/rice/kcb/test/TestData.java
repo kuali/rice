@@ -22,7 +22,7 @@ import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 /**
  * Contains test data objects 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestData {
     public static final Long FAKE_ID = 0xBEEFl;

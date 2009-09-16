@@ -24,7 +24,7 @@ import org.kuali.rice.kim.util.KimConstants;
  *
  * @see Workgroup
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class GroupNameId implements GroupId {
 

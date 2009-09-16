@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
  * element of the dom destined to be transformed so the transform can include the specified
  * javascript.  This is because the EDL definition itself is no longer present in this dom.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class JavascriptEDLComponent implements EDLModelComponent {

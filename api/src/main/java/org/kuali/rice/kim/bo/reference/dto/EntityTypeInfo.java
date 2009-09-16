@@ -20,12 +20,20 @@ import org.kuali.rice.kim.bo.reference.EntityType;
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EntityTypeInfo extends KimCodeInfoBase implements EntityType {
 
 	private static final long serialVersionUID = 1L;
+
+	public EntityTypeInfo() {
+		super();
+	}
+
+	public EntityTypeInfo(EntityType entityType) {
+		super(entityType);
+	}
 
 	/**
 	 * @return the entityTypeCode

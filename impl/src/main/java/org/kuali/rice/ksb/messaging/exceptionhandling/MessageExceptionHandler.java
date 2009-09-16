@@ -22,7 +22,7 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
  * A MessageExceptionHandler handles exception which arrise during processing of the
  * message.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MessageExceptionHandler {
 

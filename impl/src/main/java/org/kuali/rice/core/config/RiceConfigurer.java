@@ -66,7 +66,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
 /**
  * Used to configure common Rice configuration properties.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener, BeanFactoryAware {

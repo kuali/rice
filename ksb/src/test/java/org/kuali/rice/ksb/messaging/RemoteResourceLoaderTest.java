@@ -46,7 +46,7 @@ import org.kuali.rice.ksb.test.KSBTestCase;
  * Tests RemoteResourceLoader is working correctly by itself and working correctly with the RemoteServiceRegistry in marking
  * services bad/refreshing services/etc.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RemoteResourceLoaderTest extends KSBTestCase {

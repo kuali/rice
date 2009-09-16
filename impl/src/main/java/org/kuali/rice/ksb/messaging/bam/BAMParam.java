@@ -34,7 +34,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * A parameter of a method invocation recorded by the BAM.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRSB_BAM_PARM_T")

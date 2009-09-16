@@ -36,7 +36,7 @@ import org.quartz.Trigger;
 /**
  * action to view messages in quartz and push them into the message queue. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class QuartzQueueAction extends KSBAction {

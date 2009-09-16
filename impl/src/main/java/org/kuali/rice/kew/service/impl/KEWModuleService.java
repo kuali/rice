@@ -31,7 +31,7 @@ import org.kuali.rice.kns.service.impl.ModuleServiceBase;
 /**
  * The ModuleService for KEW
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KEWModuleService extends ModuleServiceBase {

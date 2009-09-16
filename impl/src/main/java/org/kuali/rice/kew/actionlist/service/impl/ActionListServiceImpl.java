@@ -45,7 +45,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * Default implementation of the {@link ActionListService}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListServiceImpl implements ActionListService {
 

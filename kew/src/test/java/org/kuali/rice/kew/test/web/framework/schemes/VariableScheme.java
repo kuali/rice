@@ -27,7 +27,7 @@ import org.kuali.rice.kew.test.web.framework.ScriptState;
 
 /**
  * A property scheme that looks the property up in the state variable map
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class VariableScheme implements PropertyScheme {
     public String getName() {

@@ -17,6 +17,7 @@ package org.kuali.rice.kew.engine.node;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.ClassDumper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -49,7 +49,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Essentially extends RequestsNode and provides a custom RouteModule
  * implementation.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class RoleNode extends RequestsNode {
@@ -215,13 +215,39 @@ public class RoleNode extends RequestsNode {
 		performanceLogger.log( "Time to activate requests." );
 		return requestActivated;
 	}
+	
+    protected static class RoleRequestSorter implements Comparator<ActionRequestValue> {
+        public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
+        	int result = 0;
+        	// compare descriptions (only if both not null)
+        	if ( ar1.getResponsibilityDesc() != null && ar2.getResponsibilityDesc() != null ) {
+        		result = ar1.getResponsibilityDesc().compareTo( ar2.getResponsibilityDesc() );
+        	}
+            if ( result != 0 ) return result;
+        	// compare priority
+            result = ar1.getPriority().compareTo(ar2.getPriority());
+            if ( result != 0 ) return result;
+            // compare action request type
+            result = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested(), true);
+            if ( result != 0 ) return result;
+            // compare action request ID
+            if ( (ar1.getActionRequestId() != null) && (ar2.getActionRequestId() != null) ) {
+                result = ar1.getActionRequestId().compareTo(ar2.getActionRequestId());
+            } else {
+                // if even one action request id is null at this point return then the two are equal
+                result = 0;
+            }
+            return result;
+        }
+    }
+    protected static Comparator<ActionRequestValue> ROLE_REQUEST_SORTER = new RoleRequestSorter();
 
+	
 	protected boolean activateRequestsCustom(RouteContext context,
 			List<ActionRequestValue> requests, List<ActionItem> generatedActionItems,
 			DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance)
 			throws WorkflowException {
-		// FIXME: won't this undo any ordering from the role type service?
-		Collections.sort( requests, new Utilities.PrioritySorter() );
+		Collections.sort( requests, ROLE_REQUEST_SORTER );
 		String activationType = nodeInstance.getRouteNode().getActivationType();
 		boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals( activationType );
 		boolean requestActivated = false;

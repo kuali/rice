@@ -85,7 +85,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @WebService(endpointInterface = KIMWebServiceConstants.RoleService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.RoleService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
@@ -455,7 +455,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	for ( RoleMemberImpl rm : rms ) {
 			RoleMembershipInfo mi = new RoleMembershipInfo( rm.getRoleId(), rm.getRoleMemberId(), rm.getMemberId(), rm.getMemberTypeCode(), rm.getQualifier() );
 			// if the qualification check does not need to be made, just add the result
-			if ( qualification == null || getRoleTypeService( rm.getRoleId() ) == null ) {
+			if ( (qualification == null || qualification.isEmpty()) || getRoleTypeService( rm.getRoleId() ) == null ) {
 				if ( rm.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE ) ) {
 					// if a role member type, do a non-recursive role member check
 					// to obtain the group and principal members of that role
@@ -841,7 +841,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// if the qualification is null and the role list is not, then any role in the list will match
     	// so since the role ID list is not blank, we can return true at this point
-    	if ( qualification == null && !rps.isEmpty() ) {
+    	if ( (qualification == null || qualification.isEmpty()) && !rps.isEmpty() ) {
     		return true;
     	}
 

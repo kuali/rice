@@ -18,7 +18,6 @@ package org.kuali.rice.kns.service;
 import java.beans.PropertyDescriptor;
 
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.document.Document;
@@ -97,6 +96,8 @@ public interface DictionaryValidationService {
      * @param validateRequired - whether to execute required field checks
      */
     public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired);
+    
+    public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName);
     
     /**
      * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to check the 

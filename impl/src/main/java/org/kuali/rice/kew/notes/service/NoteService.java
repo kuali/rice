@@ -28,7 +28,7 @@ import org.kuali.rice.kew.notes.Note;
  * @see Note
  * @see Attachment
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NoteService {
 

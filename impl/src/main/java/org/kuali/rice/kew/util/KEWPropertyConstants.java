@@ -23,7 +23,7 @@ import org.kuali.rice.core.util.JSTLConstants;
 /**
  * This is a constants file used to describe KEW properties
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KEWPropertyConstants extends JSTLConstants {

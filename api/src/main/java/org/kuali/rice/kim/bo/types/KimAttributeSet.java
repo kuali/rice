@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * Immutable version of an attribute set - not used at present. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Deprecated 

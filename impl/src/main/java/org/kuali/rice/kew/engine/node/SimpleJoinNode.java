@@ -23,7 +23,7 @@ import org.kuali.rice.kew.engine.RouteHelper;
  * A simple implementation of a {@link JoinNode} which indicates it is complete once all branches
  * have joined.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimpleJoinNode implements JoinNode {
         

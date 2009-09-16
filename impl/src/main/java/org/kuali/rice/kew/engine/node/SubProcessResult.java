@@ -23,7 +23,7 @@ import org.kuali.rice.kew.engine.transition.SubProcessTransitionEngine;
  * a sub process is handled by the {@link SubProcessTransitionEngine} so this result will always wrap
  * a {@link SimpleResult} with a completion value of true.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SubProcessResult extends SimpleResult {
 

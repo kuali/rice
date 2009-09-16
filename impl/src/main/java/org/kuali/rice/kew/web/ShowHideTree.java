@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A tree of boolean flags which represent the state of show/hide for the GUI.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ShowHideTree implements java.io.Serializable {
 

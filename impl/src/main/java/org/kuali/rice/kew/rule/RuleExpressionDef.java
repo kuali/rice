@@ -28,7 +28,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
  * BO for rule expressions 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_EXPR_T")

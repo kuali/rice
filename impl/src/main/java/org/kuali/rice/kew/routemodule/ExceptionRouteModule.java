@@ -22,6 +22,6 @@ package org.kuali.rice.kew.routemodule;
  * that does not generate requests since it extends the {@link DefaultRouteModule} and does
  * not augment it's functionality.  Similar in nature to the {@link AdHocRouteModule}. 
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExceptionRouteModule extends DefaultRouteModule {}

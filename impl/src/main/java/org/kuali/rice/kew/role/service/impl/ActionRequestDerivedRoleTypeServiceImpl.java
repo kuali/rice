@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class ActionRequestDerivedRoleTypeServiceImpl extends
@@ -53,7 +53,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
-		if ( qualification != null ) {
+		if ( qualification != null && !qualification.isEmpty() ) {
 		    String principalId = qualification.get(KimAttributes.PRINCIPAL_ID);
 			if (qualification.containsKey(KimAttributes.PRINCIPAL_ID)
 					&& hasApplicationRole(principalId, null, namespaceCode,
@@ -73,7 +73,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 			AttributeSet qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		try {
-			if ( qualification != null && StringUtils.isNumeric( qualification.get(KimAttributes.DOCUMENT_NUMBER) ) ) {
+			if ( (qualification != null && !qualification.isEmpty()) && StringUtils.isNumeric( qualification.get(KimAttributes.DOCUMENT_NUMBER) ) ) {
 				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(Long
 									.parseLong(qualification
 											.get(KimAttributes.DOCUMENT_NUMBER)), null, principalId);

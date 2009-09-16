@@ -33,7 +33,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * This class represents and instance of a NotificationMessageDelivery.  A Notification gets delivered to 
  * recipients, possibly in various ways.  For each delivery type that a recipient gets sent to them, 
  * they have an instance of this entity.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_NTFCTN_MSG_DELIV_T")

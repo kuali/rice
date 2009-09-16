@@ -23,7 +23,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * DocumentType policy enum type.
  * Encapsulates  policies of the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class DocumentTypePolicyEnum {
 
@@ -53,7 +53,7 @@ public final class DocumentTypePolicyEnum {
      * determines whether a document will go processed without any approval requests.  If
      * a document has this policy set to false and doesn't generate and approval requests the document will
      * be put in exception routing, which is the exception workgroup associated with the last route node or the
-     * workgroup defined in the 'defaultExceptionWorkgroupName'.  This policy if not defined in this or a parent
+     * workgroup defined in the 'defaultExceptionGroupName'.  This policy if not defined in this or a parent
      * document type defaults to true
      */
     public static final DocumentTypePolicyEnum DEFAULT_APPROVE = new DocumentTypePolicyEnum(KEWConstants.DEFAULT_APPROVE_POLICY);

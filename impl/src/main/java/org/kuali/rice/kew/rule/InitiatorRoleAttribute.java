@@ -28,7 +28,7 @@ import org.kuali.rice.kew.identity.PrincipalId;
  * RoleAttribute that exposes an INITIATOR abstract role which resolves to the
  * initiator of the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
     private static final String INITIATOR_ROLE_KEY = "INITIATOR";

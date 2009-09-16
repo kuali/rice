@@ -32,7 +32,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Alternate model object for action list fetches that do not automatically use
  * ojb collections.  This is here to make action list faster.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @MappedSuperclass

@@ -20,7 +20,7 @@ package org.kuali.rice.kew.exception;
  * parent document type has been parsed; this provides a means for delaying the processing
  * of child doc types until their parents are parsed.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class InvalidParentDocTypeException extends InvalidXmlException {

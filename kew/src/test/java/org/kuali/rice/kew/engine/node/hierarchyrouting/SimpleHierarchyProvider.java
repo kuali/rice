@@ -46,7 +46,7 @@ import org.w3c.dom.NodeList;
  *     stop ...
  *       stop ...
  * </pre>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimpleHierarchyProvider implements HierarchyProvider {
     private static final Logger LOG = Logger.getLogger(SimpleHierarchyProvider.class);

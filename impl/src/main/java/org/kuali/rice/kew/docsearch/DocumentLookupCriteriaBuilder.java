@@ -38,7 +38,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * Helper class Used for building a Document Search criteria for the lookup
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentLookupCriteriaBuilder  {
@@ -59,7 +59,18 @@ public class DocumentLookupCriteriaBuilder  {
 			}
 		}
     	for (String fieldToSet : fieldsToSet.keySet()) {
-    		String valueToSet = fieldsToSet.get(fieldToSet)[0];
+    		 String valueToSet = "";
+    		 String[] valuesToSet = fieldsToSet.get(fieldToSet);
+    		 // some inputs are now multi-select
+    		 if(valuesToSet.length >= 1){
+    			 for(String value: valuesToSet){
+    				 valueToSet += value + ",";
+    			 }
+    			 valueToSet = valueToSet.substring(0, valueToSet.length()-1);
+    		 }else{
+    			 valueToSet = valuesToSet[0];
+    		 }
+
 			try {
 				PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
 			} catch (IllegalAccessException e) {
@@ -159,7 +170,7 @@ public class DocumentLookupCriteriaBuilder  {
     		dTypeCriteria.setName(docTypeName.trim());
     		dTypeCriteria.setActive(true);
     		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
-    
+
     		String firstDocTypeName = null;
     		// Return the first valid doc type.
     		if(docTypeList != null){

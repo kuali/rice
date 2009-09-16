@@ -28,7 +28,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
  * A simple base RoleAttribute implementation for roles that do not need to be qualified
  * prior to resolution.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
 

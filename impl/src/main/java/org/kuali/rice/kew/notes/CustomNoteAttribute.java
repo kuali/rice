@@ -24,7 +24,7 @@ import org.kuali.rice.kew.web.session.UserSession;
  * An attribute which allows for customization of the Notes interface for
  * a particular document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface CustomNoteAttribute {
 

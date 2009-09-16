@@ -39,7 +39,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Super user Approves a single action request.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEvent {
     /**

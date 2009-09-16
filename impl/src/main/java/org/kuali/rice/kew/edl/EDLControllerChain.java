@@ -36,7 +36,7 @@ import org.w3c.dom.Document;
  * being that this is how you would page between edls.  Uses the template associated with the last edl controller
  * to render the dom of the last edl controller.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDLControllerChain {

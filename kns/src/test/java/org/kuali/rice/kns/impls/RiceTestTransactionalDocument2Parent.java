@@ -20,7 +20,7 @@ import org.kuali.rice.kns.document.TransactionalDocumentBase;
 /**
  * This is a simple test document for use in the BaseBOClassAndBaseDocumentClassTest unit test.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceTestTransactionalDocument2Parent extends
 		TransactionalDocumentBase {

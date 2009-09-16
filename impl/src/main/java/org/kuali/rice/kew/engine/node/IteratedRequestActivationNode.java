@@ -60,7 +60,7 @@ import org.kuali.rice.kew.util.Utilities;
  * This node transitions/completes when there are no remaining <i>blocking</i> action requests (i.e., no approval or
  * completion requests).
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IteratedRequestActivationNode implements SimpleNode {
 

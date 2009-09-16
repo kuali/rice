@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface KimPrincipal extends ExternalizableBusinessObject {
-	String getPrincipalId();
-	String getPrincipalName();
-	String getPassword();
-	String getEntityId();
-	boolean isActive();
+public interface KimPrincipal {
+	public String getPrincipalId();
+	public String getPrincipalName();
+	public String getEntityId();
+	public boolean isActive();
 }

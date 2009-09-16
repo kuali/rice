@@ -26,7 +26,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * Responsible for implementing policy to put message into threadpool for execution appropriately. Could make Spring and
  * overridable service.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class MessageSender {

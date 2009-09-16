@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.Role;
 /**
  * Simple Role data designed in DTO form for consumption by web services. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimRoleInfo implements Role, Serializable {

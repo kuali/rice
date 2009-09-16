@@ -22,7 +22,7 @@ import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
 /**
  * This is the JaxWsEchoService implementation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @WebService(endpointInterface="org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService",

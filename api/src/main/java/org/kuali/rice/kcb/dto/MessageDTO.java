@@ -21,7 +21,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 /**
  * Message value object for published API  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageDTO {
     private String deliveryType;

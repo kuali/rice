@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
@@ -60,7 +61,7 @@ import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRuleBase implements AddPermissionRule, AddResponsibilityRule, AddMemberRule, AddDelegationRule, AddDelegationMemberRule {
 //	private static final Logger LOG = Logger.getLogger( IdentityManagementRoleDocumentRule.class );
@@ -100,16 +101,19 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         IdentityManagementRoleDocument roleDoc = (IdentityManagementRoleDocument)document;
 
         boolean valid = true;
+        boolean validateRoleAssigneesAndDelegations = !KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDoc.getKimType());
         GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
-        valid &= validAssignRole(roleDoc);
         valid &= validDuplicateRoleName(roleDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
-        valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
-        valid &= validRoleMemberActiveDates(roleDoc.getMembers());
-        valid &= validateDelegationMemberRoleQualifier(roleDoc.getMembers(), roleDoc.getDelegationMembers(), roleDoc.getKimType());
-        valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
+        if(validateRoleAssigneesAndDelegations){
+	        valid &= validAssignRole(roleDoc);
+	        valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
+	        valid &= validRoleMemberActiveDates(roleDoc.getMembers());
+	        valid &= validateDelegationMemberRoleQualifier(roleDoc.getMembers(), roleDoc.getDelegationMembers(), roleDoc.getKimType());
+	        valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
+	        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
+        }
         valid &= validRoleResponsibilitiesActions(roleDoc.getResponsibilities());
-        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;

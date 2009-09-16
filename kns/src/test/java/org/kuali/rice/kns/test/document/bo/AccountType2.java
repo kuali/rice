@@ -21,7 +21,7 @@ import java.util.LinkedHashMap;
 /**
  * This is a copy of AccountType for usage in the BaseBOClassAndBaseDocumentClassTest unit test.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AccountType2 extends AccountType2Parent {
     

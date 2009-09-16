@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler;
@@ -60,9 +60,10 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 
 		// now look at the branch state
 		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
-		RouteNodeInstance nodeInstance = (RouteNodeInstance) routeHeader.getInitialRouteNodeInstance(0);
-		BranchState processedBranchState = nodeInstance.getBranch().getBranchState(KEWConstants.POST_PROCESSOR_PROCESSED_KEY);
-		BranchState finalBranchState = nodeInstance.getBranch().getBranchState(KEWConstants.POST_PROCESSOR_FINAL_KEY);
+		Branch rootBranch = routeHeader.getRootBranch();
+		assertNotNull(rootBranch);
+		BranchState processedBranchState = rootBranch.getBranchState(KEWConstants.POST_PROCESSOR_PROCESSED_KEY);
+		BranchState finalBranchState = rootBranch.getBranchState(KEWConstants.POST_PROCESSOR_FINAL_KEY);
 		assertNotNull(processedBranchState);
 		assertNotNull(finalBranchState);
 		assertEquals("true", processedBranchState.getValue());

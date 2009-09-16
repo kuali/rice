@@ -20,39 +20,39 @@ import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincipal {
 
 	private static final long serialVersionUID = 4480581610252159266L;
 
-	private String principalId;
-	private String principalName;
-	private String entityId;
-    private String password;
-    
+	private String principalId = "";
+	private String principalName = "";
+	private String entityId = "";
+
 	/**
 	 * 
 	 */
 	public KimPrincipalInfo() {
-		this.active = true;
+		super();
+		active = true;
 	}
 	
 	/**
 	 * 
 	 */
 	public KimPrincipalInfo( KimPrincipal p ) {
+		this();
 		if ( p != null ) {
-			this.principalId = p.getPrincipalId();
-			this.entityId = p.getEntityId();
-			this.principalName = p.getPrincipalName();
-			this.password = p.getPassword();
-			this.active = p.isActive();
+			principalId = unNullify( p.getPrincipalId() );
+			entityId = unNullify( p.getEntityId() );
+			principalName = unNullify( p.getPrincipalName() );
+			active = p.isActive();
 		}
 	}
 	
 	public String getPrincipalId() {
-		return unNullify(this.principalId);
+		return this.principalId;
 	}
 
 	public void setPrincipalId(String principalId) {
@@ -60,7 +60,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getPrincipalName() {
-		return unNullify(this.principalName);
+		return this.principalName;
 	}
 
 	public void setPrincipalName(String principalName) {
@@ -68,29 +68,11 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getEntityId() {
-		return unNullify(this.entityId);
+		return this.entityId;
 	}
 
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-
-	public String getPassword() {
-		return unNullify(this.password);
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	/** {@inheritDoc} */
-    public void refresh(){
-    	
-    }
-    
-    /** {@inheritDoc} */
-    public void prepareForWorkflow(){
-    	
-    }
 
 }

@@ -26,7 +26,7 @@ import org.kuali.rice.test.BaselineTestCase;
 /**
  * Base KCBTestCase 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class KCBTestCase extends BaselineTestCase {
     protected KCBServiceLocator services;

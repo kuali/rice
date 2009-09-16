@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.test.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,14 +27,19 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
 
 /**
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityServiceTest extends KIMTestCase {
 
@@ -84,6 +90,60 @@ public class IdentityServiceTest extends KIMTestCase {
 	}
 	
 	@Test
+	public void testGetDefaultEntityByPrincipalId() {
+		String principalId = "KULUSER";
+		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalId(principalId);
+		assertNotNull("entity must not be null", info);
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal id", principalId, principalInfo.getPrincipalId());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+	}
+
+	@Test
+	public void testGetDefaultEntityByPrincipalName() {
+		String principalName = "kuluser";
+		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalName(principalName);
+		assertNotNull("entity must not be null", info);
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal name", principalName, principalInfo.getPrincipalName());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+	}
+
+	@Test
+	public void testGetEntityByPrincipalId() {
+		String principalId = "KULUSER";
+		KimEntityInfo info = identityService.getEntityInfoByPrincipalId(principalId);
+		assertNotNull("entity must not be null", info);
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal id", principalId, principalInfo.getPrincipalId());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+		assertTrue("entity residencies must not be null", (info.getResidencies() == null) || info.getResidencies().isEmpty());
+	}
+
+	@Test
+	public void testGetEntityByPrincipalName() {
+		String principalName = "kuluser";
+		KimEntityInfo info = identityService.getEntityInfoByPrincipalName(principalName);
+		assertNotNull("entity must not be null", info);
+		assertNotNull("entity principals must not be null", info.getPrincipals());
+		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
+		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
+			assertEquals("Wrong principal name", principalName, principalInfo.getPrincipalName());
+		}
+		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+		assertTrue("entity residencies must not be null", (info.getResidencies() == null) || info.getResidencies().isEmpty());
+	}
+
+	@Test
 	public void testGetContainedAttributes() {
 		KimPrincipal principal = identityService.getPrincipal("p1");
 		
@@ -93,6 +153,37 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertNotNull( "PERSON EntityEntityType must not be null", eet );
 		assertNotNull( "EntityEntityType's default email address must not be null", eet.getDefaultEmailAddress() );
 		assertEquals( "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
+	}
+
+	protected Map<String,String> setUpEntityLookupCriteria(String principalId) {
+		PersonServiceImpl personServiceImpl = (PersonServiceImpl) KIMServiceLocator.getService(KIMServiceLocator.KIM_PERSON_SERVICE);
+		Map<String,String> criteria = new HashMap<String,String>(1);
+		criteria.put(KIMPropertyConstants.Person.PRINCIPAL_ID, principalId);
+		return personServiceImpl.convertPersonPropertiesToEntityProperties(criteria);
+	}
+
+	@Test
+	public void testLookupEntityDefaultInfo() {
+		String principalIdToTest = "p1";
+		List<KimEntityDefaultInfo> results = identityService.lookupEntityDefaultInfo(setUpEntityLookupCriteria(principalIdToTest), false);
+		assertNotNull("Lookup results should never be null", results);
+		assertEquals("Lookup result count is invalid", 1, results.size());
+		for (KimEntityDefaultInfo kimEntityDefaultInfo : results) {
+			assertEquals("Entity should have only one principal for this test", 1, kimEntityDefaultInfo.getPrincipals().size());
+			assertEquals("Principal Ids should match", principalIdToTest, kimEntityDefaultInfo.getPrincipals().get(0).getPrincipalId());
+		}
+	}
+
+	@Test
+	public void testLookupEntityInfo() {
+		String principalIdToTest = "p1";
+		List<KimEntityInfo> results = identityService.lookupEntityInfo(setUpEntityLookupCriteria(principalIdToTest), false);
+		assertNotNull("Lookup results should never be null", results);
+		assertEquals("Lookup result count is invalid", 1, results.size());
+		for (KimEntityInfo kimEntityInfo : results) {
+			assertEquals("Entity should have only one principal for this test", 1, kimEntityInfo.getPrincipals().size());
+			assertEquals("Principal Ids should match", principalIdToTest, kimEntityInfo.getPrincipals().get(0).getPrincipalId());
+		}
 	}
 
 	protected IdentityService findIdSvc() throws Exception {

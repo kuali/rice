@@ -25,7 +25,7 @@ import org.kuali.rice.kcb.exception.ErrorList;
 
 /**
  * Service for accessing user preferences in the KEN system.{@link UserPreference}
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RecipientPreferenceService {
     /**

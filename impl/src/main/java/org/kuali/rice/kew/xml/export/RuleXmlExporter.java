@@ -38,7 +38,7 @@ import org.kuali.rice.kim.bo.Group;
  *
  * @see RuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleXmlExporter implements XmlExporter, XmlConstants {
 

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document.rule;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +25,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -66,7 +67,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule, AddRoleRule, AddPersonDocumentRoleQualifierRule, AddPersonDelegationMemberRule {
@@ -99,6 +100,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
         //KNSServiceLocator.getDictionaryValidationService().validateDocument(document);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
+        valid &= validDuplicatePrincipalName(personDoc);
         valid &= validTaxId(personDoc);
         valid &= checkMultipleDefault (personDoc.getAffiliations(), "affiliations");
         valid &= checkMultipleDefault (personDoc.getNames(), "names");
@@ -130,6 +132,24 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         return valid;
     }
     
+    @SuppressWarnings("unchecked")
+	private boolean validDuplicatePrincipalName(IdentityManagementPersonDocument personDoc){
+    	Map<String, String> criteria = new HashMap<String, String>();
+    	criteria.put("principalName", personDoc.getPrincipalName());
+    	List<KimPrincipalImpl> prncplImpls = (List<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
+    	boolean rulePassed = true;
+    	if(prncplImpls!=null && prncplImpls.size()>0){
+    		if(prncplImpls.size()==1 && prncplImpls.get(0).getPrincipalId().equals(personDoc.getPrincipalId()))
+    			rulePassed = true;
+    		else{
+	    		GlobalVariables.getMessageMap().putError("document.principalName", 
+	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Principal Name"});
+	    		rulePassed = false;
+    		}
+    	}
+    	return rulePassed;
+    }
+
 	private boolean checkUnassignableRoles(IdentityManagementPersonDocument document) {
 		boolean valid = true;
     	Map<String,Set<String>> unassignableRoles = getAuthorizer( document ).getUnassignableRoles(document, GlobalVariables.getUserSession().getPerson());
@@ -568,7 +588,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return businessObjectService;
 	}
 
-	public boolean processAddPersonDocumentRoleQualifier(PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
+	public boolean processAddPersonDocumentRoleQualifier(IdentityManagementPersonDocument document, PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
 		boolean dateValidationSuccess = validateActiveDate("document.roles[" + selectedRoleIdx + "].newRolePrncpl.activeFromDate", kimDocumentRoleMember.getActiveFromDate(), kimDocumentRoleMember.getActiveToDate());
 		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
 		AttributeSet validationErrors = new AttributeSet();
@@ -583,9 +603,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    AttributeSet oldMemberQualifiers;
 	    List<String> roleIds = new ArrayList<String>();
 	    roleIds.add(role.getRoleId());
-	    List<RoleMembershipInfo> roleMembersForRole = getRoleService().getFirstLevelRoleMembers(roleIds);
-	    for(RoleMembershipInfo member: roleMembersForRole){
-	    	oldMemberQualifiers = member.getQualifier();
+	    //List<RoleMembershipInfo> roleMembersForRole = getRoleService().getFirstLevelRoleMembers(roleIds);
+	    for(KimDocumentRoleMember member: role.getRolePrncpls()){
+	    	oldMemberQualifiers = member.getQualifierAsAttributeSet();
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			role.getKimRoleType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
 	    	validationErrors.putAll( 
@@ -596,11 +616,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
 	    			role.getKimRoleType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
-	    	if (!attributesUnique && (member.getMemberId().equals(kimDocumentRoleMember.getMemberId()) && 
-	    			member.getMemberTypeCode().equals(kimDocumentRoleMember.getMemberTypeCode()))){
-	            rulePassed = false;
-	            GlobalVariables.getMessageMap().putError(errorPath, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role"});
-	            break;
+	    	if (!attributesUnique){
+	            GlobalVariables.getMessageMap().putError("document."+errorPath+".qualifiers[0].attrVal", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role Qualifier"});
+	            return false;
 	    	}
 	    	i++;
 	    }

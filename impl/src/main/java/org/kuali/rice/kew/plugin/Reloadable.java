@@ -23,7 +23,7 @@ package org.kuali.rice.kew.plugin;
  * <p>If invocations of isReloadable() return false then calls to reload() should be
  * no-ops.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Reloadable {
 

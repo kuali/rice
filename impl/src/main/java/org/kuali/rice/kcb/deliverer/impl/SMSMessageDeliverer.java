@@ -29,7 +29,7 @@ import org.kuali.rice.kcb.exception.MessageDismissalException;
 /**
  * This class is responsible for describing the SMS delivery mechanism for
  * the system.  It is not yet fully implemented - this class is just a stub.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SMSMessageDeliverer implements MessageDeliverer {
     private static Logger LOG = Logger.getLogger(SMSMessageDeliverer.class);

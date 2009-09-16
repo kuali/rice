@@ -22,7 +22,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Result of a {@link RuleExpression} evaluation 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleExpressionResult {
     /**

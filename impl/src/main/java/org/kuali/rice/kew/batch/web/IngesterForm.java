@@ -26,7 +26,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  * Struts form that accepts uploaded files (in the form of <code>FormFile</code>s)
  * @see org.kuali.rice.kew.batch.web.IngesterAction
  * @see org.apache.struts.upload.FormFile
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IngesterForm extends KualiForm {
 

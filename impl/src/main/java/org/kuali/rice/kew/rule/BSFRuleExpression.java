@@ -28,7 +28,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * The language is given by the type qualifier, e.g.:
  * &lt;expression type="BSF:groovy"&gt;...
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BSFRuleExpression implements RuleExpression {
     static {

@@ -17,12 +17,10 @@ package org.kuali.rice.kim.bo.entity.dto;
 
 import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityPhone {
 	
@@ -34,164 +32,215 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	protected String phoneNumber = "";
 	protected String extensionNumber = "";
 	protected String countryCode = "";
+	
+	protected String phoneNumberUnmasked;
+    protected String extensionNumberUnmasked;
+    protected String countryCodeUnmasked;
+    
+    protected String formattedPhoneNumber;
+	protected String formattedPhoneNumberUnmasked;
 
 	protected boolean suppressPhone = false;
 	
+
 	/**
 	 * 
 	 */
 	public KimEntityPhoneInfo() {
+		super();
+		active = true;
 	}
 	
 	/**
 	 * 
 	 */
 	public KimEntityPhoneInfo( KimEntityPhone phone ) {
+		this();
 		if ( phone != null ) {
 		    this.entityPhoneId = unNullify( phone.getEntityPhoneId() );
 		    this.entityTypeCode = unNullify( phone.getEntityTypeCode() );
 		    this.phoneTypeCode = unNullify( phone.getPhoneTypeCode() );
-		    this.phoneNumber = unNullify( phone.getPhoneNumberUnmasked() );
-		    this.extensionNumber = unNullify( phone.getExtensionNumberUnmasked() );
+		    this.phoneNumber = unNullify( phone.getPhoneNumber() );
+		    this.extensionNumber = unNullify( phone.getExtensionNumber() );
 		    this.countryCode = unNullify( phone.getCountryCodeUnmasked() );
 		    this.dflt = phone.isDefault();
 		    this.active = phone.isActive();
 		    this.suppressPhone = phone.isSuppressPhone();
+		    
+		    this.phoneNumberUnmasked = unNullify(phone.getPhoneNumberUnmasked());
+		    this.extensionNumberUnmasked = unNullify(phone.getExtensionNumberUnmasked());
+		    this.countryCodeUnmasked = unNullify(phone.getCountryCodeUnmasked());
+		    this.formattedPhoneNumber = unNullify(phone.getFormattedPhoneNumber());
+		    this.formattedPhoneNumberUnmasked = unNullify(phone.getFormattedPhoneNumberUnmasked());
 		}
 	}
-	
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCode()
-	 */
-	public String getCountryCode() {
-	    if (isSuppressPhone()) {
-            return "XX";
-        }
-		return countryCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getEntityPhoneId()
+	 * @return the entityPhoneId
 	 */
 	public String getEntityPhoneId() {
-		return entityPhoneId;
+		return this.entityPhoneId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumber()
+	 * @param entityPhoneId the entityPhoneId to set
 	 */
-	public String getExtensionNumber() {
-	    if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		return extensionNumber;
+	public void setEntityPhoneId(String entityPhoneId) {
+		this.entityPhoneId = entityPhoneId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumber()
+	 * @return the entityTypeCode
 	 */
-	public String getPhoneNumber() {
-	    if (isSuppressPhone()) {
-            return "000-000-0000";
-        }
-		return phoneNumber;
+	public String getEntityTypeCode() {
+		return this.entityTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneTypeCode()
+	 * @param entityTypeCode the entityTypeCode to set
+	 */
+	public void setEntityTypeCode(String entityTypeCode) {
+		this.entityTypeCode = entityTypeCode;
+	}
+
+	/**
+	 * @return the phoneTypeCode
 	 */
 	public String getPhoneTypeCode() {
-		return phoneTypeCode;
+		return this.phoneTypeCode;
 	}
 
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-
-	public void setExtensionNumber(String extensionNumber) {
-		this.extensionNumber = extensionNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
+	/**
+	 * @param phoneTypeCode the phoneTypeCode to set
+	 */
 	public void setPhoneTypeCode(String phoneTypeCode) {
 		this.phoneTypeCode = phoneTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
+	 * @return the phoneNumber
 	 */
-	public String getEntityTypeCode() {
-		return entityTypeCode;
+	public String getPhoneNumber() {
+		return this.phoneNumber;
 	}
 
-	public void setEntityTypeCode(String entityTypeCode) {
-		this.entityTypeCode = entityTypeCode;
+	/**
+	 * @param phoneNumber the phoneNumber to set
+	 */
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
-	public void setEntityPhoneId(String entityPhoneId) {
-		this.entityPhoneId = entityPhoneId;
+	/**
+	 * @return the extensionNumber
+	 */
+	public String getExtensionNumber() {
+		return this.extensionNumber;
 	}
 
+	/**
+	 * @param extensionNumber the extensionNumber to set
+	 */
+	public void setExtensionNumber(String extensionNumber) {
+		this.extensionNumber = extensionNumber;
+	}
+
+	/**
+	 * @return the countryCode
+	 */
+	public String getCountryCode() {
+		return this.countryCode;
+	}
+
+	/**
+	 * @param countryCode the countryCode to set
+	 */
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	/**
+	 * @return the phoneNumberUnmasked
+	 */
+	public String getPhoneNumberUnmasked() {
+		return this.phoneNumberUnmasked;
+	}
+
+	/**
+	 * @param phoneNumberUnmasked the phoneNumberUnmasked to set
+	 */
+	public void setPhoneNumberUnmasked(String phoneNumberUnmasked) {
+		this.phoneNumberUnmasked = phoneNumberUnmasked;
+	}
+
+	/**
+	 * @return the extensionNumberUnmasked
+	 */
+	public String getExtensionNumberUnmasked() {
+		return this.extensionNumberUnmasked;
+	}
+
+	/**
+	 * @param extensionNumberUnmasked the extensionNumberUnmasked to set
+	 */
+	public void setExtensionNumberUnmasked(String extensionNumberUnmasked) {
+		this.extensionNumberUnmasked = extensionNumberUnmasked;
+	}
+
+	/**
+	 * @return the countryCodeUnmasked
+	 */
+	public String getCountryCodeUnmasked() {
+		return this.countryCodeUnmasked;
+	}
+
+	/**
+	 * @param countryCodeUnmasked the countryCodeUnmasked to set
+	 */
+	public void setCountryCodeUnmasked(String countryCodeUnmasked) {
+		this.countryCodeUnmasked = countryCodeUnmasked;
+	}
+
+	/**
+	 * @return the formattedPhoneNumber
+	 */
 	public String getFormattedPhoneNumber() {
-	    if (isSuppressPhone()) {
-            return KimConstants.RESTRICTED_DATA_MASK;
-        }
-		StringBuffer sb = new StringBuffer( 30 );
-		
-		// TODO: get extension from country code table
-		// TODO: append "+xxx" if country is not the default country
-		sb.append( getPhoneNumber() );
-		if ( StringUtils.isNotBlank( getExtensionNumber() ) ) {
-			sb.append( " x" );
-			sb.append( getExtensionNumber() );
-		}
-		
-		return sb.toString();
+		return this.formattedPhoneNumber;
+	}
+
+	/**
+	 * @param formattedPhoneNumber the formattedPhoneNumber to set
+	 */
+	public void setFormattedPhoneNumber(String formattedPhoneNumber) {
+		this.formattedPhoneNumber = formattedPhoneNumber;
+	}
+
+	/**
+	 * @return the formattedPhoneNumberUnmasked
+	 */
+	public String getFormattedPhoneNumberUnmasked() {
+		return this.formattedPhoneNumberUnmasked;
+	}
+
+	/**
+	 * @param formattedPhoneNumberUnmasked the formattedPhoneNumberUnmasked to set
+	 */
+	public void setFormattedPhoneNumberUnmasked(String formattedPhoneNumberUnmasked) {
+		this.formattedPhoneNumberUnmasked = formattedPhoneNumberUnmasked;
+	}
+
+	/**
+	 * @return the suppressPhone
+	 */
+	public boolean isSuppressPhone() {
+		return this.suppressPhone;
+	}
+
+	/**
+	 * @param suppressPhone the suppressPhone to set
+	 */
+	public void setSuppressPhone(boolean suppressPhone) {
+		this.suppressPhone = suppressPhone;
 	}
 	
-    public boolean isSuppressPhone() {
-        return this.suppressPhone;
-    }
-
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCodeUnmasked()
-     */
-    public String getCountryCodeUnmasked() {
-        return this.countryCode;
-    }
-
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumberUnmasked()
-     */
-    public String getExtensionNumberUnmasked() {
-        return this.extensionNumber;
-    }
-
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getFormattedPhoneNumberUnmasked()
-     */
-    public String getFormattedPhoneNumberUnmasked() {
-        StringBuffer sb = new StringBuffer( 30 );
-        
-        // TODO: get extension from country code table
-        // TODO: append "+xxx" if country is not the default country
-        sb.append( this.phoneNumber );
-        if ( StringUtils.isNotBlank( this.extensionNumber ) ) {
-            sb.append( " x" );
-            sb.append( this.extensionNumber );
-        }
-        
-        return sb.toString();
-    }
-
-    /**
-     * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumberUnmasked()
-     */
-    public String getPhoneNumberUnmasked() {
-        return this.phoneNumber;
-    }
 }

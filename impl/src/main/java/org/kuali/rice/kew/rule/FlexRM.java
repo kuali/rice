@@ -63,7 +63,7 @@ import org.kuali.rice.kew.util.Utilities;
  * @see RuleTemplate
  * @see RuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FlexRM {
 
@@ -140,6 +140,9 @@ public class FlexRM {
 		try {
 			ruleSelector = ((Class<RuleSelector>) ruleSelectorClass).newInstance();
 		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException)e;
+			}
 			throw new WorkflowException("Error instantiating rule selector implementation '" + ruleSelectorClass + "'", e);
 		}
 

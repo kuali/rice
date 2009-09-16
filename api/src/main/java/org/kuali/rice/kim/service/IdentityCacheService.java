@@ -21,7 +21,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
  * 
  * This service implements a cache of KimEntityDefaultInfo. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface IdentityCacheService {

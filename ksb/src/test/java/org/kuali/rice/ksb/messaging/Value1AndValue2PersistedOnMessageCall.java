@@ -28,7 +28,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
 /**
  * verify that value1 and value2 are preserved when passed into message helper and making an async call.  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {

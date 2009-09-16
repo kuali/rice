@@ -20,7 +20,7 @@ package org.kuali.rice.kew.engine.node;
  * The result of the execution of a {@link SimpleNode}.  Simply wraps a boolean as
  * to whether or not the node has completed.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimpleResult implements ProcessResult {
 

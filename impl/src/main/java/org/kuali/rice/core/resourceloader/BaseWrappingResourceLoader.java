@@ -36,7 +36,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * A BaseResourceLoader implementation which wraps services with a Proxy that
  * switches the current context ClassLoader of the Thread.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BaseWrappingResourceLoader extends BaseResourceLoader {
 

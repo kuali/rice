@@ -38,7 +38,7 @@ import org.kuali.rice.kew.test.TestUtilities;
  * libs on the classpath.  Within the lib directory is a jar called extraclasspath.jar.
  * Inside this jar is a single resource called extraclasspath-lib.txt.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExtraClassPathTest extends KEWTestCase {
     

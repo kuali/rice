@@ -23,7 +23,7 @@ import java.util.List;
  * The result of a node graph search.  Indentifies the node instance which was found in the search and also the
  * path followed to find the node.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NodeGraphSearchResult {
 	

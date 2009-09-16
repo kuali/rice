@@ -22,7 +22,7 @@ import org.kuali.rice.kew.engine.RouteHelper;
 /**
  * A Node type which can be used to dynamically generate a route path for a document.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DynamicNode extends Node {
 

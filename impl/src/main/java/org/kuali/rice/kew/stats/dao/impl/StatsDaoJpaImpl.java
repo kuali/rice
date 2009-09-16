@@ -35,7 +35,7 @@ import org.kuali.rice.kew.web.KeyValue;
 /**
  * This is a description of what this class does - ddean don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 // There isn't an obvious place to put these @NamedQueries since they are just doing select count(*) from various tables.

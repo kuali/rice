@@ -30,7 +30,7 @@ import org.kuali.rice.kim.util.KimConstants;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementGroupDocumentForm extends IdentityManagementDocumentFormBase {
@@ -48,9 +48,13 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
     
 	public IdentityManagementGroupDocumentForm() {
         super();
-        this.setDocument(new IdentityManagementGroupDocument());
     }
 
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementGroupDocument";
+	}
+	
 	public IdentityManagementGroupDocument getGroupDocument() {
         return (IdentityManagementGroupDocument) this.getDocument();
     }

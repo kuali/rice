@@ -38,7 +38,7 @@ import org.w3c.dom.NodeList;
  * 
  * <p>This allows for <select> fields to be dependent upon one another. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SelectControlEDLComponent implements EDLModelComponent {
 

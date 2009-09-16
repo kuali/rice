@@ -24,7 +24,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 /**
  * This class extends the KEW WorkflowDocument object and becomes our gateway for 
  * get a handle on KEW documents in workflow.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationWorkflowDocument extends WorkflowDocument {
     private static final long serialVersionUID = 6125662798733898964L;

@@ -25,7 +25,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
 /**
  * A values finder for returning KEW Action Request codes.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestCodeValuesFinder extends KeyValuesBase {
 

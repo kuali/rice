@@ -18,7 +18,7 @@ package org.kuali.rice.kns.impls;
 /**
  * This is a simple test document for use in the BaseBOClassAndBaseDocumentClassTest unit test. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceTestTransactionalDocument2 extends RiceTestTransactionalDocument2Parent {
 

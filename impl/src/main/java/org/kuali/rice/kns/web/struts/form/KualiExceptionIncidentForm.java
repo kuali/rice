@@ -17,13 +17,16 @@
 package org.kuali.rice.kns.web.struts.form;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.exception.ExceptionIncident;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the action form for all Question Prompts.
@@ -33,6 +36,24 @@ import org.kuali.rice.kns.exception.ExceptionIncident;
 public class KualiExceptionIncidentForm extends KualiForm {
     private static final long serialVersionUID = 831951332440283401L;
     private static Logger LOG=Logger.getLogger(KualiExceptionIncidentForm.class); 
+    
+    /**
+     * The form properties that should be populated in order for the toMap() method to function properly.
+     */
+    private static final Set<String> PROPS_NEEDED_FOR_MAP = new HashSet<String>();
+    static {
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.DOCUMENT_ID);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.USER_EMAIL);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.USER_NAME);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.UUID);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.COMPONENT_NAME);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.DESCRIPTION);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.EXCEPTION_REPORT_SUBJECT);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.EXCEPTION_MESSAGE);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.DISPLAY_MESSAGE);
+    	PROPS_NEEDED_FOR_MAP.add(ExceptionIncident.STACK_TRACE);
+    }
+    
     /**
      * Flag to determine whether it's cancel action
      */
@@ -81,10 +102,6 @@ public class KualiExceptionIncidentForm extends KualiForm {
      * Form that threw the exception
      */
     private String componentName;
-     /**
-     * A custom contextual information obtained from an attribute of GlobalVariables
-     */
-    private String customContextualInfo;
 
     /**
      * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#populate(javax.servlet.http.HttpServletRequest)
@@ -111,7 +128,6 @@ public class KualiExceptionIncidentForm extends KualiForm {
         this.cancel=false;
         this.documentId=null;
         this.componentName=null;
-        this.customContextualInfo=null;
         this.description=null;
         this.displayMessage=null;
         this.exceptionMessage=null;
@@ -136,7 +152,6 @@ public class KualiExceptionIncidentForm extends KualiForm {
      * exceptionMessage, Error message from exception
      * displayMessage, Either exception error message or generic exception error message
      * stackTrace, Exception stack trace here
-     * customContextualInfo, ?
      * </code>
      * 
      */
@@ -157,7 +172,6 @@ public class KualiExceptionIncidentForm extends KualiForm {
         map.put(ExceptionIncident.EXCEPTION_MESSAGE, this.exceptionMessage);
         map.put(ExceptionIncident.DISPLAY_MESSAGE, this.displayMessage);
         map.put(ExceptionIncident.STACK_TRACE, this.stackTrace);
-        map.put(ExceptionIncident.CUSTOM_CONTEXTUAL_INFO, customContextualInfo);
         
         if (LOG.isTraceEnabled()) {
             String message=String.format("ENTRY %s", map.toString());
@@ -301,20 +315,6 @@ public class KualiExceptionIncidentForm extends KualiForm {
     }
 
     /**
-     * @return the customContextualInfo
-     */
-    public final String getCustomContextualInfo() {
-        return this.customContextualInfo;
-    }
-
-    /**
-     * @param customContextualInfo the customContextualInfo to set
-     */
-    public final void setCustomContextualInfo(String customContextualInfo) {
-        this.customContextualInfo = customContextualInfo;
-    }
-
-    /**
      * @return the exceptionReportSubject
      */
     public final String getExceptionReportSubject() {
@@ -355,6 +355,19 @@ public class KualiExceptionIncidentForm extends KualiForm {
 		return true;
 	}
 
-    
+	/**
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldPropertyBePopulatedInForm(
+			String requestParameterName, HttpServletRequest request) {
+		if (PROPS_NEEDED_FOR_MAP.contains(requestParameterName)) {
+			return true;
+		}
+		else if (KNSConstants.CANCEL_METHOD.equals(requestParameterName)) {
+			return true;
+		}
+		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
+	}
 }
 

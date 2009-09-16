@@ -19,7 +19,7 @@ package org.kuali.rice.kew.plugin;
 /**
  * A RuntimeException thrown from the plugin system when a problem is encountered.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PluginException extends RuntimeException {
 

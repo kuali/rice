@@ -20,7 +20,7 @@ package org.kuali.rice.kns.exception;
  * the exception handler looks for an instance of this class and processes as Kuali
  * exception. Otherwise, generic system exception is processed. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 

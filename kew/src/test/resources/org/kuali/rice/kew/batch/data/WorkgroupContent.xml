@@ -10,8 +10,7 @@
       <namespace>KR-WKFLW</namespace>
       <description>fake group 1 for testing xml</description>
       <active>true</active>
-      <!-- <workgroupType>W</workgroupType>
-      <workgroupCurInd>false</workgroupCurInd>-->
+      <!--<workgroupCurInd>false</workgroupCurInd>-->
 
       <members>
         <principalId>5000</principalId>
@@ -24,8 +23,7 @@
       <namespace>KR-WKFLW</namespace>
       <description>fake group 2 for testing xml</description>
       <active>false</active>
-      <!-- <workgroupType>W</workgroupType>
-      <workgroupCurInd>false</workgroupCurInd>-->
+      <!--<workgroupCurInd>false</workgroupCurInd>-->
 
       <members>
         <principalName>Unit Test User 1</principalName>

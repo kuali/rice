@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
  * This class makes xml for the instructions template of widgets.  Processes config elements
  * instructions and createInstructions.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class InstructionsEDLComponent implements EDLModelComponent {

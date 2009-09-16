@@ -28,7 +28,7 @@ import org.kuali.test.KNSWithTestSpringContext;
  * This class tests KULRICE-1666: missing Spring mapping for ojbCollectionHelper
  * (not injected into BusinessObjectDaoTest)
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @KNSWithTestSpringContext

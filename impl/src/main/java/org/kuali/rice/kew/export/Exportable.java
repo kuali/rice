@@ -20,7 +20,7 @@ package org.kuali.rice.kew.export;
 /**
  * Identifies an object which can be exported.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Exportable {
 

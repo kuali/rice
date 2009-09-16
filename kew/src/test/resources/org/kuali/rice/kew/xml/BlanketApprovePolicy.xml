@@ -21,9 +21,9 @@
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy1</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -41,9 +41,9 @@
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy2</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:BlanketApproveWorkgroup</superUserWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">BlanketApproveWorkgroup</superUserGroupName>
       <blanketApprovePolicy>NONE</blanketApprovePolicy>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -61,8 +61,8 @@
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy3</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -80,9 +80,9 @@
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy4</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <blanketApproveWorkgroupName>BlanketApproveWorkgroup</blanketApproveWorkgroupName>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">BlanketApproveWorkgroup</blanketApproveGroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -101,8 +101,8 @@
       <parent>BlanketApprovePolicy4</parent>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -122,8 +122,8 @@
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>NONE</blanketApprovePolicy>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -143,8 +143,8 @@
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <policies>
         <policy>
@@ -168,9 +168,9 @@
       <label>DocumentTypeXmlParserTestDoc_BlanketApprovePolicy_OverridedParent</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>KR-WKFLW:BlanketApproveWorkgroup</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">BlanketApproveWorkgroup</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <policies>
         <policy>
@@ -196,8 +196,8 @@
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>NONE</blanketApprovePolicy>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -217,8 +217,8 @@
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <blanketApprovePolicy>ANY</blanketApprovePolicy>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>
@@ -237,8 +237,8 @@
       <parent>BlanketApprovePolicy_OverridedParent</parent>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
-      <superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
       <active>true</active>
       <routePaths>
         <routePath>

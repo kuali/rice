@@ -29,7 +29,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * session user. It is constructed and saved into the HTTP Request for passing to the
  * jsp when an exception occurs. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ExceptionIncident implements KualiExceptionIncident {
@@ -65,7 +65,6 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * <li>USER_EMAIL</li>
      * <li>USER_NAME</li>
      * <li>COMPONENT_NAME</li>
-     * <li>CUSTOM_CONTEXTUAL_INFO</li>
      * </ul> 
      */
     public ExceptionIncident(Exception exception,
@@ -95,7 +94,6 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * <li>USER_EMAIL - Session user email</li>
      * <li>USER_NAME - Session user name</li>
      * <li>COMPONENT_NAME - Document or lookup or inquiry form</li>
-     * <li>CUSTOM_CONTEXTUAL_INFO - custom contextual information obtained from an
      * attribute of GlobalVariables</li>
      * <li>EXCEPTION_REPORT_SUBJECT - Exception error message and current settings</li>
      * <li>EXCEPTION_MESSAGE - Exception error message</li>
@@ -120,7 +118,6 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * <li>USER_EMAIL</li>
      * <li>USER_NAME</li>
      * <li>COMPONENT_NAME</li>
-     * <li>CUSTOM_CONTEXTUAL_INFO</li>
      * </ul> 
      */
     private void initialize(Exception thrownException, Map<String, String> inputs) {
@@ -232,8 +229,6 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * <li>description - Information input by user or blank</li>
      * <li>errorMessage - Exception error message</li>
      * <li>stackTrace - Exception stack trace</li>
-     * <li>customContextualInfo - custom contextual information obtained from an attribute
-     * of GlobalVariables</li>
      * </ul>
      * <p>Example;
      * <code>
@@ -244,7 +239,6 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * component: document
      * errorMessage: Some error message
      * stackTrace: Exception stack trace here 
-     * customContextualInfo: ?
      * </code>
      * 
      * @return

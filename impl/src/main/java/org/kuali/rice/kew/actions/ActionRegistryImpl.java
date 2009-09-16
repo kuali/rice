@@ -38,7 +38,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * A simple implementation of an ActionRegistry which includes all of the default Workflow Actions.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRegistryImpl implements ActionRegistry {
     private static final Logger LOG = Logger.getLogger(ActionRegistryImpl.class);

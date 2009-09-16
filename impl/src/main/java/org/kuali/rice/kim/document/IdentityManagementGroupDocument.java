@@ -35,7 +35,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementGroupDocument extends IdentityManagementTypeAttributeTransactionalDocument {
@@ -117,7 +117,8 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		String groupId;
 		if(StringUtils.isBlank(getGroupId())){
 			SequenceAccessorService sas = getSequenceAccessorService();
-			Long nextSeq = sas.getNextAvailableSequenceNumber("KRIM_GRP_ID_S", this.getClass());
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					"KRIM_GRP_ID_S", this.getClass());
 			groupId = nextSeq.toString();
 			setGroupId(groupId);
 		} else{
@@ -129,7 +130,8 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 				member.setGroupId(groupId);
 				if(StringUtils.isBlank(member.getGroupMemberId())){
 					SequenceAccessorService sas = getSequenceAccessorService();
-					Long nextSeq = sas.getNextAvailableSequenceNumber("KRIM_GRP_MBR_ID_S", this.getClass());
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_GRP_MBR_ID_S", this.getClass());
 					groupMemberId = nextSeq.toString();
 					member.setGroupMemberId(groupMemberId);
 				}
@@ -153,7 +155,8 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	public void initializeDocumentForNewGroup() {
 		if(StringUtils.isBlank(this.groupId)){
 			SequenceAccessorService sas = getSequenceAccessorService();
-			Long nextSeq = sas.getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_GROUP_ID_S, this.getClass());
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					KimConstants.SequenceNames.KRIM_GROUP_ID_S, this.getClass());
 			this.groupId = nextSeq.toString();
 		}
 		if(StringUtils.isBlank(this.groupTypeId)) {

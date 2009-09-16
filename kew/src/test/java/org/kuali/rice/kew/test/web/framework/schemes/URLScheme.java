@@ -30,7 +30,7 @@ import org.kuali.rice.kew.test.web.framework.Util;
 
 /**
  * A property scheme that interprets the locator as a URL
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class URLScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(URLScheme.class);

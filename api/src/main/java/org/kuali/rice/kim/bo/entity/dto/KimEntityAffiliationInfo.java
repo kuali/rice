@@ -20,7 +20,7 @@ import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimEntityAffiliation {
 
@@ -35,11 +35,14 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimE
 	 * 
 	 */
 	public KimEntityAffiliationInfo() {
+		super();
+		active = true;
 	}
 	/**
 	 * 
 	 */
 	public KimEntityAffiliationInfo( KimEntityAffiliation aff ) {
+		this();
 		if ( aff != null ) {
 			entityAffiliationId = unNullify( aff.getEntityAffiliationId() );
 			affiliationTypeCode = unNullify( aff.getAffiliationTypeCode() );

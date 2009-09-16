@@ -33,7 +33,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * A message which has been persisted to the data store.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRSB_MSG_QUE_T")

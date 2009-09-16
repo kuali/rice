@@ -33,7 +33,7 @@ import org.kuali.test.KNSTestCase;
  * making sure that lookup resultSetLimits set in the DD for
  * a BO will override the system wide default.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 

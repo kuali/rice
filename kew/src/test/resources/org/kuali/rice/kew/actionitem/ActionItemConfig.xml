@@ -141,10 +141,10 @@
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:AIWG-Test</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">AIWG-Test</superUserGroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:AIWG-Test</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:AIWG-Test</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">AIWG-Test</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">AIWG-Test</defaultExceptionGroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -190,10 +190,10 @@
 			<name>BAOrphanedRequestDocumentType</name>
 			<label>Document Type used to test that Blanket Approval is not orphaning Action Requests</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:AIWG-Test</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">AIWG-Test</superUserGroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:AIWG-Test</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:AIWG-Test</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">AIWG-Test</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">AIWG-Test</defaultExceptionGroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>

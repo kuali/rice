@@ -33,7 +33,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * This is a Test class to verify the edoc lite post processor. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDocLitePostProcessorTest extends KEWTestCase {

@@ -31,7 +31,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 /**
  * NotificationContentTypeService implementation - uses the businessObjectDao to get at the underlying data in the stock DBMS.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationContentTypeServiceImpl implements NotificationContentTypeService {
     private GenericDao businessObjectDao;

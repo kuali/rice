@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SearchAttributeFormContainer implements Serializable {
     private static final long serialVersionUID = 8034659910798901330L;

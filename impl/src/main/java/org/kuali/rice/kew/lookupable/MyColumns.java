@@ -27,7 +27,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  * 
  * @see RuleBaseValuesLookupableImpl
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MyColumns implements Serializable {
 

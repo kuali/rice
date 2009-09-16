@@ -23,7 +23,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 
 /**
  * Test CustomEmailAttribute for EmailMessageTestCase
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttribute {
 

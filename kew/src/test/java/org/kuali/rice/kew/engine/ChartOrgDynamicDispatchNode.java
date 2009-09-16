@@ -23,7 +23,7 @@ package org.kuali.rice.kew.engine;
  * This is just used for testing at the moment but I'm going to put it into the plugin to simplify things until
  * we fix up that portion of the testing framework.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ChartOrgDynamicDispatchNode {// extends ChartOrgRoutingNode {
 

@@ -26,7 +26,7 @@ import org.kuali.rice.ksb.security.credentials.X509CredentialsSourceTest.KualiX5
 
 /**
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  *
  */

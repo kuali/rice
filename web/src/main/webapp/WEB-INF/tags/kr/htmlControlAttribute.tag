@@ -33,9 +33,6 @@
               description="when readOnly, you can specify a String value to display instead of
               the main property.  The readOnlyBody and extraReadOnlyProperty attributes take precedence.
               THIS VALUE WILL BE DISPLAYED WITHOUT ANY XML FILTERING/ESCAPING, AND NEEDS TO BE PROPERLY ESCAPED TO PREVENT CROSS-SITE SCRIPTING VULNERABILITIES" %>
-<%@ attribute name="encryptValue" required="false"
-			  description="when readOnly or hidden field, boolean to indicate whether the value should
-			  be encrypted and display masked. Defaults to false." %>
 <%@ attribute name="displayMask" required="false"
               description="Specify whether to mask the given field using the displayMaskValue rather than showing the actual value." %>
 <%@ attribute name="displayMaskValue" required="false"
@@ -48,7 +45,7 @@
         description="Use this to attach further information to the title attribute of a field
         if present"%>
 <%@ attribute name="forceRequired" required="false" %>
-<%@ attribute name="kimTypeName" required="false" %>
+<%@ attribute name="kimTypeId" required="false" %>
 <!-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) -->
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
 <c:if test="${empty readOnly}">
@@ -60,7 +57,7 @@
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
 	<c:set var="displayMask" value="${kfunc:canFullyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
 	<c:set var="readOnly" value="${displayMask || readOnly}" />
-	<c:if test="${displayMask || encryptValue}">
+	<c:if test="${displayMask}">
 		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
 	</c:if>
 </c:if>
@@ -72,7 +69,7 @@
     <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
 	<c:set var="readOnly" value="${displayMask || readOnly}"/>
 	<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
-	<c:if test="${displayMask || encryptValue}">
+	<c:if test="${displayMask}">
 		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
 	</c:if>
 </c:if>
@@ -93,10 +90,6 @@
 <c:set var="disableField" value="false" />
 <c:if test="${disabled}">
   <c:set var="disableField" value="true" />
-</c:if>
-
-<c:if test="${empty encryptValue}">
-    <c:set var="encryptValue" value="false"/>
 </c:if>
 
 <c:if test="${empty styleClass}">
@@ -120,15 +113,6 @@
 
      <c:otherwise>
         <c:choose>
-         <c:when test="${encryptValue}">
-            <%-- mask and encrypt --%>
-            <%
-              ((org.kuali.rice.kns.web.struts.form.KualiForm) request.getAttribute("KualiForm")).setFormatterType((String) property, org.kuali.rice.kns.web.format.EncryptionFormatter.class);
-            %>
-            <html:hidden property="encryptedProperties('${fn:replace(property,'.','_')}')" value="true"/>
-            <html:hidden write="false" property="${property}" style="${textStyle}"/>
-            ${displayMaskValue}
-         </c:when>
 		<c:when test="${displayMask}" >
 			${displayMaskValue}
 		</c:when>
@@ -192,11 +176,11 @@
 
             <html:select styleId="${property}" property="${property}" title="${accessibleTitle}" tabindex="${tabindex}" style="${textStyle}" disabled="${disableField}" onblur="${onblur}" onchange="${onchange}" styleClass="${styleClass}">
               <c:choose>
-              	<c:when test="${not empty businessObjectClass and empty kimTypeName}">
+              	<c:when test="${not empty businessObjectClass and empty kimTypeId}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
               	</c:when>
-              	<c:when test="${not empty businessObjectClass and not empty kimTypeName}">
-                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeName}"/>
+              	<c:when test="${not empty kimTypeId}">
+                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.name}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeId}"/>
               	</c:when>
               	<c:otherwise>
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
@@ -212,11 +196,11 @@
         <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 
 		<c:choose>
-      		<c:when test="${not empty businessObjectClass and empty kimTypeName}">
+      		<c:when test="${not empty businessObjectClass and empty kimTypeId}">
             	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
       	  	</c:when>
-      		<c:when test="${not empty businessObjectClass and not empty kimTypeName}">
-            	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeName}"/>
+      		<c:when test="${not empty kimTypeId}">
+                <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.name}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}IGNORED${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${kimTypeId}"/>
       	  	</c:when>
       	  	<c:otherwise>
             	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>

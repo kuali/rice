@@ -25,7 +25,7 @@ import javax.persistence.MappedSuperclass;
 /**
  * A simple object representing a key/value pair.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
 public class KeyValuePair implements KeyValue, Serializable {

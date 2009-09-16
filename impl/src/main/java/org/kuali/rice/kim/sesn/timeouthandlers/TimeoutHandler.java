@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * This interface allows different methods for handling timeouts for Authentication
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface TimeoutHandler {

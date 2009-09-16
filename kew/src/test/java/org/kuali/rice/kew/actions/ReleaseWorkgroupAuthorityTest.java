@@ -30,7 +30,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
 

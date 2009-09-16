@@ -33,7 +33,7 @@ import org.kuali.rice.kew.util.Utilities;
 
 /**
  * Rule selector that select a rule based on configured rule name 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NamedRuleSelector implements RuleSelector {
     /**

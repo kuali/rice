@@ -45,7 +45,7 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 /**
  * This is a test class to test the document search security and row filtering
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentSearchSecurityTest extends KEWTestCase {

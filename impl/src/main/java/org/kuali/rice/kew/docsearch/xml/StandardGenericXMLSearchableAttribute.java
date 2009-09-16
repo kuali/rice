@@ -45,6 +45,7 @@ import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
@@ -60,7 +61,7 @@ import org.xml.sax.InputSource;
 /**
  * implementation of {@link GenericXMLSearchableAttribute}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchableAttribute {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardGenericXMLSearchableAttribute.class);
@@ -269,6 +270,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 				// range search details
 				Field rangeLowerBoundField = null;
 				Field rangeUpperBoundField = null;
+				myField.setUpperCase(true); // this defaults us to case insensitive.
 				for (int j = 0; j < field.getChildNodes().getLength(); j++) {
 					Node childNode = field.getChildNodes().item(j);
 					if ("value".equals(childNode.getNodeName())) {
@@ -341,7 +343,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 						if (!myField.isMemberOfRange()) {
 							Boolean caseSensitive = getBooleanValue(searchDefAttributes, "caseSensitive");
 							if (caseSensitive == null) {
-								caseSensitive = true;
+								caseSensitive = false; // we mimmic the KNS. KNS is case insensitive by default
 							}
 							myField.setUpperCase(!caseSensitive);
 						} else {
@@ -388,7 +390,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
                         }
 					} else if ("lookup".equals(childNode.getNodeName())) {
 						XMLAttributeUtils.establishFieldLookup(myField, childNode);
-					} 
+					}
 				}
                 myField.setIndexedForSearch(hasXPathExpression);
 
@@ -512,7 +514,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		namedNodeMapsByImportance.add(searchDefinitionAttributes);
 		Boolean caseSensitive = getBooleanWithPotentialOverrides(namedNodeMapsByImportance, "caseSensitive");
 		if (caseSensitive == null) {
-			caseSensitive = true;
+			caseSensitive = false; // we mimmic the KNS. KNS is case insensitive by default
 		}
 		boundField.setUpperCase(!caseSensitive);
 		// TODO: after face-to-face work in december 2008, this was throwing a nullpointerexception for lookups with date pickers
@@ -581,13 +583,29 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 					for (int vdIndex = 0; vdIndex < visibilityDecls.getLength(); vdIndex++) {
 						Node visibilityDecl = visibilityDecls.item(vdIndex);
                         if (visibilityDecl.getNodeType() == Node.ELEMENT_NODE) {
-    						if ("isMemberOfWorkgroup".equals(visibilityDecl.getNodeName())) {
-    							String workgroupName = visibilityDecl.getFirstChild().getNodeValue();
+                        	boolean hasIsMemberOfGroupElement = false;
+                        	String groupName = null;
+                        	String groupNamespace = null;
+                        	if (XmlConstants.IS_MEMBER_OF_GROUP.equals(visibilityDecl.getNodeName())) { // Found an "isMemberOfGroup" element.
+                        		hasIsMemberOfGroupElement = true;
+                        		groupName = Utilities.substituteConfigParameters(visibilityDecl.getTextContent()).trim();
+                        		groupNamespace = Utilities.substituteConfigParameters(((Element)visibilityDecl).getAttribute(XmlConstants.NAMESPACE)).trim();
+                        	}
+                        	else if (XmlConstants.IS_MEMBER_OF_WORKGROUP.equals(visibilityDecl.getNodeName())) { // Found a deprecated "isMemberOfWorkgroup" element.
+                        		LOG.warn((new StringBuilder()).append("Rule Attribute XML is using deprecated element '").append(
+                        				XmlConstants.IS_MEMBER_OF_WORKGROUP).append("', please use '").append(XmlConstants.IS_MEMBER_OF_GROUP).append(
+                        						"' instead.").toString());
+                        		hasIsMemberOfGroupElement = true;
+    							String workgroupName = Utilities.substituteConfigParameters(visibilityDecl.getFirstChild().getNodeValue());
+    							groupNamespace = Utilities.parseGroupNamespaceCode(workgroupName);
+    							groupName = Utilities.parseGroupName(workgroupName);
+    						}
+    						if (hasIsMemberOfGroupElement) { // Found one of the "isMemberOf..." elements.
     							UserSession session = UserSession.getAuthenticatedUser();
     							if (session == null) {
     								throw new WorkflowRuntimeException("UserSession is null!  Attempted to render the searchable attribute outside of an established session.");
     							}
-    							visible = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(session.getPerson().getPrincipalId(), Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName));
+    							visible = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(session.getPerson().getPrincipalId(), groupNamespace, groupName);
     						}
                         }
 					}

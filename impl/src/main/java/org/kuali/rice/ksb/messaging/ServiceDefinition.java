@@ -37,7 +37,7 @@ import org.springframework.util.Assert;
 /**
  * The definition of a service on the service bus.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ServiceDefinition implements Serializable {
 

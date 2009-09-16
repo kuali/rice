@@ -36,7 +36,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 /**
  * This class is a utility service intended to help retrieve objects related to particular documents.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentHelperServiceImpl implements DocumentHelperService {

@@ -24,7 +24,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * Used from Spring to register service definitions from an already configured and started KSB.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KSBExporter implements InitializingBean, ApplicationContextAware {
 	

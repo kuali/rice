@@ -29,7 +29,7 @@ import org.springframework.web.servlet.mvc.Controller;
  * An adapter for the {@link ServletController} so that it conforms to Springs MVC {@link Controller} interface. 
  * 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class CXFServletControllerAdapter 

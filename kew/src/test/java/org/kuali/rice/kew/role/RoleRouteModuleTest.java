@@ -47,7 +47,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 /**
  * Tests Role-based routing integration between KEW and KIM.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 

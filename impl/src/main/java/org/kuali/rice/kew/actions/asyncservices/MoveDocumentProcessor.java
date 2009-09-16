@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Service to do the async work of moving a document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MoveDocumentProcessor implements MoveDocumentService { 
     

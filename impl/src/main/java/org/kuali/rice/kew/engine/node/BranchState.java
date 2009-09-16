@@ -28,7 +28,7 @@ import javax.persistence.Version;
 /**
  * A piece of state on a {@link Branch} stored as a key-value pair of Strings.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RTE_BRCH_ST_T")

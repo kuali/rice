@@ -45,7 +45,7 @@ import org.kuali.rice.kim.service.ResponsibilityService;
  * The RoleRouteModule is responsible for interfacing with the KIM
  * Role system to provide Role-based routing to KEW. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoleRouteModule implements RouteModule {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleRouteModule.class);

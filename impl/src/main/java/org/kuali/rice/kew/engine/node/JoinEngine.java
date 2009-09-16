@@ -22,7 +22,7 @@ import org.kuali.rice.kew.engine.RouteContext;
  * The JoinEngine is responsible for maintaining join state and determining when the join condition
  * has been satisfied.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface JoinEngine {
 

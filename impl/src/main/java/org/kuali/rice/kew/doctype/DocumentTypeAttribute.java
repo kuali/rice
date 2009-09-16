@@ -41,7 +41,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * Data bean representing an attribute associated at the document type level.  e.g. NoteAttribute, 
  * EmailAttribute, SearchableAttribute, etc.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity

@@ -51,7 +51,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  *  
  *  Most of the methods on this interface are straight pass-thrus to methods on the four core services.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface IdentityManagementService {

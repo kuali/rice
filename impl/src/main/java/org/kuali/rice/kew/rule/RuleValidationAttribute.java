@@ -25,7 +25,7 @@ import org.kuali.rice.kew.validation.ValidationResults;
  * rule.  The user who is adding or editing the rule is passed to validate as well as the
  * rule to be validated.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleValidationAttribute {
 	

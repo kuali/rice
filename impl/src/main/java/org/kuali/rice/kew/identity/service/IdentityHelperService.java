@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * the purpose of assisting with the piece-by-piece migration of
  * KEW to use the KIM services.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface IdentityHelperService {
 

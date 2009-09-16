@@ -39,7 +39,7 @@ import org.xml.sax.InputSource;
  * A PropertyScheme that resolves the Property by evaluating it as an XPath expression.
  * DocumentRouteHeaderValue variables are set on the XPath instance so they are accessible.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XPathScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(XPathScheme.class);

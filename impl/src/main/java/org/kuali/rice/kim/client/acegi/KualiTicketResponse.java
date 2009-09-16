@@ -25,7 +25,7 @@ import org.acegisecurity.providers.cas.TicketResponse;
  * Adds <code>distributedSessionToken</code> to the 
  * <code>TicketResponse</code>.
  *  
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiTicketResponse extends TicketResponse{

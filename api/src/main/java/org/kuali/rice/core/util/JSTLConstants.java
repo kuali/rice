@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Have constants class extend this class to expose them to JSTL as a HashMap.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JSTLConstants extends HashMap {
 

@@ -34,7 +34,7 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
  * components within the system.  It also defines type hierarchys for the various
  * node types.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NodeType {
 

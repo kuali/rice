@@ -39,7 +39,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 /**
  * OJB implementation of {@link ActionItemDAO}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionItemDAO {
 

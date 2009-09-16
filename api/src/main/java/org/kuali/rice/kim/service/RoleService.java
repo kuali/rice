@@ -62,7 +62,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
  * @see RoleUpdateService
  * @see PermissionService
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @WebService(name = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)

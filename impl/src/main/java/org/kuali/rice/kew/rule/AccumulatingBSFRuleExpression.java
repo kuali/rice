@@ -29,7 +29,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
  * An extension of BSFRuleExpression that makes it easier to accumulate a list of responsibilities
  * to emit. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
     private static final Logger LOG = Logger.getLogger(AccumulatingBSFRuleExpression.class);

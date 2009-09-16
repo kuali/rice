@@ -45,7 +45,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @see HelpService
  * @see HelpEntry
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HelpAction extends KewKualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpAction.class);

@@ -28,7 +28,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
  * Tests meta rule implemented via KRAMetaRuleExpression variant that allows the
  * rule to be expressed in groovy, with the help of a helper bean
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRAMetaRuleGroovyTest extends KEWTestCase {
     protected void loadTestData() throws Exception {

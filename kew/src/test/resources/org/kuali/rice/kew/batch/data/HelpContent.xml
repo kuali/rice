@@ -126,11 +126,6 @@
         	<helpKey>WorkgroupDescription</helpKey>
         </helpEntry>
 
-        <helpEntry>
-          <helpName> Workgroup Type </helpName>
-          <helpText>Workgroups are classified by their document approval policies. First Action means when any member of the workgroup approves a document, the document is approved. Last action means every member of the workgroup needs to approve the document for the approval to become effective. For both types, when any member in the workgroup disapproves or cancels a document, the action becomes effective regardless of the actions other members have taken on the document</helpText>
-          <helpKey> WorkgroupType </helpKey>
-        </helpEntry>
 
 
 

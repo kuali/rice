@@ -25,7 +25,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 /**
  * Data Access Object for {@link ActionTakenValue}s.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionTakenDAO {
 

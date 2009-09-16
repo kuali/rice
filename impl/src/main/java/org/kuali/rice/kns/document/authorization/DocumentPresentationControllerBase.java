@@ -208,7 +208,14 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return (kualiWorkflowDocument.stateIsInitiated() || kualiWorkflowDocument.stateIsSaved());
     }
 
-
+    protected boolean canFyi(Document document) {
+    	return true;
+    }
+    
+    protected boolean canAcknowledge(Document document) {
+    	return true;
+    }
+    
     /**
      * @see org.kuali.rice.kns.document.authorization.DocumentPresentationController#getDocumentActions(org.kuali.rice.kns.document.Document)
      */
@@ -268,6 +275,12 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	}
     	if(this.canEditDocumentOverview(document)){
     		documentActions.add(KNSConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW);
+    	}
+    	if (canFyi(document)) {
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_FYI);
+    	}
+    	if (canAcknowledge(document)) {
+    		documentActions.add(KNSConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
     	}
     	return documentActions;
     }

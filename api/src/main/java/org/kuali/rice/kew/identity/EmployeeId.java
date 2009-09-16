@@ -20,7 +20,7 @@ import org.kuali.rice.kew.user.EmplId;
 /**
  * The Employee ID of a Person in KIM
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EmployeeId extends EmplId {

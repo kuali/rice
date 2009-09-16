@@ -17,7 +17,7 @@ package org.kuali.rice.kcb.bo;
 
 /**
  * The states of a message delivery
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum MessageDeliveryStatus {
     UNDELIVERED, DELIVERED, REMOVED, AUTO_REMOVED

@@ -27,7 +27,7 @@ import org.springframework.util.DefaultPropertiesPersister;
  * PropertyPlaceholderConfigurer subclass that overrides any statically defined properties and properties locations,
  * with configuration settings from a properties file specified in a System property.
  * @see PropertyPlaceholderConfigurer
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
     private static final String CFG_LOCATION_PROPERTY = "notification.config";

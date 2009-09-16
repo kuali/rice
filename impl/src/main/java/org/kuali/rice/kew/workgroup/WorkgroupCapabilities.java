@@ -23,7 +23,7 @@ import java.io.Serializable;
  * 
  * @see WorkgroupService
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkgroupCapabilities implements Serializable {
 	

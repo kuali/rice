@@ -40,13 +40,13 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * Old hardcoded implementation for unit testing purposes only
  * @deprecated This is the original hardcoded actionlistemailservice implementation
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceImpl {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(HardCodedActionListEmailServiceImpl.class);
 
-	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "workflow@indiana.edu";
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = "admin@localhost";
 
 	private static final String ACTION_LIST_REMINDER = "Action List Reminder";
 

@@ -5,7 +5,7 @@
             <name>KRAMetaRuleMapsTest</name>
             <label>KRAMetaRuleMapsTest doc label</label>
             <docHandler>has to be defined</docHandler>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
             <routePaths>
                 <routePath>
                     <start name="initial" nextNode="approval" />
@@ -39,9 +39,9 @@
             </expression>
             <forceAction>true</forceAction>
             <responsibilities>
-                <responsibility><workgroup>KR-WKFLW:TestWorkgroup</workgroup></responsibility>
+                <responsibility><groupName namespace="KR-WKFLW">TestWorkgroup</groupName></responsibility>
                 <responsibility><role>org.kuali.rice.kew.rule.MockRole!shenl,jhopf</role></responsibility>
-                <responsibility><workgroup>KR-WKFLW:NonSIT</workgroup></responsibility>
+                <responsibility><groupName namespace="KR-WKFLW">NonSIT</groupName></responsibility>
             </responsibilities>
         </rule>
         <rule>
@@ -55,7 +55,7 @@
             </expression>
             <forceAction>true</forceAction>
             <responsibilities>
-                <responsibility><workgroup>KR-WKFLW:NonSIT</workgroup></responsibility>
+                <responsibility><groupName namespace="KR-WKFLW">NonSIT</groupName></responsibility>
             </responsibilities>
         </rule>
         <rule>

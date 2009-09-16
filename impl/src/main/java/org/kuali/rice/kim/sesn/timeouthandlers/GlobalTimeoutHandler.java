@@ -23,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * This class uses the same timeout for all authentication methods and applications
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GlobalTimeoutHandler extends AbstractTimeoutHandler {

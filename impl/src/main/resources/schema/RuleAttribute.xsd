@@ -536,10 +536,17 @@
 
   <complexType name="visibilityDecl">
     <sequence>
+    	<element name="isMemberOfGroup" type="c:GroupNameType" minOccurs="0">
+    		<annotation>
+    			<documentation>
+    			 Specifies visibility of the field and/or column based on group membership.
+    			</documentation>
+    		</annotation>
+    	</element>
     	<element name="isMemberOfWorkgroup" type="string" minOccurs="0">
     		<annotation>
     			<documentation>
-    			 Specifies visibility of the field and/or column based on workgroup membership.
+    			 DEPRECATED: use isMemberOfGroup instead.
     			</documentation>
     		</annotation>
     	</element>

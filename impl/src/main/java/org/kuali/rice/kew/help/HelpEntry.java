@@ -30,7 +30,7 @@ import org.kuali.rice.core.jpa.annotations.Sequence;
  * Model bean representing a piece of help information which adds extra information about fields and
  * data in the user interface.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_HLP_T")

@@ -174,9 +174,9 @@
           <serviceNamespace>KEN</serviceNamespace>
           -->
           <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor</postProcessorName>
-          <superUserWorkgroupName>KR-WKFLW:NotificationAdmin</superUserWorkgroupName>
-          <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-          <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+          <superUserGroupName namespace="KR-WKFLW">NotificationAdmin</superUserGroupName>
+          <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+          <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
           <docHandler>${ken.url}/DetailView.form</docHandler>
           <active>true</active>
           <attributes>
@@ -226,9 +226,9 @@
             <serviceNamespace>KEN</serviceNamespace>
             -->
             <postProcessorName>org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor</postProcessorName>
-            <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+            <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
             <docHandler>${ken.url}/AdministerNotificationRequest.form</docHandler>
             <active>true</active>
 

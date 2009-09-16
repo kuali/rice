@@ -25,7 +25,7 @@ import org.kuali.rice.core.resourceloader.ResourceLoader;
  * up to the PluginRegistry implementation to determine the resource loading strategy if it contains
  * more than a single plugin.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PluginRegistry extends ResourceLoader {
     

@@ -108,11 +108,10 @@
 					<c:set var="fieldName" value="${qualifier.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
-        			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+		               	<div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.kimTypeId}" property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
 		               	<c:if test="${attrDefinition.hasLookupBoDefinition}"> 
-                            <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
+                            <c:if test="${!empty attrDefinition.lookupBoClass and canModifyAssignees}">
     			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="delegationMember" attr="${attrDefinition}" />
     			          	</c:if>
                         </c:if>
@@ -185,7 +184,7 @@
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
         			<c:set var="attrReadOnly" value="${(!canModifyAssignees || attrDefinition.unique)}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}"  />
+		               	<div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.kimTypeId}" property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}"  />
 		               	<c:if test="${attrDefinition.hasLookupBoDefinition}"> 
                             <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
     			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.delegationMembers[${statusMember.index}]" attr="${attrDefinition}" />

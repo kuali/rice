@@ -21,7 +21,7 @@ import java.io.FileFilter;
 
 /**
  * An XmlDocCollection backed by a directory of XML files
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DirectoryXmlDocCollection extends BaseXmlDocCollection {
     private static class DirectoryXmlDocsCollectionFileFilter implements FileFilter {

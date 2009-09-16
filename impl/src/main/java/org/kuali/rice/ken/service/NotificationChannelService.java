@@ -21,7 +21,7 @@ import org.kuali.rice.ken.bo.NotificationChannel;
 
 /**
  * Service for accessing {@link NotificationChannel}s
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationChannelService {
     /**

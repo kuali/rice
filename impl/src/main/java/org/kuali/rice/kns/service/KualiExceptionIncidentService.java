@@ -22,7 +22,7 @@ import org.kuali.rice.kns.exception.KualiExceptionIncident;
 /**
  * This is used for sending report of an incident
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KualiExceptionIncidentService {
@@ -57,7 +57,6 @@ public interface KualiExceptionIncidentService {
      * <li>User email</li>
      * <li>User name</li>
      * <li>Component name</li>
-     * <li>Custom contextual information</li>
      * </ul>
      * @return
      */

@@ -18,7 +18,7 @@
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
     <documentType overwriteMode="true">
       <name>LoadRoutePathOnlyAdjustsDocument</name>
-      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
       <routePaths>
         <routePath>
           <start name="First" nextNode="Second" />
@@ -27,7 +27,7 @@
       </routePaths>
       <routeNodes>
         <start name="First">
-          <exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+          <exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
           <activationType>S</activationType>
         </start>
         <requests name="Second">

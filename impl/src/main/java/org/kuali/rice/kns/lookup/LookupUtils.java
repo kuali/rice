@@ -407,20 +407,46 @@ public class LookupUtils {
         return field;
     }
     
+    private static String BASE_LOOKUP_ACTION_URL = null;
+    private static String BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = null;
+    private static String BASE_INQUIRY_ACTION_URL = null;
+    
     public static String getBaseLookupUrl(boolean isMultipleValue) {
-    	String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
-		String lookupUrl = riceBaseUrl;
-		if (!lookupUrl.endsWith("/")) {
-			lookupUrl = lookupUrl + "/";
-		}
-		lookupUrl += "kr/";
-		if (isMultipleValue) {
-			lookupUrl = lookupUrl + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
-		}
-		else {
-			lookupUrl = lookupUrl + KNSConstants.LOOKUP_ACTION;
-		}
-		return lookupUrl;
+    	if ( isMultipleValue ) {
+    		if ( BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL == null ) {
+    			String lookupUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+    			if (!lookupUrl.endsWith("/")) {
+    				lookupUrl = lookupUrl + "/";
+    			}
+				lookupUrl += "kr/" + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+				BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = lookupUrl;
+    		}
+    		return BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL;
+    	} else {
+    		if ( BASE_LOOKUP_ACTION_URL == null ) {
+    			String lookupUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+    			if (!lookupUrl.endsWith("/")) {
+    				lookupUrl = lookupUrl + "/";
+    			}
+				lookupUrl += "kr/" + KNSConstants.LOOKUP_ACTION;
+				BASE_LOOKUP_ACTION_URL = lookupUrl;
+    		}
+    		return BASE_LOOKUP_ACTION_URL;
+    	}
+    }
+
+    public static String getBaseInquiryUrl() {
+    	if ( BASE_INQUIRY_ACTION_URL == null ) {
+	    	StringBuffer inquiryUrl = new StringBuffer( 
+	    			KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) );
+			if (inquiryUrl.charAt(inquiryUrl.length()-1) != '/' ) {
+				inquiryUrl.append( '/' );
+			}
+			inquiryUrl.append("kr/");
+			inquiryUrl.append( KNSConstants.INQUIRY_ACTION );
+			BASE_INQUIRY_ACTION_URL = inquiryUrl.toString();
+    	}
+    	return BASE_INQUIRY_ACTION_URL;
     }
 
     public static String transformLookupUrlToMultiple(String lookupUrl) {

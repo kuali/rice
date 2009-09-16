@@ -33,7 +33,7 @@ import org.kuali.rice.kew.web.RowStyleable;
 /**
  * Bean that representing a row displayed in a document search.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocSearchDTO implements Serializable, RowStyleable {
 

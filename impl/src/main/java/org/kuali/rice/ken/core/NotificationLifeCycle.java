@@ -27,7 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Eager-initializing singleton bean that performs some notification startup operations
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationLifeCycle extends LifecycleBean implements BeanFactoryAware {
     private static final Logger LOG = Logger.getLogger(NotificationLifeCycle.class);

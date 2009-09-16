@@ -33,7 +33,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 /**
  * This class tests various ValuesFinders classes.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Ignore("KULRICE-3011")

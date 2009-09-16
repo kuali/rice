@@ -30,7 +30,7 @@ import org.kuali.rice.test.BaseRiceTestCase;
 
 /**
  * Tests the behavior of EDocLiteForm in the presence of various types of input
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EDocLiteFormTest extends BaseRiceTestCase {
     /**

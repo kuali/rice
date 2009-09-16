@@ -26,7 +26,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
  * A general purpose resource loader which fetches objects and services from the
  * approriate source.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ResourceLoader extends ObjectLoader, ServiceLocator, Lifecycle {
 

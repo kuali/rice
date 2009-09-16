@@ -29,7 +29,7 @@ import org.springframework.beans.factory.BeanNameAware;
  * uses RiceService annotations to have Rice services from the Rice context injected into it instead
  * of Spring wiring.  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceServiceInjectedObject implements BeanNameAware {
     // hack for testing purposes

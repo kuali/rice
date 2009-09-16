@@ -23,7 +23,7 @@ import org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData;
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @MappedSuperclass

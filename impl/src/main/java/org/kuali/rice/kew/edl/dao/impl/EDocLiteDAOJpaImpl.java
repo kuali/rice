@@ -33,7 +33,7 @@ import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
 /**
  * JPA implementation of the EDOcLiteDAO
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EDocLiteDAOJpaImpl.class);

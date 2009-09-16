@@ -39,7 +39,7 @@ import org.kuali.rice.kew.util.Utilities;
  * A node which will activate any requests on it, returning true when there are no more requests 
  * which require activation.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RequestActivationNode implements SimpleNode {
 

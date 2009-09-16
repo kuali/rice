@@ -19,7 +19,7 @@ import org.kuali.rice.kcb.bo.MessageDelivery;
 
 /**
  * The EmailService class is responsible for actually sending email messages to recipients.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface EmailService {
     /**

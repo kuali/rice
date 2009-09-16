@@ -42,7 +42,7 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
  * Model bean defining a rule attribute.  Includes the classname of the attribute
  * class, as well as it's name and other information.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_ATTR_T")

@@ -37,7 +37,7 @@ import org.apache.commons.beanutils.converters.ShortConverter;
  *
  * @see ContextSensitiveConverter
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConverterUtils {
 

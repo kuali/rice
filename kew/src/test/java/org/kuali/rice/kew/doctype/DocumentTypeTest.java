@@ -25,6 +25,7 @@ import java.util.Set;
 import mocks.MockPostProcessor;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -58,16 +59,30 @@ public class DocumentTypeTest extends KEWTestCase {
         loadXmlFile("DoctypeConfig.xml");
     }
 
+    @Ignore
+    @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
+        loadXmlFile("DoctypeConfig_duplicateNodes.xml");
+        WorkflowDocument document = new WorkflowDocument("user1", "TestDoubleNodeDocumentType");
+        document.setTitle("");
+        document.routeDocument("");
+        document = new WorkflowDocument("rkirkend", document.getRouteHeaderId());
+        assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
+        document.approve("");
+        document = new WorkflowDocument("user2", document.getRouteHeaderId());
+        assertTrue("user2 should have an approve request", document.isApprovalRequested());
+        document.approve("");
+    }
+
     /**
      * Verify that enroute documents are not affected if you edit their document type.
      * @throws Exception
      */
     @Test public void testChangingDocumentTypeOnEnrouteDocument() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "DocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "DocumentType");
         document.setTitle("");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         WorkflowInfo info = new WorkflowInfo();
@@ -82,12 +97,12 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("Version2 should be larger than verison1", version2.intValue() > version1.intValue());
 
         //the new version would take the document final
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
 
         document.approve("");
 
-        document = new WorkflowDocument(new NetworkIdDTO("user2"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
         Integer versionDocument = info.getDocType(document.getRouteHeader().getDocTypeId()).getDocTypeVersion();
 
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
@@ -102,19 +117,33 @@ public class DocumentTypeTest extends KEWTestCase {
      */
     @Test public void testFinalApproverRouting() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "FinalApproverDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "FinalApproverDocumentType");
         document.setTitle("");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         try {
             document.approve("");
             fail("document should have thrown routing exception");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        	document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
+    }
+    
+    /**
+     * this test will verify that a document type with an empty route path will go directly
+     * to "final" status
+     *
+     * @throws Exception
+     */
+    @Test public void testEmptyRoutePath() throws Exception {
+
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "EmptyRoutePathDocumentType");
+        document.setTitle("");
+        document.routeDocument("");
+        assertTrue("Document should be in final state", document.stateIsFinal());
     }
 
     /**
@@ -122,14 +151,14 @@ public class DocumentTypeTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testMandatoryRoute() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "MandatoryRouteDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "MandatoryRouteDocumentType");
         document.setTitle("");
         try {
             document.routeDocument("");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
+        	document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
     }
@@ -152,7 +181,7 @@ public class DocumentTypeTest extends KEWTestCase {
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getDocumentTypes().add(parsedDocument);
-        String regex = "(?s).*<defaultExceptionWorkgroupName>" + KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE + ":TestWorkgroup</defaultExceptionWorkgroupName>.*";
+        String regex = "(?s).*<defaultExceptionGroupName namespace=\"" + KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE + "\">TestWorkgroup</defaultExceptionGroupName>.*";
         LOG.warn("Using regex: " + regex);
         assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches(regex));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());

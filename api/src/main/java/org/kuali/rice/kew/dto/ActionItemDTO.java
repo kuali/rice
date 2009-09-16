@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 /**
  * A transport object representing an ActionItem
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionItemDTO implements Serializable {
 

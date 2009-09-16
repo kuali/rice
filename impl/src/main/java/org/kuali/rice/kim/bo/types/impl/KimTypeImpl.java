@@ -30,13 +30,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRIM_TYP_T")
@@ -155,7 +154,6 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 		attrib.setSortCode( attribImpl.getSortCode() );
 		attrib.setComponentName( attribImpl.getKimAttribute().getComponentName() );
 		attrib.setNamespaceCode( attribImpl.getKimAttribute().getNamespaceCode() );
-		attrib.setApplicationUrl( attribImpl.getKimAttribute().getApplicationUrl() );
 		attrib.setAttributeLabel( attribImpl.getKimAttribute().getAttributeLabel() );
 		attrib.setKimAttributeId( attribImpl.getKimAttributeId() );
 		return attrib;

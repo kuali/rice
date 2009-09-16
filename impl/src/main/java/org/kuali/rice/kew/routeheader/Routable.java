@@ -21,7 +21,7 @@ package org.kuali.rice.kew.routeheader;
  * as to whether or not this is the current and active instance of the Routable (this is used
  * for versioning).
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Routable {
 

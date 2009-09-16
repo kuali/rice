@@ -35,9 +35,9 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * This is a description of what this class does - chris don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * This is a description of what this class does - chris don't forget to fill this in.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentLookupCriteriaProcessorKEWAdapter implements
@@ -45,7 +45,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	DocumentSearchCriteriaProcessor criteriaProcessor;
 	//TODO: remove this and use service locator or try helper in WorkflowUtils if sufficient
 	DataDictionaryService dataDictionaryService;
-	
+
 	/**
 	 * @return the criteriaProcessor
 	 */
@@ -57,36 +57,36 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 			DocumentSearchCriteriaProcessor criteriaProcessor) {
 		this.criteriaProcessor = criteriaProcessor;
 	}
-	
+
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 		this.dataDictionaryService = dataDictionaryService;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor#getRows(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public List<Row> getRows(DocumentType documentType, List<Row> knsRows, boolean detailed, boolean superSearch) {
 		List<Row> rows = new ArrayList<Row>();
-		
+
 		List<Row> searchAttRows = new ArrayList<Row>();
-		List<List<StandardDocSearchCriteriaFieldContainer>> preSearchAttFields; 
+		List<List<StandardDocSearchCriteriaFieldContainer>> preSearchAttFields;
 			if(!detailed) {
 				 preSearchAttFields = criteriaProcessor.getBasicSearchManager().getColumnsPreSearchAttributes();
 			} else {
 				 preSearchAttFields = criteriaProcessor.getAdvancedSearchManager().getColumnsPreSearchAttributes();
 			}
 		List<Row> preSearchAttRows = standardNonSearchAttRows(documentType,preSearchAttFields);
-		
+
 		rows.addAll(preSearchAttRows);
-		
+
 
 		if(documentType!=null) {
-			
+
 			//search atts
 			searchAttRows = searchAttRows(documentType);
 			rows.addAll(searchAttRows);
 	}
-		
+
 		//post atts
 		List<List<StandardDocSearchCriteriaFieldContainer>> postSearchAttFields;
 		if(!detailed) {
@@ -95,7 +95,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 			postSearchAttFields = criteriaProcessor.getAdvancedSearchManager().getColumnsPostSearchAttributes();
 		}
 
-		
+
 		List<Row> postSearchAttRows = standardNonSearchAttRows(documentType,postSearchAttFields);
 		rows.addAll(postSearchAttRows);
 		//add hidden fields
@@ -114,17 +114,17 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 		hidFields.add(superUserSearchField);
 		hidrow.setFields(hidFields);
 		rows.add(hidrow);
-		
+
 		return rows;
 	}
 	/**
 	 * This method ...
-	 * 
+	 *
 	 */
 	protected List<Row> standardNonSearchAttRows(DocumentType documentType, List<List<StandardDocSearchCriteriaFieldContainer>> fields) {
 		List<Row> customPreRows = new ArrayList<Row>();
 		for (List<StandardDocSearchCriteriaFieldContainer> list : fields) {
-			
+
 
 			for (StandardDocSearchCriteriaFieldContainer standardDocSearchCriteriaFieldContainer : list) {
 				List<StandardSearchCriteriaField> standardSearchCriteriaFields = standardDocSearchCriteriaFieldContainer.getFields();
@@ -134,7 +134,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 					List<Field>knsFields = new ArrayList<Field>();
 					Field field = new Field();
 					boolean skipadd = false;
-					
+
 					String propertyName = "";
 					if(StringUtils.contains(standardSearchCriteriaField.getProperty(), ".")) {
 						propertyName = StringUtils.substringAfterLast(standardSearchCriteriaField.getProperty(), ".");
@@ -147,11 +147,12 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 					//				field.setBusinessObjectClassName(dataDictionaryService.getattribute);
 
 					String fieldType = standardSearchCriteriaField.getFieldType();
-					
+
 					String lookupableImplServiceName = standardSearchCriteriaField.getLookupableImplServiceName();
 					if(lookupableImplServiceName!=null) {
 						if(StringUtils.equals("DocumentTypeLookupableImplService", lookupableImplServiceName)) {
-							fieldType = Field.LOOKUP_READONLY;
+							fieldType = Field.TEXT; // KULRICE-2630 - doctype needs to be a text box
+							field.setWebOnBlurHandler("validateDocTypeAndRefresh"); // used to call ajax dwr search for doctype
 							//TODO: instead of hardcoding these let's see about getting them from spring
 							field.setQuickFinderClassNameImpl("org.kuali.rice.kew.doctype.bo.DocumentType");
 							field.setFieldConversions("name:"+propertyName);
@@ -171,19 +172,26 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 						row.setHidden(true);
 					}
 					field.setFieldType(fieldType);
+
+					//this is set to 30 in the jsp for standard fields, should this be a parameter?!
+					field.setMaxLength(30); // moved this here so the value can be altered below
+
 					//TODO: special processing for some field types
 					if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN,fieldType)||
 					   StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY, fieldType)){
 						if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY,fieldType)) {
-							
+
 							field.setFieldType(Field.DROPDOWN);
 							field.setSkipBlankValidValue(true);
-									
+
 						}
-						
+
 						if("documentRouteStatus".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())) {
 							DocumentRouteStatusValuesFinder values = new DocumentRouteStatusValuesFinder();
 							field.setFieldValidValues(values.getKeyValues());
+							field.setFieldType(Field.MULTISELECT); // this is now multi select [KULRICE-2840]
+							int size = (values.getKeyValues().size() > 10)?10:values.getKeyValues().size();
+							field.setMaxLength(size);
 						} else if("routeNodes".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())){
 							if(documentType!=null) {
 								//TODO: can these be used directly in values finder also there is an option key and value property that could probably be used by all of these
@@ -216,19 +224,16 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 							field.setFieldValidValues(new ArrayList<KeyLabelPair>());
 						}
 					}
-					
-					
+
+
 					if(StringUtils.isEmpty(field.getFieldLabel())) {
 						String labelMessageKey = dataDictionaryService.getAttributeLabel(DocSearchCriteriaDTO.class,propertyName);
 						field.setFieldLabel(labelMessageKey);
 					}
-					
+
 					boolean hasDatePicker = StringUtils.isNotEmpty(standardSearchCriteriaField.getDatePickerKey());
 					field.setDatePicker(hasDatePicker);
-					
-					//this is set to 30 in the jsp for standard fields, should this be a parameter?!
-					field.setMaxLength(30);
-					
+
 					if(!skipadd) {
 						knsFields.add(field);
 						row.setFields(knsFields);
@@ -242,7 +247,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 
 	/**
 	 * This method gets the search att rows and fixes them where necessary
-	 * 
+	 *
 	 */
 	protected List<Row> searchAttRows(DocumentType documentType) {
 		List<Row> customSearchAttRows = new ArrayList<Row>();
@@ -270,9 +275,9 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 		}
 		return fixedCustomSearchAttRows;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
 	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
@@ -280,7 +285,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	}
 
 	/**
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#shouldDisplayLookupCriteria()
 	 */
 	public boolean shouldDisplayLookupCriteria() {

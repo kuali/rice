@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 /**
  * This is the base class for all derived role type services 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimDerivedRoleTypeServiceBase extends KimRoleTypeServiceBase {

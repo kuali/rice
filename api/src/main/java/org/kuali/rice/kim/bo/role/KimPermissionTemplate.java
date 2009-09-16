@@ -23,7 +23,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * 
  * Permissions templates define the type (and corresponding set of attributes) for the permission as well as a default name and description.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimPermissionTemplate extends Inactivateable {

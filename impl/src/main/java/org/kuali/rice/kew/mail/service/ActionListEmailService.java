@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.Person;
  * A service which allows for the sending of email reminders triggered by the state
  * of a user's Action List.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionListEmailService {
 

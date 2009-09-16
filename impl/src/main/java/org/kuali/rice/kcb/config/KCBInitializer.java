@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Required;
  * Initializing bean that initializes KCB (specifically the GlobalKCBServiceLocator)
  * on Spring context initialization.  This bean should be eagerly initialized (not marked lazy) 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBInitializer implements BeanFactoryAware, InitializingBean, DisposableBean {
     private BeanFactory beanFactory;

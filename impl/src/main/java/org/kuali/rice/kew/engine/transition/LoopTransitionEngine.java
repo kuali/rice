@@ -35,7 +35,7 @@ import org.kuali.rice.kew.util.XmlHelper;
 /**
  * TransitionEngine responsible for returning the workflow engine to another RouteNode
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LoopTransitionEngine extends TransitionEngine {
 

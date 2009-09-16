@@ -65,7 +65,7 @@ import org.kuali.rice.kim.util.KimConstants;
  *
  * <p>This class is not thread safe and must by synchronized externally for concurrent access.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowDocument implements java.io.Serializable {
 
@@ -162,16 +162,12 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException if a routeHeaderId is specified but an exception occurs trying to load the document route header
      */
     private void init(String principalId, String documentType, Long routeHeaderId) throws WorkflowException {
-        try {
-            this.principalId = principalId;
-            routeHeader = new RouteHeaderDTO();
-            routeHeader.setDocTypeName(documentType);
-            if (routeHeaderId != null) {
-                routeHeader = getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, routeHeaderId);
-            }
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	this.principalId = principalId;
+    	routeHeader = new RouteHeaderDTO();
+    	routeHeader.setDocTypeName(documentType);
+    	if (routeHeaderId != null) {
+    		routeHeader = getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, routeHeaderId);
+    	}
     }
 
     /**
@@ -293,11 +289,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#validateWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO)
      */
     public WorkflowAttributeValidationErrorDTO[] validateAttributeDefinition(WorkflowAttributeDefinitionDTO attributeDefinition) throws WorkflowException {
-        try {
-            return getWorkflowUtility().validateWorkflowAttributeDefinitionVO(attributeDefinition);
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().validateWorkflowAttributeDefinitionVO(attributeDefinition);
     }
 
     /**
@@ -392,12 +384,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException if an error occurs during document creation
      */
     public Long getRouteHeaderId() throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            return getRouteHeader().getRouteHeaderId();
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	return getRouteHeader().getRouteHeaderId();
     }
 
     /**
@@ -415,11 +403,7 @@ public class WorkflowDocument implements java.io.Serializable {
         if (getRouteHeaderId() == null) {
             return new ActionRequestDTO[0];
         }
-        try {
-            return getWorkflowUtility().getAllActionRequests(getRouteHeaderId());
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+        return getWorkflowUtility().getAllActionRequests(getRouteHeaderId());
     }
 
     /**
@@ -437,11 +421,7 @@ public class WorkflowDocument implements java.io.Serializable {
         if (getRouteHeaderId() == null) {
             return new ActionTakenDTO[0];
         }
-        try {
-            return getWorkflowUtility().getActionsTaken(getRouteHeaderId());
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+        return getWorkflowUtility().getActionsTaken(getRouteHeaderId());
     }
 
     /**
@@ -487,13 +467,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#saveDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void saveDocument(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().saveDocument(principalId, getRouteHeader(), annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().saveDocument(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -504,13 +480,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#routeDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void routeDocument(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().routeDocument(principalId, routeHeader, annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().routeDocument(principalId, routeHeader, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -521,14 +493,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#disapproveDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void disapprove(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().disapproveDocument(principalId, getRouteHeader(), annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().disapproveDocument(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -539,13 +506,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#approveDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void approve(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().approveDocument(principalId, getRouteHeader(), annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().approveDocument(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -556,13 +519,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#cancelDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void cancel(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().cancelDocument(principalId, getRouteHeader(), annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().cancelDocument(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -583,13 +542,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#saveRoutingData(UserIdDTO, RouteHeaderDTO)
      */
     public void saveRoutingData() throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().saveRoutingData(principalId, getRouteHeader());
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().saveRoutingData(principalId, getRouteHeader());
+    	documentContentDirty = true;
     }
 
     /**
@@ -600,13 +555,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#acknowledgeDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void acknowledge(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().acknowledgeDocument(principalId, getRouteHeader(), annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().acknowledgeDocument(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -616,13 +567,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException in case an error occurs fyi-ing the document
      */
     public void fyi() throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().clearFYIDocument(principalId, getRouteHeader());
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().clearFYIDocument(principalId, getRouteHeader());
+    	documentContentDirty = true;
     }
 
     /**
@@ -633,13 +580,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#deleteDocument(UserIdDTO, RouteHeaderDTO)
      */
     public void delete() throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            getWorkflowDocumentActions().deleteDocument(principalId, getRouteHeader());
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	getWorkflowDocumentActions().deleteDocument(principalId, getRouteHeader());
+    	documentContentDirty = true;
     }
 
     /**
@@ -648,13 +591,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException in case an error occurs retrieving the route header
      */
     public void refreshContent() throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowUtility().getRouteHeader(getRouteHeaderId());
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowUtility().getRouteHeader(getRouteHeaderId());
+    	documentContentDirty = true;
     }
 
     /**
@@ -678,13 +617,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * in a terminal state, the request will be attached to the terminal node.
      */
     public void adHocRouteDocumentToPrincipal(String actionRequested, String nodeName, String annotation, String principalId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(principalId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, forceAction, requestLabel);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToPrincipal(principalId, getRouteHeader(), actionRequested, nodeName, annotation, principalId, responsibilityDesc, forceAction, requestLabel);
+    	documentContentDirty = true;
     }
 
     /**
@@ -708,13 +643,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * in a terminal state, the request will be attached to the terminal node.
      */
     public void adHocRouteDocumentToGroup(String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(principalId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, forceAction, requestLabel);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().adHocRouteDocumentToGroup(principalId, getRouteHeader(), actionRequested, nodeName, annotation, groupId, responsibilityDesc, forceAction, requestLabel);
+    	documentContentDirty = true;
     }
 
     /**
@@ -731,13 +662,9 @@ public class WorkflowDocument implements java.io.Serializable {
     	if (getRouteHeader().getRouteHeaderId() == null) {
     		throw new WorkflowException("Can't revoke request, the workflow document has not yet been created!");
     	}
-    	try {
-    		createDocumentIfNeccessary();
-    		routeHeader = getWorkflowDocumentActions().revokeAdHocRequests(principalId, getRouteHeader(), revoke, annotation);
-    		documentContentDirty = true;
-    	} catch (Exception e) {
-    		throw handleException(e);
-    	}
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().revokeAdHocRequests(principalId, getRouteHeader(), revoke, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -837,13 +764,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#superUserApprove(UserIdDTO, RouteHeaderDTO, String)
      */
     public void superUserApprove(String annotation) throws WorkflowException {
-    	try {
-    		createDocumentIfNeccessary();
-    		routeHeader = getWorkflowDocumentActions().superUserApprove(principalId, getRouteHeader(), annotation);
-    		documentContentDirty = true;
-    	} catch (Exception e) {
-			throw handleException(e);
-		}
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().superUserApprove(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -855,13 +778,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#superUserApprove(UserIdVO, RouteHeaderVO, String)(UserIdVO, RouteHeaderVO, String)
      */
     public void superUserActionRequestApprove(Long actionRequestId, String annotation) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().superUserActionRequestApprove(principalId, getRouteHeader(), actionRequestId, annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().superUserActionRequestApprove(principalId, getRouteHeader(), actionRequestId, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -872,13 +791,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#superUserDisapprove(UserIdDTO, RouteHeaderDTO, String)
      */
     public void superUserDisapprove(String annotation) throws WorkflowException {
-    	try {
-    		createDocumentIfNeccessary();
-    		routeHeader = getWorkflowDocumentActions().superUserDisapprove(principalId, getRouteHeader(), annotation);
-    		documentContentDirty = true;
-    	} catch (Exception e) {
-			throw handleException(e);
-		}
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().superUserDisapprove(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -889,13 +804,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#superUserCancel(UserIdDTO, RouteHeaderDTO, String)
      */
     public void superUserCancel(String annotation) throws WorkflowException {
-    	try {
-    		createDocumentIfNeccessary();
-    		routeHeader = getWorkflowDocumentActions().superUserCancel(principalId, getRouteHeader(), annotation);
-    		documentContentDirty = true;
-    	} catch (Exception e) {
-			throw handleException(e);
-		}
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().superUserCancel(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -905,12 +816,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#isSuperUserForDocumentType(UserIdDTO, Long)
      */
     public boolean isSuperUser() throws WorkflowException {
-		try {
-			createDocumentIfNeccessary();
-			return getWorkflowUtility().isSuperUserForDocumentType(principalId, getRouteHeader().getDocTypeId());
-		} catch (Exception e) {
-			throw handleException(e);
-		}
+    	createDocumentIfNeccessary();
+    	return getWorkflowUtility().isSuperUserForDocumentType(principalId, getRouteHeader().getDocTypeId());
 	}
 
     /**
@@ -931,13 +838,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#clearFYIDocument(UserIdDTO, RouteHeaderDTO)
      */
     public void clearFYI() throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            getWorkflowDocumentActions().clearFYIDocument(principalId, getRouteHeader());
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	getWorkflowDocumentActions().clearFYIDocument(principalId, getRouteHeader());
+    	documentContentDirty = true;
     }
 
     /**
@@ -948,13 +851,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#completeDocument(UserIdDTO, RouteHeaderDTO, String)
      */
     public void complete(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().completeDocument(principalId, getRouteHeader(), annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().completeDocument(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -965,13 +864,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#logDocumentAction(UserIdDTO, RouteHeaderDTO, String)
      */
     public void logDocumentAction(String annotation) throws WorkflowException {
-        try {
-        	createDocumentIfNeccessary();
-            getWorkflowDocumentActions().logDocumentAction(principalId, getRouteHeader(), annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	getWorkflowDocumentActions().logDocumentAction(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1095,16 +990,6 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     /**
-     * Helper to prevent us from needlessly wrapping a WorkflowException in another WorkflowException.
-     */
-    private WorkflowException handleException(Exception e) {
-    	if (e instanceof WorkflowException) {
-    		return (WorkflowException)e;
-    	}
-    	return new WorkflowException(e);
-    }
-
-    /**
      * Like handleException except it returns a RuntimeException.
      */
     private RuntimeException handleExceptionAsRuntime(Exception e) {
@@ -1137,13 +1022,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
      */
     public void blanketApprove(String annotation, String[] nodeNames) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().blanketApprovalToNodes(principalId, getRouteHeader(), annotation, nodeNames);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().blanketApprovalToNodes(principalId, getRouteHeader(), annotation, nodeNames);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1155,13 +1036,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException user taking action is not in workgroup
      */
     public void takeGroupAuthority(String annotation, String groupId) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().takeGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().takeGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1173,13 +1050,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException user taking action is not in workgroup or did not take workgroup authority
      */
     public void releaseGroupAuthority(String annotation, String groupId) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().releaseGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().releaseGroupAuthority(principalId, getRouteHeader(), groupId, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1190,16 +1063,12 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getActiveNodeInstances(Long)
      */
     public String[] getNodeNames() throws WorkflowException {
-        try {
-            RouteNodeInstanceDTO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getRouteHeaderId());
-            String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
-            for (int index = 0; index < activeNodeInstances.length; index++) {
-                nodeNames[index] = activeNodeInstances[index].getName();
-            }
-            return nodeNames;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	RouteNodeInstanceDTO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getRouteHeaderId());
+    	String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
+    	for (int index = 0; index < activeNodeInstances.length; index++) {
+    		nodeNames[index] = activeNodeInstances[index].getName();
+    	}
+    	return nodeNames;
     }
 
     /**
@@ -1224,13 +1093,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
      */
     public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().returnDocumentToPreviousNode(principalId, getRouteHeader(), returnPoint, annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().returnDocumentToPreviousNode(principalId, getRouteHeader(), returnPoint, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1242,13 +1107,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#moveDocument(UserIdDTO, RouteHeaderDTO, MovePointDTO, String)
      */
     public void moveDocument(MovePointDTO movePoint, String annotation) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            routeHeader =  getWorkflowDocumentActions().moveDocument(principalId, getRouteHeader(), movePoint, annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader =  getWorkflowDocumentActions().moveDocument(principalId, getRouteHeader(), movePoint, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1259,11 +1120,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getDocumentRouteNodeInstances(Long)
      */
     public RouteNodeInstanceDTO[] getRouteNodeInstances() throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocumentRouteNodeInstances(getRouteHeaderId());
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentRouteNodeInstances(getRouteHeaderId());
     }
 
     /**
@@ -1275,11 +1132,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getPreviousRouteNodeNames(Long)
      */
     public String[] getPreviousNodeNames() throws WorkflowException {
-		try {
-			return getWorkflowUtility().getPreviousRouteNodeNames(getRouteHeaderId());
-		} catch (Exception e) {
-			throw new WorkflowException(e);
-		}
+    	return getWorkflowUtility().getPreviousRouteNodeNames(getRouteHeaderId());
 	}
 
     /**
@@ -1289,11 +1142,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException
      */
     public DocumentDetailDTO getDetail() throws WorkflowException {
-        try {
-            return getWorkflowUtility().getDocumentDetail(getRouteHeaderId());
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	return getWorkflowUtility().getDocumentDetail(getRouteHeaderId());
     }
 
     /**
@@ -1303,22 +1152,18 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#saveDocumentContent(DocumentContentDTO)
      */
     public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException {
-    	try {
-    		if (documentContent.getRouteHeaderId() == null) {
-    			throw new WorkflowException("Document Content does not have a valid document ID.");
-    		}
-    		// important to check directly against getRouteHeader().getRouteHeaderId() instead of just getRouteHeaderId() because saveDocumentContent
-    		// is called from createDocumentIfNeccessary which is called from getRouteHeaderId().  If that method was used, we would have an infinite loop.
-    		if (!documentContent.getRouteHeaderId().equals(getRouteHeader().getRouteHeaderId())) {
-    			throw new WorkflowException("Attempted to save content on this document with an invalid document id of " + documentContent.getRouteHeaderId());
-    		}
-    		DocumentContentDTO newDocumentContent = getWorkflowDocumentActions().saveDocumentContent(documentContent);
-    		this.documentContent = new ModifiableDocumentContentDTO(newDocumentContent);
-    		documentContentDirty = false;
-    		return this.documentContent;
-    	} catch (Exception e) {
-    		throw handleException(e);
+    	if (documentContent.getRouteHeaderId() == null) {
+    		throw new WorkflowException("Document Content does not have a valid document ID.");
     	}
+    	// important to check directly against getRouteHeader().getRouteHeaderId() instead of just getRouteHeaderId() because saveDocumentContent
+    	// is called from createDocumentIfNeccessary which is called from getRouteHeaderId().  If that method was used, we would have an infinite loop.
+    	if (!documentContent.getRouteHeaderId().equals(getRouteHeader().getRouteHeaderId())) {
+    		throw new WorkflowException("Attempted to save content on this document with an invalid document id of " + documentContent.getRouteHeaderId());
+    	}
+    	DocumentContentDTO newDocumentContent = getWorkflowDocumentActions().saveDocumentContent(documentContent);
+    	this.documentContent = new ModifiableDocumentContentDTO(newDocumentContent);
+    	documentContentDirty = false;
+    	return this.documentContent;
     }
 
     // DEPRECATED: as of Workflow 2.1
@@ -1327,13 +1172,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @deprecated use blanketApprove(String annotation, String nodeName) instead
      */
     public void blanketApprove(String annotation, Integer routeLevel) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            routeHeader = getWorkflowDocumentActions().blanketApproval(principalId, getRouteHeader(), annotation, routeLevel);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().blanketApproval(principalId, getRouteHeader(), annotation, routeLevel);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1347,13 +1188,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @deprecated use returnToPreviousNode(String annotation, String nodeName) instead
      */
     public void returnToPreviousRouteLevel(String annotation, Integer destRouteLevel) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-            getWorkflowDocumentActions().returnDocumentToPreviousRouteLevel(principalId, getRouteHeader(), destRouteLevel, annotation);
-            documentContentDirty = true;
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
+    	getWorkflowDocumentActions().returnDocumentToPreviousRouteLevel(principalId, getRouteHeader(), destRouteLevel, annotation);
+    	documentContentDirty = true;
     }
 
     /**
@@ -1455,11 +1292,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @param value value of the variable
      */
     public void setVariable(String name, String value) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
         getRouteHeader().setVariable(name, value);
     }
 
@@ -1469,11 +1302,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return variable value
      */
     public String getVariable(String name) throws WorkflowException {
-        try {
-            createDocumentIfNeccessary();
-        } catch (Exception e) {
-            throw handleException(e);
-        }
+    	createDocumentIfNeccessary();
         return getRouteHeader().getVariable(name);
     }
 

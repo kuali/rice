@@ -28,7 +28,7 @@ import org.apache.commons.beanutils.Converter;
  * the context of the KEW struts module but preserve the conversion behavior of the parent
  * struts module.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ContextSensitiveConverter implements Converter {
 

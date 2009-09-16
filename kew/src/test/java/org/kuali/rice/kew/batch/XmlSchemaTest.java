@@ -48,7 +48,7 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Test schema validation
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlSchemaTest extends BaseRiceTestCase {
     private Document validate(InputStream stream) throws ParserConfigurationException, IOException , SAXException {

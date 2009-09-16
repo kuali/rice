@@ -27,7 +27,7 @@ import javax.persistence.Entity;
 /**
  * This class represents an instance of a user's subscription to a specific 
  * notification channel.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_CHNL_SUBSCRP_T")

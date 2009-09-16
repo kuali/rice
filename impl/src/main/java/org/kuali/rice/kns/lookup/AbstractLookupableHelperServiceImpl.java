@@ -735,8 +735,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @return
 	  */
 	 final protected String getReturnHref(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys) {
+    	if (StringUtils.isNotBlank(backLocation)) {
 		 return UrlFactory.parameterizeUrl(backLocation, getParameters(
 				 businessObject, fieldConversions, lookupImpl, returnKeys));
+    	}
+    	return "";
 	 }
 
 	 /**
@@ -779,8 +782,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 protected String getReturnHref(Properties parameters, LookupForm lookupForm, List returnKeys) {
+    	if (StringUtils.isNotBlank(backLocation)) {
 		 String href = UrlFactory.parameterizeUrl(backLocation, parameters);
 		 return addToReturnHref(href, lookupForm);
+    	}
+    	return "";
 	 }
 
 	 protected String addToReturnHref(String href, LookupForm lookupForm){

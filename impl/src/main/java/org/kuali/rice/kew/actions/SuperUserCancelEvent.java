@@ -26,7 +26,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * performs a cancel action as a super user
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
     

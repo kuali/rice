@@ -31,7 +31,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * A simple node settings store that backs the settings with a properties file
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimpleNodeSettingsStore implements NodeSettings, InitializingBean {
 

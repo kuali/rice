@@ -54,7 +54,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * embedded workflow programmatically but mostly this is a base class by which
  * to hang specific configuration behavior off of through subclassing
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class KSBConfigurer extends ModuleConfigurer {

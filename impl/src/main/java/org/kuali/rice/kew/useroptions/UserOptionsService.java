@@ -24,7 +24,7 @@ import java.util.List;
  * Sits on top of the UserOptionsTable and manages certain aspects of action list refresh behaviors.
  * This service could probably be broken up and it's dao put somewhere else and injected in the appropriate places.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface UserOptionsService {
     public Collection<UserOptions> findByWorkflowUser(String principalId);

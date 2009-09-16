@@ -31,7 +31,7 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 /**
  * This class helps to provide common mock objects for testing and also helper methods to build instances of objects.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MockObjectsUtil {
     /**

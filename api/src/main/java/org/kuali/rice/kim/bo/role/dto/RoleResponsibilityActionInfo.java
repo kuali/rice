@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.role.dto;
 import java.io.Serializable;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoleResponsibilityActionInfo implements Serializable {
 

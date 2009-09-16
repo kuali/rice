@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
  * Implementation of the {@link RuleCacheProcessor} which notifies the rule cache of
  * a change to the specified rule.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleCacheProcessorImpl implements RuleCacheProcessor {
 	

@@ -44,7 +44,7 @@ import org.kuali.rice.kim.service.PersonService;
  * <p>The current authenticated UserSession is stored in a ThreadLocal and can be
  * accessed using UserSession.getAuthenticatedUser().
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserSession implements Serializable {
 

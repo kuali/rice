@@ -32,9 +32,10 @@
 					<c:set var="attr" value="${attrDefn.value}" />
 					<c:set var="fieldName" value="${attr.name}" />
 					<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
+					<c:set var="attrDefinition" value="${role.definitionsKeyedByAttributeName[fieldName]}"/>
 			       	<td align="left" valign="middle">
 			       		<div align="center"> 
-			      		   <kul:htmlControlAttribute property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnlyRole}" />
+			      		   <kul:htmlControlAttribute kimTypeId="${role.kimTypeId}" property="document.roles[${roleIdx}].newRolePrncpl.qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnlyRole}" />
 			      		   <%-- 
 			      		   TODO: code (probably) does not pull the remote property name properly
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
@@ -93,7 +94,7 @@
 									<c:set var="attrReadOnly" value="${(readOnlyRole || attrDefinition.unique)}"/>
 				            <td align="left" valign="middle">
 				                <div align="center"> 
-				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+				                	<kul:htmlControlAttribute kimTypeId="${role.kimTypeId}" property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 						      		   <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
                                            <c:if test="${!empty attr.lookupBoClass and not attrReadOnly}">
     						      		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />

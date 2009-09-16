@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Listens on a socket and reads EDocLitePostProcessor events
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class EDocLitePostProcessorListener implements Runnable {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessorListener.class);

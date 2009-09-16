@@ -20,9 +20,9 @@
     		<name>SearchDoc</name>
             <label>SearchDoc</label>
     		<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-    		<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-    		<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-    		<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+    		<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+    		<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+    		<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
     		<docHandler>_blank</docHandler>
     		<active>true</active>
     		<policies>

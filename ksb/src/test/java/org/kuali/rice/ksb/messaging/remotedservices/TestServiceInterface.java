@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 
 /**
  * Interface to write test services against that's in all test webapps classpath.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface TestServiceInterface {

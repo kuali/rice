@@ -34,7 +34,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
  * KEW classloader.  It allows for loading of plugin resources from core components of the system.
  * Essentially a Plugin is a specialized ResourceLoader with a custom classloader and attached configuration.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Plugin extends BaseWrappingResourceLoader {
 

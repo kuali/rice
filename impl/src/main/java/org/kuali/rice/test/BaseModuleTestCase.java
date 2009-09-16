@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 /**
  * Base module test case that allows overriding of the test harness spring beans
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BaseModuleTestCase extends RiceInternalSuiteDataTestCase {
     protected final Logger LOG = Logger.getLogger(getClass());

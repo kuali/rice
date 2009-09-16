@@ -30,7 +30,7 @@ import org.kuali.rice.kew.xml.export.XmlExporter;
  * A service providing data access for {@link RuleTemplate}s and 
  * {@link RuleTemplateAttribute}s.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleTemplateService extends XmlLoader, XmlExporter {
 

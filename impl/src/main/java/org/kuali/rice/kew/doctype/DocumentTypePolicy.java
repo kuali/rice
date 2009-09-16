@@ -36,7 +36,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * Model bean representing a policy of a document type.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @IdClass(org.kuali.rice.kew.doctype.DocumentTypePolicyId.class)
 @Entity

@@ -34,7 +34,7 @@ import org.kuali.rice.core.util.RiceDebugUtils;
  * source repository, so maybe a forthcoming release will include this functionality and these kludges can be
  * removed.
  * @see SuffixedSqlSelectStatement
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
     private Logger logger = LoggerFactory.getLogger(SqlGeneratorSuffixableImpl.class);

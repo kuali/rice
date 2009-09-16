@@ -23,7 +23,7 @@ import org.kuali.rice.kew.test.TestUtilities;
 /**
  * This is a unit test for testing the functionality of the ExceptionRoutingService. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExceptionRoutingServiceTest extends KEWTestCase {
 

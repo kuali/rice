@@ -37,10 +37,10 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * Base EmailContentService implementation with a default email from address that can be
  * configured via Spring property injection
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseEmailContentServiceImpl implements EmailContentService {
-    protected String defaultEmailFromAddress = "workflow@indiana.edu";
+    protected String defaultEmailFromAddress = "admin@localhost";
     protected String deploymentEnvironment;
 
     public void setDefaultEmailFromAddress(String defaultEmailFromAddress) {

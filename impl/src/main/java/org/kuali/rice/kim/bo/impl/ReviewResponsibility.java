@@ -34,7 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity
@@ -76,7 +76,7 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
     	setActive( resp.isActive() );
     	AttributeSet respDetails = resp.getDetails();
     	setDocumentTypeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
-    	setRouteNodeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
+    	setRouteNodeName( respDetails.get( KimAttributes.ROUTE_NODE_NAME ) );
     	setActionDetailsAtRoleMemberLevel( Boolean.valueOf( respDetails.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) ) );
     	setRequired( Boolean.valueOf( respDetails.get( KimAttributes.REQUIRED ) ) );
     	setQualifierResolverProvidedIdentifier( respDetails.get( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) );

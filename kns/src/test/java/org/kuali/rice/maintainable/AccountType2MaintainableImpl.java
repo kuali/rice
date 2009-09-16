@@ -23,7 +23,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 /**
  * This is a subclass of KualiMaintainableImpl designed specifically for testing custom lock descriptors. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AccountType2MaintainableImpl extends KualiMaintainableImpl {
 	private static final long serialVersionUID = -396652994644246467L;

@@ -47,7 +47,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * Tests workflow Struts IngesterAction
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IngesterActionTest extends KEWTestCase {
 

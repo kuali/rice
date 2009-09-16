@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 /**
  * Notification Message Content service - handles parsing the notification XML message and also marshalling out BOs for the response.
  * @see <a href="http://wiki.library.cornell.edu/wiki/display/notsys/Hi-Level+Service+Interface+Definitions#Hi-LevelServiceInterfaceDefinitions-NotificationMessageContentService">NotificationMessageContentService</a>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationMessageContentService {
     /**

@@ -30,7 +30,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
@@ -58,7 +58,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
 		ArrayList<RoleMembershipInfo> tempIdList = new ArrayList<RoleMembershipInfo>();
-		if ( qualification == null ) {
+		if ( qualification == null || qualification.isEmpty() ) {
 			return tempIdList;
 		}
 		qualification = translateInputAttributeSet(qualification);

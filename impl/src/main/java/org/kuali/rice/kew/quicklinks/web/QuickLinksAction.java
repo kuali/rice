@@ -37,7 +37,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 /**
  * A Struts Action for interfacing with the Quick Links system
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class QuickLinksAction extends KewKualiAction {
 

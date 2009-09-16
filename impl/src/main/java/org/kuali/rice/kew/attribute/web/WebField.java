@@ -22,7 +22,7 @@ import org.kuali.rice.kns.web.ui.Field;
  * Represents a Field that's rendered on a web form and can be used to store the value
  * for that field.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebField {
 

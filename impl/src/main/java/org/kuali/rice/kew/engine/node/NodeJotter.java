@@ -25,7 +25,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 /**
  * Logs {@link RouteNodeInstance} graphs in a format which is indented and easy to read. 
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NodeJotter {
 

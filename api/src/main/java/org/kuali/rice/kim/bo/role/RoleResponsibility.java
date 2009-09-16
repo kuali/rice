@@ -19,7 +19,7 @@ package org.kuali.rice.kim.bo.role;
 /**
  * Join table between the Role and KimResponsibility objects. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface RoleResponsibility {

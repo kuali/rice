@@ -23,7 +23,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
 /**
  * Represents the entity type associated with a particular entity. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimEntityEntityType extends Inactivateable {
@@ -38,7 +38,7 @@ public interface KimEntityEntityType extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<KimEntityAddress> getAddresses();
+	List<? extends KimEntityAddress> getAddresses();
 
 	/**
 	 * Return the list of EntityEmail objects associated with this EntityType.
@@ -46,7 +46,7 @@ public interface KimEntityEntityType extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<KimEntityEmail> getEmailAddresses();
+	List<? extends KimEntityEmail> getEmailAddresses();
 	
 	/**
 	 * Return the list of EntityPhone objects associated with this EntityType.
@@ -54,7 +54,7 @@ public interface KimEntityEntityType extends Inactivateable {
 	 * The returned list will never be null, the implementation will generate an
 	 * empty list as needed.
 	 */
-	List<KimEntityPhone> getPhoneNumbers();
+	List<? extends KimEntityPhone> getPhoneNumbers();
 	
 	/** Returns the default address record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.

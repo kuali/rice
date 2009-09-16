@@ -32,7 +32,7 @@ import org.quartz.Scheduler;
 
 /**
  * Interface for obtaining Notification System services
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationServiceLocator {
     /**

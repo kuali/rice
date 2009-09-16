@@ -32,7 +32,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementPersonDocumentForm extends IdentityManagementDocumentFormBase {
@@ -76,7 +76,6 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 	public IdentityManagementPersonDocumentForm() {
         super();
         //this.registerEditableProperty("methodToCall.approve.x");
-        this.setDocument(new IdentityManagementPersonDocument());
         this.setNewAffln(new PersonDocumentAffiliation());
         this.setNewAddress(new PersonDocumentAddress());
         this.setNewEmpInfo(new PersonDocumentEmploymentInfo());
@@ -86,6 +85,11 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
         this.setNewDelegationMember(new RoleDocumentDelegationMember());
     }
 
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementPersonDocument";
+	}
+	
 	public IdentityManagementPersonDocument getPersonDocument() {
         return (IdentityManagementPersonDocument) this.getDocument();
     }

@@ -22,7 +22,7 @@ import org.kuali.rice.kcb.util.KCBConstants;
  * If tests or test data is updated, this file need to be updated
  * to be kept in sync.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface TestConstants {
     /**

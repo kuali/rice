@@ -41,7 +41,7 @@ import org.kuali.rice.kns.web.ui.ResultRow;
  * system is encapsulated in this helper class so it can be shared between
  * the various Display Tag export implementations. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ExportViewHelper {

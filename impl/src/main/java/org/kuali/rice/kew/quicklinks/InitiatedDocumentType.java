@@ -19,7 +19,7 @@ package org.kuali.rice.kew.quicklinks;
 /**
  * Stores statistics information about an initiated DocumentType
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InitiatedDocumentType {
 

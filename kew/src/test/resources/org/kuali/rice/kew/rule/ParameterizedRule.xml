@@ -28,7 +28,7 @@
                     <priority>1</priority>
                 </responsibility>
                 <responsibility>
-                    <workgroup>${test.replacement.workgroup}</workgroup>
+                    <groupName namespace="KR-WKFLW">${test.replacement.workgroup}</groupName>
                     <actionRequested>A</actionRequested>
                     <priority>1</priority>
                 </responsibility>

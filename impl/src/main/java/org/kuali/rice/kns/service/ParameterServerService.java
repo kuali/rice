@@ -26,7 +26,7 @@ import org.kuali.rice.kns.bo.ParameterDetailType;
  * the non-database components from Rice and all Rice client applications that publish
  * their own non-database components.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ParameterServerService extends ParameterService {
 

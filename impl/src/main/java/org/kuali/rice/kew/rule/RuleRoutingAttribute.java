@@ -38,7 +38,7 @@ import org.kuali.rice.kew.util.XmlHelper;
  * A {@link WorkflowAttribute} which is used to route a rule based on the
  * {@link DocumentType} of the rule which is created.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleRoutingAttribute implements WorkflowAttribute {
 

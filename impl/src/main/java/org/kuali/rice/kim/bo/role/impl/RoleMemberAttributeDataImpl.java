@@ -24,7 +24,7 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRIM_ROLE_MBR_ATTR_DATA_T")

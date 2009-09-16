@@ -43,7 +43,7 @@ import org.kuali.rice.kns.web.ui.Section;
 /**
  * This class is the maintainable implementation for the Workflow {@link DocumentType} 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentTypeMaintainable extends KualiMaintainableImpl {

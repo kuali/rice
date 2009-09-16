@@ -38,7 +38,7 @@ import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
  * This is test base that should be used for all KIM unit tests. All non-web unit tests for KIM should extend this base
  * class.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public abstract class KIMTestCase extends BaselineTestCase {

@@ -30,7 +30,7 @@ import org.kuali.rice.kew.xml.XmlLoader;
  * XmlDigesterService implementation.  This class simply loads the specified xml doc
  * with the specified XmlLoader.
  * @see org.kuali.rice.kew.batch.XmlDigesterService
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlDigesterServiceImpl implements XmlDigesterService {
     private static final Logger LOG = Logger.getLogger(XmlDigesterServiceImpl.class);

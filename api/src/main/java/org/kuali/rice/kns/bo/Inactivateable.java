@@ -22,7 +22,7 @@ package org.kuali.rice.kns.bo;
  * for lookups and default the search criteria field to active
  */
 public interface Inactivateable {
-    
+
     /**
      * Indicates whether the record is active or inactive.
      */

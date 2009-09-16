@@ -287,6 +287,7 @@
       <property name="lookupableHelperService">
         <ref local="docSearchCriteriaDTOLookupHelperService" />
       </property>
+      <property name="extraOnLoad" value="storeCurrentDocTypeNameOnLoad()"/>
     </bean>
 
 	<bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true"/>
@@ -875,5 +876,10 @@
 	       </bean>
 		</property>
   </bean>
+
+  <bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
+		<property name="name" value="scriptConfigurationFilePaths" />
+		<property name="listItem" value="classpath:org/kuali/rice/kew/dwr-core.xml" />
+	</bean>
 
 </beans>

@@ -20,7 +20,7 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
 /**
  * A service for administrative functions for a node on the service bus.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface BusAdminService {

@@ -18,7 +18,7 @@ package org.kuali.rice.kew.postprocessor;
 
 /**
  * Event sent to the postprocessor when the processor is ended
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AfterProcessEvent implements IDocumentEvent {
 

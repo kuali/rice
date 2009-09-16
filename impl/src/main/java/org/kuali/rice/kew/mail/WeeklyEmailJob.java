@@ -27,7 +27,7 @@ import org.quartz.JobExecutionException;
 /**
  * Quartz job for sending weekly email reminders.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WeeklyEmailJob implements Job {
 

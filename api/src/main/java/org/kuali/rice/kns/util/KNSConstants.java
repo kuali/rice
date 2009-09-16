@@ -74,7 +74,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String RULE_DETAIL_TYPE = "Rule";
         public static final String ACTION_LIST_DETAIL_TYPE = "ActionList";
         public static final String BACKDOOR_DETAIL_TYPE = "Backdoor";
-        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocumentSearch";
+        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocSearchCriteriaDTO";
         public static final String EDOC_LITE_DETAIL_TYPE = "EDocLite";
         public static final String FEATURE_DETAIL_TYPE = "Feature";
         public static final String GLOBAL_REVIEWER_DETAIL_TYPE = "GlobalReviewer";
@@ -83,9 +83,9 @@ public class KNSConstants extends JSTLConstants {
         public static final String QUICK_LINK_DETAIL_TYPE = "QuickLink";
         public static final String ROUTE_QUEUE_DETAIL_TYPE = "RouteQueue";
         public static final String ROUTE_DETAIL_TYPE = "Route";
-        public static final String RULE_SERVICE_DETAIL_TYPE = "RuleService";
+        public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
-        public static final String WORKGROUP_DETAIL_TYPE = "Workgroup";
+        public static final String WORKGROUP_DETAIL_TYPE = "Notification";
     }
 
     public static class DocumentFormHeaderFieldIds {
@@ -494,12 +494,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
     public static final String SESSION_SCOPE = "session";
 
-    public static class CoreApcParms {
-
-        public static final String WORKFLOW_EXCEPTION_WORKGROUP = "EXCEPTION_GROUP";
-        public static final String SUPERVISOR_WORKGROUP = "SUPERVISOR_GROUP";
-    }
-
     public static class SystemGroupParameterNames {
         public static final String CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND = "CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND";
 
@@ -559,6 +553,7 @@ public class KNSConstants extends JSTLConstants {
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( TAB_STATES );
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".hideAllTabs" );
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".showAllTabs" );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".toggleTab" );
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SWITCH_TO_PAGE_METHOD );
 //    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SORT_METHOD );
     }

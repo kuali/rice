@@ -27,7 +27,7 @@ import org.w3c.dom.Document;
 /**
  * XPath NamespaceContext implementation that delegates all lookups to a DOM Document,
  * which supplies all prefix/NS mappings defined in the doc.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentNamespaceContext implements NamespaceContext {
     private static final Logger LOG = Logger.getLogger(DocumentNamespaceContext.class);

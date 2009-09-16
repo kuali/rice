@@ -31,7 +31,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  *
  * @see PreferencesAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PreferencesForm extends KualiForm {
 

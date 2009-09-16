@@ -36,7 +36,7 @@ import org.kuali.rice.test.server.JettyServers;
  * will have to support this (e.g. not rely on static singletons...)
  * Another issue is that there is no suite "shutdown" per se, so a Jetty started up in a suite
  * lifecycle will never get explicitly shut down.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class JettyServerTestCase extends BaselineTestCase {
     private static Set<String> classesHandled = new HashSet<String>();

@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
  * </pre>
  * The 'seconds' attribute is resolved via {@link org.kuali.rice.kew.test.web.framework.Util#getResolvableAttribute(Node, String, PropertyScheme)},
  * defaulting to literal scheme.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SleepAction extends BaseScriptAction {
     private static final String[] NAMES = { "sleep" };

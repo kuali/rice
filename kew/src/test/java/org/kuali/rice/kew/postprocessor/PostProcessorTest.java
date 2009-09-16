@@ -19,8 +19,9 @@ package org.kuali.rice.kew.postprocessor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -51,7 +52,7 @@ public class PostProcessorTest extends KEWTestCase {
 	 * being thrown after returning from the EPIC post processor.
 	 */
 	@Test public void testModifyDocumentInPostProcessor() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "testModifyDocumentInPostProcessor");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "testModifyDocumentInPostProcessor");
 		document.saveDocument("");
 		assertEquals("application content should be empty initially", "", document.getApplicationContent());
 		assertNull("Doc title should be empty initially", document.getTitle());
@@ -68,23 +69,49 @@ public class PostProcessorTest extends KEWTestCase {
 		
 		// check that the document we routed from the post processor exists
 		assertNotNull("SHould have routed a document from the post processor.", DocumentModifyingPostProcessor.routedDocumentId);
-		document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), DocumentModifyingPostProcessor.routedDocumentId);
+		document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), DocumentModifyingPostProcessor.routedDocumentId);
 		assertTrue("document should be enroute", document.stateIsEnroute());
 		assertEquals("Document should have 1 pending request.", 1, KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId()).size());
 		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
 		document.approve("");
 		assertTrue("Document should be final.", document.stateIsFinal());
 	}
-	
+	/**
+     * Tests that modifying a document in the post processor works.  This test will do a few things:
+     * 
+     * 1) Change the document content in the post processor
+     * 2) Send an app specific FYI request to the initiator of the document
+     * 3) Modify the document title.
+     * 
+     * This test is meant to test that an empty post processor works.  The empty post processor should be handled as a DefaultPostProcessor.
+     */
+    
+	@Test public void testEmptyPostProcessor() throws Exception {
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "testEmptyPostProcessor");
+        document.saveDocument("");
+        assertEquals("application content should be empty initially", "", document.getApplicationContent());
+        assertNull("Doc title should be empty initially", document.getTitle());
+        
+        assertTrue("Document should be final.", document.stateIsFinal());
+               
+        DocumentType testEmptyDocType = KEWServiceLocator.getDocumentTypeService().findByName("testEmptyPostProcessor");
+        assertTrue("Post Processor should be set to 'none'",  StringUtils.equals("none", testEmptyDocType.getPostProcessorName()));
+        assertTrue("Post Processor should be of type DefaultPostProcessor", testEmptyDocType.getPostProcessor() instanceof org.kuali.rice.kew.postprocessor.DefaultPostProcessor);
+    }
+    
 	private static boolean shouldReturnDocumentIdsToLock = false;
 	private static Long documentAId = null;
 	private static Long documentBId = null;
 	private static UpdateDocumentThread updateDocumentThread = null;
 	
+	protected String getPrincipalIdForName(String principalName) {
+        return KEWServiceLocator.getIdentityHelperService()
+                .getIdForPrincipalName(principalName);
+    }
 	/**
 	 * Tests the locking of additional documents from the Post Processor.
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
 	@Test public void testGetDocumentIdsToLock() throws Exception {
 		
@@ -140,14 +167,19 @@ public class PostProcessorTest extends KEWTestCase {
 		public static int levelChanges = 0;
 		public static Long routedDocumentId;
 		
+		protected String getPrincipalIdForName(String principalName) {
+	        return KEWServiceLocator.getIdentityHelperService()
+	                .getIdForPrincipalName(principalName);
+	    }
+		
 		public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
 			if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
-				WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), statusChangeEvent.getRouteHeaderId());
+				WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), statusChangeEvent.getRouteHeaderId());
 				document.setApplicationContent(APPLICATION_CONTENT);
 				document.setTitle(DOC_TITLE);
 				document.saveRoutingData();
 				// now route another document from the post processor, sending it an adhoc request
-				WorkflowDocument ppDocument = new WorkflowDocument(new NetworkIdDTO("user1"), "testModifyDocumentInPostProcessor");
+				WorkflowDocument ppDocument = new WorkflowDocument(getPrincipalIdForName("user1"), "testModifyDocumentInPostProcessor");
 				routedDocumentId = ppDocument.getRouteHeaderId();
 				// principal id 1 = ewestfal
 				ppDocument.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "", "2001", "", true);
@@ -159,7 +191,7 @@ public class PostProcessorTest extends KEWTestCase {
 
 		public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
 			levelChanges++;
-			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), levelChangeEvent.getRouteHeaderId());
+			WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), levelChangeEvent.getRouteHeaderId());
 			document.setTitle("Current level change: " + levelChanges);
 			document.saveRoutingData();
 			return new ProcessDocReport(true);
@@ -169,9 +201,14 @@ public class PostProcessorTest extends KEWTestCase {
 	
 	public static class GetDocumentIdsToLockPostProcessor extends DefaultPostProcessor {
 
+	    protected String getPrincipalIdForName(String principalName) {
+	        return KEWServiceLocator.getIdentityHelperService()
+	                .getIdForPrincipalName(principalName);
+	    }
+	    
 		@Override
 		public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
-			WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), lockingEvent.getRouteHeaderId());
+			WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), lockingEvent.getRouteHeaderId());
 			if (shouldReturnDocumentIdsToLock) {
 				List<Long> docIds = new ArrayList<Long>();
 				docIds.add(documentBId);
@@ -182,7 +219,7 @@ public class PostProcessorTest extends KEWTestCase {
 
 		@Override
 		public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
-			WorkflowDocument wfDocument = new WorkflowDocument(new NetworkIdDTO("ewestfal"), event.getRouteHeaderId());
+			WorkflowDocument wfDocument = new WorkflowDocument(getPrincipalIdForName("ewestfal"), event.getRouteHeaderId());
 			if (wfDocument.stateIsEnroute()) {
 				// first, let's load document B in this thread
 				DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentBId);
@@ -203,7 +240,7 @@ public class PostProcessorTest extends KEWTestCase {
 	/**
 	 * A Thread which simply locks and updates the document
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
 	private class UpdateDocumentThread implements Runnable {
 		private Long documentId;

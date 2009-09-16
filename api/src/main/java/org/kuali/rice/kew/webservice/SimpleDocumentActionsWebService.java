@@ -37,7 +37,7 @@ import org.kuali.rice.kew.util.KEWWebServiceConstants;
  * <li>errorMessage String - error message from KEW if any</li>
  * </ul>
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @WebService(name = KEWWebServiceConstants.SimpleDocumentActionsWebService.WEB_SERVICE_NAME, targetNamespace = KEWWebServiceConstants.MODULE_TARGET_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)

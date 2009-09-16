@@ -47,7 +47,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * identify the appropriate responsibile parties to generate
  * {@link ActionRequestValue}s to.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_RSP_T")

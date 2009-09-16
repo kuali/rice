@@ -30,7 +30,7 @@ import org.kuali.rice.kew.web.KeyValue;
 /**
  * Service for data access for document searches.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentSearchService {
 

@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
  * As a pre processor this creates/fetches the workflow document and sets it on request.
  * As a post processor this takes appropriate user action on the document if the document is not in error.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WorkflowDocumentActions implements EDLModelComponent {

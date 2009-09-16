@@ -49,7 +49,7 @@ import org.kuali.rice.kew.test.TestUtilities;
  * <p>
  * The workflow.xml file has 2 params in it and includes the workflow2.xml file.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ZipFilePluginLoaderTest extends KEWTestCase {
 

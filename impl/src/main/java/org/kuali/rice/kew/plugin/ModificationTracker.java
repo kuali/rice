@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * Tracks modifications to a set of files and directories.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ModificationTracker implements Modifiable {
 

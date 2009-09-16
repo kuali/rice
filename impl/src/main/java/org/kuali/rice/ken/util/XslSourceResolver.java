@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 
 /**
  * This class is responsible for resolving Xsl from files and Strings.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XslSourceResolver {
     protected final Logger LOG = Logger.getLogger(getClass());

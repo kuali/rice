@@ -35,7 +35,7 @@ import org.kuali.rice.kns.util.TableRenderUtil;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementRoleDocumentForm extends IdentityManagementDocumentFormBase {
@@ -80,10 +80,13 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 
 	public IdentityManagementRoleDocumentForm() {
         super();
-        this.setDocument(new IdentityManagementRoleDocument());
     }
 
-
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementRoleDocument";
+	}
+	
 	public IdentityManagementRoleDocument getRoleDocument() {
         return (IdentityManagementRoleDocument) this.getDocument();
     }

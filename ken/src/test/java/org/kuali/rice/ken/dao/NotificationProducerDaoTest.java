@@ -26,7 +26,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 /**
  * This class tests basic persistence for the NotificationProducer business object.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationProducerDaoTest extends BusinessObjectPersistenceTestCaseBase {
     NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();

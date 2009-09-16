@@ -32,7 +32,7 @@ import org.kuali.rice.kew.web.session.UserSession;
  * The RuleDelegation represents the pointer to the rule from it's parent rule's RuleResponsibility.
  * This will be <code>null</code> if the rule being entered is not a delegation rule.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleValidationContext {
 

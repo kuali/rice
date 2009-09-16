@@ -23,7 +23,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 
 /**
  * {@link Rule} implementation 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class RuleImpl implements Rule {
     /**
@@ -80,6 +80,9 @@ class RuleImpl implements Rule {
         try {
             ruleExpression = ((Class<RuleExpression>) ruleExpressionClass).newInstance();
         } catch (Exception e) {
+        	if (e instanceof RuntimeException) {
+        		throw (RuntimeException)e;
+        	}
             throw new WorkflowException("Error instantiating rule expression implementation '" + ruleExpressionClass + "'", e);
         }
 

@@ -155,13 +155,33 @@ tr.overridden td a {
 				  <c:set var="responsibilities" value="${KualiForm.exceptionResponsibilities}" scope="request" />
 	           	  <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
  	  			</kul:subtab>
+ 	  			<c:set var="routeNodeIndentLevel" value="0" />
 				<c:forEach var="node" items="${KualiForm.routeNodes}">
-				  <c:if test="${node.roleNode}">
-				  <c:set var="responsibilities" value="${KualiForm.responsibilityMap[node.routeNodeName]}" scope="request" />
-	              <kul:subtab width="100%" subTabTitle="Route Node: ${node.routeNodeName}" noShowHideButton="true">
-	              	  <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
-	              </kul:subtab>	              
-                 </c:if>
+				   <%-- ${node.nodeType} - ${node.routeNodeName}<br /> --%>
+				   <c:if test="${fn:contains(node.nodeType,'SplitNode')}">
+					<table class="datatable" cellpadding="0" cellspacing="0" align="center"
+					       style="width: 100%; text-align: left; margin-left: auto; margin-right: auto; padding-left: ${routeNodeIndentLevel}em;">
+                        <c:set var="routeNodeIndentLevel" value="${routeNodeIndentLevel + 5}" />
+					    <tbody>
+					        <tr>
+				            <td class="tab-subhead">
+				                <span class="left">Split Node: ${node.routeNodeName}</span>
+				            </td>
+    				        </tr>
+    				        <tr><td style="padding-left: ${routeNodeIndentLevel}em;">
+                   </c:if>
+				   <c:if test="${node.routeNodeName != 'AdHoc' && !fn:contains(node.nodeType,'NoOpNode') && !fn:contains(node.nodeType,'SplitNode') && !fn:contains(node.nodeType,'JoinNode')}">
+					  <c:set var="responsibilities" value="${KualiForm.responsibilityMap[node.routeNodeName]}" scope="request" />
+		              <kul:subtab width="100%" subTabTitle="Route Node: ${node.routeNodeName}" noShowHideButton="true">
+		              	  <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
+		              </kul:subtab>	              
+		           </c:if>
+                   <c:if test="${fn:contains(node.nodeType,'JoinNode')}">
+                            </td></tr>
+                        </tbody>
+                    </table>
+                   <c:set var="routeNodeIndentLevel" value="${routeNodeIndentLevel - 5}" />
+                   </c:if>
 	            </c:forEach>
  	  		</div>
  	    </kul:tab>

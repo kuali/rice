@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,46 +16,44 @@
 package org.kuali.rice.kew.doctype;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kim.bo.Person;
 
 
 /**
- * This is an attribute used for document security and based off document type.
+ * This is an attribute used to implement custom document security for document search and the route log.
+ * SecurityAttributes are configured to be associated with the document type against which they should
+ * be applied.  For each route log or row that is returned from a document search, this authorization
+ * methods will be executed. 
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface SecurityAttribute extends Serializable {
 
     /**
-     * This method ...
+     * Determines whether or not a Person is authorized to see a given row in document search results.
+     * The row being checked corresponds to the documentId given.
      *
-     * @param security
-     * @param currentUser
-     * @param authentications
-     * @param docTypeName
-     * @param documentId
-     * @param initiatorWorkflowId
-     * @param session
-     * @return
+     * @param currentUser the Person who is executing the search
+     * @param docTypeName the name of the Document Type of the Document being checked for authorization
+     * @param documentId the ID of the Document to check authorization for
+     * @param initiatorPrincipalId the principal ID of the initiator of the document
+     * 
+     * @return true if the Person is authorized to view the row in document search, false otherwise
      */
-    public Boolean docSearchAuthorized(DocumentTypeSecurity security, Person currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session);
+    public Boolean docSearchAuthorized(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId);
 
     /**
-     * This method ...
+     * Determines whether or not a Person is authorized to open the route log for the document with the given ID.
      *
-     * @param security
-     * @param currentUser
-     * @param authentications
-     * @param docTypeName
-     * @param documentId
-     * @param initiatorWorkflowId
-     * @param session
-     * @return
+     * @param currentUser the Person who is attempting to view the route log
+     * @param docTypeName the name of the Document Type of the Document being checked for authorization
+     * @param documentId the ID of the Document that the user is trying to view the route log for
+     * @param initiatorPrincipalId the principal ID of the initiator of the document
+     * 
+     * @return true if the Person is authorized to view the route log, false otherwise
      */
-    public Boolean routeLogAuthorized(DocumentTypeSecurity security, Person currentUser, List<Authentication> authentications, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session);
+    public Boolean routeLogAuthorized(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId);
 
 }

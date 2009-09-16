@@ -23,7 +23,7 @@ import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 /**
  * This service detects whether there are any records that block the inactivation of a particular record 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface InactivationBlockingDetectionService {
     /**

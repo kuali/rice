@@ -21,7 +21,7 @@ import org.kuali.rice.core.util.RiceConstants;
 /**
  * This class is used to hold constants that are used when exposing services to the bus 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KEWWebServiceConstants {

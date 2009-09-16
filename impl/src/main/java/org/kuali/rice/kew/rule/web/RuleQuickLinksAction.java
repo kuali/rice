@@ -57,7 +57,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * A Struts Action for building and interacting with the Rule Quick Links.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleQuickLinksAction extends KewKualiAction {
 
@@ -147,7 +147,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
      * A bean to hold a DocumentType with its flattened nodes for rendering purposes
      * on the quick links.
      *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static class DocumentTypeQuickLinksStructure {
         private DocumentType documentType;
@@ -374,6 +374,18 @@ public class RuleQuickLinksAction extends KewKualiAction {
 			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public ActionForward toggleTab(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		establishRequiredState(request, form);
+		return super.toggleTab(mapping, form, request, response);
 	}
 
 }

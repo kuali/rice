@@ -63,7 +63,7 @@ import org.w3c.dom.Node;
  * The global email style name is: kew.email.style
  * If this style is not found, the resource 'defaultEmailStyle.xsl' will be retrieved
  * relative to this class.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImpl {
     private static final Logger LOG = Logger.getLogger(StyleableEmailContentServiceImpl.class);

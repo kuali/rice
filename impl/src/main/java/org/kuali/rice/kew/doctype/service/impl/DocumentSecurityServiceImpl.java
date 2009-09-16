@@ -34,6 +34,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -50,7 +51,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
       return checkAuthorization(userSession, session, routeHeader.getDocumentType().getName(), routeHeader.getRouteHeaderId(), routeHeader.getInitiatorWorkflowId());
   }
 
-  protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorWorkflowId) {
+  protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorPrincipalId) {
       DocumentTypeSecurity security = getDocumentTypeSecurity(userSession, documentTypeName, session);
       if (security == null || !security.isActive()) {
         // Security is not enabled for this doctype.  Everyone can see this doc.
@@ -60,12 +61,12 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
           return true;
       }
       for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
-          Boolean authorized = securityAttribute.docSearchAuthorized(security, userSession.getPerson(), userSession.getAuthentications(), documentTypeName, routeHeaderId, initiatorWorkflowId, session);
+          Boolean authorized = securityAttribute.docSearchAuthorized(userSession.getPerson(), documentTypeName, routeHeaderId, initiatorPrincipalId);
           if (authorized != null) {
               return authorized.booleanValue();
           }
       }
-      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorWorkflowId, session);
+      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorPrincipalId, session);
   }
 
   protected boolean isAdmin(SecuritySession session) {
@@ -75,14 +76,14 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 	  return KIMServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
-  protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
+  protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorPrincipalId, SecuritySession session) {
 	Person user = userSession.getPerson();
 
     LOG.debug("auth check user=" + user.getPrincipalId() +" docId=" + documentId);
 
     // Doc Initiator Authorization
     if (security.getInitiatorOk() != null && security.getInitiatorOk()) {
-      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getPrincipalId());
+      boolean isInitiator = StringUtils.equals(initiatorPrincipalId, user.getPrincipalId());
       if (isInitiator) {
         return true;
       }
@@ -109,11 +110,10 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     //  Workgroup Authorization
-    List<String> securityWorkgroups = security.getWorkgroups();
+    List<Group> securityWorkgroups = security.getWorkgroups();
     if (securityWorkgroups != null) {
-      for (String workgroupName : securityWorkgroups) {
-        //TODO Might want security to hold group Id instead of name
-        if (isWorkgroupAuthenticated(Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName), session)) {
+      for (Group securityWorkgroup : securityWorkgroups) {
+        if (isWorkgroupAuthenticated(securityWorkgroup.getNamespaceCode(), securityWorkgroup.getGroupName(), session)) {
         	return true;
         }
       }
@@ -137,7 +137,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 
     // Route Log Authorization
     if (security.getRouteLogAuthenticatedOk() != null && security.getRouteLogAuthenticatedOk()) {
-      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getPrincipalId());
+      boolean isInitiator = StringUtils.equals(initiatorPrincipalId, user.getPrincipalId());
       if (isInitiator) {
         return true;
       }

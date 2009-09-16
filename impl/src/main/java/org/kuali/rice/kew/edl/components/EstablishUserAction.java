@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
  * <p>This is primarily important in identifying whether the submission is the first-time "load"
  * of a document or an action being executed against an already loaded document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EstablishUserAction implements EDLModelComponent {
 	

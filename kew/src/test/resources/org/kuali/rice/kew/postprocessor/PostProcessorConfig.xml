@@ -26,9 +26,9 @@
 			<name>testModifyDocumentInPostProcessor</name>
 			<label>testModifyDocumentInPostProcessor</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.PostProcessorTest$DocumentModifyingPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>none</docHandler>
 			<policies>
 				<policy>
@@ -61,9 +61,9 @@
 			<name>testGetDocumentIdsToLock</name>
 			<label>testGetDocumentIdsToLock</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.PostProcessorTest$GetDocumentIdsToLockPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>none</docHandler>
 			<policies>
 				<policy>
@@ -81,6 +81,16 @@
 					<activationType>P</activationType>
 				</start>
 			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>testEmptyPostProcessor</name>
+			<label>testEmptyPostProcessor</label>
+			<postProcessorName>none</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+			<docHandler>none</docHandler>
+			<routePaths />
 		</documentType>
 	</documentTypes>
 

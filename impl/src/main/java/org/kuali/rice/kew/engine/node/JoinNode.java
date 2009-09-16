@@ -22,7 +22,7 @@ import org.kuali.rice.kew.engine.RouteHelper;
 /**
  * A node which is responsible for joining 1 or more branches in the route path of a document.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface JoinNode extends Node {
 	

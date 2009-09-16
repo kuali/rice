@@ -27,7 +27,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Tests NotificationContentTypeService implementation 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.CLEAR_DB)
 public class NotificationContentTypeServiceImplTest extends KENTestCase {

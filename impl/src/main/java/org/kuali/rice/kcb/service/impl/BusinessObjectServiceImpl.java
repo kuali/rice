@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * Base class for service implementations handling business objects 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BusinessObjectServiceImpl {
     protected GenericDao dao;

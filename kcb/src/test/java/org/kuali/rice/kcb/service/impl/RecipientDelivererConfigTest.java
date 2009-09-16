@@ -31,7 +31,7 @@ import org.springframework.test.AssertThrows;
 /**
  * Tests persisting RecipientDelivererConfig 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public class RecipientDelivererConfigTest extends KCBTestCase {

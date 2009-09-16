@@ -28,7 +28,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 /**
  * Tests that the PluginConfigParser properly parses the plugin config xml file.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PluginConfigParserTest extends KEWTestCase {
 

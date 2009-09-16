@@ -24,7 +24,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
  * For now this is a KEW-based test case living in the KEW unit tests because the
  * KEW unit test suite happens to exercise Rice startup and config pretty well.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Ignore("This test only works if it's the only test run in the suite so it always fails in CI")

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.test.TestUtilities;
 
 /**
  * Test hierarchical routing coupled with KRA meta-rule
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRAMetaRuleHierarchyTest extends KEWTestCase {
     // this matches the hierarchy of meta-rules defined

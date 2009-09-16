@@ -30,7 +30,7 @@ import org.springframework.dao.DataAccessException;
 /**
  * This class tests the various methods offered up by the BusinessObjectDao.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BusinessObjectDaoTest extends BusinessObjectDaoTestCaseBase {
     private static final Map<Long, NotificationProducer> producers = new HashMap<Long, NotificationProducer>();

@@ -41,7 +41,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Future;
 
 /**
  * Base class for jobs that must obtain a set of work items atomically
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ConcurrentJob<T> {
     /**

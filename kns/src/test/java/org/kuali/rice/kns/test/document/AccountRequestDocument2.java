@@ -29,7 +29,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 /**
  * This is a test copy of AccountRequestDocument that has been modified to allow for custom lock descriptors.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AccountRequestDocument2 extends TransactionalDocumentBase implements SessionDocument {
 

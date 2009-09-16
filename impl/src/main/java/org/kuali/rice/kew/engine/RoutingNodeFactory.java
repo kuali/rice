@@ -25,7 +25,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * Provides factory methods for creating {@link Branch} objects and {@link RouteNodeInstance} object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoutingNodeFactory {
 

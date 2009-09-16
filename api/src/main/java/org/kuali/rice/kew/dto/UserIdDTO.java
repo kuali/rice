@@ -22,7 +22,7 @@ package org.kuali.rice.kew.dto;
  * @deprecated UserIdDTO should no longer be used.  Instead, there should be alternate API methods
  * which reference Strings containing principal ID
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UserIdDTO extends RecipientIdDTO {
     

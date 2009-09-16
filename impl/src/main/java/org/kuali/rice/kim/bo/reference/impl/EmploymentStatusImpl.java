@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.reference.EmploymentStatus;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentStatusInfo;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRIM_EMP_STAT_T")

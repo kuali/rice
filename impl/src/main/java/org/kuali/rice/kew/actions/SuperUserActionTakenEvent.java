@@ -36,7 +36,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Super class for all super user action takens.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
 

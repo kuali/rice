@@ -38,7 +38,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  * through.  Instead we need to know the type of all the different
  * HttpClient parameters and set the parameter accordingly.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HttpClientHelper {
 

@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Represents a property being populated on an attribute being used from the client but set on the server.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PropertyDefinitionDTO implements Serializable {
 

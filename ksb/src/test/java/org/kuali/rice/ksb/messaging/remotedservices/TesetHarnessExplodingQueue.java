@@ -23,7 +23,7 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 /**
  * A service that throws exceptions
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class TesetHarnessExplodingQueue implements KSBJavaService {

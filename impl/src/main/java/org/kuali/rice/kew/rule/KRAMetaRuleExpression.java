@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule;
 /**
  * Simply an alias for {@link MetaRuleExpression}
  * @deprecated Use {@link MetaRuleExpression} instead
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRAMetaRuleExpression extends MetaRuleExpression {
 }

@@ -26,7 +26,7 @@ import org.kuali.rice.kns.document.authorization.PessimisticLock;
 /**
  * This is the service interface for documents to use the Pessimistic Locking mechanism 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface PessimisticLockService {

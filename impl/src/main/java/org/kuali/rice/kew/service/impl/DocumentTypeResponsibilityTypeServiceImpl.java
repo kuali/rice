@@ -29,7 +29,7 @@ import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeResponsibilityTypeServiceImpl extends
 		KimResponsibilityTypeServiceBase {

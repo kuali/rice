@@ -54,7 +54,7 @@ import org.kuali.rice.kim.bo.Group;
  *
  * @see DocumentType
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
 
@@ -93,23 +93,27 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
         Group superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, SUPER_USER_WORKGROUP_NAME, superUserWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + superUserWorkgroup.getGroupName().trim());
+        	Element superUserGroupElement = renderer.renderTextElement(docTypeElement, SUPER_USER_GROUP_NAME, superUserWorkgroup.getGroupName().trim());
+        	superUserGroupElement.setAttribute(NAMESPACE, superUserWorkgroup.getNamespaceCode().trim());
         }
         Group blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
         if (blanketWorkgroup != null){
-        	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_WORKGROUP_NAME, blanketWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + blanketWorkgroup.getGroupName().trim());
+        	Element blanketGroupElement = renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_GROUP_NAME, blanketWorkgroup.getGroupName().trim());
+        	blanketGroupElement.setAttribute(NAMESPACE, blanketWorkgroup.getNamespaceCode().trim());
         }
         if (documentType.getBlanketApprovePolicy() != null){
         	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_POLICY, documentType.getBlanketApprovePolicy());
         }
         Group reportingWorkgroup = documentType.getReportingWorkgroup();
         if (reportingWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + reportingWorkgroup.getGroupName().trim());
+        	Element reportingGroupElement = renderer.renderTextElement(docTypeElement, REPORTING_GROUP_NAME, reportingWorkgroup.getGroupName().trim());
+        	reportingGroupElement.setAttribute(NAMESPACE, reportingWorkgroup.getNamespaceCode().trim());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
         	Group exceptionWorkgroup = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
         	if (exceptionWorkgroup != null) {
-        		renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, exceptionWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + exceptionWorkgroup.getGroupName().trim());
+        		Element exceptionGroupElement = renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_GROUP_NAME, exceptionWorkgroup.getGroupName().trim());
+        		exceptionGroupElement.setAttribute(NAMESPACE, exceptionWorkgroup.getNamespaceCode().trim());
         	}
         }
         if (StringUtils.isNotBlank(documentType.getUnresolvedDocHandlerUrl())) {
@@ -128,7 +132,15 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
       	if (!StringUtils.isBlank(documentType.getRoutingVersion())) {
       		renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
       	}
-        exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
+      	Process process = null;
+      	if (documentType.getProcesses().size() > 0) {
+      	    process = (Process)documentType.getProcesses().get(0);
+      	}
+      	if (process != null && process.getInitialRouteNode() != null) {
+      	    exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
+      	} else {
+      	    renderer.renderElement(docTypeElement, ROUTE_PATHS);
+      	}
     }
 
     private void exportPolicies(Element parent, Collection policies) {
@@ -312,7 +324,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
     }
 
     /**
-     * Exists for backward compatability for nodes which don't have a content fragment.
+     * Exists for backward compatibility for nodes which don't have a content fragment.
      */
     private void exportRouteNodeOld(Element parent, RouteNode node, boolean hasDefaultExceptionWorkgroup) {
         NodeType nodeType = getNodeTypeForNode(node);
@@ -320,7 +332,8 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         renderer.renderAttribute(nodeElement, NAME, node.getRouteNodeName());
         if (!hasDefaultExceptionWorkgroup) {
         	if (!StringUtils.isBlank(node.getExceptionWorkgroupName())) {
-        		renderer.renderTextElement(nodeElement, EXCEPTION_WORKGROUP_NAME, node.getExceptionWorkgroupName());
+        		Element exceptionGroupElement = renderer.renderTextElement(nodeElement, EXCEPTION_GROUP_NAME, node.getExceptionWorkgroupName());
+        		exceptionGroupElement.setAttribute(NAMESPACE, node.getExceptionWorkgroup().getNamespaceCode());
         	}
         }
         if (supportsActivationType(nodeType) && !StringUtils.isBlank(node.getActivationType())) {
@@ -372,7 +385,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
      *
      * This method will find the base node type via the content fragment of the node.
      * Basically, it reads the node type, start, split, join, etc and then assigns
-     * the base type to it.  This is necessary becuase there are cases where the
+     * the base type to it.  This is necessary because there are cases where the
      * passed in nodeType will no be in the classpath. It should, in theory do
      * the same thing as getNodeTypeForNode.
      *

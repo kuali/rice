@@ -28,14 +28,16 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  */
 public class IndicatorValuesFinder extends KeyValuesBase {
 
-    /*
-     * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
-     */
-    public List<KeyLabelPair> getKeyValues() {
-        List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>();
+	public static final IndicatorValuesFinder INSTANCE = new IndicatorValuesFinder();
+	
+	protected static final List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>(3);
+	static {
         activeLabels.add(new KeyLabelPair(KNSConstants.YES_INDICATOR_VALUE, "Yes"));
         activeLabels.add(new KeyLabelPair(KNSConstants.NO_INDICATOR_VALUE, "No"));
         activeLabels.add(new KeyLabelPair("", "Both"));
+	}
+	
+    public List<KeyLabelPair> getKeyValues() {
         return activeLabels;
     }
 }

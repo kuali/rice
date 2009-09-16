@@ -106,18 +106,34 @@
       	</annotation>
       </element>
 
-      <element name="superUserWorkgroupName" type="c:ShortStringType" minOccurs="0">
+      <element name="superUserGroupName" type="c:GroupNameType" minOccurs="0">
       	<annotation>
       		<documentation>
-      		  The workflow workgroup who's members are allowed to take Super User actions on documents of this document type.
+      		  The workflow group whose members are allowed to take Super User actions on documents of this document type.
       		</documentation>
       	</annotation>
       </element>
 
+      <element name="superUserWorkgroupName" type="c:ShortStringType" minOccurs="0">
+      	<annotation>
+      		<documentation>
+      		  DEPRECATED: use superUserGroupName instead.
+      		</documentation>
+      	</annotation>
+      </element>
+
+      <element name="blanketApproveGroupName" type="c:GroupNameType" minOccurs="0">
+      	<annotation>
+      		<documentation>
+      	  	  The workflow group whose members are allowed to take blanket approve actions on documents of this document type.
+      		</documentation>
+      	</annotation>
+      </element>
+      
       <element name="blanketApproveWorkgroupName" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
-      	  	 The workflow workgroup who's members are allowed to take blanket approve actions on documents of this document type.
+      	  	  DEPRECATED: use blanketApproveGroupName instead.
       		</documentation>
       	</annotation>
       </element>
@@ -131,10 +147,28 @@
       	</annotation>
       </element>
 
+      <element name="reportingGroupName" type="c:GroupNameType" minOccurs="0">
+      	<annotation>
+      		<documentation>
+      		  The workflow group whose members are allowed to report against documents of this document type.
+      		</documentation>
+      	</annotation>
+      </element>
+      
       <element name="reportingWorkgroupName" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
-      		  The workflow workgroup who's members are allowed to report against documents of this document type.
+      		  DEPRECATED: use reportingGroupName instead.
+      		</documentation>
+      	</annotation>
+      </element>
+
+      <element name="defaultExceptionGroupName" type="c:GroupNameType" minOccurs="0">
+      	<annotation>
+      		<documentation>
+      		 The workflow group that will act as the exception group for all route nodes defined for the document type.
+      		 If a routing problem occurs that prevents routing in any of these nodes the document will be marked as in the
+      		 Exception state and delivered to this group for completion.
       		</documentation>
       	</annotation>
       </element>
@@ -142,9 +176,7 @@
       <element name="defaultExceptionWorkgroupName" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
-      		 The workflow workgroup that will act as the exception workgroup for all route nodes defined for the document type.
-      		 If a routing problem occurs that prevents routing in any of these nodes the document will be marked as in the
-      		 Exception state and delivered to this workgroup for completion.
+      		  DEPRECATED: use defaultExceptionGroupName instead.
       		</documentation>
       	</annotation>
       </element>
@@ -318,7 +350,7 @@
 	DEFAULT_APPROVE - determines whether a document will go processed without any approval requests.  If
 		a document has this policy set to false and doesn't generate and approval requests the document will
 		be put in exception routing, which is the exception workgroup associated with the last route node or the
-		workgroup defined in the 'defaultExceptionWorkgroupName'.  This policy if not defined in this or a parent
+		workgroup defined in the 'defaultExceptionGroupName'.  This policy if not defined in this or a parent
 		document type defaults to true
 	INITIATOR_MUST_ROUTE - determines if the user that initiated a document must 'route' the document when it is
 		in the initiated state.  Defaults to true.
@@ -456,7 +488,7 @@ Definitions are applied to the names in the routeNodes section.
 		-->
   <complexType name="RoutePathsType">
     <sequence>
-      <element name="routePath" type="dt:RoutePathType" maxOccurs="unbounded">
+      <element name="routePath" type="dt:RoutePathType" minOccurs="0" maxOccurs="unbounded">
       	<annotation>
       		<documentation>
       		 A modifiable configuration parameter in the system.
@@ -799,10 +831,18 @@ Definitions are applied to the names in the routeNodes section.
       <extension base="dt:NamedElementType">
         <sequence>
           <choice>
-            <element name="exceptionWorkgroupName" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
+            <element name="exceptionGroupName" type="c:GroupNameType" minOccurs="0" maxOccurs="1">
           		<annotation>
           			<documentation>
-          			 Name of the exception workgroup.
+          			 Name of the exception group.
+          			</documentation>
+          		</annotation>
+            </element>
+
+           <element name="exceptionWorkgroupName" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
+          		<annotation>
+          			<documentation>
+          			 DEPRECATED: use exceptionGroupName instead.
           			</documentation>
           		</annotation>
             </element>
@@ -810,7 +850,7 @@ Definitions are applied to the names in the routeNodes section.
             <element name="exceptionWorkgroup" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
             	<annotation>
             		<documentation>
-           			 Name of the exception workgroup.
+           			 DEPRECATED: use exceptionGroupName instead.
            		 	</documentation>
             	</annotation>
             </element>
@@ -818,7 +858,7 @@ Definitions are applied to the names in the routeNodes section.
           <element name="activationType" type="dt:ActivationTypeType" minOccurs="0" maxOccurs="1">
           	<annotation>
           		<documentation>
-          		 A set of values and parameters from the ActicationType.
+          		 A set of values and parameters from the ActivationType.
           		</documentation>
           	</annotation>
           </element>
@@ -926,7 +966,10 @@ Definitions are applied to the names in the routeNodes section.
       <element name="initiator" type="boolean" default="true" />
       <element name="routeLogAuthenticated" type="boolean" default="true"  />
       <element name="searchableAttribute" type="dt:SecuritySearchableAttributeType"/>
-      <element name="workgroup" type="c:ShortStringType"/>
+      <element name="groupName" type="c:GroupNameType"/>
+      <element name="workgroup" type="c:ShortStringType">
+          <annotation><documentation>DEPRECATED: use groupName instead.</documentation></annotation>
+      </element>
       <element name="role" type="dt:SecurityRoleType"/>
       <element name="securityAttribute" type="dt:SecurityAttribute"/>
     </choice>

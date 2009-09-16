@@ -18,7 +18,7 @@ package org.kuali.rice.ken.exception;
 /**
  * This class represents a dismissal exception - when notifications are not properly dismissed 
  * by a deliverer
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationMessageDismissalException extends Exception {
     /**

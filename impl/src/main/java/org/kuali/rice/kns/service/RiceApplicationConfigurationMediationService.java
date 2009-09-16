@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
 /**
  * This service handles mediation between all RiceApplicationConfiguration services that are
@@ -25,7 +26,7 @@ import org.kuali.rice.kns.bo.ParameterDetailType;
  * which RiceApplicationConfiguration services to contact and dispatching service calls
  * to them to properly implement the methods on the service.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface RiceApplicationConfigurationMediationService {
@@ -39,11 +40,23 @@ public interface RiceApplicationConfigurationMediationService {
 	 * @param parameterName
 	 * @return
 	 */
-	public String getConfigurationParameter(String namespaceCode, String parameterName);
+	String getConfigurationParameter(String namespaceCode, String parameterName);
 
 	/**
 	 * Returns the non-database components that have been published by all Rice client applications.
 	 */
-	public List<ParameterDetailType> getNonDatabaseComponents();
-
+	List<ParameterDetailType> getNonDatabaseComponents();
+    
+    /**
+	 * This method will return the attribute definition from the local data dictionary of the
+	 * application which supports that business object.  If not present in any application
+	 * attached to the bus, this method will return null.
+	 * 
+	 * This method also returns null if the given attribute definition can not be found on the business object.
+     */
+    AttributeDefinition getBusinessObjectAttributeDefinition( String businessObjectClassName, String attributeName );
+    
+    String getBaseLookupUrl( String businessObjectClassName );
+    String getBaseInquiryUrl( String businessObjectClassName );
+	
 }

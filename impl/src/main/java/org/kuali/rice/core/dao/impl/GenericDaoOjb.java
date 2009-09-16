@@ -39,7 +39,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * class was adapted from the Kuali Nervous System
  * (org.kuali.rice.kns.dao.impl.GenericDaoOjb).
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements GenericDao {
     private static final Logger LOG = Logger.getLogger(GenericDaoOjb.class);

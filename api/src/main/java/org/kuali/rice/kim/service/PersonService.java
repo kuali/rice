@@ -38,7 +38,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
  * for entities that don't have an entity type of "PERSON".  In those cases
  * not all of the attributes on the Person object will be populated.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface PersonService<T extends Person> {

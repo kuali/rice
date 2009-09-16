@@ -27,7 +27,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestWorkgroupRoleAttribute extends AbstractRoleAttribute {
 

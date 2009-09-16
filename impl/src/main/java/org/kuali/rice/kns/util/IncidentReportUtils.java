@@ -29,7 +29,7 @@ import org.kuali.rice.kns.exception.KualiExceptionIncident;
  * This is a description of what this class does - ewestfal don't forget to fill
  * this in.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class IncidentReportUtils {
@@ -68,7 +68,6 @@ public class IncidentReportUtils {
 		properties.put(KualiExceptionIncident.USER_NAME, userName);
 		properties.put(KualiExceptionIncident.UUID, uuid);
 		properties.put(KualiExceptionIncident.COMPONENT_NAME, componentName);
-		properties.put(KualiExceptionIncident.CUSTOM_CONTEXTUAL_INFO, "?");
 
 		// Reset the exception so the forward action can read it
 		request.setAttribute(Globals.EXCEPTION_KEY, exception);

@@ -179,9 +179,9 @@
 			<description>Create a New Graduate Course</description>
 			<label>New Course Request</label>
 			<postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>http://localhost:8080/en-dev/EDocLite</docHandler>
 			<active>true</active>
 			<attributes>
@@ -250,7 +250,7 @@
 			</ruleExtensions>
 			<responsibilities>
 			    <responsibility>
-        			<workgroup>Group1</workgroup>
+        			<groupName namespace="">Group1</groupName>
         			<actionRequested>A</actionRequested>
         			<priority>1</priority>
 		    	</responsibility>
@@ -276,7 +276,7 @@
 			</ruleExtensions>
 			<responsibilities>
 				<responsibility>
-					<workgroup>Group2</workgroup>
+					<groupName namespace="">Group2</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

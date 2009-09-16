@@ -26,7 +26,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 /**
  * Test the RoleService via remote calls
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoleServiceRemoteTest extends RoleServiceTest {

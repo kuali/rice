@@ -28,7 +28,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * Tests a new document being spawned from the post processing of an existing document
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PostProcessorSpawnDocument extends DefaultPostProcessor {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PostProcessorSpawnDocument.class);

@@ -27,7 +27,7 @@ import org.kuali.rice.kcb.exception.MessageDismissalException;
 /**
  * A message deliverer that just throws runtime exceptions 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BrokenMessageDeliverer implements MessageDeliverer {
 

@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 /**
  * Handles setting the current page in the EDL XML.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PageHandler implements EDLModelComponent {

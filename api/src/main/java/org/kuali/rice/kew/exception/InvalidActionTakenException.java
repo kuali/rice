@@ -20,7 +20,7 @@ package org.kuali.rice.kew.exception;
 /**
  * The exception thrown whenever an ActionTaken can not be procesed for some reason.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InvalidActionTakenException extends WorkflowException {
   /**

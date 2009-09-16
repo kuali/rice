@@ -41,7 +41,7 @@ import edu.yale.its.tp.cas.client.ProxyTicketValidator;
  * Creates the distributed session.  Session principal is currently 
  * user@method.
  *  
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiCasProxyTicketValidator extends CasProxyTicketValidator {

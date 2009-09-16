@@ -25,7 +25,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
  * A factory bean which reads quartz-related properties from the Config system and
  * generates a Properites instance for use when configuration quartz.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class QuartzConfigPropertiesFactoryBean extends AbstractFactoryBean {

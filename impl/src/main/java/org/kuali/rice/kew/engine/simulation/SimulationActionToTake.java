@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * An object represnting an action to take in the simulation engine
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimulationActionToTake implements Serializable {
 	private static final long serialVersionUID = 5212455086079117671L;

@@ -58,7 +58,7 @@
             <name>KRAMetaRuleTest</name>
             <label>KRAMetaRuleTest doc label</label>
             <docHandler>has to be defined</docHandler>
-            <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
             <routePaths>
                 <routePath>
                     <start name="initial" nextNode="approval" />

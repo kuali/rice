@@ -21,7 +21,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  * Represents an attribute which is configured via XML.  In these cases, a reference
  * to the RuleAttribute BO is required in order to extract the XML config.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlConfiguredAttribute {
 	public void setRuleAttribute(RuleAttribute ruleAttribute);

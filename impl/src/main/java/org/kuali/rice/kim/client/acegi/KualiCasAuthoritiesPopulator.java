@@ -36,7 +36,7 @@ import org.acegisecurity.userdetails.UserDetails;
  * when a refresh is required.
  * </p>
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com) 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
 */
 public interface KualiCasAuthoritiesPopulator extends CasAuthoritiesPopulator {
    //~ Methods ========================================================================================================

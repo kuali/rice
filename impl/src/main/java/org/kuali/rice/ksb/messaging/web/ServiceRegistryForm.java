@@ -25,7 +25,7 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
 /**
  * Struts ActionForm for the {@link ServiceRegistryAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ServiceRegistryForm extends ActionForm {

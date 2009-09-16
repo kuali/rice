@@ -31,7 +31,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * Imported into client style sheets to import other style sheets in our database into their stylesheet.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class WidgetURIResolver implements URIResolver {

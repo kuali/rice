@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
 /**
  * Store global EDL config information parsed from config file.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class EDLGlobalConfig {

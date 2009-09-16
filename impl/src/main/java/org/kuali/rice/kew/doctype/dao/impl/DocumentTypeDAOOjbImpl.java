@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,7 +44,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentTypeDAO {
 
 	public static final Logger LOG = Logger.getLogger(DocumentTypeDAOOjbImpl.class);
-	
+
 	public void delete(DocumentType documentType) {
 		this.getPersistenceBrokerTemplate().delete(documentType);
 	}
@@ -56,8 +56,16 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	}
 
 	public DocumentType findByName(String name) {
+		return findByName(name, true);
+	}
+
+	public DocumentType findByName(String name, boolean caseSensitive) {
 		Criteria crit = new Criteria();
-		crit.addEqualTo("name", name);
+		if(!caseSensitive){
+			crit.addEqualTo("UPPER(name)", name.trim().toUpperCase());
+		}else{
+			crit.addEqualTo("name", name);
+		}
 		crit.addEqualTo("currentInd", new Boolean(true));
 		DocumentType docType = (DocumentType) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentType.class, crit));
 		return docType;
@@ -66,7 +74,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	public Integer getMaxVersionNumber(String docTypeName) {
 		return getMostRecentDocType(docTypeName).getVersion();
 	}
-	
+
 	public List getChildDocumentTypeIds(Long parentDocumentTypeId) {
 		List childrenIds = new ArrayList();
 		PersistenceBroker broker = getPersistenceBroker(false);
@@ -79,7 +87,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 			rs = st.executeQuery("select DOC_TYP_ID from KREW_DOC_TYP_T where CUR_IND = 1 and PARNT_ID = " + parentDocumentTypeId);
 			while (rs.next()) {
 				childrenIds.add(new Long(rs.getLong("DOC_TYP_ID")));
-			}	
+			}
 		} catch (Exception e) {
 			LOG.error("Error occured fetching children document type ids for document type " + parentDocumentTypeId, e);
 			throw new RuntimeException(e);
@@ -89,13 +97,13 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 			} catch (Exception e) {
 				LOG.warn("Failed to close Statement", e);
 			}
-			
+
 			try {
 				rs.close();
 			} catch (Exception e) {
 				LOG.warn("Failed to close Resultset", e);
 			}
-			
+
         	if (broker != null) {
         		try {
         			OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());
@@ -216,11 +224,11 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		crit.addIsNull("docTypeParentId");
 		return findAllCurrent(crit);
 	}
-    
+
     public List findAllCurrent() {
 	return findAllCurrent(new Criteria());
     }
-    
+
     public List findAllCurrentByName(String name) {
 	Criteria crit = new Criteria();
 	crit.addEqualTo("name", name);
@@ -248,13 +256,13 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	crit.addEqualTo("ruleAttributeId", ruleAttribute.getRuleAttributeId());
     	return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentTypeAttribute.class, crit));
     }
-    
+
     public Long findDocumentTypeIdByDocumentId(Long documentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("routeHeaderId", documentId);
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
     	query.setAttributes(new String[] { "documentTypeId" });
-    	
+
     	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
     	while (iter.hasNext()) {
     	    Object[] row = (Object[]) iter.next();

@@ -26,7 +26,7 @@ import org.w3c.dom.Node;
  * This class provides some common shared utility methods shared by the XML-based
  * attribute implementations. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class XMLAttributeUtils {

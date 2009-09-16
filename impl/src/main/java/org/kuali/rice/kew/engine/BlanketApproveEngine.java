@@ -45,7 +45,7 @@ import org.kuali.rice.kew.util.Utilities;
 /**
  * A WorkflowEngine implementation which orchestrates the document through the blanket approval process.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BlanketApproveEngine extends StandardWorkflowEngine {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveEngine.class);

@@ -33,7 +33,7 @@ import org.springframework.beans.factory.BeanFactory;
 
 /**
  * NotificationServiceLocator backed by a Spring Bean Factory - responsible for returning instances of services instantiated by the Spring context loader.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SpringNotificationServiceLocator implements NotificationServiceLocator {
     // Spring bean names

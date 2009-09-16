@@ -20,17 +20,11 @@ import java.io.Serializable;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimInfoBase implements Serializable {
 
-	/** So users of this class don't need to program around nulls. */
-	protected String unNullify( String str ) {
-		if ( str == null ) {
-			return "";
-		}
-		return str;
-	}
-	
+	private static final long serialVersionUID = -1278117496016870920L;
+
 }

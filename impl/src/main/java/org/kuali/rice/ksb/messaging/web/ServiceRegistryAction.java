@@ -42,7 +42,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
 /**
  * Struts action for interacting with the queue of messages.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ServiceRegistryAction extends KSBAction {
 

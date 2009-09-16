@@ -31,7 +31,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
  * Table: en_edoclt_assoc_t
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_EDL_ASSCTN_T")

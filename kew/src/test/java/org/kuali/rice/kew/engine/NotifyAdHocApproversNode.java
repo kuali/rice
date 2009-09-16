@@ -23,7 +23,7 @@ import org.kuali.rice.kew.engine.node.SimpleResult;
 
 /**
  * A node which notifies the AdHocApproversNode that it can transition and attempts to process it.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotifyAdHocApproversNode implements SimpleNode {
 

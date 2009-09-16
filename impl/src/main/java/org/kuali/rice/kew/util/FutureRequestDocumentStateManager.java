@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Manages document state in relation to users seeing future requests for a particular document.
  * Construct the object with a document and a user and ask it questions in relation to future requests.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class FutureRequestDocumentStateManager {
@@ -48,20 +48,22 @@ public class FutureRequestDocumentStateManager {
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, String principalId)
     {
-    	for (BranchState state : document.getRootBranchState()) {
-    	    if (isStateForUser(state, principalId)) {
-    		if (isReceiveFutureRequests(state)) {
-    		    this.receiveFutureRequests = true;
-    		} else if (isDoNotReceiveFutureRequests(state)) {
-    		    this.doNotReceiveFutureRequests = true;
-    		} else if (isClearFutureRequests(state)) {
-    		    this.clearFutureRequestState = true;
-    		    this.receiveFutureRequests = false;
-    		    this.doNotReceiveFutureRequests = false;
-    		    break;
-    		}
-    	    }
-    	}
+        if (document.getRootBranch() != null) {
+        	for (BranchState state : document.getRootBranchState()) {
+        	    if (isStateForUser(state, principalId)) {
+            		if (isReceiveFutureRequests(state)) {
+            		    this.receiveFutureRequests = true;
+            		} else if (isDoNotReceiveFutureRequests(state)) {
+            		    this.doNotReceiveFutureRequests = true;
+            		} else if (isClearFutureRequests(state)) {
+            		    this.clearFutureRequestState = true;
+            		    this.receiveFutureRequests = false;
+            		    this.doNotReceiveFutureRequests = false;
+            		    break;
+            		}
+        	    }
+        	}
+        }
     	if (this.isClearFutureRequestState()) {
     	    this.clearStateFromDocument(document);
     	}
@@ -86,13 +88,15 @@ public class FutureRequestDocumentStateManager {
     }
 
     protected void clearStateFromDocument(DocumentRouteHeaderValue document) {
-    	for (BranchState state : document.getRootBranchState()) {
-    	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
-    		String values[] = state.getKey().split(",");
-    		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[1] + "," + new Date().toString());
-    	    }
-    	}
-    	KEWServiceLocator.getRouteNodeService().save(document.getRootBranch());
+        if (document.getRootBranchState() != null) {
+        	for (BranchState state : document.getRootBranchState()) {
+        	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
+        		String values[] = state.getKey().split(",");
+        		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[1] + "," + new Date().toString());
+        	    }
+        	}
+        	KEWServiceLocator.getRouteNodeService().save(document.getRootBranch());
+        }
     }
 
     protected boolean isStateForUser(BranchState state, String principalId)

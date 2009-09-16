@@ -26,7 +26,7 @@ package org.kuali.rice.kew.web.session;
  * something like Acegi security for handling some of this authentication
  * stuff?
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Authentication extends java.io.Serializable {
 

@@ -23,7 +23,7 @@ import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyRoutingNode;
 /**
  * A simple hierarchy routing node for testing
  * Hierarchy is simply codified in XML.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimpleHierarchyRoutingNode extends HierarchyRoutingNode {
     @Override

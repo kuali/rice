@@ -50,7 +50,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * Implementation of the SimpleDocumentActionsWebService
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @WebService(endpointInterface = KEWWebServiceConstants.SimpleDocumentActionsWebService.INTERFACE_CLASS,
         serviceName = KEWWebServiceConstants.SimpleDocumentActionsWebService.WEB_SERVICE_NAME,

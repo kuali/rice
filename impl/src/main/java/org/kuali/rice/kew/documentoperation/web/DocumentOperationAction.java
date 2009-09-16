@@ -80,7 +80,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 /**
  * Struts Action for doing editing of workflow documents.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentOperationAction extends KewKualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentOperationAction.class);
@@ -187,13 +187,15 @@ public class DocumentOperationAction extends KewKualiAction {
 			DocumentRouteHeaderValue dHeader=docForm.getRouteHeader();
 			String initials=docForm.getInitialNodeInstances();
 			List lInitials=new ArrayList();
-			StringTokenizer tokenInitials=new StringTokenizer(initials,",");
-			while (tokenInitials.hasMoreTokens()) {
-		         Long instanceId=Long.valueOf(tokenInitials.nextToken().trim());
-		         LOG.debug(instanceId);
-		         RouteNodeInstance instance=getRouteNodeService().findRouteNodeInstanceById(instanceId);
-		         lInitials.add(instance);
-		     }
+			if (StringUtils.isNotEmpty(initials)){ 
+    			StringTokenizer tokenInitials=new StringTokenizer(initials,",");
+    			while (tokenInitials.hasMoreTokens()) {
+    		         Long instanceId=Long.valueOf(tokenInitials.nextToken().trim());
+    		         LOG.debug(instanceId);
+    		         RouteNodeInstance instance=getRouteNodeService().findRouteNodeInstanceById(instanceId);
+    		         lInitials.add(instance);
+    		    }
+			}
 			dHeader.setInitialRouteNodeInstances(lInitials);
 			getRouteHeaderService().validateRouteHeader(docForm.getRouteHeader());
 			getRouteHeaderService().saveRouteHeader(docForm.getRouteHeader());

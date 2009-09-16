@@ -25,13 +25,12 @@ import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
 	private static final long serialVersionUID = 7006569761728813805L;
 	
 	protected Mask mask;
-	protected String applicationUrl;
 	protected Map<String, String> lookupInputPropertyConversions;
 	protected Map<String, String> lookupReturnPropertyConversions;
 	protected String lookupBoClass;
@@ -40,22 +39,6 @@ public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition
 	 * 
 	 */
 	public KimDataDictionaryAttributeDefinition() {
-	}
-
-	
-	/**
-	 * @return the applicationUrl
-	 */
-	public String getApplicationUrl() {
-		return this.applicationUrl;
-	}
-
-	/**
-	 * @param applicationUrl
-	 *            the applicationUrl to set
-	 */
-	public void setApplicationUrl(String applicationUrl) {
-		this.applicationUrl = applicationUrl;
 	}
 
 	/**
@@ -116,6 +99,7 @@ public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition
     }
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
 		if (lookupBoClass != null) {

@@ -35,7 +35,7 @@ import org.kuali.rice.kew.web.session.UserSession;
  * {@link ActionForm}s when leaving one context in the web GUI for another and then
  * returning.  This uses the {@link #DOC_FORM_KEY_ATTRIBUTE} to store the saved forms.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StrutsRequestProcessor extends RequestProcessor {
 

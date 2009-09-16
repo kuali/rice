@@ -48,7 +48,7 @@ import org.w3c.dom.NodeList;
  * as an XPath function, than it could be used as follows on the second expression to produce the desired result of "hello": 
  * xstreamsafe('/test/b/a', root())
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XStreamSafeEvaluator {
 	

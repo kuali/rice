@@ -104,11 +104,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import org.kuali.rice.kew.engine.node.Branch;
+
 
 /**
  * Translates Workflow server side beans into client side VO beans.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DTOConverter {
     private static final Logger LOG = Logger.getLogger(DTOConverter.class);
@@ -126,7 +128,7 @@ public class DTOConverter {
             	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(principalId, routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
                 routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
-            AttributeSet actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(routeHeader, principalId);
+            AttributeSet actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(routeHeader, principalId, true);
             for (String actionRequestCode : actionsRequested.keySet()) {
 				if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
                     routeHeaderVO.setFyiRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));					
@@ -209,11 +211,11 @@ public class DTOConverter {
 
         /* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
-        RouteNodeInstance routeNodeInstance = (RouteNodeInstance) routeHeader.getInitialRouteNodeInstance(0);
+        Branch routeNodeInstanceBranch = routeHeader.getRootBranch();
         // Ok, we are using the "branch state" as the arbitrary convenient repository for flow/process/edoc variables
         // so we need to stuff them into the VO
-        if (routeNodeInstance.getBranch() != null) {
-            List listOfBranchStates = routeNodeInstance.getBranch().getBranchState();
+        if (routeNodeInstanceBranch != null) {
+            List listOfBranchStates = routeNodeInstanceBranch.getBranchState();
             Iterator it = listOfBranchStates.iterator();
             while (it.hasNext()) {
                 BranchState bs = (BranchState) it.next();

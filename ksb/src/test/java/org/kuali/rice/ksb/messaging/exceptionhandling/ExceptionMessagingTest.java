@@ -42,7 +42,7 @@ import org.kuali.rice.test.TestUtilities;
  * App Constant to determine the default time increment works (we need this to effectively test anyway)
  * Things work without the timeincrement constant in place
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ExceptionMessagingTest extends KSBTestCase {

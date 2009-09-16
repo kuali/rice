@@ -22,7 +22,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimTypeAttributeInfo implements Serializable {
@@ -32,7 +32,6 @@ public class KimTypeAttributeInfo implements Serializable {
 	protected String namespaceCode;
 	protected String attributeLabel;
 	protected String componentName;
-	protected String applicationUrl;
 	protected String kimAttributeId;
 
 	public String getSortCode() {
@@ -65,12 +64,6 @@ public class KimTypeAttributeInfo implements Serializable {
 	public void setComponentName(String componentName) {
 		this.componentName = componentName;
 	}
-	public String getApplicationUrl() {
-		return this.applicationUrl;
-	}
-	public void setApplicationUrl(String applicationUrl) {
-		this.applicationUrl = applicationUrl;
-	}
 	public String getKimAttributeId() {
 		return this.kimAttributeId;
 	}
@@ -88,7 +81,6 @@ public class KimTypeAttributeInfo implements Serializable {
 				.append("namespaceCode", this.namespaceCode)
 				.append("sortCode",this.sortCode)
 				.append("attributeLabel",this.attributeLabel)
-				.append("applicationUrl",this.applicationUrl)
 				.toString();
 	}
 	

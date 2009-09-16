@@ -23,7 +23,7 @@ import java.util.Map;
  * Document plus it's requests and actions.  Primarily used by the routingReport method 
  * on WorkflowInfo
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentDetailDTO extends RouteHeaderDTO {
 

@@ -76,7 +76,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * application context (when it was SpringServiceLocator) but those responsibilities have been
  * moved to the SpringLoader.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public final class KEWServiceLocator {

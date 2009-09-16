@@ -30,7 +30,7 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
 /**
  * Default test base for a full KNS enabled unit test.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 

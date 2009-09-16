@@ -33,7 +33,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * This class represents an instance of who can actually submit notification messages to the system 
  * for processing.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_PRODCR_T")

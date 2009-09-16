@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * A servlet which returns a client {@link java.security.KeyStore} object to the user as a file.  It takes in
  * the KeyStore file as a session attribute byte array.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExportServlet extends HttpServlet {
 

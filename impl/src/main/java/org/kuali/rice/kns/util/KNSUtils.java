@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.lang.reflect.Constructor;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,4 +76,27 @@ public class KNSUtils {
 
         return StringUtils.replace(formattedAmount, ",", "");
     }
+    
+	public static Integer getIntegerValue(String numberStr){
+		Integer numberInt = null;
+		try{
+			numberInt = new Integer(numberStr);
+		} catch(NumberFormatException nfe){
+			Double numberDbl = new Double(numberStr);
+			numberInt = new Integer(numberDbl.intValue());
+		}
+		return numberInt;
+	}
+
+	public static Object createObject(Class<?> clazz, Class<?>[] argumentClasses, Object[] argumentValues) {
+		if(clazz==null)
+			return null;
+		try {
+			Constructor<?> constructor = clazz.getConstructor(argumentClasses);
+			return constructor.newInstance(argumentValues);
+	    } catch (Exception e) {
+	      	return null;
+	    }
+	}
+
 }

@@ -32,7 +32,7 @@ import org.springframework.web.util.UrlPathHelper;
 /**
  * A {@link HandlerMapping} which handles incoming HTTP requests from the bus.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KSBHttpInvokerHandler extends AbstractHandlerMapping {
 

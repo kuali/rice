@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationHandler;
  * An InvocationHandler which targets a specific Object.  An InvocationHandler which implements this
  * interface should provide a reference to the target Object it's wrapping via the getTarget() method.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface TargetedInvocationHandler extends InvocationHandler {
 

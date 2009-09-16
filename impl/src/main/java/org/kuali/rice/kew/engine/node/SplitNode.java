@@ -22,7 +22,7 @@ import org.kuali.rice.kew.engine.RouteHelper;
 /**
  * An interface for a Split Node which allows for parallel branching of the route path within a document.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface SplitNode extends Node {
 	

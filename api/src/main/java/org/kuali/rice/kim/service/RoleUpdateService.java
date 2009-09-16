@@ -30,7 +30,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 /**
  * This service provides operations for creating and updating roles. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
 @WebService(name = KIMWebServiceConstants.RoleUpdateService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)

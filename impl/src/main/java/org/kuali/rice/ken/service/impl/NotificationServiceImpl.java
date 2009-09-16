@@ -39,7 +39,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationServiceImpl implements NotificationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

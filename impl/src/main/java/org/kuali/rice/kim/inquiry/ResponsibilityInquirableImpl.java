@@ -45,7 +45,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {

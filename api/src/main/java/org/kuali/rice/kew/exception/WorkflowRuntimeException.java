@@ -20,7 +20,7 @@ package org.kuali.rice.kew.exception;
  * A generic runtime exception thrown from KEW.  Acts as the superclass for all runtime
  * exceptions in KEW.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowRuntimeException extends RuntimeException {
     

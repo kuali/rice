@@ -47,11 +47,11 @@
   <bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
-  
+
   <bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
-  
+
   <bean id="enBranchDAO" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>

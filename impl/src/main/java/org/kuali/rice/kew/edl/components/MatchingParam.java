@@ -19,7 +19,7 @@ package org.kuali.rice.kew.edl.components;
 /**
  * Convenience class for representing a request param with it's value and any associated errors.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MatchingParam {

@@ -21,7 +21,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo implements KimEntityEmploymentInformation {
 
@@ -41,12 +41,15 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * 
 	 */
 	public KimEntityEmploymentInformationInfo() {
+		super();
+		active = true;
 	}
 	
 	/**
 	 * 
 	 */
 	public KimEntityEmploymentInformationInfo( KimEntityEmploymentInformation eei ) {
+		this();
 		if ( eei != null ) {
 			entityEmploymentId = unNullify( eei.getEntityEmploymentId() );
 			employeeId = unNullify( eei.getEmployeeId() );
@@ -60,95 +63,131 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 			active = eei.isActive();
 		}
 	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()
-	 */
-	public KualiDecimal getBaseSalaryAmount() {
-		return baseSalaryAmount;
-	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeStatusCode()
-	 */
-	public String getEmployeeStatusCode() {
-		return employeeStatusCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeTypeCode()
-	 */
-	public String getEmployeeTypeCode() {
-		return employeeTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityAffiliationId()
-	 */
-	public String getEntityAffiliationId() {
-		return entityAffiliationId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityEmploymentId()
+	 * @return the entityEmploymentId
 	 */
 	public String getEntityEmploymentId() {
-		return entityEmploymentId;
+		return this.entityEmploymentId;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#isPrimary()
+	 * @param entityEmploymentId the entityEmploymentId to set
 	 */
-	public boolean isPrimary() {
-		return primary;
-	}
-
-	public void setEntityAffiliationId(String entityAffiliationId) {
-		this.entityAffiliationId = entityAffiliationId;
-	}
-
-	public void setBaseSalaryAmount(KualiDecimal baseSalaryAmount) {
-		this.baseSalaryAmount = baseSalaryAmount;
-	}
-
-	public void setEmployeeStatusCode(String employeeStatusCode) {
-		this.employeeStatusCode = employeeStatusCode;
-	}
-
-	public void setEmployeeTypeCode(String employeeTypeCode) {
-		this.employeeTypeCode = employeeTypeCode;
-	}
-
-	public void setPrimary(boolean primary) {
-		this.primary = primary;
-	}
-
 	public void setEntityEmploymentId(String entityEmploymentId) {
 		this.entityEmploymentId = entityEmploymentId;
 	}
 
-	public String getPrimaryDepartmentCode() {
-		return this.primaryDepartmentCode;
-	}
-
-	public void setPrimaryDepartmentCode(String primaryDepartmentCode) {
-		this.primaryDepartmentCode = primaryDepartmentCode;
-	}
-
+	/**
+	 * @return the employeeId
+	 */
 	public String getEmployeeId() {
 		return this.employeeId;
 	}
 
+	/**
+	 * @param employeeId the employeeId to set
+	 */
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
 
+	/**
+	 * @return the employmentRecordId
+	 */
 	public String getEmploymentRecordId() {
 		return this.employmentRecordId;
 	}
 
+	/**
+	 * @param employmentRecordId the employmentRecordId to set
+	 */
 	public void setEmploymentRecordId(String employmentRecordId) {
 		this.employmentRecordId = employmentRecordId;
 	}
 
+	/**
+	 * @return the entityAffiliationId
+	 */
+	public String getEntityAffiliationId() {
+		return this.entityAffiliationId;
+	}
+
+	/**
+	 * @param entityAffiliationId the entityAffiliationId to set
+	 */
+	public void setEntityAffiliationId(String entityAffiliationId) {
+		this.entityAffiliationId = entityAffiliationId;
+	}
+
+	/**
+	 * @return the employeeStatusCode
+	 */
+	public String getEmployeeStatusCode() {
+		return this.employeeStatusCode;
+	}
+
+	/**
+	 * @param employeeStatusCode the employeeStatusCode to set
+	 */
+	public void setEmployeeStatusCode(String employeeStatusCode) {
+		this.employeeStatusCode = employeeStatusCode;
+	}
+
+	/**
+	 * @return the employeeTypeCode
+	 */
+	public String getEmployeeTypeCode() {
+		return this.employeeTypeCode;
+	}
+
+	/**
+	 * @param employeeTypeCode the employeeTypeCode to set
+	 */
+	public void setEmployeeTypeCode(String employeeTypeCode) {
+		this.employeeTypeCode = employeeTypeCode;
+	}
+
+	/**
+	 * @return the primaryDepartmentCode
+	 */
+	public String getPrimaryDepartmentCode() {
+		return this.primaryDepartmentCode;
+	}
+
+	/**
+	 * @param primaryDepartmentCode the primaryDepartmentCode to set
+	 */
+	public void setPrimaryDepartmentCode(String primaryDepartmentCode) {
+		this.primaryDepartmentCode = primaryDepartmentCode;
+	}
+
+	/**
+	 * @return the baseSalaryAmount
+	 */
+	public KualiDecimal getBaseSalaryAmount() {
+		return this.baseSalaryAmount;
+	}
+
+	/**
+	 * @param baseSalaryAmount the baseSalaryAmount to set
+	 */
+	public void setBaseSalaryAmount(KualiDecimal baseSalaryAmount) {
+		this.baseSalaryAmount = baseSalaryAmount;
+	}
+
+	/**
+	 * @return the primary
+	 */
+	public boolean isPrimary() {
+		return this.primary;
+	}
+
+	/**
+	 * @param primary the primary to set
+	 */
+	public void setPrimary(boolean primary) {
+		this.primary = primary;
+	}
+	
 }

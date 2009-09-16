@@ -34,7 +34,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * A service which provides data access for {@link RouteNode}, {@link RouteNodeInstance}, 
  * {@link NodeState}, and {@link Branch} objects.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RouteNodeService {
 

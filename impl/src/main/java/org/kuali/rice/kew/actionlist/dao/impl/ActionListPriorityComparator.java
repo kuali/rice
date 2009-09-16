@@ -34,7 +34,7 @@ import org.kuali.rice.kew.actionitem.ActionItemComparator;
  * first argument has a higher priority then the second.  If the result returned is 0, then
  * the two action items have the same priority.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListPriorityComparator implements Comparator {
 

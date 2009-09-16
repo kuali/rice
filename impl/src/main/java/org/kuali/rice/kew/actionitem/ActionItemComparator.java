@@ -24,14 +24,14 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 /**
  * Compares an action item to another action item.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionItemComparator implements Comparator {
 
 	public int compare(Object object1, Object object2) throws ClassCastException {
 		ActionItem actionItem1 = (ActionItem)object1;
 		ActionItem actionItem2 = (ActionItem)object2;
-		int actionCodeValue = ActionRequestValue.compareActionCode(actionItem1.getActionRequestCd(), actionItem2.getActionRequestCd());
+		int actionCodeValue = ActionRequestValue.compareActionCode(actionItem1.getActionRequestCd(), actionItem2.getActionRequestCd(), true);
 		if (actionCodeValue != 0) {
 			return actionCodeValue;
 		}

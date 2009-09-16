@@ -443,7 +443,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiator = new DocumentInitiator();
         String initiatorPrincipalId = getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
-        Person initiatorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalId);
+        Person initiatorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
         initiator.setPerson(initiatorUser);
         transInfo.setDocumentInitiator(initiator);
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();

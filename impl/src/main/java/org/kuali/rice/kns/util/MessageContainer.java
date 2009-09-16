@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionMessages;
 /**
  * An adapter whose subclasses will make either an {@link MessageMap}'s warning or info messages available to the JSP layer
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public abstract class MessageContainer implements Serializable {

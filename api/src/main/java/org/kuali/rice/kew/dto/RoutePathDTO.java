@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport object responsible for holding the process a document has been through.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoutePathDTO implements Serializable {
 

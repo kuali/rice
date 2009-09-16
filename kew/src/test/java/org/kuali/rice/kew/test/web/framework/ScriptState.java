@@ -53,7 +53,7 @@ import org.kuali.rice.kew.test.web.ChainingFilter;
  * This class provides access to "properties" which are abstract names that can be resolved in several ways: via
  * the variable map, as a resource in the classloader, as a url, and as literal text.
  * @see org.kuali.rice.kew.test.web.framework.actions.SubmitAction for information on RESPONSE Map contents
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ScriptState {
     public static final String USER = "USER";

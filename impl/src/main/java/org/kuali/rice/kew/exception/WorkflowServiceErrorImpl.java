@@ -30,7 +30,7 @@ import java.util.List;
  * documentation for further explanation.</p>
  * <p>Copyright: Copyright (c) 2002</p>
  * <p>Company: Indiana University</p>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkflowServiceErrorImpl implements Serializable, WorkflowServiceError {
 

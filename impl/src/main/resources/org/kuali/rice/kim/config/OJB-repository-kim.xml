@@ -148,7 +148,6 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="componentName" column="CMPNT_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="applicationUrl" column="APPL_URL" jdbc-type="VARCHAR" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl" table="KRIM_TYP_ATTR_T">
@@ -215,6 +214,15 @@
     <reference-descriptor name="bioDemographics" class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="entityId" />
     </reference-descriptor>
+    <collection-descriptor name="ethnicities" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="entityId" />
+    </collection-descriptor>
+    <collection-descriptor name="residencies" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="entityId" />
+    </collection-descriptor>
+    <collection-descriptor name="visas" element-class-ref="org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="entityId" />
+    </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl" table="KRIM_ENTITY_AFLTN_T">
@@ -233,9 +241,16 @@
 
   <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl" table="KRIM_ENTITY_BIO_T">
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="birthDate" column="BIRTH_DT" jdbc-type="DATE"  />
-    <field-descriptor name="ethnicityCode" column="ETHNCTY_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="genderCode" column="GNDR_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="birthDate" column="BIRTH_DT" jdbc-type="DATE"  />
+    <field-descriptor name="deceasedDate" column="DECEASED_DT" jdbc-type="DATE"  />
+    <field-descriptor name="maritalStatusCode" column="MARITAL_STATUS" jdbc-type="VARCHAR"  />
+    <field-descriptor name="primaryLanguageCode" column="PRIM_LANG_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="secondaryLanguageCode" column="SEC_LANG_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="cityOfBirth" column="BIRTH_CITY" jdbc-type="VARCHAR"  />
+    <field-descriptor name="birthStateCode" column="BIRTH_STATE_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="countryOfBirthCode" column="BIRTH_CNTRY_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="geographicOrigin" column="GEO_ORIGIN" jdbc-type="VARCHAR"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
   </class-descriptor>
@@ -319,6 +334,34 @@
     <reference-descriptor name="entityNameType" class-ref="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="nameTypeCode" />
     </reference-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl" table="KRIM_ENTITY_ETHNIC_T">
+    <field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_ETHNIC_ID_S" />
+    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="ethnicityCode" column="ETHNCTY_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="subEthnicityCode" column="SUB_ETHNCTY_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl" table="KRIM_ENTITY_RESIDENCY_T">
+    <field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_RESIDENCY_ID_S" />
+    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="determinationMethod" column="DETERMINATION_METHOD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="inStateFlag" column="IN_STATE" jdbc-type="VARCHAR"  />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl" table="KRIM_ENTITY_VISA_T">
+    <field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRIM_ENTITY_VISA_ID_S" />
+    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="visaTypeKey" column="VISA_TYPE_KEY" jdbc-type="VARCHAR"  />
+    <field-descriptor name="visaEntry" column="VISA_ENTRY" jdbc-type="VARCHAR"  />
+    <field-descriptor name="visaId" column="VISA_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
   </class-descriptor>
 
   <!-- ******************************************************************* -->
@@ -986,6 +1029,7 @@
     <field-descriptor name="roleTypeId" column="role_typ_id" jdbc-type="VARCHAR"/>
     <field-descriptor name="roleNamespace" column="role_nmspc" jdbc-type="VARCHAR"  />
     <field-descriptor name="roleName" column="role_nm" jdbc-type="VARCHAR"  />
+    <field-descriptor name="roleDescription" column="desc_txt" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />

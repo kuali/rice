@@ -28,7 +28,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
  * A RouteModule is responsible for generating Action Requests for a given Route Header document.
  * Implementations of this Interface are potentially remotable, so this Interface uses value objects.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RouteModuleRemote {
 

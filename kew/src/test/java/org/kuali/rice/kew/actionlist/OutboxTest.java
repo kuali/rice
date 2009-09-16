@@ -41,7 +41,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
  * Tests Outbox functionality
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class OutboxTest extends KEWTestCase {
 

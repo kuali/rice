@@ -71,6 +71,10 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         return (DocumentType) documentsByName.get(name);
     }
 
+    public DocumentType findByNameCaseInsensitive(String name) {
+        return (DocumentType) documentsByName.get(name);
+    }
+
     public void versionAndSave(DocumentType documentType) {
         addDocumentType(documentType, new MockPostProcessor(true));
     }
@@ -145,7 +149,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 
     }
     public void flushCache() {
-        
+
     }
 	public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute) {
 

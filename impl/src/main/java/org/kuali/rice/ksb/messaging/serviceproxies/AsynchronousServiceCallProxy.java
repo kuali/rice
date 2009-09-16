@@ -40,7 +40,7 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * Standard default proxy used to call services asynchronously. Persists the method call to the db so call is never lost and
  * only sent when transaction is committed.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class AsynchronousServiceCallProxy extends BaseInvocationHandler implements TargetedInvocationHandler {

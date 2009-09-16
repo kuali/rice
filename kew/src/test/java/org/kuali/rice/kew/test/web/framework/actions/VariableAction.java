@@ -47,7 +47,7 @@ import org.w3c.dom.Node;
  * <dt>filters</dt>
  * <dd>Allows applying a sequence of preconfigured filters to the value.  The list of filter names is comma-delimited.  E.g. filters="DUPLICATE_SPACES, DUPLICATE_NEWLINES"</dd>
  * </dl>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class VariableAction extends BaseScriptAction {
     private static final String[] NAMES = { "variable" };

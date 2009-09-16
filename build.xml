@@ -94,6 +94,12 @@
 		<antcall target="merge-module-classpaths"/>
     </target>
 	
+	<target name="package-test-files" depends="init" description="Updates Eclipse classpath">
+	    <maven goals="test-compile" />
+		<jar destfile="target/kewTests.jar"
+	         basedir="kew/target/test-classes" />
+	</target>
+	
 	<target name="merge-module-classpaths" depends="init">
 		<dirname property="project.dir" file="${ant.file}"/>
 		<java classname="org.codehaus.groovy.tools.GroovyStarter">
@@ -296,7 +302,7 @@ file in your home directory (${user.home})
 in order to package the various Rice datasets.
 				
 1) impex.home.directory -- the absolute path of the impex directory
-2) dist.database.svn.base -- the base path of the Rice master database project (rice-cfg-dbs) to use.  For example: branches/rice-release-1-0-0-br
+2) dist.database.svn.base -- the base path of the Rice master database project (rice-cfg-dbs) to use.  For example: branches/rice-release-1-0-1-br
 3) dist.database.password
 4) dist.database.admin.user
 5) dist.database.admin.password

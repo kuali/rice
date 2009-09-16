@@ -66,7 +66,7 @@ import org.xml.sax.InputSource;
 /**
  * DAO-based EDocLiteService implementation
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EDocLiteServiceImpl implements EDocLiteService {
     private static final Logger LOG = Logger.getLogger(EDocLiteServiceImpl.class);

@@ -46,7 +46,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebRuleResponsibility extends RuleResponsibility {
 
@@ -444,7 +444,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	 * on the delegation rules if they haven't been materialized from the
 	 * database yet (they are currenty proxied by OJB)
 	 *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
 	private class DelegationRulesProxy implements InvocationHandler, java.io.Serializable {
 

@@ -25,7 +25,7 @@ import org.apache.struts.action.RequestProcessor;
  * A RequestProcessor implementation for Struts which handles determining whether or not access
  * should be allowed to the requested KSB page.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KSBStrutsRequestProcessor extends RequestProcessor {
 	

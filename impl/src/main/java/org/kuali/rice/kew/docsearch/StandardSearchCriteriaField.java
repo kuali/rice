@@ -20,7 +20,7 @@ package org.kuali.rice.kew.docsearch;
 /**
  * This is a container object used by KEW Document Search 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class StandardSearchCriteriaField implements java.io.Serializable {

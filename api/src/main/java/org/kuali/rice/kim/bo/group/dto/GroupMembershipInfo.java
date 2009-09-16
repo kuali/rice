@@ -26,7 +26,7 @@ import org.kuali.rice.core.jaxb.SqlDateAdapter;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GroupMembershipInfo implements Serializable {
@@ -49,7 +49,10 @@ public class GroupMembershipInfo implements Serializable {
 		this.activeToDate = activeToDate;
 	}
 	
-
+	// for jax-ws service construction
+	@SuppressWarnings("unused")
+	private GroupMembershipInfo() {}
+	
 	public String getMemberId() {
 		return this.memberId;
 	}
@@ -115,7 +118,6 @@ public class GroupMembershipInfo implements Serializable {
 	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
-
 
 	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;

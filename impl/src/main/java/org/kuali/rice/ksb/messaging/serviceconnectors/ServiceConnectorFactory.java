@@ -30,7 +30,7 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
  * <p>
  * ServiceConnector will fail if a CredentialsSource for the Service Definition cannot be located.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  * @since 0.9
  * @see ServiceConnector

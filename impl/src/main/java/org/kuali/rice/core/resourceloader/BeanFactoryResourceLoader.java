@@ -27,7 +27,7 @@ import org.springframework.beans.factory.BeanFactory;
  * Does not start or stop the {@link BeanFactory}.  Assumes this is being done 
  * by the application that started it.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class BeanFactoryResourceLoader extends BaseResourceLoader {

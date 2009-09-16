@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
  * Matches university ID param to UserService to validate universityId.  Returns error message if 
  * universityId does NOT match.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UniversityIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {
   

@@ -29,7 +29,7 @@ import org.kuali.rice.ksb.test.KSBTestCase;
 /**
  * This is a test class used to test the KSB java security operation using certificates and keystores 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class JavaSecurityManagementServiceTest extends KSBTestCase {

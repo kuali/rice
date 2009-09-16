@@ -28,7 +28,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * This interface defines service methods for modules.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface ModuleService extends InitializingBean, ApplicationContextAware {

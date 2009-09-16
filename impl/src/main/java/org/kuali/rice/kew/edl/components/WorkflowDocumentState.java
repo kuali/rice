@@ -44,7 +44,7 @@ import org.w3c.dom.Element;
 /**
  * Generates document state based on the workflow document in session.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WorkflowDocumentState implements EDLModelComponent {

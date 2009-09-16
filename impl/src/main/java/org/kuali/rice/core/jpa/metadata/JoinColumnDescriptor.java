@@ -16,7 +16,7 @@
 package org.kuali.rice.core.jpa.metadata;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JoinColumnDescriptor implements java.io.Serializable {
 

@@ -42,7 +42,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * An entry in the BAM representing a service method invocation.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRSB_BAM_T")

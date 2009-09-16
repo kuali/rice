@@ -69,7 +69,6 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private Map unconvertedValues = new HashMap();
     private List unknownKeys = new ArrayList();
     private Map formatterTypes = new HashMap();
-    private Map encryptedProperties = new HashMap();
     private List<String> maxUploadFileSizes = new ArrayList<String>();
     private Set<String> editableProperties = new HashSet<String>();
     private transient Set<String> editablePropertiesFromPreviousRequest;
@@ -218,14 +217,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private Formatter buildFormatterForKeypath(String keypath, Class propertyType, Map requestParams) {
         Formatter formatter = null;
 
-        // check if keypath was sent in encrypted property map
-        Class formatterClass = null;
-        if (requestParams.containsKey("encryptedProperties('" + keypath.replace( '.', '_' ) + "')")) {
-            formatterClass = EncryptionFormatter.class;
-        }
-        else {
-            formatterClass = formatterClassForKeypath(keypath);
-        }
+        Class formatterClass = formatterClassForKeypath(keypath);
 
         if (formatterClass != null) {
             try {
@@ -447,25 +439,6 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 
 
 	// begin Kuali Foundation modification
-    /**
-     * Gets the encryptedProperties attribute. 
-     * @return Returns the encryptedProperties.
-     */
-    public Map getEncryptedProperties() {
-        return encryptedProperties;
-    }
-    // end Kuali Foundation modification
-
-
-	// begin Kuali Foundation modification
-    /**
-     * Sets the encryptedProperties attribute value.
-     * @param encryptedProperties The encryptedProperties to set.
-     */
-    public void setEncryptedProperties(Map encryptedProperties) {
-        this.encryptedProperties = encryptedProperties;
-    }
-
     /**
      * Adds the given string as a maximum size to the form.  It will be used if a file upload is used.
      * 

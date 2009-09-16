@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 /**
  * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntityNameInfoMapEntry[], Map<String, KimEntityNameInfo>> {

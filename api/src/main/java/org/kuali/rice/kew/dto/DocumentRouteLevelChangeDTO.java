@@ -20,7 +20,7 @@ package org.kuali.rice.kew.dto;
 /**
  * Event passed to remote post processor when document changes route levels.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentRouteLevelChangeDTO extends DocumentEventDTO {
 

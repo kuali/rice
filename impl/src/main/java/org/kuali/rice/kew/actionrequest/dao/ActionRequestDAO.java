@@ -25,7 +25,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 /**
  * Data Access Object for {@link ActionRequestValue}s.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionRequestDAO {
 

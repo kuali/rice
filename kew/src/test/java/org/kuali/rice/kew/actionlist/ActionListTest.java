@@ -52,7 +52,7 @@ import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListTest extends KEWTestCase {
 

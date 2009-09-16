@@ -45,7 +45,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
  * This is the default out-of-the-box implementation that leverages the status flag on a notification (RESOLVED versus UNRESOLVED) to determine whether
  * the notification's message deliveries need to be resolved or not.  This also looks at the start and auto remove
  * dates and times.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJob<Notification> implements NotificationMessageDeliveryResolverService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

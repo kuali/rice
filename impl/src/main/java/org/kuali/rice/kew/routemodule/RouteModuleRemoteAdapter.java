@@ -37,7 +37,7 @@ import org.kuali.rice.kew.util.ResponsibleParty;
  * @see RouteModuleRemote
  * @see RouteModule
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteModuleRemoteAdapter implements RouteModule {
 

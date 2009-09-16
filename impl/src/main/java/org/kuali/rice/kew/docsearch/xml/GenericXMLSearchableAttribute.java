@@ -25,7 +25,7 @@ import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 /**
  * Interface representing attributes that are backed by xml.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface GenericXMLSearchableAttribute extends SearchableAttribute, XmlConfiguredAttribute {
 

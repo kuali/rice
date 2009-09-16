@@ -30,7 +30,7 @@ import org.kuali.rice.kew.rule.FlexRM;
  * @see FlexRM
  * @see RouteModule
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FlexRMAdapter extends FlexRM implements RouteModule {
 

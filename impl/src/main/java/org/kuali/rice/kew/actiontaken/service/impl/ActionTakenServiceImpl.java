@@ -40,7 +40,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * Default implementation of the {@link ActionTakenService}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionTakenServiceImpl implements ActionTakenService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenServiceImpl.class);
@@ -86,7 +86,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
             for (ActionTakenValue actionTaken : actionsTakenByUser)
             {
                 if (ActionRequestValue.compareActionCode(actionTaken.getActionTaken(),
-                        actionRequest.getActionRequested()) >= 0)
+                        actionRequest.getActionRequested(), true) >= 0)
                 {
                   foundActionTaken = actionTaken;
                 }

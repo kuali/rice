@@ -37,7 +37,7 @@ import org.kuali.rice.kew.util.Utilities;
 /**
  * Parses a {@link PluginConfig} configuration from an XML file.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PluginConfigParser {
 

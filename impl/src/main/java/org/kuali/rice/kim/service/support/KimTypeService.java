@@ -26,7 +26,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  *  to various objects (currently groups and roles) in KIM to add additional attributes and
  *  modify their behavior.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimTypeService {
@@ -55,7 +55,7 @@ public interface KimTypeService {
 	
 	boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
 	
-//    List<KeyLabelPair> getAttributeValidValues(String attributeName);
+    List<KeyLabelPair> getAttributeValidValues(String kimTypeId, String attributeName);
     
     AttributeDefinitionMap getAttributeDefinitions(String kimTypeId);
     

@@ -29,7 +29,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
@@ -58,29 +58,30 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
-		
-		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
-		if (StringUtils.isNotBlank(documentNumber)) {
-			Long documentNumberLong = Long.parseLong(documentNumber);
-			try{
-				if (INITIATOR_ROLE_NAME.equals(roleName)) {
-				    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong);
-                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
-				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
-				    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
-				    for ( String id : ids ) {
-				    	if ( StringUtils.isNotBlank(id) ) {
-				    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, Role.PRINCIPAL_MEMBER_TYPE, null) );
-				    	}
-				    }
-				} else if(ROUTER_ROLE_NAME.equals(roleName)) {
-				    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);
-                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();		
+		if(qualification!=null && !qualification.isEmpty()){
+			String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+			if (StringUtils.isNotBlank(documentNumber)) {
+				Long documentNumberLong = Long.parseLong(documentNumber);
+				try{
+					if (INITIATOR_ROLE_NAME.equals(roleName)) {
+					    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong);
+	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+					} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
+					    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
+					    for ( String id : ids ) {
+					    	if ( StringUtils.isNotBlank(id) ) {
+					    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, Role.PRINCIPAL_MEMBER_TYPE, null) );
+					    	}
+					    }
+					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
+					    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);
+	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+					}
+				} catch(WorkflowException wex){
+					throw new RuntimeException(
+					"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 				}
-			} catch(WorkflowException wex){
-				throw new RuntimeException(
-				"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 			}
 		}
 		return members;
@@ -93,23 +94,24 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	public boolean hasApplicationRole(
 			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
 		validateRequiredAttributesAgainstReceived(qualification);
-	
-		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
         boolean isUserInRouteLog = false;
-		try {
-			Long documentNumberLong = Long.parseLong(documentNumber);
-			if (INITIATOR_ROLE_NAME.equals(roleName)){
-				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
-			} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
-				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
-			} else if(ROUTER_ROLE_NAME.equals(roleName)){
-				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
+		if(qualification!=null && !qualification.isEmpty()){
+			String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+			try {
+				Long documentNumberLong = Long.parseLong(documentNumber);
+				if (INITIATOR_ROLE_NAME.equals(roleName)){
+					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
+				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
+					isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
+				} else if(ROUTER_ROLE_NAME.equals(roleName)){
+					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
+				}
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
+			} catch (WorkflowException wex) {
+				throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
+						"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 			}
-		} catch (NumberFormatException e) {
-			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
-		} catch (WorkflowException wex) {
-			throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
-					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 		}
 		return isUserInRouteLog;
 	}

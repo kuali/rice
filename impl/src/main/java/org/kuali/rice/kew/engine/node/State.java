@@ -30,7 +30,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 /**
  * A KeyValuePair that adds an id fields that makes it sufficient for storing in a database.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
 @Sequence(name="KREW_RTE_NODE_S", property="stateId")

@@ -18,7 +18,7 @@ package org.kuali.rice.kns.exception;
 /**
  * This class used by Kuali's Pessimistic Locking mechanism
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PessimisticLockingException extends RuntimeException {

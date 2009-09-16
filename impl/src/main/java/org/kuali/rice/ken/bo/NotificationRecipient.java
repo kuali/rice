@@ -28,7 +28,7 @@ import javax.persistence.Table;
 /**
  * This class houses information pertaining to each recipient for a Notification message.  This 
  * recipient can be either a user or a group - which is specified by the recipient type.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREN_RECIP_T")

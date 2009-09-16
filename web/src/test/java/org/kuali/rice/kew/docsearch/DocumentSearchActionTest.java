@@ -35,7 +35,7 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 /**
  * Tests the web GUI for the Document Search.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Ignore

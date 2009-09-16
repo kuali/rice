@@ -38,7 +38,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * extracted when the route node is parsed, and depend on route node implementation.
  * (well, they actually depend on the route node parser because the parser is what
  * will parse them, but the parser is not specialized per-node-type at this point) 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity

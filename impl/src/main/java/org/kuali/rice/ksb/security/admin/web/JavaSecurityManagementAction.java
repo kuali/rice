@@ -41,7 +41,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * Struts action for admin users to manage keys and keystore files for client applications 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class JavaSecurityManagementAction extends KSBAction {

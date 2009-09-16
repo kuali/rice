@@ -29,7 +29,7 @@ import org.xml.sax.InputSource;
 /**
  * Used by {@link EDocLitePostProcessorTest} to test the {@link #postEvent(Long, Object, String)} method 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class TestEDocLitePostProcessor extends EDocLitePostProcessor {

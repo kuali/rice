@@ -25,7 +25,7 @@ import org.kuali.rice.kew.engine.node.SimpleResult;
  * This node will wait until a sibling branch has joined and it has no more pending requests
  * before it signals that it is complete.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AdHocApproversNode extends InitialNode {
 

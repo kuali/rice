@@ -21,7 +21,7 @@ import java.util.Collection;
 /**
  * The criteria defining parameters to a search through a document's node graph.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NodeGraphSearchCriteria {
 

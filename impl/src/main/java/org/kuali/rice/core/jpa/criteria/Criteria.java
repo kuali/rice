@@ -32,7 +32,7 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
  * 
  * TODO: Rewrite this class with a better criteria building algorithm.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @SuppressWarnings("unchecked")
 public class Criteria {

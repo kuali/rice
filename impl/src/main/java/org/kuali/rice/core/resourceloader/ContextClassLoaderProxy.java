@@ -27,7 +27,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  * A Proxy that sets the thread Context ClassLoader before invocation of the
  * proxied object, and resets it back afterwards.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
 

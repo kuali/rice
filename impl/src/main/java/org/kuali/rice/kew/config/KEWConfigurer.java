@@ -56,7 +56,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  *   <li>Configure and startup KEW for "Embedded Mode"</li>
  * </ol>
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KEWConfigurer extends ModuleConfigurer {
 

@@ -64,7 +64,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 /**
  * A Struts Action used to display the routelog.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteLogAction extends KewKualiAction {
 
@@ -265,7 +265,7 @@ public class RouteLogAction extends KewKualiAction {
      * Creates dummy RouteNodeInstances based on imported data from RouteNodeInstanceDTOs.
      * It is then able to vend those RouteNodeInstanceS back by their IDs.
      * 
-     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     * @author Kuali Rice Team (rice.collab@kuali.org)
      *
      */
     private static class RouteNodeInstanceFabricator implements RouteNodeInstanceLoader {

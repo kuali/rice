@@ -28,7 +28,7 @@ import org.springframework.util.FileCopyUtils;
 
 /**
  * A mock FormFile which is constructed directly from a File on disk 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MockFormFile implements FormFile {
     private File file;

@@ -43,7 +43,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementRoleDocument extends IdentityManagementTypeAttributeTransactionalDocument {
@@ -265,7 +265,9 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 */
 	public void addMember(KimDocumentRoleMember member) {
 		SequenceAccessorService sas = getSequenceAccessorService();
-		Long nextSeq = sas.getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, KimDocumentRoleMember.class);
+		Long nextSeq = sas.getNextAvailableSequenceNumber(
+				KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, 
+				KimDocumentRoleMember.class);
 		String roleMemberId = nextSeq.toString();
 		member.setRoleMemberId(roleMemberId);
 		setupMemberRspActions(member);
@@ -421,7 +423,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 				responsibility.setRoleId(roleId);
 				if(!getResponsibilityService().areActionsAtAssignmentLevelById(responsibility.getResponsibilityId())){
 					if(StringUtils.isBlank(responsibility.getRoleRspActions().get(0).getRoleResponsibilityActionId())){
-						String roleResponsibilityActionId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S).toString();
+						Long nextSeq = sas.getNextAvailableSequenceNumber(
+								KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S,
+								KimDocumentRoleResponsibilityAction.class);
+						String roleResponsibilityActionId = nextSeq.toString();
 						responsibility.getRoleRspActions().get(0).setRoleResponsibilityActionId(roleResponsibilityActionId);
 					}
 					responsibility.getRoleRspActions().get(0).setRoleMemberId("*");

@@ -26,7 +26,7 @@ import org.kuali.rice.kcb.test.service.MockEmailService;
 
 /**
  * Mock EmailService implementation that does not actually send any mail
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MockEmailServiceImpl extends EmailServiceImpl implements MockEmailService {
     private static final Logger LOG = Logger.getLogger(MockEmailServiceImpl.class);

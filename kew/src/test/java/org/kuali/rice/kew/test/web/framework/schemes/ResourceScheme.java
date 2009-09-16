@@ -30,7 +30,7 @@ import org.kuali.rice.kew.test.web.framework.Util;
 
 /**
  * A property scheme that loads resources from the class loader 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ResourceScheme implements PropertyScheme {
     private static final Logger LOG = Logger.getLogger(ResourceScheme.class);

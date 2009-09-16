@@ -34,7 +34,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * deprecated "route level" concept and the "node" concept which was introduced in
  * KEW 2.1.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CompatUtils {
 	

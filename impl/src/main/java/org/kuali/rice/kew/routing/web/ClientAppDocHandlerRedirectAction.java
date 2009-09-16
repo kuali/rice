@@ -39,7 +39,7 @@ import org.kuali.rice.kew.web.session.UserSession;
  * A Struts Action for redirecting from the KEW web application to the appropriate
  * Doc Handler for a document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
 

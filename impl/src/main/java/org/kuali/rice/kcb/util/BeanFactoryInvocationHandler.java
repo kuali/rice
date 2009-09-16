@@ -22,7 +22,7 @@ import org.springframework.beans.factory.BeanFactory;
 
 /**
  * Maps accessor invocations to beans in a BeanFactory. 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class BeanFactoryInvocationHandler implements InvocationHandler {

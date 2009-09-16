@@ -31,7 +31,7 @@ import org.springframework.beans.factory.InitializingBean;
  * It will return null if it cannot find or create an instance of the required
  * type.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  * 
  */

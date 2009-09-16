@@ -32,7 +32,7 @@ import org.kuali.rice.kew.engine.node.var.schemes.XPathScheme;
  * Interface representing an implementation that can resolve Property objects to
  * values.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PropertyScheme {
     public static final PropertyScheme VARIABLE_SCHEME = new VariableScheme();

@@ -36,7 +36,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 //	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CustomSearchAttributesTest.class);

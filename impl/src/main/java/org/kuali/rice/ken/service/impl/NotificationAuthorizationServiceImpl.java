@@ -29,7 +29,7 @@ import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * NotificationAuthorizationService implementation - this is the default out-of-the-box implementation of the service.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationAuthorizationServiceImpl implements NotificationAuthorizationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NotificationAuthorizationServiceImpl.class);

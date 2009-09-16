@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2008 The Kuali Foundation
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,8 +26,8 @@ import org.kuali.rice.kew.xml.export.XmlExporter;
 
 /**
  * Service for data access and some cache behavior of document types.
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
 
@@ -42,4 +42,13 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
     public List<DocumentType> findPreviousInstances(String documentTypeName);
     public List getChildDocumentTypes(Long documentTypeId);
     public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute);
+
+    /**
+     *
+     * This method is similar to the findByName method except it is case insensitive.
+     *
+     * @param name
+     * @return
+     */
+    public DocumentType findByNameCaseInsensitive(String name);
 }

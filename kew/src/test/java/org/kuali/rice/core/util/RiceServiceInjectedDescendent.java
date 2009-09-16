@@ -23,7 +23,7 @@ import org.kuali.rice.ksb.messaging.MessageHelper;
  * This object extends the RiceServiceInjectedObject to test that the service injection
  * via annotation works in derived classes.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RiceServiceInjectedDescendent extends RiceServiceInjectedObject {

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.util.Utilities;
 /**
  * Node that implements a KRAMetaRule, with multiple request/response phases
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRAMetaRuleNode extends IteratedRequestActivationNode {
     private static String SUPPRESS_POLICY_ERRORS_KEY = "_suppressPolicyErrorsRequestActivationNode";

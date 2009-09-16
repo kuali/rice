@@ -27,7 +27,7 @@ import java.util.List;
  * In someway allows muliple xml documents to be pushed into the xml loading 
  * 'pipeline'.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CompositeXmlDocCollection implements XmlDocCollection {
     protected Collection collections; 

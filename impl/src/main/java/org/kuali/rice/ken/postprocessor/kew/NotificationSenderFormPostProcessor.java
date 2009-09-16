@@ -40,7 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * This class is the post processor that gets run when the general notification 
  * message sending form is approved by its reviewers.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationSenderFormPostProcessor implements PostProcessorRemote {
     private static final Logger LOG = Logger.getLogger(NotificationSenderFormPostProcessor.class);

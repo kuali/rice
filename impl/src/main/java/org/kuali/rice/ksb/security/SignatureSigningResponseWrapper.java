@@ -30,7 +30,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * An HttpServletResponseWrapper which wraps the underlying response's OutputStream in a 
  * SignatureSingingOutputStream which will generate a digital signature for the outgoing message.
  *  
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SignatureSigningResponseWrapper extends HttpServletResponseWrapper {
 

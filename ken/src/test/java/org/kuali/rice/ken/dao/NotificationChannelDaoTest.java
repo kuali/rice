@@ -29,7 +29,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 /**
  * This class test basic persistence for the NotificationChannel business object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.CLEAR_DB) // this test can't run in a transaction because of how it is using ojb
 public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCaseBase {

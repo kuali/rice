@@ -1,12 +1,12 @@
 /*
  * Copyright 2007-2009 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +16,12 @@
 package org.kuali.rice.kew.util;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -236,6 +238,42 @@ public class KEWConstants extends JSTLConstants {
     public static final int TITLE_MAX_LENGTH = 255;
 
     public static final Date CURRENT_DATE = new Date(-7);
+
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_PENDING = "Pending";
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_SUCCESSFUL = "Successful";
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_UNSUCCESSFUL = "Unsuccessful";
+
+    public static final Map<String, List<String>> DOCUMENT_STATUS_PARENT_TYPES;
+
+    static {
+
+    	DOCUMENT_STATUS_PARENT_TYPES = new HashMap<String, List<String>>();
+
+    	// Pending Statuses
+    	List<String> pendingList = new ArrayList<String>();
+    	pendingList.add(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_SAVED_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_INITIATED_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+
+    	// Successful Statuses
+    	List<String> successfulList = new ArrayList<String>();
+    	successfulList.add(KEWConstants.ROUTE_HEADER_FINAL_CD);
+    	successfulList.add(KEWConstants.ROUTE_HEADER_PROCESSED_CD);
+    	successfulList.add(KEWConstants.ROUTE_HEADER_APPROVED_CD);
+
+    	// Unsuccessful Statuses
+    	List<String> unsuccessfulList = new ArrayList<String>();
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD);
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_CANCEL_CD);
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_CANCEL_DISAPPROVE_CD);
+
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_PENDING, pendingList);
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_SUCCESSFUL, successfulList);
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_UNSUCCESSFUL, unsuccessfulList);
+
+    }
+
     public static final Map<String, String> DOCUMENT_STATUSES;
 
     static {
@@ -285,7 +323,7 @@ public class KEWConstants extends JSTLConstants {
     		ACTION_LIST_COLOR_NAMES.put(colorEntry.getValue(), colorEntry.getKey());
     	}
     }
-    
+
     public static final String HEADER_TAG = "ROUTE_HEADER";
     public static final String DOCTYPE_TAG = "DOCTYPE";
 
@@ -817,6 +855,7 @@ public class KEWConstants extends JSTLConstants {
     // system branch state keys
     public static final String POST_PROCESSOR_PROCESSED_KEY = "System.PostProcessorProcessed";
     public static final String POST_PROCESSOR_FINAL_KEY = "System.PostProcessorFinal";
+    public static final String POST_PROCESSOR_NON_DEFINED_VALUE = "none";
 
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";
@@ -826,8 +865,6 @@ public class KEWConstants extends JSTLConstants {
 	public static final int MAX_RETURNED_ROWS = 1000;
 
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
-
-    public static final String LEGACY_DEFAULT_WORKGROUP_TYPE = "W";
 
     public static final String SIMPLE_DOCUMENT_ACTIONS_SECURITY = "simpleDocumentActionsService.security";
     public static final String DAILY_EMAIL_CRON_EXPRESSION = "dailyEmail.cronExpression";
@@ -937,8 +974,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND = "SEND_EMAIL_NOTIFICATION_IND";
     public static final String SHOW_BACK_DOOR_LOGIN_IND = "SHOW_BACK_DOOR_LOGIN_IND";
     public static final String RULE_DELEGATE_LIMIT = "DELEGATE_LIMIT";
-    public static final String RULE_LOCKING_ON_IND = "RULE_LOCKING_ON_IND";
-    public static final String BACKDOOR_TARGET_FRAME_NAME = "TARGET_FRAME_NAME";
+    //public static final String BACKDOOR_TARGET_FRAME_NAME = "TARGET_FRAME_NAME";
     public static final String EMAIL_REMINDER_FROM_ADDRESS = "FROM_ADDRESS";
     public static final String MAX_NODES_BEFORE_RUNAWAY_PROCESS = "MAXIMUM_NODES_BEFORE_RUNAWAY";
     public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND = "NOTIFY_EXCLUDED_USERS_IND";
@@ -946,21 +982,13 @@ public class KEWConstants extends JSTLConstants {
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_IND = "DOCUMENT_SEARCH_POPUP_IND";
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND = "DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND";
     public static final String DOC_SEARCH_RESULT_CAP = "RESULT_CAP";
-    public static final String DOCUMENT_TYPE_SEARCH_INSTRUCTION = "DOCUMENT_TYPE_SEARCH_INSTRUCTION";
     public static final String EDL_DEBUG_TRANSFORM_IND = "DEBUG_TRANSFORM_IND";
     public static final String EDL_USE_XSLTC_IND = "USE_XSLTC_IND";
     public static final String IS_LAST_APPROVER_ACTIVATE_FIRST_IND = "IS_LAST_APPROVER_ACTIVATE_FIRST_IND";
-    public static final String GLOBAL_REVIEWER_REPLACE_INSTRUCTION = "REPLACE_INSTRUCTION";
     public static final String HELP_DESK_ACTION_LIST = "HELP_DESK_NAME_GROUP";
-    public static final String NOTE_CREATE_NEW_INSTRUCTION = "NOTE_CREATE_NEW_INSTRUCTION";
     public static final String QUICK_LINKS_RESTRICT_DOCUMENT_TYPES = "RESTRICT_DOCUMENT_TYPES";
     public static final String RULE_CUSTOM_DOC_TYPES = "CUSTOM_DOCUMENT_TYPES";
-    public static final String RULE_CREATE_NEW_INSTRUCTION = "RULE_CREATE_NEW_INSTRUCTION";
-    public static final String RULE_ROUTE_LOG_POPUP_IND = "ROUTE_LOG_POPUP_IND";
-    public static final String RULE_SEARCH_INSTRUCTION = "RULE_SEARCH_INSTRUCTION";
     public static final String RULE_GENERATE_ACTION_REQESTS_IND = "GENERATE_ACTION_REQUESTS_IND";
-    public static final String RULE_TEMPLATE_CREATE_NEW_INSTRUCTION = "RULE_TEMPLATE_CREATE_NEW_INSTRUCTION";
-    public static final String RULE_TEMPLATE_SEARCH_INSTRUCTION = "RULE_TEMPLATE_SEARCH_INSTRUCTION";
     public static final String SHOW_ATTACHMENTS_IND = "SHOW_ATTACHMENTS_IND";
     public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";
     public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIL_NOTIFICATION_TEST_ADDRESS";

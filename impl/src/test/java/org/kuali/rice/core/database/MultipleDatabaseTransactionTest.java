@@ -37,7 +37,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
  * Tests if transactions across multiple databases rollback properly when failures occur.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Ignore
 public class MultipleDatabaseTransactionTest extends BaseRiceTestCase {

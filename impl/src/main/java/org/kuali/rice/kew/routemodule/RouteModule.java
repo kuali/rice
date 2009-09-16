@@ -28,7 +28,7 @@ import org.kuali.rice.kew.util.ResponsibleParty;
  * A RouteModule is responsible for generating Action Requests for a given Route Header document.
  * Implementations of this class are potentially remotable, so this interface uses value objects.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RouteModule {
 

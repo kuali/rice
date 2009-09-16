@@ -25,7 +25,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * these permission checks are invoked from the various actions
  * which require authorization.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentTypePermissionService {
 	

@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 /**
  * Unit Test for RiceConfigurer class -- highly incomplete at the moment
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RiceConfigurerTest {

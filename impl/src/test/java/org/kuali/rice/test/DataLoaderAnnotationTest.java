@@ -23,7 +23,7 @@ import org.kuali.rice.test.data.UnitTestData;
 /**
  * This class is used to test the annotation data entry provided by {@link UnitTestData}, {@link PerTestUnitTestData}, and {@link PerSuiteUnitTestData}
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @PerSuiteUnitTestData({

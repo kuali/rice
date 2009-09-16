@@ -4,9 +4,9 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="http.port" override="false">8080</param>  
-    <param name="application.host" override="false">localhost</param>  
-    <param name="application.http.scheme" override="false">http</param>  
+    <param name="http.port" override="false">8080</param>
+    <param name="application.host" override="false">localhost</param>
+    <param name="application.http.scheme" override="false">http</param>
 
     <!--
       NOTE: The application.url parameter needs to be set by the client
@@ -20,7 +20,7 @@
     <param name="workflow.url" override="false">${application.url}/kew</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
-    
+
     <param name="cas.context.name" override="false">cas</param>
     <param name="cas.url" override="false">https://test.kuali.org/cas-stg</param>
     <param name="cas.login.url" override="false">${cas.url}/login</param>
@@ -55,7 +55,7 @@
 
     <param name="javascript.files" override="false">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
     <param name="css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
-    
+
     <param name="portal.css.files" override="false">rice-portal/css/portal.css</param>
     <param name="portal.javascript.files" override="false">kr/scripts/my_common.js</param>
 
@@ -173,7 +173,7 @@
     <param name="kim.mode" override="false">local</param>
     <param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 
-    <param name="kim.cache.entity.max.size" override="false">3000</param>
+	<param name="kim.cache.entity.max.size" override="false">3000</param>
     <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
     <param name="kim.cache.group.max.size" override="false">3000</param>
     <param name="kim.cache.group.max.age.seconds" override="false">3600</param>
@@ -207,5 +207,5 @@
     <param name="kcb.maxProcessAttempts" override="false">3</param>
     <param name="kcb.messaging.synchronous" override="false">false</param>
     <param name="kcb.smtp.host" override="false">${mail.smtp.host}</param>
-    
+
 </config>

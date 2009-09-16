@@ -40,7 +40,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  *
  * @deprecated Use {@link NetworkIdRoleAttribute} instead
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FYIByNetworkId extends RequestActivationNode {
     private static final Logger LOG = Logger.getLogger(FYIByNetworkId.class);

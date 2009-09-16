@@ -21,7 +21,7 @@ package org.kuali.rice.kim.service.support;
  *
  * Is it used to interpret the qualifiers which may be attached.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimGroupTypeService extends KimTypeService {

@@ -45,7 +45,7 @@ import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
 /**
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementGroupDocumentAction extends IdentityManagementDocumentActionBase {
@@ -63,7 +63,6 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ActionForward forward = null;
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
         if ( StringUtils.isBlank( groupDocumentForm.getGroupId() ) ) {
             String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
@@ -71,12 +70,13 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         }
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
         setKimType(kimTypeId, groupDocumentForm);
+
+        ActionForward forward = super.execute(mapping, groupDocumentForm, request, response);
+
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
 		if (groupDocumentForm.getMemberRows() != null) {
-		    memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
+			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
 		}
-        forward = super.execute(mapping, groupDocumentForm, request, response);
-
 		groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
 		return forward;
     }
@@ -84,8 +84,10 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     private void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
 			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
-			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
-		} else if ( StringUtils.isNotBlank(groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
+			if (groupDocumentForm.getGroupDocument() != null) {
+				groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
+			}
+		} else if ( groupDocumentForm.getGroupDocument() != null && StringUtils.isNotBlank(groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
 			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(
 					groupDocumentForm.getGroupDocument().getGroupTypeId()));
 			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());

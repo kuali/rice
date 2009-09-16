@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport object for representing the criteria for a routing report.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReportCriteriaDTO implements Serializable {
 

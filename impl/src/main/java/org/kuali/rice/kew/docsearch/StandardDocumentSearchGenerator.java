@@ -59,7 +59,7 @@ import org.kuali.rice.kns.util.MessageMap;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardDocumentSearchGenerator implements DocumentSearchGenerator {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardDocumentSearchGenerator.class);
@@ -341,7 +341,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched));
                 }
         	}
-        } else {        	
+        } else {
             boolean usingWildcards = false;
         	StringBuffer prefix = new StringBuffer("");
         	StringBuffer suffix = new StringBuffer("");
@@ -364,7 +364,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	}
             String prefixToUse = prefix.toString();
         	String suffixToUse = suffix.toString();
-        	
+
         	if (addCaseInsensitivityForValue) {
             	queryTableColumnName = "upper(" + queryTableColumnName + ")";
             	prefixToUse = "upper(" + prefix.toString();
@@ -788,7 +788,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             fromSQL.append(", KREW_ACTN_TKN_T ");
         }
 
-        
+
 
         String docRouteNodeSql = getDocRouteNodeSql(criteria.getDocTypeFullName(), criteria.getDocRouteNodeId(), criteria.getDocRouteNodeLogic(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!"".equals(docRouteNodeSql)) {
@@ -828,7 +828,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	criteria.setFromDateCreated(RiceConstants.getDefaultDateFormat().format(calendar.getTime()));
             whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
         }
-        
+
         String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!("".equals(docTypeFullNameSql))) {
             possibleSearchableAttributesExist |= true;
@@ -975,12 +975,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         	if(viewer != null)
         		viewerGroupIds = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
-        	
+
         	// Documents routed to users as part of a workgoup should be returned.
             if (viewerGroupIds != null && !viewerGroupIds.isEmpty()) {
 
             	returnSql += " or ( " +
-            		"DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +            		
+            		"DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +
             		"and KREW_ACTN_RQST_T.GRP_ID in (";
 
             	boolean first = true;
@@ -1021,21 +1021,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((docTypeFullName != null) && (!"".equals(docTypeFullName.trim()))) {
             DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
             DocumentType docType = docSrv.findByName(docTypeFullName.trim());
-            returnSql.append(getDocTypeFullNameWhereSql(docType,whereClausePredicatePrefix));
-        }
-        return returnSql.toString();
-    }
-
-    public String getDocTypeFullNameWhereSql(DocumentType docType, String whereClausePredicatePrefix) {
-    	StringBuffer returnSql = new StringBuffer("");
-        if (docType != null) {
-        	returnSql.append(whereClausePredicatePrefix).append("(");
-        	addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
-            if (docType.getChildrenDocTypes() != null) {
-                addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
+            if (docType != null) {
+            	returnSql.append(whereClausePredicatePrefix).append("(");
+            	addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
+                if (docType.getChildrenDocTypes() != null) {
+                    addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
+                }
+                addExtraDocumentTypesToSearch(returnSql,docType);
+                returnSql.append(")");
+            }else{
+            	returnSql.append(whereClausePredicatePrefix).append("(");
+            	addDocumentTypeLikeNameToSearchOn(returnSql,docTypeFullName.trim(), "");
+                returnSql.append(")");
             }
-            addExtraDocumentTypesToSearch(returnSql,docType);
-            returnSql.append(")");
         }
         return returnSql.toString();
     }
@@ -1055,6 +1053,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     public void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
     	whereSql.append(clause).append(" DOC1.DOC_TYP_NM = '" + documentTypeName + "'");
+    }
+    public void addDocumentTypeLikeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
+    	documentTypeName = documentTypeName.replace('*', '%');
+    	whereSql.append(clause).append(" DOC1.DOC_TYP_NM LIKE '" + documentTypeName + "'");
     }
 
     public String getDocRouteNodeSql(String documentTypeFullName, String docRouteLevel, String docRouteLevelLogic, String whereClausePredicatePrefix) {
@@ -1100,11 +1102,27 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return returnSql;
     }
 
-    public String getDocRouteStatusSql(String docRouteStatus, String whereClausePredicatePrefix) {
-        if ((docRouteStatus == null) || "".equals(docRouteStatus.trim())) {
+    public String getDocRouteStatusSql(String docRouteStatuses, String whereClausePredicatePrefix) {
+        if ((docRouteStatuses == null) || "".equals(docRouteStatuses.trim())) {
             return whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
-            return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD = '" + getDbPlatform().escapeString(docRouteStatus.trim()) + "'";
+
+        	// doc status can now be a comma deliminated list
+        	List<String> docRouteStatusList = Arrays.asList(docRouteStatuses.split(","));
+        	String inList = "";
+
+        	for(String docRouteStatus : docRouteStatusList){
+        		if(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.containsKey(docRouteStatus)){
+        			// build the sql
+        			for(String docStatusCd : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(docRouteStatus)){
+            			inList += "'" + getDbPlatform().escapeString(docStatusCd.trim()) + "',";
+            		}
+        		} else{
+        			inList += "'" + getDbPlatform().escapeString(docRouteStatus.trim()) + "',";
+        		}
+        		inList = inList.substring(0,inList.length()-1); // remove trailing ','
+        	}
+        	return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD in (" + inList +")";
         }
     }
 

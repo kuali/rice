@@ -22,7 +22,7 @@ import org.kuali.rice.kew.mail.service.ActionListEmailService;
 /**
  * Spring proxies cannot be cast to implementation classes...
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MockEmailNotificationService extends ActionListEmailService {
 

@@ -13,9 +13,6 @@
 <bean:define id="routeStatusLabel">
 	<bean-el:message key="actionList.ActionList.results.label.routeStatus" />
 </bean:define>
-<bean:define id="appDocStatusLabel">
-	<bean-el:message key="actionList.ActionList.results.label.appDocStatus" />
-</bean:define>
 <bean:define id="actionRequestedLabel">
 	<bean-el:message
 		key="actionList.ActionList.results.label.actionRequested" />
@@ -51,13 +48,13 @@
   </bean:define>
     <c:url var="actionListURI" value="ActionList.do">
     <c:param name="methodToCall" value="start"/>
-    <c:param name="currentPage" value="${ActionListFormNew.currentPage}"/>
-    <c:param name="currentSort" value="${ActionListFormNew.currentSort}"/>
-    <c:param name="currentDir" value="${ActionListFormNew.currentDir}"/>
+    <c:param name="currentPage" value="${ActionListForm.currentPage}"/>
+    <c:param name="currentSort" value="${ActionListForm.currentSort}"/>
+    <c:param name="currentDir" value="${ActionListForm.currentDir}"/>
   </c:url>
 
 <kul:page headerTitle="Action List" lookup="true"
-	headerMenuBar="${ActionListFormNew.menuBar}"
+	headerMenuBar="${ActionListForm.menuBar}"
 	transactionalDocument="false" showDocumentInfo="false"
 	htmlFormAction="ActionList" docTitle="Action List">
   <script language="JavaScript" src="scripts/en-common.js"></script>
@@ -99,12 +96,12 @@
 
         <!-- Delegates selection list -->
 
-		<c:if test="${! empty ActionListFormNew.delegators}">
+		<c:if test="${! empty ActionListForm.delegators}">
 			<div style="float:left; width:226px; position: relative; top: -.5em;">
 	            <html-el:select property="delegationId" onchange="document.forms[0].methodToCall.value='start';document.forms[0].submit();">
 	              <html-el:option value="${Constants.DELEGATION_DEFAULT}"><c:out value="${Constants.DELEGATION_DEFAULT}" /></html-el:option>
 	              <html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
-				  <c:forEach var="delegator" items="${ActionListFormNew.delegators}">
+				  <c:forEach var="delegator" items="${ActionListForm.delegators}">
 					<html-el:option value="${delegator.recipientId}"><c:out value="${delegator.displayName}" /></html-el:option>
 				  </c:forEach>
 	            </html-el:select>
@@ -143,8 +140,8 @@
 	<div align="right">
 	<br/>
          <c:if
-            test="${kewUserSession.helpDeskActionListPerson == null && ! empty actionList && ! empty ActionListFormNew.defaultActions}">
-              <c:set var="defaultActions" value="${ActionListFormNew.defaultActions}" scope="request" />
+            test="${kewUserSession.helpDeskActionListPerson == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
+              <c:set var="defaultActions" value="${ActionListForm.defaultActions}" scope="request" />
               <html-el:select styleId='defaultAction' property="defaultActionToTake">
                     <html-el:options collection="defaultActions" labelProperty="value" property="key" filter="false" />
               </html-el:select>&nbsp;<html-el:img src="images/tinybutton-applydflt.gif" align="absmiddle" onclick="setActions();" /><br>
@@ -181,7 +178,7 @@
 
 						<c:choose>
 							<c:when
-								test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox}">
+								test="${ActionListForm.viewOutbox && ActionListForm.showOutbox}">
 								<a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=false" />">
 								    <bean-el:message key="actionList.ActionList.title" /></a>
                                 | <strong><bean-el:message key="actionList.Outbox.title" /></strong>
@@ -189,7 +186,7 @@
 							<c:otherwise>
 								<strong>
 								<bean-el:message key="actionList.ActionList.title" /></strong>
-								<c:if test="${ActionListFormNew.showOutbox }">
+								<c:if test="${ActionListForm.showOutbox }">
                                     | <a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=true" />">
                                         <bean-el:message key="actionList.Outbox.title" />
                                        </a>
@@ -200,7 +197,7 @@
 						</td>
                         <td>
                         <div align="right">
-                          <c:if test="${ActionListFormNew.viewOutbox && ActionListFormNew.showOutbox && !ActionListFormNew.outBoxEmpty}">
+                          <c:if test="${ActionListForm.viewOutbox && ActionListForm.showOutbox && !ActionListForm.outBoxEmpty}">
                            <html-el:image
                               src="${ConfigProperties.kr.url}/images/buttonsmall_delselitems.gif" align="absmiddle"
                               property="methodToCall.removeOutboxItems" style="border-style:none;" />
@@ -239,7 +236,7 @@
 					<display-el:setProperty name="export.banner" value="" />
 					<display-el:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display-el:setProperty name="css.tr.odd" value="actionlist_anyRow" />
-                    <c:if test="${kewUserSession.helpDeskActionListPerson == null && ActionListFormNew.hasDisplayParameters}">
+                    <c:if test="${kewUserSession.helpDeskActionListPerson == null && ActionListForm.hasDisplayParameters}">
   					  <display-el:column title="&nbsp;">
 						<c:choose>
 						   <c:when test="${result.displayParameters != null}">
@@ -263,12 +260,12 @@
 						sortProperty="routeHeaderId">
 						<c:choose>
 							<c:when test="${kewUserSession.helpDeskActionListPerson == null}">
-								<a
+                                <a
 									href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
-                                     <c:param name="docId" value="${result.routeHeaderId}"/>
-                                         <c:param name="command" value="displayActionListView" />
+                                     <c:param name="${Constants.ROUTEHEADER_ID_PARAMETER}" value="${result.routeHeaderId}"/>
+                                         <c:param name="${Constants.COMMAND_PARAMETER}" value="${Constants.ACTIONLIST_COMMAND}" />
                                              </c:url>"
-									<c:if test="${ActionListFormNew.documentPopup}"> target="_blank" </c:if>
+									<c:if test="${ActionListForm.documentPopup}"> target="_blank" </c:if>
 									class="showvisit"> <c:out value="${result.routeHeaderId}" />
 								</a>
 							</c:when>
@@ -296,10 +293,6 @@
 						<display-el:column property="routeHeader.docRouteStatusLabel"
 							sortable="true" title="${routeStatusLabel}" class="infocell" />
 					</c:if>
-					<c:if test="${preferences.showAppDocStatus == Constants.PREFERENCES_YES_VAL}">
-						<display-el:column property="routeHeader.appDocStatus"
-							sortable="true" title="${appDocStatusLabel}" class="infocell" />
-					</c:if>					
 					<c:if test="${preferences.showActionRequested == Constants.PREFERENCES_YES_VAL}">
 						<display-el:column property="actionRequestLabel" sortable="true"
 							title="${actionRequestedLabel}" class="infocell" />
@@ -382,7 +375,7 @@
 					</c:if>
 
 					<c:if
-						test="${! ActionListFormNew.viewOutbox && kewUserSession.helpDeskActionListPerson == null && ActionListFormNew.hasCustomActions && (ActionListFormNew.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
+						test="${! ActionListForm.viewOutbox && kewUserSession.helpDeskActionListPerson == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
 						<display-el:column title="${actionsLabel}" class="infocell">
 							<c:if test="${! empty result.customActions}">
 								<c:set var="customActions" value="${result.customActions}"
@@ -400,7 +393,7 @@
                         </display-el:column>
 					</c:if>
 
-					<c:if test="${ActionListFormNew.viewOutbox }">
+					<c:if test="${ActionListForm.viewOutbox }">
 						<display-el:column title="${outboxActionItemDelete}"
 							class="infocell">
 							<html-el:checkbox property="outboxItems"
@@ -414,7 +407,7 @@
 					<display-el:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
 							href="<c:url value="RouteLog.do"><c:param name="routeHeaderId" value="${result.routeHeaderId}"/></c:url>"
-							<c:if test="${ActionListFormNew.routeLogPopup}">target="_blank"</c:if>>
+							<c:if test="${ActionListForm.routeLogPopup}">target="_blank"</c:if>>
 						<img alt="Route Log for Document"
 							src="images/my_route_log.gif" /> </a></div>
 					</display-el:column>
@@ -431,7 +424,7 @@
 				</td>
 			</tr>
 			<c:if
-				test="${kewUserSession.helpDeskActionListPerson == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListFormNew.customActionList)}">
+				test="${kewUserSession.helpDeskActionListPerson == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListForm.customActionList)}">
 				<tr>
 					<td></td>
 					<td height="0" class="tinybutton">

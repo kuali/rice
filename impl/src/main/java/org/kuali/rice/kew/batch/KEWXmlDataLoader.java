@@ -34,7 +34,7 @@ import org.springframework.core.io.Resource;
 /**
  * This is a description of what this class does - arh14 don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KEWXmlDataLoader {

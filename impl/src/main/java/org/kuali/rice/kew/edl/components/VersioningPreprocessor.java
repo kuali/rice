@@ -33,7 +33,7 @@ import org.w3c.dom.NodeList;
  * Versions the data element if necessary by checking 'currentVersion' param on request.  If this request is
  * a doc handler request this will configure the dom so the next request will cause the data to be incremented.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class VersioningPreprocessor implements EDLModelComponent {

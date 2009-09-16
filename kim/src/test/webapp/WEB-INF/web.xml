@@ -20,7 +20,7 @@
 
 	<context-param>
 	    <param-name>contextConfigLocation</param-name>
-		<param-value>classpath:KimTestHarnessSpring.xml</param-value>
+		<param-value>classpath:KIMTestHarnessSpringBeans.xml</param-value>
     </context-param>
 
 	<listener>

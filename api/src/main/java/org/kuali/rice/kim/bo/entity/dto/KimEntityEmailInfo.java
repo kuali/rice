@@ -18,10 +18,9 @@ package org.kuali.rice.kim.bo.entity.dto;
 import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityEmail {
 
@@ -31,6 +30,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	protected String entityTypeCode = "";
 	protected String emailTypeCode = "";
 	protected String emailAddress = "";
+	protected String emailAddressUnmasked = "";
 	
 	protected boolean suppressEmail = false;
 	
@@ -38,80 +38,109 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 * 
 	 */
 	public KimEntityEmailInfo() {
+		super();
+		active = true;
 	}
 	
 	/**
 	 * 
 	 */
 	public KimEntityEmailInfo( KimEntityEmail email ) {
+		this();
 		if ( email != null ) {
 			this.entityEmailId = unNullify( email.getEntityEmailId() );
 			this.entityTypeCode = unNullify( email.getEntityTypeCode() );
 			this.emailTypeCode = unNullify( email.getEmailTypeCode() );
-			this.emailAddress = unNullify( email.getEmailAddressUnmasked() );
+			this.emailAddress = unNullify( email.getEmailAddress() );
+			this.emailAddressUnmasked = unNullify( email.getEmailAddressUnmasked() );
 			this.dflt = email.isDefault();
 			this.active = email.isActive();
 			this.suppressEmail = email.isSuppressEmail();
 		}
 	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
-	 */
-	public String getEmailAddress() {
-	    if (isSuppressEmail()) {
-	        return KimConstants.RESTRICTED_DATA_MASK;
-	    }
-		return emailAddress;
-	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailTypeCode()
-	 */
-	public String getEmailTypeCode() {
-		return emailTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityEmailId()
+	 * @return the entityEmailId
 	 */
 	public String getEntityEmailId() {
-		return entityEmailId;
+		return this.entityEmailId;
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	/**
+	 * @param entityEmailId the entityEmailId to set
+	 */
+	public void setEntityEmailId(String entityEmailId) {
+		this.entityEmailId = entityEmailId;
 	}
 
+	/**
+	 * @return the entityTypeCode
+	 */
+	public String getEntityTypeCode() {
+		return this.entityTypeCode;
+	}
+
+	/**
+	 * @param entityTypeCode the entityTypeCode to set
+	 */
+	public void setEntityTypeCode(String entityTypeCode) {
+		this.entityTypeCode = entityTypeCode;
+	}
+
+	/**
+	 * @return the emailTypeCode
+	 */
+	public String getEmailTypeCode() {
+		return this.emailTypeCode;
+	}
+
+	/**
+	 * @param emailTypeCode the emailTypeCode to set
+	 */
 	public void setEmailTypeCode(String emailTypeCode) {
 		this.emailTypeCode = emailTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
+	 * @return the emailAddress
 	 */
-	public String getEntityTypeCode() {
-		return entityTypeCode;
+	public String getEmailAddress() {
+		return this.emailAddress;
 	}
 
-	public void setEntityTypeCode(String entityTypeCode) {
-		this.entityTypeCode = entityTypeCode;
+	/**
+	 * @param emailAddress the emailAddress to set
+	 */
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
-	public void setEntityEmailId(String entityEmailId) {
-		this.entityEmailId = entityEmailId;
+	/**
+	 * @return the emailAddressUnmasked
+	 */
+	public String getEmailAddressUnmasked() {
+		return this.emailAddressUnmasked;
 	}
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddressUnmasked()
-     */
-    public String getEmailAddressUnmasked() {
-        return this.emailAddress;
-    }
+	/**
+	 * @param emailAddressUnmasked the emailAddressUnmasked to set
+	 */
+	public void setEmailAddressUnmasked(String emailAddressUnmasked) {
+		this.emailAddressUnmasked = emailAddressUnmasked;
+	}
 
-    public boolean isSuppressEmail() {
-        return this.suppressEmail;
-    }
+	/**
+	 * @return the suppressEmail
+	 */
+	public boolean isSuppressEmail() {
+		return this.suppressEmail;
+	}
+
+	/**
+	 * @param suppressEmail the suppressEmail to set
+	 */
+	public void setSuppressEmail(boolean suppressEmail) {
+		this.suppressEmail = suppressEmail;
+	}
+	
 }

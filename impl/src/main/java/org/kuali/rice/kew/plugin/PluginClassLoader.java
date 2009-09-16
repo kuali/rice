@@ -30,7 +30,7 @@ import org.kuali.rice.kew.util.SimpleEnumeration;
 /**
  * A simple class loader implementation which looks at itself before delegating to its parent.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PluginClassLoader extends URLClassLoader implements Lifecycle {//implements Modifiable {
     static final String CLASSES_DIR = "classes";

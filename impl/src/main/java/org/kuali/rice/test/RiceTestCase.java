@@ -49,7 +49,7 @@ import org.springframework.core.io.ResourceLoader;
  * for running custom transactional setUp. Tear down handles automatic tear down of objects created inside the test
  * environment.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 public abstract class RiceTestCase extends BaseRiceTestCase {

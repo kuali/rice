@@ -32,7 +32,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  * Wrapper on all the Resource loaders.  This is what programmers typically use to get in the resource loading
  * framework.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GlobalResourceLoader {
 

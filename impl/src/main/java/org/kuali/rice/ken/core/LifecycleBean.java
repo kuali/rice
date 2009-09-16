@@ -22,7 +22,7 @@ import org.springframework.beans.factory.InitializingBean;
  * A Lifecycle subclass that wires Spring InitializingBean/DisposableBean to
  * Lifecycle methods
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LifecycleBean extends BaseLifecycle implements InitializingBean, DisposableBean {
     /**

@@ -66,7 +66,7 @@ import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 /**
  * This is a description of what this class does - ctdang don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public abstract class KualiAction extends DispatchAction {
@@ -76,6 +76,7 @@ public abstract class KualiAction extends DispatchAction {
     private static BusinessObjectAuthorizationService businessObjectAuthorizationService = null;
     private static EncryptionService encryptionService = null;
     private static Boolean OUTPUT_ENCRYPTION_WARNING = null;
+    private static String applicationBaseUrl = null;
     
     private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
     
@@ -367,14 +368,9 @@ public abstract class KualiAction extends DispatchAction {
         return imageContext;
     }
 
-    protected String getBasePath(HttpServletRequest request) {
-        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-    }
-
-    protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) 
-    {
+    protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) {
     	String mappingPath = mapping.getPath();
-    	String basePath = getBasePath(request);
+    	String basePath = getApplicationBaseUrl();
         return basePath + ("/lookup".equals(mappingPath) || "/maintenance".equals(mappingPath) || "/multipleValueLookup".equals(mappingPath) ? "/kr" : "") + mappingPath + ".do";
     }
 
@@ -451,7 +447,16 @@ public abstract class KualiAction extends DispatchAction {
 		} catch(ClassNotFoundException cnfex){
 			// we must have a valid boClass that can be loaded unless baseLookupUrl is defined
 			if (StringUtils.isBlank(baseLookupUrl)) {
-				throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class.");
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug( "BO Class " + boClassName + " not found in the current context, checking the RiceApplicationConfigurationService." );
+				}
+				baseLookupUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseLookupUrl(boClassName);
+				if ( LOG.isDebugEnabled() ) {
+					LOG.debug( "URL Returned from KSB: " + baseLookupUrl );
+				}
+				if ( StringUtils.isBlank(baseLookupUrl)) {
+					throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class and no base URL could be found on the bus.");
+				}
 			}
 		}
 		
@@ -600,7 +605,7 @@ public abstract class KualiAction extends DispatchAction {
     	}
 		
     	if (StringUtils.isBlank(baseLookupUrl)) {
-    		baseLookupUrl = getBasePath(request) + "/kr/" + lookupAction;
+    		baseLookupUrl = getApplicationBaseUrl() + "/kr/" + lookupAction;
     	} else {
     		if (isMultipleValue) {
     			LookupUtils.transformLookupUrlToMultiple(baseLookupUrl);
@@ -621,7 +626,6 @@ public abstract class KualiAction extends DispatchAction {
     
     @SuppressWarnings("unchecked")
 	public ActionForward performInquiry(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         // parse out the important strings from our methodToCall parameter
         String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         validateLookupInquiryFullParameter(request, form, fullParameter);
@@ -676,8 +680,14 @@ public abstract class KualiAction extends DispatchAction {
         }
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
         parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
-
-        String inquiryUrl = UrlFactory.parameterizeUrl(basePath + "/kr/" + KNSConstants.DIRECT_INQUIRY_ACTION, parameters);
+        String inquiryUrl = null;
+        try {
+        	Class.forName(boClassName);
+        	inquiryUrl = getApplicationBaseUrl() + "/kr/" + KNSConstants.DIRECT_INQUIRY_ACTION;
+        } catch ( ClassNotFoundException ex ) {
+        	inquiryUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseInquiryUrl(boClassName);
+        }
+        inquiryUrl = UrlFactory.parameterizeUrl(inquiryUrl, parameters);
         return new ActionForward(inquiryUrl, true);
 
     }
@@ -794,7 +804,7 @@ public abstract class KualiAction extends DispatchAction {
     		}
 		}
 
-        String questionUrl = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + KNSConstants.QUESTION_ACTION, parameters);
+        String questionUrl = UrlFactory.parameterizeUrl(getApplicationBaseUrl() + "/kr/" + KNSConstants.QUESTION_ACTION, parameters);
         return new ActionForward(questionUrl, true);
     }
 
@@ -812,9 +822,9 @@ public abstract class KualiAction extends DispatchAction {
     public ActionForward performWorkgroupLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	String returnUrl = null;
     	if ("/kr".equals(mapping.getModuleConfig().getPrefix())) {
-    		returnUrl = getBasePath(request) + mapping.getModuleConfig().getPrefix() + mapping.getPath() + ".do";
+    		returnUrl = getApplicationBaseUrl() + mapping.getModuleConfig().getPrefix() + mapping.getPath() + ".do";
     	} else {
-    		returnUrl = getBasePath(request) + mapping.getPath() + ".do";
+    		returnUrl = getApplicationBaseUrl() + mapping.getPath() + ".do";
     	}
 
 
@@ -1087,4 +1097,21 @@ public abstract class KualiAction extends DispatchAction {
     	}
     	return encryptionService;
     }
+
+	public static String getApplicationBaseUrl() {
+		if ( applicationBaseUrl == null ) {
+			applicationBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+		}
+		return applicationBaseUrl;
+	}
+	
+	/**
+	 * Returns the Base URL for the application server.
+	 * 
+	 * @deprecated Use getApplicationBaseUrl() instead.
+	 */
+	@Deprecated
+	protected String getBasePath( HttpServletRequest request ) {
+		return getApplicationBaseUrl();
+	}
 }

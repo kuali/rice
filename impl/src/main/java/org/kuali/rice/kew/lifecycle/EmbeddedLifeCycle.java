@@ -27,7 +27,7 @@ import org.kuali.rice.kew.mail.EmailReminderLifecycle;
 
 /**
  * A temporary lifecycle that lives in embedded space.  Will be removed when the embedded plugin is factored out.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmbeddedLifeCycle extends BaseCompositeLifecycle {
 

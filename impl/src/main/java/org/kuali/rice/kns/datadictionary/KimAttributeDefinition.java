@@ -18,13 +18,14 @@ package org.kuali.rice.kns.datadictionary;
 
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = -1889598053944123008L;
 	
-	private String sortCode;
+	protected String sortCode;
 	protected String kimAttrDefnId;
+	protected String kimTypeId;
 
 	/**
 	 * @return the sortCode
@@ -52,4 +53,18 @@ public class KimAttributeDefinition extends AttributeDefinition {
 	public boolean isHasLookupBoDefinition() {
         return false;
     }
+
+	/**
+	 * @return the kimTypeId
+	 */
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+
+	/**
+	 * @param kimTypeId the kimTypeId to set
+	 */
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
+	}
 }

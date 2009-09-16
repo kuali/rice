@@ -41,7 +41,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * The default implementation of the NotificationService.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefaultNotificationService implements NotificationService {
 

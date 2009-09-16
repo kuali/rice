@@ -33,7 +33,7 @@ import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
 /**
  * This is a Test class to test the rule template xml parser
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RuleTemplateXmlParserTest extends KEWTestCase {

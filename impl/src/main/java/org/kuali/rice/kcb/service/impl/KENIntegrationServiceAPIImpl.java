@@ -28,7 +28,7 @@ import org.kuali.rice.ken.service.KENServiceConstants;
 /**
  * Integrates with KEN via the exposed KENAPIService (meaning there is a runtime dependency on KEN) 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KENIntegrationServiceAPIImpl implements KENIntegrationService {
 

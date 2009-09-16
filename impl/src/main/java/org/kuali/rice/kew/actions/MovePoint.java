@@ -20,7 +20,7 @@ package org.kuali.rice.kew.actions;
  * Represents a point to move to in the route path.  Used by the 
  * {@link MoveDocumentAction}
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MovePoint {
 

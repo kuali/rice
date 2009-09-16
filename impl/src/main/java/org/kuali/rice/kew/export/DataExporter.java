@@ -41,7 +41,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * existing XmlExporterService which is part of KEW and which was used to do exports before
  * KEW was converted to use the KNS.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataExporter implements Exporter {
 

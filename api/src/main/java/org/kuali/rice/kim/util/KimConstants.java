@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimConstants {
@@ -230,7 +230,7 @@ public class KimConstants {
 	 * Use these constants to flags their members with the appropriate member
 	 * type code.
 	 *
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
 	public static class KimGroupMemberTypes {
 

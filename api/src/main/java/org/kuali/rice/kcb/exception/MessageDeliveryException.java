@@ -18,7 +18,7 @@ package org.kuali.rice.kcb.exception;
 /**
  * This class represents a delivery exception - when notifications are not properly delivered 
  * to their target audiences.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageDeliveryException extends MessageDeliveryProcessingException {
     /**

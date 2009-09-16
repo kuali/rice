@@ -45,7 +45,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  * @see ActionItem
  * @see Workgroup
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 

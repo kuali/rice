@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Hook for applications to perform logic due to workflow events from the engine.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PostProcessor {
 

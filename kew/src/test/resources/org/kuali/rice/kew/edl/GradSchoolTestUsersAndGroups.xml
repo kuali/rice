@@ -18,7 +18,7 @@
     </group>
     <group>
       <id>2</id>
-      <workgroupName>Group2</workgroupName>
+      <name>Group2</name>
       <namespace>KR-WKFLW</namespace>
       <description>Group2</description>
       <members>

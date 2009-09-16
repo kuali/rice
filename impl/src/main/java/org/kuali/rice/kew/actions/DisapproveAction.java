@@ -45,7 +45,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Disapproves a document. This deactivates all requests on the document and sends
  * acknowlegde requests to anybody who had already completed or approved the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DisapproveAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DisapproveAction.class);

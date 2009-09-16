@@ -39,7 +39,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * Tests users requesting to see all future requests, not seeing any future requests on documents and the clearing of those
  * statuses on documents.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FutureRequestsTest extends KEWTestCase {
 

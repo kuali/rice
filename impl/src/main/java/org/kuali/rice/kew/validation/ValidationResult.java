@@ -19,7 +19,7 @@ package org.kuali.rice.kew.validation;
 /**
  * Represents a simple validation result.  Includes the name of the field and the error message.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidationResult {
 

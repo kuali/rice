@@ -232,10 +232,17 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     
     public List getFlattenedNodes(Process process) {
         Map nodesMap = new HashMap();
-        flattenNodeGraph(nodesMap, process.getInitialRouteNode());
-        List nodes = new ArrayList(nodesMap.values());
-        Collections.sort(nodes, new RouteNodeSorter());
-        return nodes;
+        if (process.getInitialRouteNode() != null) {
+            flattenNodeGraph(nodesMap, process.getInitialRouteNode());
+            List nodes = new ArrayList(nodesMap.values());
+            Collections.sort(nodes, new RouteNodeSorter());
+            return nodes;
+        } else {
+            List nodes = new ArrayList();
+            nodes.add(new RouteNode());
+            return nodes;
+        }
+
     }
     
     /**
@@ -243,13 +250,17 @@ public class RouteNodeServiceImpl implements RouteNodeService {
      * end up walking through duplicates, as is the case with Join nodes.
      */
     private void flattenNodeGraph(Map nodes, RouteNode node) {
-        if (nodes.containsKey(node.getRouteNodeName())) {
+        if (node != null) {
+            if (nodes.containsKey(node.getRouteNodeName())) {
+                return;
+            }
+            nodes.put(node.getRouteNodeName(), node);
+            for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
+                RouteNode nextNode = (RouteNode) iterator.next();
+                flattenNodeGraph(nodes, nextNode);
+            }
+        } else {
             return;
-        }
-        nodes.put(node.getRouteNodeName(), node);
-        for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
-            RouteNode nextNode = (RouteNode) iterator.next();
-            flattenNodeGraph(nodes, nextNode);
         }
     }
     
@@ -386,7 +397,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
      * Sorts by RouteNodeId or the order the nodes will be evaluated in *roughly*.  This is 
      * for display purposes when rendering a flattened list of nodes.
      * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static class RouteNodeSorter implements Comparator {
         public int compare(Object arg0, Object arg1) {
@@ -431,9 +442,11 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 			throw new IllegalArgumentException("In order to revoke a final approval node the node instance must be persisent and have an id.");
 		}
 		// get the initial node instance, the root branch is where we will store the state
-    	RouteNodeInstance initialInstance = (RouteNodeInstance)document.getInitialRouteNodeInstance(0);
-    	Branch rootBranch = initialInstance.getBranch();
-    	BranchState state = rootBranch.getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY);
+    	Branch rootBranch = document.getRootBranch();
+    	BranchState state = null;
+    	if (rootBranch != null) {
+    	    state = rootBranch.getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY);
+    	}
     	if (state == null) {
     		state = new BranchState(REVOKED_NODE_INSTANCES_STATE_KEY, "");
     		rootBranch.addBranchState(state);
@@ -454,9 +467,12 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     		throw new IllegalArgumentException("Document must not be null.");
     	}
 		List revokedNodeInstances = new ArrayList();
-    	RouteNodeInstance initialInstance = (RouteNodeInstance)document.getInitialRouteNodeInstance(0);
-    	Branch rootBranch = initialInstance.getBranch();
-    	BranchState state = rootBranch.getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY);
+    	
+    	Branch rootBranch = document.getRootBranch();
+    	BranchState state = null;
+    	if (rootBranch != null) {
+    	    state = rootBranch.getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY);
+    	}
     	if (state == null || Utilities.isEmpty(state.getValue())) {
     		return revokedNodeInstances;
     	}

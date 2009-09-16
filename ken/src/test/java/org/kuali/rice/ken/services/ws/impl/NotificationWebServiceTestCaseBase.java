@@ -25,7 +25,7 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 
 /**
  * Base class for testing the web service that KEN exposes.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class NotificationWebServiceTestCaseBase extends KENTestCase {
     protected Server server;

@@ -31,7 +31,7 @@ package org.kuali.rice.kew.dto;
  *   <li><b>nodeName</b> - the name of the node to revoke requests at</li>
  * </ol>
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AdHocRevokeDTO implements java.io.Serializable {
 

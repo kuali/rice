@@ -20,16 +20,33 @@ import java.util.Date;
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimEntityBioDemographics {
 
+	String getEntityId();
 	Date getBirthDate();
-	String getEthnicityCode();
-	String getEthnicityCodeUnmasked();
+	Date getDeceasedDate();
+
 	String getGenderCode();
+	String getMaritalStatusCode();
+	String getPrimaryLanguageCode();
+	String getSecondaryLanguageCode();
+	String getCountryOfBirthCode();
+	String getBirthStateCode();
+	String getCityOfBirth();
+	String getGeographicOrigin();
+
 	String getGenderCodeUnmasked();
-	
+	String getMaritalStatusCodeUnmasked();
+	String getPrimaryLanguageCodeUnmasked();
+	String getSecondaryLanguageCodeUnmasked();
+	String getCountryOfBirthCodeUnmasked();
+	String getBirthStateCodeUnmasked();
+	String getCityOfBirthUnmasked();
+	String getGeographicOriginUnmasked();
+
 	boolean isSuppressPersonal();
+
 }

@@ -23,7 +23,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * Stream-based XML doc 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StreamXmlDoc extends BaseXmlDoc {
     private byte[] bytes;

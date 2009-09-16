@@ -22,10 +22,12 @@ import org.kuali.rice.kns.bo.Inactivateable;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimInactivatableInfo implements Serializable, Inactivateable {
+
+	private static final long serialVersionUID = 3867167307504353932L;
 
 	protected boolean active;
 

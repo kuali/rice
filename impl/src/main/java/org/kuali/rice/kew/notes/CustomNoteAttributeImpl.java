@@ -23,7 +23,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 /**
  * Default implementation of the {@link CustomNoteAttribute}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CustomNoteAttributeImpl implements CustomNoteAttribute {
 

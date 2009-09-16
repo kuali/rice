@@ -23,7 +23,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  *
  * @see BackdoorAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BackdoorForm extends KualiForm {
 
@@ -70,12 +70,14 @@ public class BackdoorForm extends KualiForm {
     public void setLinkTarget(String linkTarget) {
         this.linkTarget = linkTarget;
     }
+    /*
     public String getTargetName() {
         return targetName;
     }
     public void setTargetName(String targetName) {
         this.targetName = targetName;
     }
+    */
     public String getGraphic(){
     	return this.graphic;
     }

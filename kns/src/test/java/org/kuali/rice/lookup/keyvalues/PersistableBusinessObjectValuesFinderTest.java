@@ -28,7 +28,7 @@ import org.kuali.test.KNSTestCase;
 /**
  * This class tests the PersistableBusinessObjectValuesFinder.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PersistableBusinessObjectValuesFinderTest extends KNSTestCase {

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.routemodule;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestRouteModulePostProcessor extends DefaultPostProcessor {
 

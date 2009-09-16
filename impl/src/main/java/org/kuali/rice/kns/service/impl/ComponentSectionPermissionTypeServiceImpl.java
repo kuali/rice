@@ -18,7 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentSectionPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 }

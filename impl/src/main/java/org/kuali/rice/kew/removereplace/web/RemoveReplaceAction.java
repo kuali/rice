@@ -52,7 +52,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * Struts Action for the Remove/Replace User Document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RemoveReplaceAction extends KewKualiAction {
@@ -127,10 +127,6 @@ public class RemoveReplaceAction extends KewKualiAction {
 	    }
 	}
 
-	// TODO with KIM, no longer possible to get all group types
-
-	//form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
-        //form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
         return messages;
     }
 
@@ -315,11 +311,6 @@ public class RemoveReplaceAction extends KewKualiAction {
 	    // this condition should already be satisfied but throw an error if it's not
 	    throw new RuntimeException("Please enter a valid user id before choosing workgroups.");
 	}
-//	Workgroup template = KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
-//	template.setActiveInd(Boolean.TRUE);
-//	if (!StringUtils.isBlank(form.getWorkgroupType())) {
-//	    template.setWorkgroupType(form.getWorkgroupType());
-//	}
 	List<? extends Group> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getPrincipalId());
 	form.getWorkgroups().clear();
 	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, groups));

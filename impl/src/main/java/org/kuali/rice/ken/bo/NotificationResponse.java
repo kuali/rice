@@ -21,7 +21,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 /**
  * This class represents the data structure that will house information for
  * a Notification Response
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationResponse {
     

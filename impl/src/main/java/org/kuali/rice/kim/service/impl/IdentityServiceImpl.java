@@ -35,6 +35,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
@@ -77,7 +78,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * Base implementation of the identity (entity) service.  This version assumes the KimEntity
  * and related data is located within the KIM database. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
 @WebService(endpointInterface = KIMWebServiceConstants.IdentityService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
@@ -85,6 +86,39 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	private BusinessObjectService businessObjectService;
 
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityInfo(java.lang.String)
+	 */
+	public KimEntityInfo getEntityInfo(String entityId) {
+		KimEntityImpl entity = getEntityImpl( entityId );
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToInfo( entity );
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityInfoByPrincipalId(java.lang.String)
+	 */
+	public KimEntityInfo getEntityInfoByPrincipalId(String principalId) {
+		KimEntityImpl entity = getEntityByPrincipalId(principalId);
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToInfo(entity);
+	}
+	
+	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#getEntityInfoByPrincipalName(java.lang.String)
+	 */
+	public KimEntityInfo getEntityInfoByPrincipalName(String principalName) {
+		KimEntityImpl entity = getEntityByPrincipalName(principalName);
+		if ( entity == null ) {
+			return null;
+		}
+		return convertEntityImplToInfo(entity);
+	}
+	
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getEntityDefaultInfo(java.lang.String)
 	 */
@@ -135,17 +169,28 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
+	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntityInfo(Map, boolean)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<KimEntityInfo> lookupEntityInfo(
+			Map<String,String> searchCriteria, boolean unbounded) {
+		Collection baseResults = lookupEntityImpls(searchCriteria, unbounded);
+		List<KimEntityInfo> results = new ArrayList<KimEntityInfo>( baseResults.size() );
+		for ( KimEntityImpl entity : (Collection<KimEntityImpl>)baseResults ) {
+			results.add( convertEntityImplToInfo( entity ) );
+		}
+		if ( baseResults instanceof CollectionIncomplete ) {
+			results = new CollectionIncomplete<KimEntityInfo>( results, ((CollectionIncomplete<KimEntityInfo>)baseResults).getActualSizeIfTruncated() ); 
+		}		
+		return results;
+	}
+	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#lookupEntityDefaultInfo(Map, boolean)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
+	public List<KimEntityDefaultInfo> lookupEntityDefaultInfo(
 			Map<String,String> searchCriteria, boolean unbounded) {
-		Collection baseResults = null; 
-		if ( unbounded ) {
-			baseResults = KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
-		} else {
-			baseResults = KNSServiceLocator.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
-		}
+		Collection baseResults = lookupEntityImpls(searchCriteria, unbounded);
 		List<KimEntityDefaultInfo> results = new ArrayList<KimEntityDefaultInfo>( baseResults.size() );
 		for ( KimEntityImpl entity : (Collection<KimEntityImpl>)baseResults ) {
 			results.add( convertEntityImplToDefaultInfo( entity ) );
@@ -155,7 +200,15 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		}		
 		return results;
 	}
-	
+
+	protected Collection lookupEntityImpls(Map<String,String> searchCriteria, boolean unbounded) {
+		if ( unbounded ) {
+			return KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
+		} else {
+			return KNSServiceLocator.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
+		}
+	}
+
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityService#getMatchingEntityCount(java.util.Map)
 	 */
@@ -163,6 +216,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		return getBusinessObjectService().countMatching( KimEntityImpl.class, searchCriteria );
 	}
 	
+	protected KimEntityInfo convertEntityImplToInfo( KimEntityImpl entity ) {
+		return new KimEntityInfo(entity);
+	}
+
 	protected KimEntityDefaultInfo convertEntityImplToDefaultInfo( KimEntityImpl entity ) {
 		KimEntityDefaultInfo info = new KimEntityDefaultInfo();
 		info.setEntityId( entity.getEntityId() );

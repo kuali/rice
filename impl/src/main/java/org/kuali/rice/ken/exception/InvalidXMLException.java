@@ -19,7 +19,7 @@ package org.kuali.rice.ken.exception;
  * This class represents an InvalidXMLException for Notification XML processing.
  * This is mostly used for <i>semantic</i> validation, as XML schema takes care
  * of syntactic validation. 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InvalidXMLException extends Exception {
     /**

@@ -35,7 +35,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  * This class is used by the {@link DataLoaderAnnotationTest} and {@link DataLoaderAnnotationOverrideTest} classes to verify parent class annotation usage
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @PerSuiteUnitTestData({

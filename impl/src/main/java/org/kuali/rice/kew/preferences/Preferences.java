@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * <p>When loaded, Preferences could be in a state where they require being saved to the database.
  * If this is the case then {{@link #requiresSave} will evaluate to true.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Preferences implements Serializable {
 

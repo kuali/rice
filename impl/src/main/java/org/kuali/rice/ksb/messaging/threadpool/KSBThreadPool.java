@@ -25,7 +25,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 /**
  * A thread pool which can be used to schedule asynchronous tasks.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KSBThreadPool extends ExecutorService, Lifecycle {
 

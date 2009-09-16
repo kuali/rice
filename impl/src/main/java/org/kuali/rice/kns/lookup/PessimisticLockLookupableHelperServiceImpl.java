@@ -42,7 +42,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * This class is the lookup helper for {@link org.kuali.rice.kns.document.authorization.PessimisticLock} objects
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {

@@ -35,7 +35,7 @@ import javax.persistence.Transient;
  * notification, or in other words a specific business purpose. For instance, all overdue books from a specific library could
  * be a channel or a channel for concerts coming to campus could be another channel.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name = "KREN_CHNL_T")

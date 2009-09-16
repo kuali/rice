@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.Person;
 
 /**
  * Interface for generating email message content for various types of messages the system needs to send
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see EmailContent
  */
 public interface EmailContentService {

@@ -31,7 +31,7 @@ import org.kuali.rice.kew.preferences.Preferences;
 /**
  * An option defined for a user.  These are used to store user {@link Preferences}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @IdClass(org.kuali.rice.kew.useroptions.UserOptionsId.class)
 @Entity

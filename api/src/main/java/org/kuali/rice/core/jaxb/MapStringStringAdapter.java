@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.core.jaxb;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,10 +23,10 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 /**
  * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class MapStringStringAdapter extends XmlAdapter<ArrayList<StringMapEntry>, Map<String, String>> {
+public class MapStringStringAdapter extends XmlAdapter<StringMapEntry[], Map<String, String>> {
 
 	/**
 	 * This overridden method ...
@@ -35,14 +34,15 @@ public class MapStringStringAdapter extends XmlAdapter<ArrayList<StringMapEntry>
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public ArrayList<StringMapEntry> marshal(Map<String, String> map) throws Exception {
+	public StringMapEntry[] marshal(Map<String, String> map) throws Exception {
 		if(null == map) return null;
-		ArrayList<StringMapEntry>entryList = new ArrayList<StringMapEntry>();
+		StringMapEntry[] entryArray = new StringMapEntry[map.size()];
+		int i = 0;
 		for (Map.Entry<String, String> e : map.entrySet()) {
-			entryList.add(
-					new StringMapEntry(e.getKey(), e.getValue()));
+			entryArray[i] = new StringMapEntry(e);
+			i++;
 		}
-		return entryList;
+		return entryArray;
 	}
 
 	/**
@@ -51,11 +51,12 @@ public class MapStringStringAdapter extends XmlAdapter<ArrayList<StringMapEntry>
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Map<String, String> unmarshal(ArrayList<StringMapEntry> entryList) throws Exception {
-		if (null == entryList) return null;
-		Map<String, String> resultMap = new HashMap<String, String>();
-		for (StringMapEntry entry : entryList) {
-			resultMap.put(entry.key, entry.value);
+	public Map<String, String> unmarshal(StringMapEntry[] entryArray) throws Exception {
+		if (null == entryArray) return null;
+		Map<String, String> resultMap = new HashMap<String, String>(entryArray.length);
+		for (int i = 0; i < entryArray.length; i++) {
+			StringMapEntry stringMapEntry = entryArray[i];
+			resultMap.put(stringMapEntry.key, stringMapEntry.value);
 		}
 		return resultMap;
 	}

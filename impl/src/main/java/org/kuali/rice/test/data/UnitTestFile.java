@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
  * Annotation for a single SQL file (and delimiter) containing a list of statements to be run before a method, set of tests,
  * or testing suite.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})

@@ -19,7 +19,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 /**
  * This base class for testing CRUD operations on BOs
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
 public abstract class BusinessObjectTestCase extends KCBTestCase {

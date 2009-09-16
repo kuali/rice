@@ -54,7 +54,7 @@ import org.xml.sax.SAXException;
  *
  * @see RuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleXmlParser implements XmlConstants {
 
@@ -419,7 +419,7 @@ public class RuleXmlParser implements XmlConstants {
         
         if (!StringUtils.isEmpty(user)) {
         	principalName = user;
-        	LOG.warn("Rule XML is using deprecated element 'user', plese use 'principalName' instead.");
+        	LOG.warn("Rule XML is using deprecated element 'user', please use 'principalName' instead.");
         }
         
         // in code below, we allow core config parameter replacement in responsibilities
@@ -482,7 +482,7 @@ public class RuleXmlParser implements XmlConstants {
         	responsibility.setRuleResponsibilityName(Role.constructRoleValue(attributeClassName, roleName));
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
         } else if (!StringUtils.isBlank(workgroup)) {
-        	LOG.warn("Rule XML is using deprecated element 'workgroup', plese use 'groupName' instead.");
+        	LOG.warn("Rule XML is using deprecated element 'workgroup', please use 'groupName' instead.");
             workgroup = Utilities.substituteConfigParameters(workgroup);
             String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
             String workgroupName = Utilities.parseGroupName(workgroup);

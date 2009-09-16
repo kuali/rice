@@ -55,7 +55,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * The RuleTemplate is essentially a collection of {@link RuleAttribute}s
  * (associated vai the {@link RuleTemplateAttribute} bean).
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_T")

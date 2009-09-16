@@ -30,7 +30,7 @@ import org.xml.sax.InputSource;
  * A simple class for performing operations on RouteNode.  In particular, this class provides some
  * convenience methods for processing custom RouteNode XML content fragments. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RouteNodeUtils {

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
  *   </responsibility>
  * </responsibilities>
  * </pre>
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MockRole extends UnqualifiedRoleAttribute {
     private static final Role ROLE = new Role(MockRole.class, "List of authentication ids", "List of authentication ids");

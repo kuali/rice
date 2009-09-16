@@ -20,19 +20,19 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NamespaceService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
-import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.kns.bo.Namespace;
 
 //@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
      
  // Max age defined in seconds
     protected int configurationParameterCacheMaxSize = 200;
@@ -42,6 +42,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 
     protected HashMap<String,MaxAgeSoftReference<String>> configurationParameterCache = new HashMap<String,MaxAgeSoftReference<String>>( configurationParameterCacheMaxSize );
     protected HashMap<String,MaxAgeSoftReference<List<ParameterDetailType>>> nonDatabaseComponentsCache = new HashMap<String,MaxAgeSoftReference<List<ParameterDetailType>>>( nonDatabaseComponentsCacheMaxSize );
+    protected HashMap<String,MaxAgeSoftReference<RiceApplicationConfigurationService>> responsibleServiceByPackageClass = new HashMap<String,MaxAgeSoftReference<RiceApplicationConfigurationService>>( configurationParameterCacheMaxSize );
     
     public String getConfigurationParameter( String namespaceCode, String parameterName ){
     	
@@ -137,22 +138,22 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 		return nonDatabaseComponents;
     }
     
-    private RiceApplicationConfigurationService findRiceApplicationConfigurationService(QName serviceName) {
+    protected RiceApplicationConfigurationService findRiceApplicationConfigurationService(QName serviceName) {
     	try {
     		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(serviceName);
     	} catch (Exception e) {
     		// if the service doesn't exist an exception is thrown
-    		LOG.warn("Failed to locate RiceApplicationConfigurationService with name: " + serviceName);
+    		LOG.warn("Failed to locate RiceApplicationConfigurationService with name: " + serviceName,e);
     	}
     	return null;
     }
     
-    private RiceApplicationConfigurationService findRiceApplicationConfigurationService(String namespace) {
+    protected RiceApplicationConfigurationService findRiceApplicationConfigurationService(String namespace) {
     	try {
     		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(new QName(namespace, KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE));
     	} catch (Exception e) {
     		// if the service doesn't exist an exception is thrown
-    		LOG.warn("Failed to locate RiceApplicationConfigurationService with namespace: " + namespace);
+    		LOG.warn("Failed to locate RiceApplicationConfigurationService with namespace: " + namespace,e);
     	}
     	return null;
     }
@@ -181,5 +182,82 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
         this.nonDatabaseComponentsCacheMaxAgeSeconds = nonDatabaseComponentsCacheMaxAgeSeconds;
     }
     
+    /**
+     * Call each available service to see if it's responsible for the given package.  When found, cache the result
+     * to prevent need for future service lookups for the same package.
+     */
+    protected RiceApplicationConfigurationService findServiceResponsibleForPackageOrClass( String packageOrClassName ) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "Checking for app config service responsible for: " + packageOrClassName );
+    	}
+    	RiceApplicationConfigurationService racService = null;
+    	MaxAgeSoftReference<RiceApplicationConfigurationService> ref = responsibleServiceByPackageClass.get(packageOrClassName);
+    	if ( ref != null ) {
+    		racService = ref.get();
+    		if ( racService != null ) {
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug( "Service found in cache: " + racService.getClass().getName() );
+            	}    		    			
+    		}
+    	}
+    	if ( racService == null ) {
+	    	RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
+	    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE);
+			for ( QName serviceName : serviceNames ) {
+				racService = findRiceApplicationConfigurationService(serviceName);
+				if ( racService != null ) {
+					if ( racService.isResponsibleForPackage(packageOrClassName) ) {
+			        	if ( LOG.isDebugEnabled() ) {
+			        		LOG.debug( "Found responsible class on bus with name: " + serviceName );
+			        	}    		
+						responsibleServiceByPackageClass.put(packageOrClassName, new MaxAgeSoftReference<RiceApplicationConfigurationService>( configurationParameterCacheMaxAgeSeconds, racService) );
+						break;
+					} else {
+						racService = null; // null it out in case this is the last iteration
+					}
+				}
+			}
+    	}
+    	if ( racService == null ) {
+    		LOG.warn( "Unable to find service which handles package/class: " + packageOrClassName + " -- returning null." );
+    	}
+		return racService;
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService#getBaseInquiryUrl(java.lang.String)
+     */
+    public String getBaseInquiryUrl(String businessObjectClassName) {
+    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
+    	if ( racService != null ) {
+    		return racService.getBaseInquiryUrl(businessObjectClassName);
+    	}
+    	return null;
+    }
 
+    /**
+     * @see org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService#getBaseLookupUrl(java.lang.String)
+     */
+    public String getBaseLookupUrl(String businessObjectClassName) {
+    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
+    	if ( racService != null ) {
+    		return racService.getBaseLookupUrl(businessObjectClassName);
+    	}
+    	return null;
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService#getBusinessObjectAttributeDefinition(java.lang.String, java.lang.String)
+     */
+    public AttributeDefinition getBusinessObjectAttributeDefinition(String businessObjectClassName, String attributeName) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "Querying for an AttributeDefinition for: " + businessObjectClassName + " / " + attributeName );
+    	}
+    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
+    	if ( racService != null ) {
+    		return racService.getBusinessObjectAttributeDefinition(businessObjectClassName, attributeName);
+    	}
+    	return null;
+    }
+    
 }

@@ -45,7 +45,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PersonServiceImplTest extends KIMTestCase {

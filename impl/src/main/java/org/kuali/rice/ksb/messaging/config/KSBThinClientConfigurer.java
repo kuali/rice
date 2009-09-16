@@ -33,7 +33,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
  * without requiring the entire service bus to be started (which requires datasources, etc.).  We need
  * to examine how better to support this sort of a concept in the future.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KSBThinClientConfigurer extends ModuleConfigurer {

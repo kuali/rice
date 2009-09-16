@@ -144,7 +144,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
      * Subclasses the Spring Log4jConfigurer to expose a static method which accepts an initial set of
      * properties (to use for variable substitution)
      * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static final class WorkflowLog4j_1_2_13_Configurer extends Log4jConfigurer {
         public static void initLoggingWithProperties(Properties props, String location, long refreshInterval) throws FileNotFoundException {

@@ -26,7 +26,7 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 /**
  * This class tests basic persistence for the {@link NotificationChannelReviewer} business object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenceTestCaseBase {
     private NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();

@@ -109,6 +109,7 @@ public class KimConstants {
 		public static final String PARAMETERIZED_URL_SEPARATOR = "%2F";
 		public static final String KIM_URL_KEY = "kim.url";
 		public static final String KIM_APPLICATION = "kim";
+		public static final String MEMBER_ID_PREFIX = PrimaryKeyConstants.MEMBER_ID+".";
 		public static final String MEMBER_NAME = "memberName";
 		public static final String MEMBER_NAMESPACE_CODE = "memberNamespaceCode";
 		public static final String MEMBER_TYPE_PRINCIPAL_CODE = "P";

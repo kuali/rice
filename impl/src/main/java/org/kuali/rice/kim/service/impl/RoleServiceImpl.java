@@ -1551,25 +1551,53 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	return roleMembersCompleteInfos;
     }
     
-    public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(Map<String, String> fieldValues){
+    public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(final Map<String, String> fieldValues){
     	List<DelegateMemberCompleteInfo> delegateMembersCompleteInfo = new ArrayList<DelegateMemberCompleteInfo>();
     	DelegateMemberCompleteInfo delegateMemberCompleteInfo;
     	List<KimDelegationImpl> delegations = (List<KimDelegationImpl>)getLookupService().findCollectionBySearchHelper(
 				KimDelegationImpl.class, fieldValues, true);
-    	for(KimDelegationImpl delegation: delegations){
-	    	for(KimDelegationMemberImpl delegateMember: delegation.getMembers()){
+    	if(delegations!=null && !delegations.isEmpty()){
+    		Map<String, String> delegationMemberFieldValues = new HashMap<String, String>();
+    		for(String key: fieldValues.keySet()){
+    			if(key.startsWith(KimConstants.KimUIConstants.MEMBER_ID_PREFIX)){
+    				delegationMemberFieldValues.put(
+    						key.substring(key.indexOf(
+    						KimConstants.KimUIConstants.MEMBER_ID_PREFIX)+KimConstants.KimUIConstants.MEMBER_ID_PREFIX.length()), 
+    						fieldValues.get(key));
+    			}
+    		}
+			StringBuffer memberQueryString = new StringBuffer();
+	    	for(KimDelegationImpl delegation: delegations)
+	    		memberQueryString.append(delegation.getDelegationId()+KimConstants.KimUIConstants.OR_OPERATOR);
+	    	delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, 
+	    			KimCommonUtils.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
+	    	List<KimDelegationMemberImpl> delegateMembers = (List<KimDelegationMemberImpl>)getLookupService().findCollectionBySearchHelper(
+					KimDelegationMemberImpl.class, delegationMemberFieldValues, true);
+	    	KimDelegationImpl delegationTemp;
+	    	for(KimDelegationMemberImpl delegateMember: delegateMembers){
 	    		delegateMemberCompleteInfo = delegateMember.toSimpleInfo();
-	    		delegateMemberCompleteInfo.setRoleId(delegation.getRoleId());
-	    		delegateMemberCompleteInfo.setDelegationTypeCode(delegation.getDelegationTypeCode());
+	    		delegationTemp = getDelegationImpl(delegations, delegateMember.getDelegationId());
+	    		delegateMemberCompleteInfo.setRoleId(delegationTemp.getRoleId());
+	    		delegateMemberCompleteInfo.setDelegationTypeCode(delegationTemp.getDelegationTypeCode());
 				BusinessObject member = getMember(delegateMemberCompleteInfo.getMemberTypeCode(), delegateMemberCompleteInfo.getMemberId());
 				delegateMemberCompleteInfo.setMemberName(getMemberName(delegateMemberCompleteInfo.getMemberTypeCode(), member));
 				delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(delegateMemberCompleteInfo.getMemberTypeCode(), member));
 				delegateMembersCompleteInfo.add(delegateMemberCompleteInfo);
 	    	}
+
     	}
     	return delegateMembersCompleteInfo;
     }
     
+    private KimDelegationImpl getDelegationImpl(List<KimDelegationImpl> delegations, String delegationId){
+    	if(StringUtils.isEmpty(delegationId) || delegations==null)
+    		return null;
+    	for(KimDelegationImpl delegation: delegations){
+    		if(StringUtils.equals(delegation.getDelegationId(), delegationId))
+    			return delegation;
+    	}
+    	return null;
+    }
     /**
      * 
      * This overridden method ...

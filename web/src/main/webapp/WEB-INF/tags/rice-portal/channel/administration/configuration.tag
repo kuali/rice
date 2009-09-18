@@ -34,6 +34,10 @@
 		<li>
 		<portal:portalLink displayTitle="true" title="Namespace"
             url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.bo.Namespace&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" />
+		</li>
+    	<li>
+		<portal:portalLink displayTitle="true" title="Pessimistic Lock" 
+			url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kns.document.authorization.PessimisticLock&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" />
 		</li>		
 	</ul>
 

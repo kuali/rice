@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.document.rule;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
@@ -25,6 +28,7 @@ import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -45,6 +49,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 		boolean rulesPassed = true;
 		try {
 			GenericPermission perm = (GenericPermission)getNewBo();
+			validateDetailValuesFormat(perm.getDetailValues());
 			// detailValues
 			// get the type from the template for validation
 			KimPermissionTemplateInfo template = KIMServiceLocator.getPermissionService().getPermissionTemplate( perm.getTemplateId() );
@@ -89,7 +94,29 @@ public class GenericPermissionMaintenanceDocumentRule extends
 		return rulesPassed;
 	}
 
-    protected KimPermissionTypeService getPermissionTypeService( String serviceName ) {
+	protected boolean validateDetailValuesFormat(String permissionDetailValues){
+		if(permissionDetailValues != null){
+			String spacesPattern = "[\\s\\t]*";
+			Pattern pattern = Pattern.compile(".+"+"="+".+");
+			Matcher matcher;
+			// ensure that all line delimiters are single linefeeds
+			permissionDetailValues = permissionDetailValues.replace( "\r\n", "\n" );
+			permissionDetailValues = permissionDetailValues.replace( '\r', '\n' );
+			if(StringUtils.isNotBlank(permissionDetailValues)){
+				String[] values = permissionDetailValues.split( "\n" );
+				for(String attrib: values){
+				      matcher = pattern.matcher(attrib);
+				      if(!matcher.matches()){
+				    	  GlobalVariables.getMessageMap().putError(MAINTAINABLE_ERROR_PATH+"."+DETAIL_VALUES_PROPERTY, RiceKeyConstants.ERROR_INVALID_FORMAT, new String[]{"Detail Values", permissionDetailValues});
+				    	  return false;
+				      }
+				}
+			}
+		}
+		return true;
+	}
+	
+	protected KimPermissionTypeService getPermissionTypeService( String serviceName ) {
     	if ( StringUtils.isBlank( serviceName ) ) {
     		return null;
     	}

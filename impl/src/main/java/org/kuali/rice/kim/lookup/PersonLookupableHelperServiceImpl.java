@@ -103,34 +103,64 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 		String namespaceCode = null;
 		while ( i.hasNext() ) {
 			Row row = i.next();
-			Field field = row.getField(0);
-			String propertyName = field.getPropertyName();
-			if ( propertyName.equals("lookupRoleName") ) {
-				Object val = getParameters().get( propertyName );
-				String propVal = null;
-				if ( val != null ) {
-					propVal = (val instanceof String)?(String)val:((String[])val)[0];
-				}
-				if ( StringUtils.isBlank( propVal ) ) {
+			int numFieldsRemoved = 0;
+			boolean rowIsBlank = true;
+			// Since multi-column lookups can be specified on Rice lookups, all the fields in each row must be iterated over as well,
+			// just in case the person lookup ever gets configured to have multiple columns per row.
+			for (Iterator<Field> fieldIter = row.getFields().iterator(); fieldIter.hasNext();) {
+			    Field field = fieldIter.next();
+			    String propertyName = field.getPropertyName();
+			    if ( propertyName.equals("lookupRoleName") ) {
+				    Object val = getParameters().get( propertyName );
+				    String propVal = null;
+				    if ( val != null ) {
+					    propVal = (val instanceof String)?(String)val:((String[])val)[0];
+				    }
+				    if ( StringUtils.isBlank( propVal ) ) {
+					    fieldIter.remove();
+					    numFieldsRemoved++;
+				    } else {
+					    field.setReadOnly(true);
+					    field.setDefaultValue( propVal );
+					    roleName = propVal;
+					    rowIsBlank = false;
+				    }
+			    } else if ( propertyName.equals("lookupRoleNamespaceCode") ) {
+				    Object val = getParameters().get( propertyName );
+				    String propVal = null;
+				    if ( val != null ) {
+					    propVal = (val instanceof String)?(String)val:((String[])val)[0];
+				    }
+				    if ( StringUtils.isBlank( propVal ) ) {
+					    fieldIter.remove();
+					    numFieldsRemoved++;
+				    } else {
+					    field.setReadOnly(true);
+					    field.setDefaultValue( propVal );
+					    namespaceCode = propVal;
+					    rowIsBlank = false;
+				    }				
+			    } else if (!Field.BLANK_SPACE.equals(field.getFieldType())) {
+			    	rowIsBlank = false;
+			    }
+			}
+			// Check if any fields were removed from the row.
+			if (numFieldsRemoved > 0) {
+				// If fields were removed, check whether or not the remainder of the row is empty or only has blank space fields.
+				if (rowIsBlank) {
+					// If so, then remove the row entirely.
 					i.remove();
 				} else {
-					field.setReadOnly(true);
-					field.setDefaultValue( propVal );
-					roleName = propVal;
+					// Otherwise, add one blank space for each field that was removed, using a technique similar to FieldUtils.createBlankSpace.
+					// It is safe to just add blank spaces as needed, since the two removable fields are the last of the visible ones in the list.
+					while (numFieldsRemoved > 0) {
+						Field blankSpace = new Field();
+						blankSpace.setFieldType(Field.BLANK_SPACE);
+						blankSpace.setPropertyName(Field.BLANK_SPACE);
+						row.getFields().add(blankSpace);
+						numFieldsRemoved--;
+					}
 				}
-			} else if ( propertyName.equals("lookupRoleNamespaceCode") ) {
-				Object val = getParameters().get( propertyName );
-				String propVal = null;
-				if ( val != null ) {
-					propVal = (val instanceof String)?(String)val:((String[])val)[0];
-				}
-				if ( StringUtils.isBlank( propVal ) ) {
-					i.remove();
-				} else {
-					field.setReadOnly(true);
-					field.setDefaultValue( propVal );
-					namespaceCode = propVal;
-				}				
 			}
 		}
 		if ( roleName != null && namespaceCode != null ) {

@@ -256,20 +256,47 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 		Iterator<Row> i = rows.iterator();
 		while ( i.hasNext() ) {
 			Row row = i.next();
-			Field field = row.getField(0);
-			String propertyName = field.getPropertyName();
-			if ( propertyName.equals(DETAIL_CRITERIA) ) {
-				Object val = getParameters().get( propertyName );
-				String propVal = null;
-				if ( val != null ) {
-					propVal = (val instanceof String)?(String)val:((String[])val)[0];
+			int numFieldsRemoved = 0;
+			boolean rowIsBlank = true;
+			for (Iterator<Field> fieldIter = row.getFields().iterator(); fieldIter.hasNext();) {
+				Field field = fieldIter.next();
+				String propertyName = field.getPropertyName();
+				if ( propertyName.equals(DETAIL_CRITERIA) ) {
+					Object val = getParameters().get( propertyName );
+					String propVal = null;
+					if ( val != null ) {
+						propVal = (val instanceof String)?(String)val:((String[])val)[0];
+					}
+					if ( StringUtils.isBlank( propVal ) ) {
+						fieldIter.remove();
+						numFieldsRemoved++;
+					} else {
+						field.setReadOnly(true);
+						rowIsBlank = false;
+						// leaving this in would prevent the "clear" button from resetting this value
+//						field.setDefaultValue( propVal );
+					}
+				} else if (!Field.BLANK_SPACE.equals(field.getFieldType())) {
+					rowIsBlank = false;
 				}
-				if ( StringUtils.isBlank( propVal ) ) {
+			}
+			// Check if any fields were removed from the row.
+			if (numFieldsRemoved > 0) {
+				// If fields were removed, check whether or not the remainder of the row is empty or only has blank space fields.
+				if (rowIsBlank) {
+					// If so, then remove the row entirely.
 					i.remove();
 				} else {
-					field.setReadOnly(true);
-					// leaving this in would prevent the "clear" button from resetting this value
-//					field.setDefaultValue( propVal );
+					// Otherwise, add one blank space for each field that was removed, using a technique similar to FieldUtils.createBlankSpace.
+					// It is safe to just add blank spaces as needed, since the removable field is the last of the visible ones in the list (or
+					// at least for the Permission and Responsibility lookups).
+					while (numFieldsRemoved > 0) {
+						Field blankSpace = new Field();
+						blankSpace.setFieldType(Field.BLANK_SPACE);
+						blankSpace.setPropertyName(Field.BLANK_SPACE);
+						row.getFields().add(blankSpace);
+						numFieldsRemoved--;
+					}
 				}
 			}
 		}

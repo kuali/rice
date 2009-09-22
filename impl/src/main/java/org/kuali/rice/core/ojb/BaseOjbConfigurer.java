@@ -62,7 +62,7 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
 
     public static final String RICE_OJB_PROPERTIES_PARAM = "rice.custom.ojb.properties";
     public static final String OJB_PROPERTIES_PROP = "OJB.properties";
-    private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
+    public static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
 
     /**
      * The OJB JCD aliases 
@@ -133,8 +133,9 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
         String ojbPropertiesLocation = ConfigContext.getCurrentContextConfig().getProperty(RICE_OJB_PROPERTIES_PARAM);
         if (!StringUtils.isBlank(ojbPropertiesLocation)) {
             LOG.info("Using custom OJB.properites from: " + ojbPropertiesLocation);
-        } else {
+        } else {        	
             ojbPropertiesLocation = DEFAULT_OJB_PROPERTIES;
+            ConfigContext.getCurrentContextConfig().overrideProperty(RICE_OJB_PROPERTIES_PARAM, ojbPropertiesLocation);
             LOG.info("Using default OJB.properties from: " + ojbPropertiesLocation);
         }
         return ojbPropertiesLocation;
@@ -185,7 +186,8 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
         return new BufferedInputStream(new ByteArrayInputStream(baos.toByteArray()));
     }
 
-    protected boolean isConnectionAlreadyConfigured(MetadataManager mm) {
+    @SuppressWarnings("unchecked")
+	protected boolean isConnectionAlreadyConfigured(MetadataManager mm) {
         List descriptors = mm.connectionRepository().getAllDescriptor();
         for (Iterator iterator = descriptors.iterator(); iterator.hasNext();) {
             JdbcConnectionDescriptor descriptor = (JdbcConnectionDescriptor) iterator.next();

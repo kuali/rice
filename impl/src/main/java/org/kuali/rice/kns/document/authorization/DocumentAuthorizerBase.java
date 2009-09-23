@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -237,7 +236,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						.getPrincipalId(), additionalPermissionDetails, null);
 	}
 	
-	public final boolean canEditDocumentOverview(Document document, Person user){
+	public boolean canEditDocumentOverview(Document document, Person user){
 		return isAuthorizedByTemplate(document,
 				KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.EDIT_DOCUMENT,

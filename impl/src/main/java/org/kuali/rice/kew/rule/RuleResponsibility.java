@@ -27,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -184,24 +185,24 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
         RuleResponsibility ruleResponsibilityClone = new RuleResponsibility();
         ruleResponsibilityClone.setApprovePolicy(getApprovePolicy());
         if (actionRequestedCd != null) {
-            ruleResponsibilityClone.setActionRequestedCd(new String(actionRequestedCd));
+            ruleResponsibilityClone.setActionRequestedCd(actionRequestedCd);
         }
         if (ruleResponsibilityKey != null && preserveKeys) {
-            ruleResponsibilityClone.setRuleResponsibilityKey(new Long(ruleResponsibilityKey.longValue()));
+            ruleResponsibilityClone.setRuleResponsibilityKey(ruleResponsibilityKey);
         }
 
         if (responsibilityId != null) {
-            ruleResponsibilityClone.setResponsibilityId(new Long(responsibilityId.longValue()));
+            ruleResponsibilityClone.setResponsibilityId(responsibilityId);
         }
 
         if (ruleResponsibilityName != null) {
-            ruleResponsibilityClone.setRuleResponsibilityName(new String(ruleResponsibilityName));
+            ruleResponsibilityClone.setRuleResponsibilityName(ruleResponsibilityName);
         }
         if (ruleResponsibilityType != null) {
-            ruleResponsibilityClone.setRuleResponsibilityType(new String(ruleResponsibilityType));
+            ruleResponsibilityClone.setRuleResponsibilityType(ruleResponsibilityType);
         }
         if (priority != null) {
-            ruleResponsibilityClone.setPriority(new Integer(priority.intValue()));
+            ruleResponsibilityClone.setPriority(priority);
         }
 //        if (delegationRules != null) {
 //            for (Iterator iter = delegationRules.iterator(); iter.hasNext();) {
@@ -286,6 +287,20 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
                Utilities.equals(priority, pred.getPriority()) &&
                Utilities.equals(approvePolicy, pred.getApprovePolicy());
     }
+    
+    /**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+		.append(this.actionRequestedCd)
+		.append(this.approvePolicy)
+		.append(this.priority)
+		.append(this.ruleResponsibilityName).toHashCode();
+	}
+    
+    
 
     @Override
 	protected LinkedHashMap toStringMapper() {

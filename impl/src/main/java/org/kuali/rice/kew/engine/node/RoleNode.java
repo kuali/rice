@@ -209,10 +209,9 @@ public class RoleNode extends RequestsNode {
 		// activate each request individually, we need
 		// to collection all action items and then notify after all have been
 		// generated
-		if ( !context.isSimulation() ) {
-			KEWServiceLocator.getNotificationService().notify( generatedActionItems );
-		}
-		performanceLogger.log( "Time to activate requests." );
+        notify(context, generatedActionItems, nodeInstance);
+
+        performanceLogger.log( "Time to activate requests." );
 		return requestActivated;
 	}
 	
@@ -240,7 +239,7 @@ public class RoleNode extends RequestsNode {
             return result;
         }
     }
-    protected static Comparator<ActionRequestValue> ROLE_REQUEST_SORTER = new RoleRequestSorter();
+    protected static final Comparator<ActionRequestValue> ROLE_REQUEST_SORTER = new RoleRequestSorter();
 
 	
 	protected boolean activateRequestsCustom(RouteContext context,

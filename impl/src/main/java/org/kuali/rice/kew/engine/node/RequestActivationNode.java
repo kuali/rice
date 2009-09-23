@@ -41,7 +41,7 @@ import org.kuali.rice.kew.util.Utilities;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RequestActivationNode implements SimpleNode {
+public class RequestActivationNode extends RequestActivationNodeBase {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger( RequestActivationNode.class );
     private static long generatedRequestPriority = 0;
@@ -110,11 +110,11 @@ public class RequestActivationNode implements SimpleNode {
         	LOG.debug("Pending Root Requests " + requests.size());
         }
         boolean activatedApproveRequest = activateRequestsCustom( context, requests, generatedActionItems, document, nodeInstance );
+
         // now let's send notifications, since this code needs to be able to activate each request individually, we need
         // to collection all action items and then notify after all have been generated
-        if (!context.isSimulation()) {
-            KEWServiceLocator.getNotificationService().notify(generatedActionItems);
-        }
+        notify(context, generatedActionItems, nodeInstance);
+
         performanceLogger.log("Time to activate requests.");
         return activatedApproveRequest;
     }

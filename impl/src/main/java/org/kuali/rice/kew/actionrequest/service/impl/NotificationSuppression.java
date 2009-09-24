@@ -89,7 +89,6 @@ public class NotificationSuppression {
 		
 		// remove all actionItems from the collection whose request has a suppress notification node state element
 		CollectionUtils.filter(actionItems, new Predicate() {
-			@Override
 			public boolean evaluate(Object object) {
 				boolean result = true;
 				ActionItem actionItem = (ActionItem)object;

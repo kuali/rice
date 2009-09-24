@@ -98,7 +98,7 @@
     <param name="notification.ojb.platform">Oracle</param>
 
     <!-- Email Plugin Properties -->
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    <param name="mail.smtp.host">localhost</param>
 
     <param name="cas.server.renew">false</param>
 

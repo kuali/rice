@@ -84,7 +84,7 @@
 
 
     <!-- Email Plugin Properties -->
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    <param name="mail.smtp.host">localhost</param>
 
 
     <param name="css.files">kr/css/kuali.css</param>

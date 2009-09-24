@@ -14,11 +14,13 @@ package org.kuali.rice.kns.web.struts.action;
 
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.MessageResourcesFactory;
 import org.apache.struts.util.PropertyMessageResources;
 import org.apache.struts.util.PropertyMessageResourcesFactory;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * A custom MessageResourceFactory that delegates to the KualiConfigurationService's pre-loaded properties. It will first try
@@ -35,30 +37,51 @@ public class KualiPropertyMessageResourcesFactory extends PropertyMessageResourc
 
     private static final long serialVersionUID = 9045578011738154255L;
 
+    /**
+     * Uses KualiPropertyMessageResources, which allows multiple property files to be loaded into the defalt message set.
+     * 
+     * @see org.apache.struts.util.MessageResourcesFactory#createResources(java.lang.String)
+     */
+    @Override
     public MessageResources createResources(String config) {
-	return new KualiPropertyMessageResources(this, config, this.returnNull);
+        if (StringUtils.isBlank(config)) {
+            config = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.MESSAGE_RESOURCES);
+        }
+        return new KualiPropertyMessageResources(this, config, this.returnNull);
     }
 
     private class KualiPropertyMessageResources extends PropertyMessageResources {
 
-	private static final long serialVersionUID = -7712311580595112293L;
+    	private static final long serialVersionUID = -7712311580595112293L;
+    
+    	public KualiPropertyMessageResources(MessageResourcesFactory factory, String config) {
+    	    super(factory, config);
+    	}
+    
+    	public KualiPropertyMessageResources(MessageResourcesFactory factory, String config, boolean returnNull) {
+    	    super(factory, config, returnNull);
+    	}
 
-	public KualiPropertyMessageResources(MessageResourcesFactory factory, String config) {
-	    super(factory, config);
-	}
-
-	public KualiPropertyMessageResources(MessageResourcesFactory factory, String config, boolean returnNull) {
-	    super(factory, config, returnNull);
-	}
-
-	@Override
-	public String getMessage(Locale locale, String key) {
-	    String value = super.getMessage(locale, key);
-	    if (value == null || value.trim().length() == 0) {
-		value = KNSServiceLocator.getKualiConfigurationService().getPropertyString(key);
-	    }
-	    return value;
-	}
+        protected void loadLocale(String localeKey) {
+            String initialConfig = config;
+            String[] propertyFiles = config.split(",");
+            for (String propertyFile : propertyFiles) {
+                config = propertyFile;
+                locales.remove(localeKey);
+                super.loadLocale(localeKey);
+            }
+            config = initialConfig;
+        }
+    
+    	@Override
+    	public String getMessage(Locale locale, String key) {
+    	    String value = super.getMessage(locale, key);
+    	    if (value == null || value.trim().length() == 0) {
+    	        value = KNSServiceLocator.getKualiConfigurationService().getPropertyString(key);
+    	    }
+    	    return value;
+    	}
 
     }
+    
 }

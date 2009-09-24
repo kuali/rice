@@ -105,7 +105,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validDuplicatePrincipalName(personDoc);
         KimEntityDefaultInfo origEntity = getIdentityManagementService().getEntityDefaultInfo(personDoc.getEntityId());
-        boolean isCreatingNew = origEntity!=null?true:true;
+        boolean isCreatingNew = origEntity==null?true:true;
         if(getUIDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDoc.getPrincipalId()) || isCreatingNew)
         	valid &= validateEntityInformation(isCreatingNew, personDoc);
         // kimtypeservice.validateAttributes is not working yet.

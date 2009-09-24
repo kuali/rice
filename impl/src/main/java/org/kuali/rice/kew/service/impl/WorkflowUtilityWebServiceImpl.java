@@ -502,7 +502,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
         }
-    	List<String> principalIds = new ArrayList<String>();
+    	Set<String> principalIds = new HashSet<String>();
         try {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug("Evaluating isUserInRouteLog [docId=" + routeHeaderId + ", lookFuture=" + lookFuture + "]");

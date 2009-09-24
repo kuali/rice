@@ -260,6 +260,44 @@
 				</requests>
 			</routeNodes>
 		</documentType>
+        <documentType>
+            <name>UserAndGroupTestDocType</name>
+            <description>UserAndGroupTest  Type</description>
+            <label>RuleTestDocument</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <docHandler>_blank</docHandler>
+            <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+            <active>true</active>
+            <policies>
+                <policy>
+                    <name>DEFAULT_APPROVE</name>
+                    <value>false</value>
+                </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="WorkflowDocument" />
+                    <requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+                    <requests name="WorkflowDocument2" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>S</activationType>
+                </start>
+                <requests name="WorkflowDocument">
+                    <activationType>S</activationType>
+                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+                </requests>
+                <requests name="WorkflowDocument2">
+                    <activationType>S</activationType>
+                    <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+                    <finalApproval>true</finalApproval>
+                </requests>
+            </routeNodes>
+        </documentType>        
 
 	</documentTypes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
@@ -559,5 +597,42 @@
 	        </responsibility>
 	      </responsibilities>
 	    </rule>
+        <rule>
+          <documentType>UserAndGroupTestDocType</documentType>
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+          <description>WorkflowDocumentTemplate Rule</description>
+          <forceAction>true</forceAction>
+          <responsibilities>
+            <responsibility>
+              <user>ewestfal</user>
+              <actionRequested>A</actionRequested>
+              <priority>1</priority>
+            </responsibility>
+            <responsibility>
+              <groupName namespace="KR-WKFLW">NonSIT</groupName>
+              <actionRequested>A</actionRequested>
+              <priority>1</priority>
+            </responsibility>
+          </responsibilities>
+        </rule>
+        <rule>
+          <documentType>UserAndGroupTestDocType</documentType>
+            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+          <description>WorkflowDocumentTemplate Rule</description>
+          <forceAction>true</forceAction>
+          <responsibilities>
+            <responsibility>
+              <user>jitrue</user>
+              <actionRequested>A</actionRequested>
+              <priority>1</priority>
+            </responsibility>
+            <responsibility>
+              <groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
+              <actionRequested>A</actionRequested>
+              <priority>1</priority>
+            </responsibility>
+          </responsibilities>
+        </rule>              
 	</rules>
+    
 </data>

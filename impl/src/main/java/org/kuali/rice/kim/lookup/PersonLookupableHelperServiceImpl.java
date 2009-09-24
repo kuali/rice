@@ -31,6 +31,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.ui.Field;
@@ -59,7 +60,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
         List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
-		if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME)){
+		if(StringUtils.equals(GlobalVariables.getUserSession().getPrincipalId(), ((PersonImpl)bo).getPrincipalId()) || allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME)){
 			String href = "";
 			Properties parameters = new Properties();
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);

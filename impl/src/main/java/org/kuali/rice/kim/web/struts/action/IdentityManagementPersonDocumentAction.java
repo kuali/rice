@@ -100,8 +100,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         }
         forward = super.execute(mapping, form, request, response);
         
-        personDocumentForm.setCanModifyEntity(getUiDocumentService().canModifyEntity(personDocumentForm.getPrincipalId()));
-        personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(personDocumentForm.getPrincipalId()));
+        personDocumentForm.setCanModifyEntity(getUiDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
+        personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
 		return forward;
     }
     

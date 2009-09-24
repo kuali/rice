@@ -25,6 +25,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -52,6 +53,7 @@ import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -81,6 +83,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	private BusinessObjectService businessObjectService;
 	private IdentityService identityService;
 	private RoleService roleService;
+	private UiDocumentService uiDocumentService;
 	private Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
 	private Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
 	private Class<? extends AddPersonDelegationMemberRule> addPersonDelegationMemberRuleClass = PersonDocumentDelegationMemberRule.class;
@@ -101,16 +104,10 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         //KNSServiceLocator.getDictionaryValidationService().validateDocument(document);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validDuplicatePrincipalName(personDoc);
-        valid &= validTaxId(personDoc);
-        valid &= checkMultipleDefault (personDoc.getAffiliations(), "affiliations");
-        valid &= checkMultipleDefault (personDoc.getNames(), "names");
-        valid &= checkMultipleDefault (personDoc.getAddrs(), "addrs");
-        valid &= checkMultipleDefault (personDoc.getPhones(), "phones");
-        valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
-        valid &= checkPrimaryEmploymentInfo (personDoc.getAffiliations());
-        valid &= validEmployeeIDForAffiliation(personDoc.getAffiliations());
-        valid &= checkAffiliationTypeChange (personDoc.getAffiliations());
-        valid &= checkUniqueAffiliationTypePerCampus(personDoc.getAffiliations());
+        KimEntityDefaultInfo origEntity = getIdentityManagementService().getEntityDefaultInfo(personDoc.getEntityId());
+        boolean isCreatingNew = origEntity!=null?true:true;
+        if(getUIDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDoc.getPrincipalId()) || isCreatingNew)
+        	valid &= validateEntityInformation(isCreatingNew, personDoc);
         // kimtypeservice.validateAttributes is not working yet.
         valid &= validateRoleQualifier (personDoc.getRoles());
         valid &= validateDelegationMemberRoleQualifier(personDoc.getDelegationMembers());
@@ -130,6 +127,26 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
+    }
+    
+    private boolean validateEntityInformation(boolean isCreatingNew, IdentityManagementPersonDocument personDoc){
+        boolean valid = true;
+        boolean canOverridePrivacyPreferences = getUIDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDoc.getPrincipalId());
+        valid &= validTaxId(personDoc);
+        valid &= checkMultipleDefault (personDoc.getAffiliations(), "affiliations");
+        if(isCreatingNew || canOverridePrivacyPreferences || !personDoc.getPrivacy().isSuppressName())
+        	valid &= checkMultipleDefault (personDoc.getNames(), "names");
+        if(isCreatingNew || canOverridePrivacyPreferences || !personDoc.getPrivacy().isSuppressAddress())
+        	valid &= checkMultipleDefault (personDoc.getAddrs(), "addrs");
+        if(isCreatingNew || canOverridePrivacyPreferences || !personDoc.getPrivacy().isSuppressPhone())
+        	valid &= checkMultipleDefault (personDoc.getPhones(), "phones");
+        if(isCreatingNew || canOverridePrivacyPreferences || !personDoc.getPrivacy().isSuppressEmail())
+        	valid &= checkMultipleDefault (personDoc.getEmails(), "emails");
+        valid &= checkPrimaryEmploymentInfo (personDoc.getAffiliations());
+        valid &= validEmployeeIDForAffiliation(personDoc.getAffiliations());
+        valid &= checkAffiliationTypeChange (personDoc.getAffiliations());
+        valid &= checkUniqueAffiliationTypePerCampus(personDoc.getAffiliations());
+    	return valid;
     }
     
     @SuppressWarnings("unchecked")
@@ -485,6 +502,13 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return roleService;
 	}
 
+	public UiDocumentService getUIDocumentService() {
+		if ( uiDocumentService == null ) {
+			uiDocumentService = KIMServiceLocator.getUiDocumentService();
+		}
+		return uiDocumentService;
+	}
+	
 	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
 			authorizer = (IdentityManagementKimDocumentAuthorizer)KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
@@ -661,7 +685,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			validationErrors.putAll(
 					attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));
 
-			roleMember = KIMServiceLocator.getUiDocumentService().getRoleMember(delegationMember.getRoleMemberId());
+			roleMember = getUIDocumentService().getRoleMember(delegationMember.getRoleMemberId());
 			if(roleMember==null){
 				valid = false;
 				GlobalVariables.getMessageMap().putError("document."+errorPath, RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});

@@ -52,11 +52,12 @@ public class NotificationSuppression {
 
     	// iterative depth first traversal of the action request tree
     	LinkedList<ActionRequestValue> stack = new LinkedList<ActionRequestValue>();
-    	stack.push(actionRequestValue);
+    	// push
+    	stack.add(actionRequestValue);
 
     	while (stack.size() > 0) {
-    		// get our next action request
-    		ActionRequestValue childActionRequest = stack.pop(); 
+    		// pop our next action request 
+    		ActionRequestValue childActionRequest = stack.removeLast(); 
 
     		// process this action request only if it is a leaf
     		if (childActionRequest.getChildrenRequests() == null || 

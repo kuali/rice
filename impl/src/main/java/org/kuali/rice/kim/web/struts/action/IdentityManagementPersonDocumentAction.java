@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -101,7 +102,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         forward = super.execute(mapping, form, request, response);
         
         personDocumentForm.setCanModifyEntity(getUiDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
-        personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
+        KimEntityDefaultInfo origEntity = null;
+        if(personDocumentForm.getPersonDocument()!=null)
+        	origEntity = getIdentityManagementService().getEntityDefaultInfo(personDocumentForm.getPersonDocument().getEntityId());
+        boolean isCreatingNew = (personDocumentForm.getPersonDocument()==null || origEntity==null)?true:false;
+        personDocumentForm.setCanOverrideEntityPrivacyPreferences(isCreatingNew || getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
 		return forward;
     }
     

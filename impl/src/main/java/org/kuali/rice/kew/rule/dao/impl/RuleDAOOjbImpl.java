@@ -258,12 +258,14 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	}
 
     public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
+    	List results = null;
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
         if (query != null) {
         	crit.addIn("responsibilities.ruleBaseValuesId", query);
         }
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
+        results = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
+        return results;
     }
 
     private ReportQueryByCriteria getResponsibilitySubQuery(List<String> workgroupIds, String workflowId, Boolean searchUser, Boolean searchUserInWorkgroups) {
@@ -273,9 +275,11 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         }
         return getResponsibilitySubQuery(workgroupIdStrings,workflowId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
+    
     private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
-        Criteria responsibilityCrit = new Criteria();
+        Criteria responsibilityCrit = null;
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
+        	responsibilityCrit = new Criteria();
             responsibilityCrit.addIn("actionRequestedCd", actionRequestCodes);
         }
 
@@ -311,11 +315,15 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         }
         if (ruleResponsibilityNameCrit != null) {
+        	if (responsibilityCrit == null) {
+        		responsibilityCrit = new Criteria();
+        	}
             responsibilityCrit.addAndCriteria(ruleResponsibilityNameCrit);
-            query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
-            query.setAttributes(new String[] { "ruleBaseValuesId" });
         }
-
+        if (responsibilityCrit != null) {
+        	query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
+        	query.setAttributes(new String[] { "ruleBaseValuesId" });
+        }
         return query;
     }
 

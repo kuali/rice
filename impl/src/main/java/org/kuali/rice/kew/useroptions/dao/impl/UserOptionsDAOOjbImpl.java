@@ -69,7 +69,13 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     public void save(UserOptions userOptions) {
     	this.getPersistenceBrokerTemplate().store(userOptions);
     }
-
+    
+    public void save(Collection<UserOptions> userOptions) {
+    	if (userOptions != null) for (UserOptions option : userOptions) {
+    		this.getPersistenceBrokerTemplate().store(option);
+    	}
+    }
+    
     public void deleteUserOptions(UserOptions userOptions) {
     	this.getPersistenceBrokerTemplate().delete(userOptions);
     }

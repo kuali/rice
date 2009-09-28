@@ -132,7 +132,9 @@ public class CachingInterceptor implements MethodInterceptor {
 	 * @return
 	 */
 	private String getCacheKey(String methodName, Object [] args) {
-		StringBuilder sb = new StringBuilder(methodName);
+		StringBuilder sb = new StringBuilder(cacheGroupName);
+		sb.append(".");
+		sb.append(methodName);
 		sb.append(":");
 		boolean first = true;
 		for (Object arg : args) {
@@ -140,9 +142,6 @@ public class CachingInterceptor implements MethodInterceptor {
 				first = false;
 			} else {
 				sb.append(",");
-			}
-			if (arg == null) {
-				return null;
 			}
 			sb.append((arg == null) ? "null" : arg.toString());
 		}

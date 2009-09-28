@@ -19,7 +19,6 @@ package org.kuali.rice.kew.useroptions.dao;
 import java.util.Collection;
 import java.util.List;
 
-
 import org.kuali.rice.kew.useroptions.UserOptions;
 
 
@@ -29,6 +28,7 @@ public interface UserOptionsDAO {
 	public List<UserOptions> findByUserQualified(String principalId, String likeString);
     public void deleteByUserQualified(String principalId, String likeString);
 	public void save(UserOptions userOptions);
+	public void save(Collection<UserOptions> userOptions);
 	public void deleteUserOptions(UserOptions userOptions);
 	public UserOptions findByOptionId(String optionId, String principalId);
 	public Collection<UserOptions> findByOptionValue(String optionId, String optionValue);

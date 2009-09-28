@@ -224,42 +224,19 @@
 	<!--  PreferencesService -->
 	<bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true" />
 
-
-    <!-- wrap enPreferencesService in a caching proxy -->
-
-    <!-- configure the caching interceptor -->
-    <bean name="preferencesServiceInterceptor" class="org.kuali.rice.kew.util.CachingInterceptor">
-        <property name="cacheGroupName" value="PreferencesService" />
-        <property name="clearCacheOnMethods">
-            <list>
-                <value>savePreferences</value>
-            </list>
-        </property>
-        <property name="cacheForMethods">
-            <list>
-                <value>getPreferences</value>
-            </list>
-        </property>
-    </bean>
-    <!-- put our caching proxy in front of the target bean -->
-    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-        <property name="beanNames">
-            <value>enPreferencesService</value>
-        </property>
-        <property name="interceptorNames">
-            <list>
-                <value>preferencesServiceInterceptor</value>
-            </list>
-        </property>
-    </bean>
-  
-  
 	<!--  UserOptionsService -->
-	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
-		<property name="userOptionsDAO">
-            <ref bean="enUserOptionsDAO" />
+	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceCache" lazy-init="true">
+		<property name="innerService">
+            <ref local="UserOptionsServiceInner" />
 		</property>
 	</bean>
+
+    <!--  UserOptionsServiceInner -->
+    <bean id="UserOptionsServiceInner" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
+        <property name="userOptionsDAO">
+            <ref bean="enUserOptionsDAO" />
+        </property>
+    </bean>
 
 
 	<!--  ActionTakenService -->

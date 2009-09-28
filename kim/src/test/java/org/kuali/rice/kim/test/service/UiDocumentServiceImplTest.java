@@ -25,6 +25,8 @@ import javax.xml.namespace.QName;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
@@ -74,7 +76,14 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	@Test
 	public void testSaveToEntity() {
+	    Person adminPerson = KIMServiceLocator.getPersonService().getPersonByPrincipalName("admin");
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
+		
+		try {
+            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
+        } catch (WorkflowException e) {
+            e.printStackTrace();
+        }
 		uiDocumentService.saveEntityPerson(personDoc);
 		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(personDoc.getEntityId());
         KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
@@ -199,7 +208,6 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		personDoc.setEmails(initEmails());	
 		return personDoc;
 	}
-	
 	
 	private List<PersonDocumentName> initNames() {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();

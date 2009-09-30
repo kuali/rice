@@ -17,9 +17,6 @@
 package org.kuali.rice.kew.dto;
 
 import java.io.Serializable;
-import java.util.Calendar;
-
-import javax.persistence.Column;
 
 /**
  * Transport object for DocumentStatusTransition

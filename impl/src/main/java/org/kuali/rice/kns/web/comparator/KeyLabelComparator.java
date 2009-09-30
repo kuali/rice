@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.comparator;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
+import org.kuali.rice.core.util.KeyLabelPair;
 
 public class KeyLabelComparator implements Serializable, Comparator {
     private static final KeyLabelComparator theInstance = new KeyLabelComparator();

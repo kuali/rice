@@ -15,16 +15,10 @@
  */
 package org.kuali.rice.kns.bo.options;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.Country;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This class returns list of country value pairs.

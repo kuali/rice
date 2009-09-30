@@ -19,11 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.kns.bo.Namespace;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kns.bo.ParameterType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This class...

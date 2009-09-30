@@ -1305,4 +1305,30 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         } catch (WorkflowServiceErrorException wsee) {}
     }
 
+    /**
+     * Tests that Field objects use correct KeyLabelPair instances when checks for blank valid values are performed
+     * (such as when JSP renders drop-downs), to verify that KULRICE-3587 has been fixed.
+     * 
+     * @throws Exception
+     */
+    @Test public void testBlankValidValuesOnKeyLabelPairs() throws Exception {
+    	boolean[] shouldHaveBlank = {true, false};
+    	String[] attributesToTest = {"XMLSearchableAttributeWithBlank", "XMLSearchableAttributeWithoutBlank"};
+        DocumentSearchContext docSearchContext = DocSearchUtils.getDocumentSearchContext("", "BlankValidValuesDocType", "");
+        // Verify that the getHasBlankValidValue() method on each field returns the correct result and does not cause unexpected exceptions.
+        for (int i = 0; i < shouldHaveBlank.length; i++) {
+        	List<Row> rowList = getAttribute(attributesToTest[i]).getSearchingRows(docSearchContext);
+            assertEquals("The searching rows list for " + attributesToTest[i] + " should have exactly one element", 1, rowList.size());
+        	assertEquals("Searching row for " + attributesToTest[i] + " should have exactly one field", 1, rowList.get(0).getFields().size());
+        	Field testField = rowList.get(0).getFields().get(0);
+        	try {
+        		assertEquals("The field for " + attributesToTest[i] + " does not have the expected getHasBlankValidValue() result",
+        				shouldHaveBlank[i], testField.getHasBlankValidValue());
+        	} catch (Exception ex) {
+        		fail("An exception occurred while running getHasBlankValidValue() on " + attributesToTest[i] + ": " + ex.getMessage());
+        	}
+        }
+        
+        
+    }
 }

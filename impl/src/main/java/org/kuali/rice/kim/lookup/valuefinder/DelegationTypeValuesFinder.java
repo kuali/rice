@@ -18,9 +18,9 @@ package org.kuali.rice.kim.lookup.valuefinder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * A values finder for returning KEW rule delegation type codes.

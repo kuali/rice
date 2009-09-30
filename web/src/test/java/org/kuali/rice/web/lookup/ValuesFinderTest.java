@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.web.test.WebTestBase;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;

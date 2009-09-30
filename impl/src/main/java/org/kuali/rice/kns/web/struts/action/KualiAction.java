@@ -222,16 +222,7 @@ public abstract class KualiAction extends DispatchAction {
      * @throws Exception
      */
     public ActionForward showAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        KualiForm kualiForm = (KualiForm) form;
-
-        Map<String, String> tabStates = kualiForm.getTabStates();
-        Map<String, String> newTabStates = new HashMap<String, String>();
-        for (String tabKey: tabStates.keySet()) {
-            newTabStates.put(tabKey, "OPEN");
-        }
-        kualiForm.setTabStates(newTabStates);
-        doProcessingAfterPost( kualiForm, request );
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    	return this.doTabOpenOrClose(mapping, form, request, response, true);
     }
 
     /**
@@ -245,12 +236,27 @@ public abstract class KualiAction extends DispatchAction {
      * @throws Exception
      */
     public ActionForward hideAllTabs(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return this.doTabOpenOrClose(mapping, form, request, response, false);
+    }
+    
+    /**
+     * 
+     * Toggles all tabs to open of closed depending on the boolean flag.
+     * 
+     * @param mapping the mapping
+     * @param form the form
+     * @param request the request
+     * @param response the response
+     * @param open whether to open of close the tabs
+     * @return the action forward
+     */
+    private ActionForward doTabOpenOrClose(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, boolean open) {
         KualiForm kualiForm = (KualiForm) form;
 
         Map<String, String> tabStates = kualiForm.getTabStates();
         Map<String, String> newTabStates = new HashMap<String, String>();
         for (String tabKey: tabStates.keySet()) {
-        	newTabStates.put(tabKey, "CLOSE");
+        	newTabStates.put(tabKey, open ? "OPEN" : "CLOSE");
         }
         kualiForm.setTabStates(newTabStates);
         doProcessingAfterPost( kualiForm, request );
@@ -865,7 +871,7 @@ public abstract class KualiAction extends DispatchAction {
             if (GlobalVariables.getMessageMap().getNumberOfPropertiesWithErrors() > 0) {
                 return mapping.findForward(RiceConstants.MAPPING_BASIC);
             }
-            this.hideAllTabs(mapping, form, request, response);
+            this.doTabOpenOrClose(mapping, form, request, response, false);
             if (forward.getRedirect()) {
                 return forward;
             }

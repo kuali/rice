@@ -548,6 +548,19 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     /**
+     * 
+     * This method sets the Application Document Status and then calls saveRoutingData() to commit 
+     * the changes to the workflow system.
+     * 
+     * @param appDocStatus
+     * @throws WorkflowException
+     */
+    public void updateAppDocStatus(String appDocStatus) throws WorkflowException {
+       	getRouteHeader().setAppDocStatus(appDocStatus);
+       	saveRoutingData();
+    }
+    
+    /**
      * Performs the 'acknowledge' action on the document this WorkflowDocument represents.  If this is a new document,
      * the document is created first.
      * @param annotation the message to log for the action

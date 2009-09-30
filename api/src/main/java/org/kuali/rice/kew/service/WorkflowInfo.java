@@ -28,6 +28,7 @@ import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -101,7 +102,18 @@ public class WorkflowInfo implements java.io.Serializable {
      * if the given document ID is null.
      */
     public String getDocumentStatus(Long documentId) throws WorkflowException {
-    	return getWorkflowUtility().getDocumentStatus(documentId);
+   		return getWorkflowUtility().getDocumentStatus(documentId);
+    }
+
+    /**
+     * Returns the status of the document with the given ID.
+     *
+     * @since 0.9.1
+     * @throws WorkflowException if document cannot be found for the given ID or
+     * if the given document ID is null.
+     */
+    public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(Long documentId) throws WorkflowException {
+   		return getWorkflowUtility().getDocumentStatusTransitionHistory(documentId);
     }
 
     /**

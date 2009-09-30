@@ -33,6 +33,7 @@ import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -378,4 +379,10 @@ public interface WorkflowUtility {
 	public boolean isCurrentActiveDocumentType(
 			@WebParam(name = "documentTypeName") String documentTypeName)
 			throws WorkflowException;
+			
+    // new for 1.0.kc
+    public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(
+    		@WebParam(name = "routeHeaderId") Long routeHeaderId)
+    		throws WorkflowException;
+    
 }

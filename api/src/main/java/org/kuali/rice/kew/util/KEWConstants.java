@@ -167,9 +167,9 @@ public class KEWConstants extends JSTLConstants {
     // alternate kew status policy constants.  Determines if route header will show the KEW Route Status
     // or the application doc status, or both
     public static final String DOCUMENT_STATUS_POLICY = "DOCUMENT_STATUS_POLICY";
-    public static final String DOCUMENT_STATUS_POLICY_KEW_STATUS = "kew";
-    public static final String DOCUMENT_STATUS_POLICY_APP_DOC_STATUS = "app";
-    public static final String DOCUMENT_STATUS_POLICY_BOTH = "both";
+    public static final String DOCUMENT_STATUS_POLICY_KEW_STATUS = "KEW";
+    public static final String DOCUMENT_STATUS_POLICY_APP_DOC_STATUS = "APP";
+    public static final String DOCUMENT_STATUS_POLICY_BOTH = "BOTH";
     
     public static final String[] DOCUMENT_STATUS_POLICY_VALUES = {
     	DOCUMENT_STATUS_POLICY_KEW_STATUS,
@@ -383,7 +383,7 @@ public class KEWConstants extends JSTLConstants {
     /** The document is currently being routed. */
     public static final String ROUTE_HEADER_ENROUTE_CD = "R";
     
-    public static String UNKNOWN_STATUS = "UNKNOWN";
+    public static String UNKNOWN_STATUS = "";
 
     /** Actions Taken Constants **/
     public static final String ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD = "k";

@@ -28,8 +28,20 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
  * Model bean representing the valid application document statuses for a document type
+ * An instance of this class represents a single valid status for a given document type.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * The purpose of the Application Document Status is to provide an alternative to the
+ * KEW Route Status. Some documents may have a variety of statuses relating to where they are 
+ * in their lifecycle.  The application document status provides a means to for a document type to have its 
+ * own set of statuses.
+ * 
+ * A policy defined in the document type definition for a document determines if the Application
+ * Document Status is to be used.  In the document definition, a list of valid application statuses
+ * for the document may also be defined.  If the list of valid statuses are not defined, then any status 
+ * value may be assigned by the client.
+ * 
+ * 
+ * @author Dan Seibert
  *
  */
 @IdClass(org.kuali.rice.kew.doctype.ApplicationDocumentStatusId.class)

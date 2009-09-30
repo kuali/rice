@@ -52,6 +52,8 @@ public interface DocumentSearchCriteriaProcessor {
     public static final String CRITERIA_KEY_LAST_MODIFIED_DATE = "lastModifiedDate";
     public static final String CRITERIA_KEY_FINALIZED_DATE = "finalizedDate";
     public static final String CRITERIA_KEY_APPROVED_DATE = "approvedDate";
+    public static final String CRITERIA_KEY_APP_DOC_STATUS = "appDocStatus";
+    public static final String CRITERIA_KEY_STATUS_TRANSITION_DATE = "statusTransitionDate";
 
 	public void setSearchingUser(String principalId);
 

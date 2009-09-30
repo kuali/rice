@@ -94,7 +94,12 @@ public class RouteNode implements Serializable {
 	private String routeMethodCode;
     @Column(name="ACTVN_TYP")
     private String activationType = ActivationTypeEnum.PARALLEL.getCode();
-    @Column(name="NEXT_DOC_STATUS")
+    
+    /**
+     * The nextDocStatus property represents the value of the ApplicationDocumentStatus to be set 
+     * in the RouteHeader upon transitioning from this node.
+     */
+    @Column(name="NEXT_DOC_STAT")
 	private String nextDocStatus;
 
     @Version

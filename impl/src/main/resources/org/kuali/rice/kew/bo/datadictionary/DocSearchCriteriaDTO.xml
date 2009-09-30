@@ -83,6 +83,8 @@
 		<ref bean="DocSearchCriteriaDTO-docRouteNodeId"/>
 		<ref bean="DocSearchCriteriaDTO-dateCreated"/>
 		<ref bean="DocSearchCriteriaDTO-appDocStatus"/>
+        <ref bean="DocSearchCriteriaDTO-fromStatusTransitionDate"/>
+        <ref bean="DocSearchCriteriaDTO-toStatusTransitionDate"/>
       </list>
     </property>
   </bean>
@@ -203,7 +205,7 @@
     <property name="shortLabel" value="Date Modified To"/>
   </bean>
 
-    <bean id="DocSearchCriteriaDTO-fromDateFinalized" parent="DocSearchCriteriaDTO-fromDateFinalized-parentBean"/>
+  <bean id="DocSearchCriteriaDTO-fromDateFinalized" parent="DocSearchCriteriaDTO-fromDateFinalized-parentBean"/>
 
   <bean id="DocSearchCriteriaDTO-fromDateFinalized-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="fromDateFinalized"/>
@@ -367,7 +369,24 @@
       <bean parent="HiddenControlDefinition" />
     </property>
   </bean>
+ 
+  <bean id="DocSearchCriteriaDTO-fromStatusTransitionDate" parent="DocSearchCriteriaDTO-fromStatusTransitionDate-parentBean"/> 
+  
+  <bean id="DocSearchCriteriaDTO-fromStatusTransitionDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="fromStatusTransitionDate"/>
+    <property name="label" value="Status Transition Date From"/>
+    <property name="shortLabel" value="Status Transition Date"/>
+  </bean>
 
+  <bean id="DocSearchCriteriaDTO-toStatusTransitionDate" parent="DocSearchCriteriaDTO-toStatusTransitionDate-parentBean"/> 
+  
+  <bean id="DocSearchCriteriaDTO-toStatusTransitionDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="toStatusTransitionDate"/>
+    <property name="label" value="Status Transition Date To"/>
+    <property name="shortLabel" value="Status Transition Date To"/>
+  </bean>
+  
+   
   <!-- Business Object Inquiry Definition -->
 <!--
   <bean id="DocumentType-inquiryDefinition" parent="DocumentType-inquiryDefinition-parentBean" />

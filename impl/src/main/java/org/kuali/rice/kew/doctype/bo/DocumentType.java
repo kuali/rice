@@ -167,6 +167,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Fetch(value=FetchMode.SUBSELECT)
     private Collection<DocumentTypePolicy> policies;
     
+    /* This property contains the list of valid ApplicationDocumentStatus values, 
+     * if defined, for the document type.  If these status values are defined, only these
+     * values may be assigned as the status.  If not valid values are defined, the status may
+     * be set to any value by the client.
+     */
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
     		mappedBy="documentType")
     @Fetch(value=FetchMode.SUBSELECT)
@@ -290,35 +295,61 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     	return getPolicyByName(DocumentTypePolicyEnum.NOTIFY_ON_SAVE.getName(), Boolean.FALSE);
     }
 
+    /**
+     * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type. 
+     */
     public DocumentTypePolicy getDocumentStatusPolicy() {
     	return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
     }
     
+    /**
+     * 
+     * This method returns a boolean denoting whether the KEW Route Status is to be displayed.
+     * The KEW Route Status is updated by the workflow engine regardless of whether it is to be displayed or not.
+     * 
+     * @return  true  - if the status is to be displayed  (Policy is set to either use KEW (default) or both)
+     *          false - if the KEW Route Status is not to be displayed 
+     */
     public Boolean isKEWStatusInUse() {
     	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
     		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
     		return (policyValue == null || "".equals(policyValue) 
-    				|| KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equals(policyValue) 
-    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equals(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equalsIgnoreCase(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
     	} else {
     		return Boolean.TRUE;
     	}
     }
     
+    /**
+     * 
+     * This method returns a boolean denoting whether the Application Document Status is to be used for this document type.
+     * 
+     * @return true  - if the status is to be displayed  (Policy is set to either use the application document status or both)
+     *         false - if only the KEW Route Status is to be displayed (default)
+     */
     public Boolean isAppDocStatusInUse() {
     	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
     		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
-    		return (KEWConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equals(policyValue) 
-    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equals(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    		return (KEWConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equalsIgnoreCase(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
     	} else {
     		return Boolean.FALSE;
     	}
     }
-    
+
+    /**
+     * 
+     * This method returns a boolean denoting if both the KEW Route Status and the Application Document Status
+     * are to be used in displays.
+     * 
+     * @return  true  - if both the KEW Route Status and Application Document Status are to be displayed.
+     *          false - if only one status is to be displayed. 
+     */
     public Boolean areBothStatusesInUse() {
     	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
     		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
-    		return (KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equals(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    		return (KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
     	} else {
     		return Boolean.FALSE;
     	}

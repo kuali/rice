@@ -77,6 +77,7 @@ import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -1339,7 +1340,16 @@ public class DTOConverter {
         return rowVO;
     }
 
-
+    public static DocumentStatusTransitionDTO convertDocumentStatusTransition(DocumentStatusTransition transition) throws WorkflowException {
+    	DocumentStatusTransitionDTO tranVO = new DocumentStatusTransitionDTO();
+    	tranVO.setStatusTransitionId(transition.getStatusTransitionId());
+    	tranVO.setRouteHeaderId(transition.getRouteHeaderId());
+    	tranVO.setOldAppDocStatus(transition.getOldAppDocStatus());
+    	tranVO.setNewAppDocStatus(transition.getNewAppDocStatus());
+    	tranVO.setStatusTransitionDate(transition.getStatusTransitionDate());    	
+    	return tranVO;
+    }
+    
     //    public static RuleBaseValues convertRuleVO(RuleVO ruleVO) throws WorkflowException {}
 
     private static void handleException(String message, Exception e) throws WorkflowException {

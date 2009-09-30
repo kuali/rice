@@ -16,10 +16,13 @@
 package org.kuali.rice.kew.docsearch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookup.valuefinder.DocumentRouteStatusValuesFinder;
@@ -219,8 +222,23 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 								keyValues.add(keyLabel);
 							}
 							field.setFieldValidValues(keyValues);
-						}
-						else {
+						} else if("validApplicationStatuses".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())){
+							if(documentType!=null) {
+								//TODO: can these be used directly in values finder also there is an option key and value property that could probably be used by all of these
+								List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
+								List<ApplicationDocumentStatus> validStatuses = documentType.getValidApplicationStatuses();
+								for (ApplicationDocumentStatus appStatus : (List<ApplicationDocumentStatus>) validStatuses) {
+									keyValues.add(new KeyLabelPair(appStatus.getStatusName(),appStatus.getStatusName()));
+								}
+								field.setFieldValidValues(keyValues);
+								//TODO: fix this in criteria this field shouldn't be blank values otherwise have to reset this for some reason
+								field.setSkipBlankValidValue(false);
+							} else {
+								field.setFieldType(Field.READONLY);
+								skipadd=true;
+							}
+							
+						} else {
 							field.setFieldValidValues(new ArrayList<KeyLabelPair>());
 						}
 					}
@@ -273,7 +291,59 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 			}
 			fixedCustomSearchAttRows.add(row);
 		}
+		
+		// If Application Document Status policy is in effect for this document type,
+		// add search attributes for document status, and transition dates.
+		// Note: document status field is a drop down if valid statuses are defined,
+		//       a text input field otherwise.
+		fixedCustomSearchAttRows.addAll( buildAppDocStatusRows(documentType) );
+		
 		return fixedCustomSearchAttRows;
+	}
+
+	// Add the appropriate doc search criteria rows.
+	// If the document type policy DOCUMENT_STATUS_POLICY is set to "app", or "both"
+	// Then display the doc search criteria fields.
+	// If the documentType.validApplicationStatuses are defined, then the criteria field is a drop down.
+	// If the validApplication statuses are NOT defined, then the criteria field is a text input.
+	protected List<Row> buildAppDocStatusRows(DocumentType documentType){
+		List<Row> appDocStatusRows = new ArrayList<Row>();
+		List<List<StandardDocSearchCriteriaFieldContainer>> columnList = new ArrayList<List<StandardDocSearchCriteriaFieldContainer>>();
+		List<StandardDocSearchCriteriaFieldContainer> columns = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
+		if (documentType.isAppDocStatusInUse()){
+			StandardDocSearchCriteriaFieldContainer container = new StandardDocSearchCriteriaFieldContainer();
+
+			List<ApplicationDocumentStatus> validStatuses = documentType.getValidApplicationStatuses();
+			if (validStatuses == null || validStatuses.size() == 0){
+				// use a text input field
+				container = new StandardDocSearchCriteriaFieldContainer("docSearch.DocumentSearch.criteria.label.appDocStatus", new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS,"criteria.appDocStatus",StandardSearchCriteriaField.TEXT,null,null,"DocSearchApplicationDocStatus",false,null,null,false));
+				
+			} else {	
+				// dropdown
+				container.setLabelMessageKey("docSearch.DocumentSearch.criteria.label.appDocStatus");
+				container.setFieldKey(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS);
+				StandardSearchCriteriaField dropDown = new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS + "_VALUES","criteria.appDocStatus",StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY,null,null,"DocSearchApplicationDocStatus",false,null,null,false);
+				
+				dropDown.setOptionsCollectionProperty("validApplicationStatuses");
+				dropDown.setCollectionKeyProperty("statusName");
+				dropDown.setCollectionLabelProperty("statusName");
+				dropDown.setEmptyCollectionMessage("Select a document status.");
+				container.addField(dropDown);
+				
+			}
+			// Create Date Picker fields for AppDocStatus transitions
+	    	List<StandardSearchCriteriaField> dateFields = new ArrayList<StandardSearchCriteriaField>();
+	    	dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_LOWER_BOUND,"fromStatusTransitionDate",StandardSearchCriteriaField.TEXT,"fromStatusTransitionDate","docSearch.DocumentSearch.criteria.label.from","DocSearchStatusTransitionDate",false,null,null,false));
+	    	dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_UPPER_BOUND,"toStatusTransitionDate",StandardSearchCriteriaField.TEXT,"toStatusTransitionDate","docSearch.DocumentSearch.criteria.label.to",null,false,null,null,false));
+	    	StandardDocSearchCriteriaFieldContainer dateContainer = new StandardDocSearchCriteriaFieldContainer(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE, "docSearch.DocumentSearch.criteria.label.statusTransitionDate", dateFields);
+			
+			columns.add( container );
+			columns.add( dateContainer );
+			columnList.add( columns );
+			appDocStatusRows.addAll( standardNonSearchAttRows(documentType,columnList) );
+			
+		}
+		return appDocStatusRows;
 	}
 
 	/**

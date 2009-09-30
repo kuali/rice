@@ -52,6 +52,7 @@ import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
@@ -73,6 +74,7 @@ import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
@@ -1101,7 +1103,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
     	return docType != null && docType.isActive();
     }
-
+    
 	public DocumentDetailDTO getDocumentDetailFromAppId(
 			String documentTypeName, String appId) throws WorkflowException {
         if (documentTypeName == null) {
@@ -1126,4 +1128,32 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         
         return getDocumentDetail((Long)routeHeaderIds.iterator().next());
 	}
+    
+    public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(Long documentId) throws WorkflowException {
+        if (documentId == null) {
+            LOG.error("null routeHeaderId passed in.");
+            throw new RuntimeException("null routeHeaderId passed in");
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Fetching document status transition history [id="+documentId+"]");
+        }
+        DocumentRouteHeaderValue document = loadDocument(documentId);
+        
+        UserSession userSession = UserSession.getAuthenticatedUser();
+        String principalId = null;
+        if (userSession != null) { // get the principalId if we can
+        	principalId = userSession.getPrincipalId();
+        }
+        List<DocumentStatusTransition> list = document.getAppDocStatusHistory();
+
+        DocumentStatusTransitionDTO[] transitionHistory = new DocumentStatusTransitionDTO[list.size()];        
+        int i = 0;
+        for (Iterator iter = list.iterator(); iter.hasNext();) {
+        	DocumentStatusTransition transition = (DocumentStatusTransition) iter.next();
+            transitionHistory[i] = DTOConverter.convertDocumentStatusTransition(transition);
+            i++;
+        }
+        return transitionHistory;
+    }
+
 }

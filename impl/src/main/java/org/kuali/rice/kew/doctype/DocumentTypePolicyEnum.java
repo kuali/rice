@@ -83,6 +83,10 @@ public final class DocumentTypePolicyEnum {
 
     public static final DocumentTypePolicyEnum NOTIFY_ON_SAVE = new DocumentTypePolicyEnum(KEWConstants.NOTIFY_ON_SAVE_POLICY);
     
+    /**
+     * The Document Status Policy determines whether the KEW Route Status or the Application Document Status (or both) 
+     * are to be used for a specific document type.
+     */
     public static final DocumentTypePolicyEnum DOCUMENT_STATUS_POLICY = new DocumentTypePolicyEnum(KEWConstants.DOCUMENT_STATUS_POLICY);
 
     private final String name;

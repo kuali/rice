@@ -71,10 +71,12 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     private String fromDateLastModified; // the begin range for LastModified
     private String fromDateApproved; // the begin range for Approved
     private String fromDateFinalized; // the begin range for Finalized
+    private String fromStatusTransitionDate;  // the begin range for app doc status transition
     private String toDateCreated; // the end range for created
     private String toDateLastModified; // the end range for last modified
     private String toDateApproved; // the end range for approved
     private String toDateFinalized; // the end range for finalized
+    private String toStatusTransitionDate;  // the end range for app doc status transition
     private java.sql.Timestamp dateCreated; //fake date for DD
     
     // criteria processing
@@ -344,6 +346,9 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         return fromDateLastModified;
     }
 
+    public String getFromStatusTransitionDate() {
+        return fromStatusTransitionDate;
+    }
     /**
 	 * This overridden method ...
 	 * 
@@ -380,6 +385,9 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         return toDateLastModified;
     }
 
+    public String getToStatusTransitionDate() {
+        return toStatusTransitionDate;
+    }
     public void setFromDateApproved(String fromDateApproved) {
         this.fromDateApproved = safeTrimmer(fromDateApproved);
     }
@@ -396,6 +404,10 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.fromDateLastModified = safeTrimmer(fromDateLastModified);
     }
 
+    public void setFromStatusTransitionDate(String fromStatusTransitionDate) {
+        this.fromStatusTransitionDate = safeTrimmer(fromStatusTransitionDate);
+    }
+
     public void setToDateApproved(String toDateApproved) {
         this.toDateApproved = safeTrimmer(toDateApproved);
     }
@@ -410,6 +422,10 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 
     public void setToDateLastModified(String toDateLastModified) {
         this.toDateLastModified = safeTrimmer(toDateLastModified);
+    }
+
+    public void setToStatusTransitionDate(String toStatusTransitionDate) {
+        this.toStatusTransitionDate = safeTrimmer(toStatusTransitionDate);
     }
 
     private String safeTrimmer(String value) {
@@ -443,6 +459,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         String dateCreatedString = getRangeString(this.toDateCreated, this.fromDateCreated);
         String dateLastModifiedString = getRangeString(this.toDateLastModified, this.fromDateLastModified);
         String dateFinalizedString = getRangeString(this.toDateFinalized, this.fromDateFinalized);
+        String dateStatusTransitionString = getRangeString(this.toStatusTransitionDate, this.fromStatusTransitionDate);
         if (appDocId != null && !"".equals(appDocId.trim())) {
             abbreviatedString.append("Application Document Id=").append(appDocId).append("; ");
         }
@@ -485,6 +502,9 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         }
         if (dateApprovedString != null) {
             abbreviatedString.append("Date Approved=").append(dateApprovedString).append("; ");
+        }
+        if (dateStatusTransitionString != null) {
+            abbreviatedString.append("Date Status Transition=").append(dateStatusTransitionString).append("; ");
         }
 
         Set<String> alreadyAddedRangeAttributes = new HashSet<String>();

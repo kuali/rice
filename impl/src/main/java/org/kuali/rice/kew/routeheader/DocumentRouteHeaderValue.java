@@ -67,6 +67,7 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.CustomEmailAttributeImpl;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
@@ -157,24 +158,39 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 	private java.sql.Timestamp routeStatusDate;
 	@Column(name="RTE_LVL_MDFN_DT")
 	private java.sql.Timestamp routeLevelDate;
-    @Column(name="APP_DOC_STATUS")
+    @Column(name="APP_DOC_STAT")
 	private java.lang.String appDocStatus;
 	@Column(name="APP_DOC_STAT_MDFN_DT")
 	private java.sql.Timestamp appDocStatusDate;
+	
     @Id
 	@Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
+    
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE}, mappedBy="routeHeader")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+    
     @OneToMany(fetch=FetchType.EAGER, mappedBy="routeHeader")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
+    
     @OneToMany(cascade={CascadeType.REMOVE}, mappedBy="routeHeader")
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
+    
+    /**
+     * The appDocStatusHistory keeps a list of Application Document Status transitions
+     * for the document.  It tracks the previous status, the new status, and a timestamp of the 
+     * transition for each status transition.
+     */
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST}, mappedBy="routeHeader")
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<DocumentStatusTransition> appDocStatusHistory = new ArrayList<DocumentStatusTransition>();
+    
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name="DOC_HDR_ID")
     private List<Note> notes = new ArrayList<Note>();
+    
     @Transient
     private List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
     @Transient
@@ -294,7 +310,14 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     public String getDocRouteStatusLabel() {
         return CodeTranslator.getRouteStatusLabel(getDocRouteStatus());
     }
-
+    /**
+     * 
+     * This method returns the Document Status Policy for the document type associated with this Route Header.
+     * The Document Status Policy denotes whether the KEW Route Status, or the Application Document Status,
+     * or both are to be displayed.
+     * 
+     * @return
+     */
     public String getDocStatusPolicy() {
     	return getDocumentType().getDocumentStatusPolicy().getPolicyStringValue();
     }
@@ -467,6 +490,17 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
         this.statusModDate = statusModDate;
     }
 
+    /**
+     * 
+     * This method returns the Application Document Status.
+     * This status is an alternative to the Route Status that may be used for a document.
+     * It is configurable per document type.
+     * 
+     * @see ApplicationDocumentStatus
+     * @see DocumentTypePolicy
+     * 
+     * @return
+     */
     public java.lang.String getAppDocStatus() {
     	if (appDocStatus == null || "".equals(appDocStatus)){
     		return KEWConstants.UNKNOWN_STATUS;
@@ -477,6 +511,25 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     public void setAppDocStatus(java.lang.String appDocStatus){
         this.appDocStatus = appDocStatus;
     }
+    
+    /**
+     * 
+     * This method returns a combination of the route status label and the app doc status.
+     * 
+     * @return
+     */
+    public String getCombinedStatus(){
+    	String routeStatus = getRouteStatusLabel();
+    	String appStatus = getAppDocStatus();
+    	if (routeStatus != null && routeStatus.length()>0){
+    		if (appStatus.length() > 0){
+    			routeStatus += ", "+appStatus;
+    		}
+    	} else {
+    		return appStatus;
+    	}
+    	return routeStatus;
+    }
 
     /**
      * 
@@ -485,38 +538,42 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      * It also updates the AppDocStatus date, and saves the status transition information
      * 
      * @param appDocStatus
-     * @throws RiceException
+     * @throws WorkflowRuntimeException
      */
-    public void updateAppDocStatus(java.lang.String appDocStatus) throws RiceException{
+    public void updateAppDocStatus(java.lang.String appDocStatus) throws WorkflowRuntimeException{
        	//validate against allowable values if defined
-    	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(this.getDocumentTypeId());    	
-    	if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
-    		Iterator iter = documentType.getValidApplicationStatuses().iterator();
-    		boolean statusValidated = false;
-    		while (iter.hasNext())
-    		{
-    			ApplicationDocumentStatus myAppDocStat = (ApplicationDocumentStatus) iter.next();
-    			if (appDocStatus.compareToIgnoreCase(myAppDocStat.getStatusName()) == 0)
+    	if (appDocStatus != null && appDocStatus.length() > 0){    		
+    		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(this.getDocumentTypeId());    	
+    		if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
+    			Iterator iter = documentType.getValidApplicationStatuses().iterator();
+    			boolean statusValidated = false;
+    			while (iter.hasNext())
     			{
-    				statusValidated = true;
-    				break;
+    				ApplicationDocumentStatus myAppDocStat = (ApplicationDocumentStatus) iter.next();
+    				if (appDocStatus.compareToIgnoreCase(myAppDocStat.getStatusName()) == 0)
+    				{
+    					statusValidated = true;
+    					break;
+    				}
     			}
-    		}
-    		if (!statusValidated){
-    				RiceException xpee = new RiceException("AppDocStatus value " +  appDocStatus + " not allowable."); 
+    			if (!statusValidated){
+    				WorkflowRuntimeException xpee = new WorkflowRuntimeException("AppDocStatus value " +  appDocStatus + " not allowable."); 
     				LOG.error("Error validating nextAppDocStatus name: " +  appDocStatus + " against acceptable values.", xpee);
     				throw xpee; 
+    			}
     		}
+
+    		// set the status value
+    		String oldStatus = this.appDocStatus;
+    		this.appDocStatus = appDocStatus;
+
+    		// update the timestamp
+    		setAppDocStatusDate(new Timestamp(System.currentTimeMillis()));
+
+    		// save the status transition
+    		this.appDocStatusHistory.add(new DocumentStatusTransition(routeHeaderId, oldStatus, appDocStatus));
     	}
-    	
-    	// set the status value
-        this.appDocStatus = appDocStatus;
-        
-        // update the timestamp
-        setAppDocStatusDate(new Timestamp(System.currentTimeMillis()));
-        
-        // TODO: save the status transition
-        
+
     }
     
     
@@ -729,17 +786,13 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      * @throws WorkflowException
      */
     public void setRouteHeaderData(RouteHeaderDTO routeHeaderVO) throws WorkflowException {
-//    	String updatedDocumentContent = DTOConverter.buildUpdatedDocumentContent(routeHeaderVO);
-//    	// updatedDocumentContent will be null if the content has not changed, only update if its changed
-//    	if (updatedDocumentContent != null) {
-//    		setDocContent(updatedDocumentContent);
-//    	}
         if (!Utilities.equals(getDocTitle(), routeHeaderVO.getDocTitle())) {
         	KEWServiceLocator.getActionListService().updateActionItemsForTitleChange(getRouteHeaderId(), routeHeaderVO.getDocTitle());
         }
         setDocTitle(routeHeaderVO.getDocTitle());
         setAppDocId(routeHeaderVO.getAppDocId());
         setStatusModDate(new Timestamp(System.currentTimeMillis()));
+        updateAppDocStatus(routeHeaderVO.getAppDocStatus());
 
         /* set the variables from the routeHeaderVO */
         List<KeyValueDTO> variables = routeHeaderVO.getVariables();
@@ -969,6 +1022,16 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 	public void setDocumentContent(DocumentRouteHeaderValueContent documentContent) {
 		this.documentContent = documentContent;
 	}
+
+	public List<DocumentStatusTransition> getAppDocStatusHistory() {
+		return this.appDocStatusHistory;
+	}
+
+	public void setAppDocStatusHistory(
+			List<DocumentStatusTransition> appDocStatusHistory) {
+		this.appDocStatusHistory = appDocStatusHistory;
+	}
+
 
 	public String toString() {
 	    return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

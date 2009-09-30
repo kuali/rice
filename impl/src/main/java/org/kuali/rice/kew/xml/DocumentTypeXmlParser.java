@@ -1293,7 +1293,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             policy.setDocumentTypeId(documentType.getDocumentTypeId());
             try {
                 String policyName = (String) getXPath().evaluate("./name", documentTypePolicies.item(i), XPathConstants.STRING);
-                policy.setPolicyName(DocumentTypePolicyEnum.lookup(policyName).getName());
+                policy.setPolicyName(DocumentTypePolicyEnum.lookup(policyName).getName().toUpperCase());
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type policy name", xpee);
                 throw xpee;
@@ -1310,7 +1310,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
             }
             try {
             	String policyStringValue = (String) getXPath().evaluate("./stringValue", documentTypePolicies.item(i), XPathConstants.STRING);
-                policy.setPolicyStringValue(policyStringValue);
+                policy.setPolicyStringValue(policyStringValue.toUpperCase());
                 policy.setPolicyValue(Boolean.TRUE);
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type policy string value", xpee);
@@ -1335,7 +1335,6 @@ public class DocumentTypeXmlParser implements XmlConstants {
         	status.setDocumentTypeId(documentType.getDocumentTypeId());
         	Node myNode = documentTypeStatuses.item(i);  
         	String statusName = myNode.getFirstChild().getNodeValue();
-        	String myStatusName =  (String) getXPath().evaluate("./" + STATUS, myNode, XPathConstants.STRING);
         	status.setStatusName(statusName);
         	if (!statusNames.add(status.getStatusName())) {
         		throw new InvalidXmlException("Application Status '" + status.getStatusName() + "' has already been defined on this document");

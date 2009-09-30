@@ -73,6 +73,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static final String APPROVE_DATE_FIELD_STRING = " DOC_HDR.APRV_DT ";
     private static final String FINALIZATION_DATE_FIELD_STRING = " DOC_HDR.FNL_DT ";
     private static final String LAST_STATUS_UPDATE_DATE = " DOC_HDR.STAT_MDFN_DT ";
+    private static final String STATUS_TRANSITION_DATE_FIELD_STRING = " STAT_TRAN.STAT_TRANS_DATE ";
 
     private static List<SearchableAttribute> searchableAttributes;
     private static DocSearchCriteriaDTO criteria;
@@ -669,7 +670,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         docCriteriaDTO.setDocumentTitle(rs.getString("TTL"));
         docCriteriaDTO.setDocTypeName(rs.getString("DOC_TYP_NM"));
         docCriteriaDTO.setDocTypeLabel(docTypeLabel);
-        docCriteriaDTO.setAppDocStatus(rs.getString("APP_DOC_STATUS"));
+        docCriteriaDTO.setAppDocStatus(rs.getString("APP_DOC_STAT"));
 
         if ((activeIndicatorCode == null) || (activeIndicatorCode.trim().length() == 0)) {
             docCriteriaDTO.setActiveIndicatorCode(KEWConstants.ACTIVE_CD);
@@ -764,7 +765,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
     	boolean possibleSearchableAttributesExist = false;
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
-        StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.INITR_PRNCPL_ID, DOC_HDR.DOC_HDR_STAT_CD, DOC_HDR.CRTE_DT, DOC_HDR.TTL, DOC_HDR.APP_DOC_STATUS, DOC1.DOC_TYP_NM, DOC1.LBL, DOC1.DOC_HDLR_URL, DOC1.ACTV_IND");
+        StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.INITR_PRNCPL_ID, DOC_HDR.DOC_HDR_STAT_CD, DOC_HDR.CRTE_DT, DOC_HDR.TTL, DOC_HDR.APP_DOC_STAT, DOC1.DOC_TYP_NM, DOC1.LBL, DOC1.DOC_HDLR_URL, DOC1.ACTV_IND");
         StringBuffer fromSQL = new StringBuffer(" from KREW_DOC_TYP_T DOC1 ");
         String docHeaderTableAlias = "DOC_HDR";
         StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");
@@ -836,8 +837,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
         whereSQL.append(getDocRouteStatusSql(criteria.getDocRouteStatus(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getGeneratedPredicatePrefix(whereSQL.length())).append(" DOC_HDR.DOC_TYP_ID = DOC1.DOC_TYP_ID ");
-
         fromSQL.append(fromSQLForDocHeaderTable);
+        
+        // App Doc Status Value and Transition clauses
+        String statusTransitionWhereClause = getStatusTransitionDateSql(criteria.getFromStatusTransitionDate(), criteria.getToStatusTransitionDate(), getGeneratedPredicatePrefix(whereSQL.length()));
+        whereSQL.append(getAppDocStatusSql(criteria.getAppDocStatus(), getGeneratedPredicatePrefix(whereSQL.length()), statusTransitionWhereClause.length() ));        	
+        if (statusTransitionWhereClause.length() > 0){
+        	whereSQL.append(statusTransitionWhereClause);
+            whereSQL.append(getGeneratedPredicatePrefix(whereSQL.length())).append(" DOC_HDR.DOC_HDR_ID = STAT_TRAN.DOC_HDR_ID ");
+        	fromSQL.append(", KREW_APP_DOC_STAT_TRAN_T STAT_TRAN ");
+        } 
+        
         String finalizedSql = sqlPrefix + " " + selectSQL.toString() + " " + fromSQL.toString() + " " + whereSQL.toString() + " " + sqlSuffix;
         usingAtLeastOneSearchAttribute = possibleSearchableAttributesExist;
 //        usingAtLeastOneSearchAttribute = false;
@@ -964,6 +974,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return establishDateString(fromDateLastModified, toDateLastModified, LAST_STATUS_UPDATE_DATE, whereClausePredicatePrefix);
     }
 
+    public String getStatusTransitionDateSql(String fromStatusTransitionDate, String toStatusTransitionDate, String whereClausePredicatePrefix) {
+        return establishDateString(fromStatusTransitionDate, toStatusTransitionDate, STATUS_TRANSITION_DATE_FIELD_STRING, whereClausePredicatePrefix);
+    }
+    
     public String getViewerSql(String viewer, String whereClausePredicatePrefix) {
     	String returnSql = "";
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
@@ -1123,6 +1137,29 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         		inList = inList.substring(0,inList.length()-1); // remove trailing ','
         	}
         	return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD in (" + inList +")";
+        }
+    }
+
+    /**
+     * 
+     * This method generates the where clause fragment related to Application Document Status.
+     * If the Status value only is defined, search for the appDocStatus value in the route header.
+     * If either the transition from/to dates are defined, search agains the status transition history.
+     * 
+     * @param appDocStatus
+     * @param whereClausePredicatePrefix
+     * @param statusTransitionWhereClauseLength
+     * @return
+     */
+    public String getAppDocStatusSql(String appDocStatus, String whereClausePredicatePrefix, int statusTransitionWhereClauseLength) {
+        if ((appDocStatus == null) || "".equals(appDocStatus.trim())) {
+            return "";
+        } else {
+        	if (statusTransitionWhereClauseLength > 0){
+        		return whereClausePredicatePrefix + " STAT_TRAN.APP_DOC_STAT_TO = '" + getDbPlatform().escapeString(appDocStatus.trim()) + "'";
+        	}else{
+        		return whereClausePredicatePrefix + " DOC_HDR.APP_DOC_STAT = '" + getDbPlatform().escapeString(appDocStatus.trim()) + "'";
+        	}
         }
     }
 

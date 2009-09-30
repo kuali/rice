@@ -52,7 +52,7 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 	private String policyName;
     @Column(name="PLCY_NM")
 	private Boolean policyValue;
-    @Column(name="PLCY_DESC")
+    @Column(name="PLCY_VAL")
     private String policyStringValue;
     @Transient
     private Boolean inheritedFlag;

@@ -169,8 +169,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String DOCUMENT_STATUS_POLICY = "DOCUMENT_STATUS_POLICY";
     public static final String DOCUMENT_STATUS_POLICY_KEW_STATUS = "KEW";
     public static final String DOCUMENT_STATUS_POLICY_APP_DOC_STATUS = "APP";
-    public static final String DOCUMENT_STATUS_POLICY_BOTH = "BOTH";
-    
+    public static final String DOCUMENT_STATUS_POLICY_BOTH = "BOTH";   
     public static final String[] DOCUMENT_STATUS_POLICY_VALUES = {
     	DOCUMENT_STATUS_POLICY_KEW_STATUS,
     	DOCUMENT_STATUS_POLICY_APP_DOC_STATUS,

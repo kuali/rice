@@ -1310,12 +1310,19 @@ public class DocumentTypeXmlParser implements XmlConstants {
             }
             try {
             	String policyStringValue = (String) getXPath().evaluate("./stringValue", documentTypePolicies.item(i), XPathConstants.STRING);
-                policy.setPolicyStringValue(policyStringValue.toUpperCase());
-                policy.setPolicyValue(Boolean.TRUE);
+            	if (!StringUtils.isEmpty(policyStringValue)){
+            		policy.setPolicyStringValue(policyStringValue.toUpperCase());
+            		policy.setPolicyValue(Boolean.TRUE);
+            	} else {
+            		if (KEWConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            			throw new InvalidXmlException("Application Document Status Policy requires a <stringValue>");            			
+            		}
+            	}
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type policy string value", xpee);
                 throw xpee;
             }
+            
             if (!policyNames.add(policy.getPolicyName())) {
                 throw new InvalidXmlException("Policy '" + policy.getPolicyName() + "' has already been defined on this document");
             } else {

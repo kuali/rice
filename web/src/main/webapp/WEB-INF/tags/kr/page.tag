@@ -325,34 +325,36 @@
 
 		</div>
 		<c:if test="${not empty KualiForm.headerNavigationTabs}">
-		  <div class="horz-links-bkgrnd" id="horz-links">
-			<c:choose>
-			  <c:when test="${empty headerDispatch}">
-													<c:forEach var="headerTab"
-														items="${KualiForm.headerNavigationTabs}"
-														varStatus="status">
-														<html:submit value="${headerTab.headerTabDisplayName}"
-															property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"
-															alt="${headerTab.headerTabDisplayName}" disabled="true"
-                              title="${headerTab.headerTabDisplayName}"
-															styleClass="${(headerTabActive eq headerTab.headerTabNavigateTo) ? 'selected' : ''}" />
-													</c:forEach>
-			  </c:when>
-			  <c:otherwise>
-													<c:forEach var="headerTab"
-														items="${KualiForm.headerNavigationTabs}"
-														varStatus="status">
-														<html:submit value="${headerTab.headerTabDisplayName}"
-															property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"
-															alt="${headerTab.headerTabDisplayName}"
-															disabled="${headerTab.disabled}"
-                              title="${headerTab.headerTabDisplayName}"
-															styleClass="${(headerTabActive eq headerTab.headerTabNavigateTo) ? 'selected' : ''}" />
-													</c:forEach>
-			  </c:otherwise>
-			</c:choose>
-		  </div>
-		</c:if>
+            <div class="horz-links-bkgrnd" id="horz-links">
+                <div id="tabs">
+                    <dl class="tabul">
+                        <c:choose>
+                            <c:when test="${empty headerDispatch}">
+                                <c:forEach var="headerTab" items="${KualiForm.headerNavigationTabs}" varStatus="status">
+                                    <c:set var="currentTab" value="${headerTabActive eq headerTab.headerTabNavigateTo}" /> <!-- ${headerTab.headerTabNavigateTo}; ${headerTabActive}; ${currentTab} -->
+                                    <c:choose>
+                                        <c:when test="${currentTab}"><dt class="licurrent"></c:when>
+                                        <c:otherwise><dt></c:otherwise>
+                                    </c:choose>
+                                    <span class="tabright ${currentTab ? 'tabcurrent' : ''}">
+                                        <html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"  alt="${headerTab.headerTabDisplayName}" disabled="true" />
+                                    </span></dt>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="headerTab" items="${KualiForm.headerNavigationTabs}" varStatus="status">
+                                    <c:set var="currentTab" value="${headerTabActive eq headerTab.headerTabNavigateTo}" /> <!-- ${headerTab.headerTabNavigateTo}; ${headerTabActive}; ${currentTab} -->
+                                    <c:choose><c:when test="${currentTab}"><dt class="licurrent"></c:when><c:otherwise><dt></c:otherwise></c:choose>
+                                    <span class="tabright ${currentTab ? 'tabcurrent' : ''}">
+                                        <html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"  alt="${headerTab.headerTabDisplayName}" disabled="${headerTab.disabled}"  />
+                                    </span></dt>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>  
+                    </dl>
+                </div>
+            </div>
+        </c:if>
 		<div class="msg-excol">
 		  <div class="left-errmsg">
 			 <kul:errorCount auditCount="${auditCount}"/>

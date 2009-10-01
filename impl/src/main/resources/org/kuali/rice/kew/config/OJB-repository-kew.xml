@@ -957,4 +957,10 @@
     </reference-descriptor>
   </class-descriptor>
 
+  <class-descriptor class="org.kuali.rice.kew.documentlink.DocumentLink" table="KREW_DOC_LNK_T">
+    <field-descriptor column="DOC_LNK_ID" name="docLinkId" jdbc-type="BIGINT" primarykey="true"
+         autoincrement="true" sequence-name="KREW_DOC_LNK_S" />
+    <field-descriptor column="ORGN_DOC_ID" name="orgnDocId" jdbc-type="BIGINT"/>
+    <field-descriptor column="DEST_DOC_ID" name="destDocId" jdbc-type="BIGINT"/>
+  </class-descriptor>
 </descriptor-repository>

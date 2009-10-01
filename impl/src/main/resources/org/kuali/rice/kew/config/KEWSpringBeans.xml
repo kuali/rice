@@ -882,4 +882,7 @@
 		<property name="listItem" value="classpath:org/kuali/rice/kew/dwr-core.xml" />
 	</bean>
 
+	<bean id="enDocumentLinkService" class="org.kuali.rice.kew.documentlink.service.impl.DocumentLinkServiceImpl" lazy-init="true">
+		<property name="documentLinkDAO" ref="enDocumentLinkDAO"/>
+	</bean>
 </beans>

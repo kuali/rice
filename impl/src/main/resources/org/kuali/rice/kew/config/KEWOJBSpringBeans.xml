@@ -135,4 +135,9 @@
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
   
+  <bean id="enDocumentLinkDAO" class="org.kuali.rice.kew.documentlink.dao.impl.DocumentLinkDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="enWorkflowDataSource" />
+  </bean>
+  
+  
 </beans>

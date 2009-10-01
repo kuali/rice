@@ -36,6 +36,7 @@ import org.apache.ojb.broker.PersistenceBrokerException;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
@@ -426,6 +427,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             deleteDocumentAttachment();  
             
             getMaintenanceDocumentService().deleteLocks(documentNumber);
+            
+       	 //for issue 3070, check if delete record
+			 if(this.checkAllowsRecordDeletion() && this.checkMaintenanceAction() &&
+					 this.checkDeletePermission(newMaintainableObject.getBusinessObject()))
+				 newMaintainableObject.deleteBusinessObject(); 
         }
 
         // unlock the document when its canceled or disapproved
@@ -909,4 +915,32 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 		return documentHeaderService;
 	}
 
+	 //for issue KULRice3070
+	 private boolean checkAllowsRecordDeletion() {
+		 Boolean allowsRecordDeletion = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsRecordDeletion(this.getNewMaintainableObject().getBoClass());
+		 if ( allowsRecordDeletion != null ) {
+			 return allowsRecordDeletion.booleanValue();
+		 }
+		 else {
+			 return false;
+		 }
+	 }
+
+	 //for KULRice3070
+	 private boolean checkMaintenanceAction(){	 
+		 return this.getNewMaintainableObject().getMaintenanceAction().equals(KNSConstants.MAINTENANCE_DELETE_ACTION);
+	 }
+
+	 //for KULRice3070
+	 private boolean checkDeletePermission(BusinessObject businessObject) {
+
+		 boolean allowsMaintain = false;
+
+		 String maintDocTypeName = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getDocumentTypeName(businessObject.getClass());
+
+		 if (StringUtils.isNotBlank(maintDocTypeName)) {
+			 allowsMaintain = KNSServiceLocator.getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);            
+		 }     
+		 return allowsMaintain;
+	 }
 }

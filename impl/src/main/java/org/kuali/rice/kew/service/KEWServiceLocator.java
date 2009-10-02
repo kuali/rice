@@ -37,6 +37,7 @@ import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.documentlink.service.DocumentLinkService;
 import org.kuali.rice.kew.edl.extract.ExtractService;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.edl.service.StyleService;
@@ -168,6 +169,8 @@ public final class KEWServiceLocator {
 	public static final String CACHE_ADMINISTRATOR = "enCacheAdministrator";
 
 	public static final String SCHEDULER = "enScheduler";
+	
+	public static final String DOCUMENT_LINK_SERVICE = "enDocumentLinkService";
 
 	/**
 	 * Polls for xml files on disk
@@ -436,6 +439,10 @@ public final class KEWServiceLocator {
 
     public static IdentityHelperService getIdentityHelperService() {
     	return (IdentityHelperService) getBean(IDENTITY_HELPER_SERVICE);
+    }
+    
+    public static DocumentLinkService getDocumentLinkService(){
+    	return (DocumentLinkService) getBean(DOCUMENT_LINK_SERVICE);
     }
     
     /**

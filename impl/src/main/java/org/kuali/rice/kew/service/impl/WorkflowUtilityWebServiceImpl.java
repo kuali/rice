@@ -44,12 +44,14 @@ import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
@@ -1156,4 +1158,54 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return transitionHistory;
     }
 
+	//for document link
+
+	public void deleteDocumentLink(DocumentLinkDTO docLink) throws WorkflowException {
+		KEWServiceLocator.getDocumentLinkService().deleteDocumentLink(initDocLink(docLink));
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#addDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
+	 */
+	public void addDocumentLink(DocumentLinkDTO docLinkVO) throws WorkflowException {
+		KEWServiceLocator.getDocumentLinkService().saveDocumentLink(initDocLink(docLinkVO));
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#getgetLinkedDocumentsByDocId(java.lang.Long)
+	 */
+	public List<DocumentLinkDTO> getLinkedDocumentsByDocId(Long id) throws WorkflowException {
+		return DTOConverter.convertDocumentLinkToArrayList(KEWServiceLocator.getDocumentLinkService().getLinkedDocumentsByDocId(id));
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#getDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
+	 */
+	public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
+		return DTOConverter.convertDocumentLink(KEWServiceLocator.getDocumentLinkService().getLinkedDocument(initDocLink(docLinkVO)));
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#deleteDocumentLinkByDocId(java.lang.Long)
+	 */
+	public void deleteDocumentLinksByDocId(Long id) throws WorkflowException{
+		KEWServiceLocator.getDocumentLinkService().deleteDocumentLinksByDocId(id);
+	}
+
+	private DocumentLink initDocLink(DocumentLinkDTO docLinkVO){
+		DocumentLink docLink = new DocumentLink();
+		docLink.setDocLinkId(docLinkVO.getLinbkId());
+		docLink.setOrgnDocId(docLinkVO.getOrgnDocId());
+		docLink.setDestDocId(docLinkVO.getDestDocId());
+
+		return docLink;
+	}
 }

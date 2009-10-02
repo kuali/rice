@@ -18,6 +18,7 @@ package org.kuali.rice.kew.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -31,6 +32,7 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
@@ -385,4 +387,15 @@ public interface WorkflowUtility {
     		@WebParam(name = "routeHeaderId") Long routeHeaderId)
     		throws WorkflowException;
     
+    //for docmentlink
+    public void addDocumentLink(DocumentLinkDTO docLinkVO) throws WorkflowException;
+
+    public void deleteDocumentLink(DocumentLinkDTO docLinkVO) throws WorkflowException;
+    
+    public void deleteDocumentLinksByDocId(Long docId) throws WorkflowException;
+    
+    public List<DocumentLinkDTO> getLinkedDocumentsByDocId(Long id) throws WorkflowException;
+    
+    public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException;
+
 }

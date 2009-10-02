@@ -55,6 +55,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.KeyValuePair;
 import org.kuali.rice.kew.engine.node.Process;
@@ -1359,6 +1360,47 @@ public class DTOConverter {
             throw (WorkflowException) e;
         }
         throw new WorkflowException(message, e);
+    }
+
+    //convert DocumentLink beans to array of DocumentLinkDTO
+    public static DocumentLinkDTO[] convertDocumentLink(Collection<DocumentLink> links) {
+        if (links == null) {
+            return null;
+        }
+        DocumentLinkDTO[] docLinkVOs = new DocumentLinkDTO[links.size()];
+        
+        int index = 0;
+        
+        for (DocumentLink link: links) {
+            docLinkVOs[index++] = convertDocumentLink(link);
+        }
+        return docLinkVOs;
+    }
+    
+    //convert DocumentLink beans to list of DocumentLinkDTO
+    public static List<DocumentLinkDTO> convertDocumentLinkToArrayList(Collection<DocumentLink> links) {
+        if (links == null) {
+            return null;
+        }
+        List<DocumentLinkDTO> docLinkVOs = new ArrayList<DocumentLinkDTO>(links.size());
+        
+        for (DocumentLink link: links) {
+            docLinkVOs.add(convertDocumentLink(link));
+        }
+        return docLinkVOs;
+    }
+    
+    //covert DocumentLink bean to DocumentLinkDTO
+    public static DocumentLinkDTO convertDocumentLink(DocumentLink link) {
+        if (link == null) {
+            return null;
+        }
+        DocumentLinkDTO linkVO = new DocumentLinkDTO();
+        linkVO.setLinbkId(link.getDocLinkId());
+        linkVO.setOrgnDocId(link.getOrgnDocId());
+        linkVO.setDestDocId(link.getDestDocId());
+        
+        return linkVO;
     }
 
 }

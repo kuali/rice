@@ -28,6 +28,7 @@ import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.ModifiableDocumentContentDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
@@ -1405,4 +1406,67 @@ public class WorkflowDocument implements java.io.Serializable {
 	   }
 	   routeHeader.setNotesToDelete(tempArray);
    }
+   
+   //add 1 link between 2 docs by DTO, double link added
+   public void addLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
+	   try{
+		   if(DocumentLinkDTO.checkDocLink(docLinkVO))
+			   getWorkflowUtility().addDocumentLink(docLinkVO);
+	   }
+	   catch(Exception e){
+		   throw handleExceptionAsRuntime(e); 
+	   } 
+   }
+   
+   //get link from orgn doc to a specifc doc
+   public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
+	   try{
+		   if(DocumentLinkDTO.checkDocLink(docLinkVO))
+			   return getWorkflowUtility().getLinkedDocument(docLinkVO);
+		   else
+			   return null;
+	   }
+	   catch(Exception e){
+		   throw handleExceptionAsRuntime(e); 
+	   }
+   }
+   
+   //get all links to orgn doc
+   public List<DocumentLinkDTO> getLinkedDocumentsByDocId(Long id) throws WorkflowException{
+	   if(id == null)
+		   throw new WorkflowException("doc id is null");
+	   try{   
+		   return getWorkflowUtility().getLinkedDocumentsByDocId(id);
+	   } 
+	   catch (Exception e) {
+		   throw handleExceptionAsRuntime(e);
+	   }
+   }
+   
+   //remove all links from orgn: double links removed
+   public void removeLinkedDocuments(Long docId) throws WorkflowException{
+	   
+	   if(docId == null)
+		   throw new WorkflowException("doc id is null");
+	   
+	   try{   
+		   getWorkflowUtility().deleteDocumentLinksByDocId(docId);
+	   } 
+	   catch (Exception e) {
+		   throw handleExceptionAsRuntime(e);
+	   }
+   }
+   
+   //remove link between 2 docs, double link removed
+   public void removeLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
+	   
+	   try{
+		   if(DocumentLinkDTO.checkDocLink(docLinkVO))
+			   getWorkflowUtility().deleteDocumentLink(docLinkVO);
+	   }
+	   catch(Exception e){
+		   throw handleExceptionAsRuntime(e); 
+	   } 
+   }
+
 }

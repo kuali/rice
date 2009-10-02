@@ -849,19 +849,19 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     	return null;
     }
 
-	/**
-	 * @param searchableAttributeValues The searchableAttributeValues to set.
-	 */
-	public void setSearchableAttributeValues(List<SearchableAttributeValue> searchableAttributeValues) {
-		this.searchableAttributeValues = searchableAttributeValues;
-	}
-
-	/**
-	 * @return Returns the searchableAttributeValues.
-	 */
-	public List<SearchableAttributeValue> getSearchableAttributeValues() {
-		return searchableAttributeValues;
-	}
+//	/**
+//	 * @param searchableAttributeValues The searchableAttributeValues to set.
+//	 */
+//	public void setSearchableAttributeValues(List<SearchableAttributeValue> searchableAttributeValues) {
+//		this.searchableAttributeValues = searchableAttributeValues;
+//	}
+//
+//	/**
+//	 * @return Returns the searchableAttributeValues.
+//	 */
+//	public List<SearchableAttributeValue> getSearchableAttributeValues() {
+//		return searchableAttributeValues;
+//	}
 
 	public boolean isRoutingReport() {
 		return routingReport;

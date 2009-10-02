@@ -45,8 +45,8 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 	}
 
 	public void indexDocument(Long documentId, boolean useMostRecentDocType) {
+		long t1 = System.currentTimeMillis();		
 		LOG.info("Indexing document " + documentId + " for document search...");
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		try {
 			DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
 			DocumentRouteHeaderValueContent docContent = KEWServiceLocator.getRouteHeaderService().getContent(documentId);
@@ -57,7 +57,8 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 			LOG.error(errorMsg, e);
 			throw new WorkflowRuntimeException(errorMsg,e);
 		}
-		LOG.info("...finished indexing document " + documentId + " for document search.");
+		long t2 = System.currentTimeMillis();
+		LOG.info("...finished indexing document " + documentId + " for document search, total time = " + (t2-t1) + " ms.");
 	}
 
 	private List<SearchableAttributeValue> buildSearchableAttributeValues(DocumentType docType, Long documentId, String docContent, boolean useMostRecentDocType) {

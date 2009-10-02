@@ -52,21 +52,21 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimE
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
 	 */
 	public String getEntityExternalIdentifierId() {
-		return entityExternalIdentifierId;
+		return unNullify(entityExternalIdentifierId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
 	 */
 	public String getExternalId() {
-		return externalId;
+		return unNullify(externalId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalIdentifierTypeCode()
 	 */
 	public String getExternalIdentifierTypeCode() {
-		return externalIdentifierTypeCode;
+		return unNullify(externalIdentifierTypeCode);
 	}
 
 	public void setExternalId(String externalId) {

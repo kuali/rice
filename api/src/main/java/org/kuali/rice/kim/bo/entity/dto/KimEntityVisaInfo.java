@@ -54,35 +54,35 @@ public class KimEntityVisaInfo extends KimInfoBase implements KimEntityVisa {
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getId()
 	 */
 	public String getId() {
-		return id;
+		return unNullify( id);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getEntityId()
 	 */
 	public String getEntityId() {
-		return entityId;
+		return unNullify( entityId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaEntry()
 	 */
 	public String getVisaEntry() {
-		return visaEntry;
+		return unNullify( visaEntry);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaId()
 	 */
 	public String getVisaId() {
-		return visaId;
+		return unNullify( visaId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaTypeKey()
 	 */
 	public String getVisaTypeKey() {
-		return visaTypeKey;
+		return unNullify( visaTypeKey);
 	}
 
 	/**

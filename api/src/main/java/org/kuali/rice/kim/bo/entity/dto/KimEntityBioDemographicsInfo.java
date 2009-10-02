@@ -91,7 +91,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the entityId
 	 */
 	public String getEntityId() {
-		return this.entityId;
+		return unNullify(this.entityId);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the birthDate
 	 */
 	public Date getBirthDate() {
-		return this.birthDate;
+		return unNullify(this.birthDate);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the deceasedDate
 	 */
 	public Date getDeceasedDate() {
-		return this.deceasedDate;
+		return unNullify(this.deceasedDate);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the genderCode
 	 */
 	public String getGenderCode() {
-		return this.genderCode;
+		return unNullify(this.genderCode);
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the maritalStatusCode
 	 */
 	public String getMaritalStatusCode() {
-		return this.maritalStatusCode;
+		return unNullify(this.maritalStatusCode);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the primaryLanguageCode
 	 */
 	public String getPrimaryLanguageCode() {
-		return this.primaryLanguageCode;
+		return unNullify(this.primaryLanguageCode);
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the secondaryLanguageCode
 	 */
 	public String getSecondaryLanguageCode() {
-		return this.secondaryLanguageCode;
+		return unNullify(this.secondaryLanguageCode);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the countryOfBirthCode
 	 */
 	public String getCountryOfBirthCode() {
-		return this.countryOfBirthCode;
+		return unNullify(this.countryOfBirthCode);
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the birthStateCode
 	 */
 	public String getBirthStateCode() {
-		return this.birthStateCode;
+		return unNullify(this.birthStateCode);
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the cityOfBirth
 	 */
 	public String getCityOfBirth() {
-		return this.cityOfBirth;
+		return unNullify(this.cityOfBirth);
 	}
 
 	/**
@@ -231,7 +231,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the geographicOrigin
 	 */
 	public String getGeographicOrigin() {
-		return this.geographicOrigin;
+		return unNullify(this.geographicOrigin);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the genderCodeUnmasked
 	 */
 	public String getGenderCodeUnmasked() {
-		return this.genderCodeUnmasked;
+		return unNullify(this.genderCodeUnmasked);
 	}
 
 	/**
@@ -259,7 +259,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the genderCodeUnmaskedUnmasked
 	 */
 	public String getGenderCodeUnmaskedUnmasked() {
-		return this.genderCodeUnmaskedUnmasked;
+		return unNullify(this.genderCodeUnmaskedUnmasked);
 	}
 
 	/**
@@ -273,7 +273,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the maritalStatusCodeUnmasked
 	 */
 	public String getMaritalStatusCodeUnmasked() {
-		return this.maritalStatusCodeUnmasked;
+		return unNullify(this.maritalStatusCodeUnmasked);
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the primaryLanguageCodeUnmasked
 	 */
 	public String getPrimaryLanguageCodeUnmasked() {
-		return this.primaryLanguageCodeUnmasked;
+		return unNullify(this.primaryLanguageCodeUnmasked);
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the secondaryLanguageCodeUnmasked
 	 */
 	public String getSecondaryLanguageCodeUnmasked() {
-		return this.secondaryLanguageCodeUnmasked;
+		return unNullify(this.secondaryLanguageCodeUnmasked);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the countryOfBirthCodeUnmasked
 	 */
 	public String getCountryOfBirthCodeUnmasked() {
-		return this.countryOfBirthCodeUnmasked;
+		return unNullify(this.countryOfBirthCodeUnmasked);
 	}
 
 	/**
@@ -330,7 +330,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the birthStateCodeUnmasked
 	 */
 	public String getBirthStateCodeUnmasked() {
-		return this.birthStateCodeUnmasked;
+		return unNullify(this.birthStateCodeUnmasked);
 	}
 
 	/**
@@ -344,7 +344,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the cityOfBirthUnmasked
 	 */
 	public String getCityOfBirthUnmasked() {
-		return this.cityOfBirthUnmasked;
+		return unNullify(this.cityOfBirthUnmasked);
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the geographicOriginUnmasked
 	 */
 	public String getGeographicOriginUnmasked() {
-		return this.geographicOriginUnmasked;
+		return unNullify(this.geographicOriginUnmasked);
 	}
 
 	/**

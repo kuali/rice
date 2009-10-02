@@ -92,7 +92,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the addresses
 	 */
 	public List<KimEntityAddressInfo> getAddresses() {
-		return this.addresses;
+		return unNullify(this.addresses);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the defaultAddress
 	 */
 	public KimEntityAddressInfo getDefaultAddress() {
-		return this.defaultAddress;
+		return unNullify(this.defaultAddress, KimEntityAddressInfo.class);
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the emailAddresses
 	 */
 	public List<KimEntityEmailInfo> getEmailAddresses() {
-		return this.emailAddresses;
+		return unNullify(this.emailAddresses);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the defaultEmailAddress
 	 */
 	public KimEntityEmailInfo getDefaultEmailAddress() {
-		return this.defaultEmailAddress;
+		return unNullify(this.defaultEmailAddress, KimEntityEmailInfo.class);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the entityType
 	 */
 	public EntityTypeInfo getEntityType() {
-		return this.entityType;
+		return unNullify(this.entityType, EntityTypeInfo.class);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the entityTypeCode
 	 */
 	public String getEntityTypeCode() {
-		return this.entityTypeCode;
+		return unNullify(this.entityTypeCode);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the phoneNumbers
 	 */
 	public List<KimEntityPhoneInfo> getPhoneNumbers() {
-		return this.phoneNumbers;
+		return unNullify(this.phoneNumbers);
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	 * @return the defaultPhoneNumber
 	 */
 	public KimEntityPhoneInfo getDefaultPhoneNumber() {
-		return this.defaultPhoneNumber;
+		return unNullify(this.defaultPhoneNumber, KimEntityPhoneInfo.class);
 	}
 
 	/**

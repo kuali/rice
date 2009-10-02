@@ -55,21 +55,21 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimE
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
-		return affiliationTypeCode;
+		return unNullify(affiliationTypeCode);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getCampusCode()
 	 */
 	public String getCampusCode() {
-		return campusCode;
+		return unNullify(campusCode);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
-		return entityAffiliationId;
+		return unNullify(entityAffiliationId);
 	}
 
 	public void setAffiliationTypeCode(String affiliationTypeCode) {

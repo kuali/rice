@@ -56,7 +56,7 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	 * @return the id
 	 */
 	public String getId() {
-		return this.id;
+		return unNullify(this.id);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	 * @return the entityId
 	 */
 	public String getEntityId() {
-		return this.entityId;
+		return unNullify(this.entityId);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	 * @return the ethnicityCode
 	 */
 	public String getEthnicityCode() {
-		return this.ethnicityCode;
+		return unNullify(this.ethnicityCode);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	 * @return the ethnicityCodeUnmasked
 	 */
 	public String getEthnicityCodeUnmasked() {
-		return this.ethnicityCodeUnmasked;
+		return unNullify(this.ethnicityCodeUnmasked);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	 * @return the subEthnicityCode
 	 */
 	public String getSubEthnicityCode() {
-		return this.subEthnicityCode;
+		return unNullify(this.subEthnicityCode);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	 * @return the subEthnicityCodeUnmasked
 	 */
 	public String getSubEthnicityCodeUnmasked() {
-		return this.subEthnicityCodeUnmasked;
+		return unNullify(this.subEthnicityCodeUnmasked);
 	}
 
 	/**

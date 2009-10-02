@@ -52,7 +52,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 	
 	public String getPrincipalId() {
-		return this.principalId;
+		return unNullify( this.principalId);
 	}
 
 	public void setPrincipalId(String principalId) {
@@ -60,7 +60,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getPrincipalName() {
-		return this.principalName;
+		return unNullify( this.principalName);
 	}
 
 	public void setPrincipalName(String principalName) {
@@ -68,7 +68,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getEntityId() {
-		return this.entityId;
+		return unNullify( this.entityId);
 	}
 
 	public void setEntityId(String entityId) {

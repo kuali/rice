@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.Defaultable;
+import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
  * Contains common utility methods used for DTOs.  Currently package visible only.  This class could be moved to a more common
@@ -27,7 +28,7 @@ import org.kuali.rice.kns.bo.Defaultable;
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-class DtoUtils {
+final class DtoUtils {
 
 	private DtoUtils() {
 		throw new UnsupportedOperationException("do not call");
@@ -59,6 +60,15 @@ class DtoUtils {
 	 */
 	public static Date unNullify( Date dte ) {
 		return dte != null ? dte : new Date(0L);
+	}
+	
+	/**
+	 *  Returns an new KualiDecimal if the passed in KualiDecimal is null or the passed in KualiDecimal if not null.
+	 *  @param dec the KualiDecimal to unNullify 
+	 *  @return a non-null KualiDecimal.
+	 */
+	public static KualiDecimal unNullify( KualiDecimal dec ) {
+		return dec != null ? dec : new KualiDecimal(0);
 	}
 	
 	/**

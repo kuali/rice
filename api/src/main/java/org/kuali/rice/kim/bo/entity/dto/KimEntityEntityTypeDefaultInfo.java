@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -40,25 +41,25 @@ public class KimEntityEntityTypeDefaultInfo implements Serializable {
 	protected KimEntityEmailInfo defaultEmailAddress;
 	
 	public String getEntityTypeCode() {
-		return this.entityTypeCode;
+		return unNullify( this.entityTypeCode);
 	}
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;
 	}
 	public KimEntityAddressInfo getDefaultAddress() {
-		return this.defaultAddress;
+		return unNullify( this.defaultAddress, KimEntityAddressInfo.class);
 	}
 	public void setDefaultAddress(KimEntityAddress defaultAddress) {
 		this.defaultAddress = new KimEntityAddressInfo(defaultAddress);
 	}
 	public KimEntityPhoneInfo getDefaultPhoneNumber() {
-		return this.defaultPhoneNumber;
+		return unNullify( this.defaultPhoneNumber, KimEntityPhoneInfo.class);
 	}
 	public void setDefaultPhoneNumber(KimEntityPhone defaultPhoneNumber) {
 		this.defaultPhoneNumber = new KimEntityPhoneInfo(defaultPhoneNumber);
 	}
 	public KimEntityEmailInfo getDefaultEmailAddress() {
-		return this.defaultEmailAddress;
+		return unNullify( this.defaultEmailAddress, KimEntityEmailInfo.class);
 	}
 	public void setDefaultEmailAddress(KimEntityEmail defaultEmailAddress) {
 		this.defaultEmailAddress = new KimEntityEmailInfo(defaultEmailAddress);

@@ -68,7 +68,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the entityEmploymentId
 	 */
 	public String getEntityEmploymentId() {
-		return this.entityEmploymentId;
+		return unNullify(this.entityEmploymentId);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the employeeId
 	 */
 	public String getEmployeeId() {
-		return this.employeeId;
+		return unNullify(this.employeeId);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the employmentRecordId
 	 */
 	public String getEmploymentRecordId() {
-		return this.employmentRecordId;
+		return unNullify(this.employmentRecordId);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the entityAffiliationId
 	 */
 	public String getEntityAffiliationId() {
-		return this.entityAffiliationId;
+		return unNullify(this.entityAffiliationId);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the employeeStatusCode
 	 */
 	public String getEmployeeStatusCode() {
-		return this.employeeStatusCode;
+		return unNullify(this.employeeStatusCode);
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the employeeTypeCode
 	 */
 	public String getEmployeeTypeCode() {
-		return this.employeeTypeCode;
+		return unNullify(this.employeeTypeCode);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the primaryDepartmentCode
 	 */
 	public String getPrimaryDepartmentCode() {
-		return this.primaryDepartmentCode;
+		return unNullify(this.primaryDepartmentCode);
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	 * @return the baseSalaryAmount
 	 */
 	public KualiDecimal getBaseSalaryAmount() {
-		return this.baseSalaryAmount;
+		return unNullify( this.baseSalaryAmount );
 	}
 
 	/**

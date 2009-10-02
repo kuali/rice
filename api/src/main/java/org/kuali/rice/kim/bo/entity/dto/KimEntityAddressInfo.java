@@ -84,7 +84,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the entityAddressId
 	 */
 	public String getEntityAddressId() {
-		return this.entityAddressId;
+		return unNullify(this.entityAddressId);
 	}
 	/**
 	 * @param entityAddressId the entityAddressId to set
@@ -96,7 +96,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the addressTypeCode
 	 */
 	public String getAddressTypeCode() {
-		return this.addressTypeCode;
+		return unNullify(this.addressTypeCode);
 	}
 	/**
 	 * @param addressTypeCode the addressTypeCode to set
@@ -108,7 +108,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the entityTypeCode
 	 */
 	public String getEntityTypeCode() {
-		return this.entityTypeCode;
+		return unNullify(this.entityTypeCode);
 	}
 	/**
 	 * @param entityTypeCode the entityTypeCode to set
@@ -120,7 +120,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the cityName
 	 */
 	public String getCityName() {
-		return this.cityName;
+		return unNullify(this.cityName);
 	}
 	/**
 	 * @param cityName the cityName to set
@@ -132,7 +132,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the cityNameUnmasked
 	 */
 	public String getCityNameUnmasked() {
-		return this.cityNameUnmasked;
+		return unNullify(this.cityNameUnmasked);
 	}
 	/**
 	 * @param cityNameUnmasked the cityNameUnmasked to set
@@ -144,7 +144,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the stateCode
 	 */
 	public String getStateCode() {
-		return this.stateCode;
+		return unNullify(this.stateCode);
 	}
 	/**
 	 * @param stateCode the stateCode to set
@@ -156,7 +156,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the stateCodeUnmasked
 	 */
 	public String getStateCodeUnmasked() {
-		return this.stateCodeUnmasked;
+		return unNullify(this.stateCodeUnmasked);
 	}
 	/**
 	 * @param stateCodeUnmasked the stateCodeUnmasked to set
@@ -168,7 +168,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the postalCode
 	 */
 	public String getPostalCode() {
-		return this.postalCode;
+		return unNullify(this.postalCode);
 	}
 	/**
 	 * @param postalCode the postalCode to set
@@ -180,7 +180,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the postalCodeUnmasked
 	 */
 	public String getPostalCodeUnmasked() {
-		return this.postalCodeUnmasked;
+		return unNullify(this.postalCodeUnmasked);
 	}
 	/**
 	 * @param postalCodeUnmasked the postalCodeUnmasked to set
@@ -192,7 +192,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the countryCode
 	 */
 	public String getCountryCode() {
-		return this.countryCode;
+		return unNullify(this.countryCode);
 	}
 	/**
 	 * @param countryCode the countryCode to set
@@ -204,7 +204,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the countryCodeUnmasked
 	 */
 	public String getCountryCodeUnmasked() {
-		return this.countryCodeUnmasked;
+		return unNullify(this.countryCodeUnmasked);
 	}
 	/**
 	 * @param countryCodeUnmasked the countryCodeUnmasked to set
@@ -216,7 +216,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the line1
 	 */
 	public String getLine1() {
-		return this.line1;
+		return unNullify(this.line1);
 	}
 	/**
 	 * @param line1 the line1 to set
@@ -228,7 +228,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the line1Unmasked
 	 */
 	public String getLine1Unmasked() {
-		return this.line1Unmasked;
+		return unNullify(this.line1Unmasked);
 	}
 	/**
 	 * @param line1Unmasked the line1Unmasked to set
@@ -240,7 +240,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the line2
 	 */
 	public String getLine2() {
-		return this.line2;
+		return unNullify(this.line2);
 	}
 	/**
 	 * @param line2 the line2 to set
@@ -252,7 +252,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the line2Unmasked
 	 */
 	public String getLine2Unmasked() {
-		return this.line2Unmasked;
+		return unNullify(this.line2Unmasked);
 	}
 	/**
 	 * @param line2Unmasked the line2Unmasked to set
@@ -264,7 +264,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the line3
 	 */
 	public String getLine3() {
-		return this.line3;
+		return unNullify(this.line3);
 	}
 	/**
 	 * @param line3 the line3 to set
@@ -276,7 +276,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 	 * @return the line3Unmasked
 	 */
 	public String getLine3Unmasked() {
-		return this.line3Unmasked;
+		return unNullify(this.line3Unmasked);
 	}
 	/**
 	 * @param line3Unmasked the line3Unmasked to set

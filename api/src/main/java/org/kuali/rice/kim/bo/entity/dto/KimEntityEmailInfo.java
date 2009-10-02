@@ -63,7 +63,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 * @return the entityEmailId
 	 */
 	public String getEntityEmailId() {
-		return this.entityEmailId;
+		return unNullify(this.entityEmailId);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 * @return the entityTypeCode
 	 */
 	public String getEntityTypeCode() {
-		return this.entityTypeCode;
+		return unNullify(this.entityTypeCode);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 * @return the emailTypeCode
 	 */
 	public String getEmailTypeCode() {
-		return this.emailTypeCode;
+		return unNullify(this.emailTypeCode);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 * @return the emailAddress
 	 */
 	public String getEmailAddress() {
-		return this.emailAddress;
+		return unNullify(this.emailAddress);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	 * @return the emailAddressUnmasked
 	 */
 	public String getEmailAddressUnmasked() {
-		return this.emailAddressUnmasked;
+		return unNullify(this.emailAddressUnmasked);
 	}
 
 	/**

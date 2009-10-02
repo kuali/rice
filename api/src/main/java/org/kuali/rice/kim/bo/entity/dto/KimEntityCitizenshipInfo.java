@@ -57,7 +57,7 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	 * @return the citizenshipStatusCode
 	 */
 	public String getCitizenshipStatusCode() {
-		return this.citizenshipStatusCode;
+		return unNullify(this.citizenshipStatusCode);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	 * @return the countryCode
 	 */
 	public String getCountryCode() {
-		return this.countryCode;
+		return unNullify(this.countryCode);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	 * @return the endDate
 	 */
 	public Date getEndDate() {
-		return this.endDate;
+		return unNullify(this.endDate);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	 * @return the startDate
 	 */
 	public Date getStartDate() {
-		return this.startDate;
+		return unNullify(this.startDate);
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	 * @return the entityCitizenshipId
 	 */
 	public String getEntityCitizenshipId() {
-		return this.entityCitizenshipId;
+		return unNullify( this.entityCitizenshipId);
 	}
 
 	/**

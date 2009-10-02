@@ -20,6 +20,7 @@ import java.util.List;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -41,64 +42,64 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 	protected KimEntityPrivacyPreferencesInfo privacyPreferences;
 	
 	public String getEntityId() {
-		return this.entityId;
+		return unNullify( this.entityId);
 	}
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
 	public KimEntityNameInfo getDefaultName() {
-		return this.defaultName;
+		return unNullify( this.defaultName, KimEntityNameInfo.class);
 	}
 	public void setDefaultName(KimEntityName defaultName) {
 		this.defaultName = new KimEntityNameInfo(defaultName);
 	}
 	public List<KimEntityEntityTypeDefaultInfo> getEntityTypes() {
-		return this.entityTypes;
+		return unNullify( this.entityTypes);
 	}
 	public void setEntityTypes(List<KimEntityEntityTypeDefaultInfo> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
 	public List<KimEntityAffiliationInfo> getAffiliations() {
-		return this.affiliations;
+		return unNullify( this.affiliations);
 	}
 	public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
 		this.affiliations = affiliations;
 	}
 	public KimEntityAffiliationInfo getDefaultAffiliation() {
-		return this.defaultAffiliation;
+		return unNullify( this.defaultAffiliation, KimEntityAffiliationInfo.class);
 	}
 	public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
 		this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
 	}
 	public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
-		return this.primaryEmployment;
+		return unNullify( this.primaryEmployment, KimEntityEmploymentInformationInfo.class);
 	}
 	public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
 		this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
 	}
 	public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
-		return this.externalIdentifiers;
+		return unNullify( this.externalIdentifiers);
 	}
 	public void setExternalIdentifiers(List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
 	public List<KimPrincipalInfo> getPrincipals() {
-		return this.principals;
+		return unNullify( this.principals);
 	}
 	public void setPrincipals(List<KimPrincipalInfo> principals) {
 		this.principals = principals;
 	}
 	
 	public KimEntityEntityTypeDefaultInfo getEntityType(String entityTypeCode) {
-		for ( KimEntityEntityTypeDefaultInfo entType : entityTypes ) {
+		for ( KimEntityEntityTypeDefaultInfo entType : unNullify(entityTypes) ) {
 			if ( entType.getEntityTypeCode().equals( entityTypeCode ) ) {
 				return entType;
 			}
 		}
-		return null;
+		return new KimEntityEntityTypeDefaultInfo();
 	}
     public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
-        return this.privacyPreferences;
+        return unNullify( this.privacyPreferences, KimEntityPrivacyPreferencesInfo.class);
     }
     public void setPrivacyPreferences(
             KimEntityPrivacyPreferencesInfo privacyPreferences) {

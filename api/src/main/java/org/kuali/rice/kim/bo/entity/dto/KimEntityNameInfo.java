@@ -85,7 +85,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the entityNameId
 	 */
 	public String getEntityNameId() {
-		return this.entityNameId;
+		return unNullify(this.entityNameId);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the nameTypeCode
 	 */
 	public String getNameTypeCode() {
-		return this.nameTypeCode;
+		return unNullify(this.nameTypeCode);
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the firstName
 	 */
 	public String getFirstName() {
-		return this.firstName;
+		return unNullify(this.firstName);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the firstNameUnmasked
 	 */
 	public String getFirstNameUnmasked() {
-		return this.firstNameUnmasked;
+		return unNullify(this.firstNameUnmasked);
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the middleName
 	 */
 	public String getMiddleName() {
-		return this.middleName;
+		return unNullify(this.middleName);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the middleNameUnmasked
 	 */
 	public String getMiddleNameUnmasked() {
-		return this.middleNameUnmasked;
+		return unNullify(this.middleNameUnmasked);
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the lastName
 	 */
 	public String getLastName() {
-		return this.lastName;
+		return unNullify(this.lastName);
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the lastNameUnmasked
 	 */
 	public String getLastNameUnmasked() {
-		return this.lastNameUnmasked;
+		return unNullify(this.lastNameUnmasked);
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the title
 	 */
 	public String getTitle() {
-		return this.title;
+		return unNullify(this.title);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the titleUnmasked
 	 */
 	public String getTitleUnmasked() {
-		return this.titleUnmasked;
+		return unNullify(this.titleUnmasked);
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the suffix
 	 */
 	public String getSuffix() {
-		return this.suffix;
+		return unNullify(this.suffix);
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the suffixUnmasked
 	 */
 	public String getSuffixUnmasked() {
-		return this.suffixUnmasked;
+		return unNullify(this.suffixUnmasked);
 	}
 
 	/**
@@ -267,7 +267,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the formattedName
 	 */
 	public String getFormattedName() {
-		return this.formattedName;
+		return unNullify(this.formattedName);
 	}
 
 	/**
@@ -281,7 +281,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	 * @return the formattedNameUnmasked
 	 */
 	public String getFormattedNameUnmasked() {
-		return this.formattedNameUnmasked;
+		return unNullify(this.formattedNameUnmasked);
 	}
 
 	/**

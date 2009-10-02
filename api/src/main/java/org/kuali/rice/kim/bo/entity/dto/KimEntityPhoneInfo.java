@@ -79,7 +79,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the entityPhoneId
 	 */
 	public String getEntityPhoneId() {
-		return this.entityPhoneId;
+		return unNullify(this.entityPhoneId);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the entityTypeCode
 	 */
 	public String getEntityTypeCode() {
-		return this.entityTypeCode;
+		return unNullify(this.entityTypeCode);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the phoneTypeCode
 	 */
 	public String getPhoneTypeCode() {
-		return this.phoneTypeCode;
+		return unNullify(this.phoneTypeCode);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the phoneNumber
 	 */
 	public String getPhoneNumber() {
-		return this.phoneNumber;
+		return unNullify(this.phoneNumber);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the extensionNumber
 	 */
 	public String getExtensionNumber() {
-		return this.extensionNumber;
+		return unNullify(this.extensionNumber);
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the countryCode
 	 */
 	public String getCountryCode() {
-		return this.countryCode;
+		return unNullify(this.countryCode);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the phoneNumberUnmasked
 	 */
 	public String getPhoneNumberUnmasked() {
-		return this.phoneNumberUnmasked;
+		return unNullify(this.phoneNumberUnmasked);
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the extensionNumberUnmasked
 	 */
 	public String getExtensionNumberUnmasked() {
-		return this.extensionNumberUnmasked;
+		return unNullify(this.extensionNumberUnmasked);
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the countryCodeUnmasked
 	 */
 	public String getCountryCodeUnmasked() {
-		return this.countryCodeUnmasked;
+		return unNullify(this.countryCodeUnmasked);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the formattedPhoneNumber
 	 */
 	public String getFormattedPhoneNumber() {
-		return this.formattedPhoneNumber;
+		return unNullify(this.formattedPhoneNumber);
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	 * @return the formattedPhoneNumberUnmasked
 	 */
 	public String getFormattedPhoneNumberUnmasked() {
-		return this.formattedPhoneNumberUnmasked;
+		return unNullify(this.formattedPhoneNumberUnmasked);
 	}
 
 	/**

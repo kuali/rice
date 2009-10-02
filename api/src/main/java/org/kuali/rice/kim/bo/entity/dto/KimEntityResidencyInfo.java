@@ -77,27 +77,27 @@ public class KimEntityResidencyInfo extends KimInfoBase implements KimEntityResi
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getDeterminationMethod()
 	 */
 	public String getDeterminationMethod() {
-		return determinationMethod;
+		return unNullify( determinationMethod);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getEntityId()
 	 */
 	public String getEntityId() {
-		return entityId;
+		return unNullify( entityId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getId()
 	 */
 	public String getId() {
-		return id;
+		return unNullify( id);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getInState()
 	 */
 	public String getInState() {
-		return inStateFlag;
+		return unNullify( inStateFlag);
 	}
 }

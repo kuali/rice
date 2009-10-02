@@ -187,16 +187,23 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			setupEmail(identityManagementPersonDocument, entityType, origEntityType.getEmailAddresses());
 			setupAddress(identityManagementPersonDocument, entityType, origEntityType.getAddresses());
 		} else{
-			kimEntity.setExternalIdentifiers(origEntity.getExternalIdentifiers());
-			kimEntity.setEmploymentInformation(origEntity.getEmploymentInformation());
-			kimEntity.setAffiliations(origEntity.getAffiliations());
-			kimEntity.setNames(origEntity.getNames());
-			kimEntity.setEntityTypes(origEntity.getEntityTypes());
+			if(ObjectUtils.isNotNull(origEntity.getExternalIdentifiers()))
+				kimEntity.setExternalIdentifiers(origEntity.getExternalIdentifiers());
+			if(ObjectUtils.isNotNull(origEntity.getEmploymentInformation()))
+				kimEntity.setEmploymentInformation(origEntity.getEmploymentInformation());
+			if(ObjectUtils.isNotNull(origEntity.getAffiliations()))
+				kimEntity.setAffiliations(origEntity.getAffiliations());
+			if(ObjectUtils.isNotNull(origEntity.getNames()))
+				kimEntity.setNames(origEntity.getNames());
+			if(ObjectUtils.isNotNull(origEntity.getEntityTypes()))
+				kimEntity.setEntityTypes(origEntity.getEntityTypes());
 		}
 		if(creatingNew || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId()))
 			setupPrivacy(identityManagementPersonDocument, kimEntity, origEntity.getPrivacyPreferences());
-		else
-			kimEntity.setPrivacyPreferences(origEntity.getPrivacyPreferences());
+		else{
+			if(ObjectUtils.isNotNull(origEntity.getPrivacyPreferences()))
+				kimEntity.setPrivacyPreferences(origEntity.getPrivacyPreferences());
+		}
 		List <GroupMemberImpl>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
 		List <RoleMemberImpl>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
 		List <KimDelegationImpl> personDelegations = populateDelegations(identityManagementPersonDocument);
@@ -882,8 +889,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		privacyPreferences.setSuppressEmail(identityManagementPersonDocument.getPrivacy().isSuppressEmail());
 		privacyPreferences.setSuppressName(identityManagementPersonDocument.getPrivacy().isSuppressName());
 		privacyPreferences.setSuppressPhone(identityManagementPersonDocument.getPrivacy().isSuppressPhone());
-		privacyPreferences
-				.setSuppressPersonal(identityManagementPersonDocument.getPrivacy().isSuppressPersonal());
+		privacyPreferences.setSuppressPersonal(identityManagementPersonDocument.getPrivacy().isSuppressPersonal());
 		if (ObjectUtils.isNotNull(origPrivacy)) {
 			privacyPreferences.setVersionNumber(origPrivacy.getVersionNumber());
 		}

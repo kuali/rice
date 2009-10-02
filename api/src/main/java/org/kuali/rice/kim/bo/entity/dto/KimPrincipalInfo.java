@@ -29,7 +29,8 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	private String principalId = "";
 	private String principalName = "";
 	private String entityId = "";
-
+	private String password = "";
+	
 	/**
 	 * 
 	 */
@@ -47,6 +48,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 			principalId = unNullify( p.getPrincipalId() );
 			entityId = unNullify( p.getEntityId() );
 			principalName = unNullify( p.getPrincipalName() );
+			password = unNullify( p.getPassword() );
 			active = p.isActive();
 		}
 	}
@@ -75,4 +77,11 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 		this.entityId = entityId;
 	}
 
+	public String getPassword() {
+		return unNullify( this.password);
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

@@ -204,17 +204,18 @@ public class KualiRequestProcessor extends RequestProcessor {
 		} else {
 			userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 		}
-		if (KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND)
-		        && !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment()) {
-    		if (request.getParameter(KNSConstants.BACKDOOR_PARAMETER) != null && request.getParameter(KNSConstants.BACKDOOR_PARAMETER).trim().length() > 0) {
-    			userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-    			userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
-    		}
-		}
 		
 		request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
 		GlobalVariables.setUserSession(userSession);
 		GlobalVariables.clear();
+		if ( StringUtils.isNotBlank( request.getParameter(KNSConstants.BACKDOOR_PARAMETER) ) ) {
+			if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
+				if ( KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
+	    			userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
+	    			org.kuali.rice.kew.web.session.UserSession.getAuthenticatedUser().establishBackdoorWithPrincipalName(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
+				}
+			}
+		}
 		
 		if (MDC.get(MDC_USER) != null) {
 			// abuse the MDC to prevent removing user prematurely if it was set elsewhere (e.g. UserLoginFilter)

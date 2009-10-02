@@ -23,8 +23,13 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
@@ -57,6 +62,9 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	@JoinColumn(name = "EXT_ID_TYP_CD", insertable = false, updatable = false)
 	protected ExternalIdentifierType externalIdentifierType;
 
+	@Transient
+	protected boolean dirtyExternalId = true;	
+
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
 	 */
@@ -83,6 +91,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
+		dirtyExternalId = true;
 	}
 
 	/**
@@ -90,6 +99,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	 */
 	public void setExternalIdentifierTypeCode(String externalIdentifierTypeCode) {
 		this.externalIdentifierTypeCode = externalIdentifierTypeCode;
+		dirtyExternalId = true;		
 	}
 
 	/**
@@ -128,36 +138,50 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
     @Override
 	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeInsert(persistenceBroker);
-		externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+	    evaluateExternalId();
 	}
 	
 	@Override
 	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeUpdate(persistenceBroker);
-        externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		evaluateExternalId();
 	}
 	
 	@Override
 	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
         super.afterLookup(persistenceBroker);
-        externalId = KimCommonUtils.decryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		evaluateExternalId();
 	}
 	
 	@Override
+	@PrePersist
 	public void beforeInsert() {
 		super.beforeInsert();
-		externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		evaluateExternalId();
     }
 
 	@Override
+	@PreUpdate
 	public void beforeUpdate() {
 		super.beforeUpdate();
-        externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		evaluateExternalId();
 	}
 	
-	@javax.persistence.PostLoad 
+	@PostLoad 
 	public void afterLookup(){
-        externalId = KimCommonUtils.decryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		evaluateExternalId();
 	}
-
+	
+	protected void evaluateExternalId() {
+		if ( dirtyExternalId ) {
+			String newId = KimCommonUtils.decryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+			if ( StringUtils.isNotBlank(newId) && (newId != externalId) ) {
+				// Only clear dirty flag if we get back a different non-blank
+				// value...  Just in case an initial decrypt attempt failed
+				// for some unknown reason.
+				dirtyExternalId = false;
+			}
+			externalId = newId;
+		}
+	}
 }

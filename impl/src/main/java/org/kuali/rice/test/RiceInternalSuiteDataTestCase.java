@@ -33,18 +33,25 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 	 */
 	@Override
 	protected void loadSuiteTestData() throws Exception {
-		new SQLDataLoader("file:" + getBaseDir()
-				+ "/../impl/src/test/config/data/DefaultSuiteTestDataKNS.sql", "/")
-				.runSql();
-		BufferedReader reader = new BufferedReader(new FileReader(getBaseDir() + "/../impl/src/test/config/data/KIMDataLoadOrder.txt"));
+		new SQLDataLoader(getKNSDefaultSuiteTestData(), "/").runSql();
+		BufferedReader reader = new BufferedReader(new FileReader(getKIMDataLoadOrderFile()));
 		String line = null;
 		while ((line = reader.readLine()) != null) {
 			if (!StringUtils.isBlank(line)) {
-				new SQLDataLoader("file:" + getBaseDir()
-						+ "/../impl/src/test/config/data/" + line, "/")
-						.runSql();
+				new SQLDataLoader(getKIMSqlFileBaseLocation() + "/" + line, "/").runSql();
 			}
 		}
 	}
 	
+	protected String getKNSDefaultSuiteTestData() {
+	    return "file:" + getBaseDir() + "/../impl/src/test/config/data/DefaultSuiteTestDataKNS.sql";
+	}
+
+	protected String getKIMDataLoadOrderFile() {
+	    return getBaseDir() + "/../impl/src/test/config/data/KIMDataLoadOrder.txt";
+	}
+
+	protected String getKIMSqlFileBaseLocation() {
+	    return "file:" + getBaseDir() + "/../impl/src/test/config/data";
+	}
 }

@@ -17,7 +17,10 @@ import java.util.Set;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
 public interface PostDataLoadEncryptionService {
-    public void checkArguments(Class businessObjectClass, Set<String> attributeNames);
+	
+	public void checkArguments(Class businessObjectClass, Set<String> attributeNames);
+	
+    public void checkArguments(Class businessObjectClass, Set<String> attributeNames, boolean checkOjbEncryptConfig);
 
     public void createBackupTable(Class businessObjectClass);
 

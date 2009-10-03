@@ -186,6 +186,28 @@
 		<servlet-name>edoclite</servlet-name>
 		<servlet-class>org.kuali.rice.kew.edl.EDLServlet</servlet-class>
 	</servlet>
+	
+	<!--  
+	
+		Following servlet and servlet mapping for the PostDataLoadEncryptionServlet are commented out.
+		Uncomment these if you want to run the servlet in order to encrypt some data in the Rice database
+		(this would most likely be used for external identifiers in KIM that require encryption)
+		
+		It is not recommended to enable this service for a production instance except during initial
+		data load.  It is not secured in any way and would allow for easy corruption of data if mishandled.
+	
+	-->
+	<!--
+	<servlet>
+	    <servlet-name>postDataLoadEncryption</servlet-name>
+	    <servlet-class>org.kuali.rice.kns.web.servlet.PostDataLoadEncryptionServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>postDataLoadEncryption</servlet-name>
+		<url-pattern>/postDataLoadEncryption</url-pattern>
+	</servlet-mapping>
+	-->
 
 	<servlet-mapping>
 		<servlet-name>remoting</servlet-name>

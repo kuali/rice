@@ -348,6 +348,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         workflowDocument.routeDocument("routing this document.");
 
         workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), workflowDocument.getRouteHeaderId());
+        
+        /*
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
         assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
         for (Iterator iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
@@ -382,6 +384,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 fail("Searchable Attribute Value base class should be one of the four checked always");
             }
         }
+        */
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);

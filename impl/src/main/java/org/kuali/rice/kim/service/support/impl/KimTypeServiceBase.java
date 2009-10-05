@@ -888,7 +888,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			KimTypeAttributeInfo attr = kimType.getAttributeDefinitionByName(attributeNameKey);
 			String mainAttributeValue = getAttributeValue(originalAttributeSet, attributeNameKey);
 			String delegationAttributeValue = getAttributeValue(newAttributeSet, attributeNameKey);
-
+			attributeErrors = null;
 			if(!StringUtils.equals(mainAttributeValue, delegationAttributeValue)){
 				GlobalVariables.getMessageMap().putError(
 					attributeNameKey, RiceKeyConstants.ERROR_CANT_BE_MODIFIED, 

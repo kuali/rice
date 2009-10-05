@@ -243,11 +243,14 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		for(KimDocumentRoleMember roleMember: roleMembers) {
+			errorsTemp = new AttributeSet();
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-			errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
-			validationErrors.putAll( 
-					attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
-	        memberCounter++;
+			if(!roleMember.isRole()){
+				errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
+				validationErrors.putAll( 
+						attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
+		        memberCounter++;
+			}
     	}
 
 		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
@@ -283,11 +286,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         String errorPath;
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			errorPath = "delegationMembers["+memberCounter+"]";
+			errorsTemp = new AttributeSet();
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
-			errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
-			validationErrors.putAll(
-					attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
-
+			if(!delegationMember.isRole()){
+				errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
+				validationErrors.putAll(
+						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
+			}
 			roleMember = getRoleMemberForDelegation(roleMembers, delegationMember);
 			if(roleMember==null){
 				valid = false;

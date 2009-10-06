@@ -1313,7 +1313,22 @@ public class DocumentTypeXmlParser implements XmlConstants {
             	if (!StringUtils.isEmpty(policyStringValue)){
             		policy.setPolicyStringValue(policyStringValue.toUpperCase());
             		policy.setPolicyValue(Boolean.TRUE);
+            		// if DocumentStatusPolicy, check against allowable values
+            		if (KEWConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            			boolean found = false;
+            			for (int index=0; index<KEWConstants.DOCUMENT_STATUS_POLICY_VALUES.length; index++) {
+            				if (KEWConstants.DOCUMENT_STATUS_POLICY_VALUES[index].equalsIgnoreCase(policyStringValue)){
+            					found = true;
+            					break;
+            				}            					
+            			}
+            			if (!found){
+            				throw new InvalidXmlException("Application Document Status string value: " + policyStringValue + " is invalid.");
+            			}
+            		}
+            		
             	} else {
+            		//DocumentStatusPolicy requires a <stringValue> tag
             		if (KEWConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
             			throw new InvalidXmlException("Application Document Status Policy requires a <stringValue>");            			
             		}

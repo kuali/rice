@@ -36,14 +36,14 @@ public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		if(getLinkedDocument(link) == null)
 			this.getPersistenceBrokerTemplate().store(link);  	
 		//if we want a 2-way linked pair
-		DocumentLink rLink = reverseLink(link);
+		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink(link);
 		if(getLinkedDocument(rLink) == null)
 			this.getPersistenceBrokerTemplate().store(rLink);
 	}
 
 	public void deleteDocumentLink(DocumentLink link) {
 		deleteSingleLinkFromOrgnDoc(link);
-		deleteSingleLinkFromOrgnDoc(reverseLink(link));
+		deleteSingleLinkFromOrgnDoc(DocumentLinkDaoUtil.reverseLink(link));
 	}
 
 	//double delete style
@@ -80,16 +80,6 @@ public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		QueryByCriteria query = new QueryByCriteria(DocumentLink.class, crit);
 		query.addOrderByAscending("orgnDocId");
 		return (DocumentLink) this.getPersistenceBrokerTemplate().getObjectByQuery(query);  
-	}
-
-	private DocumentLink reverseLink(DocumentLink link){
-
-		Long tmp = link.getDestDocId();
-		link.setDocLinkId(null);
-		link.setDestDocId(link.getOrgnDocId());
-		link.setOrgnDocId(tmp);
-
-		return link;
 	}
 
 	private void deleteSingleLinkFromOrgnDoc(DocumentLink link){

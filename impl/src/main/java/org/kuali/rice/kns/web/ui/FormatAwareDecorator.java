@@ -24,6 +24,7 @@ import org.displaytag.properties.MediaTypeEnum;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 
+/** @see #decorate(Object, PageContext, MediaTypeEnum) */
 public class FormatAwareDecorator implements DisplaytagColumnDecorator {
 
     /**
@@ -36,32 +37,65 @@ public class FormatAwareDecorator implements DisplaytagColumnDecorator {
      * @param mediaType
      */
     public Object decorate(Object cellValue, PageContext pageContext, MediaTypeEnum mediaType) throws DecoratorException {
-        Object decoratedOutput = null;
 
         if (null == cellValue) {
-            decoratedOutput = MediaTypeEnum.HTML.equals(mediaType) ? "&nbsp" : KNSConstants.EMPTY_STRING;
+            return getEmptyStringFor(mediaType);
         }
-        //If a column resulting from lookup contains collection values, each of the collection entry
-        //should be printed on one line (i.e. separated by a <BR>). If there is no entry in the
-        //collection, then we'll just print an &nbsp for the column. 
-        else if (cellValue.toString().indexOf("[") == 0 && cellValue.toString().indexOf("]") > 0) {
-            String cellContentToBeParsed = cellValue.toString().substring(1, cellValue.toString().indexOf("]"));
-            if (StringUtils.isNotBlank(cellContentToBeParsed)) {
-                String[] parsed = cellContentToBeParsed.split(",");
-                decoratedOutput = new String();
-                for (int i=0; i<parsed.length; i++) {
-                    decoratedOutput = decoratedOutput + parsed[i] + "<BR>";                    
-                }
-            }
-            else { //if the cellContentToBeParsed is blank
-                decoratedOutput = "&nbsp";
-            }
-        }
-        else {
-            decoratedOutput = MediaTypeEnum.HTML.equals(mediaType) ? new StringBuffer(cellValue.toString()).append("&nbsp;").toString() : CellComparatorHelper.getSanitizedStaticValue(cellValue.toString());
+        
+        final String decoratedOutput;
+        
+        if (isCollection(cellValue)) {
+        	decoratedOutput = createCollectionString(cellValue);
+        } else {
+        	decoratedOutput = MediaTypeEnum.HTML.equals(mediaType) ? cellValue.toString() : CellComparatorHelper.getSanitizedStaticValue(cellValue.toString());
         }
 
+        return StringUtils.isBlank(decoratedOutput) ? getEmptyStringFor(mediaType) : StringUtils.trim(decoratedOutput);
+    }
+    
+    /**
+     * Takes a cellValue which is a collection and creates a String representations.
+     * 
+     * <p>
+     * If a column resulting from lookup contains collection values, each of the collection entry
+     * should be printed on one line (i.e. separated by a <br/>). If there is no entry in the
+     * collection, then we'll just print an &nbsp for the column.
+     * </p>
+     * 
+     * @param cellValue the cell value to convert
+     * @return the string representation of the cell value
+     */
+    private static String createCollectionString(Object cellValue) {
+    	String decoratedOutput = "";
+    	
+    	String cellContentToBeParsed = cellValue.toString().substring(1, cellValue.toString().indexOf("]"));
+        if (StringUtils.isNotBlank(cellContentToBeParsed)) {
+            String[] parsed = cellContentToBeParsed.split(",");
+            for (String elem : parsed) {
+                decoratedOutput = decoratedOutput + elem + "<br/>";                    
+            }
+        }
         return decoratedOutput;
+    }
+    
+    /**
+     * Checks if a cell value is a Collection
+     * 
+     * @param cellValue to check
+     * @return true if a Collection
+     */
+    private static boolean isCollection(Object cellValue) {
+    	return cellValue != null && cellValue.toString().indexOf("[") == 0 && cellValue.toString().indexOf("]") > 0;
+    }
+    
+    /**
+     * Gets an empty string type based on the media type.
+     * 
+     * @param mediaType the media type
+     * @return the empty string 
+     */
+    private static String getEmptyStringFor(MediaTypeEnum mediaType) {
+    	return MediaTypeEnum.HTML.equals(mediaType) ? "&nbsp" : KNSConstants.EMPTY_STRING;
     }
 
 }

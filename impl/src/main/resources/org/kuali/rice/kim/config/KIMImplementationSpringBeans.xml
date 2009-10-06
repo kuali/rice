@@ -96,7 +96,7 @@
 
   <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl"/>
 
-  <!-- 
+  <!--
         Authentication Service
   -->
   <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
@@ -107,17 +107,8 @@
         p:localServiceName="kimAuthenticationService" />
     </property>
   </bean>
-  <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimSoapService"
-        p:service-ref="kimAuthenticationService"
-        p:localServiceName="kimAuthenticationServiceSOAP" />
-    </property>
-    <property name="propertyName" value="kimAuthenticationServiceSOAP.expose"/>
-  </bean>
 
-  <!-- 
+  <!--
         Identity Service
   -->
   <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
@@ -131,7 +122,7 @@
         p:localServiceName="kimIdentityService" />
     </property>
   </bean>
-  
+
   <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -143,7 +134,7 @@
   </bean>
 
 
-  <!-- 
+  <!--
         Role Service
   -->
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
@@ -157,7 +148,7 @@
         p:localServiceName="kimRoleService" />
     </property>
   </bean>
-  
+
   <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -178,19 +169,19 @@
         p:localServiceName="kimRoleUpdateService" />
     </property>
   </bean>
- 
+
   <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleUpdateService"
-        p:localServiceName="kimRoleUpdateServiceSOAP" 
+        p:localServiceName="kimRoleUpdateServiceSOAP"
         p:serviceInterface="org.kuali.rice.kim.service.RoleUpdateService" />
     </property>
     <property name="propertyName" value="kimRoleUpdateServiceSOAP.expose"/>
   </bean>
 
-  <!-- 
+  <!--
         Group Services
   -->
   <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
@@ -203,7 +194,7 @@
         p:localServiceName="kimGroupService" />
     </property>
   </bean>
-  
+
   <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -224,7 +215,7 @@
         p:localServiceName="kimGroupUpdateService" />
     </property>
   </bean>
-  
+
   <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
   	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -236,7 +227,7 @@
     <property name="propertyName" value="kimGroupUpdateServiceSOAP.expose"/>
   </bean>
 
-  <!-- 
+  <!--
         Permission Service
   -->
   <bean id="kimPermissionService" class="org.kuali.rice.kim.service.impl.PermissionServiceImpl"
@@ -251,7 +242,7 @@
         p:localServiceName="kimPermissionService" />
     </property>
   </bean>
-  
+
   <bean class="org.kuali.rice.ksb.messaging.PropertyConditionalKSBExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -285,7 +276,7 @@
     <property name="propertyName" value="kimPermissionServiceSOAP.expose"/>
   </bean>
 
-  <!-- 
+  <!--
         Responsibility Service
   -->
   <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="kimPlatformAwareDao"/>
@@ -493,7 +484,7 @@
             </bean>
         </property>
     </bean>
-    
+
     <bean id="kimPersonLookupable" class="org.kuali.rice.kim.lookup.PersonLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.PersonLookupableHelperServiceImpl"

@@ -351,12 +351,31 @@ public class KualiInquirableImpl implements Inquirable {
     public static final String INQUIRY_TITLE_PREFIX = "title.inquiry.url.value.prependtext";
     protected AnchorHtmlData getHyperLink(Class inquiryClass, Map<String,String> fieldList, String inquiryUrl){
     	AnchorHtmlData a = new AnchorHtmlData(inquiryUrl, KNSConstants.EMPTY_STRING);
-    	a.setTitle(AnchorHtmlData.getTitleText(
-                getKualiConfigurationService().getPropertyString(
-                        INQUIRY_TITLE_PREFIX) + " " +
-                        getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryClass.getName()).getObjectLabel() +
-                        " ", inquiryClass, fieldList));
+    	a.setTitle(HtmlData.getTitleText(this.createTitleText(inquiryClass), inquiryClass, fieldList));
     	return a;
+    }
+    
+    /**
+     * creates the title text for a given BO
+     * 
+     * @param boClass the BO class
+     * @return the title text
+     */
+    private String createTitleText(Class<? extends BusinessObject> boClass) {
+    	String titleText = "";
+    	
+    	final String titlePrefixProp = getKualiConfigurationService().getPropertyString(
+                INQUIRY_TITLE_PREFIX);
+    	if (StringUtils.isNotBlank(titlePrefixProp)) {
+    		titleText += titlePrefixProp + " ";
+    	}
+    	
+    	final String objectLabel = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(boClass.getName()).getObjectLabel();
+    	if (StringUtils.isNotBlank(objectLabel)) {
+    		titleText += objectLabel + " ";
+    	}
+    	
+    	return titleText;
     }
 
     public void addAdditionalSections(List columns, BusinessObject bo) {

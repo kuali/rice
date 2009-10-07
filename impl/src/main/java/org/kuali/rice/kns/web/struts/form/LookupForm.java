@@ -604,8 +604,8 @@ public class LookupForm extends KualiForm {
      * Sets the showMaintenanceLinks attribute value.
      * @param showMaintenanceLinks The showMaintenanceLinks to set.
      */
-    public void setShowMaintenanceLinks(boolean hideMaintenanceLinks) {
-        this.showMaintenanceLinks = hideMaintenanceLinks;
+    public void setShowMaintenanceLinks(boolean showMaintenanceLinks) {
+        this.showMaintenanceLinks = showMaintenanceLinks;
     }
 
     /**

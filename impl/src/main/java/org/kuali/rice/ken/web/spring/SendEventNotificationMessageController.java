@@ -622,8 +622,8 @@ public class SendEventNotificationMessageController extends BaseSendNotification
                         + "  <summary>" + summary + "</summary>\n"
                         + "  <description>" + description + "</description>\n"
                         + "  <location>" + location + "</location>\n"
-                        + "  <startDateTime>" + Util.toXSDDateTimeString(startDate) + "</startDateTime>\n"
-                        + "  <stopDateTime>" + Util.toXSDDateTimeString(stopDate) + "</stopDateTime>\n"
+                        + "  <startDateTime>" + Util.toUIDateTimeString(startDate) + "</startDateTime>\n"
+                        + "  <stopDateTime>" + Util.toUIDateTimeString(stopDate) + "</stopDateTime>\n"
                         + "</event>"
 			+ NotificationConstants.XML_MESSAGE_CONSTANTS.CONTENT_CLOSE);
 

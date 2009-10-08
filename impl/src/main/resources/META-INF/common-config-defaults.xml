@@ -202,7 +202,7 @@
     <param name="notification.concurrent.jobs" override="false">true</param>
 
 	<param name="kcb.messaging.synchronous" override="false">false</param>
-    <param name="kcb.messageprocessing.startDelayMS" override="false">50000</param>
+    <param name="kcb.messageprocessing.startDelayMS" override="false">75000</param>
     <param name="kcb.messageprocessing.repeatIntervalMS" override="false">30000</param>
     <param name="kcb.quartz.group" override="false">KCB-Delivery</param>
     <param name="kcb.quartz.job.name" override="false">MessageProcessingJobDetail</param>

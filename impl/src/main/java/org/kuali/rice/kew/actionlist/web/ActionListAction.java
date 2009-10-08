@@ -50,6 +50,7 @@ import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -216,11 +217,45 @@ public class ActionListAction extends KualiAction {
             Preferences preferences = getUserSession(request).getPreferences();
 
             if (!StringUtils.isEmpty(form.getDelegationId())) {
-                uSession.getActionListFilter().setDelegatorId(form.getDelegationId());
-                uSession.getActionListFilter().setExcludeDelegatorId(false);
-                actionList = null;
+            	if (!KEWConstants.DELEGATION_DEFAULT.equals(form.getDelegationId())) {
+            		// If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
+            		// then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
+            		// but the secondary drop-down's value has been altered; but if one of these alteration situations does not apply, reset the
+            		// secondary delegation drop-down.
+            		if (StringUtils.isNotBlank(form.getPrimaryDelegateId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId())){
+            			if (form.getPrimaryDelegateId().equals(request.getParameter("oldPrimaryDelegateId")) &&
+            					!form.getDelegationId().equals(request.getParameter("oldDelegationId"))) {
+            				form.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
+            			} else {
+            				form.setDelegationId(KEWConstants.DELEGATION_DEFAULT);
+            			}
+            		} else if (StringUtils.isNotBlank(uSession.getActionListFilter().getPrimaryDelegateId()) &&
+            				!KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(uSession.getActionListFilter().getPrimaryDelegateId())) {
+            			// If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
+            			// drop-down has a non-default value selected, then reset the primary delegation filtering.
+            			uSession.getActionListFilter().setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
+            		}
+            	}
+            	// Enable the secondary delegation filtering.
+           		uSession.getActionListFilter().setDelegatorId(form.getDelegationId());
+           		uSession.getActionListFilter().setExcludeDelegatorId(false);
+           		actionList = null;
             }
 
+            if (!StringUtils.isEmpty(form.getPrimaryDelegateId())) {
+            	// If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
+            	// drop-down has a non-default value selected, then reset the secondary delegation filtering.
+            	if (StringUtils.isBlank(form.getDelegationId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId()) && 
+            			StringUtils.isNotBlank(uSession.getActionListFilter().getDelegatorId()) &&
+            					!KEWConstants.DELEGATION_DEFAULT.equals(uSession.getActionListFilter().getDelegatorId())) {
+            		uSession.getActionListFilter().setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
+            	}
+            	// Enable the primary delegation filtering.
+            	uSession.getActionListFilter().setPrimaryDelegateId(form.getPrimaryDelegateId());
+            	uSession.getActionListFilter().setExcludeDelegatorId(false);
+            	actionList = null;
+            }
+            
             // if the user has changed, we need to refresh the action list
             if (!principalId.equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
@@ -258,6 +293,13 @@ public class ActionListAction extends KualiAction {
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
             }
 
+            // Build the drop-down of primary delegates.
+            if (KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getPrimaryDelegateFilter())) {
+            	Collection<Recipient> pDelegates = actionListSrv.findUserPrimaryDelegations(principalId);
+            	form.setPrimaryDelegates(getWebFriendlyRecipients(pDelegates));
+            	form.setPrimaryDelegateId(uSession.getActionListFilter().getPrimaryDelegateId());
+            }
+            
             form.setFilterLegend(uSession.getActionListFilter().getFilterLegend());
             plog.log("Setting attributes");
 
@@ -671,6 +713,22 @@ public class ActionListAction extends KualiAction {
 	return start(mapping, form, request, response);
     }
 
+    /**
+     * Navigate to the Action List Filter page, preserving any newly-modified primary/secondary delegation filters as necessary.
+     */
+    public ActionForward viewFilter(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	start(mapping, actionForm, request, response);
+    	return mapping.findForward("viewFilter");
+    }
+    
+    /**
+     * Navigate to the user's Preferences page, preserving any newly-modified primary/secondary delegation filters as necessary.
+     */
+    public ActionForward viewPreferences(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	start(mapping, actionForm, request, response);
+    	return mapping.findForward("viewPreferences");
+    }
+    
     private boolean isActionCompatibleRequest(ActionItemActionListExtension actionItem, String actionTakenCode) {
         boolean actionCompatible = false;
         String requestCd = actionItem.getActionRequestCd();

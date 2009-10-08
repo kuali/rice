@@ -25,6 +25,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -59,6 +60,8 @@ public class ActionListForm extends KualiForm {
     private Boolean hasCustomActions;
     private Boolean routeLogPopup;
     private Boolean documentPopup;
+    private List<WebFriendlyRecipient> primaryDelegates;
+    private String primaryDelegateId;
 
     private Boolean hasDisplayParameters;
     
@@ -375,4 +378,20 @@ public class ActionListForm extends KualiForm {
 		this.hasDisplayParameters = hasDisplayParameters;
 	}
 
+	public List<WebFriendlyRecipient> getPrimaryDelegates() {
+		return this.primaryDelegates;
+	}
+
+	public void setPrimaryDelegates(List<WebFriendlyRecipient> primaryDelegates) {
+		this.primaryDelegates = primaryDelegates;
+	}
+
+	public String getPrimaryDelegateId() {
+		return this.primaryDelegateId;
+	}
+
+	public void setPrimaryDelegateId(String primaryDelegateId) {
+		this.primaryDelegateId = primaryDelegateId;
+	}
+	
 }

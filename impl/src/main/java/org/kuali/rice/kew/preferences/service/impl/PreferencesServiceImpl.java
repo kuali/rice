@@ -72,6 +72,7 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.refreshRate";
     private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.pageSize";
     private static final String DELEGATOR_FILTER_KEY = "DELEGATOR_FILTER";
+    private static final String PRIMARY_DELEGATE_FILTER_KEY = "PRIMARY_DELEGATE_FILTER";
     public static final String USE_OUT_BOX = "USE_OUT_BOX";
     private static final String COLUMN_LAST_APPROVED_DATE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
     public static final String COLUMN_CURRENT_NODE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
@@ -106,6 +107,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, principalId, preferences).getOptionVal());
+        preferences.setPrimaryDelegateFilter(getOption(PRIMARY_DELEGATE_FILTER_KEY, KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, principalId, preferences).getOptionVal());
         preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
         preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
 
@@ -171,6 +173,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionsMap.put(EMAIL_NOTIFY_PRIMARY_KEY, preferences.getNotifyPrimaryDelegation());
         optionsMap.put(EMAIL_NOTIFY_SECONDARY_KEY, preferences.getNotifySecondaryDelegation());
         optionsMap.put(DELEGATOR_FILTER_KEY, preferences.getDelegatorFilter());
+        optionsMap.put(PRIMARY_DELEGATE_FILTER_KEY, preferences.getPrimaryDelegateFilter());
         optionsMap.put(COLUMN_LAST_APPROVED_DATE_KEY, preferences.getShowDateApproved());
         optionsMap.put(COLUMN_CURRENT_NODE_KEY, preferences.getShowCurrentNode());
         if (ConfigContext.getCurrentContextConfig().getOutBoxOn()) {

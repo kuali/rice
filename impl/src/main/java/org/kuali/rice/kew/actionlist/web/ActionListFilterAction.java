@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.comparators.ComparableComparator;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -97,7 +98,14 @@ public class ActionListFilterAction extends KualiAction {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
         UserSession session = getUserSession(request);
-        session.setActionListFilter(filterForm.getLoadedFilter());
+        ActionListFilter alFilter = filterForm.getLoadedFilter();
+        if (StringUtils.isNotBlank(alFilter.getDelegatorId()) && !KEWConstants.DELEGATION_DEFAULT.equals(alFilter.getDelegatorId()) &&
+        		StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
+        	// If the primary and secondary delegation drop-downs are both visible and are both set to non-default values,
+        	// then reset the secondary delegation drop-down to its default value.
+        	alFilter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
+        }
+        session.setActionListFilter(alFilter);
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
         if (GlobalVariables.getMessageMap().isEmpty()) {
             return mapping.findForward("viewActionList");

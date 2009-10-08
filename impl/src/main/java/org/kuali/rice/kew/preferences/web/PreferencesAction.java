@@ -80,6 +80,7 @@ public class PreferencesAction extends KewKualiAction {
     public ActionMessages initForm(HttpServletRequest request, ActionForm form) throws Exception {
         request.setAttribute("actionListContent", KEWConstants.ACTION_LIST_CONTENT);
         getDelegatorFilterChoices(request);
+        getPrimaryDelegateFilterChoices(request);
         PreferencesForm prefForm = (PreferencesForm)form;
         prefForm.setShowOutbox(ConfigContext.getCurrentContextConfig().getOutBoxOn());
         return null;
@@ -90,6 +91,13 @@ public class PreferencesAction extends KewKualiAction {
         delegatorFilterChoices.add(new KeyValue(KEWConstants.DELEGATORS_ON_FILTER_PAGE, KEWConstants.DELEGATORS_ON_FILTER_PAGE));
         delegatorFilterChoices.add(new KeyValue(KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
         request.setAttribute("delegatorFilter", delegatorFilterChoices);
+    }
+    
+    public void getPrimaryDelegateFilterChoices(HttpServletRequest request) {
+    	List<KeyValue> primaryDelegateFilterChoices = new ArrayList<KeyValue>();
+    	primaryDelegateFilterChoices.add(new KeyValue(KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE));
+        primaryDelegateFilterChoices.add(new KeyValue(KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE));
+        request.setAttribute("primaryDelegateFilter", primaryDelegateFilterChoices);
     }
 
     private static UserSession getUserSession(HttpServletRequest request) {

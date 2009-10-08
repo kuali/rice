@@ -105,6 +105,9 @@
   <bean id="enUserOptionsDAO" parent="kewJpaParent"
     class="org.kuali.rice.kew.useroptions.dao.impl.UserOptionsDaoJpaImpl" />
 
+  <bean id="enDocumentLinkDAO" parent="kewJpaParent" 
+  	class="org.kuali.rice.kew.documentlink.dao.impl.DocumentLinkDAOJpaImpl" />
+  </bean>
 
   <bean
     class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">

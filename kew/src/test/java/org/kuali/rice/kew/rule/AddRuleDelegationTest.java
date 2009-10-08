@@ -18,11 +18,14 @@ package org.kuali.rice.kew.rule;
 
 import java.util.List;
 
+import mocks.MockDocumentRequeuerImpl;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -34,10 +37,55 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AddRuleDelegationTest extends KEWTestCase {
+	
+	private static final String DELEGATE_USER = "user2";
+	private static final String DELEGATE_USER2 = "pmckown";
+
+	private static final String DOCTYPE = "AddDelegationTest_DocType";
+	private static final String RULE_TEMPLATE = "AddDelegationTest_RuleTemplate";
+	private static final String DELEGATION_TEMPLATE = "AddDelegationTest_DelegationTemplate";
 
 	protected void loadTestData() throws Exception {
 		loadXmlFile("AddRuleDelegationTestData.xml");
 	}
+	
+	/**
+	 * 
+	 * Tests that adding a delegation for a rule for which a document has a pending action request causes
+	 * the document to be requeued. See KULRICE-3575
+	 * 
+	 * @throws Exception
+	 */
+    @Test public void testNewDelegationTriggersRequeue() throws Exception {
+    	String docType = "RiceDocument.testNewDelegationTriggersRequeue";
+    	
+    	// route a document of this type
+    	WorkflowDocument wd = new WorkflowDocument(getPrincipalIdForName("ewestfal"), DOCTYPE);
+    	wd.routeDocument("");
+    	
+    	// create and save a rule delegation 
+    	List rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(RULE_TEMPLATE, DOCTYPE);
+    	assertTrue("assuming there is 1 rule", rules != null && rules.size() == 1);
+    	
+    	RuleBaseValues originalRule = (RuleBaseValues)rules.get(0);
+    	List<RuleResponsibility> responsibilities = originalRule.getResponsibilities();
+    	assertTrue("assuming there is 1 responsibility", responsibilities != null && responsibilities.size() == 1);
+    	
+    	RuleResponsibility originalResp = responsibilities.get(0);
+    	RuleTemplate rt = originalRule.getRuleTemplate();
+    	KimPrincipal principal2 = KEWServiceLocator.getIdentityHelperService().getPrincipal(new NetworkIdDTO(DELEGATE_USER));
+
+    	// clear the current set of requeued document ids
+		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
+
+		// save the new rule delegation
+		// this *SHOULD* requeue, but will it?
+		saveNewRuleDelegation(originalRule, rt, originalResp, principal2);
+    	
+		assertTrue("our document should have been requeued!", 
+				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(wd.getRouteHeaderId()));
+    }
+
 
 	/**
 	 * Tests adding a delegation rule.  The implementation is mostly a cut-and-paste copy of
@@ -45,13 +93,6 @@ public class AddRuleDelegationTest extends KEWTestCase {
 	 */
 	@Test
 	public void testAddRuleDelegation() throws Exception {
-
-		final String DELEGATE_USER = "user2";
-		final String DELEGATE_USER2 = "pmckown";
-
-		final String DOCTYPE = "AddDelegationTest_DocType";
-		final String RULE_TEMPLATE = "AddDelegationTest_RuleTemplate";
-		final String DELEGATION_TEMPLATE = "AddDelegationTest_DelegationTemplate";
 
 		List<RuleBaseValues> existingRules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(RULE_TEMPLATE, DOCTYPE);
 		assertNotNull(existingRules);

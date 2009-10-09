@@ -227,6 +227,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
     
     
+    /**
+     * @deprecated as of Rice 1.0.1 (KULRICE-1652), Use {@link #getRouteHeaderId()} instead. 
+     */
+    @Deprecated
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="DOC_HDR_ID")
     public DocumentRouteHeaderValue getRouteHeader() {
@@ -350,6 +354,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.docName = docName;
     }
 
+    /**
+     * @deprecated as of Rice 1.0.1 (KULRICE-1652), Use {@link #setRouteHeaderId(Long)} instead. 
+     */
+    @Deprecated
     public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
         this.routeHeader = routeHeader;
     }

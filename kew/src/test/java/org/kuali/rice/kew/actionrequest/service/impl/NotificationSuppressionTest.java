@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actionrequest.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import mocks.MockDocumentRequeuerImpl;
 import mocks.MockEmailNotificationService;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -137,8 +138,8 @@ public class NotificationSuppressionTest extends KEWTestCase {
 		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), TEST_DOC_TYPE);
 		document.routeDocument("");
 
-		// the responsible party should have been notified
-		assertTrue(1 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
+		assertTrue("the responsible party should have been notified",
+				1 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 		
 		getMockEmailService().resetReminderCounts();
@@ -181,19 +182,21 @@ public class NotificationSuppressionTest extends KEWTestCase {
 		delegationResponsibility.setRuleResponsibilityName("user2");
 		delegationResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 
-		// this *SHOULD* requeue, but it isn't
+		// reset mock service test data
+		getMockEmailService().resetReminderCounts();
+		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
+		
+		// this *SHOULD* requeue
 		KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 
-		getMockEmailService().resetReminderCounts();
+		assertTrue("document should have been requeued",
+				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(document.getRouteHeaderId()));
 		
-		// requeue
-		new DocumentRequeuerImpl().requeueDocument(document.getRouteHeaderId());
-		
-		// should have notified user2
-		assertTrue(1 == getMockEmailService().immediateReminderEmailsSent("user2", document.getRouteHeaderId(), 
+		assertTrue("should have notified user2", 
+				1 == getMockEmailService().immediateReminderEmailsSent("user2", document.getRouteHeaderId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
-		// the responsible party that is delegating should not be notified
-		assertTrue(0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
+		assertTrue("the responsible party that is delegating should not be notified",
+				0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 
 		getMockEmailService().resetReminderCounts();
@@ -201,13 +204,14 @@ public class NotificationSuppressionTest extends KEWTestCase {
 		// now if we requeue, nobody should get notified
 		new DocumentRequeuerImpl().requeueDocument(document.getRouteHeaderId());
 
-		assertTrue(0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getRouteHeaderId(), 
+		assertTrue("nobody should have been notified", 
+				0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getRouteHeaderId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
-		assertTrue(0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
+		assertTrue("nobody should have been notified",
+				0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 		
 		getMockEmailService().resetReminderCounts();
-	
 	}
 	
     private MockEmailNotificationService getMockEmailService() {

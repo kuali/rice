@@ -658,6 +658,39 @@ KualiLookupableHelperServiceImpl {
 
 		if(docType == null) {
 		    super.performClear(lookupForm);
+		    
+		    // Retrieve the detailed/superuser search statuses.
+	        boolean detailed=false;
+	        if(this.getParameters().containsKey("isAdvancedSearch")) {
+	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
+	        } else if(fixedParameters.containsKey("isAdvancedSearch")) {
+	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("isAdvancedSearch")[0]);
+	        }
+	        
+	        boolean superSearch=false;
+	        if(this.getParameters().containsKey(("superUserSearch"))) {
+	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
+	        } else if(fixedParameters.containsKey("superUserSearch")) {
+	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("superUserSearch")[0]);
+	        }
+	        
+	        // Repopulate the fields indicating detailed/superuser search status.
+	        int fieldsRepopulated = 0;
+	        List<Row> rows = super.getRows();
+	        int index = rows.size() - 1;
+	        while (index >= 0 && fieldsRepopulated < 2) {
+	        	for (Field tempField : rows.get(index).getFields()) {
+	        		if ("isAdvancedSearch".equals(tempField.getPropertyName())) {
+	        			tempField.setPropertyValue(detailed?"YES":"NO");
+	        			fieldsRepopulated++;
+	        		}
+	        		else if ("superUserSearch".equals(tempField.getPropertyName())) {
+	        			tempField.setPropertyValue(superSearch?"YES":"NO");
+	        			fieldsRepopulated++;
+	        		}
+	        	}
+	        	index--;
+	        }
 		} else {
     		DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fixedParameters);
     		docCriteria = docType.getDocumentSearchGenerator().clearSearch(docCriteria);

@@ -211,7 +211,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List <RoleResponsibilityActionImpl> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 		List <RoleMemberAttributeDataImpl> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
 		bos.add(kimEntity);
-		bos.add(kimEntity.getPrivacyPreferences());
+		if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
+			bos.add(kimEntity.getPrivacyPreferences());
 		bos.addAll(groupPrincipals);
 		bos.addAll(rolePrincipals);
 		bos.addAll(roleRspActions);

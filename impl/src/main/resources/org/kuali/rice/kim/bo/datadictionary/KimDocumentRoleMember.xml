@@ -48,7 +48,7 @@
   <bean id="DocRoleMember-memberNamespaceCode-parentBean" parent="KimAttributes-namespaceCode" abstract="true" p:name="memberNamespaceCode" p:required="false" p:label="Member Namespace"/>
   
   <bean id="DocRoleMember-memberName" parent="DocRoleMember-memberName-parentBean"/>
-  <bean id="DocRoleMember-memberName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberName" p:forceUppercase="false" p:label="Member Name" p:shortLabel="Name" p:maxLength="40" p:required="false">
+  <bean id="DocRoleMember-memberName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberName" p:forceUppercase="false" p:label="Member Name" p:shortLabel="Name" p:maxLength="100" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>

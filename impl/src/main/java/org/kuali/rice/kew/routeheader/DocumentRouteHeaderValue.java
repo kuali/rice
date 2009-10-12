@@ -542,7 +542,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      */
     public void updateAppDocStatus(java.lang.String appDocStatus) throws WorkflowRuntimeException{
        	//validate against allowable values if defined
-    	if (appDocStatus != null && appDocStatus.length() > 0){    		
+    	if (appDocStatus != null && appDocStatus.length() > 0 && !appDocStatus.equalsIgnoreCase(this.appDocStatus)){    		
     		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(this.getDocumentTypeId());    	
     		if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
     			Iterator iter = documentType.getValidApplicationStatuses().iterator();

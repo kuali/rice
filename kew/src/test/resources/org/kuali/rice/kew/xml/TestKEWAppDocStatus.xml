@@ -151,5 +151,39 @@
                 </requests>
             </routeNodes>
         </documentType>
+        <documentType>
+            <name>TestAppDocStatusDoc3</name>
+            <description>Create a test document</description>
+            <label>Test Status Doc 3</label>
+            <postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+            <superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+            <blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+            <defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+            <docHandler>_blank</docHandler>
+            <policies>
+              <policy>
+                    <name>DOCUMENT_STATUS_POLICY</name>
+                    <stringValue>app</stringValue>
+              </policy>
+            </policies>
+            <routePaths>
+                <routePath>
+                    <start name="Initiated" nextNode="DestinationApproval" />
+                    <requests name="DestinationApproval"/>
+                    <requests name="AccountApproval" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="Initiated">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="DestinationApproval">
+                    <ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
+                </requests>
+                <requests name="AccountApproval">
+                    <ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
 </documentTypes>
 </data>

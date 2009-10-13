@@ -1184,6 +1184,8 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
         Note newNote = kualiDocumentFormBase.getNewNote();
+        newNote.setNotePostedTimestampToCurrent();
+
         String attachmentTypeCode = null;
         
         FormFile attachmentFile = kualiDocumentFormBase.getAttachmentFile();

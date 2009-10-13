@@ -79,13 +79,20 @@ public class Note extends PersistableBusinessObjectBase {
     public Note() {
         super();
 
-        Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
-        this.setNotePostedTimestamp(now);
+        this.setNotePostedTimestampToCurrent();
         this.setNoteText(KNSConstants.EMPTY_STRING);
         // for now just do this
         this.setNoteTypeCode("DH");
 
         this.setAdHocRouteRecipient(new AdHocRoutePerson());
+    }
+    
+    /**
+     * Sets the {@link #setNotePostedTimestamp(Timestamp)} to the current time.
+     */
+    public void setNotePostedTimestampToCurrent() {
+    	final Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
+    	this.setNotePostedTimestamp(now);
     }
 
     /**

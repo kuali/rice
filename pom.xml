@@ -473,19 +473,19 @@
                 <groupId>tomcat</groupId>
                 <artifactId>jasper-compiler</artifactId>
                 <version>${jasper-compiler.version}</version>
-                <scope>compile</scope>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>tomcat</groupId>
                 <artifactId>jasper-runtime</artifactId>
                 <version>${jasper-runtime.version}</version>
-                <scope>runtime</scope>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>tomcat</groupId>
                 <artifactId>jasper-compiler-jdt</artifactId>
                 <version>${jasper-compiler-jdt.version}</version>
-                <scope>runtime</scope>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>xalan</groupId>

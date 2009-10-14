@@ -151,7 +151,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         	return forward;
     }
 
-	private ActionForward getBasePathForward(HttpServletRequest request, ActionForward forward){
+	protected ActionForward getBasePathForward(HttpServletRequest request, ActionForward forward){
 		ActionForward newDest = new ActionForward();
         KimCommonUtils.copyProperties(newDest, forward);
         newDest.setPath(getBasePath(request));

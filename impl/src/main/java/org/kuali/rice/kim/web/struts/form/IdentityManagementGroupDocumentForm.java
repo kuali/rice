@@ -34,7 +34,7 @@ import org.kuali.rice.kim.util.KimConstants;
  *
  */
 public class IdentityManagementGroupDocumentForm extends IdentityManagementDocumentFormBase {
-	private static final long serialVersionUID = -107836689162363400L;
+	protected static final long serialVersionUID = -107836689162363400L;
 	
 	{
 		requiredNonEditableProperties.add("methodToCall");
@@ -73,7 +73,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 		return getMemberBusinessObjectName(member.getMemberTypeCode());
 	}
 
-	private String getMemberFieldConversions(String memberTypeCode){
+	protected String getMemberFieldConversions(String memberTypeCode){
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return "principalId:member.memberId,principalName:member.memberName";
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
@@ -83,7 +83,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 		return "";
 	}
 
-	private String getMemberBusinessObjectName(String memberTypeCode){
+	protected String getMemberBusinessObjectName(String memberTypeCode){
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return PersonImpl.class.getName();
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))

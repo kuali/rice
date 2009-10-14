@@ -38,7 +38,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class KimDocumentResponsibilityRule extends DocumentRuleBase implements AddResponsibilityRule {
 
-	private static final String ERROR_PATH = "document.responsibility.responsibilityId";
+	protected static final String ERROR_PATH = "document.responsibility.responsibilityId";
 
 	public boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent) {
 		KimDocumentRoleResponsibility newResponsibility = addResponsibilityEvent.getResponsibility();

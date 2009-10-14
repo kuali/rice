@@ -72,7 +72,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		return rulePassed;
 	} 
 
-	private boolean validAssignGroup(IdentityManagementPersonDocument document, PersonDocumentGroup newGroup){
+	protected boolean validAssignGroup(IdentityManagementPersonDocument document, PersonDocumentGroup newGroup){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, newGroup.getNamespaceCode());

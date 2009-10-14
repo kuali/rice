@@ -29,9 +29,9 @@ public class RoutingRuleDelegationMaintainableBusRule extends RoutingRuleMaintai
 {
 
 	// Name of the section in the xml file.
-	private static final String PERSON_RESP_SECTION = "delegationRuleBaseValues.personResponsibilities";
+	protected static final String PERSON_RESP_SECTION = "delegationRuleBaseValues.personResponsibilities";
 	// Name of the section in the xml file.
-	private static final String GROUP_RESP_SECTION = "delegationRuleBaseValues.groupResponsibilities";
+	protected static final String GROUP_RESP_SECTION = "delegationRuleBaseValues.groupResponsibilities";
 
 	/**
 	 * Returns the new RuleBaseValues business object. Overrides the base

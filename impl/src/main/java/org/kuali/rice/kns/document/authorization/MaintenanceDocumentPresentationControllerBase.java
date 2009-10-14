@@ -34,7 +34,7 @@ public class MaintenanceDocumentPresentationControllerBase extends
 //	private static final Logger LOG = Logger
 //			.getLogger(MaintenanceDocumentPresentationControllerBase.class);
 
-	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	public boolean canCreate(Class boClass) {
 		return getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(

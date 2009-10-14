@@ -41,7 +41,7 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  */
 public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		implements DocumentAuthorizer {
-	private static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
+	protected static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
 	public static final String PRE_ROUTING_ROUTE_NAME = "PreRoute";
 	public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
 	public static final String USER_SESSION_METHOD_TO_CALL_OBJECT_KEY = "METHOD_TO_CALL_KEYS_METHOD_OBJECT_KEY";
@@ -243,7 +243,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				user.getPrincipalId()) && this.isDocumentInitiator(document, user);
 	}
 	
-	private final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
+	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)){
 		    DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(Long.parseLong(document.getDocumentNumber()));
 	        if (routeHeader.getRootBranch() == null) {
@@ -256,7 +256,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		return canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, user);
 	}
 
-	private boolean canTakeRequestedAction(Document document,
+	protected boolean canTakeRequestedAction(Document document,
 			String actionRequestCode, Person user) {
 		Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
 		additionalPermissionDetails.put(KimAttributes.ACTION_REQUEST_CD,
@@ -284,7 +284,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		}
 	}
 
-	private void addStandardAttributes(Document document,
+	protected void addStandardAttributes(Document document,
 			Map<String, String> attributes) {
 		KualiWorkflowDocument wd = document.getDocumentHeader()
 				.getWorkflowDocument();
@@ -302,12 +302,12 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				.getDocRouteStatus());
 	}
 	
-	private boolean isDocumentInitiator(Document document, Person user) {
+	protected boolean isDocumentInitiator(Document document, Person user) {
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
     }
 	
-	private RouteHeaderService getRouteHeaderService() {
+	protected RouteHeaderService getRouteHeaderService() {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 

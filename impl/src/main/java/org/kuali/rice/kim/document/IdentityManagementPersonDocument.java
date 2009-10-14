@@ -60,7 +60,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
  */
 public class IdentityManagementPersonDocument extends IdentityManagementKimDocument {
 
-    private static final long serialVersionUID = -534993712085516925L;
+    protected static final long serialVersionUID = -534993712085516925L;
     // principal data
     protected String principalId;
     protected String principalName;
@@ -321,7 +321,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         }
     }
 
-    private void setEmployeeRecordIds(){
+    protected void setEmployeeRecordIds(){
     	List<KimEntityEmploymentInformationInfo> empInfos = getUiDocumentService().getEntityEmploymentInformationInfo(getEntityId());
         for(PersonDocumentAffiliation affiliation: getAffiliations()) {
             int employeeRecordCounter = CollectionUtils.isEmpty(empInfos) ? 0 : empInfos.size();
@@ -409,8 +409,8 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         return rulePassed;
 	}
 
-	private transient DocumentHelperService documentHelperService;
-	private transient UiDocumentService uiDocumentService;
+	protected transient DocumentHelperService documentHelperService;
+	protected transient UiDocumentService uiDocumentService;
 		
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {

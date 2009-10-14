@@ -74,21 +74,21 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule, AddRoleRule, AddPersonDocumentRoleQualifierRule, AddPersonDelegationMemberRule {
 
-//	private static final Logger LOG = Logger.getLogger( IdentityManagementPersonDocumentRule.class );
+//	protected static final Logger LOG = Logger.getLogger( IdentityManagementPersonDocumentRule.class );
 	
-	private AddGroupRule addGroupRule;
-	private AddRoleRule  addRoleRule;
-	private AddPersonDelegationMemberRule addPersonDelegationMemberRule;
-	private IdentityManagementKimDocumentAuthorizer authorizer;
-	private BusinessObjectService businessObjectService;
-	private IdentityService identityService;
-	private RoleService roleService;
-	private UiDocumentService uiDocumentService;
-	private Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
-	private Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
-	private Class<? extends AddPersonDelegationMemberRule> addPersonDelegationMemberRuleClass = PersonDocumentDelegationMemberRule.class;
+	protected AddGroupRule addGroupRule;
+	protected AddRoleRule  addRoleRule;
+	protected AddPersonDelegationMemberRule addPersonDelegationMemberRule;
+	protected IdentityManagementKimDocumentAuthorizer authorizer;
+	protected BusinessObjectService businessObjectService;
+	protected IdentityService identityService;
+	protected RoleService roleService;
+	protected UiDocumentService uiDocumentService;
+	protected Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
+	protected Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
+	protected Class<? extends AddPersonDelegationMemberRule> addPersonDelegationMemberRuleClass = PersonDocumentDelegationMemberRule.class;
 	
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
@@ -129,7 +129,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         return valid;
     }
     
-    private boolean validateEntityInformation(boolean isCreatingNew, IdentityManagementPersonDocument personDoc){
+    protected boolean validateEntityInformation(boolean isCreatingNew, IdentityManagementPersonDocument personDoc){
         boolean valid = true;
         boolean canOverridePrivacyPreferences = getUIDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDoc.getPrincipalId());
         valid &= validTaxId(personDoc);
@@ -150,7 +150,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     }
     
     @SuppressWarnings("unchecked")
-	private boolean validDuplicatePrincipalName(IdentityManagementPersonDocument personDoc){
+	protected boolean validDuplicatePrincipalName(IdentityManagementPersonDocument personDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("principalName", personDoc.getPrincipalName());
     	List<KimPrincipalImpl> prncplImpls = (List<KimPrincipalImpl>)getBusinessObjectService().findMatching(KimPrincipalImpl.class, criteria);
@@ -167,7 +167,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return rulePassed;
     }
 
-	private boolean checkUnassignableRoles(IdentityManagementPersonDocument document) {
+	protected boolean checkUnassignableRoles(IdentityManagementPersonDocument document) {
 		boolean valid = true;
     	Map<String,Set<String>> unassignableRoles = getAuthorizer( document ).getUnassignableRoles(document, GlobalVariables.getUserSession().getPerson());
         for (String namespaceCode : unassignableRoles.keySet()) {
@@ -185,7 +185,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         return valid;
 	}
 	
-	private boolean checkUnpopulatableGroups(IdentityManagementPersonDocument document) {
+	protected boolean checkUnpopulatableGroups(IdentityManagementPersonDocument document) {
 		boolean valid = true;
     	Map<String,Set<String>> unpopulatableGroups = getAuthorizer( document ).getUnpopulateableGroups(document, GlobalVariables.getUserSession().getPerson());
         for (String namespaceCode : unpopulatableGroups.keySet()) {
@@ -217,7 +217,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	}
 
 
-	private boolean checkMultipleDefault (List <? extends PersonDocumentBoDefaultBase> boList, String listName) {
+	protected boolean checkMultipleDefault (List <? extends PersonDocumentBoDefaultBase> boList, String listName) {
     	boolean valid = true;
     	boolean isDefaultSet = false;
     	int i = 0;
@@ -238,7 +238,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean checkPrimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
+    protected boolean checkPrimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
     	int firstAfflnCounter = -1;
@@ -268,7 +268,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean checkAffiliationTypeChange (List <PersonDocumentAffiliation> affiliations) {
+    protected boolean checkAffiliationTypeChange (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
@@ -285,7 +285,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
 
-    private boolean validEmployeeIDForAffiliation(List <PersonDocumentAffiliation> affiliations) {
+    protected boolean validEmployeeIDForAffiliation(List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
     	int j = 0;
@@ -307,7 +307,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean validTaxId(IdentityManagementPersonDocument personDoc){
+    protected boolean validTaxId(IdentityManagementPersonDocument personDoc){
     	boolean valid = true;
     	if(isPersonAnEmployee(personDoc.getAffiliations()) && StringUtils.isEmpty(personDoc.getTaxId())){
      		GlobalVariables.getMessageMap().putError("document.taxId", RiceKeyConstants.ERROR_REQUIRED_CONDITIONALLY, new String[] {"Tax Identification Number", "an employee"});
@@ -316,7 +316,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean isPersonAnEmployee(List<PersonDocumentAffiliation> affiliations){
+    protected boolean isPersonAnEmployee(List<PersonDocumentAffiliation> affiliations){
     	boolean isEmployee = false;
     	for (PersonDocumentAffiliation affiliation : affiliations){
     		if (affiliation.getAffiliationType() != null && affiliation.getAffiliationType().isEmploymentAffiliationType()){
@@ -327,7 +327,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return isEmployee;
     }
     
-    private boolean checkUniqueAffiliationTypePerCampus (List <PersonDocumentAffiliation> affiliations) {
+    protected boolean checkUniqueAffiliationTypePerCampus (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
@@ -344,7 +344,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean checkAffiliationEithOneEMpInfo (List <PersonDocumentAffiliation> affiliations) {
+    protected boolean checkAffiliationEithOneEMpInfo (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
@@ -360,7 +360,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     /*
      * Verify at least one affiliation and one default name
      */
-    private boolean validateAffiliationAndName(IdentityManagementPersonDocument personDoc) {
+    protected boolean validateAffiliationAndName(IdentityManagementPersonDocument personDoc) {
     	boolean valid = true;
     	if (personDoc.getAffiliations().isEmpty()) {
      		GlobalVariables.getMessageMap().putError("affiliations[0]",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "affiliation");
@@ -386,7 +386,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean doesPrincipalNameExist (String principalName, String principalId) {
+    protected boolean doesPrincipalNameExist (String principalName, String principalId) {
     	KimPrincipal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
         	GlobalVariables.getMessageMap().putError(KIMPropertyConstants.Person.PRINCIPAL_NAME,RiceKeyConstants.ERROR_EXIST_PRINCIPAL_NAME, principalName);
@@ -395,7 +395,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return true;
     }
 	
-    private boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
+    protected boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
 		AttributeSet validationErrors = new AttributeSet();
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
@@ -432,7 +432,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     }    
 
-    private boolean validActiveDatesForRole (List<PersonDocumentRole> roles ) {
+    protected boolean validActiveDatesForRole (List<PersonDocumentRole> roles ) {
     	boolean valid = true;
 		int i = 0;
     	for(PersonDocumentRole role : roles ) {
@@ -446,7 +446,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
     
-    private boolean validActiveDatesForGroup (List<PersonDocumentGroup> groups ) {
+    protected boolean validActiveDatesForGroup (List<PersonDocumentGroup> groups ) {
     	boolean valid = true;
 		int i = 0;
     	for(PersonDocumentGroup group : groups ) {
@@ -456,7 +456,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
 
-    private boolean validActiveDatesForDelegations(List<RoleDocumentDelegationMember> delegationMembers) {
+    protected boolean validActiveDatesForDelegations(List<RoleDocumentDelegationMember> delegationMembers) {
     	boolean valid = true;
 		int i = 0;
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers){
@@ -466,7 +466,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return valid;
     }
 
-	private boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
+	protected boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
@@ -662,7 +662,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	return rulePassed;
 	}
 	
-    private boolean validateDelegationMemberRoleQualifier(List<RoleDocumentDelegationMember> delegationMembers){
+    protected boolean validateDelegationMemberRoleQualifier(List<RoleDocumentDelegationMember> delegationMembers){
 		AttributeSet validationErrors = new AttributeSet();
 		boolean valid;
 		int memberCounter = 0;

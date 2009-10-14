@@ -41,7 +41,7 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
 		requiredNonEditableProperties.add("methodToCall");
 	}
 
-    private static final long serialVersionUID = -4787045391777666988L;
+    protected static final long serialVersionUID = -4787045391777666988L;
     protected String principalId;
     protected PersonDocumentAffiliation newAffln;
     protected PersonDocumentEmploymentInfo newEmpInfo;

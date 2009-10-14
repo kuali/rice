@@ -66,7 +66,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	public static final String CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL = "changeDelegationRoleMember";
 	public static final String SWITCH_TO_ROLE_MEMBER_METHOD_TO_CALL = "jumpToRoleMember";
 	
-	private List<String> methodToCallToUncheckedList = new ArrayList<String>();
+	protected List<String> methodToCallToUncheckedList = new ArrayList<String>();
 	{
 		methodToCallToUncheckedList.add(CHANGE_DEL_ROLE_MEMBER_METHOD_TO_CALL);
 		methodToCallToUncheckedList.add(CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL);
@@ -162,7 +162,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		}
     }
 
-    private void setKimType(String kimTypeId, IdentityManagementRoleDocumentForm roleDocumentForm){
+    protected void setKimType(String kimTypeId, IdentityManagementRoleDocumentForm roleDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
             roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
             if (roleDocumentForm.getRoleDocument() != null) {
@@ -175,7 +175,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		}
     }
     
-    private void loadRoleIntoDocument( String roleId, IdentityManagementRoleDocumentForm roleDocumentForm){
+    protected void loadRoleIntoDocument( String roleId, IdentityManagementRoleDocumentForm roleDocumentForm){
         KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(roleId);
         getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
     }
@@ -187,7 +187,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		return KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
 	}
 
-	private boolean validAssignRole(IdentityManagementRoleDocument document){
+	protected boolean validAssignRole(IdentityManagementRoleDocument document){
         boolean rulePassed = true;
         if(StringUtils.isNotEmpty(document.getRoleNamespace())){
 	        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
@@ -275,7 +275,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-    private boolean checkKimDocumentRoleMember(KimDocumentRoleMember newMember){
+    protected boolean checkKimDocumentRoleMember(KimDocumentRoleMember newMember){
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
         	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});
@@ -310,7 +310,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-    private boolean checkDelegationMember(RoleDocumentDelegationMember newMember){
+    protected boolean checkDelegationMember(RoleDocumentDelegationMember newMember){
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
         	GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});

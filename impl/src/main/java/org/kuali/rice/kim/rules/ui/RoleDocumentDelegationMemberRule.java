@@ -43,7 +43,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 
 	public static final String ERROR_PATH = "document.delegationMember.memberId";
 
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
 	public boolean processAddDelegationMember(AddDelegationMemberEvent addDelegationMemberEvent){
 		RoleDocumentDelegationMember newMember = addDelegationMemberEvent.getDelegationMember();

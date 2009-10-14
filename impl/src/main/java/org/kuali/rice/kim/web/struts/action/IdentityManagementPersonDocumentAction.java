@@ -223,7 +223,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
-    private String getSelectedParentChildIdx(HttpServletRequest request) {
+    protected String getSelectedParentChildIdx(HttpServletRequest request) {
     	String lineNumber = null;
         String parameterName = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
@@ -356,7 +356,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
-	private boolean validateRoleAssignment(IdentityManagementPersonDocument document, PersonDocumentRole newRole){
+	protected boolean validateRoleAssignment(IdentityManagementPersonDocument document, PersonDocumentRole newRole){
         boolean rulePassed = true;
         if(!document.validAssignRole(newRole)){
 			GlobalVariables.getMessageMap().putError("newRole.roleId", 
@@ -367,7 +367,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 		return rulePassed;
 	}
 
-    private void setupRoleRspActions(PersonDocumentRole role, KimDocumentRoleMember rolePrncpl) {
+    protected void setupRoleRspActions(PersonDocumentRole role, KimDocumentRoleMember rolePrncpl) {
         for (RoleResponsibilityImpl roleResp : role.getAssignedResponsibilities()) {
         	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
         		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
@@ -382,7 +382,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         }
     }
     
-//	private boolean isUniqueRoleRspAction(List<KimDocumentRoleResponsibilityAction> roleRspActions, KimDocumentRoleResponsibilityAction roleRspAction){
+//	protected boolean isUniqueRoleRspAction(List<KimDocumentRoleResponsibilityAction> roleRspActions, KimDocumentRoleResponsibilityAction roleRspAction){
 //    	if(roleRspActions==null || roleRspAction==null) return false;
 //    	for(KimDocumentRoleResponsibilityAction roleRspActionTemp: roleRspActions){
 //    		if((StringUtils.isNotEmpty(roleRspActionTemp.getRoleMemberId()) && roleRspActionTemp.getRoleMemberId().equals(roleRspAction.getRoleMemberId())) && 
@@ -393,7 +393,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 //    }
 	    
 
-    private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
+    protected void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
     		qualifier.refreshReferenceObject("kimAttribute");
@@ -504,7 +504,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     	return super.performLookup(mapping, form, request, response);
     }
     
-    private ActionForward refreshAfterDelegationMemberRoleSelection(ActionMapping mapping, IdentityManagementPersonDocumentForm impdForm, HttpServletRequest request) {
+    protected ActionForward refreshAfterDelegationMemberRoleSelection(ActionMapping mapping, IdentityManagementPersonDocumentForm impdForm, HttpServletRequest request) {
         String refreshCaller = impdForm.getRefreshCaller();
 
         boolean isRoleLookupable = KimConstants.KimUIConstants.ROLE_LOOKUPABLE_IMPL.equals(refreshCaller);
@@ -541,7 +541,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return null;
     }
     
-    private ActionForward renderRoleMemberSelection(ActionMapping mapping, HttpServletRequest request, IdentityManagementPersonDocumentForm impdForm) {
+    protected ActionForward renderRoleMemberSelection(ActionMapping mapping, HttpServletRequest request, IdentityManagementPersonDocumentForm impdForm) {
         Properties props = new Properties();
 
         props.put(KNSConstants.SUPPRESS_ACTIONS, Boolean.toString(true));

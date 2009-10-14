@@ -38,7 +38,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPermissionRule {
 
-	private static final String ERROR_PATH = "document.permission.permissionId";
+	protected static final String ERROR_PATH = "document.permission.permissionId";
 	
 	public boolean processAddPermission(AddPermissionEvent addPermissionEvent) {
 		KimDocumentRolePermission newPermission = addPermissionEvent.getPermission();

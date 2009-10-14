@@ -31,7 +31,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class RoleDocumentDelegationRule extends DocumentRuleBase implements AddDelegationRule {
 
-	private static final String ERROR_PATH = "permission.permissionId";
+	protected static final String ERROR_PATH = "permission.permissionId";
 	
 	public boolean processAddDelegation(AddDelegationEvent addDelegationEvent) {
 		RoleDocumentDelegation newDelegation = addDelegationEvent.getDelegation();

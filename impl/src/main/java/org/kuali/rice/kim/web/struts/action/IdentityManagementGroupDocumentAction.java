@@ -81,7 +81,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		return forward;
     }
     
-    private void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
+    protected void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
 			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
 			if (groupDocumentForm.getGroupDocument() != null) {
@@ -139,7 +139,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     }
 
 
-    private void loadGroupIntoDocument( String groupId, IdentityManagementGroupDocumentForm groupDocumentForm){
+    protected void loadGroupIntoDocument( String groupId, IdentityManagementGroupDocumentForm groupDocumentForm){
         GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
         getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
     }    
@@ -151,7 +151,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		return KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
 	}
 	
-	private boolean validAssignGroup(IdentityManagementGroupDocument document){
+	protected boolean validAssignGroup(IdentityManagementGroupDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
@@ -186,7 +186,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
-    private boolean checkKimDocumentGroupMember(GroupDocumentMember newMember){
+    protected boolean checkKimDocumentGroupMember(GroupDocumentMember newMember){
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
         	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});

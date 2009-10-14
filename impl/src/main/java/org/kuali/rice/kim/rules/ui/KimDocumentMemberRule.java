@@ -46,7 +46,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 
 	private static final String ERROR_PATH = "document.member.memberId";
 
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
 	public boolean processAddMember(AddMemberEvent addMemberEvent){
 		KimDocumentRoleMember newMember = addMemberEvent.getMember();
@@ -98,7 +98,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 		return rulePassed;
 	} 
 
-	private boolean validAssignRole(KimDocumentRoleMember roleMember, IdentityManagementRoleDocument document){
+	protected boolean validAssignRole(KimDocumentRoleMember roleMember, IdentityManagementRoleDocument document){
         boolean rulePassed = true;
 		if(StringUtils.isNotEmpty(document.getRoleNamespace())){
 			Map<String,String> roleDetails = new HashMap<String,String>();

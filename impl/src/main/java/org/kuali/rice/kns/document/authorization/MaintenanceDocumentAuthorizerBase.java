@@ -36,7 +36,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	// private static final org.apache.log4j.Logger LOG =
 	// org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);
 
-	transient private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	transient protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	@SuppressWarnings("unchecked")
 	public final boolean canCreate(Class boClass, Person user) {

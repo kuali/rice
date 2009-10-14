@@ -115,7 +115,7 @@ public class UserLoginFilter implements Filter {
      *            the servlet request
      * @return UserSession object if authentication was successful, null otherwise
      */
-    private UserSession login(HttpServletRequest request) {
+    protected UserSession login(HttpServletRequest request) {
         LOG.info("performing user login: ");
 
         String principalName = null;

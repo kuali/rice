@@ -792,6 +792,19 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						new AttributeSet(KimAttributes.PRINCIPAL_ID, currentUserPrincipalId) );
 	}
 
+	protected boolean canAssignToRole(IdentityManagementRoleDocument document, String initiatorPrincipalId){
+        boolean rulePassed = true;
+        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
+        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
+        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
+		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+				initiatorPrincipalId, additionalPermissionDetails, null)){
+            rulePassed = false;
+		}
+		return rulePassed;
+	}
+	
     protected List<PersonDocumentAffiliation> loadAffiliations(List <KimEntityAffiliationImpl> affiliations, List<KimEntityEmploymentInformationImpl> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 		if(ObjectUtils.isNotNull(affiliations)){
@@ -1901,12 +1914,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		bos.addAll(getRolePermissions(identityManagementRoleDocument, origRolePermissions));
 		bos.addAll(getRoleResponsibilities(identityManagementRoleDocument, origRoleResponsibilities));
 		bos.addAll(getRoleResponsibilitiesActions(identityManagementRoleDocument));
-		List<RoleMemberImpl> newRoleMembersList = getRoleMembers(identityManagementRoleDocument, origRoleMembers);
-		bos.addAll(newRoleMembersList);
-		bos.addAll(getRoleMemberResponsibilityActions(newRoleMembersList));
-		//bos.addAll(getRoleMemberResponsibilityActions(identityManagementRoleDocument));
-		bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
-
+		String initiatorPrincipalId = getInitiatorPrincipalId(identityManagementRoleDocument);
+		if(canAssignToRole(identityManagementRoleDocument, initiatorPrincipalId)){
+			List<RoleMemberImpl> newRoleMembersList = getRoleMembers(identityManagementRoleDocument, origRoleMembers);
+			bos.addAll(newRoleMembersList);
+			bos.addAll(getRoleMemberResponsibilityActions(newRoleMembersList));
+			//bos.addAll(getRoleMemberResponsibilityActions(identityManagementRoleDocument));
+			bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
+		}
 		getBusinessObjectService().save(bos);
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
         service.roleUpdated();

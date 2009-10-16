@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -291,6 +292,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
     public void testEstablishLocks() throws Exception {
     	PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
     	AccountRequestDocument accountDoc = (AccountRequestDocument) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest");
+    	
     	assertTrue("The AccountRequestDocument should be using pessimistic locking",
     			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
     	
@@ -501,7 +503,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
     	// Ensure that the last user to attempt to establish locks has the expected finalModes entry (or lack of it).
     	if (finalModes != null) {
     		assertEquals("The last user that tried to establish locks does not have the expected status on their full entry privileges",
-    				latestUserHasFullEntry, KNSConstants.KUALI_DEFAULT_TRUE_VALUE.equals(finalModes.get(AuthorizationConstants.EditMode.FULL_ENTRY)));
+    				latestUserHasFullEntry, StringUtils.equalsIgnoreCase(KNSConstants.KUALI_DEFAULT_TRUE_VALUE, (String)(finalModes.get(AuthorizationConstants.EditMode.FULL_ENTRY))));
     	}
     	// Ensure that the expected number of locks are present.
     	assertEquals("The wrong number of pessimistic locks are in place", expectedLockQuantity, pessimisticLocks.size());

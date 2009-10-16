@@ -429,12 +429,12 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      *         {@link #EDIT_MODE_DEFAULT_TRUE_VALUE}... false if not
      */
     protected boolean isEntryEditMode(Map.Entry entry) {
-        // check for FULL_ENTRY edit mode set to default true value
-        if (AuthorizationConstants.EditMode.FULL_ENTRY.equals(entry.getKey())) {
-            String fullEntryEditModeValue = (String)entry.getValue();
-            return ( (ObjectUtils.isNotNull(fullEntryEditModeValue)) && (KNSConstants.KUALI_DEFAULT_TRUE_VALUE.equals(fullEntryEditModeValue)) );
-        }
-        return false;
+    	// check for FULL_ENTRY edit mode set to default true value
+    	if (AuthorizationConstants.EditMode.FULL_ENTRY.equals(entry.getKey())) {
+    		String fullEntryEditModeValue = (String)entry.getValue();           
+    		return ( StringUtils.equalsIgnoreCase(KNSConstants.KUALI_DEFAULT_TRUE_VALUE, fullEntryEditModeValue) );     	
+    	}
+    	return false;
     }
 
     /**

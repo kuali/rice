@@ -745,20 +745,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					PersonDocumentName docName = new PersonDocumentName();
 					docName.setNameTypeCode(name.getNameTypeCode());
 					docName.setEntityNameType(name.getEntityNameType());
-					// unmask the user name data if the user can edit or see past the privacy preferences
-					if ( !suppressDisplay || canOverrideEntityPrivacyPreferences( getInitiatorPrincipalId(personDoc), principalId ) ) {
-						docName.setFirstName(name.getFirstNameUnmasked());
-						docName.setLastName(name.getLastNameUnmasked());
-						docName.setMiddleName(name.getMiddleNameUnmasked());
-						docName.setTitle(name.getTitleUnmasked());
-						docName.setSuffix(name.getSuffixUnmasked());
-					} else {
-						docName.setFirstName(name.getFirstName());
-						docName.setLastName(name.getLastName());
-						docName.setMiddleName(name.getMiddleName());
-						docName.setTitle(name.getTitle());
-						docName.setSuffix(name.getSuffix());
-					}
+					//We do not need to check the privacy setting here - The UI should care of it
+					docName.setFirstName(name.getFirstNameUnmasked());
+					docName.setLastName(name.getLastNameUnmasked());
+					docName.setMiddleName(name.getMiddleNameUnmasked());
+					docName.setTitle(name.getTitleUnmasked());
+					docName.setSuffix(name.getSuffixUnmasked());
+
 					docName.setActive(name.isActive());
 					docName.setDflt(name.isDefault());
 					docName.setEdit(true);
@@ -1080,15 +1073,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
 					docPhone.setPhoneType(((KimEntityPhoneImpl)phone).getPhoneType());
 					docPhone.setEntityTypeCode(phone.getEntityTypeCode());
-					if ( !suppressDisplay || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), principalId) ) {
-						docPhone.setPhoneNumber(phone.getPhoneNumberUnmasked());
-						docPhone.setCountryCode(phone.getCountryCodeUnmasked());
-						docPhone.setExtensionNumber(phone.getExtensionNumberUnmasked());
-					} else {
-						docPhone.setPhoneNumber(phone.getPhoneNumber());
-						docPhone.setCountryCode(phone.getCountryCode());
-						docPhone.setExtensionNumber(phone.getExtensionNumber());
-					}
+					//We do not need to check the privacy setting here - The UI should care of it
+					docPhone.setPhoneNumber(phone.getPhoneNumberUnmasked());
+					docPhone.setCountryCode(phone.getCountryCodeUnmasked());
+					docPhone.setExtensionNumber(phone.getExtensionNumberUnmasked());
+
 					docPhone.setActive(phone.isActive());
 					docPhone.setDflt(phone.isDefault());
 					docPhone.setEntityPhoneId(phone.getEntityPhoneId());
@@ -1139,11 +1128,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docEmail.setEntityTypeCode(email.getEntityTypeCode());
 					docEmail.setEmailTypeCode(email.getEmailTypeCode());
 					docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
-					if ( !suppressDisplay || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), principalId) ) {
-						docEmail.setEmailAddress(email.getEmailAddressUnmasked());
-					} else {
-						docEmail.setEmailAddress( email.getEmailAddress() );
-					}
+					//We do not need to check the privacy setting here - The UI should care of it
+					docEmail.setEmailAddress(email.getEmailAddressUnmasked());
+
 					docEmail.setActive(email.isActive());
 					docEmail.setDflt(email.isDefault());
 					docEmail.setEntityEmailId(email.getEntityEmailId());
@@ -1199,23 +1186,15 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docAddress.setEntityTypeCode(address.getEntityTypeCode());
 					docAddress.setAddressTypeCode(address.getAddressTypeCode());
 					docAddress.setAddressType(((KimEntityAddressImpl)address).getAddressType());
-					if ( !suppressDisplay || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), principalId) ) {
-						docAddress.setLine1(address.getLine1Unmasked());
-						docAddress.setLine2(address.getLine2Unmasked());
-						docAddress.setLine3(address.getLine3Unmasked());
-						docAddress.setStateCode(address.getStateCodeUnmasked());
-						docAddress.setPostalCode(address.getPostalCodeUnmasked());
-						docAddress.setCountryCode(address.getCountryCodeUnmasked());
-						docAddress.setCityName(address.getCityNameUnmasked());
-					} else {
-						docAddress.setLine1(address.getLine1());
-						docAddress.setLine2(address.getLine2());
-						docAddress.setLine3(address.getLine3());
-						docAddress.setStateCode(address.getStateCode());
-						docAddress.setPostalCode(address.getPostalCode());
-						docAddress.setCountryCode(address.getCountryCode());
-						docAddress.setCityName(address.getCityName());
-					}
+					//We do not need to check the privacy setting here - The UI should care of it
+					docAddress.setLine1(address.getLine1Unmasked());
+					docAddress.setLine2(address.getLine2Unmasked());
+					docAddress.setLine3(address.getLine3Unmasked());
+					docAddress.setStateCode(address.getStateCodeUnmasked());
+					docAddress.setPostalCode(address.getPostalCodeUnmasked());
+					docAddress.setCountryCode(address.getCountryCodeUnmasked());
+					docAddress.setCityName(address.getCityNameUnmasked());
+
 					docAddress.setActive(address.isActive());
 					docAddress.setDflt(address.isDefault());
 					docAddress.setEntityAddressId(address.getEntityAddressId());

@@ -32,6 +32,7 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -61,6 +62,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
         if ( principalId != null ) {
         	personDocumentForm.setPrincipalId(principalId);
         	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
+            personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
         	populateRoleInformation( personDocumentForm.getPersonDocument() );
         }
 	}

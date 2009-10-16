@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,9 @@ import org.kuali.rice.kns.web.ui.Column;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentSearchResultComponents {
-
+public class DocumentSearchResultComponents implements Serializable {
+	private static final long serialVersionUID = -2395396912914099421L;
+	
 	protected List<Column> columns;
 	protected List<DocumentSearchResult> searchResults = new ArrayList<DocumentSearchResult>(); // list of DocumentSearchResult objects
 

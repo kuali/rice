@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,9 +30,10 @@ import org.kuali.rice.kew.web.KeyValueSort;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentSearchResult {
-
-    // following much match documentation for XML result processor attribute
+public class DocumentSearchResult implements Serializable {
+    private static final long serialVersionUID = -1255359695353320685L;
+    
+	// following much match documentation for XML result processor attribute
     /**
      *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID} INSTEAD
      */

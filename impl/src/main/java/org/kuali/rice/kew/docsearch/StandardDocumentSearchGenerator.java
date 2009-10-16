@@ -78,8 +78,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static DocSearchCriteriaDTO criteria;
     private static String searchingUser;
 
-    private boolean usingAtLeastOneSearchAttribute = false;
-
     private boolean isProcessResultSet = true;
 
     private DatabasePlatform dbPlatform;
@@ -697,7 +695,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
         }
 
-        if (usingAtLeastOneSearchAttribute) {
+        if (isUsingAtLeastOneSearchAttribute()) {
             populateRowSearchableAttributes(docCriteriaDTO,searchAttributeStatement);
         }
         return docCriteriaDTO;
@@ -761,7 +759,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public String getDocSearchSQL() {
     	String sqlPrefix = "Select * from (";
     	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
-    	boolean possibleSearchableAttributesExist = false;
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
         StringBuffer selectSQL = new StringBuffer("select DISTINCT(DOC_HDR.DOC_HDR_ID), DOC_HDR.INITR_PRNCPL_ID, DOC_HDR.DOC_HDR_STAT_CD, DOC_HDR.CRTE_DT, DOC_HDR.TTL, DOC1.DOC_TYP_NM, DOC1.LBL, DOC1.DOC_HDLR_URL, DOC1.ACTV_IND");
         StringBuffer fromSQL = new StringBuffer(" from KREW_DOC_TYP_T DOC1 ");
@@ -798,7 +795,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         filterOutNonQueryAttributes();
         if ((criteria.getSearchableAttributes() != null) && (criteria.getSearchableAttributes().size() > 0)) {
-            possibleSearchableAttributesExist |= true;
             QueryComponent queryComponent = getSearchableAttributeSql(criteria.getSearchableAttributes(), getGeneratedPredicatePrefix(whereSQL.length()));
             selectSQL.append(queryComponent.getSelectSql());
             fromSQL.append(queryComponent.getFromSql());
@@ -830,7 +826,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (!("".equals(docTypeFullNameSql))) {
-            possibleSearchableAttributesExist |= true;
             whereSQL.append(docTypeFullNameSql);
         }
         whereSQL.append(getDocRouteStatusSql(criteria.getDocRouteStatus(), getGeneratedPredicatePrefix(whereSQL.length())));
@@ -838,12 +833,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         fromSQL.append(fromSQLForDocHeaderTable);
         String finalizedSql = sqlPrefix + " " + selectSQL.toString() + " " + fromSQL.toString() + " " + whereSQL.toString() + " " + sqlSuffix;
-        usingAtLeastOneSearchAttribute = possibleSearchableAttributesExist;
-//        usingAtLeastOneSearchAttribute = false;
-//        if (possibleSearchableAttributesExist) {
-//            usingAtLeastOneSearchAttribute = true;
-//            finalizedSql = generateFinalSQL(new QueryComponent(selectSQL.toString(),fromSQL.toString(),whereSQL.toString()), docHeaderTableAlias, sqlPrefix, sqlSuffix);
-//        }
+
         LOG.info("*********** SEARCH SQL ***************");
         LOG.info(finalizedSql);
         LOG.info("**************************************");
@@ -1187,5 +1177,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public MessageMap getMessageMap(DocSearchCriteriaDTO searchCriteria) {
         setCriteria(searchCriteria);
         return this.messageMap;
+    }
+    
+    /**
+     * A helper method for determining whether any searchable attributes are in use for the search. Subclasses can override this method to add their
+     * own logic for checking searchable attribute existence.
+     * 
+     * @return True if the search criteria contains at least one searchable attribute or the criteria's doc type name is non-blank; false otherwise.
+     */
+    protected boolean isUsingAtLeastOneSearchAttribute() {
+    	return ( (criteria.getSearchableAttributes() != null && criteria.getSearchableAttributes().size() > 0) ||
+    			StringUtils.isNotBlank(criteria.getDocTypeFullName()) );
     }
 }

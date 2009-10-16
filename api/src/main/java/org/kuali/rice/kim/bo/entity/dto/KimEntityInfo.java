@@ -33,6 +33,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.getDefaultAndUnNullify;
 
 /**
  * This is a data transfer objects containing all information related to a KIM entity.
@@ -44,16 +45,13 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	private static final long serialVersionUID = 1L;
 
 	private List<KimEntityAffiliationInfo> affiliations;
-	private KimEntityAffiliationInfo defaultAffiliation;
 	private KimEntityBioDemographicsInfo bioDemographics;
 	private List<KimEntityCitizenshipInfo> citizenships;
 	private List<KimEntityEmploymentInformationInfo> employmentInformation;
-	private KimEntityEmploymentInformationInfo primaryEmployment;
 	private String entityId;
 	private List<KimEntityEntityTypeInfo> entityTypes;
 	private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
 	private List<KimEntityNameInfo> names;
-	private KimEntityNameInfo defaultName;
 	private List<KimPrincipalInfo> principals;
 	private KimEntityPrivacyPreferencesInfo privacyPreferences;
 	private List<KimEntityEthnicityInfo> ethnicities;
@@ -121,7 +119,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 		for ( KimEntityEmploymentInformation emp : entity.getEmploymentInformation() ) {
 			employmentInfos.add( new KimEntityEmploymentInformationInfo( emp ) );
 		}
-		this.setPrimaryEmployment(new KimEntityEmploymentInformationInfo(entity.getPrimaryEmployment()));
+		
 		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
 		this.setExternalIdentifiers( idInfo );
 		for ( KimEntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
@@ -173,14 +171,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * @return the defaultAffiliation
 	 */
 	public KimEntityAffiliationInfo getDefaultAffiliation() {
-		return unNullify( this.defaultAffiliation, KimEntityAffiliationInfo.class);
-	}
-
-	/**
-	 * @param defaultAffiliation the defaultAffiliation to set
-	 */
-	public void setDefaultAffiliation(KimEntityAffiliationInfo defaultAffiliation) {
-		this.defaultAffiliation = defaultAffiliation;
+		return getDefaultAndUnNullify(this.affiliations, KimEntityAffiliationInfo.class);
 	}
 
 	/**
@@ -230,15 +221,13 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * @return the primaryEmployment
 	 */
 	public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
-		return unNullify( this.primaryEmployment, KimEntityEmploymentInformationInfo.class);
-	}
-
-	/**
-	 * @param primaryEmployment the primaryEmployment to set
-	 */
-	public void setPrimaryEmployment(
-			KimEntityEmploymentInformationInfo primaryEmployment) {
-		this.primaryEmployment = primaryEmployment;
+		for (KimEntityEmploymentInformationInfo employment : unNullify(this.employmentInformation)) {
+			if (employment.isPrimary()) {
+				return employment;
+			}
+		}
+		
+		return new KimEntityEmploymentInformationInfo();
 	}
 
 	/**
@@ -302,14 +291,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 	 * @return the defaultName
 	 */
 	public KimEntityNameInfo getDefaultName() {
-		return unNullify( this.defaultName, KimEntityNameInfo.class);
-	}
-
-	/**
-	 * @param defaultName the defaultName to set
-	 */
-	public void setDefaultName(KimEntityNameInfo defaultName) {
-		this.defaultName = defaultName;
+		return getDefaultAndUnNullify(this.names, KimEntityNameInfo.class);
 	}
 
 	/**

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.entity.impl;
 
 import java.util.Date;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -79,6 +80,19 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	 * @return the birthDate
 	 */
 	public Date getBirthDate() {
+		
+	    if (isSuppressPersonal()) {
+            return dateMask();
+        }
+		return this.birthDate;
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthDateUnmasked()
+	 */
+	public Date getBirthDateUnmasked() {
 		return this.birthDate;
 	}
 
@@ -353,4 +367,14 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
         return suppressPersonal.booleanValue();
     }
 
+    //mask date to "0001-01-01"
+    private Date dateMask(){
+
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.set(calendar.getMinimum(Calendar.YEAR), 
+    			calendar.getMinimum(Calendar.MONTH ), 
+    			calendar.getMinimum(Calendar.DATE));
+
+    	return (calendar != null ? new java.sql.Date(calendar.getTime().getTime()) : null);
+    }
 }

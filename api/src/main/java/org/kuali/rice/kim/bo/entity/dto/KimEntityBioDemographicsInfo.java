@@ -42,6 +42,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	protected String birthStateCode = "";
 	protected String cityOfBirth = "";
 	protected String geographicOrigin = "";
+	protected Date birthDateUnmasked;
 	protected String genderCodeUnmasked = "";
 	protected String genderCodeUnmaskedUnmasked = "";
 	protected String maritalStatusCodeUnmasked = "";
@@ -73,6 +74,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 			cityOfBirth = unNullify(kimEntityBioDemographics.getCityOfBirth());
 			geographicOrigin = unNullify(kimEntityBioDemographics.getGeographicOrigin());
 
+			birthDateUnmasked = unNullify(kimEntityBioDemographics.getBirthDateUnmasked());
 			genderCodeUnmaskedUnmasked = unNullify(kimEntityBioDemographics.getGenderCodeUnmasked());
 			genderCodeUnmasked = unNullify(kimEntityBioDemographics.getGenderCodeUnmasked());
 			maritalStatusCodeUnmasked = unNullify(kimEntityBioDemographics.getMaritalStatusCodeUnmasked());
@@ -380,6 +382,19 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 */
 	public void setSuppressPersonal(boolean suppressPersonal) {
 		this.suppressPersonal = suppressPersonal;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthDateUnmasked()
+	 */
+	public Date getBirthDateUnmasked() {
+		return unNullify(this.birthDateUnmasked);
+	}
+	
+	public void setBirthDateUnmasked(Date birthDateUnmasked){
+		this.birthDateUnmasked = birthDateUnmasked;
 	}
 
 }

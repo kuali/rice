@@ -26,9 +26,9 @@ import java.util.Date;
 public interface KimEntityBioDemographics {
 
 	String getEntityId();
-	Date getBirthDate();
 	Date getDeceasedDate();
 
+	Date getBirthDate();
 	String getGenderCode();
 	String getMaritalStatusCode();
 	String getPrimaryLanguageCode();
@@ -38,6 +38,7 @@ public interface KimEntityBioDemographics {
 	String getCityOfBirth();
 	String getGeographicOrigin();
 
+	Date getBirthDateUnmasked();
 	String getGenderCodeUnmasked();
 	String getMaritalStatusCodeUnmasked();
 	String getPrimaryLanguageCodeUnmasked();

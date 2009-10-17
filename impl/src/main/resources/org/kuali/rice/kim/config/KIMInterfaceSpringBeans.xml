@@ -166,31 +166,10 @@
 	        </bean>
 	</property>
   </bean> 
-  
-<!-- this service is intended to be run locally, should not be exported
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimIdentityManagementService"
-        p:localServiceName="kimIdentityManagementService" />
-    </property>
-  </bean>
- -->
 
   <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
     p:roleCacheMaxSize="${kim.cache.role.max.size}"
     p:roleCacheMaxAgeSeconds="${kim.cache.role.max.age.seconds}" />
-<!-- this service is intended to be run locally, should not be exported
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimRoleManagementService"
-        p:localServiceName="kimRoleManagementService" />
-    </property>
-  </bean>
- -->
 
   <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
     p:personCacheMaxSize="${kim.cache.person.max.size}"
@@ -202,19 +181,7 @@
       </list>
     </property>
   </bean>
-
-<!-- this service is intended to be run locally, should not be exported except for non-Rice applications
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="personService"
-        p:localServiceName="personService" />
-    </property>
-  </bean>
--->
-
-
-
-
+  
+  <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl"/>
+  
 </beans>

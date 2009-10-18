@@ -51,6 +51,8 @@ public interface WorkflowDocumentActions {
     public RouteHeaderDTO superUserCancel(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
 
     public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException;
+    
+    public RouteHeaderDTO placeInExceptionRouting(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
 
     // Deprecated as of 2.1 //
 

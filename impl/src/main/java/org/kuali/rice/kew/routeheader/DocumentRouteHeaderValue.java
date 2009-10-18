@@ -116,7 +116,8 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 @Sequence(name="KREW_DOC_HDR_S", property="routeHeaderId")
 @NamedQueries({
 	@NamedQuery(name="DocumentRouteHeaderValue.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId"),
-	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(routeHeaderId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC")
+	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(routeHeaderId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC"),
+	@NamedQuery(name="DocumentRouteHeaderValue.GetAppDocId", query="SELECT d.appDocId from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId")
 })
 public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     private static final long serialVersionUID = -4700736340527913220L;

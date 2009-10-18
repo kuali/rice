@@ -297,6 +297,14 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
     public RouteHeaderDTO superUserCancel(String principalId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
     	return superUserCancel(principalId, routeHeaderVO, annotation, true);
     }
+    
+    public RouteHeaderDTO placeInExceptionRouting(String principalId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
+ 	 	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
+ 	 	incomingParamCheck(principalId, "principalId");
+ 	 	LOG.debug("placeInExceptionRouting [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
+ 	 	routeHeader = KEWServiceLocator.getWorkflowDocumentService().placeInExceptionRouting(principalId, routeHeader, annotation);
+ 	 	return DTOConverter.convertRouteHeader(routeHeader, principalId);
+ 	 }
 
 	public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException {
 		incomingParamCheck(documentContent, "documentContent");

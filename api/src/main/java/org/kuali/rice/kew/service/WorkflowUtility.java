@@ -156,6 +156,9 @@ public interface WorkflowUtility {
 			@WebParam(name = "documentTypeId") Long documentTypeId)
 			throws WorkflowException;
 
+	public String getAppDocId(
+			@WebParam(name = "documentId") Long documentId);
+	
 	// TODO delyea
 	public DocumentSearchResultDTO performDocumentSearch(
 			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)

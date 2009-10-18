@@ -310,6 +310,20 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	return status;
     }
     
+    public String getAppDocId(Long documentId) {
+ 	 	Criteria crit = new Criteria();
+ 	 	crit.addEqualTo("routeHeaderId", documentId);
+ 	 	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
+ 	 	query.setAttributes(new String[] { "appDocId" });
+ 	 	String appDocId = null;
+ 	 	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+ 	 	while (iter.hasNext()) {
+ 	 		Object[] row = (Object[]) iter.next();
+ 	 		appDocId = (String)row[0];
+ 	 	}
+ 	 	return appDocId;
+ 	 }
+    
     public void save(SearchableAttributeValue searchableAttributeValue) {
     	getPersistenceBrokerTemplate().store(searchableAttributeValue);
     }

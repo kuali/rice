@@ -29,6 +29,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.query.Criteria;
+import org.apache.ojb.broker.query.QueryFactory;
+import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.OrmUtils;
@@ -262,6 +265,12 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
 		return document.getDocRouteStatus();
     }
+    
+    public String getAppDocId(Long documentId) {
+    	Query query = entityManager.createNamedQuery("DocumentRouteHeaderValue.GetAppDocId");
+        query.setParameter("routeHeaderId", documentId);
+        return (String) query.getSingleResult(); 
+ 	 }
     
     public void save(SearchableAttributeValue searchableAttributeValue) {   	
     	if (searchableAttributeValue.getSearchableAttributeValueId() == null){

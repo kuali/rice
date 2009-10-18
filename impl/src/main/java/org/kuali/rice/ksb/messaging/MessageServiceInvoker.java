@@ -22,7 +22,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -66,7 +68,17 @@ public class MessageServiceInvoker implements Runnable {
                 }
             });
         } catch (Throwable t) {
-            placeInExceptionRouting(t, getMethodCall(), getService());
+        	// if we are in synchronous mode, we can't put the message into exception routing, let's instead throw the error up to the calling code
+        	// however, for the purposes of the unit tests, even when in synchronous mode, we want to call the exception routing service, so check a parameter for that as well
+        	boolean allowSyncExceptionRouting = new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ALLOW_SYNC_EXCEPTION_ROUTING));
+     	 	if (!allowSyncExceptionRouting && KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY))) {
+     	 		if (t instanceof RuntimeException) {
+     	 			throw (RuntimeException)t;
+     	 		}
+     	 		throw new RiceRuntimeException(t);
+     	 	} else {
+     	 		placeInExceptionRouting(t, getMethodCall(), getService());
+     	 	}
         } finally {
             try {
                 notifyOnCallback(methodCall, result);

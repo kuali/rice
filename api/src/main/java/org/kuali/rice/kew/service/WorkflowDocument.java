@@ -1165,6 +1165,14 @@ public class WorkflowDocument implements java.io.Serializable {
     	documentContentDirty = false;
     	return this.documentContent;
     }
+    
+    public void placeInExceptionRouting(String annotation) throws WorkflowException {
+    	createDocumentIfNeccessary();
+    	routeHeader = getWorkflowDocumentActions().placeInExceptionRouting(principalId, getRouteHeader(), annotation);
+    	documentContentDirty = true;
+    }
+
+
 
     // DEPRECATED: as of Workflow 2.1
 

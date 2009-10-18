@@ -36,8 +36,10 @@
 
 	<!-- bus messaging props -->
 	<param name="message.delivery">synchronous</param>
+	<param name="rice.ksb.allowSyncExceptionRouting">true</param>
 	<param name="message.persistence">true</param>	
 	<param name="useQuartzDatabase">false</param>
+	
 	<!-- 
     <param name="org.quartz.jobStore.isClustered">false</param>
     <param name="org.quartz.jobStore.tablePrefix">KRSB_QRTZ_</param>

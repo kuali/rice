@@ -24,6 +24,7 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
  */
 public interface WorkflowDocumentExceptionRoutingService {
 	
+	public void placeInExceptionRouting(String errorMessage, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception;
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception;
 
 }

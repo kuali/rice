@@ -1148,4 +1148,9 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         
         return getDocumentDetail((Long)routeHeaderIds.iterator().next());
 	}
+	
+	public String getAppDocId(Long documentId) {
+ 	 	return KEWServiceLocator.getRouteHeaderService().getAppDocId(documentId);
+ 	}
+	
 }

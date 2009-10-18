@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.AcknowledgeAction;
@@ -52,6 +53,7 @@ import org.kuali.rice.kew.actions.SuperUserReturnToPreviousNodeAction;
 import org.kuali.rice.kew.actions.TakeWorkgroupAuthority;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -59,7 +61,9 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
+import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -124,6 +128,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		action.performAction();
 		return finish(routeHeader);
 	}
+	
+	public DocumentRouteHeaderValue placeInExceptionRouting(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException {
+ 	 	try {
+ 	 		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(annotation, null, routeHeader.getRouteHeaderId());
+ 	 	} catch (Exception e) {
+ 	 		throw new RiceRuntimeException("Failed to place the document into exception routing!", e);
+ 	 	}
+ 	 	return finish(routeHeader);
+ 	 }
 
 	public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String targetPrincipalId,
 			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
@@ -278,7 +291,23 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	public DocumentRouteHeaderValue saveRoutingData(String principalId, DocumentRouteHeaderValue routeHeader) {
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
-		if (routeHeader.getDocumentType().hasSearchableAttributes()) {
+		
+		// save routing data should invoke the post processor doActionTaken for SAVE
+ 	 	ActionTakenValue val = new ActionTakenValue();
+ 	 	val.setActionTaken(KEWConstants.ACTION_TAKEN_SAVED_CD);
+ 	 	val.setRouteHeaderId(routeHeader.getRouteHeaderId());
+ 	 	val.setRouteHeader(routeHeader);
+ 	 	PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
+ 	 	try {
+ 	 		postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), val));
+ 	 	} catch (Exception e) {
+ 	 		if (e instanceof RuntimeException) {
+ 	 			throw (RuntimeException)e;
+ 	 		}
+ 	 		throw new WorkflowRuntimeException(e);
+ 	 	}
+
+ 	 	if (routeHeader.getDocumentType().hasSearchableAttributes()) {
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
 			searchableAttService.indexDocument(routeHeader.getRouteHeaderId());
 		}

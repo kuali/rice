@@ -19,6 +19,7 @@
 		<preProcessor>org.kuali.rice.kew.edl.components.WorkflowDocumentActions</preProcessor>
 		<preProcessor>org.kuali.rice.kew.edl.components.VersioningPreprocessor</preProcessor>
 		<preProcessor>org.kuali.rice.kew.edl.components.PageHandler</preProcessor>
+		<preProcessor>org.kuali.rice.kew.edl.components.BrowserHandler</preProcessor>
 	</preProcessors>
 	<postProcessors>
 		<postProcessor>org.kuali.rice.kew.edl.components.SelectControlEDLComponent</postProcessor>

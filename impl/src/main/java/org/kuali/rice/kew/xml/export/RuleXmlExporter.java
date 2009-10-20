@@ -16,8 +16,11 @@
  */
 package org.kuali.rice.kew.xml.export;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
@@ -91,8 +94,15 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         }
         renderer.renderBooleanElement(ruleElement, FORCE_ACTION, rule.getForceAction(), false);
         exportRuleExtensions(ruleElement, rule.getRuleExtensions());
-        exportResponsibilities(ruleElement, rule.getResponsibilities());
-
+        
+        // put responsibilities in a single collection 
+        Set<RuleResponsibility> responsibilities = new HashSet<RuleResponsibility>();
+        responsibilities.addAll(rule.getResponsibilities());
+        responsibilities.addAll(rule.getPersonResponsibilities());
+        responsibilities.addAll(rule.getGroupResponsibilities());
+        responsibilities.addAll(rule.getRoleResponsibilities());
+        
+        exportResponsibilities(ruleElement, responsibilities);
     }
 
     private void exportRuleExtensions(Element parent, List ruleExtensions) {
@@ -121,11 +131,10 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         }
     }
 
-    private void exportResponsibilities(Element parent, List responsibilities) {
-        if (!responsibilities.isEmpty()) {
+    private void exportResponsibilities(Element parent, Collection<? extends RuleResponsibility> responsibilities) {
+        if (responsibilities != null && !responsibilities.isEmpty()) {
             Element responsibilitiesElement = renderer.renderElement(parent, RESPONSIBILITIES);
-            for (Iterator iterator = responsibilities.iterator(); iterator.hasNext();) {
-                RuleResponsibility ruleResponsibility = (RuleResponsibility) iterator.next();
+            for (RuleResponsibility ruleResponsibility : responsibilities) {
                 Element respElement = renderer.renderElement(responsibilitiesElement, RESPONSIBILITY);
                 renderer.renderTextElement(respElement, RESPONSIBILITY_ID, "" + ruleResponsibility.getResponsibilityId());
                 if (ruleResponsibility.isUsingWorkflowUser()) {

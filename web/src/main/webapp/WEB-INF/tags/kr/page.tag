@@ -383,7 +383,7 @@
 		  	 </div>
 		  </div>
 		</div>
-		<table class="page-main" width="100%" cellpadding="0" cellspacing="0">
+		<table width="100%" cellpadding="0" cellspacing="0">
 			<tr>
 											<td width="1%">
 												<img

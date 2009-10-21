@@ -18,7 +18,9 @@ package org.kuali.rice.kim.service;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
@@ -38,5 +40,5 @@ public interface ResponsibilityUpdateService {
 							 @WebParam(name="name") String name,
 							 @WebParam(name="description") String description,
 							 @WebParam(name="active") boolean active,
-							 @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails );
+							 @WebParam(name="responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails );
 }

@@ -21,7 +21,9 @@ import java.util.Map;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -86,8 +88,8 @@ public interface ResponsibilityService {
     boolean hasResponsibility( @WebParam(name="principalId") String principalId, 
     						   @WebParam(name="namespaceCode") String namespaceCode, 
     						   @WebParam(name="responsibilityName") String responsibilityName, 
-    						   @WebParam(name="qualification") AttributeSet qualification, 
-    						   @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails );
+    						   @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification, 
+    						   @WebParam(name="responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails );
 
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
@@ -95,18 +97,18 @@ public interface ResponsibilityService {
     boolean hasResponsibilityByTemplateName( @WebParam(name="principalId") String principalId, 
     										 @WebParam(name="namespaceCode") String namespaceCode, 
     										 @WebParam(name="responsibilityTemplateName") String responsibilityTemplateName, 
-    										 @WebParam(name="qualification") AttributeSet qualification, 
-    										 @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails );
+    										 @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification, 
+    										 @WebParam(name="responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails );
     
    	List<ResponsibilityActionInfo> getResponsibilityActions( @WebParam(name="namespaceCode") String namespaceCode, 
    															 @WebParam(name="responsibilityName") String responsibilityName, 
-   															 @WebParam(name="qualification") AttributeSet qualification, 
-   															 @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails);
+   															 @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification, 
+   															 @WebParam(name="responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails);
    	
    	List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode, 
    																		   @WebParam(name="responsibilityTemplateName") String responsibilityTemplateName,	
-   																		   @WebParam(name="qualification") AttributeSet qualification, 
-   																		   @WebParam(name="responsibilityDetails") AttributeSet responsibilityDetails);
+   																		   @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification, 
+   																		   @WebParam(name="responsibilityDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet responsibilityDetails);
    	
     /**
      * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
@@ -132,5 +134,5 @@ public interface ResponsibilityService {
    	 * Get the role IDs associated with the given responsibility.
    	 */
    	List<String> getRoleIdsForResponsibility( @WebParam(name="responsibility") KimResponsibilityInfo responsibility, 
-   											  @WebParam(name="qualification") AttributeSet qualification );
+   											  @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
 }

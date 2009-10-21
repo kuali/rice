@@ -96,12 +96,22 @@ public class RoutingTableDiffCalculator {
 //							"IP Address.");
 //				    }
 				    this.servicesNeedUpdated.add(deployedServiceInfo);
+//				    if ( LOG.isInfoEnabled() ) {
+//				    	LOG.info( "servicesNeedUpdated.add( " + deployedServiceInfo.getActualEndpointUrl() + " )");
+//				    }
 				}
 				updateDeployedServiceInfo(infoEntry.getValue(), deployedServiceInfo);
 				this.masterServiceList.add(deployedServiceInfo);	
+//			    if ( LOG.isInfoEnabled() ) {
+//			    	LOG.info( "masterServiceList.add( " + deployedServiceInfo.getActualEndpointUrl() + " )");
+//			    }
 			} else {
 			    this.servicesNeedUpdated.add(infoEntry.getValue());
 			    this.masterServiceList.add(infoEntry.getValue());
+//			    if ( LOG.isInfoEnabled() ) {
+//			    	LOG.info( "servicesNeedUpdated.add( " + infoEntry.getValue().getActualEndpointUrl() + " )");
+//			    	LOG.info( "masterServiceList.add( " + infoEntry.getValue().getActualEndpointUrl() + " )");
+//			    }
 			}
 		}
 		
@@ -109,6 +119,9 @@ public class RoutingTableDiffCalculator {
 		for (Map.Entry<String, ServiceInfo> infoEntry : deployedServices.entrySet()) {
 			if (! configuredServices.containsKey(infoEntry.getKey())) {
 			    this.servicesNeedRemoved.add(infoEntry.getValue());
+//			    if ( LOG.isInfoEnabled() ) {
+//			    	LOG.info( "servicesNeedRemoved.add( " + infoEntry.getValue().getActualEndpointUrl() + " )");
+//			    }
 			}
 		}
 		

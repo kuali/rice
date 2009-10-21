@@ -27,6 +27,8 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class KualiDateMask extends Date{
 
+	private static final long serialVersionUID = 1L;
+	
 	private String mask;
 	
 	private KualiDateMask(String s){
@@ -42,19 +44,6 @@ public class KualiDateMask extends Date{
 	public String toString(){
 		
 		return this.mask;
-	}
-	/**
-	 * @return the mask
-	 */
-	public String getMask() {
-		return mask;
-	}
-
-	/**
-	 * @param mask the mask to set
-	 */
-	public void setMask(String mask) {
-		this.mask = mask;
 	}
 	
 	public static void main(String[] args){

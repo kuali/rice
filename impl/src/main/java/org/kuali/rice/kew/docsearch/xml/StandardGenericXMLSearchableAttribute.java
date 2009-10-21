@@ -429,7 +429,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
         boolean allowRangedSearch = searchableAttributeValue.allowsRangeSearches();
         Boolean rangeSearchBoolean = getBooleanValue(searchDefAttributes, "rangeSearch");
         boolean rangeSearch = (rangeSearchBoolean != null) ? rangeSearchBoolean.booleanValue() : false;
-        Node rangeDefinition = searchDefNode.getFirstChild();
+        Node rangeDefinition = getPotentialChildNode(searchDefNode, "rangeDefinition");
         return ( (allowRangedSearch) && ((rangeDefinition != null) || (rangeSearch)) );
     }
 

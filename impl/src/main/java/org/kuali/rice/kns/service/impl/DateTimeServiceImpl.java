@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,11 +46,11 @@ public class DateTimeServiceImpl implements DateTimeService {
 	public synchronized void initializeDateTimeService() {
 		ParameterService parameterService = KNSServiceLocator.getParameterService();
 		if (stringToDateFormats == null) {
-			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE, 
+			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE,
 					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.STRING_TO_DATE_FORMATS);
-			
+
 			stringToDateFormats = new String[dateFormatParams.size()];
-			
+
 			for (int i = 0; i < dateFormatParams.size(); i++) {
 				String dateFormatParam = dateFormatParams.get(i);
 				if (StringUtils.isBlank(dateFormatParam)) {
@@ -63,13 +63,13 @@ public class DateTimeServiceImpl implements DateTimeService {
 				}
 			}
 		}
-		
+
 		if (stringToTimestampFormats == null) {
-			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE, 
+			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE,
 					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.STRING_TO_TIMESTAMP_FORMATS);
-			
+
 			stringToTimestampFormats = new String[dateFormatParams.size()];
-			
+
 			for (int i = 0; i < dateFormatParams.size(); i++) {
 				String dateFormatParam = dateFormatParams.get(i);
 				if (StringUtils.isBlank(dateFormatParam)) {
@@ -82,30 +82,30 @@ public class DateTimeServiceImpl implements DateTimeService {
 				}
 			}
 		}
-		
+
 		if (dateToStringFormatForUserInterface == null) {
-			dateToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE, 
+			dateToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
 					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(dateToStringFormatForUserInterface);
 		}
-		
+
 		if (timestampToStringFormatForUserInterface == null) {
-			timestampToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE, 
+			timestampToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
 					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(timestampToStringFormatForUserInterface);
 		}
-		
+
 		if (dateToStringFormatForFileName == null) {
-			dateToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE, 
+			dateToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
 					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(dateToStringFormatForFileName);
 		}
-		
+
 		if (timestampToStringFormatForFileName == null) {
-			timestampToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE, 
+			timestampToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
 					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(timestampToStringFormatForFileName);
@@ -189,7 +189,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 
 	/**
 	 * Formats strings into dates using the format string in the KR-NS/All/STRING_TO_DATE_FORMATS parameter
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.DateTimeService#convertToDate(java.lang.String)
 	 */
 	public Date convertToDate(String dateString) throws ParseException {
@@ -246,7 +246,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 		throw new ParseException(exceptionMessage.toString().substring(0,
 				exceptionMessage.length() - 1), 0);
 	}
-	
+
 	/**
 	 * @throws ParseException
 	 * @see org.kuali.rice.kns.service.DateTimeService#convertToSqlDate(java.sql.Timestamp)
@@ -291,7 +291,13 @@ public class DateTimeServiceImpl implements DateTimeService {
 		if (!StringUtils.isBlank(dateString)) {
 			DateFormat dateFormat = new SimpleDateFormat(pattern);
 			dateFormat.setLenient(false);
-			return dateFormat.parse(dateString);
+			Date testDate =  dateFormat.parse(dateString);
+
+			if (!dateFormat.format(testDate).equals(dateString))
+		    {
+			      throw new ParseException("The date that you provided is invalid.",1);
+			}
+			return testDate;
 		}
 		return null;
 	}

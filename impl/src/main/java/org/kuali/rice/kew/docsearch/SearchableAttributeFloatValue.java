@@ -21,7 +21,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,13 +41,18 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.KNSConstants;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 
 /**
@@ -56,7 +63,7 @@ import org.kuali.rice.kew.util.Utilities;
 @Table(name="KREW_DOC_HDR_EXT_FLT_T")
 @Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeFloatValue.FindByRouteHeaderId", query="select s from SearchableAttributeFloatValue as s where s.routeHeaderId = :routeHeaderId"),	
+	@NamedQuery(name="SearchableAttributeFloatValue.FindByRouteHeaderId", query="select s from SearchableAttributeFloatValue as s where s.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="SearchableAttributeFloatValue.FindByKey", query="select s from SearchableAttributeFloatValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
 })
 public class SearchableAttributeFloatValue implements WorkflowPersistable, SearchableAttributeValue {
@@ -166,9 +173,52 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
 	 */
     public boolean isPassesDefaultValidation(String valueEntered) {
-        Pattern pattern = Pattern.compile(DEFAULT_VALIDATION_REGEX_EXPRESSION);
-        Matcher matcher = pattern.matcher(valueEntered);
-        return (matcher.matches());
+
+    	boolean bRet = true;
+    	boolean bSplit = false;
+
+		if (StringUtils.contains(valueEntered, KNSConstants.BETWEEN_OPERATOR)) {
+			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
+			for(String value : l){
+				bSplit = true;
+				if(!isPassesDefaultValidation(value)){
+					bRet = false;
+				}
+			}
+		}
+		if (StringUtils.contains(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR));
+			for(String value : l){
+				bSplit = true;
+				if(!isPassesDefaultValidation(value)){
+					bRet = false;
+				}
+			}
+		}
+		if (StringUtils.contains(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR));
+			for(String value : l){
+				bSplit = true;
+				if(!isPassesDefaultValidation(value)){
+					bRet = false;
+				}
+			}
+		}
+
+		if(bSplit){
+			return bRet;
+		}
+
+		Pattern pattern = Pattern.compile(DEFAULT_VALIDATION_REGEX_EXPRESSION);
+		Matcher matcher = pattern.matcher(SqlBuilder.cleanNumericOfValidOperators(valueEntered).trim());
+		if(!matcher.matches()){
+			bRet = false;
+		}
+
+		return bRet;
+
     }
 
     /* (non-Javadoc)
@@ -176,8 +226,14 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
      */
     public Boolean isRangeValid(String lowerValue, String upperValue) {
         if (allowsRangeSearches()) {
-            BigDecimal lower = convertStringToBigDecimal(lowerValue);
-            BigDecimal upper = convertStringToBigDecimal(upperValue);
+            BigDecimal lower = null;
+            BigDecimal upper = null;
+            try{
+            	lower = convertStringToBigDecimal(lowerValue);
+            	upper = convertStringToBigDecimal(upperValue);
+            }catch(NumberFormatException ex){
+            	return false;
+            }
             if ( (lower != null) && (upper != null) ) {
                 return (lower.compareTo(upper) <= 0);
             }
@@ -251,11 +307,11 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
     public Object copy(boolean preserveKeys) {
         return null;
     }
-    
+
 	@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
-    
+
 }
 

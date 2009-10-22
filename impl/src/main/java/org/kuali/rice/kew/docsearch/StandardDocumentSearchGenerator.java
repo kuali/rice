@@ -589,6 +589,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 			QueryComponent qc = generateSearchableAttributeRangeSql(keyName, criteriaComponents, whereClausePrefix, tableIndex);
             fromSql.append(qc.getFromSql());
 		}
+        
+        if (finalCriteria == null) {
+        	return new QueryComponent("", "", "");
+        }
 
         String whereClausePrefix = (whereSql.length() == 0) ? whereClausePredicatePrefix : getGeneratedPredicatePrefix(whereSql.length());
 

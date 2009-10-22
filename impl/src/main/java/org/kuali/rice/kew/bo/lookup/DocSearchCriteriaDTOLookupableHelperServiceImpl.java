@@ -29,6 +29,8 @@ import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -154,6 +156,16 @@ KualiLookupableHelperServiceImpl {
     	if(!GlobalVariables.getMessageMap().hasNoErrors()) {
         	throw new ValidationException("error with doc search");
         }
+    	
+    	// check various warning conditions
+    	
+    	if (criteria.isOverThreshold() && criteria.getSecurityFilteredRows() > 0) {
+    	    GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(components.getSearchResults().size()), String.valueOf(criteria.getSecurityFilteredRows()));
+    	} else if (criteria.getSecurityFilteredRows() > 0) {
+    	    GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.securityFiltered", String.valueOf(criteria.getSecurityFilteredRows()));
+    	} else if (criteria.isOverThreshold()) {
+    		GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES,"docsearch.DocumentSearchService.exceededThreshold", String.valueOf(components.getSearchResults().size()));
+    	}
 
     	for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {

@@ -70,7 +70,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
           }
       } 
       catch (Exception e) {
-          LOG.warn("Not able to retrieve DocumentTypeSecurity from remote system for doctype: " + documentTypeName);
+          LOG.warn("Not able to retrieve DocumentTypeSecurity from remote system for doctype: " + documentTypeName, e);
           return false;
       }
       return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorPrincipalId, session);

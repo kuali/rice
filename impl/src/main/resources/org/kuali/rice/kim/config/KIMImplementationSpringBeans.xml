@@ -102,17 +102,24 @@
   <!--
         Identity Service
   -->
-  <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
-  <bean id="kimIdentityCacheService" class="org.kuali.rice.kim.service.impl.IdentityCacheServiceImpl" />
+
+  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
+
+  <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl" />
+
+  <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityCurrentAndArchivedServiceImpl">
+    <constructor-arg ref="kimIdentityArchiveService" />
+    <constructor-arg ref="kimIdentityDelegateService" />
+  </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="remotedServiceRegistry" ref="enServiceInvoker" />
     <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimIdentityService"
+      <bean parent="kimService" 
+        p:service-ref="kimIdentityService" 
         p:localServiceName="kimIdentityService" />
     </property>
-  </bean>
+  </bean> 
 
   <bean parent="kimLocalServiceExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

@@ -53,7 +53,6 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.service.IdentityCacheService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
@@ -69,7 +68,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	private PermissionService permissionService; 
 	private ResponsibilityService responsibilityService;  
 	private IdentityService identityService;
-	private IdentityCacheService identityCacheService;
 	private GroupService groupService;
 	private GroupUpdateService groupUpdateService;
 	private IdentityUpdateService identityUpdateService;
@@ -832,11 +830,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCache( entityId );
     	if ( entity == null ) {
     		entity = getIdentityService().getEntityDefaultInfo(entityId);
-	    	if ( entity == null ) {
-	    		entity = getIdentityCacheService().getEntityDefaultInfoFromPersistentCache( entityId );
-	    	} else {
-				getIdentityCacheService().saveDefaultInfoToCache(entity);
-	    	}
     		addEntityDefaultInfoToCache( entity );
     	}
     	return entity;
@@ -852,11 +845,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalId( principalId );
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
-	    	if ( entity == null ) {
-	    		entity = getIdentityCacheService().getEntityDefaultInfoFromPersistentCacheByPrincipalId( principalId );
-	    	} else {
-				getIdentityCacheService().saveDefaultInfoToCache(entity);
-	    	}
 			addEntityDefaultInfoToCache( entity );
     	}
     	return entity;
@@ -872,11 +860,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalName( principalName );
     	if ( entity == null ) {
 	    	entity = getIdentityService().getEntityDefaultInfoByPrincipalName(principalName);
-	    	if ( entity == null ) {
-	    		entity = getIdentityCacheService().getEntityDefaultInfoFromPersistentCacheByPrincipalName( principalName );
-	    	} else {
-				getIdentityCacheService().saveDefaultInfoToCache(entity);
-	    	}
 			addEntityDefaultInfoToCache( entity );
     	}
     	return entity;
@@ -1043,13 +1026,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 			identityService = KIMServiceLocator.getIdentityService();
 		}
 		return identityService;
-	}
-
-	public IdentityCacheService getIdentityCacheService() {
-		if ( identityCacheService == null ) {
-			identityCacheService = KIMServiceLocator.getIdentityCacheService();
-		}
-		return identityCacheService;
 	}
 	
 	public GroupService getGroupService() {

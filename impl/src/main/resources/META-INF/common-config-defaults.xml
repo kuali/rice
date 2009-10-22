@@ -189,7 +189,8 @@
     <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
 
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
-
+	
+	<param name="enable.nonproduction.data.unmasking" override="false">false</param>
     <!-- KEN -->
 
 	<param name="ken.url" override="false">${application.url}/ken</param>

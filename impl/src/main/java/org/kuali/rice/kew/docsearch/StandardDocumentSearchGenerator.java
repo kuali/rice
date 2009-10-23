@@ -232,6 +232,20 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     /**
+     * Cleans upper bounds on an entire list of values.
+     */
+    private static List<String> cleanUpperBounds(List<String> stringDates) {
+    	List<String> lRet = null;
+    	if(stringDates != null && !stringDates.isEmpty()){
+    		lRet = new ArrayList<String>();
+    		for(String stringDate:stringDates){
+    			lRet.add(cleanUpperBound(stringDate));
+    		}
+    	}
+    	return lRet;
+    }
+    
+    /**
      * When dealing with upperbound dates, it is a business requirement that if a timestamp isn't already
      * stated append 23:59:59 to the end of the date.  This ensures that you are searching for the entire
      * day.
@@ -407,6 +421,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 				// for upperbound
 				if (TypeUtils.isTemporalClass(clazz) && criteriaComponent.isComponentUpperBoundValue()) {
 					criteriaComponent.setValue(cleanUpperBound(criteriaComponent.getValue()));
+					criteriaComponent.setValues(cleanUpperBounds(criteriaComponent.getValues()));
 				}
 
 			} else {
@@ -561,10 +576,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             Class c = getSearchableAttributeClass(searchAttribute);
 
-            String searchValue = criteriaComponent.getValue();
             boolean addCaseInsensitivityForValue = (!criteriaComponent.isCaseSensitive()) && criteriaComponent.getSearchableAttributeValue().allowsCaseInsensitivity();
 
-            Criteria crit = sqlBuild.createCriteria("VAL", searchValue , searchAttribute.getAttributeTableName(), tableAlias, c, addCaseInsensitivityForValue, searchAttribute.allowsWildcards());
+            Criteria crit = null;
+            List<String> searchValues = criteriaComponent.getValues();
+            if (searchValues != null && !searchValues.isEmpty()) {
+            	crit = new Criteria(searchAttribute.getAttributeTableName(), tableAlias);
+            	crit.setDbPlatform(sqlBuild.getDbPlatform());
+            	crit.in("VAL", criteriaComponent.getValues(), c);
+            } else {
+            	crit = sqlBuild.createCriteria("VAL", criteriaComponent.getValue() , searchAttribute.getAttributeTableName(), tableAlias, c, addCaseInsensitivityForValue, searchAttribute.allowsWildcards());
+            }
             sqlBuild.addCriteria("KEY_CD", criteriaComponent.getSavedKey(), String.class, false, false, crit); // this is always of type string.
             sqlBuild.andCriteria("DOC_HDR_ID", tableAlias + ".DOC_HDR_ID", "KREW_DOC_HDR_T", "DOC_HDR", TypeUtils.JoinType.class, false, false, crit);
 

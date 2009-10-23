@@ -967,7 +967,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         }
 
         // test for kuali xstream formatted dates
-        value = "2007-02-20";
+        value = "02/20/2007";
         String returnValue = "02/20/2007";
         documentcontent = "<documentContent>" + "<searchableContent>" + "<putWhateverWordsIwantInsideThisTag>" + "<" + keyName + ">" + "<value>" + value + "</value>" + "</" + keyName + ">" + "</putWhateverWordsIwantInsideThisTag>" + "</searchableContent>" + "</documentContent>";
         context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, documentcontent);

@@ -398,6 +398,10 @@ public class KualiXmlAttributeHelper {
                 return title;
             }
         }
+        // return any potentially hard coded title info
+        else if ( (StringUtils.isNotBlank(businessObjectText)) && (StringUtils.isBlank(businessObjectName)) ) {
+        	return businessObjectText;
+        }
         return notFound;
 
     }

@@ -514,6 +514,10 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 		return roleService;
 	}
 
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
 	public KimPermissionDao getPermissionDao() {
 		return this.permissionDao;
 	}

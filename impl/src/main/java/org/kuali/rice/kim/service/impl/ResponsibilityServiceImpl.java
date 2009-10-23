@@ -504,6 +504,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 		return roleService;
 	}
 
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
 	public KimResponsibilityDao getResponsibilityDao() {
 		return this.responsibilityDao;
 	}

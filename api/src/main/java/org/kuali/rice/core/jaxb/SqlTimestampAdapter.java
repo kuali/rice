@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This class allows for a {@link java.sql.Timestamp} instance to be passed across the wire by jaxws enabled services
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service;
 import org.junit.Test;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.test.document.AccountRequestDocument;
+import org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.test.KNSTestCase;
@@ -95,4 +96,33 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveZeroMessageMapSize, recursiveFiveMessageMapSize);
     }
 
+    @Test public void testRecursiveValidationParentChildLoop() throws Exception {
+        AccountRequestDocumentWithCyclicalReference doc1 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest3");
+        // set all required fields except 1
+        doc1.getDocumentHeader().setDocumentDescription("test document 1");
+        doc1.setReason1("reason1");
+        doc1.setReason2("reason2");
+        doc1.setRequester("requester");
+
+        AccountRequestDocumentWithCyclicalReference doc2 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest3");
+        doc2.getDocumentHeader().setDocumentDescription("test document 2");
+        doc2.setReason1("reason1a");
+        doc2.setReason2("reason2a");
+        doc2.setRequester("requester2");
+        doc2.setParent(doc1);
+        doc1.setChild(doc2);
+
+        GlobalVariables.setMessageMap(new MessageMap());
+        KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 5, true);
+        MessageMap errorMap = GlobalVariables.getMessageMap();
+        int recursiveFiveMessageMapSize = errorMap.size();
+
+        GlobalVariables.setMessageMap(new MessageMap());
+        KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 10, true);
+        MessageMap errorMap2 = GlobalVariables.getMessageMap();
+        int recursiveTenMessageMapSize = errorMap2.size();
+
+        assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveFiveMessageMapSize, recursiveTenMessageMapSize);
+    }
+    
 }

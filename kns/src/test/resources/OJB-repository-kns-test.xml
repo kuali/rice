@@ -49,6 +49,36 @@
 		</collection-descriptor>
 	</class-descriptor>
 	
+	
+	<class-descriptor class="org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference" table="TRV_DOC_2">
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="requester" column="traveler" jdbc-type="VARCHAR" />
+		<field-descriptor name="reason1" column="org" jdbc-type="VARCHAR" />
+		<field-descriptor name="reason2" column="dest" jdbc-type="VARCHAR" />
+
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"></field-descriptor>
+		<!--  object references -->
+		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+		<collection-descriptor name="accounts" element-class-ref="org.kuali.rice.kns.test.document.bo.Account" auto-retrieve="true" auto-update="false"
+			auto-delete="false" indirection-table="TRAV_DOC_2_ACCOUNTS">
+			<fk-pointing-to-this-class column="DOC_HDR_ID" />
+			<fk-pointing-to-element-class column="ACCT_NUM" />
+		</collection-descriptor>
+		<reference-descriptor name="child" class-ref="org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+		<reference-descriptor name="parent" class-ref="org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+	</class-descriptor>
+	
 	<class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountManager" table="TRV_ACCT_FO">
 		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
 		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />

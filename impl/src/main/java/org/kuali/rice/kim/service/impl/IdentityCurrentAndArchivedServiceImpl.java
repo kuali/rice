@@ -50,7 +50,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
  */
 
 @WebService(endpointInterface = KIMWebServiceConstants.IdentityService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
-public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, IdentityUpdateService {
+public class IdentityCurrentAndArchivedServiceImpl extends IdentityServiceImpl implements IdentityUpdateService {
 
 	private final IdentityArchiveService identityArchiveService;
 	private final IdentityService innerIdentityService;

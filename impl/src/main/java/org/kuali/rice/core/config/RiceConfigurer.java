@@ -237,8 +237,9 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
                 notify(new AfterStartEvent());
             }
             //Event raised when an ApplicationContext gets closed. 
-            else if (event instanceof ContextClosedEvent) {
-                notify(new AfterStopEvent());
+            else if (event instanceof ContextClosedEvent && !super.isStarted()) 
+            {
+            	notify(new AfterStopEvent());
             }
         } catch (Exception e) {
             throw new RiceRuntimeException(e);

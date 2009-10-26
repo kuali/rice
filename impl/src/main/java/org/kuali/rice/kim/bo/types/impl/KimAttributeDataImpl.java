@@ -30,6 +30,7 @@ import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -88,6 +89,9 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 		this.kimAttributeId = kimAttributeId;
 	}
 	public KimAttributeImpl getKimAttribute() {
+		if(ObjectUtils.isNull(this.kimAttribute)) {
+				this.refreshReferenceObject("kimAttribute");
+		}
 		return this.kimAttribute;
 	}
 	public void setKimAttribute(KimAttributeImpl kimAttribute) {

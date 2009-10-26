@@ -1115,6 +1115,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier) {
     	// look up the role
     	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	role.refreshReferenceObject("members");
+    	
     	// check that identical member does not already exist
     	if ( doAnyMemberRecordsMatch( role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
     		return;
@@ -1171,6 +1173,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// look up the role
     	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// pull all the principal members
+    	role.refreshReferenceObject("members");
     	// look for an exact qualifier match
 		for ( RoleMemberImpl rm : role.getMembers() ) {
 			if ( doesMemberMatch( rm, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {

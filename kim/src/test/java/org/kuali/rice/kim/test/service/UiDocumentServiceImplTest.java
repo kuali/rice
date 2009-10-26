@@ -82,7 +82,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
             e.printStackTrace();
         }
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(personDoc.getEntityId());
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
         KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType.getAddresses().get(0));
@@ -109,7 +109,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	@Test
 	public void testLoadToPersonDocument() {
 		
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl("entity123eId");
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl("entity123eId");
 		assertNotNull(entity);
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "entity123pId");

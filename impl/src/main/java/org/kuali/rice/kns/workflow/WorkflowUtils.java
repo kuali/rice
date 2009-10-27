@@ -119,6 +119,9 @@ public class WorkflowUtils {
         params.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
         params.put(KNSPropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
         String baseUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseHelpUrl(field.getBusinessObjectClassName());
+        if (baseUrl == null) {
+        	return null;
+        }
         return UrlFactory.parameterizeUrl(baseUrl, params);
     }
 

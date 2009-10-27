@@ -58,5 +58,5 @@ public interface RiceApplicationConfigurationMediationService {
     
     String getBaseLookupUrl( String businessObjectClassName );
     String getBaseInquiryUrl( String businessObjectClassName );
-	
+	String getBaseHelpUrl( String businessObjectClassName );
 }

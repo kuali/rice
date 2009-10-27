@@ -32,6 +32,7 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
 import org.kuali.rice.kns.service.ParameterConstants.COMPONENT;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
 
 //@Transactional
@@ -179,6 +180,10 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 	public String getBaseLookupUrl(String businessObjectClassName) {
 		// all Rice applications share the same type of lookup URL
 		return LookupUtils.getBaseLookupUrl(false);
+	}
+	
+	public String getBaseHelpUrl(String businessObjectClassName) {
+		return KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/kr/help.do";
 	}
 
 	/**

@@ -247,6 +247,17 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     }
     
     /**
+     * @see org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService#getBaseHelpUrl(java.lang.String)
+     */
+    public String getBaseHelpUrl(String businessObjectClassName) {
+    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
+    	if ( racService != null ) {
+    		return racService.getBaseHelpUrl(businessObjectClassName);
+    	}
+    	return null;
+    }
+    
+    /**
      * @see org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService#getBusinessObjectAttributeDefinition(java.lang.String, java.lang.String)
      */
     public AttributeDefinition getBusinessObjectAttributeDefinition(String businessObjectClassName, String attributeName) {

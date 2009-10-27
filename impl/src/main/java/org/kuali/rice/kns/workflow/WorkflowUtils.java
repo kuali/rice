@@ -118,7 +118,8 @@ public class WorkflowUtils {
         params.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
         params.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
         params.put(KNSPropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
-        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/kr/help.do", params);
+        String baseUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseHelpUrl(field.getBusinessObjectClassName());
+        return UrlFactory.parameterizeUrl(baseUrl, params);
     }
 
     /**

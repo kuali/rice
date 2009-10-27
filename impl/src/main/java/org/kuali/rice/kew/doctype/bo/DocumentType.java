@@ -354,7 +354,12 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 			SearchableAttribute searchableAttribute = null;
 			if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-				searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+				try {
+				    searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+				} catch (Exception e) {
+				    LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
+				    searchableAttribute = null;
+				}
 			} else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
 				searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
@@ -931,7 +936,13 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         	    	return generator;
         		}
         	}
-            Object searchGenerator = GlobalResourceLoader.getObject(objDef);
+        	Object searchGenerator = null;
+        	try {
+        	    searchGenerator = GlobalResourceLoader.getObject(objDef);
+        	} catch (Exception e) {
+        	    LOG.warn("Unable to connect to load searchGenerator for " + this.getName()+ ".  Using StandardDocumentSearchGenerator as default.");
+        	    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
+        	}
 
             if (searchGenerator == null) {
                 throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());

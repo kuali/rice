@@ -25,12 +25,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.UiDocumentServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -45,6 +47,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @Entity
 @Table(name="KRIM_PND_ROLE_MT")
 public class PersonDocumentRole extends KimDocumentBoBase {
+    private static final Logger LOG = Logger.getLogger(PersonDocumentRole.class);
 	private static final long serialVersionUID = 4908044213007222739L;
 	@Column(name="ROLE_ID")
 	protected String roleId;
@@ -138,12 +141,19 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	public AttributeDefinitionMap getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( this.getKimRoleType() );
-	        if ( kimTypeService != null ) {
-	        	definitions = kimTypeService.getAttributeDefinitions(getKimTypeId());
-	        } else {
-	        	definitions = new AttributeDefinitionMap();
-	        }
+	        //it is possible that the the roleTypeService is coming from a remote application 
+	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+	        try {
+    	        if ( kimTypeService != null ) {
+    	        	definitions = kimTypeService.getAttributeDefinitions(getKimTypeId());
+    	        } else {
+    	        	definitions = new AttributeDefinitionMap();
+    	        }
+    		} catch (Exception ex) {
+                LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Role Type: " + this.getKimRoleType(), ex);
+            }
 		}
+		
 		return definitions;
 	}
 

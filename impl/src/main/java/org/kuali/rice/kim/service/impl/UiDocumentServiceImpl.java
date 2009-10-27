@@ -566,9 +566,15 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected AttributeDefinitionMap getAttributeDefinitionsForRole(PersonDocumentRole role) {
     	KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
-    	if ( kimTypeService != null ) {
-    		return kimTypeService.getAttributeDefinitions(role.getKimTypeId());
-    	}
+    	//it is possible that the the kimTypeService is coming from a remote application 
+        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+        try {
+        	if ( kimTypeService != null ) {
+        		return kimTypeService.getAttributeDefinitions(role.getKimTypeId());
+        	}
+        } catch (Exception ex) {
+            LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Role Type: " + role.getKimRoleType(), ex);
+        }
     	return new AttributeDefinitionMap();
 	}
 

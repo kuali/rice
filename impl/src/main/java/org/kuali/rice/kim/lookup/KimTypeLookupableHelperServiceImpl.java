@@ -125,8 +125,15 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	public static boolean hasDerivedRoleTypeService(KimType kimType){
 		boolean hasDerivedRoleTypeService = false;
 		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
-		if(hasRoleTypeService(kimType, kimTypeService))
-			hasDerivedRoleTypeService = (kimType.getKimTypeServiceName()!=null && ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
+		//it is possible that the the roleTypeService is coming from a remote application 
+	    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+		try {
+		    if(hasRoleTypeService(kimType, kimTypeService))
+		        hasDerivedRoleTypeService = (kimType.getKimTypeServiceName()!=null && ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
+		} catch (Exception ex) {
+			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
+		    return hasDerivedRoleTypeService;
+		}
 		return hasDerivedRoleTypeService;
 	}
 

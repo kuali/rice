@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -31,6 +32,7 @@ import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
@@ -71,7 +73,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
     }
 
     public void exportRule(Element parent, RuleBaseValues rule) {
-        Element ruleElement = renderer.renderElement(parent, RULE);
+    	Element ruleElement = renderer.renderElement(parent, RULE);
         if (rule.getName() != null) {
             renderer.renderTextElement(ruleElement, NAME, rule.getName());
         }
@@ -93,7 +95,23 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             }
         }
         renderer.renderBooleanElement(ruleElement, FORCE_ACTION, rule.getForceAction(), false);
-        exportRuleExtensions(ruleElement, rule.getRuleExtensions());
+        
+        if (CollectionUtils.isEmpty(rule.getRuleExtensions()) && 
+        		/* field values is not empty */
+        		!(rule.getFieldValues() == null || rule.getFieldValues().size() == 0)) {
+        	// the rule is in the wrong state (as far as we are concerned).
+        	// translate it
+        	WebRuleUtils.translateResponsibilitiesForSave(rule);
+        	WebRuleUtils.translateFieldValuesForSave(rule);
+        	
+        	// do our exports
+    		exportRuleExtensions(ruleElement, rule.getRuleExtensions());
+        	
+        	// translate it back
+        	WebRuleUtils.populateRuleMaintenanceFields(rule);
+        } else { 
+        	exportRuleExtensions(ruleElement, rule.getRuleExtensions());
+        }
         
         // put responsibilities in a single collection 
         Set<RuleResponsibility> responsibilities = new HashSet<RuleResponsibility>();

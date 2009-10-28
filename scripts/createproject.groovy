@@ -242,10 +242,11 @@ def buildDir(path) {
 
 def detectMaven(mvnDir) {
 	mvnPath = ""
-	mvnExec = "/bin/mvn"
+	mvnExec = (System.getProperty("os.name") =~ /^Windows/) ? "/bin/mvn.bat" : "/bin/mvn"
 	
 	mvnHome1 = System.getProperty("M2_HOME")
 	mvnHome2 = System.getProperty("m2.home")
+	mvnHome3 = System.getenv("M2_HOME")
 	
 	if (mvnDir) {
 		mvnPath = mvnDir + mvnExec
@@ -253,6 +254,8 @@ def detectMaven(mvnDir) {
 		mvnPath = mvnHome1 + mvnExec
 	}  else if (mvnHome2) {
 		mvnPath = mvnHome2 + mvnExec
+	} else if (mvnHome3) {
+		mvnPath = mvnHome3 + mvnExec
 	} else {
 		// attempt to find maven.home.directory in kuali-build.properties
 		file = new File(System.getProperty("user.home") + "/kuali-build.properties")

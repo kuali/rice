@@ -320,6 +320,7 @@ def templateReplace(file) {
 }
 
 def instructionstext() {
+	def datasetDirectory = (SAMPLEAPP)? "/database/demo-server-dataset" : "database/bootstrap-server-dataset"
 """
 ==================================================================
         Instructions to complete Rice Template Install
@@ -331,7 +332,8 @@ def instructionstext() {
 4. Configure an impex-build.properties file in your home directory
    with application runtime database information, being sure to set
    the torque.schema.dir property to the location of the rice
-   /database/demo-server-dataset directory.
+   ${datasetDirectory} directory. A template for impex-build.properties 
+   can be found in database/database-impex/impex-build.properties.sample.
 5. Run the impex tool under /database/impex-database.  If you require
    a schema to be created for you, type: 'ant create-schema'.
    To import the demonstration dataset, type: 'ant import'
@@ -339,10 +341,7 @@ def instructionstext() {
    In the eclipse Run menu, choose 'Run...' and select the the
    configuration named 'Launch Web App'
 7. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.jsp
-8. Finish bootstrapping by ingesting the workflow xml.  From the 
-   start screen, go to the workflow portal and log in as quickstart.
-   Go to the 'XML Ingester' link and ingest the following file: 
-   /src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml
+
    
    These instructions can also be found in the instructions.txt file
    in your generated project.

@@ -110,7 +110,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		configureKeystore(currentConfig);
 		configureScheduler(currentConfig);
 		configurePlatformTransactionManager(currentConfig);
-		if (getServiceServletUrl() != null) {
+		if (StringUtils.isBlank(getServiceServletUrl())) {
 			currentConfig.overrideProperty("http.service.url", getServiceServletUrl());
 		}
 		configureAlternateEndpoints(currentConfig);

@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -75,7 +76,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * <p>Value is "validate"
      */
     public static final String VALIDATE_METHOD="validate";
-    
+
     private DataDictionaryService dataDictionaryService;
     private BusinessObjectService businessObjectService;
     private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
@@ -84,7 +85,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     private KualiConfigurationService configService;
 
     private PersistenceStructureService persistenceStructureService;
-    
+
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocument(org.kuali.rice.kns.document.Document)
      */
@@ -133,22 +134,22 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
         // validate primitive values of the document
         validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
-        
+
         if (maxDepth > 0) {
             validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired, false);
         }
     }
-    
+
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
         // validate primitive values of the document
         validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
-        
+
         if (maxDepth > 0) {
             validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName);
         }
     }
-    
+
     private void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
     if (ObjectUtils.isNull(businessObject)) {
 	    return;
@@ -176,16 +177,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	for (String collectionName : collections.keySet()) {
 	    if (persistenceStructureService.isCollectionUpdatable(businessObject.getClass(), collectionName)) {
 		Object listObj = ObjectUtils.getPropertyValue(businessObject, collectionName);
-		
+
 		if (ObjectUtils.isNull(listObj)) {
 		    continue;
 		}
-		
+
 		if (!(listObj instanceof List)) {
 		    LOG.error("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
 		    continue;
 		}
-		
+
 		List list = (List) listObj;
 		for (int i = 0; i < list.size(); i++) {
 		    if (ObjectUtils.isNotNull(list.get(i)) && list.get(i) instanceof PersistableBusinessObject) {
@@ -197,7 +198,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 			    errorPathAddition = collectionName + "[" + Integer.toString(i) + "]";
 			}
 			BusinessObject element = (BusinessObject) list.get(i);
-			
+
 			GlobalVariables.getMessageMap().addToErrorPath(errorPathAddition);
 			validateBusinessObject(element, validateRequired);
 			if (maxDepth > 0) {
@@ -238,7 +239,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 			validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
 		}
 	}
-	
+
 	protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject, List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
 		for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
 			if (itemDefinition instanceof MaintainableFieldDefinition) {
@@ -315,129 +316,133 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat
+     * objectClassName is the docTypeName
      */
-    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeValue, String errorKey) {
+    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
         String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+        boolean checkDateBounds = false; // this is used so we can check date bounds
+        Class<?> formatterClass = null;
 
-        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeValue + ")");
+        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
 
-        if (StringUtils.isNotBlank(attributeValue)) {
-            Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
-            if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
-                return;
-            }
-            Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
-            if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
-                LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+        /*
+         *  This will return a list of searchable attributes. so if the value is
+         *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
+         */
+        List<String> attributeValues = SqlBuilder.getSearchableValues(attributeInValue);
 
-            	if (!validationExpression.matcher(attributeValue).matches()) {
-            		// Retrieving formatter class
-                    Class<?> formatterClass=getDataDictionaryService().getAttributeFormatter(
-                            objectClassName, attributeName);
-                    if (formatterClass != null) {
-                    	boolean valuesAreValid = true;
-                        String[] valuesToValidate = null;
-                        String[] errorKeyPrefix = null;
-                    	
-                        // For dates, remove the substrings "<=", ">=", and ".." from the date Strings before validating them. It is not necessary to
-                        // remove these substrings prior to the regex validation because custom date fields should be validated with the formatter anyway.
-                        if (DateFormatter.class.isAssignableFrom(formatterClass)) {
-                        	// Remove the substrings via logic resembling DocSearchCriteriaDTOLookupableHelperServiceImpl.getSearchableAttributeFieldValue.
-                        	if (StringUtils.contains(attributeValue, "..")) {
-                        	    // If a "From" and "To" date are embedded together, validate each one individually.
-                        	    String[] datesToTest = StringUtils.split(attributeValue, "..");
-                        	    valuesToValidate = new String[] { datesToTest[0], datesToTest[1] };
-                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX, "" };
-                        	} else if (StringUtils.contains(attributeValue, ">=")) {
-                        	    valuesToValidate = new String[] { StringUtils.split(attributeValue, ">=")[0] };
-                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX };
-                            } else if (StringUtils.contains(attributeValue, "<=")) {
-                                valuesToValidate = new String[] { StringUtils.split(attributeValue, "<=")[0] };
-                                errorKeyPrefix = new String [] { "" };
-                            } else {
-                                valuesToValidate = new String[] { attributeValue };
-                                errorKeyPrefix = new String [] { "" };
-                            }
-                        } else {
-                        	valuesToValidate = new String[] { attributeValue };
-                        	errorKeyPrefix = new String [] { "" };
-                        }
-                        
-                        // Loop twice if the field is a date field and both a "From" and "To" date were specified; otherwise, run once.
-                    	for (int i = 0; i < valuesToValidate.length; i++) {
+        if(attributeValues == null || attributeValues.isEmpty())
+        	return;
+
+        for(String attributeValue : attributeValues){
+	        if (StringUtils.isNotBlank(attributeValue)) {
+	            Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
+	            if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
+	                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
+	                return;
+	            }
+	            Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
+	            if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
+	                LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+
+	            	if (!validationExpression.matcher(attributeValue).matches()) {
+	            		// Retrieving formatter class
+	            		if(formatterClass == null){
+	            			// this is just a cache check... all dates ranges get called twice
+	            			formatterClass=getDataDictionaryService().getAttributeFormatter(
+		                            objectClassName, attributeName);
+	            		}
+
+	                    if (formatterClass != null) {
+	                    	boolean valuesAreValid = true;
                     		boolean isError=true;
+                    		String errorKeyPrefix = "";
                     		try {
+
+                    			// this is a special case for date ranges in order to set the proper error message
+                    			if (DateFormatter.class.isAssignableFrom(formatterClass)) {
+                    				String[] values = attributeInValue.split("\\.\\."); // is it a range
+                    				if(values.length == 2 && attributeValues.size() == 2){ // make sure it's not like a .. b | c
+                    					checkDateBounds = true; // now we need to check that a <= b
+                    					if(attributeValues.indexOf(attributeValue) == 0){ // only care about lower bound
+                    						errorKeyPrefix = KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX;
+                    					}
+                    				}
+                    			}
+
                     			Method validatorMethod=formatterClass.getDeclaredMethod(
                     					VALIDATE_METHOD, new Class<?>[] {String.class});
                         		Object o=validatorMethod.invoke(
-                        				formatterClass.newInstance(), valuesToValidate[i]);
+                        				formatterClass.newInstance(), attributeValue);
                         		if (o instanceof Boolean) {
                         			isError = !((Boolean)o).booleanValue();
                         		}
                         		valuesAreValid &= !isError;
                     		} catch (Exception e) {
                     			LOG.debug(e.getMessage(), e);
+                    			isError =true;
                     			valuesAreValid = false;
                     		}
                     		if (isError) {
+                    			checkDateBounds = false; // it's already invalid, no need to check date bounds
                     			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
                     			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                    			GlobalVariables.getMessageMap().putError(errorKeyPrefix[i] + errorKey, errorMessageKey, errorMessageParameters);
-                    		}
-                    	}
-                        
-                        // If there were two dates validated and both were valid, ensure that the "From" date does not occur after the "To" date.
-                		if (valuesToValidate.length == 2 && valuesAreValid) {
-                			try {
-                				valuesAreValid &= Utilities.checkDateRanges(valuesToValidate[0], valuesToValidate[1]);
-                			} catch (Exception e) {
-                				LOG.debug(e.getMessage(), e);
-                				valuesAreValid = false;
-                			}
-                			if (!valuesAreValid) {
-                           		String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                        		String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                        		GlobalVariables.getMessageMap().putError(errorKeyPrefix[0] + errorKey, errorMessageKey + ".range", errorMessageParameters);
-                			}
-                		}
-                    } else {
-                    	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-            			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-            			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
-                    }
-                    return;
-                }
+                    			GlobalVariables.getMessageMap().putError(errorKeyPrefix + errorKey, errorMessageKey, errorMessageParameters);
+	                    	}
+	                    }
+	                }
 
-            }
-            BigDecimal exclusiveMin = getDataDictionaryService().getAttributeExclusiveMin(objectClassName, attributeName);
-            if (exclusiveMin != null) {
-                try {
-                    if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
-                        // todo: Formatter for currency?
-                                new String[] { errorLabel, exclusiveMin.toString() });
-                        return;
-                    }
-                }
-                catch (NumberFormatException e) {
-                    // quash; this indicates that the DD contained a min for a non-numeric attribute
-                }
-            }
-            BigDecimal inclusiveMax = getDataDictionaryService().getAttributeInclusiveMax(objectClassName, attributeName);
-            if (inclusiveMax != null) {
-                try {
-                    if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
-                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
-                        // todo: Formatter for currency?
-                                new String[] { errorLabel, inclusiveMax.toString() });
-                        return;
-                    }
-                }
-                catch (NumberFormatException e) {
-                    // quash; this indicates that the DD contained a max for a non-numeric attribute
-                }
-            }
+	            }
+	            BigDecimal exclusiveMin = getDataDictionaryService().getAttributeExclusiveMin(objectClassName, attributeName);
+	            if (exclusiveMin != null) {
+	                try {
+	                    if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
+	                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
+	                        // todo: Formatter for currency?
+	                                new String[] { errorLabel, exclusiveMin.toString() });
+	                        return;
+	                    }
+	                }
+	                catch (NumberFormatException e) {
+	                    // quash; this indicates that the DD contained a min for a non-numeric attribute
+	                }
+	            }
+	            BigDecimal inclusiveMax = getDataDictionaryService().getAttributeInclusiveMax(objectClassName, attributeName);
+	            if (inclusiveMax != null) {
+	                try {
+	                    if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
+	                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
+	                        // todo: Formatter for currency?
+	                                new String[] { errorLabel, inclusiveMax.toString() });
+	                        return;
+	                    }
+	                }
+	                catch (NumberFormatException e) {
+	                    // quash; this indicates that the DD contained a max for a non-numeric attribute
+	                }
+	            }
+	        }
+        }
+
+        if(checkDateBounds){
+        	// this means that we only have 2 values and it's a date range.
+        	java.sql.Timestamp lVal = null;
+    		java.sql.Timestamp uVal = null;
+    		try{
+    			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
+    			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
+    		}catch(Exception ex){
+    			// this shouldn't happen because the tests passed above.
+    			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+    			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+    			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey, errorMessageParameters);
+    		}
+
+    		if(lVal.compareTo(uVal) > 0){ // check the bounds
+    			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+    			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+    			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey + ".range", errorMessageParameters);
+    		}
         }
     }
 
@@ -462,7 +467,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * iterates through the property discriptors looking for business objects or lists of business objects. calls validate method
      * for each bo found
-     * 
+     *
      * @param object
      * @param propertyDescriptors
      */
@@ -508,7 +513,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * iterates through property descriptors looking for primitives types, calls validate format and required check
-     * 
+     *
      * @param entryName
      * @param object
      * @param propertyDescriptors
@@ -524,7 +529,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * calls validate format and required check for the given propertyDescriptor
-     * 
+     *
      * @param entryName
      * @param object
      * @param propertyDescriptor
@@ -677,7 +682,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
 
     public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String attributeToHighlightOnFail, String displayFieldName) {
-    	
+
     	// if we're dealing with a nested attribute, we need to resolve down to the BO where the primitive attribute is located
     	// this is primarily to deal with the case of a defaultExistenceCheck that uses an "extension", i.e referenceName
     	// would be extension.attributeName
@@ -690,7 +695,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		}
     		return validateReferenceExistsAndIsActive((BusinessObject)nestedObject, nestedAttributePrimitive, attributeToHighlightOnFail, displayFieldName);
     	}
-    	
+
         boolean success = true;
         boolean exists;
         boolean active;
@@ -777,7 +782,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForTransDoc(org.kuali.rice.kns.document.TransactionalDocument)
 	 */
 	public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document) {
@@ -799,7 +804,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.kns.document.TransactionalDocument, org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public boolean validateDefaultExistenceChecksForNewCollectionItem(
@@ -809,7 +814,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (StringUtils.isNotBlank(collectionName)) {
 	        // get a collection of all the referenceDefinitions setup for this object
 	        Collection references = transactionalDocumentDictionaryService.getDefaultExistenceChecks(document);
-	
+
 	        // walk through the references, doing the tests on each
 	        for (Iterator iter = references.iterator(); iter.hasNext();) {
 	            ReferenceDefinition reference = (ReferenceDefinition) iter.next();
@@ -822,7 +827,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 		                Class boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : document.getDocumentBusinessObject().getClass();
 		                displayFieldName = dataDictionaryService.getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
 		            }
-		
+
 		            success &= validateReferenceExistsAndIsActive(newCollectionItem, reference.getAttributeName(), reference.getAttributeToHighlightOnFail(), displayFieldName);
 				}
 	        }
@@ -895,7 +900,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * Sets the businessObjectService attribute value.
-     * 
+     *
      * @param businessObjectService The businessObjectService to set.
      */
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
@@ -904,7 +909,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * Sets the maintenanceDocumentDictionaryService attribute value.
-     * 
+     *
      * @param maintenanceDocumentDictionaryService The maintenanceDocumentDictionaryService to set.
      */
     public void setMaintenanceDocumentDictionaryService(MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
@@ -923,7 +928,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
 	/**
      * Sets the persistenceService attribute value.
-     * 
+     *
      * @param persistenceService The persistenceService to set.
      */
     public void setPersistenceService(PersistenceService persistenceService) {
@@ -932,7 +937,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * Sets the configService attribute value
-     * 
+     *
      * @param configService the configService to set
      */
     public void setConfigService(KualiConfigurationService configService) {

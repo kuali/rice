@@ -20,6 +20,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,6 +35,8 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
@@ -465,6 +468,50 @@ public class SqlBuilder {
 			GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Date Input: " + stringDate });
 		}
 		return stringDate;
+   }
+
+   public static List<String> getSearchableValues(String valueEntered) {
+		List<String> lRet = new ArrayList<String>();
+
+		getSearchableValueRecursive(valueEntered, lRet);
+
+		return lRet;
+	}
+
+	protected static void getSearchableValueRecursive(String valueEntered, List lRet) {
+		if(valueEntered == null)return;
+
+		valueEntered = valueEntered.trim();
+
+		if(lRet == null){
+			throw new NullPointerException("The list passed in is by reference and should never be null.");
+		}
+
+		if (StringUtils.contains(valueEntered, KNSConstants.BETWEEN_OPERATOR)) {
+			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
+			for(String value : l){
+				getSearchableValueRecursive(value,lRet);
+			}
+			return;
+		}
+		if (StringUtils.contains(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)) {
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR));
+			for(String value : l){
+				getSearchableValueRecursive(value,lRet);
+			}
+			return;
+		}
+		if (StringUtils.contains(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR));
+			for(String value : l){
+				getSearchableValueRecursive(value,lRet);
+			}
+			return;
+		}
+
+		// lRet is pass by ref and should NEVER be null
+		lRet.add(valueEntered);
    }
 
 

@@ -329,7 +329,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
          *  This will return a list of searchable attributes. so if the value is
          *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
          */
-        List<String> attributeValues = SqlBuilder.getSearchableValues(attributeInValue);
+        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue);
 
         if(attributeValues == null || attributeValues.isEmpty())
         	return;

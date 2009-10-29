@@ -470,6 +470,32 @@ public class SqlBuilder {
 		return stringDate;
    }
 
+   /**
+   *
+   * This method splits the values then cleans them of any other query characters like *?!><...
+   *
+   * @param valueEntered
+   * @return
+   */
+  public static List<String> getCleanedSearchableValues(String valueEntered) {
+	   List<String> lRet = null;
+	   List<String> lTemp = getSearchableValues(valueEntered);
+	   if(lTemp != null && !lTemp.isEmpty()){
+		   lRet = new ArrayList<String>();
+		   for(String val: lTemp){
+			   lRet.add(ObjectUtils.clean(val));
+		   }
+	   }
+	   return lRet;
+  }
+
+   /**
+    *
+    * This method splits the valueEntered on locical operators and, or, and between
+    *
+    * @param valueEntered
+    * @return
+    */
    public static List<String> getSearchableValues(String valueEntered) {
 		List<String> lRet = new ArrayList<String>();
 

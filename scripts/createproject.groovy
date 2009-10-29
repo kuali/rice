@@ -338,7 +338,7 @@ def instructionstext() {
    a schema to be created for you, type: 'ant create-schema'.
    To import the demonstration dataset, type: 'ant import'
 6. Start the application using the eclipse launch configuration.
-   In the eclipse Run menu, choose 'Run...' and select the the
+   In the eclipse Run menu, choose 'Run...' and select the
    configuration named 'Launch Web App'
 7. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.jsp
 

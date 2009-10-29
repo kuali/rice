@@ -1,0 +1,886 @@
+Alter table KREW_DOC_TYP_PROC_T modify INIT_RTE_NODE_ID DECIMAL null
+
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'DocumentType' AND parm_nm = 'DOCUMENT_TYPE_SEARCH_INSTRUCTION'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'GlobalReviewer' AND parm_nm = 'REPLACE_INSTRUCTION'
+go
+
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Note' AND parm_nm = 'NOTE_CREATE_NEW_INSTRUCTION'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Rule' AND parm_nm = 'RULE_CREATE_NEW_INSTRUCTION'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Rule' AND parm_nm = 'RULE_LOCKING_ON_IND'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Rule' AND parm_nm = 'RULE_SEARCH_INSTRUCTION'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'RuleTemplate' AND parm_nm = 'RULE_TEMPLATE_CREATE_NEW_INSTRUCTION'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'RuleTemplate' AND parm_nm = 'RULE_TEMPLATE_SEARCH_INSTRUCTION'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-NS' AND PARM_DTL_TYP_CD = 'Document' AND parm_nm = 'PESSIMISTIC_LOCK_ADMIN_GROUP'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-NS' AND PARM_DTL_TYP_CD = 'Document' AND parm_nm = 'EXCEPTION_GROUP'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-NS' AND PARM_DTL_TYP_CD = 'Document' AND parm_nm = 'SUPERVISOR_GROUP'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-NS' AND PARM_DTL_TYP_CD = 'Batch' AND parm_nm = 'SCHEDULE_ADMIN_GROUP'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Backdoor' AND parm_nm = 'TARGET_FRAME_NAME'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'ActionList' AND parm_nm = 'HELP_DESK_NAME_GROUP'
+go
+delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Rule' AND parm_nm = 'ROUTE_LOG_POPUP_IND'
+go
+
+UPDATE krew_doc_typ_t SET doc_hdlr_url = '${ken.url}/DetailView.form' WHERE doc_typ_nm = 'KualiNotification'
+go
+UPDATE krew_doc_typ_t SET doc_hdlr_url = '${ken.url}/AdministerNotificationRequest.form' WHERE doc_typ_nm = 'SendNotificationRequest'
+go
+
+Delete from KRNS_PARM_DTL_TYP_T WHERE NMSPC_CD = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'RuleService'
+go
+Delete from KRNS_PARM_DTL_TYP_T WHERE NMSPC_CD = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Workgroup'
+go
+Delete from KRNS_PARM_DTL_TYP_T WHERE NMSPC_CD = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'DocumentSearch'
+go
+
+Insert into KRNS_PARM_DTL_TYP_T (NMSPC_CD, PARM_DTL_TYP_CD, OBJ_ID, VER_NBR, NM, ACTV_IND) VALUES('KR-WKFLW', 'Notification', 'D04AFB1812E34723ABEB64986AC61DC9', 1, 'Notification', 'Y')
+go
+
+UPDATE KRNS_PARM_T SET PARM_DTL_TYP_CD = 'DocSearchCriteriaDTO' where NMSPC_CD = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'DocumentSearch'
+go
+UPDATE KRNS_PARM_T SET PARM_DTL_TYP_CD = 'Notification' where NMSPC_CD = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Workgroup'
+go
+
+CREATE TABLE KRIM_ENTITY_ETHNIC_T
+(
+      ID VARCHAR(40),
+      ENTITY_ID VARCHAR(40),
+      ETHNCTY_CD VARCHAR(40),
+      SUB_ETHNCTY_CD VARCHAR(40),
+      VER_NBR DECIMAL(8) default 1 NOT NULL,
+      OBJ_ID VARCHAR(36) NOT NULL,
+
+      CONSTRAINT KRIM_ENTITY_ETHNIC_TC0 UNIQUE (OBJ_ID)
+)
+go
+
+ALTER TABLE KRIM_ENTITY_ETHNIC_T
+    ADD CONSTRAINT KRIM_ENTITY_ETHNIC_TP1
+PRIMARY KEY (ID)
+go
+
+CREATE TABLE KRIM_ENTITY_ETHNIC_ID_S
+(
+	id bigint(19) not null auto_increment, primary key (id) 
+)
+
+go
+
+CREATE TABLE KRIM_ENTITY_RESIDENCY_T
+(
+      ID VARCHAR(40),
+      ENTITY_ID VARCHAR(40),
+      DETERMINATION_METHOD VARCHAR(40),
+      IN_STATE VARCHAR(40),
+      VER_NBR DECIMAL(8) default 1 NOT NULL,
+      OBJ_ID VARCHAR(36) NOT NULL,
+
+      CONSTRAINT KRIM_ENTITY_RESIDENCY_TC0 UNIQUE (OBJ_ID)
+)
+go
+
+ALTER TABLE KRIM_ENTITY_RESIDENCY_T
+    ADD CONSTRAINT KRIM_ENTITY_RESIDENCY_TP1
+PRIMARY KEY (ID)
+go
+
+CREATE TABLE KRIM_ENTITY_RESIDENCY_ID_S
+(
+	id bigint(19) not null auto_increment, primary key (id) 
+)
+
+CREATE TABLE KRIM_ENTITY_VISA_T
+(
+      ID VARCHAR(40),
+      ENTITY_ID VARCHAR(40),
+      VISA_TYPE_KEY VARCHAR(40),
+      VISA_ENTRY VARCHAR(40),
+      VISA_ID VARCHAR(40),
+      VER_NBR DECIMAL(8) default 1 NOT NULL,
+      OBJ_ID VARCHAR(36) NOT NULL,
+
+      CONSTRAINT KRIM_ENTITY_VISA_TC0 UNIQUE (OBJ_ID)
+)
+go
+ALTER TABLE KRIM_ENTITY_VISA_T
+    ADD CONSTRAINT KRIM_ENTITY_VISA_TP1
+PRIMARY KEY (ID)
+go
+CREATE TABLE KRIM_ENTITY_VISA_ID_S
+(
+	id bigint(19) not null auto_increment, primary key (id) 
+) 
+go
+
+INSERT into KRIM_ENTITY_ETHNIC_ID_S values();
+go
+INSERT INTO KRIM_ENTITY_ETHNIC_T ( ID, OBJ_ID, ENTITY_ID, ETHNCTY_CD )
+    SELECT ((select max(id) from KRIM_ENTITY_ETHNIC_ID_S) , SYS_GUID(), bio.ENTITY_ID, bio.ETHNCTY_CD
+        FROM KRIM_ENTITY_BIO_T bio
+go
+
+ALTER TABLE KRIM_ENTITY_BIO_T ADD DECEASED_DT DATE
+go
+ALTER TABLE KRIM_ENTITY_BIO_T ADD MARITAL_STATUS VARCHAR(40)
+go
+ALTER TABLE KRIM_ENTITY_BIO_T ADD PRIM_LANG_CD VARCHAR(40)
+go
+ALTER TABLE KRIM_ENTITY_BIO_T ADD SEC_LANG_CD VARCHAR(40)
+go
+ALTER TABLE KRIM_ENTITY_BIO_T ADD BIRTH_CNTRY_CD VARCHAR(2)
+go
+ALTER TABLE KRIM_ENTITY_BIO_T ADD BIRTH_STATE_CD VARCHAR(2)
+go
+ALTER TABLE KRIM_ENTITY_BIO_T ADD BIRTH_CITY VARCHAR(30)
+go
+ALTER TABLE KRIM_ENTITY_BIO_T ADD GEO_ORIGIN VARCHAR(100)
+go
+
+-- drop ethnicity from bio table
+ALTER TABLE KRIM_ENTITY_BIO_T DROP COLUMN ETHNCTY_CD
+go
+
+ALTER TABLE KRIM_ROLE_DOCUMENT_T ADD DESC_TXT VARCHAR(4000) 
+go
+
+
+CREATE INDEX krim_role_mbr_attr_data_ti1 ON krim_role_mbr_attr_data_t (role_mbr_id)
+go
+CREATE INDEX krim_role_mbr_ti1 ON krim_role_mbr_t (mbr_id)
+go
+CREATE INDEX krim_entity_addr_ti1 ON krim_entity_addr_t (entity_id)
+go
+CREATE INDEX krim_entity_email_ti1 ON krim_entity_email_t (entity_id)
+go
+CREATE INDEX krew_rte_node_cfg_parm_ti1 ON krew_rte_node_cfg_parm_t (rte_node_id)
+go
+CREATE INDEX krim_entity_phone_ti1 ON krim_entity_phone_t (entity_id)
+go
+CREATE INDEX krim_grp_mbr_ti1 ON krim_grp_mbr_t (mbr_id)
+go
+
+CREATE INDEX krim_entity_afltn_ti1 ON krim_entity_afltn_t (entity_id)
+go
+CREATE INDEX krim_entity_emp_info_ti1 ON krim_entity_emp_info_t (entity_id)
+go
+CREATE INDEX krim_entity_emp_info_ti2 ON krim_entity_emp_info_t (entity_afltn_id)
+go
+CREATE INDEX krim_entity_ent_typ_ti1 ON krim_entity_ent_typ_t (entity_id)
+go
+CREATE INDEX krim_entity_ext_id_ti1 ON krim_entity_ext_id_t (entity_id)
+go
+CREATE INDEX krim_entity_nm_ti1 ON krim_entity_nm_t (entity_id)
+go
+CREATE INDEX krim_perm_attr_data_ti1 ON krim_perm_attr_data_t (perm_id)
+go
+CREATE INDEX krim_role_perm_ti1 ON krim_role_perm_t (perm_id)
+go
+CREATE INDEX krim_role_rsp_ti1 ON krim_role_rsp_t (rsp_id)
+go
+CREATE INDEX krim_typ_attribute_ti1 ON krim_typ_attr_t (kim_typ_id) 
+go
+
+
+CREATE TABLE KRIM_ROLE_PERM_ID_S
+(
+	id bigint(19) not null auto_increment, primary key (id) 
+) 
+
+go
+
+--KULRICE-3635
+ALTER TABLE KRIM_PND_ROLE_MBR_MT
+DROP COLUMN MBR_NM
+go 
+
+
+----KULRICE-3636 alter 100 intex here
+DROP INDEX EN_DOC_TYP_TI1 ON krew_doc_typ_t
+GO
+
+CREATE UNIQUE INDEX KREW_DOC_TYP_TI1
+    ON krew_doc_typ_t(DOC_TYP_NM, DOC_TYP_VER_NBR)
+GO
+
+DROP INDEX EN_RULE_TMPL_TI1 ON krew_rule_tmpl_t
+GO
+
+
+CREATE UNIQUE INDEX KREW_RULE_TMPL_TI1
+    ON krew_rule_tmpl_t(NM)
+GO
+
+
+DROP INDEX FP_DOC_HEADER_TC0 ON krns_doc_hdr_t
+GO
+
+
+CREATE UNIQUE INDEX KRNS_DOC_HDR_TC0
+    ON krns_doc_hdr_t(OBJ_ID)
+GO
+
+DROP INDEX FP_MAINT_DOC_ATTACHMENT_TC0 ON krns_maint_doc_att_t
+GO
+
+CREATE UNIQUE INDEX KRNS_MAINT_DOC_ATT_TC0
+    ON krns_maint_doc_att_t(OBJ_ID)
+GO
+
+
+DROP INDEX FP_MAINT_LOCK_TC0 ON krns_maint_lock_t
+GO
+
+CREATE UNIQUE INDEX KRNS_MAINT_LOCK_TC0
+    ON krns_maint_lock_t(OBJ_ID)
+GO
+
+
+DROP INDEX FP_MAINTENANCE_DOCUMENT_TC0 ON krns_maint_doc_t
+GO
+
+
+CREATE UNIQUE INDEX KRNS_MAINT_DOC_TC0
+    ON krns_maint_doc_t(OBJ_ID)
+GO
+
+
+DROP INDEX FS_ADHOC_RTE_ACTN_RECP_TC0 ON krns_adhoc_rte_actn_recip_t
+GO
+
+
+CREATE UNIQUE INDEX KRNS_ADHOC_RTE_ACTN_RECIP_TC0
+    ON krns_adhoc_rte_actn_recip_t(OBJ_ID)
+GO
+
+DROP INDEX FS_LOOKUP_RESULTS_MTC0 ON krns_lookup_rslt_t
+GO
+
+
+CREATE UNIQUE INDEX KRNS_LOOKUP_RSLT_TC0
+    ON krns_lookup_rslt_t(OBJ_ID)
+GO
+
+DROP INDEX FS_LOOKUP_SELECTIONS_MTC0 ON krns_lookup_sel_t
+GO
+
+CREATE UNIQUE INDEX KRNS_LOOKUP_SEL_TC0
+    ON krns_lookup_sel_t(OBJ_ID)
+GO
+
+DROP INDEX KNS_PESSIMISTIC_LOCK_TC0 ON krns_pessimistic_lock_t
+GO
+
+
+CREATE UNIQUE INDEX KRNS_PESSIMISTIC_LOCK_TC0
+    ON krns_pessimistic_lock_t(OBJ_ID)
+GO
+
+
+DROP INDEX KCB_MESSAGES_UK1 ON kren_msg_t
+GO
+
+
+CREATE UNIQUE INDEX KREN_MSG_TC0
+    ON kren_msg_t(ORGN_ID)
+GO
+
+
+DROP INDEX KCB_MSG_DELIVS_UK1 ON kren_msg_deliv_t
+GO
+
+
+CREATE UNIQUE INDEX KREN_MSG_DELIV_TC0
+    ON kren_msg_deliv_t(MSG_ID, TYP_NM)
+GO
+
+
+DROP INDEX KCB_RECIP_PREFS_UK1 ON kren_recip_prefs_t
+GO
+
+CREATE UNIQUE INDEX KREN_RECIP_PREFS_TC0
+    ON kren_recip_prefs_t(RECIP_ID, PROP)
+GO
+
+
+DROP INDEX KR_KIM_ADDR_TYPE_TC0 ON krim_addr_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ADDR_TYP_TC0
+    ON krim_addr_typ_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_ADDR_TYPE_TC1 ON krim_addr_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ADDR_TYP_TC1
+    ON krim_addr_typ_t(NM)
+GO
+
+
+DROP INDEX KR_KIM_AFLTN_TYPE_TC0 ON krim_afltn_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_AFLTN_TYP_TC0
+    ON krim_afltn_typ_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_AFLTN_TYPE_TC1 ON krim_afltn_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_AFLTN_TYP_TC1
+    ON krim_afltn_typ_t(NM)
+GO
+
+DROP INDEX KR_KIM_ATTRIBUTE_TC0 ON krim_attr_defn_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ATTR_DEFN_TC0
+    ON krim_attr_defn_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_CTZNSHP_STAT_TC0 ON krim_ctznshp_stat_t
+GO
+
+CREATE UNIQUE INDEX KRIM_CTZNSHP_STAT_TC0
+    ON krim_ctznshp_stat_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_CTZNSHP_STAT_TC1 ON krim_ctznshp_stat_t
+GO
+
+CREATE UNIQUE INDEX KRIM_CTZNSHP_STAT_TC1
+    ON krim_ctznshp_stat_t(NM)
+GO
+
+
+DROP INDEX KR_KIM_DELE_MBR_ATTR_DATA_TC0 ON krim_dlgn_mbr_attr_data_t
+GO
+
+CREATE UNIQUE INDEX KRIM_DLGN_MBR_ATTR_DATA_TC0
+    ON krim_dlgn_mbr_attr_data_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_DELE_TC0 ON krim_dlgn_t
+GO
+
+CREATE UNIQUE INDEX KRIM_DLGN_TC0
+    ON krim_dlgn_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_EMAIL_TYPE_TC0 ON krim_email_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_EMAIL_TYP_TC0
+    ON krim_email_typ_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_EMAIL_TYPE_TC1 ON krim_email_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_EMAIL_TYP_TC1
+    ON krim_email_typ_t(NM)
+GO
+
+
+DROP INDEX KR_KIM_EMP_STAT_TC0 ON krim_emp_stat_t
+GO
+
+CREATE UNIQUE INDEX KRIM_EMP_STAT_TC0
+    ON krim_emp_stat_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_EMP_STAT_TC1 ON krim_emp_stat_t
+GO
+
+CREATE UNIQUE INDEX KRIM_EMP_STAT_TC1
+    ON krim_emp_stat_t(NM)
+GO
+
+
+DROP INDEX KR_KIM_EMP_TYPE_TC0 ON krim_emp_typ_t
+GO
+
+CREATE UNIQUE INDEX  KRIM_EMP_TYP_TC0
+    ON krim_emp_typ_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_EMP_TYPE_TC1 ON krim_emp_typ_t
+GO
+
+CREATE UNIQUE INDEX  KRIM_EMP_TYP_TC1
+    ON krim_emp_typ_t(NM)
+GO
+
+DROP INDEX KR_KIM_ENT_NAME_TYPE_TC0 ON krim_ent_nm_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENT_NM_TYP_TC0
+    ON krim_ent_nm_typ_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENT_NAME_TYPE_TC1 ON krim_ent_nm_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENT_NM_TYP_TC1
+    ON krim_ent_nm_typ_t(NM)
+GO
+
+DROP INDEX KR_KIM_ENT_TYPE_TC0 ON krim_ent_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENT_TYP_TC0
+    ON krim_ent_typ_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENT_TYPE_TC1 ON krim_ent_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENT_TYP_TC1
+    ON krim_ent_typ_t(NM)
+GO
+
+DROP INDEX KR_KIM_ENTITY_ADDR_TC0 ON krim_entity_addr_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_ADDR_TC0
+    ON krim_entity_addr_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_AFLTN_TC0 ON krim_entity_afltn_t
+GO
+
+CREATE UNIQUE INDEX  KRIM_ENTITY_AFLTN_TC0
+    ON krim_entity_afltn_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_ENTITY_BIO_TC0 ON krim_entity_bio_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_BIO_TC0
+    ON krim_entity_bio_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_CTZNSHP_TC0 ON krim_entity_ctznshp_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_CTZNSHP_TC0
+    ON krim_entity_ctznshp_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_EMAIL_TC0 ON krim_entity_email_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_EMAIL_TC0
+    ON krim_entity_email_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_EMP_INFO_TC0 ON krim_entity_emp_info_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_EMP_INFO_TC0
+    ON krim_entity_emp_info_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_EXT_ID_TC0 ON krim_entity_ext_id_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_EXT_ID_TC0
+    ON krim_entity_ext_id_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_NAME_TC0 ON krim_entity_nm_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_NM_TC0
+    ON krim_entity_nm_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_PHONE_TC0 ON krim_entity_phone_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_PHONE_TC0
+    ON krim_entity_phone_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_PRIV_PREF_TC0 ON krim_entity_priv_pref_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_PRIV_PREF_TC0
+    ON krim_entity_priv_pref_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ENTITY_TC0 ON krim_entity_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ENTITY_TC0
+    ON krim_entity_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_EXT_ID_TYPE_TC0 ON krim_ext_id_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_EXT_ID_TYP_TC0
+    ON krim_ext_id_typ_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_EXT_ID_TYPE_TC1 ON krim_ext_id_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_EXT_ID_TYP_TC1
+    ON krim_ext_id_typ_t(NM)
+GO
+
+DROP INDEX KR_KIM_GROUP_ATTR_DATA_TC0 ON krim_grp_attr_data_t
+GO
+
+CREATE UNIQUE INDEX KRIM_GRP_ATTR_DATA_TC0
+    ON krim_grp_attr_data_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_GROUP_TC0 ON krim_grp_t
+GO
+
+CREATE UNIQUE INDEX KRIM_GRP_TC0
+    ON krim_grp_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_GROUP_TC1 ON krim_grp_t
+GO
+
+CREATE UNIQUE INDEX KRIM_GRP_TC1
+    ON krim_grp_t(GRP_NM, NMSPC_CD)
+GO
+
+DROP INDEX KR_KIM_PERM_ATTR_DATA_TC0 ON krim_perm_attr_data_t
+GO
+
+CREATE UNIQUE INDEX KRIM_PERM_ATTR_DATA_TC0
+    ON krim_perm_attr_data_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_PERM_TC0 ON krim_perm_t
+GO
+
+CREATE UNIQUE INDEX KRIM_PERM_TC0
+    ON krim_perm_t(OBJ_ID)
+GO
+
+
+DROP INDEX KR_KIM_PERM_TMPL_TC0 ON krim_perm_tmpl_t
+GO
+
+CREATE UNIQUE INDEX KRIM_PERM_TMPL_TC0
+    ON krim_perm_tmpl_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_PHONE_TYPE_TC0 ON krim_phone_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_PHONE_TYP_TC0
+    ON krim_phone_typ_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_PHONE_TYPE_TC1 ON krim_phone_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_PHONE_TYP_TC1
+    ON krim_phone_typ_t(PHONE_TYP_NM)
+GO
+
+DROP INDEX KR_KIM_PRINCIPAL_TC0 ON krim_prncpl_t
+GO
+
+CREATE UNIQUE INDEX KRIM_PRNCPL_TC0
+    ON krim_prncpl_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_PRINCIPAL_TC1 ON krim_prncpl_t
+GO
+
+CREATE UNIQUE INDEX KRIM_PRNCPL_TC1
+    ON krim_prncpl_t(PRNCPL_NM)
+GO
+
+DROP INDEX KR_KIM_RESP_ATTR_DATA_TC0 ON krim_rsp_attr_data_t
+GO
+
+CREATE UNIQUE INDEX KRIM_RSP_ATTR_DATA_TC0
+    ON krim_rsp_attr_data_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_RESP_TC0 ON krim_rsp_t
+GO
+
+CREATE UNIQUE INDEX KRIM_RSP_TC0
+    ON krim_rsp_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_RESP_TMPL_TC0 ON krim_rsp_tmpl_t
+GO
+
+CREATE UNIQUE INDEX KRIM_RSP_TMPL_TC0
+    ON krim_rsp_tmpl_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ROLE_MBR_ATTR_DATA_TC0 ON krim_role_mbr_attr_data_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ROLE_MBR_ATTR_DATA_TC0
+    ON krim_role_mbr_attr_data_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ROLE_PERM_TC0 ON krim_role_perm_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ROLE_PERM_TC0
+    ON krim_role_perm_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ROLE_RESP_ACTN_TC0 ON krim_role_rsp_actn_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ROLE_RSP_ACTN_TC0
+    ON krim_role_rsp_actn_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ROLE_RESP_TC0 ON krim_role_rsp_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ROLE_RSP_TC0
+    ON krim_role_rsp_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ROLE_TC0 ON krim_role_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ROLE_TC0
+    ON krim_role_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_ROLE_TC1 ON krim_role_t
+GO
+
+CREATE UNIQUE INDEX KRIM_ROLE_TC1
+    ON krim_role_t(ROLE_NM, NMSPC_CD)
+GO
+
+DROP INDEX KR_KIM_TYPE_ATTRIBUTE_TC0 ON krim_typ_attr_t
+GO
+
+CREATE UNIQUE INDEX KRIM_TYP_ATTR_TC0
+    ON krim_typ_attr_t(OBJ_ID)
+GO
+
+DROP INDEX KR_KIM_TYPE_TC0 ON krim_typ_t
+GO
+
+CREATE UNIQUE INDEX KRIM_TYP_TC0
+    ON krim_typ_t(OBJ_ID)
+GO
+
+DROP INDEX NOTIF_MSG_DELIVS_UK1 ON kren_ntfctn_msg_deliv_t
+GO
+
+CREATE UNIQUE INDEX KREN_NTFCTN_MSG_DELIV_TC0
+    ON kren_ntfctn_msg_deliv_t(NTFCTN_ID, RECIP_ID)
+GO
+
+DROP INDEX NOTIFICATION_CHANNELS_UK1 ON kren_chnl_t
+GO
+
+CREATE UNIQUE INDEX KREN_CHNL_TC0
+    ON kren_chnl_t(NM)
+GO
+
+
+DROP INDEX NOTIFICATION_CONTENT_TYPE_UK1 ON kren_cntnt_typ_t
+GO
+
+CREATE UNIQUE INDEX KREN_CNTNT_TYP_TC0
+    ON kren_cntnt_typ_t(NM, CNTNT_TYP_VER_NBR)
+GO
+
+
+DROP INDEX NOTIFICATION_PRIORITIES_UK1 ON kren_prio_t
+GO
+
+CREATE UNIQUE INDEX KREN_PRIO_TC0
+    ON kren_prio_t(NM)
+GO
+
+DROP INDEX NOTIFICATION_PRODUCERS_UK1 ON kren_prodcr_t
+GO
+
+CREATE UNIQUE INDEX KREN_PRODCR_TC0
+    ON kren_prodcr_t(NM)
+GO
+
+DROP INDEX NOTIFICATION_RECIPIENTS_L_UK1 ON kren_recip_list_t
+GO
+
+CREATE UNIQUE INDEX KREN_RECIP_LIST_TC0
+    ON kren_recip_list_t(CHNL_ID, RECIP_TYP_CD, RECIP_ID)
+GO
+
+DROP INDEX NOTIFICATION_RECIPIENTS_UK1 ON kren_recip_t
+GO
+
+CREATE UNIQUE INDEX KREN_RECIP_TC0
+    ON kren_recip_t(NTFCTN_ID, RECIP_TYP_CD, PRNCPL_ID)
+GO
+
+DROP INDEX NOTIFICATION_REVIEWERS_UK1 ON kren_rvwer_t
+GO
+
+CREATE UNIQUE INDEXKREN_RVWER_TC0
+    ON kren_rvwer_t(CHNL_ID, TYP, PRNCPL_ID)
+GO
+
+DROP INDEX NOTIFICATION_SENDERS_UK1 ON kren_sndr_t
+GO
+
+CREATE UNIQUE INDEX KREN_SNDR_TC0
+    ON kren_sndr_t(NTFCTN_ID, NM)
+GO
+
+DROP INDEX SH_ATT_TC0 ON krns_att_t
+GO
+
+CREATE UNIQUE INDEX KRNS_ATT_TC0
+    ON krns_att_t(OBJ_ID)
+GO
+
+DROP INDEX SH_CAMPUS_TC0 ON krns_campus_t
+GO
+
+CREATE UNIQUE INDEX KRNS_CAMPUS_TC0
+    ON krns_campus_t(OBJ_ID)
+GO
+
+DROP INDEX SH_CMP_TYP_TC0 ON krns_cmp_typ_t
+GO
+
+CREATE UNIQUE INDEX KRNS_CMP_TYP_TC0
+    ON krns_cmp_typ_t(OBJ_ID)
+GO
+
+DROP INDEX SH_NTE_TC0 ON krns_nte_t
+GO
+
+CREATE UNIQUE INDEX KRNS_NTE_TC0
+    ON krns_nte_t(OBJ_ID)
+GO
+
+DROP INDEX SH_NTE_TYP_TC0 ON krns_nte_typ_t
+GO
+
+CREATE UNIQUE INDEX KRNS_NTE_TYP_TC0
+    ON krns_nte_typ_t(OBJ_ID)
+GO
+
+DROP INDEX SH_PARM_DTL_TYP_TC0 ON krns_parm_dtl_typ_t
+GO
+
+CREATE UNIQUE INDEX KRNS_PARM_DTL_TYP_TC0
+    ON krns_parm_dtl_typ_t(OBJ_ID)
+GO
+
+DROP INDEX SH_PARM_NMSPC_TC0 ON krns_nmspc_t
+GO
+
+CREATE UNIQUE INDEX SKRNS_NMSPC_TC0
+    ON krns_nmspc_t(OBJ_ID)
+GO
+
+DROP INDEX SH_PARM_TC0 ON krns_parm_t
+GO
+
+CREATE UNIQUE INDEX KRNS_PARM_TC0
+    ON krns_parm_t(OBJ_ID)
+GO
+
+DROP INDEX SH_PARM_TYP_TC0 ON krns_parm_typ_t
+GO
+
+CREATE UNIQUE INDEX KRNS_PARM_TYP_TC0
+    ON krns_parm_typ_t(OBJ_ID)
+GO
+
+DROP INDEX USER_CHANNEL_SUBSCRIPTION_UK1 ON kren_chnl_subscrp_t
+GO
+
+CREATE UNIQUE INDEX KREN_CHNL_SUBSCRP_TC0
+    ON kren_chnl_subscrp_t(CHNL_ID, PRNCPL_ID)
+GO
+
+
+----KULRICE-3627
+UPDATE KREN_CNTNT_TYP_T SET 
+    XSD = REPLACE(XSD, 
+        'type="dateTime"', 'type="c:NonEmptyShortStringType"') 
+    WHERE NM='Event'
+go 
+
+ALTER TABLE KRNS_LOOKUP_RSLT_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KRNS_LOOKUP_SEL_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KRNS_NTE_T MODIFY AUTH_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KRNS_PESSIMISTIC_LOCK_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_ACTN_ITM_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_ACTN_ITM_T MODIFY DLGN_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_ACTN_RQST_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_ACTN_TKN_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_ACTN_TKN_T MODIFY DLGTR_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_DOC_HDR_T MODIFY INITR_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_DOC_HDR_T MODIFY RTE_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_DOC_NTE_T MODIFY AUTH_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_EDL_DMP_T MODIFY DOC_HDR_INITR_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_OUT_BOX_ITM_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_OUT_BOX_ITM_T MODIFY DLGN_PRNCPL_ID VARCHAR2(40)
+go
+ALTER TABLE KREW_RMV_RPLC_DOC_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_RMV_RPLC_DOC_T MODIFY RPLC_PRNCPL_ID VARCHAR(40)
+go
+ALTER TABLE KREW_USR_OPTN_T MODIFY PRNCPL_ID VARCHAR(40)
+go
+
+UPDATE KRNS_PARM_T SET TXT='MM/dd/yy;MM/dd/yyyy;MM/dd/yyyy HH:mm:ss;MM/dd/yy;MM-dd-yy;MMMM dd;yyyy;MMddyy' WHERE NMSPC_CD='KR-NS' AND PARM_DTL_TYP_CD='All' AND PARM_NM='STRING_TO_DATE_FORMATS' AND APPL_NMSPC_CD='KUALI'
+go
+UPDATE KRNS_PARM_T SET TXT='MM/dd/yyyy hh:mm a;MM/dd/yyyy;MM/dd/yyyy HH:mm:ss;MM/dd/yy;MM-dd-yy;MMMM dd;yyyy;MMddyy' WHERE NMSPC_CD='KR-NS' AND PARM_DTL_TYP_CD='All' AND PARM_NM='STRING_TO_TIMESTAMP_FORMATS' AND APPL_NMSPC_CD='KUALI'
+go
+
+
+
+

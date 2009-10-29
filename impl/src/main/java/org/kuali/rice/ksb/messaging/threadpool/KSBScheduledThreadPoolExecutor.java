@@ -18,7 +18,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.util.KSBConstants;
 
+import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 public class KSBScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor implements KSBScheduledPool {
 
@@ -28,7 +31,7 @@ public class KSBScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 	private static final int DEFAULT_SIZE = 2;
 
 	public KSBScheduledThreadPoolExecutor() {
-		super(DEFAULT_SIZE);
+		super(DEFAULT_SIZE, new KSBThreadFactory());
 	}
 
 	public boolean isStarted() {
@@ -36,23 +39,37 @@ public class KSBScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 	}
 
 	public void start() throws Exception {
-		LOG.info("starting " + KSBScheduledThreadPoolExecutor.class.getSimpleName());
+		LOG.info("Starting the KSB scheduled thread pool...");
 		try {
 			Integer size = new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.FIXED_POOL_SIZE));
 			this.setCorePoolSize(size);
 		} catch (NumberFormatException nfe) {
-
+			// ignore this, instead the pool will be set to DEFAULT_SIZE
 		}
+		LOG.info("...KSB scheduled thread pool successfully started.");
 	}
 
 	public void stop() throws Exception {
-		LOG.info("stopping " + KSBScheduledThreadPoolExecutor.class.getSimpleName());
+		LOG.info("Stopping the KSB scheduled thread pool...");
 		try {
 			this.shutdownNow();
+			LOG.info("awaiting termination: " + this.awaitTermination(20, TimeUnit.SECONDS));
+			LOG.info("...KSB scheduled thread pool successfully stopped, isShutdown=" + this.isShutdown());
 		} catch (Exception e) {
 			LOG.warn("Exception thrown shutting down " + KSBScheduledThreadPoolExecutor.class.getSimpleName(), e);
 		}
 
+	}
+	
+	private static class KSBThreadFactory implements ThreadFactory {
+		
+		private ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
+		
+		public Thread newThread(Runnable runnable) {
+			Thread thread = defaultThreadFactory.newThread(runnable);
+			thread.setName("KSB-Scheduled-" + thread.getName());
+			return thread;
+	    }
 	}
 
 }

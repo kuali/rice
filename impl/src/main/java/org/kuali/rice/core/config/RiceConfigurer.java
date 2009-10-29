@@ -203,9 +203,11 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#stop()
 	 */
 	public void stop() throws Exception {
+		LOG.info("Stopping Rice...");
 	    notify(new BeforeStopEvent());
 	    super.stop();
 	    GlobalResourceLoader.stop();
+	    LOG.info("...Rice stopped successfully.");
 	}
 
 	/***

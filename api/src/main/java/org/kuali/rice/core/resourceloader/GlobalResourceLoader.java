@@ -114,12 +114,13 @@ public class GlobalResourceLoader {
 	 * @throws Exception
 	 */
 	public static void stop() throws Exception {
-		LOG.debug("Destroy called on GlobalResourceLoader");
+		LOG.info("Stopping the GlobalResourceLoader...");
 		if (getResourceLoader() != null) {
 			LOG.info("Destroying GlobalResourceLoader");
 			getResourceLoader().stop();
 			rootResourceLoaders.remove(ClassLoaderUtils.getDefaultClassLoader());
 		}
+		LOG.info("...GlobalResourceLoader successfully stopped.");
 	}
 
 	public static Object getService(QName serviceName) {

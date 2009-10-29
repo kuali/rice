@@ -284,6 +284,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		if (isStarted()) {
 			return;
 		}
+		LOG.info("Starting the Service Registry...");
 		run();
 		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
 			int refreshRate = ConfigContext.getCurrentContextConfig().getRefreshRate();
@@ -291,9 +292,11 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 							:serviceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
 		}
 		this.started = true;
+		LOG.info("...Service Registry successfully started.");
 	}
 
 	public void stop() throws Exception {
+		LOG.info("Stopping the Service Registry...");
 		// remove services from the bus
 		if (this.future != null) {
 			if (!this.future.cancel(false)) {
@@ -306,6 +309,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		this.publishedServices.clear();
 		this.getPublishedTempServices().clear();
 		this.started = false;
+		LOG.info("...Service Registry successfully stopped.");
 	}
 
 	public String getContents(String indent, boolean servicePerLine) {

@@ -32,9 +32,9 @@ delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Actio
 delete from krns_parm_t where nmspc_cd = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'Rule' AND parm_nm = 'ROUTE_LOG_POPUP_IND'
 /
 
-UPDATE krew_doc_typ_t SET doc_hdlr_url = '${ken.url}/DetailView.form' WHERE doc_typ_nm = 'KualiNotification';
+UPDATE krew_doc_typ_t SET doc_hdlr_url = '${ken.url}/DetailView.form' WHERE doc_typ_nm = 'KualiNotification'
 /
-UPDATE krew_doc_typ_t SET doc_hdlr_url = '${ken.url}/AdministerNotificationRequest.form' WHERE doc_typ_nm = 'SendNotificationRequest';
+UPDATE krew_doc_typ_t SET doc_hdlr_url = '${ken.url}/AdministerNotificationRequest.form' WHERE doc_typ_nm = 'SendNotificationRequest'
 /
 
 Delete from KRNS_PARM_DTL_TYP_T WHERE NMSPC_CD = 'KR-WKFLW' AND PARM_DTL_TYP_CD = 'RuleService'

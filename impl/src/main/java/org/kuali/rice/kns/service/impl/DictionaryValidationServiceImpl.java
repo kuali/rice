@@ -430,7 +430,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		java.sql.Timestamp uVal = null;
     		try{
     			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
-    			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
+    			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(1));
     		}catch(Exception ex){
     			// this shouldn't happen because the tests passed above.
     			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);

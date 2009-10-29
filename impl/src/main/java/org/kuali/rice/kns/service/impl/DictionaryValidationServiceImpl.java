@@ -389,6 +389,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
                     			GlobalVariables.getMessageMap().putError(errorKeyPrefix + errorKey, errorMessageKey, errorMessageParameters);
 	                    	}
+	                    }else {
+	                    	// if it fails the default validation and has no formatter class then it's still a std failure.
+	                    	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+	            			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+	            			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
 	                    }
 	                }
 

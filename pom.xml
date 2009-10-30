@@ -813,12 +813,12 @@
     <distributionManagement>
         <repository>
             <id>ssh-repository</id>
-            <url>scpexe://wsa123.uits.indiana.edu/opt/m2/repository</url>
+            <url>scp://test.kuali.org:/opt/m2/repository</url>
         </repository>
         <site>
             <id>rice-site</id>
             <name>Rice Web Site</name>
-            <url>dav:https://www.kuali.org:8443/rice/docs/1.0.1/site</url>
+            <url>scp://rice.kuali.org:/opt/www/drupal/contents/rice/docs/${project.version}/site</url>
         </site>
     </distributionManagement>
 </project>

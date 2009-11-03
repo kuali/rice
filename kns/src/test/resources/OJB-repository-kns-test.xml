@@ -86,4 +86,12 @@
 		</reference-descriptor>
 	</class-descriptor>
 	
+	<class-descriptor class="org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument" table="ACCT_DD_ATTR_DOC">
+		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="BIGINT" nillable="false" primarykey="true"/>
+		<field-descriptor name="accountOwner" column="ACCT_OWNR" jdbc-type="VARCHAR" nillable="false"/>
+		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" nillable="false"/>
+		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="TIMESTAMP" nillable="false"/>
+		<field-descriptor name="accountState" column="ACCT_STAT" jdbc-type="VARCHAR" nillable="false"/>
+	</class-descriptor>
+	
 </descriptor-repository>

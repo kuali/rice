@@ -65,6 +65,17 @@
 			</members>
 		</group>
 	</groups>
+	
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>TestDataDictionarySearchableAttribute</name>
+			<className>org.kuali.rice.kns.workflow.attribute.DataDictionaryDocumentSearchCustomizer</className>
+			<label>Test Data Dictionary Searchable Attribute</label>
+			<description>DD searchable attribute for testing purposes</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+	</ruleAttributes>
+	
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">
 			<name>WorkflowDocumentTemplate</name>
@@ -285,6 +296,32 @@
 			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
 			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>none</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="Initiated" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initiated">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>AccountWithDDAttributes</name>
+			<parent>RiceDocument</parent>
+			<description>Test document for data dictionary attributes</description>
+			<label>Account With DD Attributes</label>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>none</docHandler>
+			<attributes>
+				<attribute>
+					<name>TestDataDictionarySearchableAttribute</name>
+				</attribute>
+			</attributes>
 			<routePaths>
 				<routePath>
 					<start name="Initiated" />

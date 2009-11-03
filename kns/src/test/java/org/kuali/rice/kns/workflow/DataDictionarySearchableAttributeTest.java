@@ -57,7 +57,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
 	 */
-    @Ignore("Currently throws an exception when attempting to route the test document")
+    @Ignore("Now works properly with a simple test doc, but requires the creation of the ACCT_DD_ATTR_DOC table beforehand")
 	@Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
 		DocumentService docService = KNSServiceLocator.getDocumentService();
@@ -71,34 +71,34 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		acctDoc.setAccountOwner("John Doe");
 		acctDoc.setAccountBalance(new KualiDecimal(501.77));
 		Calendar acctDate = Calendar.getInstance();
-		acctDate.set(2009, 10, 15);
+		acctDate.set(2009, 10 - 1, 15, 0, 0, 0);
 		acctDoc.setAccountOpenDate(new java.sql.Date(acctDate.getTimeInMillis()));
 		acctDoc.setAccountState("SecondState");
 		Calendar acctUpdateDate = Calendar.getInstance();
-		acctUpdateDate.set(2009, 11, 01);
+		acctUpdateDate.set(2009, 11 - 1, 1, 0, 0, 0);
 		acctDoc.setAccountUpdateDateTime(new java.sql.Timestamp(acctUpdateDate.getTimeInMillis()));
 		acctDoc.setAccountAwake(true);
 		docService.routeDocument(acctDoc, "Routing Document #1", null);
 		
 		// Ensure that DD searchable attribute integer fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
-				new String[] {"1234567890"},
-				new int[]    {1});
+				new String[] {"1234567890", ">1234567889"},
+				new int[]    {1           , 1});
 		
 		// Ensure that DD searchable attribute string fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOwner",
-				new String[] {"John Doe"},
-				new int[]    {1});
+				new String[] {"John Doe", "!John*", "???? Doe"},
+				new int[]    {1         , 0       , 1});
 		
 		// Ensure that DD searchable attribute float fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountBalance",
-				new String[] {"501.77"},
-				new int[]    {1});
+				new String[] {"501.77", "<=499.99"},
+				new int[]    {1       , 0});
 		
 		// Ensure that DD searchable attribute date fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOpenDate",
-				new String[] {"10/15/2009"},
-				new int[]    {1});
+				new String[] {"10/15/2009", "Unknown", ">=10/01/2009"},
+				new int[]    {1           , -1       , 1});
 		
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountState",
@@ -112,8 +112,8 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
-				new String[] {"11/01/2009"},
-				new int[]    {1});
+				new String[] {"11/01/2009", "02/31/2008", "<01/01/2010"},
+				new int[]    {1           , -1          , 1});
 	}
 	
 	/*

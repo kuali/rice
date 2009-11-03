@@ -95,16 +95,13 @@
 
 	<bean id="AccountWithDDAttributes-accountOpenDate" parent="AccountWithDDAttributes-accountOpenDate-parentBean"/>
 
-	<bean id="AccountWithDDAttributes-accountOpenDate-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="AccountWithDDAttributes-accountOpenDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
 		<property name="name" value="accountOpenDate"/>
 		<property name="label" value="Account Open Date"/>
 		<property name="description" value="Account Open Date"/>
 		<property name="shortLabel" value="Account Open Date"/>
 		<property name="summary" value="Account Open Date"/>
 		<property name="maxLength" value="30"/>
-		<property name="validationPattern">
-			<bean parent="DateValidationPattern"/>
-		</property>
 		<property name="required" value="true"/>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="30" p:datePicker="true"/>
@@ -132,16 +129,13 @@
 	
 	<bean id="AccountWithDDAttributes-accountUpdateDateTime" parent="AccountWithDDAttributes-accountUpdateDateTime-parentBean"/>
 
-	<bean id="AccountWithDDAttributes-accountUpdateDateTime-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="AccountWithDDAttributes-accountUpdateDateTime-parentBean" abstract="true" parent="AttributeReferenceDummy-genericTimestamp">
 		<property name="name" value="accountUpdateDateTime"/>
 		<property name="label" value="Account Update Time"/>
 		<property name="description" value="Account Update Time"/>
 		<property name="shortLabel" value="Account Update Time"/>
 		<property name="summary" value="Account Update Time"/>
 		<property name="maxLength" value="30"/>
-		<property name="validationPattern">
-			<bean parent="DateValidationPattern"/>
-		</property>
 		<property name="required" value="true"/>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="30" p:datePicker="true"/>

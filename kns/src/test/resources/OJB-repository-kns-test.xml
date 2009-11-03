@@ -90,7 +90,7 @@
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="BIGINT" nillable="false" primarykey="true"/>
+		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="BIGINT" nillable="false"/>
 		<field-descriptor name="accountOwner" column="ACCT_OWNR" jdbc-type="VARCHAR" nillable="false"/>
 		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" nillable="false"/>
 		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="DATE" nillable="false"/>

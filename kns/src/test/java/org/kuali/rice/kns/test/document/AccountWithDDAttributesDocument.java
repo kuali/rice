@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.test.document;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
@@ -33,8 +34,10 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 	private Integer accountNumber;
 	private String accountOwner;
 	private KualiDecimal accountBalance;
-	private Timestamp accountOpenDate;
+	private Date accountOpenDate;
+	private Timestamp accountUpdateDateTime;
 	private String accountState;
+	private boolean accountAwake;
 
     @Override
     protected LinkedHashMap<?,?> toStringMapper() {
@@ -69,11 +72,11 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 		this.accountBalance = accountBalance;
 	}
 
-	public Timestamp getAccountOpenDate() {
+	public Date getAccountOpenDate() {
 		return this.accountOpenDate;
 	}
 
-	public void setAccountOpenDate(Timestamp accountOpenDate) {
+	public void setAccountOpenDate(Date accountOpenDate) {
 		this.accountOpenDate = accountOpenDate;
 	}
 
@@ -84,4 +87,33 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 	public void setAccountState(String accountState) {
 		this.accountState = accountState;
 	}
+
+	/**
+	 * @return the accountUpdateDateTime
+	 */
+	public Timestamp getAccountUpdateDateTime() {
+		return this.accountUpdateDateTime;
+	}
+
+	/**
+	 * @param accountUpdateDateTime the accountUpdateDateTime to set
+	 */
+	public void setAccountUpdateDateTime(Timestamp accountUpdateDateTime) {
+		this.accountUpdateDateTime = accountUpdateDateTime;
+	}
+
+	/**
+	 * @return the accountAwake
+	 */
+	public boolean isAccountAwake() {
+		return this.accountAwake;
+	}
+
+	/**
+	 * @param accountAwake the accountAwake to set
+	 */
+	public void setAccountAwake(boolean accountAwake) {
+		this.accountAwake = accountAwake;
+	}
+	
 }

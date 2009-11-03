@@ -30,6 +30,8 @@
 				<ref bean="AccountWithDDAttributes-accountBalance"/>
 				<ref bean="AccountWithDDAttributes-accountOpenDate"/>
 				<ref bean="AccountWithDDAttributes-accountState"/>
+				<ref bean="AccountWithDDAttributes-accountAwake"/>
+				<ref bean="AccountWithDDAttributes-accountUpdateDateTime" />
 			</list>
 		</property>
 	</bean>
@@ -126,6 +128,38 @@
 		<property name="control">
 			<bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.test.document.AccountStateKeyValues" p:includeKeyInLabel="false"/>
 		</property>
+	</bean>
+	
+	<bean id="AccountWithDDAttributes-accountUpdateDateTime" parent="AccountWithDDAttributes-accountUpdateDateTime-parentBean"/>
+
+	<bean id="AccountWithDDAttributes-accountUpdateDateTime-parentBean" abstract="true" parent="AttributeDefinition">
+		<property name="name" value="accountUpdateDateTime"/>
+		<property name="label" value="Account Update Time"/>
+		<property name="description" value="Account Update Time"/>
+		<property name="shortLabel" value="Account Update Time"/>
+		<property name="summary" value="Account Update Time"/>
+		<property name="maxLength" value="30"/>
+		<property name="validationPattern">
+			<bean parent="DateValidationPattern"/>
+		</property>
+		<property name="required" value="true"/>
+		<property name="control">
+			<bean parent="TextControlDefinition" p:size="30" p:datePicker="true"/>
+		</property>
+	</bean>
+	
+	<bean id="AccountWithDDAttributes-accountAwake" parent="AccountWithDDAttributes-accountAwake-parentBean" />
+	
+	<bean id="AccountWithDDAttributes-accountAwake-parentBean" abstract="true" parent="AttributeDefinition">
+		<property name="name" value="accountAwake"/>
+	    <property name="forceUppercase" value="false"/>
+	    <property name="label" value="Account Awake"/>
+	    <property name="shortLabel" value="Acct. Awake"/>
+	    <property name="maxLength" value="1"/>
+	    <property name="control">
+	      <bean parent="CheckboxControlDefinition"/>
+	    </property>
+	    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter"/>
 	</bean>
 
 	<!-- Workflow attributes. -->

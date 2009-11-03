@@ -67,8 +67,12 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		acctDoc.setAccountBalance(new KualiDecimal(501.77));
 		Calendar acctDate = Calendar.getInstance();
 		acctDate.set(2009, 10, 15);
-		acctDoc.setAccountOpenDate(new Timestamp(acctDate.getTimeInMillis()));
+		acctDoc.setAccountOpenDate(new java.sql.Date(acctDate.getTimeInMillis()));
 		acctDoc.setAccountState("SecondState");
+		Calendar acctUpdateDate = Calendar.getInstance();
+		acctUpdateDate.set(2009, 10, 15);
+		acctDoc.setAccountUpdateDateTime(new java.sql.Timestamp(acctUpdateDate.getTimeInMillis()));
+		acctDoc.setAccountAwake(false);
 		docService.routeDocument(acctDoc, "Routing Document #1", null);
 		
 		DocSearchCriteriaDTO searchCriteria = new DocSearchCriteriaDTO();
@@ -77,6 +81,20 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		DocumentSearchResultComponents results = docSearchService.getList(principalId, searchCriteria);
 		List<DocumentSearchResult> resultList = results.getSearchResults();
 		assertEquals("Should have retrieved one document.", 1, resultList.size());
+		
+		searchCriteria = new DocSearchCriteriaDTO();
+		searchCriteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("accountAwake", "Y", false, docType));
+		docSearchService.validateDocumentSearchCriteria(docSearchService.getStandardDocumentSearchGenerator(), searchCriteria);
+		results = docSearchService.getList(principalId, searchCriteria);
+		resultList = results.getSearchResults();
+		assertEquals("Should have retrieved one document.", 1, resultList.size());
+		
+		searchCriteria = new DocSearchCriteriaDTO();
+		searchCriteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("accountAwake", "N", false, docType));
+		docSearchService.validateDocumentSearchCriteria(docSearchService.getStandardDocumentSearchGenerator(), searchCriteria);
+		results = docSearchService.getList(principalId, searchCriteria);
+		resultList = results.getSearchResults();
+		assertEquals("Should not retrieve any documents.", 0, resultList.size());
 	}
 	
 	/* Method copied from DocumentSearchTestBase. */

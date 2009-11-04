@@ -57,9 +57,9 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
-	 */
+	 */ 
     @Ignore("Now works properly with a simple test doc, but requires the creation of the ACCT_DD_ATTR_DOC table beforehand")
-	@Test
+    @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
 		DocumentService docService = KNSServiceLocator.getDocumentService();
 		//docSearchService = KEWServiceLocator.getDocumentSearchService();
@@ -102,7 +102,8 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 				new int[]    {1           , -1       , 1});
 		
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
-		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountState",
+		// Validation is still broken at the moment (see KULRICE-3681), but this part at least tests the multi-select SQL generation.
+		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountStateMultiselect",
 				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState","FourthState"}, {"SecondState","ThirdState"}},
 				new int[]      {0             , 1              , 0                           , 1});
 		

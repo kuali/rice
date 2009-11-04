@@ -88,6 +88,10 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 		this.accountState = accountState;
 	}
 
+	public String getAccountStateMultiselect() {
+		return this.accountState;
+	}
+	
 	/**
 	 * @return the accountUpdateDateTime
 	 */

@@ -30,6 +30,7 @@
 				<ref bean="AccountWithDDAttributes-accountBalance"/>
 				<ref bean="AccountWithDDAttributes-accountOpenDate"/>
 				<ref bean="AccountWithDDAttributes-accountState"/>
+				<ref bean="AccountWithDDAttributes-accountStateMultiselect"/>
 				<ref bean="AccountWithDDAttributes-accountAwake"/>
 				<ref bean="AccountWithDDAttributes-accountUpdateDateTime" />
 			</list>
@@ -127,6 +128,15 @@
 		</property>
 	</bean>
 	
+	<bean id="AccountWithDDAttributes-accountStateMultiselect" parent="AccountWithDDAttributes-accountStateMultiselect-parentBean"/>
+
+	<bean id="AccountWithDDAttributes-accountStateMultiselect-parentBean" abstract="true" parent="AccountWithDDAttributes-accountState">
+		<property name="name" value="accountStateMultiselect"/>
+		<property name="control">
+			<bean parent="MultiselectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.test.document.AccountStateKeyValues" p:includeKeyInLabel="false"/>
+		</property>
+	</bean>
+	
 	<bean id="AccountWithDDAttributes-accountUpdateDateTime" parent="AccountWithDDAttributes-accountUpdateDateTime-parentBean"/>
 
 	<bean id="AccountWithDDAttributes-accountUpdateDateTime-parentBean" abstract="true" parent="AttributeReferenceDummy-genericTimestamp">
@@ -137,6 +147,9 @@
 		<property name="summary" value="Account Update Time"/>
 		<property name="maxLength" value="30"/>
 		<property name="required" value="true"/>
+		<property name="validationPattern">
+			<bean parent="DateValidationPattern"/>
+		</property>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="30" p:datePicker="true"/>
 		</property>
@@ -234,7 +247,7 @@
 					<property name="searchingAttribute">
 						<bean class="org.kuali.rice.kns.datadictionary.SearchingAttribute">
 							<property name="businessObjectClassName" value="org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument"/>
-							<property name="attributeName" value="accountState"/>
+							<property name="attributeName" value="accountStateMultiselect"/>
 							<property name="showAttributeInSearchCriteria" value="true"/>
 							<property name="showAttributeInResultSet" value="true"/>
 						</bean>

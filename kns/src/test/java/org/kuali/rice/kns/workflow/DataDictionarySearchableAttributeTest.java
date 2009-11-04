@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.workflow;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -102,8 +103,8 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountState",
-				new String[] {"FirstState", "SecondState"},
-				new int[]    {0           , 1});
+				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState","FourthState"}, {"SecondState","ThirdState"}},
+				new int[]      {0             , 1              , 0                           , 1});
 		
 		// Ensure that DD searchable attribute boolean fields function correctly when searched on.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountAwake",
@@ -117,12 +118,18 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	}
 	
 	/*
-	 * A method that was copied from DocumentSearchTestBase.
+	 * A method similar to the one from DocumentSearchTestBase. The "value" parameter has to be either a String or a String[].
 	 */
-	protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
+	private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,Object value,Boolean isLowerBoundValue,DocumentType docType) {
 		String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
 		String savedKey = key;
-		SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
+		SearchAttributeCriteriaComponent sacc = null;
+		if (value instanceof String) {
+			sacc = new SearchAttributeCriteriaComponent(formKey,(String)value,savedKey);
+		} else {
+			sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
+			sacc.setValues(Arrays.asList((String[])value));
+		}
 		Field field = getFieldByFormKey(docType, formKey);
 		if (field != null) {
 			sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
@@ -164,12 +171,15 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
      * @param docType The document type containing the attributes.
      * @param principalId The ID of the user performing the search.
      * @param fieldName The name of the field on the test document.
-     * @param searchValues The wildcard-filled search strings to test.
+     * @param searchValues The search expressions to test. Has to be a String array (for regular fields) or a String[] array (for multi-select fields).
      * @param resultSizes The number of expected documents to be returned by the search; use -1 to indicate that an error should have occurred.
      * @throws Exception
      */
-    private void assertDDSearchableAttributeWildcardsWork(DocumentType docType, String principalId, String fieldName, String[] searchValues,
+    private void assertDDSearchableAttributeWildcardsWork(DocumentType docType, String principalId, String fieldName, Object[] searchValues,
     		int[] resultSizes) throws Exception {
+    	if (!(searchValues instanceof String[]) && !(searchValues instanceof String[][])) {
+    		throw new IllegalArgumentException("'searchValues' parameter has to be either a String[] or a String[][]");
+    	}
     	DocSearchCriteriaDTO criteria = null;
         DocumentSearchResultComponents result = null;
         List<DocumentSearchResult> searchResults = null;

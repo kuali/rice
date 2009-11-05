@@ -92,6 +92,7 @@
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="30"/>
 		</property>
+		<property name="formatterClass" value="org.kuali.rice.kns.web.format.CurrencyFormatter"/>
 	</bean>
 
 	<bean id="AccountWithDDAttributes-accountOpenDate" parent="AccountWithDDAttributes-accountOpenDate-parentBean"/>
@@ -170,6 +171,7 @@
 	</bean>
 
 	<!-- Workflow attributes. -->
+	
 	<bean id="AccountWithDDAttributes-workflowAttributes" parent="AccountWithDDAttributes-workflowAttributes-parentBean"/>
 
 	<bean id="AccountWithDDAttributes-workflowAttributes-parentBean" abstract="true" parent="WorkflowAttributes">

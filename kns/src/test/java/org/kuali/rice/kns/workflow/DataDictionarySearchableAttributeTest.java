@@ -103,7 +103,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
 	 */ 
-    @Ignore("Now works properly with a simple test doc, but requires the creation of the ACCT_DD_ATTR_DOC table beforehand")
+    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and is still incomplete.")
     @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
 		DocumentService docService = KNSServiceLocator.getDocumentService();
@@ -112,29 +112,55 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
         String principalName = "quickstart";
         String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
 		
-		AccountWithDDAttributesDocument acctDoc = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(docService);
-		docService.routeDocument(acctDoc, "Routing Document #1", null);
+        // Route some test documents.
+		docService.routeDocument(DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(docService), "Routing NORMAL_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.NEGATIVE_NUMBERS_DOCUMENT.getDocument(docService), "Routing NEGATIVE_NUMBERS_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.FALSE_AWAKE_DOCUMENT.getDocument(docService), "Routing FALSE_AWAKE_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.ODD_NAME_DOCUMENT.getDocument(docService), "Routing ODD_NAME_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.ODD_TIMESTAMP_DOCUMENT.getDocument(docService), "Routing ODD_TIMESTAMP_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.ANOTHER_ODD_NAME_DOCUMENT.getDocument(docService), "Routing ANOTHER_ODD_NAME_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.INVALID_STATE_DOCUMENT.getDocument(docService), "Routing INVALID_STATE_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.WILDCARD_NAME_DOCUMENT.getDocument(docService), "Routing WILDCARD_NAME_DOCUMENT", null);
 		
 		// Ensure that DD searchable attribute integer fields function correctly when searched on.
+		// TODO: Create a new integer validation pattern that supports negative integers?
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
-				new String[] {"1234567890", ">1234567889"},
-				new int[]    {1           , 1});
+				new String[] {"!1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<0|>=1234567890",
+						">1234567889&&<1234567890", ">=88&&<=99999", "-42|>-10&&<10000", "9000..1000000", "-100..100|>1234567889", "0..10000&&>50"},
+				new int[]    {1            , 0/*-1*/, 0/*-1*/, 6   , 2                     , 3     , 4        , -1/*1*/, 6          , 2,
+						0                         , 3              , -1/*4*/           , 2              , -1/*4*/                , 2});
 		
 		// Ensure that DD searchable attribute string fields function correctly when searched on.
+		// TODO: Verify how whitespace field values and wildcard-filled field values in the database should be treated when searching.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOwner",
-				new String[] {"John Doe", "!John*", "???? Doe"},
-				new int[]    {1         , 0       , 1});
+				new String[] {"!John Doe", "!John*", "!John Doe&&!Shane Kloe", "!Jane ???", "!Jane Doe!John Doe", " ", " |---", "Sh*ne><K!=e",
+						">Jane Doe", "<Shane Kloe", ">=Johnny", "<=John D'oh", ">John Doe|<---", ">=AAAAAAAAA&&<=Jane Doe", ">---&&!John D'oh",
+						"<Shane Kloe&&!John*", "*oe", "???? Doe", "Jane Doe..John Doe", "AAAAAAAAA..Shane Kloe&&!John Doe", "John D'oh|---..Jane Doe"},
+				new int[]    {7          , 6       , 6                       , 7          , 6                   , 8  , 1      , 8,
+						4          , 7            , 2         , 5            , 3               , 2                        , 5,
+						5                    , 3    , 2         , 3                   , 5                                 , 4});
 		
-		// Ensure that DD searchable attribute float fields function correctly when searched on.
+		// Ensure that DD searchable attribute float fields function correctly when searched on. Also ensure that the CurrencyFormatter is working.
+		// TODO: Verify if "?" and "*" should cause exceptions (for integers too), like with StandardGenericXMLSearchableAttributes that are numbers.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountBalance",
-				new String[] {"501.77", "<=499.99"},
-				new int[]    {1       , 0});
+				new String[] {"501.??", "*.54" , "!2.22", "10000051.0|771.05", "<0.0", ">501", "<=4.54", ">=-99.99", ">4.54|<=-1", ">=0&&<501.77",
+						"<=0|>=10000051", ">501&&<501.77", "-100|>771.05", "2.22..501", "-100..4.54&&<=0", "2.22|501.77..10000051.0", "Zero",
+						"-$100", "<(501)&&>=($2.22)", "$4.54|<(1)", "($0.00)..$771.05", ">=$(500)", ")501(", "4.54$"},
+				new int[]    {1/*-1*/ , 0/*-1*/, 1      , 2                  , 1     , 3     , 4       , 7         , 5           , 4,
+						3               , 0              , 2             , 3          , 2                , 4                        , -1,
+						1      , 2                  , 3           , 6                 , -1        , -1     , -1});
 		
 		// Ensure that DD searchable attribute date fields function correctly when searched on.
+		// Test Dates: 10/15/2009, 10/16/2009, 10/17/2006, 10/18/2009, 10/19/2012, 04/20/2009, 10/21/2009, 10/22/2054
+		// TODO: Determine whether our existing allowable timestamp formats need additions (for instance, the ">10/17/06" case fails). 
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOpenDate",
-				new String[] {"10/15/2009", "Unknown", ">=10/01/2009"},
-				new int[]    {1           , -1       , 1});
-		
+				new String[] {"!10/15/2009", "Unknown", "10/15/2009|10/21/2009", "10/22/????", "*/*/05", ">10/17/06", "<=12/31/2009&&>=10/16/2009",
+						">10/18/2009&&<10/20/2012", ">=10/22/2054|<10/16/2009", ">02/29/12|<=10/21/09", "<2009", ">=10/19/2012|04/20/09", ">02/29/09",
+						"10/15/2009..10/21/2009", "01/01/2009..10/20/2009|10/22/2054", "<=06/32/03", ">2008&&<2011|10/17/06"},
+				new int[]    {-1           , -1       , 2                      , -1          , -1      , 7          , 3,
+						2                         , 3                         , 8                     , 1      , 3                      , -1,
+						4                       , 5                                  , -1          , 6});
+		/*
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
 		// Validation is still broken at the moment (see KULRICE-3681), but this part at least tests the multi-select SQL generation.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountStateMultiselect",
@@ -147,9 +173,10 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 				new int[]    {1  , 0});
 		
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
+		// Test Timestamps: 11/01/2009 00:00:00, 11/02/2015 00:00:00, 11/03/1900 00:00:00, 11/04/2009 00:00:00, 11/05/2007 12:04:38, 11/06/2009 12:59:59, 11/07/2009 00:00:01, 11/08/2008 12:00:00
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
 				new String[] {"11/01/2009", "02/31/2008", "<01/01/2010"},
-				new int[]    {1           , -1          , 1});
+				new int[]    {1           , -1          , 1});*/
 	}
     
     /**
@@ -255,7 +282,6 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
         	criteria.setDocTypeFullName(docType.getName());
         	criteria.addSearchableAttribute(this.createSearchAttributeCriteriaComponent(fieldName, searchValues[i], null, docType));
         	try {
-        		docSearchService.validateDocumentSearchCriteria(docSearchService.getStandardDocumentSearchGenerator(), criteria);
         		result = docSearchService.getList(principalId, criteria);
         		searchResults = result.getSearchResults();
         		if (resultSizes[i] < 0) {

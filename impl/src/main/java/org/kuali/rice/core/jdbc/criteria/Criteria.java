@@ -117,7 +117,7 @@ public class Criteria {
 			return sql;
 		}
 		if (TypeUtils.isStringClass(propertyType)) {
-			return " '" + value.toString().trim() + "' ";
+			return " '" + getDbPlatform().escapeString(value.toString().trim()) + "' ";
 		}
 		if (TypeUtils.isBooleanClass(propertyType)) {
 			boolean bVal = ((Boolean)value).booleanValue();

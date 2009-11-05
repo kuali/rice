@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.workflow;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -30,6 +32,7 @@ import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
@@ -54,6 +57,45 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
     }
+    
+    enum DOCUMENT_FIXTURE {
+    	NORMAL_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
+    	NEGATIVE_NUMBERS_DOCUMENT(new Integer(-42), "John Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
+    	FALSE_AWAKE_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", false),
+    	ODD_NAME_DOCUMENT(new Integer(1234567890), " ", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
+    	ODD_TIMESTAMP_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 12, 4, 38), "ThirdState", true);
+    	
+    	private Integer accountNumber;
+    	private String accountOwner;
+    	private KualiDecimal accountBalance;
+    	private Date accountOpenDate;
+    	private Timestamp accountUpdateDateTime;
+    	private String accountState;
+    	private boolean accountAwake;
+    	
+    	private DOCUMENT_FIXTURE(Integer accountNumber, String accountOwner, KualiDecimal accountBalance, Date accountOpenDate, Timestamp accountUpdateDateTime, String accountState, boolean accountAwake) {
+    		this.accountNumber = accountNumber;
+    		this.accountOwner = accountOwner;
+    		this.accountBalance = accountBalance;
+    		this.accountOpenDate = accountOpenDate;
+    		this.accountUpdateDateTime = accountUpdateDateTime;
+    		this.accountState = accountState;
+    		this.accountAwake = accountAwake;
+    	}
+    	
+    	public AccountWithDDAttributesDocument getDocument(DocumentService docService) throws WorkflowException {
+    		AccountWithDDAttributesDocument acctDoc = (AccountWithDDAttributesDocument) docService.getNewDocument("AccountWithDDAttributes");
+    		acctDoc.setAccountNumber(this.accountNumber);
+    		acctDoc.setAccountOwner(this.accountOwner);
+    		acctDoc.setAccountBalance(this.accountBalance);
+    		acctDoc.setAccountOpenDate(this.accountOpenDate);
+    		acctDoc.setAccountUpdateDateTime(this.accountUpdateDateTime);
+    		acctDoc.setAccountState(this.accountState);
+    		acctDoc.setAccountAwake(this.accountAwake);
+    		
+    		return acctDoc;
+    	}
+    }
 	
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
@@ -67,18 +109,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
         String principalName = "quickstart";
         String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
 		
-		AccountWithDDAttributesDocument acctDoc = (AccountWithDDAttributesDocument) docService.getNewDocument("AccountWithDDAttributes");
-		acctDoc.setAccountNumber(1234567890);
-		acctDoc.setAccountOwner("John Doe");
-		acctDoc.setAccountBalance(new KualiDecimal(501.77));
-		Calendar acctDate = Calendar.getInstance();
-		acctDate.set(2009, 10 - 1, 15, 0, 0, 0);
-		acctDoc.setAccountOpenDate(new java.sql.Date(acctDate.getTimeInMillis()));
-		acctDoc.setAccountState("SecondState");
-		Calendar acctUpdateDate = Calendar.getInstance();
-		acctUpdateDate.set(2009, 11 - 1, 1, 0, 0, 0);
-		acctDoc.setAccountUpdateDateTime(new java.sql.Timestamp(acctUpdateDate.getTimeInMillis()));
-		acctDoc.setAccountAwake(true);
+		AccountWithDDAttributesDocument acctDoc = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(docService);
 		docService.routeDocument(acctDoc, "Routing Document #1", null);
 		
 		// Ensure that DD searchable attribute integer fields function correctly when searched on.
@@ -117,6 +148,37 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 				new String[] {"11/01/2009", "02/31/2008", "<01/01/2010"},
 				new int[]    {1           , -1          , 1});
 	}
+    
+    /**
+     * Creates a date quickly
+     * 
+     * @param year the year of the date
+     * @param month the month of the date
+     * @param day the day of the date
+     * @return a new java.sql.Date initialized to the precise date given
+     */
+    private static Date createDate(int year, int month, int day) {
+    	Calendar date = Calendar.getInstance();
+		date.set(year, month, day, 0, 0, 0);
+		return new java.sql.Date(date.getTimeInMillis());
+    }
+    
+    /**
+     * Utility method to create a timestamp quickly
+     * 
+     * @param year the year of the timestamp
+     * @param month the month of the timestamp
+     * @param day the day of the timestamp
+     * @param hour the hour of the timestamp
+     * @param minute the minute of the timestamp
+     * @param second the second of the timestamp
+     * @return a new java.sql.Timestamp initialized to the precise time given
+     */
+    private static Timestamp createTimestamp(int year, int month, int day, int hour, int minute, int second) {
+    	Calendar date = Calendar.getInstance();
+    	date.set(year, month, day, hour, minute, second);
+    	return new java.sql.Timestamp(date.getTimeInMillis());
+    }
 	
 	/*
 	 * A method similar to the one from DocumentSearchTestBase. The "value" parameter has to be either a String or a String[].

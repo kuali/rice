@@ -60,10 +60,13 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     
     enum DOCUMENT_FIXTURE {
     	NORMAL_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
-    	NEGATIVE_NUMBERS_DOCUMENT(new Integer(-42), "John Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
-    	FALSE_AWAKE_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", false),
-    	ODD_NAME_DOCUMENT(new Integer(1234567890), " ", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
-    	ODD_TIMESTAMP_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 12, 4, 38), "ThirdState", true);
+    	NEGATIVE_NUMBERS_DOCUMENT(new Integer(-42), "Jane Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 16), createTimestamp(2015, Calendar.NOVEMBER, 2, 0, 0, 0), "FirstState", true),
+    	FALSE_AWAKE_DOCUMENT(new Integer(987654321), "John D'oh", new KualiDecimal(0.0), createDate(2006, Calendar.OCTOBER, 17), createTimestamp(1900, Calendar.NOVEMBER, 3, 0, 0, 0), "FourthState", false),
+    	ODD_NAME_DOCUMENT(new Integer(88), " ", new KualiDecimal(10000051.0), createDate(2009, Calendar.OCTOBER, 18), createTimestamp(2009, Calendar.NOVEMBER, 4, 0, 0, 0), "FourthState", true),
+    	ODD_TIMESTAMP_DOCUMENT(new Integer(9000), "Shane Kloe", new KualiDecimal(4.54), createDate(2012, Calendar.OCTOBER, 19), createTimestamp(2007, Calendar.NOVEMBER, 5, 12, 4, 38), "ThirdState", false),
+    	ANOTHER_ODD_NAME_DOCUMENT(new Integer(1234567889), "---", new KualiDecimal(501), createDate(2009, Calendar.APRIL, 20), createTimestamp(2009, Calendar.NOVEMBER, 6, 12, 59, 59), "ThirdState", true),
+    	INVALID_STATE_DOCUMENT(new Integer(99999), "AAAAAAAAA", new KualiDecimal(2.22), createDate(2009, Calendar.OCTOBER, 21), createTimestamp(2009, Calendar.NOVEMBER, 7, 0, 0, 1), "SeventhState", true),
+    	WILDCARD_NAME_DOCUMENT(new Integer(1), "Sh*ne><K!=e?", new KualiDecimal(771.05), createDate(2054, Calendar.OCTOBER, 22), createTimestamp(2008, Calendar.NOVEMBER, 8, 12, 0, 0), "FirstState", true);
     	
     	private Integer accountNumber;
     	private String accountOwner;

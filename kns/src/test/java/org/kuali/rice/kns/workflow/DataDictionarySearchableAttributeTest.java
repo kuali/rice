@@ -60,7 +60,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     
     enum DOCUMENT_FIXTURE {
     	NORMAL_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
-    	NEGATIVE_NUMBERS_DOCUMENT(new Integer(-42), "Jane Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 16), createTimestamp(2015, Calendar.NOVEMBER, 2, 0, 0, 0), "FirstState", true),
+    	ZERO_NUMBER_DOCUMENT(new Integer(0), "Jane Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 16), createTimestamp(2015, Calendar.NOVEMBER, 2, 0, 0, 0), "FirstState", true),
     	FALSE_AWAKE_DOCUMENT(new Integer(987654321), "John D'oh", new KualiDecimal(0.0), createDate(2006, Calendar.OCTOBER, 17), createTimestamp(1900, Calendar.NOVEMBER, 3, 0, 0, 0), "FourthState", false),
     	ODD_NAME_DOCUMENT(new Integer(88), " ", new KualiDecimal(10000051.0), createDate(2009, Calendar.OCTOBER, 18), createTimestamp(2009, Calendar.NOVEMBER, 4, 0, 0, 0), "FourthState", true),
     	ODD_TIMESTAMP_DOCUMENT(new Integer(9000), "Shane Kloe", new KualiDecimal(4.54), createDate(2012, Calendar.OCTOBER, 19), createTimestamp(2007, Calendar.NOVEMBER, 5, 12, 4, 38), "ThirdState", false),
@@ -103,7 +103,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
 	 */ 
-    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and is still incomplete.")
+    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and the TODO and FIXME notes need to be resolved.")
     @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
 		DocumentService docService = KNSServiceLocator.getDocumentService();
@@ -114,7 +114,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		
         // Route some test documents.
 		docService.routeDocument(DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(docService), "Routing NORMAL_DOCUMENT", null);
-		docService.routeDocument(DOCUMENT_FIXTURE.NEGATIVE_NUMBERS_DOCUMENT.getDocument(docService), "Routing NEGATIVE_NUMBERS_DOCUMENT", null);
+		docService.routeDocument(DOCUMENT_FIXTURE.ZERO_NUMBER_DOCUMENT.getDocument(docService), "Routing ZERO_NUMBER_DOCUMENT", null);
 		docService.routeDocument(DOCUMENT_FIXTURE.FALSE_AWAKE_DOCUMENT.getDocument(docService), "Routing FALSE_AWAKE_DOCUMENT", null);
 		docService.routeDocument(DOCUMENT_FIXTURE.ODD_NAME_DOCUMENT.getDocument(docService), "Routing ODD_NAME_DOCUMENT", null);
 		docService.routeDocument(DOCUMENT_FIXTURE.ODD_TIMESTAMP_DOCUMENT.getDocument(docService), "Routing ODD_TIMESTAMP_DOCUMENT", null);
@@ -123,12 +123,12 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		docService.routeDocument(DOCUMENT_FIXTURE.WILDCARD_NAME_DOCUMENT.getDocument(docService), "Routing WILDCARD_NAME_DOCUMENT", null);
 		
 		// Ensure that DD searchable attribute integer fields function correctly when searched on.
-		// TODO: Create a new integer validation pattern that supports negative integers?
+		// Note that negative numbers are disallowed by the NumericValidationPattern that validates this field.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
-				new String[] {"!1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<0|>=1234567890",
-						">1234567889&&<1234567890", ">=88&&<=99999", "-42|>-10&&<10000", "9000..1000000", "-100..100|>1234567889", "0..10000&&>50"},
-				new int[]    {1            , 0/*-1*/, 0/*-1*/, 6   , 2                     , 3     , 4        , -1/*1*/, 6          , 2,
-						0                         , 3              , -1/*4*/           , 2              , -1/*4*/                , 2});
+				new String[] {"!1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
+						">1234567889&&<1234567890", ">=88&&<=99999", "0|>10&&<10000", "9000..1000000", "0..100|>1234567889", "1..10000&&>50", "250..50"},
+				new int[]    {1            , 0/*-1*/, 0/*-1*/, 6   , 2                     , 3     , 4        , -1     , 6          , 2,
+						0                         , 3              , 3              , 2              , 4                   , 2              , 0});
 		
 		// Ensure that DD searchable attribute string fields function correctly when searched on.
 		// TODO: Verify how whitespace field values and wildcard-filled field values in the database should be treated when searching.
@@ -145,38 +145,52 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountBalance",
 				new String[] {"501.??", "*.54" , "!2.22", "10000051.0|771.05", "<0.0", ">501", "<=4.54", ">=-99.99", ">4.54|<=-1", ">=0&&<501.77",
 						"<=0|>=10000051", ">501&&<501.77", "-100|>771.05", "2.22..501", "-100..4.54&&<=0", "2.22|501.77..10000051.0", "Zero",
-						"-$100", "<(501)&&>=($2.22)", "$4.54|<(1)", "($0.00)..$771.05", ">=$(500)", ")501(", "4.54$"},
+						"-$100", "<(501)&&>=($2.22)", "$4.54|<(1)", "($0.00)..$771.05", ">=$(500)", ")501(", "4.54$", "$501..0"},
 				new int[]    {1/*-1*/ , 0/*-1*/, 1      , 2                  , 1     , 3     , 4       , 7         , 5           , 4,
 						3               , 0              , 2             , 3          , 2                , 4                        , -1,
-						1      , 2                  , 3           , 6                 , -1        , -1     , -1});
+						1      , 2                  , 3           , 6                 , -1        , -1     , -1     , 0});
 		
 		// Ensure that DD searchable attribute date fields function correctly when searched on.
-		// Test Dates: 10/15/2009, 10/16/2009, 10/17/2006, 10/18/2009, 10/19/2012, 04/20/2009, 10/21/2009, 10/22/2054
-		// TODO: Determine whether our existing allowable timestamp formats need additions (for instance, the ">10/17/06" case fails). 
+		// Also, note that dates in the format "MMMM dd" are currently interpreted as being in the year 1970.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOpenDate",
-				new String[] {"!10/15/2009", "Unknown", "10/15/2009|10/21/2009", "10/22/????", "*/*/05", ">10/17/06", "<=12/31/2009&&>=10/16/2009",
-						">10/18/2009&&<10/20/2012", ">=10/22/2054|<10/16/2009", ">02/29/12|<=10/21/09", "<2009", ">=10/19/2012|04/20/09", ">02/29/09",
-						"10/15/2009..10/21/2009", "01/01/2009..10/20/2009|10/22/2054", "<=06/32/03", ">2008&&<2011|10/17/06"},
+				new String[] {"!10/15/2009", "Unknown", "10/15/2009|10/21/2009", "10/22/????", "*/*/05", ">10/17/06", "<=12-31-09&&>=10/16/2009",
+						">101809&&<102012", ">=10/22/2054|<10/16/2009", ">02-29-12|<=10/21/09", "<2009", ">=10/19/2012|04/20/09", ">02/29/09", "2009..2008",
+						"10/15/2009..10/21/2009", "01/01/2009..10/20/2009|10/22/2054", "<=06/32/03", ">2008&&<2011|10/17/06", ">=October 15", "<May 02"},
 				new int[]    {-1           , -1       , 2                      , -1          , -1      , 7          , 3,
-						2                         , 3                         , 8                     , 1      , 3                      , -1,
-						4                       , 5                                  , -1          , 6});
-		/*
+						2                 , 4                         , 8                     , 1      , 3                      , -1         , -1,
+						4                       , 5                                  , -1          , 6                      , 8             , 0});
+		
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
 		// Validation is still broken at the moment (see KULRICE-3681), but this part at least tests the multi-select SQL generation.
+		// TODO: Verify how the system should behave if a search value is not in the multi-select's list, and if a doc should be routable with one.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountStateMultiselect",
-				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState","FourthState"}, {"SecondState","ThirdState"}},
-				new int[]      {0             , 1              , 0                           , 1});
+				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState"}, {"FourthState"}, {"FirstState","ThirdState"},
+						{"SecondState","FourthState"}, {"ThirdState","SecondState"}, {"FourthState","FirstState","SecondState"}, {"SeventhState"},
+						{"ThirdState","FirstState","SecondState","FourthState"}},
+				new int[]      {2             , 1              , 2             , 2              , 4,
+						3                            , 3                           , 5                                         , 1,
+						7});
 		
 		// Ensure that DD searchable attribute boolean fields function correctly when searched on.
+		// TODO: Determine how validation should behave with invalid boolean values, or with values not matching or exceeding the field's exact/max length.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountAwake",
-				new String[] {"Y", "N"},
-				new int[]    {1  , 0});
+				new String[] {"Y", "N", "Z", "Neither", "n", "y", "true"},
+				new int[]    {6  , 2  , 0  , -1       , 0  , 0  , -1});
 		
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
+		// Also, note that timestamps in the format "MMMM dd HH:mm:ss" are currently interpreted as being in the year 1970.
+		// TODO: Verify how the max-length validation should work if wildcards or range criteria are present.
+		// FIXME: Fix the SQL generation so that non-range or upper-bound timestamps already containing a "00:00:00" do not also get "23:59:59" appended!
 		// Test Timestamps: 11/01/2009 00:00:00, 11/02/2015 00:00:00, 11/03/1900 00:00:00, 11/04/2009 00:00:00, 11/05/2007 12:04:38, 11/06/2009 12:59:59, 11/07/2009 00:00:01, 11/08/2008 12:00:00
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
-				new String[] {"11/01/2009", "02/31/2008", "<01/01/2010"},
-				new int[]    {1           , -1          , 1});*/
+				new String[] {"!11/01/2009 00:00:00", "11/05/07 *", "11/02/2015 00:00:00|11/06/2009 12:59:59", "11/??/2009 ??:??:??", ">110609 12:59:59",
+						"<=2009 01:02:03", ">=11/06/09 12:59:59", "<11/08/2008 12:00:00 PM", ">=February 28 18:19:20&&<11/06/09 12:59:59", "Blank",
+						"11/03/1900 00:00:00|>11-07-09 00:00:01", "<May 31 15:00:00|>=2015 23:00:00", "02/29/2008 07:00:00..11/04/2009 00:00:00",
+						"11/01/09 00:00:00..11/06/09 12:59:59|11/03/1900 00:00:00", ">February 29 00:00:00", "2009..2008", "2000..2009&&>=110507 12:04:38"},
+				new int[]    {-1                    , -1          , 2                                        , -1                   , 2,
+						3                , 3                    , 2                        , 4                                           , -1,
+						2                                       , 2                                 , 3,
+						4                                                         , -1                     , -1          , 2});
 	}
     
     /**

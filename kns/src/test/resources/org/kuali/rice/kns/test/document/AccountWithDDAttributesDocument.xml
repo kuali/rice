@@ -146,13 +146,13 @@
 		<property name="description" value="Account Update Time"/>
 		<property name="shortLabel" value="Account Update Time"/>
 		<property name="summary" value="Account Update Time"/>
-		<property name="maxLength" value="30"/>
+		<property name="maxLength" value="60"/>
 		<property name="required" value="true"/>
 		<property name="validationPattern">
 			<bean parent="DateValidationPattern"/>
 		</property>
 		<property name="control">
-			<bean parent="TextControlDefinition" p:size="30" p:datePicker="true"/>
+			<bean parent="TextControlDefinition" p:size="60" p:datePicker="true"/>
 		</property>
 	</bean>
 	

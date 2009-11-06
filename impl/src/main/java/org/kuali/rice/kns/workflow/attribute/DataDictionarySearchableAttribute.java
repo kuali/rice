@@ -16,11 +16,12 @@
 package org.kuali.rice.kns.workflow.attribute;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.cxf.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
@@ -191,14 +192,24 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         return docSearchRows;
     }
 
-    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap, DocumentSearchContext searchContext) {
+    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
         List<WorkflowAttributeValidationError> validationErrors = new ArrayList<WorkflowAttributeValidationError>();
         DictionaryValidationService validationService = KNSServiceLocator.getDictionaryValidationService();
         
         for (Object key : paramMap.keySet()) {
-            String value = paramMap.get(key);
-            if (!StringUtils.isEmpty(value)) {
-                validationService.validateAttributeFormat(searchContext.getDocumentTypeName(), (String)key, value, (String)key);
+            Object value = paramMap.get(key);
+            if (value != null) {
+            	if (value instanceof String && !StringUtils.isEmpty((String)value)) {
+            		validationService.validateAttributeFormat(searchContext.getDocumentTypeName(), (String)key, (String)value, (String)key);
+            	} else if (value instanceof Collection && !((Collection)value).isEmpty()) {
+            		// we're doing multi-select search; so we need to loop through all of the Strings
+            		// we've been handed and validate each of them
+            		for (Object v : ((Collection)value)) {
+            			if (v instanceof String) {
+            				validationService.validateAttributeFormat(searchContext.getDocumentTypeName(), (String)key, (String)v, (String)key);
+            			}
+            		}
+            	}
             }
         }
 

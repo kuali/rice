@@ -17,11 +17,14 @@
 package org.kuali.rice.kew.docsearch;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -30,6 +33,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.bo.Person;
@@ -472,5 +476,54 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         	}
         	GlobalVariables.clear();
         }
+    }
+    
+    /**
+     * Per KULRICE-3681, tests that StandardGenericXMLSearchableAttribute throws no cast class exception when it shouldn't
+     */
+    @Test
+    public void testValidateUserSearchInputsNoCast() {
+    	StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
+    	final RuleAttributeService ruleAttributeService = KEWServiceLocator.getRuleAttributeService();
+    	searchableAttribute.setRuleAttribute(ruleAttributeService.findByName("SearchableAttributeVisible"));
+    	
+    	Map<Object, Object> simpleParamMap = new HashMap<Object, Object>();
+    	simpleParamMap.put("givenname", "test");
+    	List errors = new ArrayList();
+    	Exception caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(simpleParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
+    	
+    	Map<Object, Object> listParamMap = new HashMap<Object, Object>();
+    	List<String> multipleValues = new ArrayList<String>();
+    	multipleValues.add("testone");
+    	multipleValues.add("testtwo");
+    	listParamMap.put("givenname", multipleValues);
+    	errors = new ArrayList();
+    	caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(listParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
+    	
+    	Map<Object, Object> badParamMap = new HashMap<Object, Object>();
+    	badParamMap.put("givenname", new Integer(7));
+    	errors = new ArrayList();
+    	caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(badParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNotNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
     }
 }

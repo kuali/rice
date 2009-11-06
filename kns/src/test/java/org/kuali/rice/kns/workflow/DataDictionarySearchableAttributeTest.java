@@ -17,15 +17,20 @@ package org.kuali.rice.kns.workflow;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
@@ -41,8 +46,10 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.test.KNSTestCase;
 
 /**
@@ -57,6 +64,8 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
     }
+    
+    private final static String ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME = "AccountWithDDAttributes";
     
     enum DOCUMENT_FIXTURE {
     	NORMAL_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
@@ -87,7 +96,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     	}
     	
     	public AccountWithDDAttributesDocument getDocument(DocumentService docService) throws WorkflowException {
-    		AccountWithDDAttributesDocument acctDoc = (AccountWithDDAttributesDocument) docService.getNewDocument("AccountWithDDAttributes");
+    		AccountWithDDAttributesDocument acctDoc = (AccountWithDDAttributesDocument) docService.getNewDocument(ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
     		acctDoc.setAccountNumber(this.accountNumber);
     		acctDoc.setAccountOwner(this.accountOwner);
     		acctDoc.setAccountBalance(this.accountBalance);
@@ -311,5 +320,52 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
         	}
         	GlobalVariables.clear();
         }
+    }
+    
+    /**
+     * Validates that the search inputs does not cause a class cast exception
+     */
+    @Test
+    public void testValidateUserSearchInputsNoCast() throws Exception {
+    	DataDictionarySearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
+    	final DocumentService documentService = KNSServiceLocator.getDocumentService();
+    	
+    	AccountWithDDAttributesDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
+    	documentService.saveDocument(document);
+    	final String documentNumber = document.getDocumentNumber();
+    	
+    	DocumentSearchContext searchContext = new DocumentSearchContext();
+    	searchContext.setDocumentId(documentNumber);
+    	searchContext.setDocumentTypeName(ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
+    	
+    	Exception caughtException;
+    	List foundErrors;
+    	
+    	caughtException = null;
+    	foundErrors = new ArrayList();
+    	Map<Object, Object> simpleParamMap = new HashMap<Object, Object>();
+    	simpleParamMap.put("accountState", "FirstState");
+    	try {
+    		foundErrors = searchableAttribute.validateUserSearchInputs(simpleParamMap, searchContext);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found Exception "+caughtException, caughtException);
+    	assertTrue("There were errors: "+foundErrors, (foundErrors == null || foundErrors.isEmpty()));
+    	
+    	caughtException = null;
+    	foundErrors = new ArrayList();
+    	Map<Object, Object> listParamMap = new HashMap<Object, Object>();
+    	List<String> paramValues = new ArrayList<String>();
+    	paramValues.add("FirstState");
+    	paramValues.add("SecondState");
+    	listParamMap.put("accountState", paramValues);
+    	try {
+    		foundErrors = searchableAttribute.validateUserSearchInputs(listParamMap, searchContext);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found Exception "+caughtException, caughtException);
+    	assertTrue("There were errors: "+foundErrors, (foundErrors == null || foundErrors.isEmpty()));
     }
 }

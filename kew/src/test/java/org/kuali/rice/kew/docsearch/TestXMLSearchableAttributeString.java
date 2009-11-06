@@ -56,7 +56,7 @@ public class TestXMLSearchableAttributeString implements SearchableAttribute {
 		return rows;
 	}
 
-	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap, DocumentSearchContext documentSearchContext) {
+	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext documentSearchContext) {
 		List<WorkflowAttributeValidationError> waves = new ArrayList<WorkflowAttributeValidationError>();
 //		WorkflowAttributeValidationError wave = new WorkflowAttributeValidationError("key1", "message1");
 //		waves.add(wave);

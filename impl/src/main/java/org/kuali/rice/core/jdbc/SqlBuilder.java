@@ -437,7 +437,7 @@ public class SqlBuilder {
     		java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
     		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
-			if("00:00:00".equals(sdfTime.format(dt))){
+			if("00:00:00".equals(sdfTime.format(dt)) && !StringUtils.contains(stringDate, "00:00:00") && !StringUtils.contains(stringDate, "12:00 AM")){
 				stringDate = stringDate + " 23:59:59";
 			}
 		} catch (Exception ex){
@@ -461,7 +461,7 @@ public class SqlBuilder {
    		java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
    		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
-			if("00:00:00".equals(sdfTime.format(dt))){
+			if("00:00:00".equals(sdfTime.format(dt)) && !StringUtils.contains(stringDate, "00:00:00") && !StringUtils.contains(stringDate, "12:00 AM")){
 				stringDate = stringDate + " .. " + stringDate + " 23:59:59";
 			}
 		} catch (Exception ex){

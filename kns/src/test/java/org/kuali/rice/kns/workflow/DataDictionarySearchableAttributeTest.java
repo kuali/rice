@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KualiDecimal;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
@@ -112,7 +110,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
 	 */ 
-    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and the TODO and FIXME notes need to be resolved.")
+    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and the TODO notes need to be resolved.")
     @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
 		DocumentService docService = KNSServiceLocator.getDocumentService();
@@ -170,7 +168,6 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 						4                       , 5                                  , -1          , 6                      , 8             , 0});
 		
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
-		// Validation is still broken at the moment (see KULRICE-3681), but this part at least tests the multi-select SQL generation.
 		// TODO: Verify how the system should behave if a search value is not in the multi-select's list, and if a doc should be routable with one.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountStateMultiselect",
 				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState"}, {"FourthState"}, {"FirstState","ThirdState"},
@@ -189,17 +186,18 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
 		// Also, note that timestamps in the format "MMMM dd HH:mm:ss" are currently interpreted as being in the year 1970.
 		// TODO: Verify how the max-length validation should work if wildcards or range criteria are present.
-		// FIXME: Fix the SQL generation so that non-range or upper-bound timestamps already containing a "00:00:00" do not also get "23:59:59" appended!
 		// Test Timestamps: 11/01/2009 00:00:00, 11/02/2015 00:00:00, 11/03/1900 00:00:00, 11/04/2009 00:00:00, 11/05/2007 12:04:38, 11/06/2009 12:59:59, 11/07/2009 00:00:01, 11/08/2008 12:00:00
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
 				new String[] {"!11/01/2009 00:00:00", "11/05/07 *", "11/02/2015 00:00:00|11/06/2009 12:59:59", "11/??/2009 ??:??:??", ">110609 12:59:59",
-						"<=2009 01:02:03", ">=11/06/09 12:59:59", "<11/08/2008 12:00:00 PM", ">=February 28 18:19:20&&<11/06/09 12:59:59", "Blank",
+						"<=2009 01:02:03", ">=11/06/09 12:59:59", "<11/08/2008 12:00 PM", ">=February 28 18:19:20&&<11/06/09 12:59:59", "Blank",
 						"11/03/1900 00:00:00|>11-07-09 00:00:01", "<May 31 15:00:00|>=2015 23:00:00", "02/29/2008 07:00:00..11/04/2009 00:00:00",
-						"11/01/09 00:00:00..11/06/09 12:59:59|11/03/1900 00:00:00", ">February 29 00:00:00", "2009..2008", "2000..2009&&>=110507 12:04:38"},
+						"11/01/09 00:00:00..11/06/09 12:59:59|11/03/1900 00:00:00", ">February 29 00:00:00", "2009..2008", "2000..2009&&>=110507 12:04:38",
+						"<=11/08/2008 12:00 AM"},
 				new int[]    {-1                    , -1          , 2                                        , -1                   , 2,
-						3                , 3                    , 2                        , 4                                           , -1,
+						3                , 3                    , 2                     , 4                                           , -1,
 						2                                       , 2                                 , 3,
-						4                                                         , -1                     , -1          , 2});
+						4                                                         , -1                     , -1          , 2,
+						2});
 	}
     
     /**

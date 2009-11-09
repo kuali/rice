@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.util.Arrays;
+
 import org.junit.Ignore;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
@@ -55,11 +57,32 @@ public class DocumentSearchTestBase extends KEWTestCase {
     protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
         return createSearchAttributeCriteriaComponent(key, value, null, docType);
     }
+    
+    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,DocumentType docType) {
+        return createSearchAttributeCriteriaComponent(key, values, null, docType);
+    }
 
     protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
         String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
         String savedKey = key;
         SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
+        Field field = getFieldByFormKey(docType, formKey);
+        if (field != null) {
+            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+            sacc.setRangeSearch(field.isMemberOfRange());
+            sacc.setCaseSensitive(!field.isUpperCase());
+            sacc.setSearchInclusive(field.isInclusive());
+            sacc.setSearchable(field.isIndexedForSearch());
+            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+        }
+        return sacc;
+    }
+    
+    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,Boolean isLowerBoundValue,DocumentType docType) {
+        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+        String savedKey = key;
+        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
+        sacc.setValues(Arrays.asList(values));
         Field field = getFieldByFormKey(docType, formKey);
         if (field != null) {
             sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));

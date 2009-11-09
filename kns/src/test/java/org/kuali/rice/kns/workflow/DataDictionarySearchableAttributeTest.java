@@ -366,4 +366,35 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     	assertNull("Found Exception "+caughtException, caughtException);
     	assertTrue("There were errors: "+foundErrors, (foundErrors == null || foundErrors.isEmpty()));
     }
+    
+    /**
+     * Test multiple value searches in the context of whole document search context
+     */
+    @Test
+    public void testMultiSelectIntegration() throws Exception {
+    	final DocumentService docService = KNSServiceLocator.getDocumentService();
+		//docSearchService = KEWServiceLocator.getDocumentSearchService();
+		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("AccountWithDDAttributes");
+        String principalName = "quickstart";
+        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+		
+        // Route some test documents.
+		docService.routeDocument(DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(docService), "Routing NORMAL_DOCUMENT", null);
+		
+		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountStateMultiselect",
+				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState"}, {"FourthState"}, {"FirstState", "SecondState"}, {"FirstState","ThirdState"}, {"FirstState", "FourthState"}, {"SecondState", "ThirdState"}, {"SecondState", "FourthState"}, {"ThirdState", "FourthState"}, {"FirstState", "SecondState", "ThirdState"}, {"FirstState", "ThirdState", "FourthState"}, {"SecondState", "ThirdState", "FourthState"}, {"FirstState","SecondState", "ThirdState", "FourthState"}},
+				new int[] { 0, 2, 0, 0, 2, 0, 0, 2, 2, 0, 2, 0, 2, 2 });
+		
+		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOpenDate",
+				new String[][] {{"10/15/2009"}, {"10/15/2009","10/17/2009"}, {"10/14/2009","10/16/2009"}},
+				new int[] { 2, 2, 0 });
+		
+		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountBalance",
+				new String[][] {{"501.77"},{"501.77", "63.54"},{"501.78","501.74"}, {"502.00"}, {"0.00"} },
+				new int[] { 2, 2, 0, 0, 0 });
+		
+		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
+				new String[][] {{"1234567890"},{"1234567890", "9876543210"},{"9876543210","77774"}, {"88881"}, {"0"} },
+				new int[] { 2, 2, 0, 0, 0 });
+    }
 }

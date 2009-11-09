@@ -20,6 +20,7 @@
 	<bean id="AccountWithDDAttributes-parentBean" abstract="true" parent="TransactionalDocumentEntry">
 		<property name="documentTypeName" value="AccountWithDDAttributes"/>
 		<property name="documentClass" value="org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument"/>
+		<property name="businessRulesClass" value="org.kuali.rice.kns.rules.TransactionalDocumentRuleBase" />
 		<property name="workflowAttributes">
 			<ref bean="AccountWithDDAttributes-workflowAttributes"/>
 		</property>

@@ -66,15 +66,16 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     private final static String ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME = "AccountWithDDAttributes";
     
     enum DOCUMENT_FIXTURE {
-    	NORMAL_DOCUMENT(new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
-    	ZERO_NUMBER_DOCUMENT(new Integer(0), "Jane Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 16), createTimestamp(2015, Calendar.NOVEMBER, 2, 0, 0, 0), "FirstState", true),
-    	FALSE_AWAKE_DOCUMENT(new Integer(987654321), "John D'oh", new KualiDecimal(0.0), createDate(2006, Calendar.OCTOBER, 17), createTimestamp(1900, Calendar.NOVEMBER, 3, 0, 0, 0), "FourthState", false),
-    	ODD_NAME_DOCUMENT(new Integer(88), " ", new KualiDecimal(10000051.0), createDate(2009, Calendar.OCTOBER, 18), createTimestamp(2009, Calendar.NOVEMBER, 4, 0, 0, 0), "FourthState", true),
-    	ODD_TIMESTAMP_DOCUMENT(new Integer(9000), "Shane Kloe", new KualiDecimal(4.54), createDate(2012, Calendar.OCTOBER, 19), createTimestamp(2007, Calendar.NOVEMBER, 5, 12, 4, 38), "ThirdState", false),
-    	ANOTHER_ODD_NAME_DOCUMENT(new Integer(1234567889), "---", new KualiDecimal(501), createDate(2009, Calendar.APRIL, 20), createTimestamp(2009, Calendar.NOVEMBER, 6, 12, 59, 59), "ThirdState", true),
-    	INVALID_STATE_DOCUMENT(new Integer(99999), "AAAAAAAAA", new KualiDecimal(2.22), createDate(2009, Calendar.OCTOBER, 21), createTimestamp(2009, Calendar.NOVEMBER, 7, 0, 0, 1), "SeventhState", true),
-    	WILDCARD_NAME_DOCUMENT(new Integer(1), "Sh*ne><K!=e?", new KualiDecimal(771.05), createDate(2054, Calendar.OCTOBER, 22), createTimestamp(2008, Calendar.NOVEMBER, 8, 12, 0, 0), "FirstState", true);
+    	NORMAL_DOCUMENT("Testing NORMAL_DOCUMENT", new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
+    	ZERO_NUMBER_DOCUMENT("Testing ZERO_NUMBER_DOCUMENT", new Integer(0), "Jane Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 16), createTimestamp(2015, Calendar.NOVEMBER, 2, 0, 0, 0), "FirstState", true),
+    	FALSE_AWAKE_DOCUMENT("Testing FALSE_AWAKE_DOCUMENT", new Integer(987654321), "John D'oh", new KualiDecimal(0.0), createDate(2006, Calendar.OCTOBER, 17), createTimestamp(1900, Calendar.NOVEMBER, 3, 0, 0, 0), "FourthState", false),
+    	ODD_NAME_DOCUMENT("Testing ODD_NAME_DOCUMENT", new Integer(88), "_", new KualiDecimal(10000051.0), createDate(2009, Calendar.OCTOBER, 18), createTimestamp(2009, Calendar.NOVEMBER, 4, 0, 0, 0), "FourthState", true),
+    	ODD_TIMESTAMP_DOCUMENT("Testing ODD_TIMESTAMP_DOCUMENT", new Integer(9000), "Shane Kloe", new KualiDecimal(4.54), createDate(2012, Calendar.OCTOBER, 19), createTimestamp(2007, Calendar.NOVEMBER, 5, 12, 4, 38), "ThirdState", false),
+    	ANOTHER_ODD_NAME_DOCUMENT("Testing ANOTHER_ODD_NAME_DOCUMENT", new Integer(1234567889), "---", new KualiDecimal(501), createDate(2009, Calendar.APRIL, 20), createTimestamp(2009, Calendar.NOVEMBER, 6, 12, 59, 59), "ThirdState", true),
+    	INVALID_STATE_DOCUMENT("Testing INVALID_STATE_DOCUMENT", new Integer(99999), "AAAAAAAAA", new KualiDecimal(2.22), createDate(2009, Calendar.OCTOBER, 21), createTimestamp(2009, Calendar.NOVEMBER, 7, 0, 0, 1), "SeventhState", true),
+    	WILDCARD_NAME_DOCUMENT("Testing WILDCARD_NAME_DOCUMENT", new Integer(1), "Sh*ne><K!=e?", new KualiDecimal(771.05), createDate(2054, Calendar.OCTOBER, 22), createTimestamp(2008, Calendar.NOVEMBER, 8, 12, 0, 0), "FirstState", true);
     	
+    	private String accountDocumentDescription;
     	private Integer accountNumber;
     	private String accountOwner;
     	private KualiDecimal accountBalance;
@@ -83,7 +84,8 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     	private String accountState;
     	private boolean accountAwake;
     	
-    	private DOCUMENT_FIXTURE(Integer accountNumber, String accountOwner, KualiDecimal accountBalance, Date accountOpenDate, Timestamp accountUpdateDateTime, String accountState, boolean accountAwake) {
+    	private DOCUMENT_FIXTURE(String accountDocumentDescription, Integer accountNumber, String accountOwner, KualiDecimal accountBalance, Date accountOpenDate, Timestamp accountUpdateDateTime, String accountState, boolean accountAwake) {
+    		this.accountDocumentDescription = accountDocumentDescription;
     		this.accountNumber = accountNumber;
     		this.accountOwner = accountOwner;
     		this.accountBalance = accountBalance;
@@ -95,6 +97,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     	
     	public AccountWithDDAttributesDocument getDocument(DocumentService docService) throws WorkflowException {
     		AccountWithDDAttributesDocument acctDoc = (AccountWithDDAttributesDocument) docService.getNewDocument(ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
+    		acctDoc.getDocumentHeader().setDocumentDescription(this.accountDocumentDescription);
     		acctDoc.setAccountNumber(this.accountNumber);
     		acctDoc.setAccountOwner(this.accountOwner);
     		acctDoc.setAccountBalance(this.accountBalance);
@@ -138,14 +141,14 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 						0                         , 3              , 3              , 2              , 4                   , 2              , 0});
 		
 		// Ensure that DD searchable attribute string fields function correctly when searched on.
-		// TODO: Verify how whitespace field values and wildcard-filled field values in the database should be treated when searching.
+		// TODO: Verify how wildcard-filled field values in the database should be treated when searching.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOwner",
-				new String[] {"!John Doe", "!John*", "!John Doe&&!Shane Kloe", "!Jane ???", "!Jane Doe!John Doe", " ", " |---", "Sh*ne><K!=e",
+				new String[] {"!John Doe", "!John*", "!John Doe&&!Shane Kloe", "!Jane ???", "!Jane Doe!John Doe", "_", "_|---", "Sh*ne><K!=e",
 						">Jane Doe", "<Shane Kloe", ">=Johnny", "<=John D'oh", ">John Doe|<---", ">=AAAAAAAAA&&<=Jane Doe", ">---&&!John D'oh",
 						"<Shane Kloe&&!John*", "*oe", "???? Doe", "Jane Doe..John Doe", "AAAAAAAAA..Shane Kloe&&!John Doe", "John D'oh|---..Jane Doe"},
-				new int[]    {7          , 6       , 6                       , 7          , 6                   , 8  , 1      , 8,
-						4          , 7            , 2         , 5            , 3               , 2                        , 5,
-						5                    , 3    , 2         , 3                   , 5                                 , 4});
+				new int[]    {7          , 6       , 6                       , 7          , 6                   , 1  , 2      , 8,
+						5          , 6            , 3         , 4            , 3               , 2                        , 6,
+						4                    , 3    , 2         , 3                   , 5                                 , 4});
 		
 		// Ensure that DD searchable attribute float fields function correctly when searched on. Also ensure that the CurrencyFormatter is working.
 		// TODO: Verify if "?" and "*" should cause exceptions (for integers too), like with StandardGenericXMLSearchableAttributes that are numbers.
@@ -186,7 +189,6 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
 		// Also, note that timestamps in the format "MMMM dd HH:mm:ss" are currently interpreted as being in the year 1970.
 		// TODO: Verify how the max-length validation should work if wildcards or range criteria are present.
-		// Test Timestamps: 11/01/2009 00:00:00, 11/02/2015 00:00:00, 11/03/1900 00:00:00, 11/04/2009 00:00:00, 11/05/2007 12:04:38, 11/06/2009 12:59:59, 11/07/2009 00:00:01, 11/08/2008 12:00:00
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
 				new String[] {"!11/01/2009 00:00:00", "11/05/07 *", "11/02/2015 00:00:00|11/06/2009 12:59:59", "11/??/2009 ??:??:??", ">110609 12:59:59",
 						"<=2009 01:02:03", ">=11/06/09 12:59:59", "<11/08/2008 12:00 PM", ">=February 28 18:19:20&&<11/06/09 12:59:59", "Blank",

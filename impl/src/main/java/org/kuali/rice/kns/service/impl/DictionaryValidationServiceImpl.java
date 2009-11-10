@@ -29,6 +29,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jdbc.SqlBuilder;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -62,6 +63,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
@@ -83,7 +85,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     private TransactionalDocumentDictionaryService transactionalDocumentDictionaryService;
     private PersistenceService persistenceService;
     private KualiConfigurationService configService;
-
+    private WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
+    
     private PersistenceStructureService persistenceStructureService;
 
     /**
@@ -325,11 +328,23 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
         LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
 
+        // Retrieve the field's data type, or set to the string data type if an exception occurs when retrieving the class or the DD entry.
+        String attributeDataType = null;
+        try {
+        	attributeDataType = getWorkflowAttributePropertyResolutionService().determineFieldDataType((Class<? extends BusinessObject>)Class.forName(
+        			getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(objectClassName).getFullClassName()), attributeName);
+        } catch(ClassNotFoundException e) {
+        	attributeDataType = SearchableAttribute.DATA_TYPE_STRING;
+        } catch (NullPointerException e) {
+        	attributeDataType = SearchableAttribute.DATA_TYPE_STRING;
+        }
+        
         /*
          *  This will return a list of searchable attributes. so if the value is
          *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
          */
-        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue);
+
+        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue, attributeDataType);
 
         if(attributeValues == null || attributeValues.isEmpty())
         	return;
@@ -954,4 +969,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         this.persistenceStructureService = persistenceStructureService;
     }
 
+    private WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+    	if (workflowAttributePropertyResolutionService == null) {
+    		workflowAttributePropertyResolutionService = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
+    	}
+    	return workflowAttributePropertyResolutionService;
+    }
 }

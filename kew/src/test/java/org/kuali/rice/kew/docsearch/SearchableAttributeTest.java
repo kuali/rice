@@ -423,9 +423,9 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         // Ensure that wildcards work on searchable long attributes, and ensure the string-specific wildcards are not being utilized.
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
         		new String[]  {"99??", "*2"       , "!33"         , "<9984", ">432", "<=33", ">=432", ">33&&<9984", "<=100000&&>=20", ">9984&&<33", "432..9984",
-        					"9999..1", "<432|>432", ">=9000|<=100", ">-76"},
+        					"9999..1", "<432|>432", ">=9000|<=100", "!", ">-76"},
         			new int[] {-1     , -1          , 1             , 2      , 1     , 1     , 2      , 1           , 3               , 0           , 2 /*1*/    ,
-        					0        , 2          , 2             , 3});
+        					0        , 2          , 2             , -1 , 3});
         
         // ensure multiple values work
         assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardLong",

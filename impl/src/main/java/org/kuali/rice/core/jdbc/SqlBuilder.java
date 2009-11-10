@@ -28,6 +28,7 @@ import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jdbc.criteria.Criteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -475,15 +476,18 @@ public class SqlBuilder {
    * This method splits the values then cleans them of any other query characters like *?!><...
    *
    * @param valueEntered
+   * @param propertyDataType
    * @return
    */
-  public static List<String> getCleanedSearchableValues(String valueEntered) {
+  public static List<String> getCleanedSearchableValues(String valueEntered, String propertyDataType) {
 	   List<String> lRet = null;
 	   List<String> lTemp = getSearchableValues(valueEntered);
 	   if(lTemp != null && !lTemp.isEmpty()){
 		   lRet = new ArrayList<String>();
 		   for(String val: lTemp){
-			   lRet.add(ObjectUtils.clean(val));
+			   // Clean the wildcards appropriately depending on the field's data type.
+			   lRet.add((SearchableAttribute.DATA_TYPE_FLOAT.equals(propertyDataType) ||
+					   SearchableAttribute.DATA_TYPE_LONG.equals(propertyDataType)) ? SqlBuilder.cleanNumericOfValidOperators(val) : ObjectUtils.clean(val));
 		   }
 	   }
 	   return lRet;

@@ -113,7 +113,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
 	 */ 
-    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and the TODO notes need to be resolved.")
+    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and a few minor details still need to be resolved.")
     @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
 		DocumentService docService = KNSServiceLocator.getDocumentService();
@@ -137,11 +137,11 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
 				new String[] {"!1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
 						">1234567889&&<1234567890", ">=88&&<=99999", "0|>10&&<10000", "9000..1000000", "0..100|>1234567889", "1..10000&&>50", "250..50"},
-				new int[]    {1            , 0/*-1*/, 0/*-1*/, 6   , 2                     , 3     , 4        , -1     , 6          , 2,
+				new int[]    {1            , -1     , -1     , 6   , 2                     , 3     , 4        , -1     , 6          , 2,
 						0                         , 3              , 3              , 2              , 4                   , 2              , 0});
 		
 		// Ensure that DD searchable attribute string fields function correctly when searched on.
-		// TODO: Verify how wildcard-filled field values in the database should be treated when searching.
+		// Note that DD searchable attributes cannot treat wildcards literally, so the "Sh*ne><K!=e" case below yields very different results.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOwner",
 				new String[] {"!John Doe", "!John*", "!John Doe&&!Shane Kloe", "!Jane ???", "!Jane Doe!John Doe", "_", "_|---", "Sh*ne><K!=e",
 						">Jane Doe", "<Shane Kloe", ">=Johnny", "<=John D'oh", ">John Doe|<---", ">=AAAAAAAAA&&<=Jane Doe", ">---&&!John D'oh",
@@ -151,12 +151,11 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 						4                    , 3    , 2         , 3                   , 5                                 , 4});
 		
 		// Ensure that DD searchable attribute float fields function correctly when searched on. Also ensure that the CurrencyFormatter is working.
-		// TODO: Verify if "?" and "*" should cause exceptions (for integers too), like with StandardGenericXMLSearchableAttributes that are numbers.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountBalance",
-				new String[] {"501.??", "*.54" , "!2.22", "10000051.0|771.05", "<0.0", ">501", "<=4.54", ">=-99.99", ">4.54|<=-1", ">=0&&<501.77",
+				new String[] {"501.??", "*.54" , "!2.22", "10000051.0|771.05", "<0.0", ">501", "<=4.54", ">=-99.99", ">4.54|<=-1", ">=0&&<501.77", "!",
 						"<=0|>=10000051", ">501&&<501.77", "-100|>771.05", "2.22..501", "-100..4.54&&<=0", "2.22|501.77..10000051.0", "Zero",
 						"-$100", "<(501)&&>=($2.22)", "$4.54|<(1)", "($0.00)..$771.05", ">=$(500)", ")501(", "4.54$", "$501..0"},
-				new int[]    {1/*-1*/ , 0/*-1*/, 1      , 2                  , 1     , 3     , 4       , 7         , 5           , 4,
+				new int[]    {-1      , -1     , 1      , 2                  , 1     , 3     , 4       , 7         , 5           , 4             , -1,
 						3               , 0              , 2             , 3          , 2                , 4                        , -1,
 						1      , 2                  , 3           , 6                 , -1        , -1     , -1     , 0});
 		
@@ -171,7 +170,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 						4                       , 5                                  , -1          , 6                      , 8             , 0});
 		
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
-		// TODO: Verify how the system should behave if a search value is not in the multi-select's list, and if a doc should be routable with one.
+		// Currently, an exception is *not* thrown if the value given is not among the selectable values.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountStateMultiselect",
 				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState"}, {"FourthState"}, {"FirstState","ThirdState"},
 						{"SecondState","FourthState"}, {"ThirdState","SecondState"}, {"FourthState","FirstState","SecondState"}, {"SeventhState"},
@@ -181,14 +180,13 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 						7});
 		
 		// Ensure that DD searchable attribute boolean fields function correctly when searched on.
-		// TODO: Determine how validation should behave with invalid boolean values, or with values not matching or exceeding the field's exact/max length.
+		// 
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountAwake",
 				new String[] {"Y", "N", "Z", "Neither", "n", "y", "true"},
 				new int[]    {6  , 2  , 0  , -1       , 0  , 0  , -1});
 		
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
 		// Also, note that timestamps in the format "MMMM dd HH:mm:ss" are currently interpreted as being in the year 1970.
-		// TODO: Verify how the max-length validation should work if wildcards or range criteria are present.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
 				new String[] {"!11/01/2009 00:00:00", "11/05/07 *", "11/02/2015 00:00:00|11/06/2009 12:59:59", "11/??/2009 ??:??:??", ">110609 12:59:59",
 						"<=2009 01:02:03", ">=11/06/09 12:59:59", "<11/08/2008 12:00 PM", ">=February 28 18:19:20&&<11/06/09 12:59:59", "Blank",

@@ -36,6 +36,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -177,7 +178,7 @@ public class SqlBuilder {
 			addDateRangeCriteria(propertyName, propertyValue, criteria, propertyType);
 		} else if (TypeUtils.isBooleanClass(propertyType)) {
 			String temp = ObjectUtils.clean(propertyValue);
-			criteria.eq(propertyName, ("Y".equalsIgnoreCase(temp) || "T".equalsIgnoreCase(temp) || "1".equalsIgnoreCase(temp) || "true".equalsIgnoreCase(temp)) ? true : false, propertyType);
+			criteria.eq(propertyName, new BooleanFormatter().convertFromPresentationFormat(temp), propertyType);
 		} else {
 			LOG.error("not adding criterion for: " + propertyName + "," + propertyType + "," + propertyValue);
 		}
@@ -485,9 +486,16 @@ public class SqlBuilder {
 	   if(lTemp != null && !lTemp.isEmpty()){
 		   lRet = new ArrayList<String>();
 		   for(String val: lTemp){
-			   // Clean the wildcards appropriately depending on the field's data type.
-			   lRet.add((SearchableAttribute.DATA_TYPE_FLOAT.equals(propertyDataType) ||
-					   SearchableAttribute.DATA_TYPE_LONG.equals(propertyDataType)) ? SqlBuilder.cleanNumericOfValidOperators(val) : ObjectUtils.clean(val));
+			   // Clean the wildcards appropriately, depending on the field's data type.
+			   if (SearchableAttribute.DATA_TYPE_STRING.equals(propertyDataType)) {
+				   lRet.add(ObjectUtils.clean(val));
+			   } else if (SearchableAttribute.DATA_TYPE_FLOAT.equals(propertyDataType) || SearchableAttribute.DATA_TYPE_LONG.equals(propertyDataType)) {
+				   lRet.add(SqlBuilder.cleanNumericOfValidOperators(val));
+			   } else if (SearchableAttribute.DATA_TYPE_DATE.equals(propertyDataType)) {
+				   lRet.add(SqlBuilder.cleanDate(val));
+			   } else {
+				   lRet.add(ObjectUtils.clean(val));
+			   }
 		   }
 	   }
 	   return lRet;

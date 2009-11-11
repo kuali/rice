@@ -48,6 +48,7 @@ import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
+import org.kuali.rice.test.TransactionalTest;
 import org.kuali.test.KNSTestCase;
 
 /**
@@ -55,6 +56,8 @@ import org.kuali.test.KNSTestCase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand.")
+@TransactionalTest
 public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 
     @Override
@@ -112,8 +115,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	
 	/**
 	 * Tests the use of multi-select and wildcard searches to ensure that they function correctly for DD searchable attributes on the doc search.
-	 */ 
-    @Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand, and a few minor details still need to be resolved.")
+	 */
     @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
 		DocumentService docService = KNSServiceLocator.getDocumentService();
@@ -180,10 +182,13 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 						7});
 		
 		// Ensure that DD searchable attribute boolean fields function correctly when searched on.
-		// 
-		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountAwake",
-				new String[] {"Y", "N", "Z", "Neither", "n", "y", "true"},
-				new int[]    {6  , 2  , 0  , -1       , 0  , 0  , -1});
+		// TODO: Add the commented-out boolean search expressions back in once KULRICE-3698 is complete.
+		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountAwake", new String[] {"Y", "N"}, new int[] {6, 2});
+		/*assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountAwake",
+				new String[] {"Y", "N", "Z", "Neither", "n", "y", "true", "FALSE", "fAlSe", "TrUe", "NO", "Yes", "f", "F", "T", "t", "2", "0", "1",
+						"Active", "INACTIVE", "On", "Off", "ON", "off", "EnAbLeD", "enabled", "dIsAbLeD", "DISABLED"},
+				new int[]    {6  , 2  , -1 , -1       , 2  , 6  , 6     , 2      , 2      , 6     , 2   , 6    , 2  , 2  , 6  , 6  , -1 , 2  , 6  ,
+						-1      , -1        , 6   , 2    , 6   , 2    , 6        , 6        , 2         , 2});*/
 		
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
 		// Also, note that timestamps in the format "MMMM dd HH:mm:ss" are currently interpreted as being in the year 1970.
@@ -383,18 +388,18 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountStateMultiselect",
 				new String[][] {{"FirstState"}, {"SecondState"}, {"ThirdState"}, {"FourthState"}, {"FirstState", "SecondState"}, {"FirstState","ThirdState"}, {"FirstState", "FourthState"}, {"SecondState", "ThirdState"}, {"SecondState", "FourthState"}, {"ThirdState", "FourthState"}, {"FirstState", "SecondState", "ThirdState"}, {"FirstState", "ThirdState", "FourthState"}, {"SecondState", "ThirdState", "FourthState"}, {"FirstState","SecondState", "ThirdState", "FourthState"}},
-				new int[] { 0, 2, 0, 0, 2, 0, 0, 2, 2, 0, 2, 0, 2, 2 });
+				new int[] { 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1 });
 		
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOpenDate",
 				new String[][] {{"10/15/2009"}, {"10/15/2009","10/17/2009"}, {"10/14/2009","10/16/2009"}},
-				new int[] { 2, 2, 0 });
+				new int[] { 1, 1, 0 });
 		
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountBalance",
 				new String[][] {{"501.77"},{"501.77", "63.54"},{"501.78","501.74"}, {"502.00"}, {"0.00"} },
-				new int[] { 2, 2, 0, 0, 0 });
+				new int[] { 1, 1, 0, 0, 0 });
 		
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
 				new String[][] {{"1234567890"},{"1234567890", "9876543210"},{"9876543210","77774"}, {"88881"}, {"0"} },
-				new int[] { 2, 2, 0, 0, 0 });
+				new int[] { 1, 1, 0, 0, 0 });
     }
 }

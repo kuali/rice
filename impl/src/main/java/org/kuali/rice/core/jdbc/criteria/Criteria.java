@@ -36,6 +36,7 @@ import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 
 
@@ -110,7 +111,8 @@ public class Criteria {
 			return value.toString();
 		}
 
-		if(TypeUtils.isIntegralClass(propertyType)){
+		if(TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType)){
+			new BigDecimal(value.toString()); // This should throw an exception if the number is invalid.
 			return value.toString();
 		}
 		if(TypeUtils.isTemporalClass(propertyType)){
@@ -129,6 +131,9 @@ public class Criteria {
 			return " '" + getDbPlatform().escapeString(value.toString().trim()) + "' ";
 		}
 		if (TypeUtils.isBooleanClass(propertyType)) {
+			if (value instanceof String) {
+				value = new BooleanFormatter().convertFromPresentationFormat(value.toString());
+			}
 			boolean bVal = ((Boolean)value).booleanValue();
 			if(bVal){return "1";}
 			else { return "0";}

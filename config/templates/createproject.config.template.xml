@@ -46,7 +46,7 @@
 	<param name="datasource.pool.size">5</param>
 
 	<param name="keystore.alias">rice</param>
-	<param name="keystore.location">${USER_HOME}/kuali/main/dev/rice.keystore</param>
+	<param name="keystore.file">${USER_HOME}/kuali/main/dev/rice.keystore</param>
 	<param name="keystore.password">r1c3pw</param>
 
 	<param name="dev.mode">true</param>

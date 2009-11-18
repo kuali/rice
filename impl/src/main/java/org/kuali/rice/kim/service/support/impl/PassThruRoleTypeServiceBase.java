@@ -31,10 +31,6 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 
     public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification);
     
-    public AttributeSet convertQualificationAttributesToRequired(AttributeSet qualificationAttributes) {
-        return qualificationAttributes;
-    }
-
     public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
         return roleMemberList;
     }

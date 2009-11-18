@@ -108,6 +108,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     private Map<String,KimRoleTypeService> roleTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimRoleTypeService>() );
     private Map<String,KimDelegationTypeService> delegationTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimDelegationTypeService>() );
+    private Map<String,Boolean> applicationRoleTypeCache = Collections.synchronizedMap( new HashMap<String,Boolean>() );
 
     // --------------------
     // Role Data
@@ -557,10 +558,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// handle application roles
     	for ( String roleId : allRoleIds ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+			RoleImpl role = roles.get( roleId );
     		// check if an application role
             try {
-        		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-        			RoleImpl role = roles.get( roleId );
+        		if ( isApplicationRoleType(role.getKimTypeId(), roleTypeService) ) {
                     // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
         			List<RoleMembershipInfo> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getRoleName(), qualification);
         			if ( !roleMembers.isEmpty()  ) {
@@ -633,6 +634,18 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
 
     	return results;
+    }
+    
+    protected boolean isApplicationRoleType( String roleTypeId, KimRoleTypeService service ) {
+    	Boolean result = applicationRoleTypeCache.get( roleTypeId );
+    	if ( result == null ) {
+    		if ( service != null ) {
+    			result = service.isApplicationRoleType();
+    		} else {
+    			result = Boolean.FALSE;
+    		}
+    	}
+    	return result;
     }
 
     protected KimRoleTypeService getRoleTypeService( String roleId ) {
@@ -978,13 +991,13 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// loop over the allRoleIds list
     	for ( String roleId : allRoleIds ) {
+			RoleImpl role = roles.get( roleId );
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
     		// check if an application role
     		//it is possible that the the roleTypeService is coming from a remote application 
             // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
             try {
-        		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-        			RoleImpl role = roles.get( roleId );
+        		if ( isApplicationRoleType(role.getKimTypeId(), roleTypeService)  ) {
         			if ( roleTypeService.hasApplicationRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getRoleName(), qualification) ) {
         				return true;
         			}
@@ -1365,10 +1378,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
     	for ( KimTypeInfo typeInfo : types ) {
     		KimRoleTypeService service = getRoleTypeService(typeInfo);
-    		if ( service != null ) {
-    			if ( service.isApplicationRoleType() ) {
-    				applicationRoleTypes.add(typeInfo);
-    			}
+    		if ( isApplicationRoleType(typeInfo.getKimTypeId(), service)) {
+				applicationRoleTypes.add(typeInfo);
     		}
     	}
     	Map<String,Object> roleLookupMap = new HashMap<String, Object>(2);

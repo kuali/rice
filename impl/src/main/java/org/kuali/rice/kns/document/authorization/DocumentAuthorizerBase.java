@@ -128,10 +128,11 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 						.remove(KNSConstants.KUALI_ACTION_CAN_DISAPPROVE);
 			}
 		}
-		if (documentActions
-				.contains(KNSConstants.KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS)
-				&& !canSendAnyTypeAdHocRequests(document, user)) {
+		
+		if ( !canSendAnyTypeAdHocRequests(document, user) ) {
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS);
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
+			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
 		}
 		
 		if(documentActions
@@ -139,14 +140,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				&& !canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)){
 			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
 		}
-		
-		
-		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS)
-				&& !canSendAnyTypeAdHocRequests(document, user) ) {
-			documentActions.remove(KNSConstants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS);
-		}
-		
-		
+				
 		if (documentActions.contains(KNSConstants.KUALI_ACTION_CAN_ANNOTATE)
 				&& !documentActions
 						.contains(KNSConstants.KUALI_ACTION_CAN_EDIT)) {

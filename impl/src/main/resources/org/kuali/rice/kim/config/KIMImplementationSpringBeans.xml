@@ -325,6 +325,24 @@
     <property name="exportIf" value="kimResponsibilityUpdateServiceSOAP.expose"/>
   </bean>
 
+  <!--
+    IdentityManagementNotificationService 
+  -->
+
+  <bean id="kimIdentityManagementNotificationService" class="org.kuali.rice.kim.service.impl.IdentityManagementNotificationServiceImpl"/>
+
+  <bean parent="kimLocalServiceExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimJaxWsSoapService"
+        p:service-ref="kimIdentityManagementNotificationService"
+        p:localServiceName="kimIdentityManagementNotificationServiceSOAP"
+        p:serviceInterface="org.kuali.rice.kim.service.IdentityManagementNotificationService"
+        />
+    </property>
+    <property name="exportIf" value="kimIdentityManagementNotificationServiceSOAP.expose"/>
+  </bean>
+
   <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />
 
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />

@@ -15,12 +15,19 @@
  */
 package org.kuali.rice.kim.service;
 
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
+
 /**
  * Service to purge local Kim caches when backend KIM data has changed. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@WebService(name = KIMWebServiceConstants.IdentityManagementNotificationService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IdentityManagementNotificationService {
     public void principalUpdated();
     public void groupUpdated();

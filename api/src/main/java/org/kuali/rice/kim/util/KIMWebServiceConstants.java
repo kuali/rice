@@ -82,4 +82,9 @@ public class KIMWebServiceConstants {
 		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
 	}
 
+	public static class IdentityManagementNotificationService {
+		public static final String WEB_SERVICE_NAME = "kimIdentityManagementNotificationServiceSOAP";
+	}
+
+	
 }

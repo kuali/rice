@@ -26,11 +26,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -97,6 +97,7 @@ KualiLookupableHelperServiceImpl {
 	DateTimeService dateTimeService;
 	DocumentLookupCriteriaProcessor processor;
 	boolean savedSearch = false;
+	private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
 
 	/**
 	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.kns.service.DateTimeService)
@@ -376,7 +377,12 @@ KualiLookupableHelperServiceImpl {
                 		}
                         col.setMaxLength(100); //for now force this
                 	} else if(StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getkey())) {
-                		anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\"><img "));
+                		Matcher hrefMatcher = HREF_PATTERN.matcher(keyValue.getValue());
+                		String matchedURL = "";
+                		if (hrefMatcher.find()) {
+                			matchedURL = hrefMatcher.group(1);
+                		}
+                		anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+matchedURL);
                 		String target = StringUtils.substringBetween(keyValue.getValue(), "target=\"", "\"");
                         if (target == null) {
                             target = "_self";

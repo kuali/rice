@@ -28,6 +28,7 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
@@ -143,7 +144,10 @@ public abstract class ActionTakenEvent {
 	protected void updateSearchableAttributesIfPossible() {
 		// queue the document up so that it can be indexed for searching if it
 		// has searchable attributes
-		if (routeHeader.getDocumentType().hasSearchableAttributes()) {
+		RouteContext routeContext = RouteContext.getCurrentRouteContext();
+		if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
+			routeContext.requestSearchIndexingForContext();
+			
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
 			searchableAttService.indexDocument(getRouteHeaderId());
 		}

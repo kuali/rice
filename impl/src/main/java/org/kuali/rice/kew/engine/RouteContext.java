@@ -54,6 +54,8 @@ public class RouteContext implements Serializable {
 	private boolean doNotSendApproveNotificationEmails = false;
 
 	private Map parameters = new HashMap();
+	
+	private boolean searchIndexingRequestedForContext = false;
 
 	public RouteContext() {
 	}
@@ -173,4 +175,20 @@ public class RouteContext implements Serializable {
 	public void setParameters(Map parameters) {
 		this.parameters = parameters;
 	}
+
+	/**
+	 * Determines if search indexing has already been requested during this context
+	 * @return the searchIndexingRequestedForContext: true if search indexing has been requested, false otherwise
+	 */
+	public boolean isSearchIndexingRequestedForContext() {
+		return this.searchIndexingRequestedForContext;
+	}
+
+	/**
+	 * Sets the route context to let it know that search indexing has been requested
+	 */
+	public void requestSearchIndexingForContext() {
+		this.searchIndexingRequestedForContext = true;
+	}
+	
 }

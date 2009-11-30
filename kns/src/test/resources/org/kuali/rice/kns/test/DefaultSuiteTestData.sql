@@ -63,3 +63,12 @@ INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, AC
 INSERT INTO KRIM_ROLE_MBR_T(ROLE_MBR_ID, VER_NBR, OBJ_ID, ROLE_ID, MBR_ID, MBR_TYP_CD)
 VALUES('2000', 1, '62311426-7dfb-102c-97b6-ed716fdaf540', '63', '1', 'G')
 ;
+insert into krim_perm_t (perm_id, obj_id, ver_nbr, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind)
+values ('1652','4348B3EDA0204A9A82D11801A0B5BF89',1,'4', 'KR-NS', 'Blanket Approve Document', 'Allow blanket approvals of documents', 'Y')
+;
+insert into krim_perm_attr_data_t (attr_data_id, obj_id, ver_nbr, perm_id, kim_typ_id, kim_attr_defn_id, attr_val)
+values ('1000', '9A6B69E11DA1477FB0FD899A3C746A17', 1, '1652', '3', '13', 'RiceDocument')
+;
+insert into krim_role_perm_t (role_perm_id, obj_id, ver_nbr, role_id, perm_id, actv_ind)
+values ('2112', '7FE9BCE73E2748FEB56DB358F0FFA84F', 1, '63', '1652', 'Y')
+;

@@ -99,4 +99,15 @@
 		<field-descriptor name="accountAwake" column="ACCT_AWAKE" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 	
+	<class-descriptor class="org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument" table="SEARCH_ATTR_INDX_TST_DOC_T">
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="routeLevelCount" column="RTE_LVL_CNT" jdbc-type="BIGINT"/>
+		<field-descriptor name="constantString" column="CNSTNT_STR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="routedString" column="RTD_STR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="heldRoutedString" column="HLD_RTD_STR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="readAccessCount" column="RD_ACCS_CNT" jdbc-type="BIGINT"/>
+	</class-descriptor>
+	
 </descriptor-repository>

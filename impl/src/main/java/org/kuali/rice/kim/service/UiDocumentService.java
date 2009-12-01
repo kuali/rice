@@ -119,8 +119,8 @@ public interface UiDocumentService {
 	
 	public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues);
 	
-	public boolean canModifyEntity( String principalId );
-	public boolean canOverrideEntityPrivacyPreferences( String principalId );
+	public boolean canModifyEntity( String currentUserPrincipalId, String toModifyPrincipalId );
+	public boolean canOverrideEntityPrivacyPreferences( String currentUserPrincipalId, String toModifyPrincipalId );
 
 	public List<KimEntityEmploymentInformationInfo> getEntityEmploymentInformationInfo(String entityId);
 }

@@ -10,7 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
  * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
+ *
  * MODIFIED BY THE KUALI FOUNDATION
  */
 // begin Kuali Foundation modification
@@ -36,8 +36,8 @@ public class DateFormatter extends Formatter {
     // begin Kuali Foundation modification
     // serialVersionUID changed from 1L
     private static final long serialVersionUID = 7612442662886603084L;
-    
-    
+
+
     private static DateTimeService dateTimeService;
     // end Kuali Foundation modification
 
@@ -49,10 +49,10 @@ public class DateFormatter extends Formatter {
 	// begin Kuali Foundation modification
 	// added this method
     /**
-     * 
+     *
      * For a given user input date, this method returns the exact string the user entered after the last slash. This allows the
      * formatter to distinguish between ambiguous values such as "/06" "/6" and "/0006"
-     * 
+     *
      * @param date
      * @return
      */
@@ -71,7 +71,7 @@ public class DateFormatter extends Formatter {
 
     /**
      * Unformats its argument and return a java.util.Date instance initialized with the resulting string.
-     * 
+     *
      * @return a java.util.Date intialized with the provided string
      */
     protected Object convertToObject(String target) {
@@ -93,7 +93,7 @@ public class DateFormatter extends Formatter {
 
     /**
      * Returns a string representation of its argument, formatted as a date with the "MM/dd/yyyy" format.
-     * 
+     *
      * @return a formatted String
      */
     public Object format(Object value) {
@@ -119,23 +119,23 @@ public class DateFormatter extends Formatter {
     /**
      * This method is invoked to validate a date string using the KNS Service
      * DateTimeService.
-     * 
+     *
      * @param dateString
      * @return
      */
     public boolean validate(String dateString) {
         boolean isValid=false;
-        
+
         DateTimeService service=getDateTimeService();
         try {
-            service.convertToSqlDate(dateString);
+            service.convertToSqlTimestamp(dateString);
             isValid=true;
         } catch (Exception e) {
-            
+
         }
-        
+
         return isValid;
-        
+
     }
 
 }

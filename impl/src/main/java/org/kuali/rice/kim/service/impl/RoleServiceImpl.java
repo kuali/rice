@@ -318,7 +318,13 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     				// pulling from here as the nested role is not necessarily (and likely is not)
     				// in the roles Map created earlier
     				RoleImpl nestedRole = getRoleImpl(rm.getMemberId());
-    				nestedQualification = roleTypeService.convertQualificationForMemberRoles(role.getNamespaceCode(), role.getRoleName(), nestedRole.getNamespaceCode(), nestedRole.getRoleName(), qualification);
+    				//it is possible that the the roleTypeService is coming from a remote application 
+                    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+    				try {
+    				    nestedQualification = roleTypeService.convertQualificationForMemberRoles(role.getNamespaceCode(), role.getRoleName(), nestedRole.getNamespaceCode(), nestedRole.getRoleName(), qualification);
+    				} catch (Exception ex) {
+                        LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + role.getRoleId(), ex);
+                    }
     			}
     			List<String> nestedRoleId = new ArrayList<String>(1);
     			nestedRoleId.add( rm.getMemberId() );
@@ -331,10 +337,16 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
 		for ( String roleId : roleIdToMembershipMap.keySet() ) {
 			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
-			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
-			for ( RoleMembershipInfo rmi : matchingMembers ) {
-				results.add( rmi.getQualifier() );
-			}
+			//it is possible that the the roleTypeService is coming from a remote application 
+            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            try {
+    			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
+    			for ( RoleMembershipInfo rmi : matchingMembers ) {
+    				results.add( rmi.getQualifier() );
+    			}
+            } catch (Exception ex) {
+                LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+            }
 		}
     	return results;
 	}
@@ -366,10 +378,16 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
 		for ( String roleId : roleIdToMembershipMap.keySet() ) {
 			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
-			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
-			for ( RoleMembershipInfo rmi : matchingMembers ) {
-				results.add( rmi.getQualifier() );
-			}
+			//it is possible that the the roleTypeService is coming from a remote application 
+            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            try {
+    			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
+    			for ( RoleMembershipInfo rmi : matchingMembers ) {
+    				results.add( rmi.getQualifier() );
+    			}
+            } catch (Exception ex) {
+                LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+            }
 		}
     	return results;
 	}
@@ -499,34 +517,40 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		// for each role, send in all the qualifiers for that role to the type service
     		// for evaluation, the service will return those which match
     		for ( String roleId : roleIdToMembershipMap.keySet() ) {
-    			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
-    			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
-    			// loop over the matching entries, adding them to the results
-    			for ( RoleMembershipInfo mi : matchingMembers ) {
-    				if ( mi.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE ) ) {
-    					// if a role member type, do a non-recursive role member check
-    					// to obtain the group and principal members of that role
-    					// given the qualification
-                        // get the member role object
-                        RoleImpl memberRole = getRoleImpl( mi.getMemberId() );
-                        if ( memberRole.isActive() ) {
-	    					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-	    					        roles.get(mi.getRoleId()).getNamespaceCode(),
-	    					        roles.get(mi.getRoleId()).getRoleName(),
-	                                memberRole.getNamespaceCode(),
-	                                memberRole.getRoleName(),
-	    					        qualification );
-	    					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
-	    					if ( !nestedRoleMembers.isEmpty() ) {
-	    						results.addAll( nestedRoleMembers );
-	    						matchingRoleIds.add( mi.getRoleId() );
-	    					}
-                        }
-    				} else { // not a role member
-    					results.add( mi );
-    					matchingRoleIds.add( mi.getRoleId() );
-    				}
-    			}
+    		    //it is possible that the the roleTypeService is coming from a remote application 
+                // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                try {
+        			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+        			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
+        			// loop over the matching entries, adding them to the results
+        			for ( RoleMembershipInfo mi : matchingMembers ) {
+        				if ( mi.getMemberTypeCode().equals( Role.ROLE_MEMBER_TYPE ) ) {
+        					// if a role member type, do a non-recursive role member check
+        					// to obtain the group and principal members of that role
+        					// given the qualification
+                            // get the member role object
+                            RoleImpl memberRole = getRoleImpl( mi.getMemberId() );
+                            if ( memberRole.isActive() ) {
+    	    					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
+    	    					        roles.get(mi.getRoleId()).getNamespaceCode(),
+    	    					        roles.get(mi.getRoleId()).getRoleName(),
+    	                                memberRole.getNamespaceCode(),
+    	                                memberRole.getRoleName(),
+    	    					        qualification );
+    	    					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
+    	    					if ( !nestedRoleMembers.isEmpty() ) {
+    	    						results.addAll( nestedRoleMembers );
+    	    						matchingRoleIds.add( mi.getRoleId() );
+    	    					}
+                            }
+        				} else { // not a role member
+        					results.add( mi );
+        					matchingRoleIds.add( mi.getRoleId() );
+        				}
+        			}
+        		} catch (Exception ex) {
+                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+                }
     		}
     	}
 
@@ -534,19 +558,23 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	for ( String roleId : allRoleIds ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
     		// check if an application role
-    		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-    			RoleImpl role = roles.get( roleId );
-                // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
-    			List<RoleMembershipInfo> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getRoleName(), qualification);
-    			if ( !roleMembers.isEmpty()  ) {
-    				matchingRoleIds.add( roleId );
-    			}
-    			for ( RoleMembershipInfo rm : roleMembers ) {
-    			    rm.setRoleId(roleId);
-    			    rm.setRoleMemberId("*");
-    			}
-    			results.addAll(roleMembers);
-    		}
+            try {
+        		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
+        			RoleImpl role = roles.get( roleId );
+                    // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
+        			List<RoleMembershipInfo> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getRoleName(), qualification);
+        			if ( !roleMembers.isEmpty()  ) {
+        				matchingRoleIds.add( roleId );
+        			}
+        			for ( RoleMembershipInfo rm : roleMembers ) {
+        			    rm.setRoleId(roleId);
+        			    rm.setRoleMemberId("*");
+        			}
+        			results.addAll(roleMembers);
+        		}
+            } catch (Exception ex) {
+                LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+            }
     	}
 
     	if ( followDelegations && !matchingRoleIds.isEmpty() ) {
@@ -563,10 +591,17 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	if ( results.size() > 1 ) {
         	// if a single role: easy case
         	if ( matchingRoleIds.size() == 1 ) {
-        		KimRoleTypeService kimRoleTypeService = getRoleTypeService( matchingRoleIds.iterator().next() );
-        		if ( kimRoleTypeService != null ) {
-        			results = kimRoleTypeService.sortRoleMembers( results );
-        		}
+        	    String roleId = matchingRoleIds.iterator().next();
+        		KimRoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
+        		//it is possible that the the roleTypeService is coming from a remote application 
+                // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                try {
+            		if ( kimRoleTypeService != null ) {
+            			results = kimRoleTypeService.sortRoleMembers( results );
+            		}
+                } catch (Exception ex) {
+                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+                }
         	} else if ( matchingRoleIds.size() > 1 ) {
         		// if more than one, check if there is only a single role type service
             	String prevServiceName = null;
@@ -580,10 +615,17 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     				prevServiceName = serviceName;
         		}
         		if ( !multipleServices ) {
-            		KimRoleTypeService kimRoleTypeService = getRoleTypeService( matchingRoleIds.iterator().next() );
-            		if ( kimRoleTypeService != null ) {
-            			results = kimRoleTypeService.sortRoleMembers( results );
-            		}
+        		    String roleId = matchingRoleIds.iterator().next();
+        		    //it is possible that the the roleTypeService is coming from a remote application 
+                    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                    try {                       
+                		KimRoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
+                		if ( kimRoleTypeService != null ) {
+                			results = kimRoleTypeService.sortRoleMembers( results );
+                		}
+            		} catch (Exception ex) {
+                        LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+                    }
         		} else {
         			LOG.warn( "Did not sort role members - multiple role type services found.  Role Ids: " + matchingRoleIds );
         		}
@@ -594,7 +636,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     }
 
     protected KimRoleTypeService getRoleTypeService( String roleId ) {
-    	KimRoleTypeService service = roleTypeServiceCache.get( roleId );
+        KimRoleTypeService service = roleTypeServiceCache.get( roleId );
     	if ( service == null && !roleTypeServiceCache.containsKey( roleId ) ) {
     		RoleImpl role = getRoleImpl( roleId );
     		KimTypeInfo roleType = role.getKimRoleType();
@@ -611,7 +653,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		if ( serviceName != null ) {
 			try {
 				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
-				if ( service != null && service instanceof KimRoleTypeService ) {
+				if ( service != null && service instanceof KimRoleTypeService) {
 					return (KimRoleTypeService)service;
 				} else {
 					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
@@ -856,10 +898,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// perform the checks against the role type services
 		for ( String roleId : roleIdToMembershipMap.keySet() ) {
-			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
-			if ( !roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) ).isEmpty() ) {
-				return true;
-			}
+		    try {
+    			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+    			if ( !roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) ).isEmpty() ) {
+    				return true;
+    			}
+		    } catch ( Exception ex ) {
+                LOG.warn( "Unable to find role type service with id: " + roleId );
+            }
 		}
 
     	// find the groups that the principal belongs to
@@ -874,10 +920,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
 	    	// perform the checks against the role type services
 			for ( String roleId : roleIdToMembershipMap.keySet() ) {
-				KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
-				if ( !roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) ).isEmpty() ) {
-					return true;
-				}
+			    try {
+    				KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+    				if ( !roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) ).isEmpty() ) {
+    					return true;
+    				}
+    			} catch ( Exception ex ) {
+                    LOG.warn( "Unable to find role type service with id: " + roleId );
+                }
 			}
     	}
 
@@ -888,20 +938,27 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	for ( RoleMemberImpl rr : rrs ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rr.getRoleId() );
     		if ( roleTypeService != null ) {
-    			if ( roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
-                    RoleImpl memberRole = getRoleImpl( rr.getMemberId() );
-					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-					        roles.get(rr.getRoleId()).getNamespaceCode(),
-					        roles.get(rr.getRoleId()).getRoleName(),
-                            memberRole.getNamespaceCode(),
-                            memberRole.getRoleName(),
-                            qualification );
-                    ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
-                    roleIdTempList.add( rr.getMemberId() );
-    				if ( principalHasRole( principalId, roleIdTempList, nestedRoleQualification, true ) ) {
-    					return true;
-    				}
-    			}
+    			//it is possible that the the roleTypeService is coming from a remote application 
+    		    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+    		    try {
+        		    if ( roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
+                        RoleImpl memberRole = getRoleImpl( rr.getMemberId() );
+    					AttributeSet nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
+    					        roles.get(rr.getRoleId()).getNamespaceCode(),
+    					        roles.get(rr.getRoleId()).getRoleName(),
+                                memberRole.getNamespaceCode(),
+                                memberRole.getRoleName(),
+                                qualification );
+                        ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
+                        roleIdTempList.add( rr.getMemberId() );
+        				if ( principalHasRole( principalId, roleIdTempList, nestedRoleQualification, true ) ) {
+        					return true;
+        				}
+        			}	
+    			} catch (Exception ex) {
+                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + rr.getRoleId(), ex);
+                    //return false; 
+                }
     		} else {
     			// no qualifiers - role is always used - check membership
 				ArrayList<String> roleIdTempList = new ArrayList<String>( 1 );
@@ -911,6 +968,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 					return true;
 				}
     		}
+    	    
     	}
 
 
@@ -922,12 +980,19 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	for ( String roleId : allRoleIds ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
     		// check if an application role
-    		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-    			RoleImpl role = roles.get( roleId );
-    			if ( roleTypeService.hasApplicationRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getRoleName(), qualification) ) {
-    				return true;
-    			}
-    		}
+    		//it is possible that the the roleTypeService is coming from a remote application 
+            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            try {
+        		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
+        			RoleImpl role = roles.get( roleId );
+        			if ( roleTypeService.hasApplicationRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getRoleName(), qualification) ) {
+        				return true;
+        			}
+        		}
+            } catch (Exception ex) {
+                LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+                //return false; 
+            }
     	}
 
     	// delegations
@@ -1554,25 +1619,53 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	return roleMembersCompleteInfos;
     }
     
-    public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(Map<String, String> fieldValues){
+    public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(final Map<String, String> fieldValues){
     	List<DelegateMemberCompleteInfo> delegateMembersCompleteInfo = new ArrayList<DelegateMemberCompleteInfo>();
     	DelegateMemberCompleteInfo delegateMemberCompleteInfo;
     	List<KimDelegationImpl> delegations = (List<KimDelegationImpl>)getLookupService().findCollectionBySearchHelper(
 				KimDelegationImpl.class, fieldValues, true);
-    	for(KimDelegationImpl delegation: delegations){
-	    	for(KimDelegationMemberImpl delegateMember: delegation.getMembers()){
+    	if(delegations!=null && !delegations.isEmpty()){
+    		Map<String, String> delegationMemberFieldValues = new HashMap<String, String>();
+    		for(String key: fieldValues.keySet()){
+    			if(key.startsWith(KimConstants.KimUIConstants.MEMBER_ID_PREFIX)){
+    				delegationMemberFieldValues.put(
+    						key.substring(key.indexOf(
+    						KimConstants.KimUIConstants.MEMBER_ID_PREFIX)+KimConstants.KimUIConstants.MEMBER_ID_PREFIX.length()), 
+    						fieldValues.get(key));
+    			}
+    		}
+			StringBuffer memberQueryString = new StringBuffer();
+	    	for(KimDelegationImpl delegation: delegations)
+	    		memberQueryString.append(delegation.getDelegationId()+KimConstants.KimUIConstants.OR_OPERATOR);
+	    	delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, 
+	    			KimCommonUtils.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
+	    	List<KimDelegationMemberImpl> delegateMembers = (List<KimDelegationMemberImpl>)getLookupService().findCollectionBySearchHelper(
+					KimDelegationMemberImpl.class, delegationMemberFieldValues, true);
+	    	KimDelegationImpl delegationTemp;
+	    	for(KimDelegationMemberImpl delegateMember: delegateMembers){
 	    		delegateMemberCompleteInfo = delegateMember.toSimpleInfo();
-	    		delegateMemberCompleteInfo.setRoleId(delegation.getRoleId());
-	    		delegateMemberCompleteInfo.setDelegationTypeCode(delegation.getDelegationTypeCode());
+	    		delegationTemp = getDelegationImpl(delegations, delegateMember.getDelegationId());
+	    		delegateMemberCompleteInfo.setRoleId(delegationTemp.getRoleId());
+	    		delegateMemberCompleteInfo.setDelegationTypeCode(delegationTemp.getDelegationTypeCode());
 				BusinessObject member = getMember(delegateMemberCompleteInfo.getMemberTypeCode(), delegateMemberCompleteInfo.getMemberId());
 				delegateMemberCompleteInfo.setMemberName(getMemberName(delegateMemberCompleteInfo.getMemberTypeCode(), member));
 				delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(delegateMemberCompleteInfo.getMemberTypeCode(), member));
 				delegateMembersCompleteInfo.add(delegateMemberCompleteInfo);
 	    	}
+
     	}
     	return delegateMembersCompleteInfo;
     }
     
+    private KimDelegationImpl getDelegationImpl(List<KimDelegationImpl> delegations, String delegationId){
+    	if(StringUtils.isEmpty(delegationId) || delegations==null)
+    		return null;
+    	for(KimDelegationImpl delegation: delegations){
+    		if(StringUtils.equals(delegation.getDelegationId(), delegationId))
+    			return delegation;
+    	}
+    	return null;
+    }
     /**
      * 
      * This overridden method ...

@@ -25,6 +25,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
@@ -111,7 +112,7 @@ public interface RoleService {
      * you are only interested in the qualifiers that are directly assigned to the principal.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalRoleIds")
-    List<AttributeSet> getRoleQualifiersForPrincipal( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
+    List<AttributeSet> getRoleQualifiersForPrincipal( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
 
     /**
      * Returns a list of role qualifiers that the given principal has without taking into consideration
@@ -119,21 +120,21 @@ public interface RoleService {
      * you are only interested in the qualifiers that are directly assigned to the principal.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalNamespaceRolename")
-    List<AttributeSet> getRoleQualifiersForPrincipal( @WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification );
+    List<AttributeSet> getRoleQualifiersForPrincipal( @WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
     
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalIncludingNestedNamespaceRolename")
-	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( @WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification );
+	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( @WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
 
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalIncludingNestedRoleIds")
-	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
+	List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
 
     // --------------------
     // Role Membership Checks
@@ -146,25 +147,25 @@ public interface RoleService {
      * The return object will have each membership relationship along with the delegations
      * 
      */
-    List<RoleMembershipInfo> getRoleMembers( @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
+    List<RoleMembershipInfo> getRoleMembers( @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
 
     /**
 	 * This method gets all the members, then traverses down into members of type role and group to obtain the nested principal ids
 	 * 
 	 * @return list of member principal ids
 	 */
-    Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification);
+    Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification);
 
     /**
      * Returns whether the given principal has any of the passed role IDs with the given qualification.
      */
-    boolean principalHasRole( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") AttributeSet qualification );
+    boolean principalHasRole( @WebParam(name="principalId") String principalId, @WebParam(name="roleIds") List<String> roleIds, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
     
     /**
      * Returns the subset of the given principal ID list which has the given role and qualification.
      * This is designed to be used by lookups of people by their roles.
      */
-    List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds, @WebParam(name="roleNamespaceCode") String roleNamespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") AttributeSet qualification );
+    List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds, @WebParam(name="roleNamespaceCode") String roleNamespaceCode, @WebParam(name="roleName") String roleName, @WebParam(name="qualification") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualification );
 
     /**
 	 * 

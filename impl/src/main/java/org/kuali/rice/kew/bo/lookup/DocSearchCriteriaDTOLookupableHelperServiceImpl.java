@@ -29,7 +29,10 @@ import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
@@ -79,7 +82,6 @@ import org.kuali.rice.kns.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -154,6 +156,16 @@ KualiLookupableHelperServiceImpl {
     	if(!GlobalVariables.getMessageMap().hasNoErrors()) {
         	throw new ValidationException("error with doc search");
         }
+    	
+    	// check various warning conditions
+    	
+    	if (criteria.isOverThreshold() && criteria.getSecurityFilteredRows() > 0) {
+    	    GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(components.getSearchResults().size()), String.valueOf(criteria.getSecurityFilteredRows()));
+    	} else if (criteria.getSecurityFilteredRows() > 0) {
+    	    GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.securityFiltered", String.valueOf(criteria.getSecurityFilteredRows()));
+    	} else if (criteria.isOverThreshold()) {
+    		GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES,"docsearch.DocumentSearchService.exceededThreshold", String.valueOf(components.getSearchResults().size()));
+    	}
 
     	for (Row row : this.getRows()) {
 			for (Field field : row.getFields()) {
@@ -658,6 +670,39 @@ KualiLookupableHelperServiceImpl {
 
 		if(docType == null) {
 		    super.performClear(lookupForm);
+		    
+		    // Retrieve the detailed/superuser search statuses.
+	        boolean detailed=false;
+	        if(this.getParameters().containsKey("isAdvancedSearch")) {
+	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
+	        } else if(fixedParameters.containsKey("isAdvancedSearch")) {
+	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("isAdvancedSearch")[0]);
+	        }
+	        
+	        boolean superSearch=false;
+	        if(this.getParameters().containsKey(("superUserSearch"))) {
+	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
+	        } else if(fixedParameters.containsKey("superUserSearch")) {
+	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("superUserSearch")[0]);
+	        }
+	        
+	        // Repopulate the fields indicating detailed/superuser search status.
+	        int fieldsRepopulated = 0;
+	        List<Row> rows = super.getRows();
+	        int index = rows.size() - 1;
+	        while (index >= 0 && fieldsRepopulated < 2) {
+	        	for (Field tempField : rows.get(index).getFields()) {
+	        		if ("isAdvancedSearch".equals(tempField.getPropertyName())) {
+	        			tempField.setPropertyValue(detailed?"YES":"NO");
+	        			fieldsRepopulated++;
+	        		}
+	        		else if ("superUserSearch".equals(tempField.getPropertyName())) {
+	        			tempField.setPropertyValue(superSearch?"YES":"NO");
+	        			fieldsRepopulated++;
+	        		}
+	        	}
+	        	index--;
+	        }
 		} else {
     		DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fixedParameters);
     		docCriteria = docType.getDocumentSearchGenerator().clearSearch(docCriteria);
@@ -707,52 +752,28 @@ KualiLookupableHelperServiceImpl {
 	 */
 	@Override
 	public String getSupplementalMenuBar() {
-
-		String returnLoc = "";
-		if (this.getParameters().containsKey(KNSConstants.RETURN_LOCATION_PARAMETER)) {
-			returnLoc = (new StringBuilder()).append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
-					((String[])this.getParameters().get(KNSConstants.RETURN_LOCATION_PARAMETER))[0]).append("&").toString();
-		}
-		else if (StringUtils.isNotBlank(this.getBackLocation())) {
-			returnLoc = (new StringBuilder()).append(KNSConstants.RETURN_LOCATION_PARAMETER).append("=").append(
-					this.getBackLocation()).append("&").toString();
-		}
-
-		String detailed="NO";
+		boolean detailed = false;
 		if(this.getParameters().containsKey("isAdvancedSearch")) {
-			detailed = ((String[])this.getParameters().get("isAdvancedSearch"))[0];
+			detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
 		}
 
-		String superSearch="NO";
+		boolean superSearch = false;
 		if(this.getParameters().containsKey("superUserSearch")) {
-			superSearch = ((String[])this.getParameters().get("superUserSearch"))[0];
+			superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
 		}
 
 		StringBuilder suppMenuBar = new StringBuilder();
-		if(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(detailed)) {
-			suppMenuBar.append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&isAdvancedSearch=NO").append("&superUserSearch=").append(superSearch).append("\">").append(
-							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-basicsearch.gif\" class=\"tinybutton\" alt=\"basic search\" title=\"basic search\" border=\"0\" />").append("</a>");
-		} else {
-			suppMenuBar.append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&isAdvancedSearch=YES").append("&superUserSearch=").append(superSearch).append("\">").append(
-							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-detailedsearch.gif\" class=\"tinybutton\" alt=\"detailed search\" title=\"detailed search\" border=\"0\" />").append("</a>");
-		}
-
-
-		if(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(superSearch)) {
-			suppMenuBar.append("&nbsp;").append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&superUserSearch=NO").append("&isAdvancedSearch=").append(detailed).append("\">").append(
-							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-nonsupusearch.gif\" class=\"tinybutton\" alt=\"non-superuser search\" title=\"non-superuser search\" border=\"0\" />").append("</a>");
-		} else {
-			suppMenuBar.append("&nbsp;").append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-					"?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&superUserSearch=YES").append("&isAdvancedSearch=").append(DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("\">").append(
-							"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-superusersearch.gif\" class=\"tinybutton\" alt=\"superuser search\" title=\"superuser search\" border=\"0\" />").append("</a>");
-		}
-
-		suppMenuBar.append("&nbsp;").append("<a href=\"").append(getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY)).append("/kr/").append(KNSConstants.LOOKUP_ACTION).append(
-				"?methodToCall=customLookupableMethodCall&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&").append(returnLoc).append("hideReturnLink=true&superUserSearch=").append(superSearch).append("&isAdvancedSearch=").append(detailed).append("&resetSavedSearch=true").append("\">").append(
-						"<img src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" class=\"tinybutton\" alt=\"clear saved searches\" title=\"clear saved searches\" border=\"0\" />").append("</a>");
+		
+		// Add the detailed-search-toggling button.
+		suppMenuBar.append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(((").append(detailed ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO").append(
+				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(detailed ? "/images/tinybutton-basicsearch.gif\" alt=\"basic search\" title=\"basic search\" />" : "/images/tinybutton-detailedsearch.gif\" alt=\"detailed search\" title=\"detailed search\" />");
+		
+		// Add the superuser-search-toggling button.
+		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(((").append((!detailed && superSearch) ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? "NO" : DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING).append(
+				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(superSearch ? "/images/tinybutton-nonsupusearch.gif\" alt=\"non-superuser search\" title=\"non-superuser search\" />" : "/images/tinybutton-superusersearch.gif\" alt=\"superuser search\" title=\"superuser search\" />");
+		
+		// Add the "clear saved searches" button.
+		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
 
         Properties parameters = new Properties();
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.getBusinessObjectClass().getName());
@@ -891,6 +912,103 @@ KualiLookupableHelperServiceImpl {
 		Map<String,String> fieldValues = new HashMap<String,String>();
 		Map<String,String[]> multFieldValues = new HashMap<String,String[]>();
 
+		// Determine if there are any properties embedded in the methodToCall parameter, and retrieve them if so.
+		String[] methodToCallArray = ((String[])this.getParameters().get(KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
+		if (ObjectUtils.isNotNull(methodToCallArray) && methodToCallArray.length > 0) {
+			String methodToCallVal = methodToCallArray[0];
+			if (StringUtils.isNotBlank(methodToCallVal)) {
+				boolean resetRows = false;
+				// Retrieve the isAdvancedSearch property, if present.
+				String advancedSearchVal = StringUtils.substringBetween(methodToCallVal, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
+				if (StringUtils.isNotBlank(advancedSearchVal)) {
+					if (this.getParameters().containsKey("isAdvancedSearch")) {
+						((String[]) this.getParameters().get("isAdvancedSearch"))[0] = advancedSearchVal;
+					}
+					else {
+						fieldValues.put("isAdvancedSearch", advancedSearchVal);
+					}
+					resetRows = true;
+				}
+				// Retrieve the superUserSearch property, if present.
+				String superUserSearchVal = StringUtils.substringBetween(methodToCallVal, KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
+				if (StringUtils.isNotBlank(superUserSearchVal)) {
+					if (this.getParameters().containsKey("superUserSearch")) {
+						((String[]) this.getParameters().get("superUserSearch"))[0] = superUserSearchVal;
+					} else {
+						fieldValues.put("superUserSearch", superUserSearchVal);
+					}
+					resetRows = true;
+				}
+				// Retrieve and act upon the resetSavedSearch property, if present and set to true.
+				String resetSavedSearchVal = StringUtils.substringBetween(methodToCallVal, KNSConstants.METHOD_TO_CALL_PARM4_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM4_RIGHT_DEL);
+				if (Boolean.parseBoolean(resetSavedSearchVal)) {
+					docSearchService.clearNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
+					resetRows = true;
+				}
+				
+				// If any of the above properties were found, reset the rows in a manner similar to KualiLookupAction.refresh, but with
+				// enough modifications to prevent any changed isAdvancedSearch or superUserSearch values from being overridden again.
+				if (resetRows) {
+					Map<String,String> values = new HashMap<String,String>();
+					for (Field tempField : getFields(this.getRows())) {
+						values.put(tempField.getPropertyName(), tempField.getPropertyValue());
+					}
+					
+			        for (Iterator<Row> iter = this.getRows().iterator(); iter.hasNext();) {
+			        	Row row = iter.next();
+
+			        	for (Iterator<Field> iterator = row.getFields().iterator(); iterator.hasNext();) {
+			        		Field field = iterator.next();
+
+			        		if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
+			        			if (this.getParameters().get(field.getPropertyName()) != null) {
+			        				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+			        					field.setPropertyValue(((String[])this.getParameters().get(field.getPropertyName()))[0]);
+			        				} else {
+			        					//multi value, set to values
+			        					field.setPropertyValues((String[])this.getParameters().get(field.getPropertyName()));
+			        				}
+			        			}
+			        		}
+			        		else if (values.get(field.getPropertyName()) != null) {
+			        			field.setPropertyValue(values.get(field.getPropertyName()));
+			        		}
+
+			        		applyFieldAuthorizationsFromNestedLookups(field);
+
+			        		fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+			        	}
+			        }
+
+			        if (checkForAdditionalFields(fieldValues)) {
+			            for (Iterator<Row> iter = this.getRows().iterator(); iter.hasNext();) {
+			                Row row = iter.next();
+			                for (Iterator<Field> iterator = row.getFields().iterator(); iterator.hasNext();) {
+			                    Field field = iterator.next();
+			                    if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
+			                        if (this.getParameters().get(field.getPropertyName()) != null) {
+			                        	if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+			            					field.setPropertyValue(((String[])this.getParameters().get(field.getPropertyName()))[0]);
+			            				} else {
+			            					//multi value, set to values
+			            					field.setPropertyValues((String[])this.getParameters().get(field.getPropertyName()));
+			            				}
+			            				//FIXME: any reason this is inside this "if" instead of the outer one, like above - this seems inconsistent
+			            				fieldValues.put(field.getPropertyName(), ((String[])this.getParameters().get(field.getPropertyName()))[0]);
+			                        }
+			                        else if (values.get(field.getPropertyName()) != null) {
+			                        	field.setPropertyValue(values.get(field.getPropertyName()));
+			                        }
+			                    }
+			                }
+			            }
+			        }
+			        // Finally, return false to prevent the search from being performed and to skip the other custom processing below.
+			        return false;
+				}
+				
+			}
+		} // End of methodToCall parameter retrieval.
 
 		String[] resetSavedSearch = ((String[])getParameters().get("resetSavedSearch"));
 		if(resetSavedSearch!=null) {

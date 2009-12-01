@@ -44,9 +44,6 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
 	private static final long serialVersionUID = -5920808902137192662L;
     
-	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
-	private static final String ID_SEPARATOR = ":";
-
 	/**
 	 * Override the getSections method on this maintainable so that the Section Containing the various Rule Attributes
 	 * can be dynamically generated based on the RuleTemplate which is selected.

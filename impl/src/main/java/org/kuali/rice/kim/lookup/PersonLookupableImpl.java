@@ -18,9 +18,12 @@ package org.kuali.rice.kim.lookup;
 import java.util.Properties;
 
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 
@@ -32,12 +35,14 @@ import org.kuali.rice.kns.util.UrlFactory;
  */
 public class PersonLookupableImpl extends KualiLookupableImpl {
 
+	private UiDocumentService uiDocumentService;
 	private static final long serialVersionUID = 1707861010746829601L;
 
 	@Override
 	public String getCreateNewUrl() {
 		String url = "";
-		if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME)){
+		if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME)
+				&& getUiDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), null)){
 	        Properties parameters = new Properties();
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
 	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
@@ -49,6 +54,13 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
 	        //url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 		}
 		return url;
+	}
+
+	public UiDocumentService getUiDocumentService() {
+		if ( uiDocumentService == null ) {
+			uiDocumentService = KIMServiceLocator.getUiDocumentService();
+		}
+		return uiDocumentService;
 	}
 
 }

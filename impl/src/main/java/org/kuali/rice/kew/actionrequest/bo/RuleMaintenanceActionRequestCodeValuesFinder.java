@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actionrequest.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -26,7 +27,6 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * A values finder for returning KEW Action Request codes related to Kuali maintenance forms.

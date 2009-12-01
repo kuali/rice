@@ -3,6 +3,7 @@
 <beans>
   <bean id="enExceptionRoutingService" class="org.kuali.rice.kew.routemanager.TestExceptionRoutingServiceImpl"/>
   <bean id="enEmailService" class="mocks.MockDefaultEmailServiceImpl" />
+  <bean id="enDocumentRequeuerService" class="mocks.MockDocumentRequeuerImpl" />
   <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl">
     <property name="deploymentEnvironment">
       <value>${environment}</value>

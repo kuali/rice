@@ -69,8 +69,8 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String namespaceCode;
 	protected String componentName;
 	protected String propertyName;
-	protected boolean existingRecordsOnly;
-	protected boolean createdBySelfOnly;
+	protected Boolean existingRecordsOnly;
+	protected Boolean createdBySelfOnly;
 	protected String attachmentTypeCode;
 	protected String collectionItemTypeCode;
 	protected String editMode;
@@ -84,8 +84,8 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String permissionName;
 	protected String responsibilityName;
 	protected String groupName;
-	protected boolean required;
-	protected boolean actionDetailsAtRoleMemberLevel;
+	protected Boolean required;
+	protected Boolean actionDetailsAtRoleMemberLevel;
 	protected String documentNumber;
 	protected String sectionId;
 	protected String kimTypeId;
@@ -395,49 +395,49 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	/**
 	 * @return the existingRecordsOnly
 	 */
-	public boolean isExistingRecordsOnly() {
+	public Boolean isExistingRecordsOnly() {
 		return this.existingRecordsOnly;
 	}
 
 	/**
 	 * @param existingRecordsOnly the existingRecordsOnly to set
 	 */
-	public void setExistingRecordsOnly(boolean existingRecordsOnly) {
+	public void setExistingRecordsOnly(Boolean existingRecordsOnly) {
 		this.existingRecordsOnly = existingRecordsOnly;
 	}
 
 	/**
 	 * @return the createdBySelfOnly
 	 */
-	public boolean isCreatedBySelfOnly() {
+	public Boolean isCreatedBySelfOnly() {
 		return this.createdBySelfOnly;
 	}
 
 	/**
 	 * @param createdBySelfOnly the createdBySelfOnly to set
 	 */
-	public void setCreatedBySelfOnly(boolean createdBySelfOnly) {
+	public void setCreatedBySelfOnly(Boolean createdBySelfOnly) {
 		this.createdBySelfOnly = createdBySelfOnly;
 	}
 
 	/**
 	 * @return the required
 	 */
-	public boolean isRequired() {
+	public Boolean isRequired() {
 		return this.required;
 	}
 
 	/**
 	 * @param required the required to set
 	 */
-	public void setRequired(boolean required) {
+	public void setRequired(Boolean required) {
 		this.required = required;
 	}
 
 	/**
 	 * @return the actionDetailsAtRoleMemberLevel
 	 */
-	public boolean isActionDetailsAtRoleMemberLevel() {
+	public Boolean isActionDetailsAtRoleMemberLevel() {
 		return this.actionDetailsAtRoleMemberLevel;
 	}
 
@@ -445,7 +445,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	 * @param actionDetailsAtRoleMemberLevel the actionDetailsAtRoleMemberLevel to set
 	 */
 	public void setActionDetailsAtRoleMemberLevel(
-			boolean actionDetailsAtRoleMemberLevel) {
+			Boolean actionDetailsAtRoleMemberLevel) {
 		this.actionDetailsAtRoleMemberLevel = actionDetailsAtRoleMemberLevel;
 	}
 

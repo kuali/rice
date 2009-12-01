@@ -21,6 +21,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
@@ -71,6 +73,11 @@ public interface IdentityManagementService {
 	int getMatchingEntityCount( Map<String,String> searchCriteria );
 	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
+	KimEntityInfo getEntityInfo( String entityId );
+	KimEntityInfo getEntityInfoByPrincipalId( String principalId );
+	KimEntityInfo getEntityInfoByPrincipalName( String principalName );
+	List<KimEntityInfo> lookupEntityInfo( Map<String,String> searchCriteria, boolean unbounded );
+	
 	AddressTypeInfo getAddressType( String code );
 	AffiliationTypeInfo getAffiliationType( String code );
 	CitizenshipStatusInfo getCitizenshipStatus( String code );

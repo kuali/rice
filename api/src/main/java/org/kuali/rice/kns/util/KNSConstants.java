@@ -108,6 +108,7 @@ public class KNSConstants extends JSTLConstants {
 
 //    public static final String CONFIGURATION_FILE_NAME = "configuration";
     public static final String ENVIRONMENT_KEY = "environment";
+    public static final String MESSAGE_RESOURCES = "rice.struts.message.resources";
 //    public static final String VERSION_KEY = "version";
 //    public static final String LOG4J_SETTINGS_FILE_KEY = "log4j.settings.file";
 //    public static final String LOGS_DIRECTORY_KEY = "logs.directory";
@@ -564,5 +565,6 @@ public class KNSConstants extends JSTLConstants {
     	public static final String APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK = "rice.kns.illegalBusinessObjectsForSave.applyCheck";
     	public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.kns.illegalBusinessObjectsForSave";
     }
-   
+
+	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
 }

@@ -25,6 +25,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
+import org.kuali.rice.kcb.util.KCBConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -48,7 +49,7 @@ public class KCBNotificationService extends DefaultNotificationService {
 
 
         // send it off to KCB if available
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(KCBConstants.SERVICE_NAMESPACE, KCBServiceNames.KCB_MESSAGING));
         if (ms == null) {
         	LOG.info("Could not locate KCB MessagingService.  Message will not be forwarded to the KCB.");
         	return;
@@ -81,7 +82,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         if (!enableKENNotification) {
         	return;
         }
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(KCBConstants.SERVICE_NAMESPACE, KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
         	LOG.debug("Removing KCB messages for action item: " + actionItem.getActionItemId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getPerson());

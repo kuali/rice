@@ -245,6 +245,12 @@ delete from krim_entity_phone_t where entity_id not in ('1', '1100')
 /
 delete from krim_entity_priv_pref_t where entity_id not in ('1', '1100')
 /
+delete from KRIM_ENTITY_ETHNIC_T where entity_id not in ('1', '1100')
+/
+delete from KRIM_ENTITY_RESIDENCY_T where entity_id not in ('1', '1100')
+/
+delete from KRIM_ENTITY_VISA_T where entity_id not in ('1', '1100')
+/
 delete from krim_entity_t where entity_id not in ('1', '1100')
 /
 

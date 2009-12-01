@@ -99,6 +99,7 @@ public class KSBConfigurer extends ModuleConfigurer {
         super();
         setModuleName( "KSB" );
         setHasWebInterface(true);
+        VALID_RUN_MODES.remove(EMBEDDED_RUN_MODE);
         VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
     }
 	

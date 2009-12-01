@@ -21,8 +21,10 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -39,6 +41,7 @@ import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
 import org.kuali.rice.kew.dto.KeyValueDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RuleDTO;
@@ -782,6 +785,64 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         document.approve("");
         assertTrue("Document should be processed.", document.stateIsProcessed());
+    }
+    
+    @Test public void testGetPrincipalIdsInRouteLog() throws Exception {
+    	
+    	Set<String> NonSITMembers = new HashSet<String>(
+    			Arrays.asList(
+						new String[] {
+								getPrincipalIdForName("user1"), 
+								getPrincipalIdForName("user2"), 
+								getPrincipalIdForName("user3"), 
+								getPrincipalIdForName("dewey")}
+				)
+    	);
+    	
+    	Set<String> WorkflowAdminMembers = new HashSet<String>(
+    			Arrays.asList(
+    					new String[] {
+    							getPrincipalIdForName("ewestfal"), 
+    							getPrincipalIdForName("rkirkend"), 
+    							getPrincipalIdForName("jhopf"), 
+    							getPrincipalIdForName("bmcgough"), 
+    							getPrincipalIdForName("shenl"), 
+    							getPrincipalIdForName("quickstart")
+    					}
+    			)
+    	);
+    	
+    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), RouteLogTestSetup.DOCUMENT_TYPE_NAME);
+		document.routeDocument("");
+
+		// just look at the current node
+		Set<String> principalIds = new HashSet<String>(
+				Arrays.asList(
+						getWorkflowUtility().getPrincipalIdsInRouteLog(document.getRouteHeaderId(), false)
+				)
+		);
+		// should contain ewestfal and NonSIT group members
+		assertTrue(principalIds.contains(getPrincipalIdForName("ewestfal")));
+		assertTrue(principalIds.containsAll(NonSITMembers));
+		
+		// should NOT contain jitrue and WorkflowAdmin group members as they are in the rule for the future node
+		assertFalse(principalIds.contains(getPrincipalIdForName("jitrue")));
+		assertFalse(principalIds.containsAll(WorkflowAdminMembers));
+		
+		// this time look at future nodes too
+		principalIds = new HashSet<String>(
+				Arrays.asList(
+						getWorkflowUtility().getPrincipalIdsInRouteLog(document.getRouteHeaderId(), true)
+				)
+		);
+		
+		// should contain ewestfal and NonSIT group members
+		assertTrue(principalIds.contains(getPrincipalIdForName("ewestfal")));
+		assertTrue(principalIds.containsAll(NonSITMembers));
+
+		// should also contain jitrue and WorkflowAdmin group members
+		assertTrue(principalIds.contains(getPrincipalIdForName("jitrue")));
+		assertTrue(principalIds.containsAll(WorkflowAdminMembers));
     }
 
     @Test public void testRoutingReportOnDocumentType() throws Exception {
@@ -1676,4 +1737,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         public static final String ACKNOWLEDGE_1_NODE = "Acknowledge1";
         public static final String ACKNOWLEDGE_2_NODE = "Acknowledge2";
     }
+    
+    private class RouteLogTestSetup {
+        public static final String DOCUMENT_TYPE_NAME = "UserAndGroupTestDocType";
+        public static final String RULE_TEST_TEMPLATE_1 = "WorkflowDocumentTemplate";
+        public static final String RULE_TEST_TEMPLATE_2 = "WorkflowDocument2Template";
+        public static final String RULE_TEST_GROUP_ID = "3003"; // the NonSIT group
+    }
+
 }

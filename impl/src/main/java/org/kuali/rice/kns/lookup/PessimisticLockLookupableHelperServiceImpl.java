@@ -31,6 +31,7 @@ import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -83,22 +84,24 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
             return super.getRows();
         } else {
             if ( (ObjectUtils.isNull(localRows)) || localRows.isEmpty() ) {
-                localRows = new ArrayList<Row>();
+                List<Field> fieldList = new ArrayList<Field>();
+                int numColumns = -1;
                 // hide a field and forcibly set a field
                 for (Iterator<Row> iterator = super.getRows().iterator(); iterator.hasNext();) {
                     Row row = (Row) iterator.next();
-                    boolean addRow = true;
+                    if (numColumns == -1) {
+                    	numColumns = row.getFields().size();
+                    }
                     for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
                         Field field = (Field) iterator2.next();
-                        if ((KNSPropertyConstants.OWNED_BY_USER + "." + KIMPropertyConstants.Person.PRINCIPAL_NAME).equals(field.getPropertyName())) {
-                            addRow = false;
-                            break;
+                        if (!(KNSPropertyConstants.OWNED_BY_USER + "." + KIMPropertyConstants.Person.PRINCIPAL_NAME).equals(field.getPropertyName()) &&
+                        		!Field.BLANK_SPACE.equals(field.getFieldType())) {
+                            fieldList.add(field);
                         }
                     }
-                    if (addRow) {
-                        localRows.add(row);
-                    }
                 }
+                // Since the removed field is the first one in the list, use FieldUtils to re-wrap the remaining fields accordingly.
+                localRows = FieldUtils.wrapFields(fieldList, numColumns);
             }
             return localRows;
         }

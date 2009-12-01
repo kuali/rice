@@ -62,7 +62,7 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 		return rulePassed;
 	} 
 
-	private boolean validAssignGroup(GroupDocumentMember groupMember, IdentityManagementGroupDocument document){
+	protected boolean validAssignGroup(GroupDocumentMember groupMember, IdentityManagementGroupDocument document){
         boolean rulePassed = true;
 		if(StringUtils.isNotEmpty(document.getGroupNamespace())){
 			Map<String,String> roleDetails = new HashMap<String,String>();

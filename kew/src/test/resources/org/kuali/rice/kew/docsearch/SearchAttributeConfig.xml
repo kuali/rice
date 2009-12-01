@@ -215,6 +215,112 @@
 				<column name="givenname_hidden" sortable="false"/>
 			</searchResultConfig>
 		</ruleAttribute>
+		<!-- Start of searchable attributes for testing wildcards. -->
+		<ruleAttribute>
+			<name>XMLSearchableAttributeWildcardString</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute for testing wildcards on strings</label>
+			<description>XML Searchable attribute for testing wildcards on strings</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="xmlSearchableAttributeWildcardString" title="XML Searchable Attribute Wildcard String">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="string">
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardString/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<xmlSearchableAttributeWildcardString>
+							<value>%xmlSearchableAttributeWildcardString%</value>
+						</xmlSearchableAttributeWildcardString>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeWildcardLong</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute for testing wildcards on longs</label>
+			<description>XML Searchable attribute for testing wildcards on longs</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="xmlSearchableAttributeWildcardLong" title="XML Searchable Attribute Wildcard Long">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="long">
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardLong/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<xmlSearchableAttributeWildcardLong>
+							<value>%xmlSearchableAttributeWildcardLong%</value>
+						</xmlSearchableAttributeWildcardLong>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeWildcardFloat</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute for testing wildcards on floats</label>
+			<description>XML Searchable attribute for testing wildcards on floats</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="xmlSearchableAttributeWildcardFloat" title="XML Searchable Attribute Wildcard Float">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="float">
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardFloat/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<xmlSearchableAttributeWildcardFloat>
+							<value>%xmlSearchableAttributeWildcardFloat%</value>
+						</xmlSearchableAttributeWildcardFloat>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>XMLSearchableAttributeWildcardDatetime</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute for testing wildcards on datetimes</label>
+			<description>XML Searchable attribute for testing wildcards on datetimes</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="xmlSearchableAttributeWildcardDatetime" title="XML Searchable Attribute Wildcard Datetime">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition dataType="datetime">
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardDatetime/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<xmlSearchableAttributeWildcardDatetime>
+							<value>%xmlSearchableAttributeWildcardDatetime%</value>
+						</xmlSearchableAttributeWildcardDatetime>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<!-- End of searchable attributes for testing wildcards. -->
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -628,6 +734,48 @@
 					<activationType>S</activationType>
 					<ruleTemplate>searchTemplate</ruleTemplate>
 				</requests>
+			</routeNodes>
+		</documentType>
+		<!-- Document type for testing wildcards on searchable attributes -->
+		<documentType>
+			<name>WildcardTestDocType</name>
+			<description>WildcardTestDocType</description>
+			<label>WildcardTestDocType</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+			<active>true</active>
+			<policies>
+			<policy>
+				<name>DEFAULT_APPROVE</name>
+				<value>true</value>
+			</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>XMLSearchableAttributeWildcardString</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeWildcardLong</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeWildcardFloat</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeWildcardDatetime</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
 			</routeNodes>
 		</documentType>
 	</documentTypes>

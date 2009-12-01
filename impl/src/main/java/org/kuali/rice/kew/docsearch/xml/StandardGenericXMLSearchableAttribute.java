@@ -33,6 +33,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -41,7 +42,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
@@ -429,7 +429,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
         boolean allowRangedSearch = searchableAttributeValue.allowsRangeSearches();
         Boolean rangeSearchBoolean = getBooleanValue(searchDefAttributes, "rangeSearch");
         boolean rangeSearch = (rangeSearchBoolean != null) ? rangeSearchBoolean.booleanValue() : false;
-        Node rangeDefinition = searchDefNode.getFirstChild();
+        Node rangeDefinition = getPotentialChildNode(searchDefNode, "rangeDefinition");
         return ( (allowRangedSearch) && ((rangeDefinition != null) || (rangeSearch)) );
     }
 

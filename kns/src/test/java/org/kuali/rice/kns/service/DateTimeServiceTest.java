@@ -142,8 +142,8 @@ public class DateTimeServiceTest extends KNSTestCase {
         assertTrue("invalid dateString failed to fail", failedAsExpected);
     }
 
-    @Test public void testConvertToSqlDate_validDateeString() throws ParseException {
-        java.sql.Date serviceDate = KNSServiceLocator.getDateTimeService().convertToSqlDate("05-01-1966");
+    @Test public void testConvertToSqlDate_validDateString() throws ParseException {
+        java.sql.Date serviceDate = KNSServiceLocator.getDateTimeService().convertToSqlDate("05/01/1966");
 
         Calendar serviceCalendar = Calendar.getInstance();
         serviceCalendar.setTime(serviceDate);

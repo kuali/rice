@@ -23,7 +23,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -40,6 +42,10 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.LockingException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -52,6 +58,8 @@ import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 
 public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentRouteHeaderDAO {
@@ -95,7 +103,14 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     public void clearRouteHeaderSearchValues(Long routeHeaderId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(SearchableAttributeValue.class, crit));
+        QueryByCriteria query = new QueryByCriteria(SearchableAttributeValue.class, crit);
+        query.addOrderByAscending("searchableAttributeValueId");
+        Collection<SearchableAttributeValue> results = this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
+        if (!results.isEmpty()) {
+            for (SearchableAttributeValue srchAttrVal: results) {
+                this.getPersistenceBrokerTemplate().delete(srchAttrVal);
+            }
+        }
     }
 
     public void lockRouteHeader(final Long routeHeaderId, final boolean wait) {
@@ -294,6 +309,20 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	}
     	return status;
     }
+    
+    public String getAppDocId(Long documentId) {
+ 	 	Criteria crit = new Criteria();
+ 	 	crit.addEqualTo("routeHeaderId", documentId);
+ 	 	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
+ 	 	query.setAttributes(new String[] { "appDocId" });
+ 	 	String appDocId = null;
+ 	 	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+ 	 	while (iter.hasNext()) {
+ 	 		Object[] row = (Object[]) iter.next();
+ 	 		appDocId = (String)row[0];
+ 	 	}
+ 	 	return appDocId;
+ 	 }
     
     public void save(SearchableAttributeValue searchableAttributeValue) {
     	getPersistenceBrokerTemplate().store(searchableAttributeValue);

@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -35,7 +33,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		identityService = (IdentityServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
+		identityService = (IdentityServiceImpl) KIMServiceLocator.getBean("kimIdentityDelegateService");
 	}
 
 	@Test

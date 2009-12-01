@@ -67,7 +67,7 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		LOG.info("Publishing Cache Service on bus under service name " + this.serviceName);
 		JavaServiceDefinition serviceDef = new JavaServiceDefinition();
 		serviceDef.setPriority(3);
-		serviceDef.setRetryAttempts(3);
+		serviceDef.setRetryAttempts(1);
 		serviceDef.setService(this);
 		serviceDef.setLocalServiceName(this.serviceName);
 		serviceDef.setServiceNameSpaceURI("");

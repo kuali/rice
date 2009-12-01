@@ -229,16 +229,16 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         List<String> workgroupIds = new ArrayList<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
-        if (!Utilities.isEmpty(workflowIdDirective)) {
-            if ("group".equals(workflowIdDirective)) {
-                searchUserInWorkgroups = Boolean.TRUE;
-            } else if ("".equals(workflowIdDirective)) {
-                searchUser = Boolean.TRUE;
-                searchUserInWorkgroups = Boolean.TRUE;
-            } else {
-                searchUser = Boolean.TRUE;
-            }
+        
+        if ("group".equals(workflowIdDirective)) {
+            searchUserInWorkgroups = Boolean.TRUE;
+        } else if (StringUtils.isBlank(workflowIdDirective)) {
+            searchUser = Boolean.TRUE;
+            searchUserInWorkgroups = Boolean.TRUE;
+        } else {
+            searchUser = Boolean.TRUE;
         }
+        
         if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups)
         {
             KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
@@ -249,15 +249,23 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             }
             workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
-        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups));
+        ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups);
+        if (query != null) {
+        	crit.addIn("responsibilities.ruleBaseValuesId", query);
+        }
 
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
 	}
 
     public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
+    	List results = null;
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
-        crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
+        ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
+        if (query != null) {
+        	crit.addIn("responsibilities.ruleBaseValuesId", query);
+        }
+        results = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
+        return results;
     }
 
     private ReportQueryByCriteria getResponsibilitySubQuery(List<String> workgroupIds, String workflowId, Boolean searchUser, Boolean searchUserInWorkgroups) {
@@ -267,12 +275,15 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         }
         return getResponsibilitySubQuery(workgroupIdStrings,workflowId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
+    
     private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
-        Criteria responsibilityCrit = new Criteria();
+        Criteria responsibilityCrit = null;
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
+        	responsibilityCrit = new Criteria();
             responsibilityCrit.addIn("actionRequestedCd", actionRequestCodes);
         }
 
+        ReportQueryByCriteria query = null;
         Criteria ruleResponsibilityNameCrit = null;
         if (!Utilities.isEmpty(workflowId)) {
             // workflow user id exists
@@ -304,11 +315,15 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         }
         if (ruleResponsibilityNameCrit != null) {
+        	if (responsibilityCrit == null) {
+        		responsibilityCrit = new Criteria();
+        	}
             responsibilityCrit.addAndCriteria(ruleResponsibilityNameCrit);
         }
-
-        ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
-        query.setAttributes(new String[] { "ruleBaseValuesId" });
+        if (responsibilityCrit != null) {
+        	query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
+        	query.setAttributes(new String[] { "ruleBaseValuesId" });
+        }
         return query;
     }
 

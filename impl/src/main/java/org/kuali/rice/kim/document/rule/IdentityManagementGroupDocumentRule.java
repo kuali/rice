@@ -49,13 +49,13 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRuleBase implements AddGroupMemberRule {
 
-	private AddGroupMemberRule addGroupMemberRule;
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AddGroupMemberRule addGroupMemberRule;
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
-	private BusinessObjectService businessObjectService;
-	private Class<? extends GroupDocumentMemberRule> addGroupMemberRuleClass = GroupDocumentMemberRule.class;
+	protected BusinessObjectService businessObjectService;
+	protected Class<? extends GroupDocumentMemberRule> addGroupMemberRuleClass = GroupDocumentMemberRule.class;
 
-	private IdentityService identityService; 
+	protected IdentityService identityService; 
 	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
@@ -83,7 +83,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         return valid;
     }
     
-	private boolean validAssignGroup(IdentityManagementGroupDocument document){
+	protected boolean validAssignGroup(IdentityManagementGroupDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
@@ -102,7 +102,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	}
 
     @SuppressWarnings("unchecked")
-	private boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
+	protected boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("groupName", groupDoc.getGroupName());
     	criteria.put("namespaceCode", groupDoc.getGroupNamespace());
@@ -120,7 +120,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     	return rulePassed;
     }
     
-    private boolean validGroupMemberActiveDates(List<GroupDocumentMember> groupMembers) {
+    protected boolean validGroupMemberActiveDates(List<GroupDocumentMember> groupMembers) {
     	boolean valid = true;
 		int i = 0;
     	for(GroupDocumentMember groupMember: groupMembers) {
@@ -130,7 +130,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     	return valid;
     }
 
-    private boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimTypeInfo kimType){
+    protected boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimTypeInfo kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
 		AttributeSet errorsTemp;
@@ -150,7 +150,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     	}
     }
     
-	private boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
+	protected boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {

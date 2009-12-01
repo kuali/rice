@@ -164,8 +164,9 @@ public class PersistedMessage implements Serializable {
 	}
 
     public String toString() {
-	return "[RouteQueue: " + ", routeQueueId=" + this.routeQueueId + ", ipNumber=" + this.ipNumber + ", serviceName="
-		+ this.serviceName + ", queueStatus=" + this.queueStatus + ", queuePriority=" + this.queuePriority
+	return "[RouteQueue: " + ", routeQueueId=" + this.routeQueueId + ", ipNumber=" + this.ipNumber 
+		+ "serviceNamespace=" + this.serviceNamespace + ", serviceName=" + this.serviceName + ", methodName=" + methodName 
+		+ ", queueStatus=" + this.queueStatus + ", queuePriority=" + this.queuePriority
 		+ ", queueDate=" + this.queueDate + "]";
     }
 

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -34,7 +35,6 @@ import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;

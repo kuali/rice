@@ -22,7 +22,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
-import org.kuali.rice.kim.service.IdentityCacheService;
+import org.kuali.rice.kim.service.IdentityArchiveService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -33,13 +33,13 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
+ * This is the default implementation for the IdentityArchiveService. 
+ * @see IdentityArchiveService
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class IdentityCacheServiceImpl implements IdentityCacheService {
-	private static final Logger LOG = Logger.getLogger( IdentityCacheServiceImpl.class );
+public class IdentityArchiveServiceImpl implements IdentityArchiveService {
+	private static final Logger LOG = Logger.getLogger( IdentityArchiveServiceImpl.class );
 	
 	private BusinessObjectService businessObjectService;
 
@@ -50,7 +50,7 @@ public class IdentityCacheServiceImpl implements IdentityCacheService {
 		return businessObjectService;
 	}
 
-	public KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCache( String entityId ) {
+	public KimEntityDefaultInfo getEntityDefaultInfoFromArchive( String entityId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put(KimConstants.PrimaryKeyConstants.ENTITY_ID, entityId);
     	KimEntityDefaultInfoCacheImpl cachedValue = (KimEntityDefaultInfoCacheImpl)getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
@@ -60,7 +60,7 @@ public class IdentityCacheServiceImpl implements IdentityCacheService {
     	return cachedValue.convertCacheToEntityDefaultInfo();
     }
 
-    public KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalId( String principalId ) {
+    public KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalId( String principalId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principals.principalId", principalId);
     	KimEntityDefaultInfoCacheImpl cachedValue = (KimEntityDefaultInfoCacheImpl)getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
@@ -71,7 +71,7 @@ public class IdentityCacheServiceImpl implements IdentityCacheService {
     }
 
     @SuppressWarnings("unchecked")
-	public KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalName( String principalName ) {
+	public KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalName( String principalName ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principals.principalName", principalName);
     	Collection<KimEntityDefaultInfoCacheImpl> entities = getBusinessObjectService().findMatching(KimEntityDefaultInfoCacheImpl.class, criteria);
@@ -81,11 +81,11 @@ public class IdentityCacheServiceImpl implements IdentityCacheService {
     	return entities.iterator().next().convertCacheToEntityDefaultInfo();
     }
 
-    public void saveDefaultInfoToCache( KimEntityDefaultInfo entity ) {
+    public void saveDefaultInfoToArchive( KimEntityDefaultInfo entity ) {
 		KSBServiceLocator.getThreadPool().execute( new SaveEntityDefaultInfoToCacheRunnable( entity ) );
     }
     
-	// store the person to the database cache
+	// store the person to the database
 
 	// but do this an alternate thread to prevent transaction issues since this service is non-transactional
 

@@ -16,37 +16,93 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.springframework.beans.factory.BeanInitializationException;
 
 /**
- * A KSBExporter class which can disallow the service from being exported by
- * setting a configuration parameter. The default behavior if the parameter is
- * not set is to export the service as the {@link KSBExporter} normally would.
+ * A KSBExporter which only exports the service if the specified property is set
+ * to true.
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class PropertyConditionalKSBExporter extends KSBExporter {
 
-    private String propertyName;
+	private List<String> exportIf = new ArrayList<String>();
+	private List<String> exportUnless = new ArrayList<String>();
+	private boolean exportIfPropertyNotSet = true;
 
-    public void afterPropertiesSet() throws Exception {
-        Boolean useRemoteIdentityServices = false;
-        String useRemoteIdentityServicesValue = ConfigContext.getCurrentContextConfig().getProperty(getPropertyName());
-        if (!StringUtils.isBlank(useRemoteIdentityServicesValue)) {
-            useRemoteIdentityServices = new Boolean(useRemoteIdentityServicesValue);
-        }
-        if (!useRemoteIdentityServices) {
-            super.afterPropertiesSet();
-        }
-    }
+	public void afterPropertiesSet() throws Exception {
+		if (shouldRemoteThisService()) {
+			super.afterPropertiesSet();
+		}
+	}
+	
+	protected boolean shouldRemoteThisService() throws Exception {
+		if (exportIf.isEmpty() && exportUnless.isEmpty()) {
+			return true;
+		}
+		boolean remoteThisService = false;
+		String serviceValue = null;
+		// Check the value in the clients config file for services in the list
+		// of property named 'exportIf' loaded by Spring.
+		// if any are ="true" then set boolean to true and exit loop, so far the
+		// service will be published.
+		for (String expIf : exportIf) {
+			serviceValue = ConfigContext.getCurrentContextConfig().getProperty(expIf);
+			// if any are true, set boolean and exit loop.
+			if (!StringUtils.isBlank(serviceValue)) {
+				remoteThisService = new Boolean(serviceValue);
+				if (remoteThisService) {
+					break;
+				}
+			} else if (exportIfPropertyNotSet) {
+				remoteThisService = true;
+				break;
+			}
+		}
+		// Check a second list, if any are ="true" DON"T publish the service.
+		for (String expUnless : exportUnless) {
+			serviceValue = ConfigContext.getCurrentContextConfig()
+					.getProperty(expUnless);
+			// if any are true, set boolean and exit loop.
+			if (!StringUtils.isBlank(serviceValue)) {
+				remoteThisService = new Boolean(serviceValue);
+				if (remoteThisService) {
+					remoteThisService = new Boolean("false");
+					break;
+				}
+			}
+		}
+		return remoteThisService;
+	}
 
-    public String getPropertyName() {
-        return this.propertyName;
-    }
+	public List getExportIf() {
+		return this.exportIf;
+	}
 
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
+	public void setExportIf(List exportIf) throws BeanInitializationException {
+		this.exportIf = exportIf;
+	}
+
+	public List getExportUnless() {
+		return this.exportUnless;
+	}
+
+	public void setExportUnless(List exportUnless)
+			throws BeanInitializationException {
+		this.exportUnless = exportUnless;
+	}
+
+	public boolean isExportIfPropertyNotSet() {
+		return this.exportIfPropertyNotSet;
+	}
+
+	public void setExportIfPropertyNotSet(boolean exportIfPropertyNotSet) {
+		this.exportIfPropertyNotSet = exportIfPropertyNotSet;
+	}
 
 }

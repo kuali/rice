@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,8 +22,8 @@ import java.util.HashMap;
 
 /**
  * This class provides utilities for checking the types of objects.
- * 
- * 
+ *
+ *
  */
 
 @SuppressWarnings("unchecked")
@@ -35,20 +35,34 @@ public class TypeUtils {
     private static final Class[] TEMPORAL_CLASSES = { java.util.Date.class, java.sql.Date.class, java.sql.Timestamp.class };
     private static final Class[] STRING_CLASSES = { String.class };
 
-	private static final HashMap<Class,Boolean> isBooleanCache = new HashMap<Class, Boolean>();  
-    private static final HashMap<Class,Boolean> isIntegralCache = new HashMap<Class, Boolean>();  
-    private static final HashMap<Class,Boolean> isDecimalCache = new HashMap<Class, Boolean>();  
-    private static final HashMap<Class,Boolean> isTemporalCache = new HashMap<Class, Boolean>();  
-    private static final HashMap<Class,Boolean> isStringCache = new HashMap<Class, Boolean>();  
-    private static final HashMap<Class,Boolean> isSimpleCache = new HashMap<Class, Boolean>();  
-    
+	private static final HashMap<Class,Boolean> isBooleanCache = new HashMap<Class, Boolean>();
+    private static final HashMap<Class,Boolean> isIntegralCache = new HashMap<Class, Boolean>();
+    private static final HashMap<Class,Boolean> isDecimalCache = new HashMap<Class, Boolean>();
+    private static final HashMap<Class,Boolean> isTemporalCache = new HashMap<Class, Boolean>();
+    private static final HashMap<Class,Boolean> isStringCache = new HashMap<Class, Boolean>();
+    private static final HashMap<Class,Boolean> isSimpleCache = new HashMap<Class, Boolean>();
+
+
+    public static class JoinType{
+
+	}
+
+    /**
+     * @param clazz
+     * @return true if the given Class is an join type
+     * @throws IllegalArgumentException if the given Class is null
+     */
+    public static boolean isJoinClass(Class clazz) {
+    	return clazz.isAssignableFrom(JoinType.class);
+    }
+
     /**
      * @param clazz
      * @return true if the given Class is an boolean type
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isBooleanClass(Class clazz) {
-	Boolean result = isBooleanCache.get(clazz); 
+	Boolean result = isBooleanCache.get(clazz);
 	if ( result == null ) {
 	    result = isa(BOOLEAN_CLASSES, clazz);
 	    synchronized (isBooleanCache) {
@@ -64,7 +78,7 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isIntegralClass(Class clazz) {
-	Boolean result = isIntegralCache.get(clazz); 
+	Boolean result = isIntegralCache.get(clazz);
 	if ( result == null ) {
 	    result = isa(INTEGRAL_CLASSES, clazz);
 	    synchronized (isIntegralCache) {
@@ -80,7 +94,7 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isDecimalClass(Class clazz) {
-	Boolean result = isDecimalCache.get(clazz); 
+	Boolean result = isDecimalCache.get(clazz);
 	if ( result == null ) {
 	    result = isa(DECIMAL_CLASSES, clazz);
 	    synchronized (isDecimalCache) {
@@ -96,7 +110,7 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isTemporalClass(Class clazz) {
-	Boolean result = isTemporalCache.get(clazz); 
+	Boolean result = isTemporalCache.get(clazz);
 	if ( result == null ) {
 	    result = isa(TEMPORAL_CLASSES, clazz);
 	    synchronized (isTemporalCache) {
@@ -112,7 +126,7 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isStringClass(Class clazz) {
-	Boolean result = isStringCache.get(clazz); 
+	Boolean result = isStringCache.get(clazz);
 	if ( result == null ) {
 	    result = isa(STRING_CLASSES, clazz);
 	    synchronized (isStringCache) {
@@ -128,7 +142,7 @@ public class TypeUtils {
      * @throws IllegalArgumentException if the given Class is null
      */
     public static boolean isSimpleType(Class clazz) {
-	Boolean result = isSimpleCache.get(clazz); 
+	Boolean result = isSimpleCache.get(clazz);
 	if ( result == null ) {
 	    result = isa(STRING_CLASSES, clazz) || isa(DECIMAL_CLASSES, clazz) || isa(INTEGRAL_CLASSES, clazz) || isa(BOOLEAN_CLASSES, clazz) || isa(TEMPORAL_CLASSES, clazz);
 	    synchronized (isSimpleCache) {

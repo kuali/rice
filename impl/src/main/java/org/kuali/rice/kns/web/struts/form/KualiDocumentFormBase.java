@@ -197,7 +197,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         }
     }
     
-    private String getPersonInquiryUrlLink(Person user, String linkBody) {
+    protected String getPersonInquiryUrlLink(Person user, String linkBody) {
         StringBuffer urlBuffer = new StringBuffer();
         
         if(user != null && StringUtils.isNotEmpty(linkBody) ) {

@@ -26,6 +26,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -51,7 +52,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
@@ -259,24 +259,22 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 			List<Row> rows = super.getRows();
 			List<Row> returnRows = new ArrayList<Row>();
 			for (Row row : rows) {
-				Field field = (Field) row.getFields().get(0);
-				if (field.getPropertyName().equals("kimTypeId")) {
-					List<Field> fields = new ArrayList<Field>();
-					Field typeField = new Field();
-					typeField.setFieldLabel("Type");
-					typeField.setPropertyName("kimTypeId");
-					typeField.setFieldValidValues(getRoleTypeOptions());
-					typeField.setFieldType(Field.DROPDOWN);
-					typeField.setMaxLength(100);
-					typeField.setSize(40);
-					fields.add(typeField);
-					// fields.add(new Field("Type", "", Field.DROPDOWN_REFRESH,
-					// false, "kimTypeId", "", getGroupTypeOptions(), null));
-					returnRows.add(new Row(fields));
-
-				} else {
-					returnRows.add(row);
+				for (int i = row.getFields().size() - 1; i >= 0; i--) {
+					Field field = (Field) row.getFields().get(i);
+					if (field.getPropertyName().equals("kimTypeId")) {
+						Field typeField = new Field();
+						typeField.setFieldLabel("Type");
+						typeField.setPropertyName("kimTypeId");
+						typeField.setFieldValidValues(getRoleTypeOptions());
+						typeField.setFieldType(Field.DROPDOWN);
+						typeField.setMaxLength(100);
+						typeField.setSize(40);
+						// row.getFields().set(i, new Field("Type", "", Field.DROPDOWN_REFRESH,
+						// false, "kimTypeId", "", getGroupTypeOptions(), null));
+						row.getFields().set(i, typeField);
+					}
 				}
+				returnRows.add(row);
 			}
 			setRoleRows(returnRows);
 			//setAttrRows(setupAttributeRows());

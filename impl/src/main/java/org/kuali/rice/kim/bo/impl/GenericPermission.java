@@ -50,7 +50,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	protected String description;
 	protected boolean active;
 	protected String templateId;
-
+	protected String detailValues;
 	protected AttributeSet details;
 	
 	/**
@@ -74,7 +74,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	}
 	
 	public String getDetailValues() {
-		StringBuffer sb = new StringBuffer();
+		/*StringBuffer sb = new StringBuffer();
 		if ( details != null ) {
 			Iterator<String> keyIter = details.keySet().iterator();
 			while ( keyIter.hasNext() ) {
@@ -85,26 +85,44 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 				}
 			}
 		}
-		return sb.toString();
+		return sb.toString();*/
+		return detailValues;
 	}
 	
 	public void setDetailValues( String detailValues ) {
+		this.detailValues = detailValues;
+		String detailValuesTemp = detailValues;
 		AttributeSet details = new AttributeSet();
-		if ( detailValues != null ) {
+		if ( detailValuesTemp != null ) {
 			// ensure that all line delimiters are single linefeeds
-			detailValues = detailValues.replace( "\r\n", "\n" );
-			detailValues = detailValues.replace( '\r', '\n' );
-			if ( StringUtils.isNotBlank( detailValues ) ) {
-				String[] values = detailValues.split( "\n" );
+			detailValuesTemp = detailValuesTemp.replace( "\r\n", "\n" );
+			detailValuesTemp = detailValuesTemp.replace( '\r', '\n' );
+			if ( StringUtils.isNotBlank( detailValuesTemp ) ) {
+				String[] values = detailValuesTemp.split( "\n" );
 				for ( String attrib : values ) {
 					if ( attrib.indexOf( '=' ) != -1 ) {
 						String[] keyValueArray = attrib.split( "=", 2 );
-						details.put( keyValueArray[0], keyValueArray[1] );
+						details.put( keyValueArray[0].trim(), keyValueArray[1].trim() );
 					}
 				}
 			}
 		}
 		this.details = details;
+	}
+	
+	public void setDetailValues( AttributeSet detailsAttribs ) {
+		StringBuffer sb = new StringBuffer();
+		if ( detailsAttribs != null ) {
+			Iterator<String> keyIter = detailsAttribs.keySet().iterator();
+			while ( keyIter.hasNext() ) {
+				String key = keyIter.next();
+				sb.append( key ).append( '=' ).append( detailsAttribs.get( key ) );
+				if ( keyIter.hasNext() ) {
+					sb.append( '\n' );
+				}
+			}
+		}
+		detailValues = sb.toString();
 	}
 	
 	/**
@@ -165,6 +183,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 
 	public void setDetails( AttributeSet details ) {
 		this.details = details;
+		setDetailValues(details);
 	}
 	
 	public String getTemplateId() {

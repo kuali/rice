@@ -18,6 +18,7 @@ package org.kuali.rice.kim.web.struts.action;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -32,6 +33,7 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -40,7 +42,7 @@ import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition
  *
  */
 public class IdentityManagementPersonInquiry extends IdentityManagementBaseInquiryAction {
-		
+    private static final Logger LOG = Logger.getLogger(IdentityManagementPersonInquiry.class);	
 	/**
 	 * This overridden method ...
 	 * 
@@ -61,6 +63,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
         if ( principalId != null ) {
         	personDocumentForm.setPrincipalId(principalId);
         	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
+            personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
         	populateRoleInformation( personDocumentForm.getPersonDocument() );
         }
 	}
@@ -68,7 +71,13 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
 	        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
-			role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
+	        //it is possible that the the kimTypeService is coming from a remote application 
+	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+	        try {
+	            role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
+	        } catch (Exception ex) {
+                LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type Id: " + role.getKimTypeId(), ex);
+            }
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
             for (String key : role.getDefinitions().keySet()) {

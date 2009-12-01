@@ -22,9 +22,13 @@ import java.util.Map;
 
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
@@ -64,27 +68,27 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRuleBase implements AddPermissionRule, AddResponsibilityRule, AddMemberRule, AddDelegationRule, AddDelegationMemberRule {
-//	private static final Logger LOG = Logger.getLogger( IdentityManagementRoleDocumentRule.class );
+//	protected static final Logger LOG = Logger.getLogger( IdentityManagementRoleDocumentRule.class );
 			
     public static final int PRIORITY_NUMBER_MIN_VALUE = 1;
     public static final int PRIORITY_NUMBER_MAX_VALUE = 11;
 
-	private AddResponsibilityRule addResponsibilityRule;
-	private AddPermissionRule  addPermissionRule;
-	private AddMemberRule  addMemberRule;
-	private AddDelegationRule addDelegationRule;
-	private AddDelegationMemberRule addDelegationMemberRule;
-	private BusinessObjectService businessObjectService;
-	private ResponsibilityService responsibilityService;
-	private Class<? extends AddResponsibilityRule> addResponsibilityRuleClass = KimDocumentResponsibilityRule.class;
-	private Class<? extends AddPermissionRule> addPermissionRuleClass = KimDocumentPermissionRule.class;
-	private Class<? extends AddMemberRule> addMemberRuleClass = KimDocumentMemberRule.class;
-	private Class<? extends AddDelegationRule> addDelegationRuleClass = RoleDocumentDelegationRule.class;
-	private Class<? extends AddDelegationMemberRule> addDelegationMemberRuleClass = RoleDocumentDelegationMemberRule.class;
+	protected AddResponsibilityRule addResponsibilityRule;
+	protected AddPermissionRule  addPermissionRule;
+	protected AddMemberRule  addMemberRule;
+	protected AddDelegationRule addDelegationRule;
+	protected AddDelegationMemberRule addDelegationMemberRule;
+	protected BusinessObjectService businessObjectService;
+	protected ResponsibilityService responsibilityService;
+	protected Class<? extends AddResponsibilityRule> addResponsibilityRuleClass = KimDocumentResponsibilityRule.class;
+	protected Class<? extends AddPermissionRule> addPermissionRuleClass = KimDocumentPermissionRule.class;
+	protected Class<? extends AddMemberRule> addMemberRuleClass = KimDocumentMemberRule.class;
+	protected Class<? extends AddDelegationRule> addDelegationRuleClass = RoleDocumentDelegationRule.class;
+	protected Class<? extends AddDelegationMemberRule> addDelegationMemberRuleClass = RoleDocumentDelegationMemberRule.class;
 
-	private IdentityService identityService;
+	protected IdentityService identityService;
 	
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
@@ -104,9 +108,12 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         boolean validateRoleAssigneesAndDelegations = !KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDoc.getKimType());
         GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validDuplicateRoleName(roleDoc);
+        valid &= validPermissions(roleDoc);
+        valid &= validResponsibilities(roleDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
+        validateRoleAssigneesAndDelegations &= validAssignRole(roleDoc);
         if(validateRoleAssigneesAndDelegations){
-	        valid &= validAssignRole(roleDoc);
+	        //valid &= validAssignRole(roleDoc);
 	        valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
 	        valid &= validRoleMemberActiveDates(roleDoc.getMembers());
 	        valid &= validateDelegationMemberRoleQualifier(roleDoc.getMembers(), roleDoc.getDelegationMembers(), roleDoc.getKimType());
@@ -119,7 +126,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         return valid;
     }
     
-	private boolean validAssignRole(IdentityManagementRoleDocument document){
+	protected boolean validAssignRole(IdentityManagementRoleDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
@@ -129,9 +136,6 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
 					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-	    		GlobalVariables.getMessageMap().putError("document.roleName", 
-	    				RiceKeyConstants.ERROR_ASSIGN_ROLE, 
-	    				new String[] {document.getRoleNamespace(), document.getRoleName()});
 	            rulePassed = false;
 			}
 		}
@@ -139,7 +143,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	}
 
     @SuppressWarnings("unchecked")
-	private boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
+	protected boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("roleName", roleDoc.getRoleName());
     	criteria.put("namespaceCode", roleDoc.getRoleNamespace());
@@ -157,7 +161,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return rulePassed;
     }
     
-    private boolean validRoleMemberActiveDates(List<KimDocumentRoleMember> roleMembers) {
+    protected boolean validRoleMemberActiveDates(List<KimDocumentRoleMember> roleMembers) {
     	boolean valid = true;
 		int i = 0;
     	for(KimDocumentRoleMember roleMember: roleMembers) {
@@ -167,7 +171,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return valid;
     }
 
-    private boolean validDelegationMemberActiveDates(List<RoleDocumentDelegationMember> delegationMembers) {
+    protected boolean validDelegationMemberActiveDates(List<RoleDocumentDelegationMember> delegationMembers) {
     	boolean valid = true;
 		int i = 0;
     	for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
@@ -178,7 +182,39 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return valid;
     }
 
-    private boolean validRoleResponsibilitiesActions(List<KimDocumentRoleResponsibility> roleResponsibilities){
+    protected boolean validPermissions(IdentityManagementRoleDocument document){
+    	KimPermissionInfo kimPermissionInfo;
+    	boolean valid = true;
+    	int i = 0;
+    	for(KimDocumentRolePermission permission: document.getPermissions()){
+    		kimPermissionInfo = permission.getKimPermission();
+    		if(!permission.isActive() && !hasPermissionToGrantPermission(permission.getKimPermission(), document)){
+    	        GlobalVariables.getMessageMap().putError("permissions["+i+"].active", RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
+    	        		new String[] {kimPermissionInfo.getNamespaceCode(), kimPermissionInfo.getTemplate().getName()});
+    	        valid = false;
+    		}
+    		i++;
+    	}
+    	return valid;
+    }
+
+    protected boolean validResponsibilities(IdentityManagementRoleDocument document){
+    	KimResponsibilityImpl kimResponsibilityImpl;
+    	boolean valid = true;
+    	int i = 0;
+    	for(KimDocumentRoleResponsibility responsibility: document.getResponsibilities()){
+    		kimResponsibilityImpl = responsibility.getKimResponsibility();
+    		if(!responsibility.isActive() && !hasPermissionToGrantResponsibility(responsibility.getKimResponsibility().toSimpleInfo(), document)){
+    	        GlobalVariables.getMessageMap().putError("responsibilities["+i+"].active", RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
+    	        		new String[] {kimResponsibilityImpl.getNamespaceCode(), kimResponsibilityImpl.getTemplate().getName()});
+    	        valid = false;
+    		}
+    		i++;
+    	}
+    	return valid;
+    }
+    
+    protected boolean validRoleResponsibilitiesActions(List<KimDocumentRoleResponsibility> roleResponsibilities){
         int i = 0;
         boolean rulePassed = true;
     	for(KimDocumentRoleResponsibility roleResponsibility: roleResponsibilities){
@@ -189,7 +225,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return rulePassed;
     }
 
-    private boolean validRoleMembersResponsibilityActions(List<KimDocumentRoleMember> roleMembers){
+    protected boolean validRoleMembersResponsibilityActions(List<KimDocumentRoleMember> roleMembers){
         int i = 0;
         int j;
         boolean rulePassed = true;
@@ -206,7 +242,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return rulePassed;
     }
 
-    private boolean validateRoleResponsibilityAction(String errorPath, KimDocumentRoleResponsibilityAction roleRspAction){
+    protected boolean validateRoleResponsibilityAction(String errorPath, KimDocumentRoleResponsibilityAction roleRspAction){
     	boolean rulePassed = true;
     	/*if(StringUtils.isBlank(roleRspAction.getActionPolicyCode())){
     		GlobalVariables.getErrorMap().putError(errorPath, 
@@ -234,7 +270,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return rulePassed;
     }
 
-    private boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimTypeInfo kimType){
+    protected boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimTypeInfo kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
 		int memberCounter = 0;
@@ -243,11 +279,14 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		for(KimDocumentRoleMember roleMember: roleMembers) {
+			errorsTemp = new AttributeSet();
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-			errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
-			validationErrors.putAll( 
-					attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
-	        memberCounter++;
+			if(!roleMember.isRole()){
+				errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
+				validationErrors.putAll( 
+						attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
+		        memberCounter++;
+			}
     	}
 
 		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
@@ -260,7 +299,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	}
     }
     
-    private KimDocumentRoleMember getRoleMemberForDelegation(
+    protected KimDocumentRoleMember getRoleMemberForDelegation(
     		List<KimDocumentRoleMember> roleMembers, RoleDocumentDelegationMember delegationMember){
     	if(roleMembers==null || delegationMember==null || delegationMember.getRoleMemberId()==null) return null;
     	for(KimDocumentRoleMember roleMember: roleMembers){
@@ -270,7 +309,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return null;
     }
 
-    private boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers, 
+    protected boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers, 
     		List<RoleDocumentDelegationMember> delegationMembers, KimTypeInfo kimType){
 		AttributeSet validationErrors = new AttributeSet();
 		boolean valid;
@@ -283,11 +322,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         String errorPath;
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			errorPath = "delegationMembers["+memberCounter+"]";
+			errorsTemp = new AttributeSet();
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
-			errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
-			validationErrors.putAll(
-					attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
-
+			if(!delegationMember.isRole()){
+				errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
+				validationErrors.putAll(
+						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
+			}
 			roleMember = getRoleMemberForDelegation(roleMembers, delegationMember);
 			if(roleMember==null){
 				valid = false;
@@ -312,7 +353,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return valid;
     }
     
-	private boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
+	protected boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
@@ -395,13 +436,21 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	}
 	
     public boolean processAddPermission(AddPermissionEvent addPermissionEvent) {
-        return new KimDocumentPermissionRule().processAddPermission(addPermissionEvent);    
+        return getAddPermissionRule().processAddPermission(addPermissionEvent);    
+    }
+
+    public boolean hasPermissionToGrantPermission(KimPermissionInfo kimPermissionInfo , IdentityManagementRoleDocument document){
+        return getAddPermissionRule().hasPermissionToGrantPermission(kimPermissionInfo, document);    
     }
 
     public boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent) {
-        return new KimDocumentResponsibilityRule().processAddResponsibility(addResponsibilityEvent);    
+        return getAddResponsibilityRule().processAddResponsibility(addResponsibilityEvent);    
     }
 
+    public boolean hasPermissionToGrantResponsibility(KimResponsibilityInfo kimResponsibilityInfo, IdentityManagementRoleDocument document) {
+        return getAddResponsibilityRule().hasPermissionToGrantResponsibility(kimResponsibilityInfo, document);    
+    }
+    
     public boolean processAddMember(AddMemberEvent addMemberEvent) {
         boolean success = new KimDocumentMemberRule().processAddMember(addMemberEvent);
         success &= validateActiveDate("member.activeFromDate", addMemberEvent.getMember().getActiveFromDate(), addMemberEvent.getMember().getActiveToDate());
@@ -409,7 +458,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     public boolean processAddDelegation(AddDelegationEvent addDelegationEvent) {
-        return new RoleDocumentDelegationRule().processAddDelegation(addDelegationEvent);    
+        return getAddDelegationRule().processAddDelegation(addDelegationEvent);    
     }
 
     public boolean processAddDelegationMember(AddDelegationMemberEvent addDelegationMemberEvent) {

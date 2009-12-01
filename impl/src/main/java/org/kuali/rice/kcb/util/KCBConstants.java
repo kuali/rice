@@ -20,6 +20,9 @@ package org.kuali.rice.kcb.util;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBConstants {
+	
+	public static final String SERVICE_NAMESPACE = "KCB";
+	
     /**
      * Different message delivers for KCB
      * DEFAULT_MESSAGE_DELIVERY_TYPE - the default message delivery type

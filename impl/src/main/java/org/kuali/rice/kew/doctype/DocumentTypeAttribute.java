@@ -53,8 +53,6 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 
 	@Id
 	@Column(name="DOC_TYP_ATTRIB_ID")
-	@GeneratedValue(strategy=javax.persistence.GenerationType.SEQUENCE, generator="KREWSeq")
-	@SequenceGenerator(name="KREWSeq",sequenceName="KREW_RTE_NODE_S", allocationSize=1)
 	private Long documentTypeAttributeId; 
     @Column(name="RULE_ATTR_ID",insertable=false, updatable=false)
 	private Long ruleAttributeId;

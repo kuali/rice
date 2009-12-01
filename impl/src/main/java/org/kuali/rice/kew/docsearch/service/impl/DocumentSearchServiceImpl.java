@@ -18,15 +18,21 @@ package org.kuali.rice.kew.docsearch.service.impl;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -51,6 +57,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -68,14 +75,16 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private static final String NAMED_SEARCH_ORDER_BASE = "DocSearch.NamedSearch.";
 	private static final String LAST_SEARCH_BASE_NAME = "DocSearch.LastSearch.Holding";
 	private static final String DOC_SEARCH_CRITERIA_DTO_CLASS = "org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO";
-	
+
 	private static DictionaryValidationService dictionaryValidationService;
 	private static DataDictionaryService dataDictionaryService;
 	private static KualiConfigurationService kualiConfigurationService;
-	
+
 	private DocumentSearchDAO docSearchDao;
 	private UserOptionsService userOptionsService;
-	
+
+	private SqlBuilder sqlBuilder = null;
+
 	public void setDocumentSearchDAO(DocumentSearchDAO docSearchDao) {
 		this.docSearchDao = docSearchDao;
 	}
@@ -139,7 +148,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             } else {
                 searchResult = new StandardDocumentSearchResultProcessor().processIntoFinalResults(docListResults, criteria, principalId);
             }
-            
+
         } catch (Exception e) {
 			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();
 			LOG.error("getList() " + errorMsg,e);
@@ -192,21 +201,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
 
         // validate the network id's
-        if (!validateNetworkId(criteria.getApprover())) {
+        if (!validatePersonByName(criteria.getApprover())) {
             errors.add(new WorkflowServiceErrorImpl("Approver network id is invalid", "docsearch.DocumentSearchService.networkid.approver"));
         } else {
             if (criteria.getApprover() != null && !"".equals(criteria.getApprover().trim())) {
                 criteria.setApprover(criteria.getApprover().trim());
             }
         }
-        if (!validateNetworkId(criteria.getViewer())) {
+        if (!validatePersonByName(criteria.getViewer())) {
             errors.add(new WorkflowServiceErrorImpl("Viewer network id is invalid", "docsearch.DocumentSearchService.networkid.viewer"));
         } else {
             if (criteria.getViewer() != null && !"".equals(criteria.getViewer().trim())) {
                 criteria.setViewer(criteria.getViewer().trim());
             }
         }
-        if (!validateNetworkId(criteria.getInitiator())) {
+        if (!validatePersonByName(criteria.getInitiator())) {
             errors.add(new WorkflowServiceErrorImpl("Initiator network id is invalid", "docsearch.DocumentSearchService.networkid.initiator"));
         } else {
             if (criteria.getInitiator() != null && !"".equals(criteria.getInitiator().trim())) {
@@ -222,7 +231,6 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             }
         }
 
-        // validate any numbers
         if (!validateNumber(criteria.getDocVersion())) {
             errors.add(new WorkflowServiceErrorImpl("Non-numeric document version", "docsearch.DocumentSearchService.docVersion"));
         } else {
@@ -230,7 +238,6 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 criteria.setDocVersion(criteria.getDocVersion().trim());
             }
         }
-
         if (!validateNumber(criteria.getRouteHeaderId())) {
             errors.add(new WorkflowServiceErrorImpl("Non-numeric document id", "docsearch.DocumentSearchService.routeHeaderId"));
         } else {
@@ -264,7 +271,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated");
             	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated") + 
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated") +
             							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateCreatedRange"));
             }
         }
@@ -292,7 +299,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved");
             	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved") + 
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved") +
             							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateApprovedRange"));
             }
         }
@@ -320,7 +327,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized");
             	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized") + 
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized") +
             							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateFinalizedRange"));
             }
         }
@@ -348,13 +355,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified");
             	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified") + 
+            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified") +
             							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateLastModifiedRange"));
             }
         }
         return errors;
     }
 
+    private boolean validateNetworkId(List<String> networkIds){
+    	for(String networkId: networkIds){
+    		if(!this.validateNetworkId(networkId)){
+    			return false;
+    		}
+    	}
+    	return true;
+    }
 	private boolean validateNetworkId(String networkId) {
 		if ((networkId == null) || networkId.trim().equals("")) {
 			return true;
@@ -365,6 +380,23 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			LOG.debug(ex, ex);
 			return false;
 		}
+	}
+
+	private boolean validatePersonByName(String searchName){
+		if(searchName == null || "".equals(searchName.trim())){
+			return true;
+		}
+		try{
+			Map<String, String> m = new HashMap<String, String>();
+    		m.put("principalName", searchName);
+
+    		// This will search for people with the ability for the valid operands.
+    		List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+		}catch(Exception ex) {
+			LOG.debug(ex, ex);
+			return false;
+		}
+		return true;
 	}
 
 	private boolean validateDate(String dateFieldName, String dateFieldValue, String dateFieldErrorKey) {
@@ -379,16 +411,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return Utilities.checkDateRanges(fromDate, toDate);
 	}
 
+	private boolean validateNumber(List<String> integers) {
+		for(String integer: integers){
+    		if(!this.validateNumber(integer)){
+    			return false;
+    		}
+    	}
+    	return true;
+	}
+
 	private boolean validateNumber(String integer) {
 		if ((integer == null) || integer.trim().equals("")) {
 			return true;
 		}
-		try {
-			new Long(integer.trim());
-			return true;
-		} catch (NumberFormatException ex) {
-			return false;
-		}
+		return SqlBuilder.isValidNumber(integer);
+
 	}
 
     private boolean validateWorkgroup(String id, String workgroupName) {
@@ -791,18 +828,45 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 		return dictionaryValidationService;
 	}
-	
+
 	public static DataDictionaryService getDataDictionaryService() {
 		if (dataDictionaryService == null) {
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
-	
+
 	public static KualiConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
+	}
+
+	private List<String> tokenizeCriteria(String input){
+		List<String> lRet = null;
+
+		lRet = Arrays.asList(input.split("\\|"));
+
+		return lRet;
+	}
+
+	/**
+	 * @return the sqlBuilder
+	 */
+	public SqlBuilder getSqlBuilder() {
+		if(sqlBuilder == null){
+			sqlBuilder = new SqlBuilder();
+			sqlBuilder.setDbPlatform((DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM));
+			sqlBuilder.setDateTimeService(KNSServiceLocator.getDateTimeService());
+		}
+		return this.sqlBuilder;
+	}
+
+	/**
+	 * @param sqlBuilder the sqlBuilder to set
+	 */
+	public void setSqlBuilder(SqlBuilder sqlBuilder) {
+		this.sqlBuilder = sqlBuilder;
 	}
 }

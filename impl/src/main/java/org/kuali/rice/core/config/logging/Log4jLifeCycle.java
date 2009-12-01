@@ -200,7 +200,12 @@ public class Log4jLifeCycle extends BaseLifecycle {
     }
 
     public void stop() throws Exception {
-		LogManager.shutdown();
+    	// commenting out LogManager.shutdown() for now because it kills logging before shutdown of the rest of the system is complete
+    	// so if there are other errors that are encountered during shutdown, they won't be logged!
+    	
+    	// move this to the standalone initialize listener instead
+    	
+		//LogManager.shutdown();
 		super.stop();
 	}
 

@@ -40,6 +40,7 @@ public class KSBConstants extends JSTLConstants {
     public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY = "RouteQueue.maxRetryAttemptsOverride";
     public static final String ROUTE_QUEUE_TIME_INCREMENT_KEY = "RouteQueue.timeIncrement";
     public static final String IMMEDIATE_EXCEPTION_ROUTING = "Routing.ImmediateExceptionRouting";
+    public static final String ALLOW_SYNC_EXCEPTION_ROUTING = "rice.ksb.allowSyncExceptionRouting";
     
     public static final String KSB_ALLOW_SELF_SIGNED_SSL = "rice.ksb.config.allowSelfSignedSSL";
     public static final String KSB_MESSAGE_DATASOURCE = "ksbMessage.datasource";

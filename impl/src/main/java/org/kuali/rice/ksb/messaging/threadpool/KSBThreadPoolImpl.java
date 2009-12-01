@@ -59,14 +59,18 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
     }
 
     public void start() throws Exception {
+    	LOG.info("Starting the KSB thread pool...");
     	loadSettings();
+    	this.started = true;
+    	LOG.info("...KSB thread pool successfully started.");
     }
 
     public void stop() throws Exception {
-		LOG.info("Shutting down KSB threadpool.");
 		if (isStarted()) {
+			LOG.info("Shutting down KSB thread pool...");
 		    this.shutdownNow();
 		    this.started = false;
+		    LOG.info("...KSB thread pool successfully shut down.");
 		}
     }
 

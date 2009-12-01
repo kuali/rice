@@ -16,18 +16,19 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
@@ -38,27 +39,27 @@ public class PersistenceServiceStructureImplBase {
 
 	private DescriptorRepository descriptorRepository;
 
-	// This is repeated in BaseOjbConfigurer
-	private static final String OJB_PROPERTIES_PROP = "OJB.properties";
-
-	private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
-
 	/**
 	 * Constructs a PersistenceServiceImpl instance.
 	 */
 	public PersistenceServiceStructureImplBase() {
-		String currentValue = System.getProperty(OJB_PROPERTIES_PROP);
-		System.setProperty(OJB_PROPERTIES_PROP, DEFAULT_OJB_PROPERTIES);
+		String ojbPropertyFileLocation = ConfigContext.getCurrentContextConfig().getProperty(BaseOjbConfigurer.RICE_OJB_PROPERTIES_PARAM);
+		if ( StringUtils.isBlank(ojbPropertyFileLocation) ) {
+			ojbPropertyFileLocation = BaseOjbConfigurer.DEFAULT_OJB_PROPERTIES;
+			ConfigContext.getCurrentContextConfig().overrideProperty(BaseOjbConfigurer.RICE_OJB_PROPERTIES_PARAM, ojbPropertyFileLocation);
+		}
+        String currentValue = System.getProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP);
 		try {
+			System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, ojbPropertyFileLocation);
 			org.apache.ojb.broker.metadata.MetadataManager metadataManager = org.apache.ojb.broker.metadata.MetadataManager.getInstance();
 			descriptorRepository = metadataManager.getGlobalRepository();
-		} finally {
-			if (currentValue == null) {
-				System.getProperties().remove(OJB_PROPERTIES_PROP);
-			} else {
-				System.setProperty(OJB_PROPERTIES_PROP, currentValue);
-			}
-		}
+	    } finally {
+	        if (currentValue == null) {
+	            System.getProperties().remove(BaseOjbConfigurer.OJB_PROPERTIES_PROP);
+	        } else {
+	            System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, currentValue);
+	        }
+	    }
 	}
 
 	/**

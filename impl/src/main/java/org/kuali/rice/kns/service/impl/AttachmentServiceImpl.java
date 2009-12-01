@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class AttachmentServiceImpl implements AttachmentService {
+	private static final int MAX_DIR_LEVELS = 6;
     private static Logger LOG = Logger.getLogger(AttachmentServiceImpl.class);
 
     private KualiConfigurationService kualiConfigurationService;
@@ -201,8 +202,21 @@ public class AttachmentServiceImpl implements AttachmentService {
         String location = null;
         if(StringUtils.isEmpty(objectId)) {
             location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
-        } else {
-            location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_DIRECTORY_KEY)+ File.separator + objectId;
+        } else {    
+        	/* 
+        	 * We need to create a hierarchical directory structure to store
+        	 * attachment directories, as most file systems max out at 16k
+        	 * or 32k entries.  If we use 6 levels of hierarchy, it allows
+        	 * hundreds of billions of attachment directories.
+        	 */
+            char[] chars = objectId.toUpperCase().replace(" ", "").toCharArray();            
+            int count = chars.length < MAX_DIR_LEVELS ? chars.length : MAX_DIR_LEVELS;
+
+            StringBuffer prefix = new StringBuffer();            
+            for ( int i = 0; i < count; i++ )
+                prefix.append(File.separator + chars[i]);
+            
+            location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_DIRECTORY_KEY) + prefix + File.separator + objectId;
         }
         return  location;
     }

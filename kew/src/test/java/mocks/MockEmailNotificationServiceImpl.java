@@ -44,6 +44,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
      */
     public void resetReminderCounts() {
         aggregateReminderCount.clear();
+        immediateReminders.clear();
     }
 
     /**

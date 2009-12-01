@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in.

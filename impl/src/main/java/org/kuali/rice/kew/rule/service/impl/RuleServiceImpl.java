@@ -121,14 +121,14 @@ public class RuleServiceImpl implements RuleService {
         if (ruleBaseValues.getPreviousVersionId() != null) {
             RuleBaseValues oldRule = findRuleBaseValuesById(ruleBaseValues.getPreviousVersionId());
             ruleBaseValues.setPreviousVersion(oldRule);
-            ruleBaseValues.setCurrentInd(new Boolean(false));
+            ruleBaseValues.setCurrentInd(Boolean.FALSE);
             ruleBaseValues.setVersionNbr(getNextVersionNumber(oldRule));
         }
         if (ruleBaseValues.getVersionNbr() == null) {
-            ruleBaseValues.setVersionNbr(new Integer(0));
+            ruleBaseValues.setVersionNbr(Integer.valueOf(0));
         }
         if (ruleBaseValues.getCurrentInd() == null) {
-            ruleBaseValues.setCurrentInd(new Boolean(false));
+            ruleBaseValues.setCurrentInd(Boolean.FALSE);
         }
         // iterate through all associated responsibilities, and if they are unsaved (responsibilityId is null)
         // set a new id on them, and recursively save any associated delegation rules
@@ -380,6 +380,7 @@ public class RuleServiceImpl implements RuleService {
             installNotification(ruleToSave, notifyMap);
         }
         if (ruleDelegation != null) {
+        	responsibilityIds.add(ruleDelegation.getResponsibilityId());
         	ruleDelegation.setDelegateRuleId(rule.getRuleBaseValuesId());
         	getRuleDelegationService().save(ruleDelegation);
         }
@@ -474,7 +475,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
+        Boolean cachingRules = Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (!cachingRules.booleanValue()) {
             return;
         }
@@ -985,7 +986,7 @@ public class RuleServiceImpl implements RuleService {
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
+        Boolean cachingRules = Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (cachingRules.booleanValue()) {
             //Cache cache = SpringServiceLocator.getCache();
             List<RuleBaseValues> rules = getListFromCache(ruleTemplateName, documentType);
@@ -1049,9 +1050,9 @@ public class RuleServiceImpl implements RuleService {
         Collections.sort(candidates);
         Integer maxVersionNumber = (Integer) candidates.get(candidates.size() - 1);
         if (maxVersionNumber == null) {
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
-        return new Integer(maxVersionNumber.intValue() + 1);
+        return Integer.valueOf(maxVersionNumber.intValue() + 1);
     }
 
     /**

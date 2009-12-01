@@ -43,7 +43,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 
 	public static final String ERROR_PATH = "document.delegationMember.memberId";
 
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
 	public boolean processAddDelegationMember(AddDelegationMemberEvent addDelegationMemberEvent){
 		RoleDocumentDelegationMember newMember = addDelegationMemberEvent.getDelegationMember();
@@ -83,7 +83,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 	    	i++;
 	    }
         
-        if ( kimTypeService != null ) {
+        if ( kimTypeService != null && !newMember.isRole()) {
     		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }

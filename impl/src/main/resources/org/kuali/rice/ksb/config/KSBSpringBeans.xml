@@ -89,6 +89,7 @@
 				<idref local="enRouteQueueService" />
 				<idref local="enRoutingTableService" />
 				<idref local="exceptionMessagingService" />
+				<idref local="ksbScheduler" />
 			</list>
 		</property>
 	</bean>

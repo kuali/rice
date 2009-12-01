@@ -207,7 +207,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @param xmlDocument
      * @return
      */
-    private boolean isOldMaintainableInDocument(Document xmlDocument) {
+    protected boolean isOldMaintainableInDocument(Document xmlDocument) {
         boolean isOldMaintainableInExistence = false;
         if (xmlDocument.getElementsByTagName(OLD_MAINTAINABLE_TAG_NAME).getLength() > 0) {
             isOldMaintainableInExistence = true;
@@ -329,7 +329,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @param oldOrNewElementName - String oldMaintainableObject or newMaintainableObject
      * @return the value of the element, or null if none was there
      */
-    private String getMaintenanceAction(Document xmlDocument, String oldOrNewElementName) {
+    protected String getMaintenanceAction(Document xmlDocument, String oldOrNewElementName) {
 
         if (StringUtils.isBlank(oldOrNewElementName)) {
             throw new IllegalArgumentException("oldOrNewElementName may not be blank, null, or empty-string.");
@@ -356,7 +356,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * Retrieves substring of document contents from maintainable tag name. Then use xml service to translate xml into a business
      * object.
      */
-    private PersistableBusinessObject getBusinessObjectFromXML(String maintainableTagName) {
+    protected PersistableBusinessObject getBusinessObjectFromXML(String maintainableTagName) {
         String maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">", "</" + maintainableTagName + ">");
         PersistableBusinessObject businessObject = (PersistableBusinessObject) KNSServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
         return businessObject;
@@ -618,7 +618,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         populateXmlDocumentContentsFromMaintainables();
     }
     
-    private void populateAttachmentForBO() {
+    protected void populateAttachmentForBO() {
         if(attachment == null) {
             this.refreshReferenceObject("attachment");
         }
@@ -740,7 +740,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
 
-    private void checkForLockingDocument(boolean throwExceptionIfLocked) {
+    protected void checkForLockingDocument(boolean throwExceptionIfLocked) {
         MaintenanceUtils.checkForLockingDocument(this, throwExceptionIfLocked);
     }
 

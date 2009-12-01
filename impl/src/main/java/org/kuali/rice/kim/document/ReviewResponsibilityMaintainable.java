@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -26,7 +28,12 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -41,6 +48,22 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
 	protected static String reviewTemplateId = null;
 
+    public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
+        List<Section> sections = super.getSections(document, oldMaintainable);
+        if(document.isEdit()){
+        	for (Section section : sections) {
+                for (Row row : section.getRows()) {
+                    for (Field field : row.getFields()) {
+                    	if(ReviewResponsibility.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL_FIELD_NAME.equals(field.getPropertyName())){
+                    		field.setReadOnly(true);
+                    	}
+                    }
+                }
+        	}
+        }
+        return sections;
+    }
+                
 	/**
 	 * Saves the responsibility via the responsibility update service
 	 * 

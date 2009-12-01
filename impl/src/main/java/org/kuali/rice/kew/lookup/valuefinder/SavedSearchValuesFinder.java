@@ -17,15 +17,13 @@ package org.kuali.rice.kew.lookup.valuefinder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in. 

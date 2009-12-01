@@ -241,16 +241,16 @@ public class RuleDAOJpaImpl implements RuleDAO {
         Collection<String> kimGroupIds = new HashSet<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
-        if (!Utilities.isEmpty(workflowIdDirective)) {
-            if ("group".equals(workflowIdDirective)) {
-                searchUserInWorkgroups = Boolean.TRUE;
-            } else if ("".equals(workflowIdDirective)) {
-                searchUser = Boolean.TRUE;
-                searchUserInWorkgroups = Boolean.TRUE;
-            } else {
-                searchUser = Boolean.TRUE;
-            }
+        
+        if ("group".equals(workflowIdDirective)) {
+            searchUserInWorkgroups = Boolean.TRUE;
+        } else if (StringUtils.isBlank(workflowIdDirective)) {
+            searchUser = Boolean.TRUE;
+            searchUserInWorkgroups = Boolean.TRUE;
+        } else {
+            searchUser = Boolean.TRUE;
         }
+        
         if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups) {
             KimPrincipal principal = null;
 
@@ -262,14 +262,20 @@ public class RuleDAOJpaImpl implements RuleDAO {
             }
             kimGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
-        crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(kimGroupIds, principalId, searchUser, searchUserInWorkgroups),"ruleBaseValuesId");
+        Criteria responsibilityCrit = getResponsibilitySubQuery(kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
+        if (responsibilityCrit != null) {
+        	crit.in("responsibilities.ruleBaseValuesId", responsibilityCrit,"ruleBaseValuesId");
+        }
         crit.distinct(true);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
     public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
-        crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())), "ruleBaseValuesId");
+        Criteria responsibilityCrit = getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
+        if (responsibilityCrit != null) {
+        	crit.in("responsibilities.ruleBaseValuesId", responsibilityCrit, "ruleBaseValuesId");
+        }
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
@@ -281,10 +287,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         return getResponsibilitySubQuery(workgroupIdStrings,principalId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
     private Criteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
-        Criteria responsibilityCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
-        if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
-            responsibilityCrit.in("actionRequestedCd", new ArrayList(actionRequestCodes));
-        }
+        Criteria responsibilityCrit = null;
 
         Criteria ruleResponsibilityNameCrit = null;
         if (!Utilities.isEmpty(workflowId)) {
@@ -318,6 +321,10 @@ public class RuleDAOJpaImpl implements RuleDAO {
         }
 
         if (ruleResponsibilityNameCrit != null) {
+        	responsibilityCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
+            if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
+                responsibilityCrit.in("actionRequestedCd", new ArrayList(actionRequestCodes));
+            }
             responsibilityCrit.and(ruleResponsibilityNameCrit);
         }
 

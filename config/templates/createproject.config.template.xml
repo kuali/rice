@@ -3,12 +3,15 @@
 	<param name="app.namespace">KUALI</param>
 	<param name="app.code">${PROJECT_NAME}</param>
 	<param name="app.context.name">${app.code}-${environment}</param>
+	<param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources</param>
 	<param name="production.environment.code">PRD</param>
 	<param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
 	<param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="kr.externalizable.images.url">/${app.context.name}/kr/static/images/</param>
 	<param name="travel.externalizable.images.url">/${app.context.name}/static/images/</param>
 	<param name="kr.url">http://localhost:8080/${app.context.name}/kr</param>
+	<param name="kew.url">http://localhost:8080/${app.context.name}/kew</param>
+	<param name="kim.url">http://localhost:8080/${app.context.name}/kim</param>
 	<param name="attachments.pending.directory">${java.io.tmpdir}</param>
 	<param name="attachments.directory">${java.io.tmpdir}</param>
 
@@ -27,6 +30,7 @@
 	<param name="log4j.settings.path">classpath:log4j.properties</param>
 
 	<param name="workflow.url">http://localhost:8080/${app.context.name}/kew</param>
+	<param name="workflow.documentsearch.base.url">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
 	<param name="application.url">http://localhost:8080/${app.context.name}</param>
 	<param name="serviceServletUrl">http://localhost:8080/${app.context.name}/remoting/</param>
 	<param name="ken.url">http://localhost:8080/${app.context.name}/ken</param>
@@ -83,7 +87,7 @@
 
 
     <!-- Email Plugin Properties -->
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    <param name="mail.smtp.host">localhost</param>
 
 
     <param name="css.files">kr/css/kuali.css</param>

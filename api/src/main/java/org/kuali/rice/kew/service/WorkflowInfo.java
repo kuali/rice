@@ -391,6 +391,16 @@ public class WorkflowInfo implements java.io.Serializable {
     public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException {
     	return getWorkflowUtility().routingReport(reportCriteria);
     }
+    
+    /**
+     * Returns the application document id for the document with the given id.
+     *
+     * @param documentId the document id of the document for which to fetch the application document id
+     * @return the application document of the document with the given id or null if the document does not have an application document id
+     */
+    public String getAppDocId(Long documentId)  throws WorkflowException {
+    	return getWorkflowUtility().getAppDocId(documentId);
+    }
 
     /**
      * Returns whether the specified user is the last approver at the specified node name

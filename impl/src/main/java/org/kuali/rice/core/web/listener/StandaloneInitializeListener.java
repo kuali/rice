@@ -27,6 +27,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.kuali.rice.core.config.ConfigContext;
@@ -198,6 +199,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
         } catch (Exception e) {
             throw new RuntimeException("Failed to shutdown Kuali Rice Standalone.", e);
         }
+        LogManager.shutdown();
     }
 
     /**

@@ -64,6 +64,7 @@ public class Preferences implements Serializable {
     private String useOutbox;
     private String showDateApproved;
     private String showCurrentNode;
+    private String primaryDelegateFilter;
  
     /**
      * @return Returns the colorApproved.
@@ -413,5 +414,17 @@ public class Preferences implements Serializable {
 	 */
 	public void setShowCurrentNode(String currentNode) {
 		this.showCurrentNode = currentNode;
+	}
+	/**
+	 * @return the primaryDelegateFilter
+	 */
+	public String getPrimaryDelegateFilter() {
+		return this.primaryDelegateFilter;
+	}
+	/**
+	 * @param primaryDelegateFilter the primaryDelegateFilter to set
+	 */
+	public void setPrimaryDelegateFilter(String primaryDelegateFilter) {
+		this.primaryDelegateFilter = primaryDelegateFilter;
 	}
 }

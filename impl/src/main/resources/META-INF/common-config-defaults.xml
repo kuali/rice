@@ -4,9 +4,11 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
+    <param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources</param>
     <param name="http.port" override="false">8080</param>
     <param name="application.host" override="false">localhost</param>
     <param name="application.http.scheme" override="false">http</param>
+    <param name="rice.custom.ojb.properties" override="false">org/kuali/rice/core/ojb/RiceOJB.properties</param>
 
     <!--
       NOTE: The application.url parameter needs to be set by the client
@@ -27,7 +29,7 @@
     <param name="cas.validate.url" override="false">${cas.url}/serviceValidate</param>
     <param name="cas.require.https" override="false">false</param>
     <param name="cas.validate.password" override="false">false</param>
-    <param name="cas.rice.server.name" override="false">${application.http.scheme}://${application.host}:${http.port}</param>
+    <param name="cas.rice.server.name" override="false">${appserver.url}</param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>
@@ -188,6 +190,7 @@
 
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
 
+	<param name="enable.nonproduction.data.unmasking" override="false">false</param>
     <!-- KEN -->
 
 	<param name="ken.url" override="false">${application.url}/ken</param>
@@ -200,7 +203,7 @@
     <param name="notification.concurrent.jobs" override="false">true</param>
 
 	<param name="kcb.messaging.synchronous" override="false">false</param>
-    <param name="kcb.messageprocessing.startDelayMS" override="false">50000</param>
+    <param name="kcb.messageprocessing.startDelayMS" override="false">75000</param>
     <param name="kcb.messageprocessing.repeatIntervalMS" override="false">30000</param>
     <param name="kcb.quartz.group" override="false">KCB-Delivery</param>
     <param name="kcb.quartz.job.name" override="false">MessageProcessingJobDetail</param>

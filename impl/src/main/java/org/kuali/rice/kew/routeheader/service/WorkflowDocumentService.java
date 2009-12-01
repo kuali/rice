@@ -62,6 +62,8 @@ public interface WorkflowDocumentService {
     public DocumentRouteHeaderValue superUserCancelAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue superUserDisapproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
+    public DocumentRouteHeaderValue placeInExceptionRouting(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
+    
     // Introduced in 2.1 //
 
     /**

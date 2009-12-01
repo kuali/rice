@@ -449,6 +449,9 @@ public class DTOConverter {
     }
 
     public static DocumentTypeDTO convertDocumentType(DocumentType docType) {
+        if (docType == null) {
+            return null;
+        }
         DocumentTypeDTO docTypeVO = new DocumentTypeDTO();
         docTypeVO.setDocTypeParentId(docType.getDocTypeParentId());
         if (docType.getParentDocType() != null) {

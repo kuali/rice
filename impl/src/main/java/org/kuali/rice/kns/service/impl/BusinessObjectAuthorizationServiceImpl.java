@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -63,8 +64,8 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -75,7 +76,8 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	private BusinessObjectDictionaryService businessObjectDictionaryService;
 	private DocumentHelperService documentHelperService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-
+	private KualiConfigurationService kualiConfigurationService;
+	
 	public BusinessObjectRestrictions getLookupResultRestrictions(
 			BusinessObject businessObject, Person user) {
 		BusinessObjectRestrictions businessObjectRestrictions = new BusinessObjectRestrictionsBase();
@@ -524,6 +526,12 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	
 	public <T extends BusinessObject> boolean canFullyUnmaskField(Person user,
 			Class<T> businessObjectClass, String fieldName, Document document) {
+		// KFSMI-5095
+		if(isNonProductionEnvAndUnmaskingTurnedOff())
+			return false;
+
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) 
+			return false;
 		Boolean result = null;
 		if (document != null) { // if a document was passed, evaluate the permission in the context of a document
 			try { // try/catch and fallthrough is a fix for KULRICE-3365
@@ -551,6 +559,13 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	public <T extends BusinessObject> boolean canPartiallyUnmaskField(
 			Person user, Class<T> businessObjectClass, String fieldName, Document document) {
+		// KFSMI-5095
+		if(isNonProductionEnvAndUnmaskingTurnedOff())
+			return false;
+		
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) 
+			return false;
+
 		if ( document == null ) {
 			return getIdentityManagementService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
@@ -679,6 +694,13 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		return maintenanceDocumentDictionaryService;
 	}
 
+	private KualiConfigurationService getKualiConfigurationService() {
+		if (kualiConfigurationService == null) {
+			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+		}
+		return kualiConfigurationService;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectAuthorizationService#attributeValueNeedsToBeEncryptedOnFormsAndLinks(java.lang.Class, java.lang.String)
 	 */
@@ -688,5 +710,10 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(businessObjectClass.getName(), attributeName);
 		return attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI();
 	}
-	
+
+	private boolean isNonProductionEnvAndUnmaskingTurnedOff(){
+		return !getKualiConfigurationService().isProductionEnvironment() && 
+				!getKualiConfigurationService().getPropertyAsBoolean(KNSConstants.ENABLE_NONPRODUCTION_UNMASKING);
+	}
+
 }

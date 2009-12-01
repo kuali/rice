@@ -202,6 +202,8 @@ public class KEWConstants extends JSTLConstants {
     public static final String ACTION_LIST_NONDELEGATED_REQUESTS = "nondelegated";
     public static final String DELEGATORS_ON_FILTER_PAGE = "Secondary Delegators only on Filter Page";
     public static final String DELEGATORS_ON_ACTION_LIST_PAGE = "Secondary Delegators on Action List Page";
+    public static final String PRIMARY_DELEGATES_ON_FILTER_PAGE = "Primary Delegates only on Filter Page";
+    public static final String PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE = "Primary Delegates on Action List Page";
 
     public static final Map<String, String> ACTION_LIST_CONTENT;
     static {

@@ -32,6 +32,10 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
     private PostDataLoadEncryptionDao postDataLoadEncryptionDao;
 
     public void checkArguments(Class businessObjectClass, Set<String> attributeNames) {
+    	checkArguments(businessObjectClass, attributeNames, true);
+    }
+    
+    public void checkArguments(Class businessObjectClass, Set<String> attributeNames, boolean checkOjbEncryptConfig) {
 	if ((businessObjectClass == null) || (attributeNames == null)) {
 	    throw new IllegalArgumentException(
 		    "PostDataLoadEncryptionServiceImpl.encrypt does not allow a null business object Class or attributeNames Set");
@@ -53,7 +57,7 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 					" specified to PostDataLoadEncryptionServiceImpl.encrypt is not in the OJB repository ClassDescriptor for Class ")
 				.append(businessObjectClass).toString());
 	    }
-	    if (!(classDescriptor.getFieldDescriptorByName(attributeName).getFieldConversion() instanceof OjbKualiEncryptDecryptFieldConversion)) {
+	    if (checkOjbEncryptConfig && !(classDescriptor.getFieldDescriptorByName(attributeName).getFieldConversion() instanceof OjbKualiEncryptDecryptFieldConversion)) {
 		throw new IllegalArgumentException(
 			new StringBuffer("Attribute ")
 				.append(attributeName)

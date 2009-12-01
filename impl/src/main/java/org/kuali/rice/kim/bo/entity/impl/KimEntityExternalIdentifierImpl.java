@@ -12,10 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package org.kuali.rice.kim.bo.entity.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,13 +25,20 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,6 +46,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 @Entity
 @Table(name = "KRIM_ENTITY_EXT_ID_T")
 public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implements KimEntityExternalIdentifier {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimEntityExternalIdentifierImpl.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,6 +66,9 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	@ManyToOne(targetEntity=KimEntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EXT_ID_TYP_CD", insertable = false, updatable = false)
 	protected ExternalIdentifierType externalIdentifierType;
+
+	@Transient protected ExternalIdentifierType cachedExtIdType = null;	
+	@Transient protected boolean encryptionRequired = false;
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
@@ -90,6 +103,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	 */
 	public void setExternalIdentifierTypeCode(String externalIdentifierTypeCode) {
 		this.externalIdentifierTypeCode = externalIdentifierTypeCode;
+		cachedExtIdType = null;		
 	}
 
 	/**
@@ -123,41 +137,76 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 
 	public void setExternalIdentifierType(ExternalIdentifierType externalIdentifierType) {
 		this.externalIdentifierType = externalIdentifierType;
+		cachedExtIdType = null;	
 	}
 	
     @Override
 	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeInsert(persistenceBroker);
-		externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		encryptExternalId();
 	}
 	
 	@Override
 	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
 		super.beforeUpdate(persistenceBroker);
-        externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		encryptExternalId();
 	}
 	
 	@Override
 	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
         super.afterLookup(persistenceBroker);
-        externalId = KimCommonUtils.decryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+        decryptExternalId();
 	}
 	
 	@Override
+	@PrePersist
 	public void beforeInsert() {
 		super.beforeInsert();
-		externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		encryptExternalId();
     }
 
 	@Override
+	@PreUpdate
 	public void beforeUpdate() {
 		super.beforeUpdate();
-        externalId = KimCommonUtils.encryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		encryptExternalId();
 	}
 	
-	@javax.persistence.PostLoad 
+	@PostLoad 
 	public void afterLookup(){
-        externalId = KimCommonUtils.decryptExternalIdentifier(externalId, externalIdentifierTypeCode);
+		decryptExternalId();
 	}
-
+	
+	protected void evaluateExternalIdentifierType() {
+		if ( cachedExtIdType == null ) {
+			Map<String, String> criteria = new HashMap<String, String>();
+		    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
+		    cachedExtIdType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		    encryptionRequired = cachedExtIdType!= null && cachedExtIdType.isEncryptionRequired(); 
+		}
+	}
+	
+	protected void encryptExternalId() {
+		evaluateExternalIdentifierType();
+		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
+			try {
+				externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
+			}
+			catch ( Exception e ) {
+				LOG.info("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
+			}				
+		}
+	}
+	
+	protected void decryptExternalId() {
+		evaluateExternalIdentifierType();
+		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
+			try {
+				externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
+			}
+			catch ( Exception e ) {
+				LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
+	        }
+		}
+    }	
 }

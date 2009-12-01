@@ -201,9 +201,17 @@
         <constructor-arg><bean class="edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
     </bean>
 
+   	<bean id="kenLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
+		<property name="runModePropertyName" value="ken.mode" />
+		<property name="validRunMode" value="local" />
+	</bean>
+	
+	<bean id="kenSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
+       <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/ken"/>
+    </bean>
 
     <!-- export our sendNotificationKewXmlService -->
-    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <bean parent="kenLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
@@ -211,6 +219,7 @@
                     <ref bean="sendNotificationKewXmlService" />
                 </property>
                 <property name="localServiceName" value="sendNotificationKewXmlService" />
+                <property name="serviceNameSpaceURI" value="KEN"/>
                 <property name="priority" value="10" />
                 <property name="retryAttempts" value="1" />
             </bean>
@@ -219,10 +228,10 @@
         <property name="forceRefresh" value="true"/>
     </bean>
     
-    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <bean parent="kenLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
         <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
+            <bean parent="kenSoapService">
                 <property name="service">
                     <ref bean="sendNotificationKewXmlService" />
                 </property>
@@ -236,7 +245,7 @@
     </bean>
     
     <!-- Export the KEN api service -->
-    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <bean parent="kenLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
@@ -244,6 +253,7 @@
                     <ref bean="kenApiService" />
                 </property>
                 <property name="localServiceName" value="KEN-KENAPIService" />
+                <property name="serviceNameSpaceURI" value="KEN"/>
                 <property name="priority" value="10" />
                 <property name="retryAttempts" value="1" />
             </bean>

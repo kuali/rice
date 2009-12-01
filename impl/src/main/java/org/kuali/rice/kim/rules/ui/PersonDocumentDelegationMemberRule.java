@@ -35,7 +35,7 @@ public class PersonDocumentDelegationMemberRule extends DocumentRuleBase impleme
 
 	public static final String ERROR_PATH = "document.newDelegationMember";
 
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
 	public boolean processAddPersonDelegationMember(AddPersonDelegationMemberEvent addPersonDelegationMemberEvent){
 		RoleDocumentDelegationMember newDelegationMember = addPersonDelegationMemberEvent.getDelegationMember();

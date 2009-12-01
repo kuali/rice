@@ -65,6 +65,12 @@ public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
             entityManager.merge(userOptions);
         }
     }
+    
+    public void save(Collection<UserOptions> userOptions) {
+    	if (userOptions != null) for (UserOptions option : userOptions) {
+			save(option);
+		}
+    }
 
     public void deleteUserOptions(UserOptions userOptions) {
         UserOptions reattatched = entityManager.merge(userOptions);

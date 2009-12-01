@@ -312,7 +312,9 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 for(String id:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(id);
                 }
-                groupCrit.in("delegatorGroupId", userGroupIds);
+                if (!userGroupIds.isEmpty()) {
+                	groupCrit.in("delegatorGroupId", userGroupIds);
+                }
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);
@@ -333,7 +335,9 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 for(String id:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(id);
                 }
-                groupCrit.in("delegatorGroupId", userGroupIds);
+                if (!userGroupIds.isEmpty()) {
+                	groupCrit.in("delegatorGroupId", userGroupIds);
+                }
                 orCrit.or(userCrit);
                 orCrit.or(groupCrit);
                 crit.and(orCrit);
@@ -344,8 +348,9 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 addedDelegationCriteria = true;
                 filterOn = true;
             }
-        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
-                || StringUtils.isNotBlank(filter.getDelegatorId())) {
+        }
+        if (!addedDelegationCriteria && ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
+                || StringUtils.isNotBlank(filter.getDelegatorId()) )) {
             // using a secondary delegation
             crit.eq("principalId", principalId);
             if (StringUtils.isBlank(filter.getDelegatorId())) {

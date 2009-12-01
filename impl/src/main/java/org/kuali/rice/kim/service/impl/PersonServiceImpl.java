@@ -575,8 +575,8 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			return null;
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 2 );
-		criteria.put( "externalIdentifierTypeCode", externalIdentifierTypeCode );
-		criteria.put( "externalId", externalId );
+		criteria.put( KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE, externalIdentifierTypeCode );
+		criteria.put( KIMPropertyConstants.Person.EXTERNAL_ID, externalId );
 		return findPeople( criteria );
 	}
 	

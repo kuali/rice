@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -34,6 +35,7 @@ import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 
@@ -55,6 +57,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleTemplateContent.xml"));
         loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/DocumentTypeContent.xml"));
         loadXmlStream(new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleContent.xml"));
+        assertRuleBaseValuesStateIndependence();
         assertExport();
     }
 
@@ -76,7 +79,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         dataSet.getRuleAttributes().addAll(KEWServiceLocator.getRuleAttributeService().findAll());
         byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
-
+        
         // now clear the tables
         ClearDatabaseLifecycle clearLifeCycle = new ClearDatabaseLifecycle();
         clearLifeCycle.getTablesToClear().add("KREW_RULE_T");
@@ -108,6 +111,34 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         
         List newRuleDelegations = KEWServiceLocator.getRuleDelegationService().findAllCurrentRuleDelegations();
         assertDelegations(oldRuleDelegations, newRuleDelegations);
+    }
+    
+    /**
+     * verifies that rule exports are the same regardless of whether the rule is ready for render, or
+     * for persistance.
+     */
+    protected void assertRuleBaseValuesStateIndependence() throws Exception {
+    	for (Object o : KEWServiceLocator.getRuleService().fetchAllRules(true)) {
+        	RuleBaseValues rule = (RuleBaseValues)o;
+        	ExportDataSet dataSet = new ExportDataSet();
+        	dataSet.getRules().add(rule);
+        	
+        	// first, do a conversion in the just-loaded state:
+        	byte[] saveXmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        	String saveStr = new String(saveXmlBytes);
+        	
+        	// now, convert for render:
+        	WebRuleUtils.populateRuleMaintenanceFields(rule);
+        	
+        	// do another conversion in the ready-for-render state:
+        	byte[] loadXmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        	String loadStr = new String(loadXmlBytes);
+        	
+        	// check that the results are identical:
+        	assertTrue("The load/render state of the RuleBaseValues shouldn't effect the export: \n" + 
+        			saveStr + "\n\n != \n\n" + loadStr, 
+        			StringUtils.equals(saveStr, loadStr));
+        }
     }
 
     private void assertRuleExport(RuleBaseValues oldRule, RuleBaseValues newRule) {

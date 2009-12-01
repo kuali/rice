@@ -113,7 +113,7 @@
 		<ruleAttribute>
 			<name>KualiOrgReviewAttribute</name>
 			<className>
-				org.kuali.rice.kew.attribute.KualiOrgReviewAttribute
+				org.kuali.rice.kew.xml.export.KualiOrgReviewAttribute
 			</className>
 			<label>Kuali Org Review Attribute</label>
 			<description>Kuali Org Review Attribute</description>

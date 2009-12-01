@@ -39,7 +39,7 @@ import org.kuali.rice.kns.util.TableRenderUtil;
  *
  */
 public class IdentityManagementRoleDocumentForm extends IdentityManagementDocumentFormBase {
-	private static final long serialVersionUID = 7099079353241080483L;
+	protected static final long serialVersionUID = 7099079353241080483L;
 	{
 		requiredNonEditableProperties.add("methodToCall");
 		requiredNonEditableProperties.add("roleCommand");
@@ -164,7 +164,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 		return getMemberBusinessObjectName(getDelegationMember().getMemberTypeCode());
 	}
 
-	private String getMemberFieldConversions(String memberTypeCode){
+	protected String getMemberFieldConversions(String memberTypeCode){
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return "principalId:member.memberId,principalName:member.memberName";
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
@@ -174,7 +174,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 		return "";
 	}
 
-	private String getMemberBusinessObjectName(String memberTypeCode){
+	protected String getMemberBusinessObjectName(String memberTypeCode){
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return PersonImpl.class.getName();
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))

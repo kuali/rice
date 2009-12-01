@@ -109,6 +109,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
             testMode = true;
         }		
 		configureWebConfiguration(config);
+		configureRunMode(config);
 		return config;
 	}
 
@@ -132,6 +133,14 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
 			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
 		}
+	}
+	
+	/**
+	 * Creates a configuration parameter for the run mode by appending the module name (in lower case) plus ".mode"
+	 */
+	protected void configureRunMode(Config config) {
+		String propertyName = getModuleName().toLowerCase() + ".mode";
+		config.getProperties().setProperty(propertyName, getRunMode());
 	}
 	
 	/**

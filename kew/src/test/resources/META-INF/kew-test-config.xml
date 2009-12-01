@@ -16,6 +16,7 @@
 	<param name="kew.url.host">http://localhost</param>
 	<param name="dev.mode">true</param>
     <param name="message.delivery">synchronous</param>
+    <param name="rice.ksb.allowSyncExceptionRouting">true</param>
 	<param name="message.persistence">true</param>
 	<param name="threadPool.size">5</param>
 	<param name="embedded.plugin.default.current.classloader">true</param>

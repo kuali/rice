@@ -38,7 +38,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPermissionRule {
 
-	private static final String ERROR_PATH = "document.permission.permissionId";
+	public static final String ERROR_PATH = "document.permission.permissionId";
 	
 	public boolean processAddPermission(AddPermissionEvent addPermissionEvent) {
 		KimDocumentRolePermission newPermission = addPermissionEvent.getPermission();
@@ -54,18 +54,10 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 		}
 	    boolean rulePassed = true;
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addPermissionEvent.getDocument();
-		Map<String,String> permissionDetails = new HashMap<String,String>();
-		permissionDetails.put(KimAttributes.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
-		permissionDetails.put(KimAttributes.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, 
-				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.GRANT_PERMISSION, 
-				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
-				permissionDetails, null)) {
-            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
-            		new String[] {kimPermissionInfo.getNamespaceCode(), kimPermissionInfo.getTemplate().getName()});
-            return false;
+		if(!hasPermissionToGrantPermission(kimPermissionInfo, document)){
+	        GlobalVariables.getMessageMap().putError(KimDocumentPermissionRule.ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
+	        		new String[] {kimPermissionInfo.getNamespaceCode(), kimPermissionInfo.getTemplate().getName()});
+	        return false;
 		}
 
 		if (newPermission == null || StringUtils.isBlank(newPermission.getPermissionId())) {
@@ -84,4 +76,19 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 		return rulePassed;
 	} 
 
+	public boolean hasPermissionToGrantPermission(KimPermissionInfo kimPermissionInfo , IdentityManagementRoleDocument document){
+		Map<String,String> permissionDetails = new HashMap<String,String>();
+		permissionDetails.put(KimAttributes.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
+		permissionDetails.put(KimAttributes.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());
+		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+				document, 
+				KimConstants.NAMESPACE_CODE, 
+				KimConstants.PermissionTemplateNames.GRANT_PERMISSION, 
+				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
+				permissionDetails, null)) {
+	        return false;
+		}
+		return true;
+	}
+	
 }

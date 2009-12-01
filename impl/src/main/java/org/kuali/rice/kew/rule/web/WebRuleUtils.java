@@ -54,7 +54,7 @@ import org.kuali.rice.kns.web.ui.Section;
 
 
 /**
- * Some utilities which are utilized by the {@link Rule2Action}.
+ * Some utilities which are utilized by the {@link RuleAction}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

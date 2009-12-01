@@ -52,19 +52,26 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   }
 
   protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorPrincipalId) {
-      DocumentTypeSecurity security = getDocumentTypeSecurity(userSession, documentTypeName, session);
-      if (security == null || !security.isActive()) {
-        // Security is not enabled for this doctype.  Everyone can see this doc.
-        return true;
-      }
-      if (isAdmin(session)) {
-          return true;
-      }
-      for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
-          Boolean authorized = securityAttribute.docSearchAuthorized(userSession.getPerson(), documentTypeName, routeHeaderId, initiatorPrincipalId);
-          if (authorized != null) {
-              return authorized.booleanValue();
+      DocumentTypeSecurity security = null;
+      try {
+          security = getDocumentTypeSecurity(userSession, documentTypeName, session);
+          if (security == null || !security.isActive()) {
+            // Security is not enabled for this doctype.  Everyone can see this doc.
+            return true;
           }
+          if (isAdmin(session)) {
+              return true;
+          }
+          for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
+              Boolean authorized = securityAttribute.docSearchAuthorized(userSession.getPerson(), documentTypeName, routeHeaderId, initiatorPrincipalId);
+              if (authorized != null) {
+                  return authorized.booleanValue();
+              }
+          }
+      } 
+      catch (Exception e) {
+          LOG.warn("Not able to retrieve DocumentTypeSecurity from remote system for doctype: " + documentTypeName, e);
+          return false;
       }
       return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorPrincipalId, session);
   }

@@ -45,6 +45,7 @@ import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -69,6 +70,13 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 	    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
 	        LOG.debug("doActionTaken: " + event);
 	        super.postEvent(event.getRouteHeaderId(), event, "actionTaken");
+	        
+	        // if the action requested is a save, go ahead and update the database with the most current information. -grpatter
+	 	 	if (KEWConstants.ACTION_TAKEN_SAVED_CD.equals(event.getActionTaken().getActionTaken())) {
+	 	 		DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
+	 	 		extractEDLData(routeHeader, getNodeNames(event.getRouteHeaderId()));
+	 	 	}
+	        
 	        return super.doActionTaken(event);
 	    }
 

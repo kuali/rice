@@ -39,13 +39,9 @@
         <value>parameterName</value>
       </list>
     </property>
-    
-    
-    
     <property name="documentTypeName" value="ParameterMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kns.rules.ParameterRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    
     <property name="workflowProperties">
       <ref bean="ParameterMaintenanceDocument-workflowProperties"/>
     </property>

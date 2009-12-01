@@ -218,14 +218,67 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 	}
 	
+	// loop over nodes
+	// if split node, push onto stack
+		// note the number of children, this is the number of times the join node needs to be found
+	// when join node found, return to last split on stack
+		// move to next child of the split
+	
+	protected RouteNode flattenSplitNode( RouteNode splitNode, Map<String,RouteNode> nodes ) {
+		nodes.put( splitNode.getRouteNodeName(), splitNode );
+		RouteNode joinNode = null;
+		
+		for ( RouteNode nextNode : splitNode.getNextNodes() ) {
+			joinNode = flattenRouteNodes(nextNode, nodes);
+		}
+		
+		if ( joinNode != null ) {
+			nodes.put( joinNode.getRouteNodeName(), joinNode );
+		}
+		return joinNode;
+	}
+	
+	/**
+	 * @param node
+	 * @param nodes
+	 * @return The last node processed by this method.
+	 */
+	protected RouteNode flattenRouteNodes( RouteNode node, Map<String,RouteNode> nodes ) {
+		RouteNode lastProcessedNode = null;
+		// if we've seen the node before - skip, avoids infinite loop
+		if ( nodes.containsKey(node.getRouteNodeName()) ) {
+			return node;
+		}
+		
+		if ( node.getNodeType().contains( "SplitNode" ) ) { // Hacky - but only way when the class may not be present in the KEW JVM
+			lastProcessedNode = flattenSplitNode(node, nodes); // special handling to process all split children before continuing
+			// now, process the join node's children
+			for ( RouteNode nextNode : lastProcessedNode.getNextNodes() ) {
+				lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+			}
+		} else if ( node.getNodeType().contains( "JoinNode" ) ) {
+			lastProcessedNode = node; // skip, handled by the split node
+		} else {
+			// normal node, add to list and process all children
+			nodes.put(node.getRouteNodeName(), node);
+			for ( RouteNode nextNode : node.getNextNodes() ) {
+				lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+			}
+		}
+		return lastProcessedNode;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void populateRoutingResponsibilities( DocumentConfigurationViewForm form ) {
 		// pull all the responsibilities
 		// merge the data and attach to route levels
 		// pull the route levels and store on form
-		List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
+		//List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
+		RouteNode rootNode = ((List<org.kuali.rice.kew.engine.node.Process>)form.getDocumentType().getProcesses()).get(0).getInitialRouteNode();
+		LinkedHashMap<String, RouteNode> routeNodeMap = new LinkedHashMap<String, RouteNode>();
+		flattenRouteNodes(rootNode, routeNodeMap);
 		
-		form.setRouteNodes( routeNodes );
+		form.setRouteNodes( new ArrayList<RouteNode>( routeNodeMap.values() ) );
 		// pull all the responsibilities and store into a map for use by the JSP
 		
 		// FILTER TO THE "Review" template only

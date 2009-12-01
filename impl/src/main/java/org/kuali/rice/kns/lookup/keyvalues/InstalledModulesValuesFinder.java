@@ -18,10 +18,10 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * This class returns list of approved document indicator value pairs.

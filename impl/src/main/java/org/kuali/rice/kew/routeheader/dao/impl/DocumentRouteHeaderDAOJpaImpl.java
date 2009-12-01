@@ -29,6 +29,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.query.Criteria;
+import org.apache.ojb.broker.query.QueryFactory;
+import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.OrmUtils;
@@ -67,8 +70,8 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 	}
 
 	public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {   	
-    	DocumentRouteHeaderValueContent documentContent = routeHeader.getDocumentContent();
-    	List<SearchableAttributeValue> searchableAttributes = routeHeader.getSearchableAttributeValues();
+    	DocumentRouteHeaderValueContent documentContent = routeHeader.getDocumentContent();    	
+//    	List<SearchableAttributeValue> searchableAttributes = routeHeader.getSearchableAttributeValues();
     	
     	if (routeHeader.getRouteHeaderId() == null){
     		entityManager.persist(routeHeader);
@@ -80,6 +83,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         documentContent.setRouteHeaderId(routeHeader.getRouteHeaderId());
         entityManager.merge(documentContent);
         
+        /*
         //Save searchable attributes
         for (SearchableAttributeValue searchableAttributeValue:searchableAttributes){
         	searchableAttributeValue.setRouteHeaderId(routeHeader.getRouteHeaderId());
@@ -89,6 +93,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         		entityManager.merge(searchableAttributeValue);
         	}
         }
+        */
     }
 
     public DocumentRouteHeaderValueContent getContent(Long routeHeaderId) {
@@ -150,7 +155,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         
         try {
 	        DocumentRouteHeaderValue routeHeader = (DocumentRouteHeaderValue) query.getSingleResult(); 
-	    	routeHeader.setSearchableAttributeValues(findSearchableAttributeValues(routeHeaderId));
+//	    	routeHeader.setSearchableAttributeValues(findSearchableAttributeValues(routeHeaderId));
 	    	return routeHeader;
         } catch (NoResultException nre){
         	return null;
@@ -260,6 +265,12 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
 		return document.getDocRouteStatus();
     }
+    
+    public String getAppDocId(Long documentId) {
+    	Query query = entityManager.createNamedQuery("DocumentRouteHeaderValue.GetAppDocId");
+        query.setParameter("routeHeaderId", documentId);
+        return (String) query.getSingleResult(); 
+ 	 }
     
     public void save(SearchableAttributeValue searchableAttributeValue) {   	
     	if (searchableAttributeValue.getSearchableAttributeValueId() == null){

@@ -946,7 +946,6 @@
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="VARCHAR" />
-    <field-descriptor name="memberName" column="MBR_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />

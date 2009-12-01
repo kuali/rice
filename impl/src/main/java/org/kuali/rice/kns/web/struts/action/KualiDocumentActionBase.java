@@ -37,6 +37,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -95,7 +96,6 @@ import org.kuali.rice.kns.web.struts.form.BlankFormFile;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springmodules.orm.ojb.OjbOperationException;
 

@@ -20,11 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
@@ -49,8 +48,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
-import org.kuali.rice.kim.service.impl.UiDocumentServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -65,18 +64,25 @@ import org.kuali.rice.kns.util.KualiDecimal;
  */
 public class UiDocumentServiceImplTest extends KIMTestCase {
 
-	private UiDocumentServiceImpl uiDocumentService;
+	private UiDocumentService uiDocumentService;
 
 	public void setUp() throws Exception {
 		super.setUp();
-		uiDocumentService = (UiDocumentServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimUiDocumentService"));
+		uiDocumentService = KIMServiceLocator.getUiDocumentService();
 	}
 
 	@Test
 	public void testSaveToEntity() {
+	    Person adminPerson = KIMServiceLocator.getPersonService().getPersonByPrincipalName("admin");
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
+		
+		try {
+            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
+        } catch (WorkflowException e) {
+            e.printStackTrace();
+        }
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(personDoc.getEntityId());
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
         KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType.getAddresses().get(0));
@@ -103,7 +109,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	@Test
 	public void testLoadToPersonDocument() {
 		
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl("entity123eId");
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl("entity123eId");
 		assertNotNull(entity);
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "entity123pId");
@@ -199,7 +205,6 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		personDoc.setEmails(initEmails());	
 		return personDoc;
 	}
-	
 	
 	private List<PersonDocumentName> initNames() {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();

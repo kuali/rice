@@ -19,31 +19,33 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 
 /**
  * 
- * This service implements a cache of KimEntityDefaultInfo. 
+ * This service archives KimEntityDefaultInfo.  It's purpose is to provide long term 
+ * storage for basic entity data that may be removed from the IdentityService implementation's 
+ * backing store.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface IdentityCacheService {
+public interface IdentityArchiveService {
 
 	/**
 	 * Gets the KimEntityDefaultInfo from the cache for the given entityId.
 	 */
-    KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCache( String entityId );
+    KimEntityDefaultInfo getEntityDefaultInfoFromArchive( String entityId );
 
 	/**
 	 * Gets the KimEntityDefaultInfo from the cache for the entity with the given principalId.
 	 */
-    KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalId( String principalId );
+    KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalId( String principalId );
 
 	/**
 	 * Gets the KimEntityDefaultInfo from the cache for the entity with the given principalName.
 	 */
-	KimEntityDefaultInfo getEntityDefaultInfoFromPersistentCacheByPrincipalName( String principalName );
+	KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalName( String principalName );
 	
 	/**
 	 * Saves the given KimEntityDefaultInfo into the cache.
 	 */
-	void saveDefaultInfoToCache( KimEntityDefaultInfo entity );
+	void saveDefaultInfoToArchive( KimEntityDefaultInfo entity );
 	
 }

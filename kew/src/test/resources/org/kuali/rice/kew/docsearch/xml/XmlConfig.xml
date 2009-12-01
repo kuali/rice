@@ -424,6 +424,157 @@
 				</xmlSearchContent>
 			</searchingConfig>
 		</ruleAttribute>
+		<!-- Test the ability to have blank valid values on a drop-down attribute. -->
+		<ruleAttribute>
+			<name>XMLSearchableAttributeWithBlank</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute with blank valid value</label>
+			<description>XML Searchable attribute with blank valid value</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="listWithBlankValidValue" title="List with Blank Valid Value">
+					<display>
+						<type>select</type>
+						<values title="No Value" selected="true"></values>
+						<values title="Value 1">VAL1</values>
+						<values title="Value 2">VAL2</values>
+						<values title="Value 3">VAL3</values>
+						<values title="Value 4">VAL4</values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/listWithBlankValidValue/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<listWithBlankValidValue>
+							<value>%listWithBlankValidValue%</value>
+						</listWithBlankValidValue>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<!-- Test the ability to not have blank valid values on a drop-down attribute. -->
+		<ruleAttribute>
+			<name>XMLSearchableAttributeWithoutBlank</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>XML Searchable attribute without blank valid value</label>
+			<description>XML Searchable attribute without blank valid value</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="listWithoutBlankValidValue" title="List without Blank Valid Value">
+					<display>
+						<type>select</type>
+						<values title="No Value" selected="true">NO_VALUE</values>
+						<values title="Value 1">VALUE_1</values>
+						<values title="Value 2">VALUE_2</values>
+						<values title="Value 3">VALUE_3</values>
+					</display>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/listWithoutBlankValidValue/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<listWithoutBlankValidValue>
+							<value>%listWithoutBlankValidValue%</value>
+						</listWithoutBlankValidValue>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<!-- Beginning of XML attribute range definition tests. -->
+		<ruleAttribute>
+			<name>TextFieldWithInclusiveLower</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Text field with inclusive lower</label>
+			<description>Text field with inclusive lower</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="textFieldWithInclusiveLower" title="Text Field with Inclusive Lower">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition>
+						<rangeDefinition inclusive="false" datePicker="false">
+							<lower inclusive="true"/>
+							<upper/>
+						</rangeDefinition>
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/textFieldWithInclusiveLower/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<textFieldWithInclusiveLower>
+							<value>%textFieldWithInclusiveLower%</value>
+						</textFieldWithInclusiveLower>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TextFieldWithCaseSensitivity</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Text field with case sensitivity</label>
+			<description>Text field with case sensitivity</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="textFieldWithCaseSensitivity" title="Text Field with Case Sensitivity">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition>
+						<rangeDefinition inclusive="true" datePicker="false" caseSensitive="true">
+							<lower/>
+							<upper/>
+						</rangeDefinition>
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/textFieldWithCaseSensitivity/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<textFieldWithCaseSensitivity>
+							<value>%textFieldWithCaseSensitivity%</value>
+						</textFieldWithCaseSensitivity>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>TextFieldWithOverrides</name>
+			<className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+			<label>Text field with overrides</label>
+			<description>Text field with overrides</description>
+			<type>SearchableXmlAttribute</type>
+			<searchingConfig>
+				<fieldDef name="textFieldWithOverrides" title="Text Field with Overrides">
+					<display>
+						<type>text</type>
+					</display>
+					<searchDefinition>
+						<rangeDefinition inclusive="true" caseSensitive="false" datePicker="false">
+							<lower inclusive="false" datePicker="true"/>
+							<upper caseSensitive="true"/>
+						</rangeDefinition>
+					</searchDefinition>
+					<fieldEvaluation>
+						<xpathexpression>//putWhateverWordsIwantInsideThisTag/textFieldWithOverrides/value</xpathexpression>
+					</fieldEvaluation>
+				</fieldDef>
+				<xmlSearchContent>
+					<putWhateverWordsIwantInsideThisTag>
+						<textFieldWithOverrides>
+							<value>%textFieldWithOverrides%</value>
+						</textFieldWithOverrides>
+					</putWhateverWordsIwantInsideThisTag>
+				</xmlSearchContent>
+			</searchingConfig>
+		</ruleAttribute>
+		<!-- End of XML attribute range definition tests. -->
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -744,6 +895,78 @@
 			<attributes>
 				<attribute>
 					<name>SearchableAttributeWithHiddens</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>BlankValidValuesDocType</name>
+			<label>BlankValidValuesDocType</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>true</value>
+				</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>XMLSearchableAttributeWithBlank</name>
+				</attribute>
+				<attribute>
+					<name>XMLSearchableAttributeWithoutBlank</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initial"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initial">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>RangeDefinitionTestDocType</name>
+			<description>RangeDefinitionTestDocType</description>
+			<label>RangeDefinitionTestDocType</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+			<active>true</active>
+			<policies>
+			<policy>
+				<name>DEFAULT_APPROVE</name>
+				<value>true</value>
+			</policy>
+			</policies>
+			<attributes>
+				<attribute>
+					<name>TextFieldWithInclusiveLower</name>
+				</attribute>
+				<attribute>
+					<name>TextFieldWithCaseSensitivity</name>
+				</attribute>
+				<attribute>
+					<name>TextFieldWithOverrides</name>
 				</attribute>
 			</attributes>
 			<routePaths>

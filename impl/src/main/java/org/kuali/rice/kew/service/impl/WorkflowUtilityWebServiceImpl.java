@@ -95,6 +95,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 @SuppressWarnings({"unchecked"})
 @WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
         serviceName = KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME,
@@ -504,7 +506,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             LOG.error("null routeHeaderId passed in.");
             throw new RuntimeException("null routeHeaderId passed in.");
         }
-    	List<String> principalIds = new ArrayList<String>();
+    	Set<String> principalIds = new HashSet<String>();
         try {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug("Evaluating isUserInRouteLog [docId=" + routeHeaderId + ", lookFuture=" + lookFuture + "]");
@@ -520,7 +522,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             List<ActionRequestValue> actionRequests =
             	KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
             for(ActionRequestValue actionRequest: actionRequests){
-            	principalIds.add(actionRequest.getPrincipalId());
+            	principalIds.addAll(getPrincipalIdsForActionRequest(actionRequest));
             }
             if (!lookFuture) {
             	return principalIds.toArray(new String[]{});
@@ -531,13 +533,33 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             SimulationResults results = simulationEngine.runSimulation(criteria);
             actionRequests = (List<ActionRequestValue>)results.getSimulatedActionRequests();
             for(ActionRequestValue actionRequest: actionRequests){
-                principalIds.add(actionRequest.getPrincipalId());
+            	principalIds.addAll(getPrincipalIdsForActionRequest(actionRequest));
             }
         } catch (Exception ex) {
             LOG.warn("Problems getting principalIds in Route Log for routeHeaderId: "+routeHeaderId+". Exception:"+ex.getMessage(),ex);
         }
     	return principalIds.toArray(new String[]{});
     }
+
+	/**
+	 * This method gets all of the principalIds for the given ActionRequestValue.  It drills down into
+	 * groups if need be.
+	 * 
+	 * @param actionRequest
+	 */
+	private List<String> getPrincipalIdsForActionRequest(ActionRequestValue actionRequest) {
+		List<String> results = Collections.emptyList();
+		if (actionRequest.getPrincipalId() != null) {
+			results = Collections.singletonList(actionRequest.getPrincipalId());
+		} else if (actionRequest.getGroupId() != null) {
+			List<String> principalIdsForGroup = 
+				KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId());
+			if (principalIdsForGroup != null) {
+				results = principalIdsForGroup;
+			}
+		}
+		return results;
+	}
 
     /***
      * @see org.kuali.rice.kew.service.WorkflowUtility#getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(java.lang.String, java.lang.Long)
@@ -1130,6 +1152,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         
         return getDocumentDetail((Long)routeHeaderIds.iterator().next());
 	}
+	
+	public String getAppDocId(Long documentId) {
+ 	 	return KEWServiceLocator.getRouteHeaderService().getAppDocId(documentId);
+ 	}
     
     public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(Long documentId) throws WorkflowException {
         if (documentId == null) {

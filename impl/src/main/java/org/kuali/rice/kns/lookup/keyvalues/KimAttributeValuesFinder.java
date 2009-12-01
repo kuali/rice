@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

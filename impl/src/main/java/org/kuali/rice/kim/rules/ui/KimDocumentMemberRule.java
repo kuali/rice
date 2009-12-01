@@ -46,7 +46,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 
 	private static final String ERROR_PATH = "document.member.memberId";
 
-	private AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
 	public boolean processAddMember(AddMemberEvent addMemberEvent){
 		KimDocumentRoleMember newMember = addMemberEvent.getMember();
@@ -86,7 +86,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	i++;
 	    }
 	    
-        if ( kimTypeService != null ) {
+        if ( kimTypeService != null && !newMember.isRole()) {
     		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
@@ -98,7 +98,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 		return rulePassed;
 	} 
 
-	private boolean validAssignRole(KimDocumentRoleMember roleMember, IdentityManagementRoleDocument document){
+	protected boolean validAssignRole(KimDocumentRoleMember roleMember, IdentityManagementRoleDocument document){
         boolean rulePassed = true;
 		if(StringUtils.isNotEmpty(document.getRoleNamespace())){
 			Map<String,String> roleDetails = new HashMap<String,String>();

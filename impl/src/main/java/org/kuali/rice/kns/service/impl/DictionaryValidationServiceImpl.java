@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -327,12 +328,25 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat
+     * objectClassName is the docTypeName
      */
-    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeValue, String errorKey) {
+    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
         String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+        boolean checkDateBounds = false; // this is used so we can check date bounds
+        Class<?> formatterClass = null;
 
-        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeValue + ")");
+        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
 
+        /*
+         *  This will return a list of searchable attributes. so if the value is
+         *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
+         */
+        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue);
+
+        if(attributeValues == null || attributeValues.isEmpty())
+        	return;
+
+        for(String attributeValue : attributeValues){
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
@@ -345,80 +359,54 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
             	if (!validationExpression.matcher(attributeValue).matches()) {
             		// Retrieving formatter class
-                    Class<?> formatterClass=getDataDictionaryService().getAttributeFormatter(
+	            		if(formatterClass == null){
+	            			// this is just a cache check... all dates ranges get called twice
+	            			formatterClass=getDataDictionaryService().getAttributeFormatter(
                             objectClassName, attributeName);
+	            		}
+
                     if (formatterClass != null) {
                     	boolean valuesAreValid = true;
-                        String[] valuesToValidate = null;
-                        String[] errorKeyPrefix = null;
+                    		boolean isError=true;
+                    		String errorKeyPrefix = "";
+                    		try {
                     	
-                        // For dates, remove the substrings "<=", ">=", and ".." from the date Strings before validating them. It is not necessary to
-                        // remove these substrings prior to the regex validation because custom date fields should be validated with the formatter anyway.
+                    			// this is a special case for date ranges in order to set the proper error message
                         if (DateFormatter.class.isAssignableFrom(formatterClass)) {
-                        	// Remove the substrings via logic resembling DocSearchCriteriaDTOLookupableHelperServiceImpl.getSearchableAttributeFieldValue.
-                        	if (StringUtils.contains(attributeValue, "..")) {
-                        	    // If a "From" and "To" date are embedded together, validate each one individually.
-                        	    String[] datesToTest = StringUtils.split(attributeValue, "..");
-                        	    valuesToValidate = new String[] { datesToTest[0], datesToTest[1] };
-                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX, "" };
-                        	} else if (StringUtils.contains(attributeValue, ">=")) {
-                        	    valuesToValidate = new String[] { StringUtils.split(attributeValue, ">=")[0] };
-                        	    errorKeyPrefix = new String[] { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX };
-                            } else if (StringUtils.contains(attributeValue, "<=")) {
-                                valuesToValidate = new String[] { StringUtils.split(attributeValue, "<=")[0] };
-                                errorKeyPrefix = new String [] { "" };
-                            } else {
-                                valuesToValidate = new String[] { attributeValue };
-                                errorKeyPrefix = new String [] { "" };
+                    				String[] values = attributeInValue.split("\\.\\."); // is it a range
+                    				if(values.length == 2 && attributeValues.size() == 2){ // make sure it's not like a .. b | c
+                    					checkDateBounds = true; // now we need to check that a <= b
+                    					if(attributeValues.indexOf(attributeValue) == 0){ // only care about lower bound
+                    						errorKeyPrefix = KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX;
+                    					}
                             }
-                        } else {
-                        	valuesToValidate = new String[] { attributeValue };
-                        	errorKeyPrefix = new String [] { "" };
                         }
                         
-                        // Loop twice if the field is a date field and both a "From" and "To" date were specified; otherwise, run once.
-                    	for (int i = 0; i < valuesToValidate.length; i++) {
-                    		boolean isError=true;
-                    		try {
                     			Method validatorMethod=formatterClass.getDeclaredMethod(
                     					VALIDATE_METHOD, new Class<?>[] {String.class});
                         		Object o=validatorMethod.invoke(
-                        				formatterClass.newInstance(), valuesToValidate[i]);
+                        				formatterClass.newInstance(), attributeValue);
                         		if (o instanceof Boolean) {
                         			isError = !((Boolean)o).booleanValue();
                         		}
                         		valuesAreValid &= !isError;
                     		} catch (Exception e) {
                     			LOG.debug(e.getMessage(), e);
+                    			isError =true;
                     			valuesAreValid = false;
                     		}
                     		if (isError) {
+                    			checkDateBounds = false; // it's already invalid, no need to check date bounds
                     			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
                     			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                    			GlobalVariables.getMessageMap().putError(errorKeyPrefix[i] + errorKey, errorMessageKey, errorMessageParameters);
+                    			GlobalVariables.getMessageMap().putError(errorKeyPrefix + errorKey, errorMessageKey, errorMessageParameters);
                     		}
-                    	}
-                        
-                        // If there were two dates validated and both were valid, ensure that the "From" date does not occur after the "To" date.
-                		if (valuesToValidate.length == 2 && valuesAreValid) {
-                			try {
-                				valuesAreValid &= Utilities.checkDateRanges(valuesToValidate[0], valuesToValidate[1]);
-                			} catch (Exception e) {
-                				LOG.debug(e.getMessage(), e);
-                				valuesAreValid = false;
-                			}
-                			if (!valuesAreValid) {
-                           		String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                        		String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                        		GlobalVariables.getMessageMap().putError(errorKeyPrefix[0] + errorKey, errorMessageKey + ".range", errorMessageParameters);
-                			}
-                		}
                     } else {
+	                    	// if it fails the default validation and has no formatter class then it's still a std failure.
                     	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
             			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
             			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
                     }
-                    return;
                 }
 
             }
@@ -450,6 +438,28 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     // quash; this indicates that the DD contained a max for a non-numeric attribute
                 }
             }
+        }
+    }
+
+        if(checkDateBounds){
+        	// this means that we only have 2 values and it's a date range.
+        	java.sql.Timestamp lVal = null;
+    		java.sql.Timestamp uVal = null;
+    		try{
+    			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
+    			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(1));
+    		}catch(Exception ex){
+    			// this shouldn't happen because the tests passed above.
+    			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+    			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+    			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey, errorMessageParameters);
+    		}
+
+    		if(lVal.compareTo(uVal) > 0){ // check the bounds
+    			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+    			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+    			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey + ".range", errorMessageParameters);
+    		}
         }
     }
 

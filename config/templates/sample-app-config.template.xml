@@ -13,6 +13,7 @@
 	<param name="app.namespace">KUALI</param>
 	<param name="app.code">kr</param>
 	<param name="app.context.name">${app.code}-${environment}</param>
+	<param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources</param>
 	<param name="application.url">http://localhost:8080/${app.context.name}</param>
 	<param name="externalizable.help.url">/${app.context.name}/kr/static/help/</param>
 	<param name="externalizable.images.url">/${app.context.name}/kr/static/images/</param>
@@ -97,7 +98,7 @@
     <param name="notification.ojb.platform">Oracle</param>
 
     <!-- Email Plugin Properties -->
-    <param name="emailDeliverer.smtp.host">no_such_smtp_host</param>
+    <param name="mail.smtp.host">localhost</param>
 
     <param name="cas.server.renew">false</param>
 

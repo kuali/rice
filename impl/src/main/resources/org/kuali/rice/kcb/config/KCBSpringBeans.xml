@@ -173,9 +173,15 @@
     </bean>
      -->
 
+   	<bean id="kcbLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
+		<property name="runModePropertyName" value="kcb.mode" />
+		<property name="validRunMode" value="local" />
+	</bean>
+   
+
     <!-- export our KCB service -->
 
-    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <bean parent="kcbLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
@@ -183,33 +189,13 @@
                 <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessagingService</value></property>
                 <property name="service"><ref bean="messagingService" /></property>
                 <property name="localServiceName" value="KCB-MessagingService" />
-                <!--
                 <property name="serviceNameSpaceURI" value="KCB"/>
-                 -->
                 <property name="busSecurity" value="false"/>
             </bean>
         </property>
     </bean>
-    <!--
-    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-        <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
-                <property name="service">
-                    <ref bean="sendNotificationKewXmlService" />
-                </property>
-                <property name="localServiceName" value="sendNotificationKewXmlSOAPService" />
-                <property name="priority" value="10" />
-                <property name="retryAttempts" value="1" />
-            </bean>
-        </property>
-         -->
-        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
-        <!-- 
-        <property name="forceRefresh" value="true"/>
-    </bean>
-    -->
  
-    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+    <bean parent="kcbLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
@@ -217,29 +203,9 @@
                 <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessageDelivererRegistryAPI</value></property>
                 <property name="service"><ref bean="messageDelivererRegistryService" /></property>
                 <property name="localServiceName" value="KCB-MessageDelivererRegistryAPI" />
-                <!--
                 <property name="serviceNameSpaceURI" value="KCB"/>
-                 -->
                 <property name="busSecurity" value="false"/>
             </bean>
         </property>
     </bean>
-    <!--
-    <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-        <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition">
-                <property name="service">
-                    <ref bean="sendNotificationKewXmlService" />
-                </property>
-                <property name="localServiceName" value="sendNotificationKewXmlSOAPService" />
-                <property name="priority" value="10" />
-                <property name="retryAttempts" value="1" />
-            </bean>
-        </property>
-         -->
-        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
-        <!-- 
-        <property name="forceRefresh" value="true"/>
-    </bean>
-    -->
 </beans>

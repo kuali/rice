@@ -43,6 +43,7 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 
 	// exceptions that will cause this Proxy to remove the service from the bus
 	private static List<Class> serviceRemovalExceptions = new ArrayList<Class>();
+	private static List<Integer> serviceRemovalResponseCodes = new ArrayList<Integer>();
 
 	static {
 		serviceRemovalExceptions.add(NoHttpResponseException.class);
@@ -52,6 +53,11 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 		serviceRemovalExceptions.add(ConnectTimeoutException.class);
 		serviceRemovalExceptions.add(ConnectionPoolTimeoutException.class);
 		serviceRemovalExceptions.add(ConnectException.class);
+	}
+	
+	static {
+	    serviceRemovalResponseCodes.add(new Integer(404));
+        serviceRemovalResponseCodes.add(new Integer(503));
 	}
 
 	private BusClientFailureProxy(Object target, ServiceInfo serviceInfo) {
@@ -97,8 +103,8 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 			return true;
 		} else if (throwable instanceof HttpException) {
 			HttpException httpException = (HttpException)throwable;
-			if (httpException.getResponseCode() == 503) {
-				LOG.info("Found a Service Removal Exception because of a 503: " + throwable.getClass().getName());
+			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
+				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + throwable.getClass().getName());
 				return true;
 			}
 		}

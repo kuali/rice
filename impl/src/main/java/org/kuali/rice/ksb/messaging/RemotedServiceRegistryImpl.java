@@ -39,7 +39,6 @@ import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;
 import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.web.servlet.mvc.Controller;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
@@ -220,6 +219,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			throw new RuntimeException("No service url provided to locate services.  This is configured in the KSBConfigurer.");
 		}
 
+		// First, we need to get the list of services that we should be publishing
+		
 		List javaServices = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		// convert the ServiceDefinitions into ServiceInfos for diff comparison
 		List<ServiceInfo> configuredJavaServices = new ArrayList<ServiceInfo>();
@@ -233,7 +234,9 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		configuredServices.addAll(configuredJavaServices);
 		List<ServiceInfo> fetchedServices = null;
 
-		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
+		// Next, let's find the services that we have already published in the registry
+	 	
+		if (ConfigContext.getCurrentContextConfig().getDevMode() || ConfigContext.getCurrentContextConfig().getBatchMode()) {
 			fetchedServices = new ArrayList<ServiceInfo>();
 		} else {
 			//TODO we are not verifying that this read is not being done in dev mode in a test
@@ -244,7 +247,11 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		diffCalc.setEnMessageHelper(serviceLocator.getMessageHelper());
 		boolean needUpdated = diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
 		if (needUpdated) {
-			if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
+			boolean updateSRegTable = true;
+	 	 	if (ConfigContext.getCurrentContextConfig().getDevMode() || ConfigContext.getCurrentContextConfig().getBatchMode()) {
+	 	 		updateSRegTable = false;
+	 	 	}
+	 	 	if (updateSRegTable) {
 				getServiceInfoService().save(diffCalc.getServicesNeedUpdated());
 				getServiceInfoService().remove(diffCalc.getServicesNeedRemoved());
 			}
@@ -277,6 +284,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		if (isStarted()) {
 			return;
 		}
+		LOG.info("Starting the Service Registry...");
 		run();
 		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
 			int refreshRate = ConfigContext.getCurrentContextConfig().getRefreshRate();
@@ -284,9 +292,11 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 							:serviceLocator.getScheduledPool().scheduleWithFixedDelay(this, 30, refreshRate, TimeUnit.SECONDS);
 		}
 		this.started = true;
+		LOG.info("...Service Registry successfully started.");
 	}
 
 	public void stop() throws Exception {
+		LOG.info("Stopping the Service Registry...");
 		// remove services from the bus
 		if (this.future != null) {
 			if (!this.future.cancel(false)) {
@@ -299,6 +309,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		this.publishedServices.clear();
 		this.getPublishedTempServices().clear();
 		this.started = false;
+		LOG.info("...Service Registry successfully stopped.");
 	}
 
 	public String getContents(String indent, boolean servicePerLine) {

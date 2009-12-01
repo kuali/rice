@@ -343,7 +343,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	}        	
     }
     
-    private void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {
+    protected void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
     		//qualifier.refreshReferenceObject("kimAttribute");

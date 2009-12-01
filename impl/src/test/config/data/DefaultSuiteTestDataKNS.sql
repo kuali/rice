@@ -1,18 +1,18 @@
--- 
+--
 -- Copyright 2009 The Kuali Foundation
--- 
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
+--
 -- Namespaces: extracted from DBA using following statement
 -- select * from KRNS_NMSPC_T
 
@@ -311,7 +311,7 @@ INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PAR
   VALUES('KR-IDM', 'EntityNameImpl', 'SUFFIXES', '61645D045B0205D7E0404F8189D849B1', 1, 'CONFG', 'Jr;Sr;Mr;Md', NULL, 'A', 'KUALI')
 /
 INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD)
-  VALUES('KR-NS', 'All', 'STRING_TO_DATE_FORMATS', '664F8ABEC722DBCDE0404F8189D85427', 1, 'CONFG', 'MM/dd/yy;MM-dd-yy;MMMM dd, yyyy;MMddyy', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse dates when DateTimeServiceImpl.convertToSqlDate(String) or DateTimeServiceImpl.convertToDate(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
+  VALUES('KR-NS', 'All', 'STRING_TO_DATE_FORMATS', '664F8ABEC722DBCDE0404F8189D85427', 1, 'CONFG', 'MM/dd/yy;MM/dd/yyyy;MM/dd/yyyy HH:mm:ss;MM/dd/yy;MM-dd-yy;MMMM dd;yyyy;MMddyy', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse dates when DateTimeServiceImpl.convertToSqlDate(String) or DateTimeServiceImpl.convertToDate(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
 /
 INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD)
   VALUES('KR-NS', 'All', 'DATE_TO_STRING_FORMAT_FOR_FILE_NAME', '664F8ABEC723DBCDE0404F8189D85427', 1, 'CONFG', 'yyyyMMdd', 'A single date format string that the DateTimeService will use to format dates to be used in a file name when DateTimeServiceImpl.toDateStringForFilename(Date) is called. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
@@ -326,6 +326,6 @@ INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PAR
   VALUES('KR-NS', 'All', 'TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE', '664F8ABEC726DBCDE0404F8189D85427', 1, 'CONFG', 'MM/dd/yyyy hh:mm a', 'A single date format string that the DateTimeService will use to format a date and time to be displayed on a web page. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
 /
 INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD)
-  VALUES('KR-NS', 'All', 'STRING_TO_TIMESTAMP_FORMATS', '664F8ABEC727DBCDE0404F8189D85427', 1, 'CONFG', 'MM/dd/yyyy hh:mm a', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse date and times when DateTimeServiceImpl.convertToDateTime(String) or DateTimeServiceImpl.convertToSqlTimestamp(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
+  VALUES('KR-NS', 'All', 'STRING_TO_TIMESTAMP_FORMATS', '664F8ABEC727DBCDE0404F8189D85427', 1, 'CONFG', 'MM/dd/yyyy hh:mm a;MM/dd/yyyy;MM/dd/yyyy HH:mm:ss;MM/dd/yy;MM-dd-yy;MMMM dd;yyyy;MMddyy', 'A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse date and times when DateTimeServiceImpl.convertToDateTime(String) or DateTimeServiceImpl.convertToSqlTimestamp(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted.', 'A', 'KUALI')
 /
 

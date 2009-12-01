@@ -110,5 +110,21 @@ public class WorkflowInfoTest extends KEWTestCase {
         String routedByPrincipalId = new WorkflowInfo().getDocumentRoutedByPrincipalId(document.getRouteHeaderId());
         assertEquals("the blanket approver should be the routed by", blanketApprover.getPrincipalId(), routedByPrincipalId);
     }
+    
+    @Test
+    public void testGetAppDocId() throws Exception {
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	document.saveRoutingData();
+    	
+    	String appDocId = new WorkflowInfo().getAppDocId(document.getRouteHeaderId());
+    	assertNull("appDocId should be null", appDocId);
+    	
+    	String appDocIdValue = "1234";
+    	document.setAppDocId(appDocIdValue);
+    	document.saveRoutingData();
+    	
+    	appDocId = new WorkflowInfo().getAppDocId(document.getRouteHeaderId());
+    	assertEquals("Incorrect appDocId", appDocIdValue, appDocId);
+    }
 
 }

@@ -40,7 +40,9 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
     
 	{
-		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
+		//KFSMI-4938 - document number needs to be optional for this role type, 
+		//since this is also used for inquiries
+		//requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
 		checkRequiredAttributes = true;
 	}
 	

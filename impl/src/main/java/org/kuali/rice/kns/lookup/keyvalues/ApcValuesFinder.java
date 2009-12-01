@@ -15,9 +15,9 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public class ApcValuesFinder extends KeyValuesBase {
 

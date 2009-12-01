@@ -52,12 +52,32 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExceptionRoutingServiceImpl.class);
 
+    public void placeInExceptionRouting(String errorMessage, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception {
+ 	 	RouteNodeInstance nodeInstance = null;
+ 	 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
+ 	 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+ 	 	RouteContext routeContext = establishRouteContext(document, null);
+ 	 	List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderId);
+ 	 	if (!activeNodeInstances.isEmpty()) {
+ 	 		// take the first active nodeInstance found.
+ 	 		nodeInstance = (RouteNodeInstance) activeNodeInstances.get(0);
+ 	 	}
+ 	 	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document);
+ 	 }
+    
     public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception {
-        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
-        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
-        throwable = unwrapRouteManagerExceptionIfPossible(throwable);
+    	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
+    	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+    	throwable = unwrapRouteManagerExceptionIfPossible(throwable);
         RouteContext routeContext = establishRouteContext(document, throwable);
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
+    	Throwable cause = determineActualCause(throwable, 0);
+        String errorMessage = (cause != null && cause.getMessage() != null) ? cause.getMessage() : "";
+    	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document);
+    }
+    
+    protected void placeInExceptionRouting(String errorMessage, RouteNodeInstance nodeInstance, PersistedMessage persistedMessage, RouteContext routeContext, DocumentRouteHeaderValue document) throws Exception {
+    	Long routeHeaderId = document.getRouteHeaderId();
         MDC.put("docId", routeHeaderId);
         PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);
         try {
@@ -76,11 +96,11 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             }
 
             LOG.debug("Generating exception request for doc : " + routeHeaderId);
-            Throwable cause = determineActualCause(throwable, 0);
-
-            String message = (cause != null && cause.getMessage() != null) ? cause.getMessage() : "";
-            if (message.length() > KEWConstants.MAX_ANNOTATION_LENGTH) {
-                message = message.substring(0, KEWConstants.MAX_ANNOTATION_LENGTH);
+            if (errorMessage == null) {
+            	errorMessage = "";
+            }
+            if (errorMessage.length() > KEWConstants.MAX_ANNOTATION_LENGTH) {
+                errorMessage = errorMessage.substring(0, KEWConstants.MAX_ANNOTATION_LENGTH);
             }
             List<ActionRequestValue> exceptionRequests = new ArrayList<ActionRequestValue>();
             if (nodeInstance.getRouteNode().isExceptionGroupDefined()) {
@@ -91,7 +111,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             if (exceptionRequests.isEmpty()) {
             	throw new RiceRuntimeException("Failed to generate exception requests for exception routing!");
             }
-            activateExceptionRequests(routeContext, exceptionRequests, message);
+            activateExceptionRequests(routeContext, exceptionRequests, errorMessage);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } finally {
             performanceLogger.log("Time to generate exception request.");

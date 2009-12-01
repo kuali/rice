@@ -20,7 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
+import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl;
 
 /**
  * A bean which wraps a List of {@link <KeyLabelPair>} objects.

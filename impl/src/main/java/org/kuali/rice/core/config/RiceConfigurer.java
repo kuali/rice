@@ -203,9 +203,11 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#stop()
 	 */
 	public void stop() throws Exception {
+		LOG.info("Stopping Rice...");
 	    notify(new BeforeStopEvent());
 	    super.stop();
 	    GlobalResourceLoader.stop();
+	    LOG.info("...Rice stopped successfully.");
 	}
 
 	/***
@@ -237,8 +239,9 @@ public class RiceConfigurer extends BaseCompositeLifecycle implements Configurer
                 notify(new AfterStartEvent());
             }
             //Event raised when an ApplicationContext gets closed. 
-            else if (event instanceof ContextClosedEvent) {
-                notify(new AfterStopEvent());
+            else if (event instanceof ContextClosedEvent && !super.isStarted()) 
+            {
+            	notify(new AfterStopEvent());
             }
         } catch (Exception e) {
             throw new RiceRuntimeException(e);

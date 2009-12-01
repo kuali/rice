@@ -16,25 +16,20 @@
 package org.kuali.rice.kew.docsearch;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookup.valuefinder.DocumentRouteStatusValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**

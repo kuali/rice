@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -63,7 +64,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 public class ResponsibilityServiceImpl implements ResponsibilityService, ResponsibilityUpdateService {
 	private static final String DEFAULT_RESPONSIBILITY_TYPE_SERVICE = "defaultResponsibilityTypeService";
 	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );
-	private static final Integer DEFAULT_PRIORITY_NUMBER = new Integer(1);
+	private static final Integer DEFAULT_PRIORITY_NUMBER = Integer.valueOf(1);
 
 	private BusinessObjectService businessObjectService;
 	private RoleService roleService;
@@ -343,9 +344,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     		Map<String,List<KimResponsibilityInfo>> responsibilityMap = groupResponsibilitiesByTemplate(responsibilities);
     		// loop over the different templates, matching all of the same template against the type
     		// service at once
-    		for ( String templateId : responsibilityMap.keySet() ) {
-    			KimResponsibilityTypeService responsibilityTypeService = responsibilityTypeServices.get( templateId );
-    			List<KimResponsibilityInfo> responsibilityInfos = responsibilityMap.get( templateId );
+    		for ( Entry<String,List<KimResponsibilityInfo>> respEntry : responsibilityMap.entrySet() ) {
+    			KimResponsibilityTypeService responsibilityTypeService = responsibilityTypeServices.get( respEntry.getKey() );
+    			List<KimResponsibilityInfo> responsibilityInfos = respEntry.getValue();
     			if (responsibilityTypeService == null) {
     				responsibilityTypeService = getDefaultResponsibilityTypeService();
     			}
@@ -456,15 +457,17 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 	    		// remove from detail map - used to add new ones later
 	    		attributesToAdd.remove(attrName);
 	    	}
-	    	for ( String attrName : attributesToAdd.keySet() ) {
-	    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrName);
-	    		ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
-	    		newDetail.setAttributeDataId(getNewAttributeDataId());
-	    		newDetail.setKimAttributeId(attr.getKimAttributeId());
-	    		newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
-	    		newDetail.setResponsibilityId(responsibilityId);
-	    		newDetail.setAttributeValue(attributesToAdd.get(attrName));
-	    		details.add(newDetail);
+	    	for ( Entry<String,String> attrEntry : attributesToAdd.entrySet() ) {
+	    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrEntry.getKey());
+	    		if (attr != null) {
+	    			ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
+	    			newDetail.setAttributeDataId(getNewAttributeDataId());
+	    			newDetail.setKimAttributeId(attr.getKimAttributeId());
+	    			newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
+	    			newDetail.setResponsibilityId(responsibilityId);
+	    			newDetail.setAttributeValue(attrEntry.getValue());
+	    			details.add(newDetail);
+	    		}
 	    	}
 	    	getBusinessObjectService().save(resp);
 	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
@@ -499,6 +502,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 		}
 
 		return roleService;
+	}
+
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
 	}
 
 	public KimResponsibilityDao getResponsibilityDao() {

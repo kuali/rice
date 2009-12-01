@@ -54,16 +54,16 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  * 
  */
 public class KualiMaintenanceForm extends KualiDocumentFormBase {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceForm.class);
+    protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceForm.class);
 
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
-    private String businessObjectClassName;
-    private String description;
-    private boolean readOnly;
-    private Map<String, String> oldMaintainableValues;
-    private Map<String, String> newMaintainableValues;
-    private String maintenanceAction;
+    protected String businessObjectClassName;
+    protected String description;
+    protected boolean readOnly;
+    protected Map<String, String> oldMaintainableValues;
+    protected Map<String, String> newMaintainableValues;
+    protected String maintenanceAction;
 
 	/**
      * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#addRequiredNonEditableProperties()
@@ -80,20 +80,20 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     /**
      * Used to indicate which result set we're using when refreshing/returning from a multi-value lookup
      */
-    private String lookupResultsSequenceNumber;
+    protected String lookupResultsSequenceNumber;
     /**
      * The type of result returned by the multi-value lookup
      * 
      * TODO: to be persisted in the lookup results service instead?
      */
-    private String lookupResultsBOClassName;
+    protected String lookupResultsBOClassName;
     
     /**
      * The name of the collection looked up (by a multiple value lookup)
      */
-    private String lookedUpCollectionName;
+    protected String lookedUpCollectionName;
     
-    private MaintenanceDocumentRestrictions authorizations;
+    protected MaintenanceDocumentRestrictions authorizations;
     
     /**
      * Override the default method to add the if statement which can't be called until after parameters from a multipart request
@@ -245,7 +245,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         }
     }
 
-    private void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {
+    protected void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {
         try {
             Class type = ObjectUtils.easyGetPropertyType(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName());
             ObjectUtils.setObjectProperty(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName(), type, maintenanceDocument.getFileAttachment());
@@ -526,7 +526,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 	 * KNSConstants.ADD_PREFIX + "." stripped off the front
 	 * @return the collectionName
 	 */
-	private String parseAddCollectionName(String propertyName) {
+	protected String parseAddCollectionName(String propertyName) {
 		StringBuilder collectionNameBuilder = new StringBuilder();
 
 		boolean firstPathElement = true;

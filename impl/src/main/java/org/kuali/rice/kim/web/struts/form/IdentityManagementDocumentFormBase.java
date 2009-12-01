@@ -38,10 +38,10 @@ import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
  */
 @SuppressWarnings("serial")
 public abstract class IdentityManagementDocumentFormBase extends KualiTransactionalDocumentFormBase {
-	private static final Logger LOG = Logger.getLogger(IdentityManagementDocumentFormBase.class);
+	protected static final Logger LOG = Logger.getLogger(IdentityManagementDocumentFormBase.class);
     protected static final String MAX_MEMBERS_PER_PAGE_PARM = "MAX_MEMBERS_PER_PAGE";
-	private transient KualiTableRenderFormMetadata memberTableMetadata;
-    private int recordsPerPage = -1;
+	protected transient KualiTableRenderFormMetadata memberTableMetadata;
+    protected int recordsPerPage = -1;
     protected boolean inquiry = false;
     
 	protected static final String CHANGE_NAMESPACE_METHOD_TO_CALL = "methodToCall.changeNamespace";

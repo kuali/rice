@@ -70,6 +70,8 @@ public interface RouteHeaderService {
 
     public String getDocumentStatus(Long documentId);
 
+    public String getAppDocId(Long documentId);
+    
     /**
      *
      * This method is a more direct way to get the searchable attribute values

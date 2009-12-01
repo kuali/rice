@@ -651,4 +651,73 @@ public class RuleServiceTest extends KEWTestCase {
 
         //fail("Saving a rule extension value with an empty string as the value yields a constraint violation");
     }
+    
+    /**
+     * Tests the RuleService's ability to retrieve RuleBaseValues instances that lack an associated rule responsibility. 
+     * @see https://test.kuali.org/jira/browse/KULRICE-3513
+     */
+    @Test
+    public void testRetrievalOfRulesWithoutResponsibilities() throws Exception {
+    	loadXmlFile("org/kuali/rice/kew/rule/RulesWithoutResponsibilities.xml");
+    	final Long NULL_ID = null;
+    	final String[] expectedRuleNames = {"NoResponsibilitiesRule1", "NoResponsibilitiesRule2", "NoResponsibilitiesRule3"};
+    	final String[] expectedRuleDocTypes = {"RiceDocument.RuleDocument", "RiceDocument.child1", "RiceDocument.child1child"};
+    	final String[] expectedRuleDescriptions = {"A rule with no responsibilities", "Another rule without responsibilities", "A third rule lacking responsibilities"};
+    	final String[] personResponsibilities = {"rkirkend", "rkirkend", "user1"};
+    	final String[] groupResponsibilities = {"TestWorkgroup", "NonSIT", "TestWorkgroup"};
+    	int actualResponsibilitylessRuleCount = 0;
+    	List<?> ruleList = null;
+    	
+    	// First, check that a blank search will retrieve all of the expected responsibility-less rules above.
+    	ruleList = KEWServiceLocator.getRuleService().search(null, NULL_ID, null, null, null, null, null, null, null, "");
+    	assertNotNull("The returned rule list should not be null", ruleList);
+    	for (Iterator<?> ruleIter = ruleList.iterator(); ruleIter.hasNext();) {
+    		RuleBaseValues rBaseValues = (RuleBaseValues) ruleIter.next();
+    		if (rBaseValues.getResponsibilities() == null || rBaseValues.getResponsibilities().isEmpty()) {
+   				actualResponsibilitylessRuleCount++;
+    		}
+    	}
+    	assertEquals("Wrong number of responsibility-less rules found", expectedRuleNames.length, actualResponsibilitylessRuleCount);
+    	
+    	// Next, test the retrieval of each of these rules independently.
+    	for (int i = 0; i < expectedRuleNames.length; i++) {
+    		ruleList = KEWServiceLocator.getRuleService().search(expectedRuleDocTypes[i], NULL_ID, null, expectedRuleDescriptions[i], null, null, null, null, null, "");
+    		assertNotNull("The returned rule list should not be null when searching for rule '" + expectedRuleNames[i] + "'", ruleList);
+    		assertEquals("Exactly one rule should have been retrieved when searching for rule '" + expectedRuleNames[i] + "'", 1, ruleList.size());
+    		RuleBaseValues rBaseValues = (RuleBaseValues) ruleList.get(0);
+    		assertEquals("The retrieved rule has the wrong name", expectedRuleNames[i], rBaseValues.getName());
+    		assertEquals("Rule '" + expectedRuleNames[i] + "' has the wrong doc type name", expectedRuleDocTypes[i], rBaseValues.getDocTypeName());
+    		assertEquals("Rule '" + expectedRuleNames[i] + "' has the wrong description", expectedRuleDescriptions[i], rBaseValues.getDescription());
+    		assertTrue("Rule '" + expectedRuleNames[i] + "' should not have any responsibilities",
+    				rBaseValues.getResponsibilities() == null || rBaseValues.getResponsibilities().isEmpty());
+    	}
+    	
+    	// Verify that when searching for rules with the same doc types but with a person responsibility specified, the responsibility-less rules are not retrieved.
+    	for (int i = 0; i < expectedRuleNames.length; i++) {
+    		ruleList = KEWServiceLocator.getRuleService().search(expectedRuleDocTypes[i], NULL_ID, null, null, null,
+    				KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(personResponsibilities[i]).getPrincipalId(), null, null, null, "user");
+    		assertNotNull("The returned rule list should not be null for doc type '" + expectedRuleDocTypes[i] + "'", ruleList);
+    		assertFalse("The returned rule list should not be empty for doc type '" + expectedRuleDocTypes[i] + "'", ruleList.isEmpty());
+    		for (Iterator<?> ruleIter = ruleList.iterator(); ruleIter.hasNext();) {
+        		RuleBaseValues rBaseValues = (RuleBaseValues) ruleIter.next();
+        		assertTrue((new StringBuilder()).append("Found a rule without responsibilities for doc type '").append(
+        				expectedRuleDocTypes[i]).append("' and principal '").append(personResponsibilities[i]).append("'").toString(),
+        					rBaseValues.getResponsibilities() != null && !rBaseValues.getResponsibilities().isEmpty());
+        	}
+    	}
+    	
+    	// Verify that when searching for rules with the same doc types but with a group responsibility specified, the responsibility-less rules are not retrieved.
+    	for (int i = 0; i < expectedRuleNames.length; i++) {
+    		ruleList = KEWServiceLocator.getRuleService().search(expectedRuleDocTypes[i], NULL_ID, null, null,
+    				KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", groupResponsibilities[i]).getGroupId(), null, null, null, null, "");
+    		assertNotNull("The returned rule list should not be null for doc type '" + expectedRuleDocTypes[i] + "'", ruleList);
+    		assertFalse("The returned rule list should not be empty for doc type '" + expectedRuleDocTypes[i] + "'", ruleList.isEmpty());
+    		for (Iterator<?> ruleIter = ruleList.iterator(); ruleIter.hasNext();) {
+        		RuleBaseValues rBaseValues = (RuleBaseValues) ruleIter.next();
+        		assertTrue((new StringBuilder()).append("Found a rule without responsibilities for doc type '").append(
+        				expectedRuleDocTypes[i]).append("' and group '").append(groupResponsibilities[i]).append("' with namespace 'KR-WKFLW'").toString(),
+        					rBaseValues.getResponsibilities() != null && !rBaseValues.getResponsibilities().isEmpty());
+        	}
+    	}
+    }
 }

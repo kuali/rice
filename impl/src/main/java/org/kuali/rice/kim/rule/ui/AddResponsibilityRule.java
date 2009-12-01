@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.rule.ui;
 
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
 import org.kuali.rice.kns.rule.BusinessRule;
 
@@ -26,5 +28,5 @@ import org.kuali.rice.kns.rule.BusinessRule;
  */
 public interface AddResponsibilityRule extends BusinessRule {
     public boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent);
-
+    public boolean hasPermissionToGrantResponsibility(KimResponsibilityInfo kimResponsibilityInfo, IdentityManagementRoleDocument document);
 }

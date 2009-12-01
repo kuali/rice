@@ -319,7 +319,8 @@ public class LookupForm extends KualiForm {
 
             // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
             if (!isShowMaintenanceLinks()) {
-            	if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/" + KNSConstants.MAPPING_PORTAL) || StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/index.html")) {
+            	if (StringUtils.contains(backLocation, "/"+KNSConstants.PORTAL_ACTION) 
+            			|| StringUtils.contains(backLocation, "/index.html")) {
             		showMaintenanceLinks = true;
             	}
             }
@@ -604,8 +605,8 @@ public class LookupForm extends KualiForm {
      * Sets the showMaintenanceLinks attribute value.
      * @param showMaintenanceLinks The showMaintenanceLinks to set.
      */
-    public void setShowMaintenanceLinks(boolean hideMaintenanceLinks) {
-        this.showMaintenanceLinks = hideMaintenanceLinks;
+    public void setShowMaintenanceLinks(boolean showMaintenanceLinks) {
+        this.showMaintenanceLinks = showMaintenanceLinks;
     }
 
     /**

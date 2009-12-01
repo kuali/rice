@@ -41,7 +41,7 @@ public class DateFormatterTest extends KNSTestCase {
     }
 
     @Test public void testShortYear() throws Exception {
-        assertEquals(kualiParseDate("9/28/0069"), javaParseDate("9/28/0069"));
+        assertEquals(kualiParseDate("09/28/0069"), javaParseDate("09/28/0069"));
     }
 
     @Test public void testAmbiguousYear() throws Exception {
@@ -49,7 +49,7 @@ public class DateFormatterTest extends KNSTestCase {
     	 * Note that in Rice 0.9.3, this date format would have thrown a FormatException,
     	 * however in Rice 1.0 changes were made so that 2 digit years could be interpreted properly.
     	 */
-    	assertEquals(kualiParseDate("9/28/69"), javaParseDate("9/28/69"));
+    	assertEquals(kualiParseDate("09/28/69"), javaParseDate("09/28/69"));
     }
 
 

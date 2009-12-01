@@ -143,6 +143,7 @@ public interface Config {
 	public static final String STORE_AND_FORWARD = "bus.storeAndForward";
 	public static final String REFRESH_RATE = "bus.refresh.rate";
 	public static final String DEV_MODE = "dev.mode";
+	public static final String BATCH_MODE = "rice.ksb.batch.mode";
 	
 	public static final String CREDENTIALS_SOURCE_FACTORY = "credentialsSourceFactory";
 
@@ -270,6 +271,8 @@ public interface Config {
     public Boolean getXmlPipelineLifeCycleEnabled();
 
 	public Boolean getDevMode();
+	
+	public Boolean getBatchMode();
 	
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();

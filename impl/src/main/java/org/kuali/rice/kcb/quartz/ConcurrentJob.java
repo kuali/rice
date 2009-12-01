@@ -38,6 +38,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Callable;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.Future;
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
 
 /**
  * Base class for jobs that must obtain a set of work items atomically
@@ -46,7 +47,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Future;
 public abstract class ConcurrentJob<T> {
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    protected ExecutorService executor = Executors.newSingleThreadExecutor();
+    protected ExecutorService executor = Executors.newSingleThreadExecutor(new KCBThreadFactory());
     protected PlatformTransactionManager txManager;
 
     /**
@@ -233,4 +234,15 @@ public abstract class ConcurrentJob<T> {
         //return (X) callback.doInTransaction(null);
         return (X) createNewTransaction().execute(callback);
     }
+    
+    private static class KCBThreadFactory implements ThreadFactory {
+		
+		private ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
+		
+		public Thread newThread(Runnable runnable) {
+			Thread thread = defaultThreadFactory.newThread(runnable);
+			thread.setName("KCB-job-" + thread.getName());
+			return thread;
+	    }
+	}
 }

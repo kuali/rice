@@ -30,12 +30,12 @@ import java.util.Properties;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -65,7 +65,6 @@ import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -149,23 +148,20 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 			List<Row> rows = super.getRows();
 			List<Row> returnRows = new ArrayList<Row>();
 			for (Row row : rows) {
-				Field field = (Field) row.getFields().get(0);
-				if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME)) {
-					List<Field> fields = new ArrayList<Field>();
-					Field typeField = new Field();
-					typeField.setFieldLabel("Type");
-					typeField.setPropertyName(KIM_TYPE_ID_PROPERTY_NAME);
-					typeField.setFieldValidValues(getGroupTypeOptions());
-					typeField.setFieldType(Field.DROPDOWN);
-					fields.add(typeField);
-					returnRows.add(new Row(fields));
-
-				} else {
-					returnRows.add(row);
+				for (int i = row.getFields().size() - 1; i >= 0; i--) {
+					Field field = row.getFields().get(i);
+					if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME)) {
+						Field typeField = new Field();
+						typeField.setFieldLabel("Type");
+						typeField.setPropertyName(KIM_TYPE_ID_PROPERTY_NAME);
+						typeField.setFieldValidValues(getGroupTypeOptions());
+						typeField.setFieldType(Field.DROPDOWN);
+						row.getFields().set(i, typeField);
+					}
 				}
+				returnRows.add(row);
 			}
 			// principalName
-			List<Field> fields = new ArrayList<Field>();
 			Field typeField = new Field();
 			typeField.setFieldLabel("Principal Name");
 			typeField.setPropertyName(KIMPropertyConstants.Person.PRINCIPAL_NAME);
@@ -175,9 +171,32 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 			typeField.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.Person");
 			typeField.setFieldConversions( "principalName:principalName" );
 			typeField.setLookupParameters( "principalName:principalName" );
-			fields.add(typeField);
-			returnRows.add(new Row(fields));
-
+			// Identify the best spot to insert the "Principal Name" search field. Note that the code below assumes that the final row of the
+			// group search fields is not a row with hidden fields; if this ever becomes the case in the future, this fix may need to
+			// be modified accordingly.
+			List<Field> fields = (returnRows.isEmpty()) ? new ArrayList<Field>() : returnRows.get(returnRows.size() - 1).getFields();
+			if (!fields.isEmpty() && fields.get(fields.size() - 1).getFieldType().equals(Field.BLANK_SPACE)) {
+				// If the last row in the list has a BLANK_SPACE field coming after any non-BLANK_SPACE fields, add the new field to that row.
+				int insertLoc = fields.size() - 1;
+				while (insertLoc >= 0 && fields.get(insertLoc).getFieldType().equals(Field.BLANK_SPACE)) {
+					insertLoc--;
+				}
+				fields.set(insertLoc + 1, typeField);
+				returnRows.get(returnRows.size() - 1).setFields(fields);
+			} else {
+				// Otherwise, add a new row containing that field.
+				int fieldLen = fields.size();
+				fields = new ArrayList<Field>();
+				fields.add(typeField);
+				for (int i = 1; i < fieldLen; i++) {
+					Field blankSpace = new Field();
+					blankSpace.setFieldType(Field.BLANK_SPACE);
+					blankSpace.setPropertyName(Field.BLANK_SPACE);
+					fields.add(blankSpace);
+				}
+				returnRows.add(new Row(fields));
+			}
+			
 			setGrpRows(returnRows);
 		}
 		if (getAttrRows().isEmpty()) {

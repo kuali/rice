@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
@@ -61,7 +62,6 @@ import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 

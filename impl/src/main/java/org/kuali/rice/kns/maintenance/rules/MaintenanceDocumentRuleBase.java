@@ -103,7 +103,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     private PersistableBusinessObject newBo;
     private Class boClass;
 
-    private List priorErrorPath;
+    protected List priorErrorPath;
 
     /**
      *
@@ -543,7 +543,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return returns True if the propertyName indicated already has the errorConstant indicated, false otherwise
      *
      */
-    private boolean errorAlreadyExists(String propertyName, String errorConstant) {
+    protected boolean errorAlreadyExists(String propertyName, String errorConstant) {
 
         if (GlobalVariables.getMessageMap().fieldHasMessage(propertyName, errorConstant)) {
             return true;
@@ -685,7 +685,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return Returns false if either test failed, otherwise returns true.
      *
      */
-    private boolean primaryKeyCheck(MaintenanceDocument document) {
+    protected boolean primaryKeyCheck(MaintenanceDocument document) {
 
         // default to success if no failures
         boolean success = true;
@@ -746,7 +746,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @param boClass
      * @return
      */
-    private String getHumanReadablePrimaryKeyFieldNames(Class boClass) {
+    protected String getHumanReadablePrimaryKeyFieldNames(Class boClass) {
 
         String delim = "";
         StringBuffer pkFieldNames = new StringBuffer();
@@ -1087,7 +1087,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * application in normal circumstances at all.
      *
      */
-    private void showErrorMap() {
+    protected void showErrorMap() {
 
         if (GlobalVariables.getMessageMap().isEmpty()) {
             return;
@@ -1254,7 +1254,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return A filled StringBuffer ready to go in an error message
      *
      */
-    private StringBuffer consolidateFieldNames(List fieldNames, String delimiter) {
+    protected StringBuffer consolidateFieldNames(List fieldNames, String delimiter) {
 
         StringBuffer sb = new StringBuffer();
 
@@ -1540,7 +1540,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @param bo
      * @return
      */
-    private boolean validateDuplicateIdentifierInDataDictionary(MaintenanceDocument document, String collectionName, PersistableBusinessObject bo) {
+    protected boolean validateDuplicateIdentifierInDataDictionary(MaintenanceDocument document, String collectionName, PersistableBusinessObject bo) {
     	boolean valid = true;
     	PersistableBusinessObject maintBo = document.getNewMaintainableObject().getBusinessObject();
         Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(maintBo, collectionName);

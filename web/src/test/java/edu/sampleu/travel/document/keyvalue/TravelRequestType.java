@@ -18,12 +18,12 @@ package edu.sampleu.travel.document.keyvalue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public class TravelRequestType extends KeyValuesBase {
 

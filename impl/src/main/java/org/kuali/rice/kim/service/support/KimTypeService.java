@@ -17,9 +17,9 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  *  This is the base service interface for handling type-specific behavior.  Types can be attached

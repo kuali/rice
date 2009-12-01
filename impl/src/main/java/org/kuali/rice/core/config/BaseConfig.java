@@ -401,6 +401,10 @@ public abstract class BaseConfig implements Config {
         return Boolean.valueOf(getProperty(DEV_MODE));
     }
 
+    public Boolean getBatchMode() {
+ 	 	return new Boolean(getProperty(BATCH_MODE));
+ 	}
+    
     public Boolean getStoreAndForward() {
         return Boolean.valueOf(getProperty(Config.STORE_AND_FORWARD));
     }

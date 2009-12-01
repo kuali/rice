@@ -219,7 +219,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                groupCrit.addIn("delegatorGroupId", KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId));
+                List<String> delegatorGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
+                	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
+                }
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
@@ -236,7 +239,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                groupCrit.addIn("delegatorGroupId", KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId));
+                List<String> delegatorGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
+                	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
+                }
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
@@ -247,13 +253,14 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 addedDelegationCriteria = true;
                 filterOn = true;
             }
-        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
-                || StringUtils.isNotBlank(filter.getDelegatorId())) {
+        }
+        if (!addedDelegationCriteria && ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
+                || StringUtils.isNotBlank(filter.getDelegatorId()) )) {
             // using a secondary delegation
             crit.addEqualTo("principalId", principalId);
             if (StringUtils.isBlank(filter.getDelegatorId())) {
                 filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-                // if isExcludeDelegationType() we want to show the default aciton list which is set up later in this method
+                // if isExcludeDelegationType() we want to show the default action list which is set up later in this method
                 if (!filter.isExcludeDelegationType()) {
                     crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
                     addToFilterDescription(filteredByItems, "Secondary Delegator Id");

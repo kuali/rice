@@ -79,12 +79,12 @@ import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
  * This class handles actions for maintenance documents. These include creating new edit, and copying of maintenance records.
  */
 public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceDocumentAction.class);
+    protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceDocumentAction.class);
 
-	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = null;
-	private EncryptionService encryptionService;
-	private LookupService lookupService;
-	private LookupResultsService lookupResultsService;
+    protected MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = null;
+    protected EncryptionService encryptionService;
+    protected LookupService lookupService;
+    protected LookupResultsService lookupResultsService;
 
 	public KualiMaintenanceDocumentAction() {
 		super();
@@ -149,7 +149,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	 * maintenance jsp which renders the page based on the maintainable's field specifications. Retrieves an existing business
 	 * object for edit and copy. Checks locking on edit.
 	 */
-	private ActionForward setupMaintenance(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String maintenanceAction) throws Exception {
+    protected ActionForward setupMaintenance(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String maintenanceAction) throws Exception {
 		KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) form;
 		MaintenanceDocument document = null;
 
@@ -345,7 +345,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 
-	private void populateBOWithCopyKeyValues(HttpServletRequest request, PersistableBusinessObject oldBusinessObject, Maintainable oldMaintainableObject) throws Exception{
+    protected void populateBOWithCopyKeyValues(HttpServletRequest request, PersistableBusinessObject oldBusinessObject, Maintainable oldMaintainableObject) throws Exception{
 		List keyFieldNamesToCopy = new ArrayList();
 		Map<String, String> parametersToCopy;
 		if (!StringUtils.isBlank(request.getParameter(KNSConstants.COPY_KEYS))) {
@@ -360,7 +360,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		}
 	}
 
-	private void copyParametersToBO(Map<String, String> parameters, PersistableBusinessObject newBO) throws Exception{
+    protected void copyParametersToBO(Map<String, String> parameters, PersistableBusinessObject newBO) throws Exception{
 		for (String parmName : parameters.keySet()) {
 			String propertyValue = parameters.get(parmName);
 
@@ -572,7 +572,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	 * Gets keys for the maintainable business object from the persistence metadata explorer. Checks for existence of key property
 	 * names as request parameters, if found adds them to the returned hash map.
 	 */
-	private Map buildKeyMapFromRequest(Maintainable maintainable, HttpServletRequest request) {
+    protected Map buildKeyMapFromRequest(Maintainable maintainable, HttpServletRequest request) {
 		List keyFieldNames = null;
 		// are override keys listed in the request? If so, then those need to be our keys,
 		// not the primary keye fields for the BO
@@ -589,7 +589,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		return getRequestParameters(keyFieldNames, maintainable, request);
 	}
 
-	private Map<String, String> getRequestParameters(List keyFieldNames, Maintainable maintainable, HttpServletRequest request){
+    protected Map<String, String> getRequestParameters(List keyFieldNames, Maintainable maintainable, HttpServletRequest request){
 
 		Map<String, String> requestParameters = new HashMap<String, String>();
 
@@ -765,7 +765,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 
-	private int getSubCollectionIndex(Object object, String documentTypeName) {
+    protected int getSubCollectionIndex(Object object, String documentTypeName) {
 		int index = 1;
 		MaintainableCollectionDefinition theCollectionDefinition = null;
 		for (MaintainableCollectionDefinition maintainableCollectionDefinition : maintenanceDocumentDictionaryService.getMaintainableCollections(documentTypeName)) {
@@ -921,7 +921,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	 * 
 	 * @param document - document to clear the pk fields on
 	 */
-	private void clearPrimaryKeyFields(MaintenanceDocument document) {
+    protected void clearPrimaryKeyFields(MaintenanceDocument document) {
 		// get business object being maintained and its keys
 		PersistableBusinessObject bo = document.getNewMaintainableObject().getBusinessObject();
 		List<String> keyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(bo.getClass());
@@ -943,7 +943,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	 * 
 	 * @param document - document to be adjusted
 	 */
-	private void clearUnauthorizedNewFields(MaintenanceDocument document) {
+    protected void clearUnauthorizedNewFields(MaintenanceDocument document) {
 		// get a reference to the current user
 		Person user = GlobalVariables.getUserSession().getPerson();
 

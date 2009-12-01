@@ -39,7 +39,7 @@ public class EmailReminderLifecycle implements Lifecycle {
 	}
 
 	public void start() throws Exception {
-		// fetch scheduler here to initialize it ouside of a transactional context, otherwise we get weird transaction errors
+		// fetch scheduler here to initialize it outside of a transactional context, otherwise we get weird transaction errors
 	    Scheduler scheduler = KSBServiceLocator.getScheduler();
 	    if (scheduler == null) {
 		throw new WorkflowException("Failed to locate Quartz Scheduler Service.");

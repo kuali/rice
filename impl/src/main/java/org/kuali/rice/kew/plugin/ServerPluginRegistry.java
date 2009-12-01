@@ -35,6 +35,7 @@ import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 /**
@@ -61,7 +62,8 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 	}
 
 	public void start() throws Exception {
-		scheduledExecutor = Executors.newScheduledThreadPool(2);
+		LOG.info("Starting server Plugin Registry...");
+		scheduledExecutor = Executors.newScheduledThreadPool(2, new KEWThreadFactory());
 		sharedPluginDirectory = loadSharedPlugin();
 		reloader = new Reloader();
 		hotDeployer = new HotDeployer(PluginUtils.getPluginRegistry(), sharedPluginDirectory, pluginDirectories);
@@ -70,9 +72,11 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 		this.reloaderFuture = scheduledExecutor.scheduleWithFixedDelay(reloader, 5, 5, TimeUnit.SECONDS);
 		this.hotDeployerFuture = scheduledExecutor.scheduleWithFixedDelay(hotDeployer, 5, 5, TimeUnit.SECONDS);
 		super.start();
+		LOG.info("...server Plugin Registry successfully started.");
 	}
 
 	public void stop() throws Exception {
+		LOG.info("Stopping server Plugin Registry...");
 		stopReloader();
 		stopHotDeployer();
 		reloader = null;
@@ -83,6 +87,7 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 			scheduledExecutor = null;
 		}
 		super.stop();
+		LOG.info("...server Plugin Registry successfully stopped.");
 	}
 
 	protected void stopReloader() {
@@ -186,6 +191,17 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 
 	protected Reloader getReloader() {
 		return reloader;
+	}
+	
+	private static class KEWThreadFactory implements ThreadFactory {
+		
+		private ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
+		
+		public Thread newThread(Runnable runnable) {
+			Thread thread = defaultThreadFactory.newThread(runnable);
+			thread.setName("ServerPluginRegistry-" + thread.getName());
+			return thread;
+	    }
 	}
 
 }

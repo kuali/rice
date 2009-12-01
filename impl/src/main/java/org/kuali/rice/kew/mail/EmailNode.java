@@ -93,6 +93,8 @@ public class EmailNode implements SimpleNode {
         emailNodeElem.appendChild(doc.importNode(docElem, true));
         emailNodeElem.appendChild(doc.importNode(nodeElem, true));
         emailNodeElem.appendChild(doc.importNode(documentContent.getDocumentElement(), true));
+        Element dConElem = context.getDocumentContent().getApplicationContent();//Add document Content element for
+ 	 	emailNodeElem.appendChild(doc.importNode(dConElem, true));//access by the stylesheet when creating the email
         return doc;
     }
 
@@ -150,6 +152,22 @@ public class EmailNode implements SimpleNode {
 	}
 	this.from = fromAddresses.item(0).getTextContent();
 
+	if ("initiator".equalsIgnoreCase(this.from)) {
+		Person initiator = KEWServiceLocator.getIdentityHelperService().getPerson(context.getDocument().getInitiatorWorkflowId());
+		// contructs the email from so that it includes name as well as address
+		// for example: "Doe, John D" <john@doe.com>
+ 	 	this.from = "\"" + initiator.getName() + "\" <";
+ 	 	this.from += initiator.getEmailAddress() + ">";
+	}
+	if (StringUtils.isBlank(this.from)) {
+		throw new WorkflowRuntimeException("No email address could be found found for principal with id " + context.getDocument().getInitiatorWorkflowId());
+	}
+	
+	if (LOG.isInfoEnabled()) {
+ 	 	LOG.info("Email From is set to:" + this.from);
+ 	 	LOG.info("Email To is set to:" + this.to);
+	}
+	
 	NodeList styleNames = document.getElementsByTagName("style");
 	if (styleNames.getLength() != 1) {
 	    throw new WorkflowRuntimeException("Must have exactly one 'style'");

@@ -11,8 +11,8 @@
   <param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>
   <param name="weeklyEmail.active">true</param>
 
-  <param name="message.delivery">async</param>
-  <param name="message.persistence">true</param>
+  <param name="message.delivery" override="false">async</param>
+  <param name="message.persistence" override="false">true</param>
 
   <param name="simpleDocumentActionsService.security">true</param>
   <param name="secure.workflowdocument.javaservice.endpoint">true</param>

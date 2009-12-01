@@ -81,6 +81,16 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 		return super.shouldWrapService(serviceName, service);
 	}
 	
+	
+	
+	@Override
+	public void stop() throws Exception {
+		if (getRegistry() != null) {
+			registry.stop();
+		}
+		super.stop();
+	}
+
 	/**
 	 * Returns true if the given service name is one which should be loaded from the service bus.  This is used
 	 * primarily for embedded clients that want to reference the workgroup and user services on a standalone
@@ -102,4 +112,5 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	public PluginRegistry getRegistry() {
 		return registry;
 	}
+	
 }

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -38,7 +39,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class KimDocumentResponsibilityRule extends DocumentRuleBase implements AddResponsibilityRule {
 
-	private static final String ERROR_PATH = "document.responsibility.responsibilityId";
+	public static final String ERROR_PATH = "document.responsibility.responsibilityId";
 
 	public boolean processAddResponsibility(AddResponsibilityEvent addResponsibilityEvent) {
 		KimDocumentRoleResponsibility newResponsibility = addResponsibilityEvent.getResponsibility();
@@ -55,15 +56,7 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addResponsibilityEvent.getDocument();		
 	    boolean rulePassed = true;
-		Map<String,String> responsibilityDetails = new HashMap<String,String>();
-		responsibilityDetails.put(KimAttributes.NAMESPACE_CODE, kimResponsibilityImpl.getNamespaceCode());
-		responsibilityDetails.put(KimAttributes.PERMISSION_NAME, kimResponsibilityImpl.getTemplate().getName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, 
-				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.GRANT_RESPONSIBILITY, 
-				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
-				responsibilityDetails, null)) {
+		if (!hasPermissionToGrantResponsibility(kimResponsibilityImpl.toSimpleInfo(), document)) {
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_RESPONSIBILITY, 
             		new String[] {kimResponsibilityImpl.getNamespaceCode(), kimResponsibilityImpl.getTemplate().getName()});
             return false;
@@ -85,4 +78,18 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 		return rulePassed;
 	} 
 
+	public boolean hasPermissionToGrantResponsibility(KimResponsibilityInfo kimResponsibilityInfo, IdentityManagementRoleDocument document){
+		Map<String,String> responsibilityDetails = new HashMap<String,String>();
+		responsibilityDetails.put(KimAttributes.NAMESPACE_CODE, kimResponsibilityInfo.getNamespaceCode());
+		responsibilityDetails.put(KimAttributes.RESPONSIBILITY_NAME, kimResponsibilityInfo.getName());
+		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+				document, 
+				KimConstants.NAMESPACE_CODE, 
+				KimConstants.PermissionTemplateNames.GRANT_RESPONSIBILITY, 
+				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
+				responsibilityDetails, null)) {
+            return false;
+		}
+		return true;
+	}
 }

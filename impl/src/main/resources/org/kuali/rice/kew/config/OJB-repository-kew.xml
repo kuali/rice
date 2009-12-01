@@ -57,10 +57,12 @@
         proxy="true">
         <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
+    <!-- 
     <collection-descriptor element-class-ref="org.kuali.rice.kew.docsearch.SearchableAttributeValue" auto-retrieve="true" auto-update="true"
       auto-delete="true" name="searchableAttributeValues">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
+    -->
     <collection-descriptor name="initialRouteNodeInstances"
      	collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
      	element-class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance"

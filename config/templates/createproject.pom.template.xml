@@ -55,36 +55,6 @@
 			<artifactId>rice-impl</artifactId>
 			<version>${RICE_VERSION}</version>
 		</dependency>		
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-kcb</artifactId>
-			<version>${RICE_VERSION}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-ken</artifactId>
-			<version>${RICE_VERSION}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-kew</artifactId>
-			<version>${RICE_VERSION}</version>
-		</dependency>		
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-kim</artifactId>
-			<version>${RICE_VERSION}</version>
-		</dependency>		
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-kns</artifactId>
-			<version>${RICE_VERSION}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.kuali.rice</groupId>
-			<artifactId>rice-ksb</artifactId>
-			<version>${RICE_VERSION}</version>
-		</dependency>			
 	</dependencies>
 	<repositories>
 		<repository>

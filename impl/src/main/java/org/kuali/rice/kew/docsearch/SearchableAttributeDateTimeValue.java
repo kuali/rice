@@ -39,6 +39,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
@@ -185,7 +186,8 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
 	 */
     public boolean isPassesDefaultValidation(String valueEntered) {
-        return (DocSearchUtils.getEntryFormattedDate(valueEntered) != null);
+    	return new SqlBuilder().isValidDate(valueEntered);
+        //return (DocSearchUtils.getEntryFormattedDate(valueEntered) != null);
     }
 
     /* (non-Javadoc)
@@ -257,10 +259,10 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     public Object copy(boolean preserveKeys) {
         return null;
     }
-    
+
 	@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 }
 

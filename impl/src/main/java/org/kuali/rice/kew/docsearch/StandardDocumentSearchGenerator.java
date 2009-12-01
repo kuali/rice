@@ -97,50 +97,50 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     private SqlBuilder sqlBuilder = null;
 
-	public StandardDocumentSearchGenerator() {
-		super();
-		this.searchableAttributes = new ArrayList<SearchableAttribute>();
-	}
+    public StandardDocumentSearchGenerator() {
+        super();
+        this.searchableAttributes = new ArrayList<SearchableAttribute>();
+    }
 
-	/**
-	 * @param searchableAttributes
-	 */
-	public StandardDocumentSearchGenerator(List<SearchableAttribute> searchableAttributes) {
-		this();
-		this.searchableAttributes = searchableAttributes;
-	}
+    /**
+     * @param searchableAttributes
+     */
+    public StandardDocumentSearchGenerator(List<SearchableAttribute> searchableAttributes) {
+        this();
+        this.searchableAttributes = searchableAttributes;
+    }
 
-	public DocSearchCriteriaDTO getCriteria() {
-		return criteria;
-	}
+    public DocSearchCriteriaDTO getCriteria() {
+        return criteria;
+    }
 
-	public void setCriteria(DocSearchCriteriaDTO criteria) {
-		StandardDocumentSearchGenerator.criteria = criteria;
-	}
+    public void setCriteria(DocSearchCriteriaDTO criteria) {
+        StandardDocumentSearchGenerator.criteria = criteria;
+    }
 
-	public List<SearchableAttribute> getSearchableAttributes() {
-		return searchableAttributes;
-	}
+    public List<SearchableAttribute> getSearchableAttributes() {
+        return searchableAttributes;
+    }
 
-	public void setSearchableAttributes(List searchableAttributes) {
-		this.searchableAttributes = searchableAttributes;
-	}
+    public void setSearchableAttributes(List searchableAttributes) {
+        this.searchableAttributes = searchableAttributes;
+    }
 
-	public String getSearchingUser() {
-		return searchingUser;
-	}
+    public String getSearchingUser() {
+        return searchingUser;
+    }
 
-	public void setSearchingUser(String searchingUser) {
-		StandardDocumentSearchGenerator.searchingUser = searchingUser;
-	}
+    public void setSearchingUser(String searchingUser) {
+        StandardDocumentSearchGenerator.searchingUser = searchingUser;
+    }
 
     public DocSearchCriteriaDTO clearSearch(DocSearchCriteriaDTO searchCriteria) {
         return new DocSearchCriteriaDTO();
     }
 
     public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria) {
-    	setCriteria(searchCriteria);
-    	return new ArrayList<WorkflowServiceError>();
+        setCriteria(searchCriteria);
+        return new ArrayList<WorkflowServiceError>();
     }
 
     public SearchAttributeCriteriaComponent getSearchableAttributeByFieldName(String name) {
@@ -164,26 +164,26 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#executeSearch(org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, org.kuali.rice.core.database.platform.DatabasePlatform)
      */
     public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) {
-    	setCriteria(searchCriteria);
+        setCriteria(searchCriteria);
         return getDocSearchSQL();
     }
 
     public DocumentType getValidDocumentType(String documentTypeFullName) {
-    	if (!Utilities.isEmpty(documentTypeFullName)) {
+        if (!Utilities.isEmpty(documentTypeFullName)) {
             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
             if (documentType == null) {
-    			throw new RuntimeException("No Valid Document Type Found for document type name '" + documentTypeFullName + "'");
+                throw new RuntimeException("No Valid Document Type Found for document type name '" + documentTypeFullName + "'");
             }
             return documentType;
-    	}
-    	return null;
+        }
+        return null;
     }
 
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#validateSearchableAttributes()
      */
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
-    	setCriteria(searchCriteria);
+        setCriteria(searchCriteria);
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
         List<SearchAttributeCriteriaComponent> searchableAttributes = criteria.getSearchableAttributes();
         if (searchableAttributes != null && !searchableAttributes.isEmpty()) {
@@ -197,15 +197,15 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             DocumentType documentType = getValidDocumentType(criteria.getDocTypeFullName());
             try {
-	            for (SearchableAttribute searchableAttribute : documentType.getSearchableAttributes()) {
-	                List<WorkflowAttributeValidationError> searchableErrors = validateSearchableAttribute(
-	                		searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
-	                if(!Utilities.isEmpty(searchableErrors)){
-	                    for (WorkflowAttributeValidationError error : searchableErrors) {
-	                        errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", error.getMessage()));
-	                    }
-	                }
-	            }
+                for (SearchableAttribute searchableAttribute : documentType.getSearchableAttributes()) {
+                    List<WorkflowAttributeValidationError> searchableErrors = validateSearchableAttribute(
+                            searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
+                    if(!Utilities.isEmpty(searchableErrors)){
+                        for (WorkflowAttributeValidationError error : searchableErrors) {
+                            errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", error.getMessage()));
+                        }
+                    }
+                }
             } catch (Exception e) {
                 LOG.error("error finding searchable attribute in when validating document search criteria.", e);
             }
@@ -214,36 +214,36 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public List<WorkflowAttributeValidationError> validateSearchableAttribute(
-    		SearchableAttribute searchableAttribute, Map searchAttributesParameterMap, DocumentSearchContext documentSearchContext) {
+            SearchableAttribute searchableAttribute, Map searchAttributesParameterMap, DocumentSearchContext documentSearchContext) {
         return searchableAttribute.validateUserSearchInputs(searchAttributesParameterMap, documentSearchContext);
     }
 
     private Class getSearchableAttributeClass(SearchableAttributeValue sav){
-    	if(sav instanceof SearchableAttributeDateTimeValue){
-    		return Timestamp.class;
-    	}else if(sav instanceof SearchableAttributeFloatValue){
-    		return Float.TYPE;
-    	}else if(sav instanceof SearchableAttributeLongValue){
-    		return Long.TYPE;
-    	}else if(sav instanceof SearchableAttributeStringValue){
-    		return String.class;
-    	}else{
-    		return null;
-    	}
+        if(sav instanceof SearchableAttributeDateTimeValue){
+            return Timestamp.class;
+        }else if(sav instanceof SearchableAttributeFloatValue){
+            return Float.TYPE;
+        }else if(sav instanceof SearchableAttributeLongValue){
+            return Long.TYPE;
+        }else if(sav instanceof SearchableAttributeStringValue){
+            return String.class;
+        }else{
+            return null;
+        }
     }
 
     /**
      * Cleans upper bounds on an entire list of values.
      */
     private static List<String> cleanUpperBounds(List<String> stringDates) {
-    	List<String> lRet = null;
-    	if(stringDates != null && !stringDates.isEmpty()){
-    		lRet = new ArrayList<String>();
-    		for(String stringDate:stringDates){
-    			lRet.add(cleanUpperBound(stringDate));
-    		}
-    	}
-    	return lRet;
+        List<String> lRet = null;
+        if(stringDates != null && !stringDates.isEmpty()){
+            lRet = new ArrayList<String>();
+            for(String stringDate:stringDates){
+                lRet.add(cleanUpperBound(stringDate));
+            }
+        }
+        return lRet;
     }
     
     /**
@@ -252,17 +252,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * day.
      */
     private static String cleanUpperBound(String stringDate){
-    	try{
-    		java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
-    		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+        try{
+            java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
-			if("00:00:00".equals(sdfTime.format(dt))){
-				stringDate = stringDate + " 23:59:59";
-			}
-		} catch (Exception ex){
-			GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Date Input: " + stringDate });
-		}
-		return stringDate;
+            if("00:00:00".equals(sdfTime.format(dt))){
+                stringDate = stringDate + " 23:59:59";
+            }
+        } catch (Exception ex){
+            GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Date Input: " + stringDate });
+        }
+        return stringDate;
     }
 
 
@@ -271,8 +271,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * This method takes in any valid date string, like <12/30/09 and convert
      * it into <12/30/09 23:59:59, but only for upper bound type values.
      *
-     * 	This method only really cares about .., <, <=. other operators
-     * 	are not evaluated.
+     *  This method only really cares about .., <, <=. other operators
+     *  are not evaluated.
      *
      * In order to do this it has to parse the inline date string
      *
@@ -281,19 +281,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     private static String parseAndConvertDateToRange(String propertyValue) {
 
-    	String sRet = propertyValue;
+        String sRet = propertyValue;
 
-		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
-			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
-			sRet = ObjectUtils.clean(rangeValues[0].trim())+ " .. " + cleanUpperBound(ObjectUtils.clean(rangeValues[1].trim()));
-		}  else if (propertyValue.startsWith("<=")) {
-			sRet = "<=" + cleanUpperBound(ObjectUtils.clean(propertyValue));
-		}  else if (propertyValue.startsWith("<")) {
-			sRet = "<" + cleanUpperBound(ObjectUtils.clean(propertyValue));
-		}
+        if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+            String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
+            sRet = ObjectUtils.clean(rangeValues[0].trim())+ " .. " + cleanUpperBound(ObjectUtils.clean(rangeValues[1].trim()));
+        }  else if (propertyValue.startsWith("<=")) {
+            sRet = "<=" + cleanUpperBound(ObjectUtils.clean(propertyValue));
+        }  else if (propertyValue.startsWith("<")) {
+            sRet = "<" + cleanUpperBound(ObjectUtils.clean(propertyValue));
+        }
 
-		return sRet;
-	}
+        return sRet;
+    }
 
 
 
@@ -309,63 +309,63 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     private void validateBounds(SearchAttributeCriteriaComponent lowerBound, SearchAttributeCriteriaComponent upperBound){
 
-    	Class type = getSearchableAttributeClass(lowerBound.getSearchableAttributeValue());
-    	Class upperType = getSearchableAttributeClass(upperBound.getSearchableAttributeValue());
+        Class type = getSearchableAttributeClass(lowerBound.getSearchableAttributeValue());
+        Class upperType = getSearchableAttributeClass(upperBound.getSearchableAttributeValue());
 
-    	// Make sure they are of the same data type
-    	if(type.getName().compareTo(upperType.getName()) != 0){
-    		String err = "Type Mismatch. Must compare two like types";
-    		LOG.error("validateBounds() " + err);
-			throw new RuntimeException(err);
-    	}
+        // Make sure they are of the same data type
+        if(type.getName().compareTo(upperType.getName()) != 0){
+            String err = "Type Mismatch. Must compare two like types";
+            LOG.error("validateBounds() " + err);
+            throw new RuntimeException(err);
+        }
 
-    	String errorMsg = "The search attribute range values are out of order. Lower bound must be <= Upper Bound. ["
-    		+ lowerBound.getValue() + ", " + upperBound.getValue() + "] for type " + type.getName();
+        String errorMsg = "The search attribute range values are out of order. Lower bound must be <= Upper Bound. ["
+            + lowerBound.getValue() + ", " + upperBound.getValue() + "] for type " + type.getName();
 
-    	if(TypeUtils.isIntegralClass(type) || TypeUtils.isDecimalClass(type)){
-    		// The clean numeric will work with both integer and float values
-    		BigDecimal lVal = SqlBuilder.stringToBigDecimal(lowerBound.getValue());
-    		BigDecimal uVal = SqlBuilder.stringToBigDecimal(upperBound.getValue());
+        if(TypeUtils.isIntegralClass(type) || TypeUtils.isDecimalClass(type)){
+            // The clean numeric will work with both integer and float values
+            BigDecimal lVal = SqlBuilder.stringToBigDecimal(lowerBound.getValue());
+            BigDecimal uVal = SqlBuilder.stringToBigDecimal(upperBound.getValue());
 
-    		if(lVal.compareTo(uVal) > 0){
-    			LOG.error("validateBounds() " + errorMsg);
-				throw new RuntimeException(errorMsg);
-    		}
+            if(lVal.compareTo(uVal) > 0){
+                LOG.error("validateBounds() " + errorMsg);
+                throw new RuntimeException(errorMsg);
+            }
 
-    	}else if(TypeUtils.isTemporalClass(type)){
-    		java.sql.Timestamp lVal = null;
-    		java.sql.Timestamp uVal = null;
-    		try{
-    			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(lowerBound.getValue());
-    			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(upperBound.getValue());
-    		}catch(Exception ex){
-    			LOG.error("validateBounds() " + errorMsg);
-				throw new RuntimeException(errorMsg, ex);
-    		}
+        }else if(TypeUtils.isTemporalClass(type)){
+            java.sql.Timestamp lVal = null;
+            java.sql.Timestamp uVal = null;
+            try{
+                lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(lowerBound.getValue());
+                uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(upperBound.getValue());
+            }catch(Exception ex){
+                LOG.error("validateBounds() " + errorMsg);
+                throw new RuntimeException(errorMsg, ex);
+            }
 
-    		if(lVal.compareTo(uVal) > 0){
-    			LOG.error("validateBounds() " + errorMsg);
-				throw new RuntimeException(errorMsg);
-    		}
+            if(lVal.compareTo(uVal) > 0){
+                LOG.error("validateBounds() " + errorMsg);
+                throw new RuntimeException(errorMsg);
+            }
 
-    	}else if(TypeUtils.isStringClass(type)){
-    		// this is a complete edge case that should not be allowed to happen but
-    		// the XSD states that it's valid.
-    		if(lowerBound.isCaseSensitive() != upperBound.isCaseSensitive()){
-    			LOG.warn("validateBounds(): Cannot Validate because mismatch case sensitivity ["
-    					+ lowerBound.getValue() + ", " + upperBound.getValue() + "] for type " + type.getName());
-    		}else if(lowerBound.isCaseSensitive()){
-    			if(lowerBound.getValue().compareTo(upperBound.getValue()) > 0){
-        			LOG.error("validateBounds() " + errorMsg);
-    				throw new RuntimeException(errorMsg);
-        		}
-    		}else{
-    			if(lowerBound.getValue().compareToIgnoreCase(upperBound.getValue()) > 0){
-        			LOG.error("validateBounds() " + errorMsg);
-    				throw new RuntimeException(errorMsg);
-        		}
-    		}
-    	}
+        }else if(TypeUtils.isStringClass(type)){
+            // this is a complete edge case that should not be allowed to happen but
+            // the XSD states that it's valid.
+            if(lowerBound.isCaseSensitive() != upperBound.isCaseSensitive()){
+                LOG.warn("validateBounds(): Cannot Validate because mismatch case sensitivity ["
+                        + lowerBound.getValue() + ", " + upperBound.getValue() + "] for type " + type.getName());
+            }else if(lowerBound.isCaseSensitive()){
+                if(lowerBound.getValue().compareTo(upperBound.getValue()) > 0){
+                    LOG.error("validateBounds() " + errorMsg);
+                    throw new RuntimeException(errorMsg);
+                }
+            }else{
+                if(lowerBound.getValue().compareToIgnoreCase(upperBound.getValue()) > 0){
+                    LOG.error("validateBounds() " + errorMsg);
+                    throw new RuntimeException(errorMsg);
+                }
+            }
+        }
     }
 
     /**
@@ -373,10 +373,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * This method takes in a list of searchable attributes and pulls out range componets, combines them
      * and adds them back into the original list.
      *
-     *	for any upperbound that does not have a timestamp, add one that's 23:59:59
+     *  for any upperbound that does not have a timestamp, add one that's 23:59:59
      *
-     *	for non range attributes it checks to see if it's a standard no time date and converts
-     *	it to a "between".
+     *  for non range attributes it checks to see if it's a standard no time date and converts
+     *  it to a "between".
      *
      * so sa list: a, b, cR1, d, e, cR2
      * returns: a, b, cR,
@@ -384,11 +384,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      *
      */
     private void combineAndFormatSearchableComponents(
-			List<SearchAttributeCriteriaComponent> searchableAttributes) {
+            List<SearchAttributeCriteriaComponent> searchableAttributes) {
 
-        Map<String, List<SearchAttributeCriteriaComponent>> searchableAttributeRangeComponents = new HashMap<String,List<SearchAttributeCriteriaComponent>>();
+        Map<String, List<SearchAttributeCriteriaComponent>> searchableAttributeRangeComponents = new HashMap<String, List<SearchAttributeCriteriaComponent>>();
 
-		for (Iterator iterator = searchableAttributes.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = searchableAttributes.iterator(); iterator.hasNext();) {
             SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iterator.next();
             if (!criteriaComponent.isSearchable()) {
                 continue;
@@ -396,156 +396,157 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             SearchableAttributeValue searchAttribute = criteriaComponent.getSearchableAttributeValue();
             if (searchAttribute == null) {
-            	// key given for propertyField must not be on document
-				String errorMsg = "The search attribute value associated with key '"
-						+ criteriaComponent.getSavedKey() + "' cannot be found";
-            	LOG.error("getSearchableAttributeSql() " + errorMsg);
-            	throw new RuntimeException(errorMsg);
+                // key given for propertyField must not be on document
+                String errorMsg = "The search attribute value associated with key '"
+                        + criteriaComponent.getSavedKey() + "' cannot be found";
+                LOG.error("getSearchableAttributeSql() " + errorMsg);
+                throw new RuntimeException(errorMsg);
             }
 
-			Class clazz = getSearchableAttributeClass(searchAttribute);
+            Class clazz = getSearchableAttributeClass(searchAttribute);
 
             if (criteriaComponent.isRangeSearch()) {
-            	if (searchableAttributeRangeComponents.containsKey(criteriaComponent.getSavedKey())) {
-					List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents.get(criteriaComponent.getSavedKey());
-					List<SearchAttributeCriteriaComponent> newCriteriaComponents = new ArrayList<SearchAttributeCriteriaComponent>();
-					newCriteriaComponents.addAll(criteriaComponents);
-            		newCriteriaComponents.add(criteriaComponent);
-            		searchableAttributeRangeComponents.put(criteriaComponent.getSavedKey(), newCriteriaComponents);
-            	} else {
-					searchableAttributeRangeComponents.put(criteriaComponent.getSavedKey(),
-									Arrays.asList(new SearchAttributeCriteriaComponent[] { criteriaComponent })
-									);
-				}
-				// we need to make sure the dates are converted based on case.
-				// for upperbound
-				if (TypeUtils.isTemporalClass(clazz) && criteriaComponent.isComponentUpperBoundValue()) {
-					criteriaComponent.setValue(cleanUpperBound(criteriaComponent.getValue()));
-					criteriaComponent.setValues(cleanUpperBounds(criteriaComponent.getValues()));
-				}
 
-			} else {
-				if (TypeUtils.isTemporalClass(clazz)) {
-					criteriaComponent.setValue(criteriaComponent.getValue());
-				}
-			}
-		}
+                if (searchableAttributeRangeComponents.containsKey(criteriaComponent.getSavedKey())) {
+                    List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents.get(criteriaComponent.getSavedKey());
+                    List<SearchAttributeCriteriaComponent> newCriteriaComponents = new ArrayList<SearchAttributeCriteriaComponent>();
+                    newCriteriaComponents.addAll(criteriaComponents);
+                    newCriteriaComponents.add(criteriaComponent);
+                    searchableAttributeRangeComponents.put(criteriaComponent.getSavedKey(), newCriteriaComponents);
+                } else {
+                    searchableAttributeRangeComponents.put(criteriaComponent.getSavedKey(),
+                                    Arrays.asList(new SearchAttributeCriteriaComponent[] { criteriaComponent })
+                                    );
+                }
+                // we need to make sure the dates are converted based on case.
+                // for upperbound
+                if (TypeUtils.isTemporalClass(clazz) && criteriaComponent.isComponentUpperBoundValue()) {
+                    criteriaComponent.setValue(cleanUpperBound(criteriaComponent.getValue()));
+                    criteriaComponent.setValues(cleanUpperBounds(criteriaComponent.getValues()));
+                }
 
-		// we combined the attributes above into a map of lists. Now for each
-		// key, make one SA.
-		for (String keyName : searchableAttributeRangeComponents.keySet()) {
-			List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents
-					.get(keyName);
+            } else {
+                if (TypeUtils.isTemporalClass(clazz)) {
+                    criteriaComponent.setValue(criteriaComponent.getValue());
+                }
+            }
+        }
 
-			SearchAttributeCriteriaComponent newComp = null;
-			SearchAttributeCriteriaComponent lowerBound = null;
-			SearchAttributeCriteriaComponent upperBound = null;
+        // we combined the attributes above into a map of lists. Now for each
+        // key, make one SA.
+        for (String keyName : searchableAttributeRangeComponents.keySet()) {
+            List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents
+                    .get(keyName);
 
-			for (SearchAttributeCriteriaComponent component : criteriaComponents) {
-				if (component.isComponentLowerBoundValue()) {
-					lowerBound = component;
-				} else if (component.isComponentUpperBoundValue()) {
-					upperBound = component;
-				} else {
-					String errorMsg = "The search attribute value associated with key '"
-							+ component.getSavedKey()
-							+ "' is not upper or lower bound";
-					LOG.error("getSearchableAttributeSql() " + errorMsg);
-					throw new RuntimeException(errorMsg);
-				}
-			}
+            SearchAttributeCriteriaComponent newComp = null;
+            SearchAttributeCriteriaComponent lowerBound = null;
+            SearchAttributeCriteriaComponent upperBound = null;
 
-			// now we have both the upper and lower if they exist. lets make a
-			// new single component.
-			if (lowerBound != null && upperBound != null) { // between case
-
-				// we need to check and make sure a < b for range values
-				validateBounds(lowerBound, upperBound);
-
-				// we need to do this if the search is NOT inclusive. if
-				// that's the case then
-				// the between operator does not work.
-
-				lowerBound.setRangeSearch(false);
-				upperBound.setRangeSearch(false);
-				if (lowerBound.isSearchInclusive()) {
-					lowerBound.setValue(">=" + lowerBound.getValue());
-				} else {
-					lowerBound.setValue(">" + lowerBound.getValue());
-				}
-				if (upperBound.isSearchInclusive()) {
-					upperBound.setValue("<=" + upperBound.getValue());
-				} else {
-					upperBound.setValue("<" + upperBound.getValue());
-				}
-
-			} else if (lowerBound != null) {
-				newComp = new SearchAttributeCriteriaComponent(lowerBound
-						.getFormKey(), null, false);
-				if (lowerBound.isSearchInclusive()) {
-					newComp.setValue(">=" + lowerBound.getValue());
-				} else {
-					newComp.setValue(">" + lowerBound.getValue());
-				}
-				newComp.setSearchInclusive(lowerBound.isSearchInclusive());
-				newComp.setCaseSensitive(lowerBound.isCaseSensitive());
-				newComp.setAllowInlineRange(lowerBound.isAllowInlineRange());
-				newComp.setCanHoldMultipleValues(lowerBound
-						.isCanHoldMultipleValues());
-				newComp.setLookupableFieldType(lowerBound
-						.getLookupableFieldType());
-				newComp.setSearchable(true);
-				newComp.setSearchableAttributeValue(lowerBound
-						.getSearchableAttributeValue());
-				newComp.setSavedKey(lowerBound.getSavedKey());
-				searchableAttributes.add(newComp);
-			} else if (upperBound != null) {
-				newComp = new SearchAttributeCriteriaComponent(upperBound
-						.getFormKey(), null, false);
-				if (upperBound.isSearchInclusive()) {
-					newComp.setValue("<=" + upperBound.getValue());
-				} else {
-					newComp.setValue("<" + upperBound.getValue());
-				}
-				newComp.setSearchInclusive(upperBound.isSearchInclusive());
-				newComp.setCaseSensitive(upperBound.isCaseSensitive());
-				newComp.setAllowInlineRange(upperBound.isAllowInlineRange());
-				newComp.setCanHoldMultipleValues(upperBound.isCanHoldMultipleValues());
-				newComp.setLookupableFieldType(upperBound.getLookupableFieldType());
-				newComp.setSearchable(true);
-				newComp.setSearchableAttributeValue(upperBound.getSearchableAttributeValue());
-				newComp.setSavedKey(upperBound.getSavedKey());
-				searchableAttributes.add(newComp);
-			}
-
-            	}
-
-		// last step is to remove all range items from the list because we have
-		// just combined them into single elements
-		for (Iterator iterator = searchableAttributes.iterator(); iterator
-				.hasNext();) {
-			SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iterator
-					.next();
-			if (!criteriaComponent.isSearchable()) {
-            	continue;
+            for (SearchAttributeCriteriaComponent component : criteriaComponents) {
+                if (component.isComponentLowerBoundValue()) {
+                    lowerBound = component;
+                } else if (component.isComponentUpperBoundValue()) {
+                    upperBound = component;
+                } else {
+                    String errorMsg = "The search attribute value associated with key '"
+                            + component.getSavedKey()
+                            + "' is not upper or lower bound";
+                    LOG.error("getSearchableAttributeSql() " + errorMsg);
+                    throw new RuntimeException(errorMsg);
+                }
             }
 
-			if (criteriaComponent.isRangeSearch()) {
-				iterator.remove();
-			}
+            // now we have both the upper and lower if they exist. lets make a
+            // new single component.
+            if (lowerBound != null && upperBound != null) { // between case
 
-		}
-	}
+                // we need to check and make sure a < b for range values
+                validateBounds(lowerBound, upperBound);
+
+                // we need to do this if the search is NOT inclusive. if
+                // that's the case then
+                // the between operator does not work.
+
+                lowerBound.setRangeSearch(false);
+                upperBound.setRangeSearch(false);
+                if (lowerBound.isSearchInclusive()) {
+                    lowerBound.setValue(">=" + lowerBound.getValue());
+                } else {
+                    lowerBound.setValue(">" + lowerBound.getValue());
+                }
+                if (upperBound.isSearchInclusive()) {
+                    upperBound.setValue("<=" + upperBound.getValue());
+                } else {
+                    upperBound.setValue("<" + upperBound.getValue());
+                }
+
+            } else if (lowerBound != null) {
+                newComp = new SearchAttributeCriteriaComponent(lowerBound
+                        .getFormKey(), null, false);
+                if (lowerBound.isSearchInclusive()) {
+                    newComp.setValue(">=" + lowerBound.getValue());
+                } else {
+                    newComp.setValue(">" + lowerBound.getValue());
+                }
+                newComp.setSearchInclusive(lowerBound.isSearchInclusive());
+                newComp.setCaseSensitive(lowerBound.isCaseSensitive());
+                newComp.setAllowInlineRange(lowerBound.isAllowInlineRange());
+                newComp.setCanHoldMultipleValues(lowerBound
+                        .isCanHoldMultipleValues());
+                newComp.setLookupableFieldType(lowerBound
+                        .getLookupableFieldType());
+                newComp.setSearchable(true);
+                newComp.setSearchableAttributeValue(lowerBound
+                        .getSearchableAttributeValue());
+                newComp.setSavedKey(lowerBound.getSavedKey());
+                searchableAttributes.add(newComp);
+            } else if (upperBound != null) {
+                newComp = new SearchAttributeCriteriaComponent(upperBound
+                        .getFormKey(), null, false);
+                if (upperBound.isSearchInclusive()) {
+                    newComp.setValue("<=" + upperBound.getValue());
+                } else {
+                    newComp.setValue("<" + upperBound.getValue());
+                }
+                newComp.setSearchInclusive(upperBound.isSearchInclusive());
+                newComp.setCaseSensitive(upperBound.isCaseSensitive());
+                newComp.setAllowInlineRange(upperBound.isAllowInlineRange());
+                newComp.setCanHoldMultipleValues(upperBound.isCanHoldMultipleValues());
+                newComp.setLookupableFieldType(upperBound.getLookupableFieldType());
+                newComp.setSearchable(true);
+                newComp.setSearchableAttributeValue(upperBound.getSearchableAttributeValue());
+                newComp.setSavedKey(upperBound.getSavedKey());
+                searchableAttributes.add(newComp);
+            }
+
+        }
+
+        // last step is to remove all range items from the list because we have
+        // just combined them into single elements
+        for (Iterator iterator = searchableAttributes.iterator(); iterator
+                .hasNext();) {
+            SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iterator
+                    .next();
+            if (!criteriaComponent.isSearchable()) {
+                continue;
+            }
+
+            if (criteriaComponent.isRangeSearch()) {
+                iterator.remove();
+            }
+
+        }
+    }
 
     public QueryComponent getSearchableAttributeSql(List<SearchAttributeCriteriaComponent> searchableAttributes, String whereClausePredicatePrefix) {
-    	/*
+        /*
          * This method still isn't complete. It now is a hybrid of the old and new way of generating the sql.
          * It's still using the old way to build the select and from parts of the statement, with the new part generating
          * the where.  The new way allows for operators and should clear up a lot of the date issues.
          */
 
-    	// this will massage the data and change all range attributes into std ones.
-    	combineAndFormatSearchableComponents(searchableAttributes);
+        // this will massage the data and change all range attributes into std ones.
+        combineAndFormatSearchableComponents(searchableAttributes);
 
         StringBuffer fromSql = new StringBuffer();
         StringBuffer whereSql = new StringBuffer();
@@ -566,10 +567,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             SearchableAttributeValue searchAttribute = criteriaComponent.getSearchableAttributeValue();
             if (searchAttribute == null) {
-            	// key given for propertyField must not be on document
-            	String errorMsg = "The search attribute value associated with key '" + criteriaComponent.getSavedKey() + "' cannot be found";
-            	LOG.error("getSearchableAttributeSql() " + errorMsg);
-            	throw new RuntimeException(errorMsg);
+                // key given for propertyField must not be on document
+                String errorMsg = "The search attribute value associated with key '" + criteriaComponent.getSavedKey() + "' cannot be found";
+                LOG.error("getSearchableAttributeSql() " + errorMsg);
+                throw new RuntimeException(errorMsg);
             }
 
             tableAlias = "EXT" + tableIndex;
@@ -581,19 +582,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             Criteria crit = null;
             List<String> searchValues = criteriaComponent.getValues();
             if (searchValues != null && !searchValues.isEmpty()) {
-            	crit = new Criteria(searchAttribute.getAttributeTableName(), tableAlias);
-            	crit.setDbPlatform(sqlBuild.getDbPlatform());
-            	crit.in("VAL", criteriaComponent.getValues(), c);
+                crit = new Criteria(searchAttribute.getAttributeTableName(), tableAlias);
+                crit.setDbPlatform(sqlBuild.getDbPlatform());
+                crit.in("VAL", criteriaComponent.getValues(), c);
             } else {
-            	crit = sqlBuild.createCriteria("VAL", criteriaComponent.getValue() , searchAttribute.getAttributeTableName(), tableAlias, c, addCaseInsensitivityForValue, searchAttribute.allowsWildcards());
+                crit = sqlBuild.createCriteria("VAL", criteriaComponent.getValue() , searchAttribute.getAttributeTableName(), tableAlias, c, addCaseInsensitivityForValue, searchAttribute.allowsWildcards());
             }
             sqlBuild.addCriteria("KEY_CD", criteriaComponent.getSavedKey(), String.class, false, false, crit); // this is always of type string.
             sqlBuild.andCriteria("DOC_HDR_ID", tableAlias + ".DOC_HDR_ID", "KREW_DOC_HDR_T", "DOC_HDR", TypeUtils.JoinType.class, false, false, crit);
 
             if(finalCriteria == null ){
-            	finalCriteria = crit;
+                finalCriteria = crit;
             }else{
-            	sqlBuild.andCriteria(finalCriteria, crit);
+                sqlBuild.andCriteria(finalCriteria, crit);
             }
 
             // - below is the old code
@@ -605,15 +606,15 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
 
         for (String keyName : searchableAttributeRangeComponents.keySet()) {
-			List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents.get(keyName);
+            List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents.get(keyName);
             // if where clause is empty then use passed in prefix... otherwise generate one
             String whereClausePrefix = (whereSql.length() == 0) ? whereClausePredicatePrefix : getGeneratedPredicatePrefix(whereSql.length());
-			QueryComponent qc = generateSearchableAttributeRangeSql(keyName, criteriaComponents, whereClausePrefix, tableIndex);
+            QueryComponent qc = generateSearchableAttributeRangeSql(keyName, criteriaComponents, whereClausePrefix, tableIndex);
             fromSql.append(qc.getFromSql());
-		}
-
+        }
+        
         if (finalCriteria == null) {
-        	return new QueryComponent("", "", "");
+            return new QueryComponent("", "", "");
         }
 
         String whereClausePrefix = (whereSql.length() == 0) ? whereClausePredicatePrefix : getGeneratedPredicatePrefix(whereSql.length());
@@ -638,24 +639,24 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public QueryComponent generateSearchableAttributeRangeSql(String searchAttributeKeyName, List<SearchAttributeCriteriaComponent> criteriaComponents,String whereSqlStarter,int tableIndex) {
         StringBuffer fromSql = new StringBuffer();
         StringBuffer whereSql = new StringBuffer();
-    	boolean joinAlreadyPerformed = false;
+        boolean joinAlreadyPerformed = false;
         String tableIdentifier = "EXT" + tableIndex;
         String queryTableColumnName = tableIdentifier + ".VAL";
 
         for (SearchAttributeCriteriaComponent criteriaComponent : criteriaComponents) {
-			if (!searchAttributeKeyName.equals(criteriaComponent.getSavedKey())) {
-				String errorMsg = "Key value of searchable attribute component with savedKey '" + criteriaComponent.getSavedKey() + "' does not match specified savedKey value '" + searchAttributeKeyName + "'";
-				LOG.error("generateSearchableAttributeRangeSql() " + errorMsg);
-				throw new RuntimeException(errorMsg);
-			}
-			if (!joinAlreadyPerformed) {
-		        QueryComponent joinSqlComponent = getSearchableAttributeJoinSql(criteriaComponent.getSearchableAttributeValue(), tableIdentifier, whereSqlStarter, searchAttributeKeyName);
-		        fromSql.append(joinSqlComponent.getFromSql());
-		        whereSql.append(joinSqlComponent.getWhereSql());
-		        joinAlreadyPerformed = true;
-			}
-	        whereSql.append(generateSearchableAttributeDefaultWhereSql(criteriaComponent, queryTableColumnName));
-		}
+            if (!searchAttributeKeyName.equals(criteriaComponent.getSavedKey())) {
+                String errorMsg = "Key value of searchable attribute component with savedKey '" + criteriaComponent.getSavedKey() + "' does not match specified savedKey value '" + searchAttributeKeyName + "'";
+                LOG.error("generateSearchableAttributeRangeSql() " + errorMsg);
+                throw new RuntimeException(errorMsg);
+            }
+            if (!joinAlreadyPerformed) {
+                QueryComponent joinSqlComponent = getSearchableAttributeJoinSql(criteriaComponent.getSearchableAttributeValue(), tableIdentifier, whereSqlStarter, searchAttributeKeyName);
+                fromSql.append(joinSqlComponent.getFromSql());
+                whereSql.append(joinSqlComponent.getWhereSql());
+                joinAlreadyPerformed = true;
+            }
+            whereSql.append(generateSearchableAttributeDefaultWhereSql(criteriaComponent, queryTableColumnName));
+        }
 
         return new QueryComponent("",fromSql.toString(),whereSql.toString());
     }
@@ -675,12 +676,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         StringBuilder whereSqlTemp = new StringBuilder();
         if (valueIsDate) {
-        	if (criteriaComponent.isRangeSearch()) {
+            if (criteriaComponent.isRangeSearch()) {
                 // for a range search just add the criteria
-	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), criteriaComponent.isComponentLowerBoundValue(), attributeValueSearched));
-        	} else if(criteriaComponent.isAllowInlineRange()) {
-        		whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched, criteriaComponent.isAllowInlineRange()));
-        	} else {
+                whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), criteriaComponent.isComponentLowerBoundValue(), attributeValueSearched));
+            } else if(criteriaComponent.isAllowInlineRange()) {
+                whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched, criteriaComponent.isAllowInlineRange()));
+            } else {
                 if (!Utilities.isEmpty(attributeValuesSearched)) {
                     // for a multivalue date search we need multiple ranges entered
                     whereSqlTemp.append(initialClauseStarter).append(" (");
@@ -699,47 +700,47 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                     }
                     whereSqlTemp.append(") ");
                 } else {
-    	        	// below is a search for a single date field.... must do a range of 'time' so we can find any value regardless of the time associated with it
-    	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), true, attributeValueSearched));
-    	        	whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched));
+                    // below is a search for a single date field.... must do a range of 'time' so we can find any value regardless of the time associated with it
+                    whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), true, attributeValueSearched));
+                    whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched));
                 }
-        	}
+            }
         } else {
             boolean usingWildcards = false;
-        	StringBuffer prefix = new StringBuffer("");
-        	StringBuffer suffix = new StringBuffer("");
-        	if (valueIsString) {
-        		prefix.append("'");
-        		suffix.insert(0,"'");
-        	}
-        	// apply wildcarding if wildcard character is specified
-        	// after conversion of doc search to lookup, wildcards are always allowed
-        	if (!Utilities.isEmpty(attributeValuesSearched)) {
-        		List<String> newList = new ArrayList<String>();
-        		for (String attributeValueEntered : attributeValuesSearched) {
-        			newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
-        			usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
-        		}
-        		attributeValuesSearched = newList;
-        	} else {
-        		attributeValueSearched = attributeValueSearched.trim().replace('*', DATABASE_WILDCARD_CHARACTER);
-        		usingWildcards |= (attributeValueSearched.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
-        	}
+            StringBuffer prefix = new StringBuffer("");
+            StringBuffer suffix = new StringBuffer("");
+            if (valueIsString) {
+                prefix.append("'");
+                suffix.insert(0,"'");
+            }
+            // apply wildcarding if wildcard character is specified
+            // after conversion of doc search to lookup, wildcards are always allowed
+            if (!Utilities.isEmpty(attributeValuesSearched)) {
+                List<String> newList = new ArrayList<String>();
+                for (String attributeValueEntered : attributeValuesSearched) {
+                    newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
+                    usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
+                }
+                attributeValuesSearched = newList;
+            } else {
+                attributeValueSearched = attributeValueSearched.trim().replace('*', DATABASE_WILDCARD_CHARACTER);
+                usingWildcards |= (attributeValueSearched.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
+            }
             String prefixToUse = prefix.toString();
-        	String suffixToUse = suffix.toString();
+            String suffixToUse = suffix.toString();
 
-        	if (addCaseInsensitivityForValue) {
-            	queryTableColumnName = "upper(" + queryTableColumnName + ")";
-            	prefixToUse = "upper(" + prefix.toString();
-            	suffixToUse = suffix.toString() + ")";
-        	}
+            if (addCaseInsensitivityForValue) {
+                queryTableColumnName = "upper(" + queryTableColumnName + ")";
+                prefixToUse = "upper(" + prefix.toString();
+                suffixToUse = suffix.toString() + ")";
+            }
 
-        	if (!Utilities.isEmpty(attributeValuesSearched)) {
+            if (!Utilities.isEmpty(attributeValuesSearched)) {
                 // for a multivalue search we need multiple 'or' clause statements entered
                 whereSqlTemp.append(initialClauseStarter).append(" (");
                 boolean firstValue = true;
                 for (String attributeValueEntered : attributeValuesSearched) {
-                	checkNumberFormattingIfNumeric(attributeValueEntered, valueIsLong, valueIsFloat);
+                    checkNumberFormattingIfNumeric(attributeValueEntered, valueIsLong, valueIsFloat);
 
                     String separator = " or ";
                     if (firstValue) {
@@ -753,31 +754,31 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             } else {
                 String sqlOperand = getSqlOperand(criteriaComponent.isRangeSearch(), criteriaComponent.isSearchInclusive(), (criteriaComponent.isRangeSearch() && criteriaComponent.isComponentLowerBoundValue()), usingWildcards);
               if(criteriaComponent.isAllowInlineRange()) {
-              	for (String range : KNSConstants.RANGE_CHARACTERS) {
-						int index = StringUtils.indexOf(attributeValueSearched, range);
-              		if(index != -1) {
-							sqlOperand=range;
-							if(!StringUtils.equals(sqlOperand, "..")) {
-								attributeValueSearched = StringUtils.remove(attributeValueSearched, range);
+                for (String range : KNSConstants.RANGE_CHARACTERS) {
+                        int index = StringUtils.indexOf(attributeValueSearched, range);
+                    if(index != -1) {
+                            sqlOperand=range;
+                            if(!StringUtils.equals(sqlOperand, "..")) {
+                                attributeValueSearched = StringUtils.remove(attributeValueSearched, range);
 
-							} else {
-								String[] rangeValues = StringUtils.split(attributeValueSearched, "..");
-								if(rangeValues!=null && rangeValues.length>1) {
-									checkNumberFormattingIfNumeric(rangeValues[0], valueIsLong, valueIsFloat);
+                            } else {
+                                String[] rangeValues = StringUtils.split(attributeValueSearched, "..");
+                                if(rangeValues!=null && rangeValues.length>1) {
+                                    checkNumberFormattingIfNumeric(rangeValues[0], valueIsLong, valueIsFloat);
 
-									//append first one here and then set the second one and break
-									whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, ">=", getDbPlatform().escapeString(rangeValues[0]), prefixToUse, suffixToUse));
-									attributeValueSearched = rangeValues[1];
-									sqlOperand = "<=";
-								} else {
-									throw new RuntimeException("What to do here...Range search \"..\" without one element");
-								}
-							}
-							break;
-						}
-					}
+                                    //append first one here and then set the second one and break
+                                    whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, ">=", getDbPlatform().escapeString(rangeValues[0]), prefixToUse, suffixToUse));
+                                    attributeValueSearched = rangeValues[1];
+                                    sqlOperand = "<=";
+                                } else {
+                                    throw new RuntimeException("What to do here...Range search \"..\" without one element");
+                                }
+                            }
+                            break;
+                        }
+                    }
               }
-              	checkNumberFormattingIfNumeric(attributeValueSearched, valueIsLong, valueIsFloat);
+                checkNumberFormattingIfNumeric(attributeValueSearched, valueIsLong, valueIsFloat);
                 whereSqlTemp.append(constructWhereClauseElement(initialClauseStarter, queryTableColumnName, sqlOperand, getDbPlatform().escapeString(attributeValueSearched), prefixToUse, suffixToUse));
             }
         }
@@ -794,23 +795,23 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @throws RiceRuntimeException if the value is supposed to be numeric, but is not.
      */
     private void checkNumberFormattingIfNumeric(String testValue, boolean valueIsLong, boolean valueIsFloat) {
-    	if (valueIsLong) {
-    		try { Long.parseLong(testValue); }
-    		catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
-    	}
-    	if (valueIsFloat) {
-    		try { new BigDecimal(testValue); }
-    		catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
-    	}
+        if (valueIsLong) {
+            try { Long.parseLong(testValue); }
+            catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
+        }
+        if (valueIsFloat) {
+            try { new BigDecimal(testValue); }
+            catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
+        }
     }
 
     public QueryComponent getSearchableAttributeJoinSql(SearchableAttributeValue attributeValue,String tableIdentifier,String whereSqlStarter,String attributeTableKeyColumnName) {
-    	return new QueryComponent("",generateSearchableAttributeFromSql(attributeValue, tableIdentifier).toString(),generateSearchableAttributeWhereClauseJoin(whereSqlStarter, tableIdentifier, attributeTableKeyColumnName).toString());
+        return new QueryComponent("",generateSearchableAttributeFromSql(attributeValue, tableIdentifier).toString(),generateSearchableAttributeWhereClauseJoin(whereSqlStarter, tableIdentifier, attributeTableKeyColumnName).toString());
     }
 
     public StringBuffer generateSearchableAttributeWhereClauseJoin(String whereSqlStarter,String tableIdentifier,String attributeTableKeyColumnName) {
-    	StringBuffer whereSql = new StringBuffer(constructWhereClauseElement(whereSqlStarter, "DOC_HDR.DOC_HDR_ID", "=", getDbPlatform().escapeString(tableIdentifier + ".DOC_HDR_ID"), null, null));
-    	whereSql.append(constructWhereClauseElement(" and ", tableIdentifier + ".KEY_CD", "=", getDbPlatform().escapeString(attributeTableKeyColumnName), "'", "'"));
+        StringBuffer whereSql = new StringBuffer(constructWhereClauseElement(whereSqlStarter, "DOC_HDR.DOC_HDR_ID", "=", getDbPlatform().escapeString(tableIdentifier + ".DOC_HDR_ID"), null, null));
+        whereSql.append(constructWhereClauseElement(" and ", tableIdentifier + ".KEY_CD", "=", getDbPlatform().escapeString(attributeTableKeyColumnName), "'", "'"));
         return whereSql;
     }
 
@@ -818,100 +819,100 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         StringBuffer fromSql = new StringBuffer();
         String tableName = getDbPlatform().escapeString(attributeValue.getAttributeTableName());
         if (StringUtils.isBlank(tableName)) {
-        	String errorMsg = "The table name associated with Searchable Attribute with class '" + attributeValue.getClass() + "' returns as '" + tableName + "'";
-        	LOG.error("getSearchableAttributeSql() " + errorMsg);
-        	throw new RuntimeException(errorMsg);
+            String errorMsg = "The table name associated with Searchable Attribute with class '" + attributeValue.getClass() + "' returns as '" + tableName + "'";
+            LOG.error("getSearchableAttributeSql() " + errorMsg);
+            throw new RuntimeException(errorMsg);
         }
         fromSql.append(" ," + tableName + " " + getDbPlatform().escapeString(tableIdentifier) + " ");
         return fromSql;
     }
 
     public StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch) {
-    	return constructWhereClauseDateElement(clauseStarter, queryTableColumnName, inclusive, valueIsLowerBound, dateValueToSearch,false);
+        return constructWhereClauseDateElement(clauseStarter, queryTableColumnName, inclusive, valueIsLowerBound, dateValueToSearch,false);
     }
 
     public StringBuffer constructWhereClauseDateElement(String clauseStarter,String queryTableColumnName,boolean inclusive,boolean valueIsLowerBound,String dateValueToSearch, boolean isAllowInlineRange) {
-    	StringBuffer whereSQLBuffer = new StringBuffer();
-    	StringBuffer sqlOperand = new StringBuffer(getSqlOperand(true, inclusive, valueIsLowerBound, false));
-		String lowerTimeBound = "00:00:00";
-		String upperTimeBound = "23:59:59";
+        StringBuffer whereSQLBuffer = new StringBuffer();
+        StringBuffer sqlOperand = new StringBuffer(getSqlOperand(true, inclusive, valueIsLowerBound, false));
+        String lowerTimeBound = "00:00:00";
+        String upperTimeBound = "23:59:59";
 
-    	String timeValueToSearch = null;
-    	if (valueIsLowerBound) {
-			timeValueToSearch = lowerTimeBound;
-    	} else {
-			timeValueToSearch = upperTimeBound;
-    	}
+        String timeValueToSearch = null;
+        if (valueIsLowerBound) {
+            timeValueToSearch = lowerTimeBound;
+        } else {
+            timeValueToSearch = upperTimeBound;
+        }
 
         if(isAllowInlineRange) {
-        	for (String range : KNSConstants.RANGE_CHARACTERS) {
-				int index = StringUtils.indexOf(dateValueToSearch, range);
-        		if(index != -1) {
-					sqlOperand=new StringBuffer(range);
-					if(!StringUtils.equals(sqlOperand.toString(), "..")) {
-						dateValueToSearch = StringUtils.remove(dateValueToSearch,range);
-						if(StringUtils.equals(range, ">")) {
-							timeValueToSearch = upperTimeBound;
-						} else if(StringUtils.equals(range, "<")){
-							timeValueToSearch = lowerTimeBound;
-						}
-					}  else {
-						String[] rangeValues = StringUtils.split(dateValueToSearch, "..");
-						if(rangeValues!=null && rangeValues.length>1) {
-							//Enhancement Idea - Could possibly use recursion here (would have to set the lower bound and inclusive variables
-							//append first one here and then set the second one and break
-							timeValueToSearch = lowerTimeBound;
-							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
+            for (String range : KNSConstants.RANGE_CHARACTERS) {
+                int index = StringUtils.indexOf(dateValueToSearch, range);
+                if(index != -1) {
+                    sqlOperand=new StringBuffer(range);
+                    if(!StringUtils.equals(sqlOperand.toString(), "..")) {
+                        dateValueToSearch = StringUtils.remove(dateValueToSearch,range);
+                        if(StringUtils.equals(range, ">")) {
+                            timeValueToSearch = upperTimeBound;
+                        } else if(StringUtils.equals(range, "<")){
+                            timeValueToSearch = lowerTimeBound;
+                        }
+                    }  else {
+                        String[] rangeValues = StringUtils.split(dateValueToSearch, "..");
+                        if(rangeValues!=null && rangeValues.length>1) {
+                            //Enhancement Idea - Could possibly use recursion here (would have to set the lower bound and inclusive variables
+                            //append first one here and then set the second one and break
+                            timeValueToSearch = lowerTimeBound;
+                            whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
 
-							dateValueToSearch = rangeValues[1];
-							sqlOperand = new StringBuffer("<=");
-							timeValueToSearch = upperTimeBound;
-						} else {
-							throw new RuntimeException("What to do here...Range search \"..\" without one element");
-						}
-					}
-					break;
-				}
-			}
+                            dateValueToSearch = rangeValues[1];
+                            sqlOperand = new StringBuffer("<=");
+                            timeValueToSearch = upperTimeBound;
+                        } else {
+                            throw new RuntimeException("What to do here...Range search \"..\" without one element");
+                        }
+                    }
+                    break;
+                }
+            }
         }
-		return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim())), timeValueToSearch.trim()), "", ""));
+        return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim())), timeValueToSearch.trim()), "", ""));
     }
 
     public StringBuffer constructWhereClauseElement(String clauseStarter,String queryTableColumnName,String operand,String valueToSearch,String valuePrefix,String valueSuffix) {
-    	StringBuffer whereSql = new StringBuffer();
-    	valuePrefix = (valuePrefix != null) ? valuePrefix : "";
-    	valueSuffix = (valueSuffix != null) ? valueSuffix : "";
-    	whereSql.append(" " + clauseStarter + " ").append(getDbPlatform().escapeString(queryTableColumnName)).append(" " + operand + " ").append(valuePrefix).append(valueToSearch).append(valueSuffix).append(" ");
-    	return whereSql;
+        StringBuffer whereSql = new StringBuffer();
+        valuePrefix = (valuePrefix != null) ? valuePrefix : "";
+        valueSuffix = (valueSuffix != null) ? valueSuffix : "";
+        whereSql.append(" " + clauseStarter + " ").append(getDbPlatform().escapeString(queryTableColumnName)).append(" " + operand + " ").append(valuePrefix).append(valueToSearch).append(valueSuffix).append(" ");
+        return whereSql;
     }
 
-	/**
-	 * For the following we first check for a ranged search because a ranged search
-	 * does not allow for wildcards
-	 */
+    /**
+     * For the following we first check for a ranged search because a ranged search
+     * does not allow for wildcards
+     */
     public String getSqlOperand(boolean rangeSearch, boolean inclusive, boolean valueIsLowerBound, boolean usingWildcards) {
-    	StringBuffer sqlOperand = new StringBuffer("=");
-    	if (rangeSearch) {
-    		if (valueIsLowerBound) {
-    			sqlOperand = new StringBuffer(">");
-    		} else {
-    			sqlOperand = new StringBuffer("<");
-    		}
-    		if (inclusive) {
-    			sqlOperand.append("=");
-    		}
+        StringBuffer sqlOperand = new StringBuffer("=");
+        if (rangeSearch) {
+            if (valueIsLowerBound) {
+                sqlOperand = new StringBuffer(">");
+            } else {
+                sqlOperand = new StringBuffer("<");
+            }
+            if (inclusive) {
+                sqlOperand.append("=");
+            }
 
-    	} else if (usingWildcards) {
+        } else if (usingWildcards) {
             sqlOperand = new StringBuffer("like");
-    	}
-    	return sqlOperand.toString();
+        }
+        return sqlOperand.toString();
     }
 
     /**
      * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaDTO, String)} instead.
      */
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws SQLException {
-    	String principalId = null;
+        String principalId = null;
         return processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
     }
 
@@ -923,7 +924,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @throws SQLException
      */
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws SQLException {
-    	setCriteria(searchCriteria);
+        setCriteria(searchCriteria);
         int size = 0;
         List<DocSearchDTO> docList = new ArrayList<DocSearchDTO>();
         Map<Long, DocSearchDTO> resultMap = new HashMap<Long, DocSearchDTO>();
@@ -933,7 +934,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         while ( resultSetHasNext &&
                 ( (searchCriteria.getThreshold() == null) || (resultMap.size() < searchCriteria.getThreshold().intValue()) ) &&
                 ( (searchCriteria.getFetchLimit() == null) || (iteration < searchCriteria.getFetchLimit().intValue()) ) ) {
-        	iteration++;
+            iteration++;
             DocSearchDTO docCriteriaDTO = processRow(searchAttributeStatement, resultSet);
             docCriteriaDTO.setSuperUserSearch(getCriteria().getSuperUserSearch());
             if (!resultMap.containsKey(docCriteriaDTO.getRouteHeaderId())) {
@@ -964,19 +965,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             userSession = new UserSession(principalId);
         }
         if (userSession != null) {
-        	// TODO do we really want to allow the document search if there is no User Session?
-        	// This is mainly to allow for the unit tests to run but I wonder if we need to push
-        	// the concept of the "executing user" into the doc search api in some way...
-        	perfLog = new PerformanceLogger();
-        	SecuritySession securitySession = new SecuritySession(userSession);
-        	for (Iterator iterator = docList.iterator(); iterator.hasNext();) {
-        		DocSearchDTO docCriteriaDTO = (DocSearchDTO) iterator.next();
-        		if (!KEWServiceLocator.getDocumentSecurityService().docSearchAuthorized(userSession, docCriteriaDTO, securitySession)) {
-        			iterator.remove();
-        			criteria.setSecurityFilteredRows(criteria.getSecurityFilteredRows() + 1);
-        		}
-        	}
-        	perfLog.log("Time to filter document search results for security.", true);
+            // TODO do we really want to allow the document search if there is no User Session?
+            // This is mainly to allow for the unit tests to run but I wonder if we need to push
+            // the concept of the "executing user" into the doc search api in some way...
+            perfLog = new PerformanceLogger();
+            SecuritySession securitySession = new SecuritySession(userSession);
+            for (Iterator iterator = docList.iterator(); iterator.hasNext();) {
+                DocSearchDTO docCriteriaDTO = (DocSearchDTO) iterator.next();
+                if (!KEWServiceLocator.getDocumentSecurityService().docSearchAuthorized(userSession, docCriteriaDTO, securitySession)) {
+                    iterator.remove();
+                    criteria.setSecurityFilteredRows(criteria.getSecurityFilteredRows() + 1);
+                }
+            }
+            perfLog.log("Time to filter document search results for security.", true);
         }
 
         LOG.debug("Processed "+size+" document search result rows.");
@@ -992,31 +993,31 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     public void handleMultipleDocumentRows(DocSearchDTO existingRow, DocSearchDTO newRow) {
 
-    	for (KeyValueSort newData : newRow.getSearchableAttributes()) {
-    		String newRowValue = newData.getValue();
+        for (KeyValueSort newData : newRow.getSearchableAttributes()) {
+            String newRowValue = newData.getValue();
             boolean foundMatch = false;
             for (KeyValueSort existingData : existingRow.getSearchableAttributes()) {
                 if (existingData.getKey().equals(newData.getKey())) {
-                	String existingRowValue = existingData.getValue();
-                	if (!Utilities.isEmpty(newRowValue)) {
-                		String valueToSet = "";
-                		if (Utilities.isEmpty(existingRowValue)) {
-                			valueToSet = newRowValue;
-                		} else {
-                			valueToSet = existingRowValue + "<br>" + newRowValue;
-                		}
-                		existingData.setvalue(valueToSet);
-                		if ( (existingData.getSortValue() == null) && (newData.getSortValue() != null) ) {
-                    		existingData.setSortValue(newData.getSortValue());
-                		}
-                	}
-                	foundMatch = true;
+                    String existingRowValue = existingData.getValue();
+                    if (!Utilities.isEmpty(newRowValue)) {
+                        String valueToSet = "";
+                        if (Utilities.isEmpty(existingRowValue)) {
+                            valueToSet = newRowValue;
+                        } else {
+                            valueToSet = existingRowValue + "<br>" + newRowValue;
+                        }
+                        existingData.setvalue(valueToSet);
+                        if ( (existingData.getSortValue() == null) && (newData.getSortValue() != null) ) {
+                            existingData.setSortValue(newData.getSortValue());
+                        }
+                    }
+                    foundMatch = true;
                 }
             }
             if (!foundMatch) {
-            	existingRow.addSearchableAttribute(new KeyValueSort(newData));
+                existingRow.addSearchableAttribute(new KeyValueSort(newData));
             }
-    	}
+        }
     }
 
     public DocSearchDTO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException {
@@ -1051,14 +1052,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
 
         if (user != null) {
-        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
 
-        	docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
-        	docCriteriaDTO.setInitiatorName(user.getName());
-        	docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
-        	docCriteriaDTO.setInitiatorLastName(user.getLastName());
-        	docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), principal));
-        	docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
+            docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
+            docCriteriaDTO.setInitiatorName(user.getName());
+            docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
+            docCriteriaDTO.setInitiatorLastName(user.getLastName());
+            docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), principal));
+            docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
         }
 
         if (isUsingAtLeastOneSearchAttribute()) {
@@ -1117,24 +1118,25 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             searchAttValue.setSearchableAttributeKey(rs.getString(prefixName + "_KEY"));
             searchAttValue.setupAttributeValue(rs, prefixName + "_VALUE");
             if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
-        	docCriteriaDTO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
+            docCriteriaDTO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
             }
         }
     }
 
     public String getDocSearchSQL() {
 
-    	String docTypeTableAlias   = "DOC1";
-    	String docHeaderTableAlias = "DOC_HDR";
+        String docTypeTableAlias   = "DOC1";
+        String docHeaderTableAlias = "DOC_HDR";
 
-    	String sqlPrefix = "Select * from (";
-    	String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
+        String sqlPrefix = "Select * from (";
+        String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
         StringBuffer selectSQL = new StringBuffer("select DISTINCT("+ docHeaderTableAlias +".DOC_HDR_ID), "+ docHeaderTableAlias +".INITR_PRNCPL_ID, "
-        		+ docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docTypeTableAlias +".DOC_TYP_NM, "
-        		+ docTypeTableAlias +".LBL, "+ docTypeTableAlias +".DOC_HDLR_URL, "+ docTypeTableAlias +".ACTV_IND");
+                + docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docHeaderTableAlias +".APP_DOC_STAT, "+ docTypeTableAlias +".DOC_TYP_NM, "
+                + docTypeTableAlias +".LBL, "+ docTypeTableAlias +".DOC_HDLR_URL, "+ docTypeTableAlias +".ACTV_IND");
         StringBuffer fromSQL = new StringBuffer(" from KREW_DOC_TYP_T "+ docTypeTableAlias +" ");
         StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");
+
         StringBuffer whereSQL = new StringBuffer();
         whereSQL.append(getRouteHeaderIdSql(criteria.getRouteHeaderId(), getGeneratedPredicatePrefix(whereSQL.length()), docHeaderTableAlias));
         whereSQL.append(getInitiatorSql(criteria.getInitiator(), getGeneratedPredicatePrefix(whereSQL.length())));
@@ -1179,19 +1181,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 //        whereSQL.append(getDocTitleSql(criteria.getDocTitle(), getGeneratedPredicatePrefix(whereSQL.length())));
         String tempWhereSql = getDocTitleSql(criteria.getDocTitle(), getGeneratedPredicatePrefix(whereSQL.length()));
         if ( ((whereSQL == null) || (StringUtils.isBlank(whereSQL.toString()))) && (StringUtils.isNotBlank(tempWhereSql)) ) {
-        	// doc title is not blank
-        	defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
+            // doc title is not blank
+            defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
         }
         whereSQL.append(tempWhereSql);
         if ( ((whereSQL == null) || (StringUtils.isBlank(whereSQL.toString()))) && (StringUtils.isBlank(criteria.getDocRouteStatus())) ) {
             // if they haven't set any criteria, default the from created date to today minus days from constant variable
-        	defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
+            defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
         }
         if (defaultCreateDateDaysAgoValue != null) {
-        	// add a default create date
-        	Calendar calendar = Calendar.getInstance();
-        	calendar.add(Calendar.DATE, defaultCreateDateDaysAgoValue.intValue());
-        	criteria.setFromDateCreated(RiceConstants.getDefaultDateFormat().format(calendar.getTime()));
+            // add a default create date
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, defaultCreateDateDaysAgoValue.intValue());
+            criteria.setFromDateCreated(RiceConstants.getDefaultDateFormat().format(calendar.getTime()));
             whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
         }
 
@@ -1227,24 +1229,24 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     @Deprecated
     public String generateFinalSQL(QueryComponent searchSQL,String docHeaderTableAlias, String standardSqlPrefix, String standardSqlSuffix) {
-    	StringBuffer finalSql = new StringBuffer();
-    	List<SearchableAttributeValue> searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
-    	List<String> tableAliasComponentNames = new ArrayList<String>(searchableAttributeValues.size());
-    	for (SearchableAttributeValue attValue : searchableAttributeValues) {
-			tableAliasComponentNames.add(attValue.getAttributeDataType().toUpperCase());
-		}
-    	for (SearchableAttributeValue attributeValue : searchableAttributeValues) {
-			QueryComponent qc = generateSqlForSearchableAttributeValue(attributeValue, tableAliasComponentNames, docHeaderTableAlias);
-			StringBuffer currentSql = new StringBuffer();
-			currentSql.append(searchSQL.getSelectSql() + qc.getSelectSql() + searchSQL.getFromSql() + qc.getFromSql() + searchSQL.getWhereSql() + qc.getWhereSql());
-			if (finalSql.length() == 0) {
-				finalSql.append(standardSqlPrefix).append(" ( ").append(currentSql);
-			} else {
-				finalSql.append(" ) UNION ( " + currentSql.toString());
-			}
-		}
-    	finalSql.append(" ) " + standardSqlSuffix);
-    	return finalSql.toString();
+        StringBuffer finalSql = new StringBuffer();
+        List<SearchableAttributeValue> searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
+        List<String> tableAliasComponentNames = new ArrayList<String>(searchableAttributeValues.size());
+        for (SearchableAttributeValue attValue : searchableAttributeValues) {
+            tableAliasComponentNames.add(attValue.getAttributeDataType().toUpperCase());
+        }
+        for (SearchableAttributeValue attributeValue : searchableAttributeValues) {
+            QueryComponent qc = generateSqlForSearchableAttributeValue(attributeValue, tableAliasComponentNames, docHeaderTableAlias);
+            StringBuffer currentSql = new StringBuffer();
+            currentSql.append(searchSQL.getSelectSql() + qc.getSelectSql() + searchSQL.getFromSql() + qc.getFromSql() + searchSQL.getWhereSql() + qc.getWhereSql());
+            if (finalSql.length() == 0) {
+                finalSql.append(standardSqlPrefix).append(" ( ").append(currentSql);
+            } else {
+                finalSql.append(" ) UNION ( " + currentSql.toString());
+            }
+        }
+        finalSql.append(" ) " + standardSqlSuffix);
+        return finalSql.toString();
     }
 
     /**
@@ -1255,19 +1257,19 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     @Deprecated
     public QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List tableAliasComponentNames, String docHeaderTableAlias) {
-    	StringBuffer selectSql = new StringBuffer();
-    	StringBuffer fromSql = new StringBuffer();
-    	String currentAttributeTableAlias = "SA_" + attributeValue.getAttributeDataType().toUpperCase();
-    	fromSql.append(" LEFT OUTER JOIN " + attributeValue.getAttributeTableName() + " " + currentAttributeTableAlias + " ON (" + docHeaderTableAlias + ".DOC_HDR_ID = " + currentAttributeTableAlias + ".DOC_HDR_ID)");
-    	for (Iterator iter = tableAliasComponentNames.iterator(); iter.hasNext();) {
-			String aliasComponentName = (String) iter.next();
-			if (aliasComponentName.equalsIgnoreCase(attributeValue.getAttributeDataType())) {
-				selectSql.append(", " + currentAttributeTableAlias + ".KEY_CD as " + aliasComponentName + "_KEY, " + currentAttributeTableAlias + ".VAL as " + aliasComponentName + "_VALUE");
-			} else {
-				selectSql.append(", NULL as " + aliasComponentName + "_KEY, NULL as " + aliasComponentName + "_VALUE");
-			}
-		}
-    	return new QueryComponent(selectSql.toString(),fromSql.toString(),"");
+        StringBuffer selectSql = new StringBuffer();
+        StringBuffer fromSql = new StringBuffer();
+        String currentAttributeTableAlias = "SA_" + attributeValue.getAttributeDataType().toUpperCase();
+        fromSql.append(" LEFT OUTER JOIN " + attributeValue.getAttributeTableName() + " " + currentAttributeTableAlias + " ON (" + docHeaderTableAlias + ".DOC_HDR_ID = " + currentAttributeTableAlias + ".DOC_HDR_ID)");
+        for (Iterator iter = tableAliasComponentNames.iterator(); iter.hasNext();) {
+            String aliasComponentName = (String) iter.next();
+            if (aliasComponentName.equalsIgnoreCase(attributeValue.getAttributeDataType())) {
+                selectSql.append(", " + currentAttributeTableAlias + ".KEY_CD as " + aliasComponentName + "_KEY, " + currentAttributeTableAlias + ".VAL as " + aliasComponentName + "_VALUE");
+            } else {
+                selectSql.append(", NULL as " + aliasComponentName + "_KEY, NULL as " + aliasComponentName + "_VALUE");
+            }
+        }
+        return new QueryComponent(selectSql.toString(),fromSql.toString(),"");
     }
 
     public String getRouteHeaderIdSql(String routeHeaderId, String whereClausePredicatePrefix, String tableAlias) {
@@ -1275,49 +1277,50 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if ((routeHeaderId == null) || "".equals(routeHeaderId.trim())) {
             return "";
         } else {
-        	Criteria crit = getSqlBuilder().createCriteria("DOC_HDR_ID", routeHeaderId, "KREW_DOC_HDR_T", tableAlias,Long.TYPE);
-        	return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
+            Criteria crit = getSqlBuilder().createCriteria("DOC_HDR_ID", routeHeaderId, "KREW_DOC_HDR_T", tableAlias,Long.TYPE);
+            return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
         }
+
     }
 
     public String getInitiatorSql(String initiator, String whereClausePredicatePrefix) {
-    	String tableAlias = "DOC_HDR";
+        String tableAlias = "DOC_HDR";
 
         if ((initiator == null) || "".equals(initiator.trim())) {
             return "";
         }
 
-		Map<String, String> m = new HashMap<String, String>();
-		m.put("principalName", initiator);
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("principalName", initiator);
 
-		// This will search for people with the ability for the valid operands.
-		List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+        // This will search for people with the ability for the valid operands.
+        List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
 
-		if(pList == null || pList.isEmpty() ){
-			// they entered something that returned nothing... so we should return nothing
-			 return new StringBuffer(whereClausePredicatePrefix + " 1 = 0 ").toString();
-		}
+        if(pList == null || pList.isEmpty() ){
+            // they entered something that returned nothing... so we should return nothing
+             return new StringBuffer(whereClausePredicatePrefix + " 1 = 0 ").toString();
+        }
 
-		List<String> principalList = new ArrayList<String>();
+        List<String> principalList = new ArrayList<String>();
 
-		for(Person p: pList){
-			principalList.add(p.getPrincipalId());
-		}
+        for(Person p: pList){
+            principalList.add(p.getPrincipalId());
+        }
 
-    	Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_DOC_HDR_T", tableAlias);
-    	crit.in("INITR_PRNCPL_ID", principalList, String.class);
+        Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_DOC_HDR_T", tableAlias);
+        crit.in("INITR_PRNCPL_ID", principalList, String.class);
 
-    	//sqlBuild.addCriteria("INITR_PRNCPL_ID", userWorkflowId, tableAlias, String.class, true, false, crit);
-    	return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
+        //sqlBuild.addCriteria("INITR_PRNCPL_ID", userWorkflowId, tableAlias, String.class, true, false, crit);
+        return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
 
-		//return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.INITR_PRNCPL_ID = '").append(userWorkflowId).append("'").toString();
+        //return new StringBuffer(whereClausePredicatePrefix + " DOC_HDR.INITR_PRNCPL_ID = '").append(userWorkflowId).append("'").toString();
     }
 
     public String getDocTitleSql(String docTitle, String whereClausePredicatePrefix) {
         if (StringUtils.isBlank(docTitle)) {
             return "";
         } else {
-        	/*
+            /*
             if (!docTitle.trim().endsWith("*")) {
                 docTitle = docTitle.trim().concat("*").replace('*', '%');
             } else {
@@ -1328,11 +1331,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             docTitle = docTitle.trim().replace("\'", "\'\'");
 
 
-    		SqlBuilder sqlBuild = new SqlBuilder();
-        	org.kuali.rice.core.jdbc.criteria.Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_DOC_HDR_T", "DOC_HDR");
+            SqlBuilder sqlBuild = new SqlBuilder();
+            org.kuali.rice.core.jdbc.criteria.Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_DOC_HDR_T", "DOC_HDR");
 
-        	sqlBuild.addCriteria("TTL", docTitle, String.class, true, true, crit);
-        	return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
+            sqlBuild.addCriteria("TTL", docTitle, String.class, true, true, crit);
+            return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
 
 
 
@@ -1343,22 +1346,22 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     // special methods that return the sql needed to complete the search
     // or nothing if the field was not filled in
     public String getAppDocIdSql(String appDocId, String whereClausePredicatePrefix) {
-    	String tableAlias = "DOC_HDR";
+        String tableAlias = "DOC_HDR";
 
         if ((appDocId == null) || "".equals(appDocId.trim())) {
             return "";
         } else {
-        	Criteria crit = getSqlBuilder().createCriteria("APP_DOC_ID", appDocId, "KREW_DOC_HDR_T", tableAlias,String.class);
-        	return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
-            }
+            Criteria crit = getSqlBuilder().createCriteria("APP_DOC_ID", appDocId, "KREW_DOC_HDR_T", tableAlias,String.class);
+            return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
         }
+    }
 
     public String getDateCreatedSql(String fromDateCreated, String toDateCreated, String whereClausePredicatePrefix) {
         return establishDateString(fromDateCreated, toDateCreated, "KREW_DOC_HDR_T", "DOC_HDR", "CRTE_DT", whereClausePredicatePrefix);
     }
 
     public String getDateApprovedSql(String fromDateApproved, String toDateApproved, String whereClausePredicatePrefix) {
-    	return establishDateString(fromDateApproved, toDateApproved, "KREW_DOC_HDR_T", "DOC_HDR", "APRV_DT", whereClausePredicatePrefix);
+        return establishDateString(fromDateApproved, toDateApproved, "KREW_DOC_HDR_T", "DOC_HDR", "APRV_DT", whereClausePredicatePrefix);
     }
 
     public String getDateFinalizedSql(String fromDateFinalized, String toDateFinalized, String whereClausePredicatePrefix) {
@@ -1367,67 +1370,67 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public String getDateLastModifiedSql(String fromDateLastModified, String toDateLastModified, String whereClausePredicatePrefix) {
-    	return establishDateString(fromDateLastModified, toDateLastModified, "KREW_DOC_HDR_T", "DOC_HDR", "STAT_MDFN_DT", whereClausePredicatePrefix);
+        return establishDateString(fromDateLastModified, toDateLastModified, "KREW_DOC_HDR_T", "DOC_HDR", "STAT_MDFN_DT", whereClausePredicatePrefix);
     }
 
-    public String getStatusTransitionDateSql(String fromStatusTransitionDate, String toStatusTransitionDate, String whereClausePredicatePrefix) {
-        return establishDateString(fromStatusTransitionDate, toStatusTransitionDate, "KREW_APP_DOC_STAT_TRAN_T", "STAT_TRAN", "STAT_TRANS_DATE", whereClausePredicatePrefix);
+	public String getStatusTransitionDateSql(String fromStatusTransitionDate, String toStatusTransitionDate, String whereClausePredicatePrefix) {
+        return establishDateString(fromStatusTransitionDate, toStatusTransitionDate, "KREW_DOC_HDR_T", "DOC_HDR", "APP_DOC_STAT_MDFN_DT", whereClausePredicatePrefix);
     }
     
     public String getViewerSql(String viewer, String whereClausePredicatePrefix) {
-    	String returnSql = "";
+        String returnSql = "";
         if ((viewer != null) && (!"".equals(viewer.trim()))) {
-        	Map<String, String> m = new HashMap<String, String>();
-    		m.put("principalName", viewer);
+            Map<String, String> m = new HashMap<String, String>();
+            m.put("principalName", viewer);
 
-    		// This will search for people with the ability for the valid operands.
-    		List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+            // This will search for people with the ability for the valid operands.
+            List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
 
-    		if(pList == null || pList.isEmpty() ){
-    			// they entered something that returned nothing... so we should return nothing
-   			 	return new StringBuffer(whereClausePredicatePrefix + " 1 = 0 ").toString();
-    		}
+            if(pList == null || pList.isEmpty() ){
+                // they entered something that returned nothing... so we should return nothing
+                return new StringBuffer(whereClausePredicatePrefix + " 1 = 0 ").toString();
+            }
 
-    		List<String> principalList = new ArrayList<String>();
+            List<String> principalList = new ArrayList<String>();
 
-    		for(Person p: pList){
-    			principalList.add(p.getPrincipalId());
-    		}
+            for(Person p: pList){
+                principalList.add(p.getPrincipalId());
+            }
 
-    		Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_ACTN_RQST_T", "KREW_ACTN_RQST_T");
+            Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_ACTN_RQST_T", "KREW_ACTN_RQST_T");
 
-        	crit.in("PRNCPL_ID", principalList, String.class);
+            crit.in("PRNCPL_ID", principalList, String.class);
 
             //Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
             //String principalId = person.getPrincipalId();
             returnSql = whereClausePredicatePrefix + "( (DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and " + crit.buildWhere() + " )";
 
-        	Set<String> viewerGroupIds = new TreeSet<String>();
+            Set<String> viewerGroupIds = new TreeSet<String>();
 
-        	if(principalList != null && !principalList.isEmpty()){
-        		for(String principalId: principalList){
-        				viewerGroupIds.addAll(KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId));
-        		}
-        	}
+            if(principalList != null && !principalList.isEmpty()){
+                for(String principalId: principalList){
+                        viewerGroupIds.addAll(KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId));
+                }
+            }
 
-        	// Documents routed to users as part of a workgoup should be returned.
+            // Documents routed to users as part of a workgoup should be returned.
 
-        	// Use Chad's escape stuff
+            // Use Chad's escape stuff
             if (viewerGroupIds != null && !viewerGroupIds.isEmpty()) {
 
-            	returnSql += " or ( " +
-            		"DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +
-            		"and KREW_ACTN_RQST_T.GRP_ID in (";
+                returnSql += " or ( " +
+                    "DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID " +
+                    "and KREW_ACTN_RQST_T.GRP_ID in (";
 
-            	boolean first = true;
-            	for(String groupId: viewerGroupIds){
-            		if(!first){
-            			returnSql += ",";
-            		}
-            		returnSql += "'" + groupId + "'";
-            		first = false;
-            	}
-            	returnSql += "))";
+                boolean first = true;
+                for(String groupId: viewerGroupIds){
+                    if(!first){
+                        returnSql += ",";
+                    }
+                    returnSql += "'" + groupId + "'";
+                    first = false;
+                }
+                returnSql += "))";
             }
             returnSql += ")";
         }
@@ -1438,32 +1441,32 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String sql = "";
         if (!Utilities.isEmpty(workgroupName)) {
             Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
-        	sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getGroupId();
+            sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getGroupId();
         }
         return sql;
     }
 
     public String getApproverSql(String approver, String whereClausePredicatePrefix) {
-    	String returnSql = "";
+        String returnSql = "";
         if ((approver != null) && (!"".equals(approver.trim()))) {
-        	Map<String, String> m = new HashMap<String, String>();
-    		m.put("principalName", approver);
+            Map<String, String> m = new HashMap<String, String>();
+            m.put("principalName", approver);
 
-    		// This will search for people with the ability for the valid operands.
-    		List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+            // This will search for people with the ability for the valid operands.
+            List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
 
-    		if(pList == null || pList.isEmpty() ){
-    			 return "";
-    		}
+            if(pList == null || pList.isEmpty() ){
+                 return "";
+            }
 
-    		List<String> principalList = new ArrayList<String>();
+            List<String> principalList = new ArrayList<String>();
 
-    		for(Person p: pList){
-    			principalList.add(p.getPrincipalId());
-    		}
+            for(Person p: pList){
+                principalList.add(p.getPrincipalId());
+            }
 
-        	Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_ACTN_TKN_T", "KREW_ACTN_TKN_T");
-        	crit.in("PRNCPL_ID", principalList, String.class);
+            Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_ACTN_TKN_T", "KREW_ACTN_TKN_T");
+            crit.in("PRNCPL_ID", principalList, String.class);
 
             returnSql = whereClausePredicatePrefix +
             " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) in ('" +
@@ -1474,30 +1477,30 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public String getDocTypeFullNameWhereSql(String docTypeFullName, String whereClausePredicatePrefix) {
-    	StringBuffer returnSql = new StringBuffer("");
+        StringBuffer returnSql = new StringBuffer("");
         if ((docTypeFullName != null) && (!"".equals(docTypeFullName.trim()))) {
-        	/*
-        	DocumentTypeDAOOjbImpl
+            /*
+            DocumentTypeDAOOjbImpl
 
 
-        	Map<String, String> m = new HashMap<String, String>();
-        	m.put("name", docTypeFullName);
+            Map<String, String> m = new HashMap<String, String>();
+            m.put("name", docTypeFullName);
 
-        	Collection c = KNSServiceLocator.getBusinessObjectDao().findMatching(DocumentType.class, m);
+            Collection c = KNSServiceLocator.getBusinessObjectDao().findMatching(DocumentType.class, m);
 */
             DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
             DocumentType docType = docSrv.findByName(docTypeFullName.trim());
             if (docType != null) {
-            	returnSql.append(whereClausePredicatePrefix).append("(");
-            	addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
+                returnSql.append(whereClausePredicatePrefix).append("(");
+                addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
                 if (docType.getChildrenDocTypes() != null) {
                     addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
                 }
                 addExtraDocumentTypesToSearch(returnSql,docType);
                 returnSql.append(")");
             }else{
-            	returnSql.append(whereClausePredicatePrefix).append("(");
-            	addDocumentTypeLikeNameToSearchOn(returnSql,docTypeFullName.trim(), "");
+                returnSql.append(whereClausePredicatePrefix).append("(");
+                addDocumentTypeLikeNameToSearchOn(returnSql,docTypeFullName.trim(), "");
                 returnSql.append(")");
             }
         }
@@ -1514,55 +1517,55 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public void addExtraDocumentTypesToSearch(StringBuffer whereSql,DocumentType docType) {}
 
     public void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName) {
-    	this.addDocumentTypeNameToSearchOn(whereSql, documentTypeName, " or ");
+        this.addDocumentTypeNameToSearchOn(whereSql, documentTypeName, " or ");
     }
 
     public void addDocumentTypeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
-    	whereSql.append(clause).append(" DOC1.DOC_TYP_NM = '" + documentTypeName + "'");
+        whereSql.append(clause).append(" DOC1.DOC_TYP_NM = '" + documentTypeName + "'");
     }
     public void addDocumentTypeLikeNameToSearchOn(StringBuffer whereSql,String documentTypeName, String clause) {
-    	documentTypeName = documentTypeName.replace('*', '%');
-    	whereSql.append(clause).append(" DOC1.DOC_TYP_NM LIKE '" + documentTypeName + "'");
+        documentTypeName = documentTypeName.replace('*', '%');
+        whereSql.append(clause).append(" DOC1.DOC_TYP_NM LIKE '" + documentTypeName + "'");
     }
 
     public String getDocRouteNodeSql(String documentTypeFullName, String docRouteLevel, String docRouteLevelLogic, String whereClausePredicatePrefix) {
         // -1 is the default 'blank' choice from the route node drop down a number is used because the ojb RouteNode object is used to
         // render the node choices on the form.
-    	String returnSql = "";
+        String returnSql = "";
         if ((docRouteLevel != null) && (!"".equals(docRouteLevel.trim())) && (!docRouteLevel.equals("-1"))) {
-        	StringBuffer routeNodeCriteria = new StringBuffer("and " + ROUTE_NODE_TABLE + ".NM ");
-        	if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
-        		routeNodeCriteria.append("= '" + getDbPlatform().escapeString(docRouteLevel) + "' ");
-        	} else {
-        		routeNodeCriteria.append("in (");
-        		// below buffer used to facilitate the addition of the string ", " to separate out route node names
-        		StringBuffer routeNodeInCriteria = new StringBuffer();
-        		boolean foundSpecifiedNode = false;
-        		List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(documentTypeFullName), true);
-    			for (RouteNode routeNode : routeNodes) {
+            StringBuffer routeNodeCriteria = new StringBuffer("and " + ROUTE_NODE_TABLE + ".NM ");
+            if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
+                routeNodeCriteria.append("= '" + getDbPlatform().escapeString(docRouteLevel) + "' ");
+            } else {
+                routeNodeCriteria.append("in (");
+                // below buffer used to facilitate the addition of the string ", " to separate out route node names
+                StringBuffer routeNodeInCriteria = new StringBuffer();
+                boolean foundSpecifiedNode = false;
+                List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(documentTypeFullName), true);
+                for (RouteNode routeNode : routeNodes) {
                     if (docRouteLevel.equals(routeNode.getRouteNodeName())) {
-                    	// current node is specified node so we ignore it outside of the boolean below
-                    	foundSpecifiedNode = true;
-                    	continue;
+                        // current node is specified node so we ignore it outside of the boolean below
+                        foundSpecifiedNode = true;
+                        continue;
                     }
                     // below logic should be to add the current node to the criteria if we haven't found the specified node
-					// and the logic qualifier is 'route nodes before specified'... or we have found the specified node and
-					// the logic qualifier is 'route nodes after specified'
+                    // and the logic qualifier is 'route nodes before specified'... or we have found the specified node and
+                    // the logic qualifier is 'route nodes after specified'
                     if ( (!foundSpecifiedNode && (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_BEFORE.equalsIgnoreCase(docRouteLevelLogic.trim()))) ||
                          (foundSpecifiedNode && (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_AFTER.equalsIgnoreCase(docRouteLevelLogic.trim()))) ) {
-                    	if (routeNodeInCriteria.length() > 0) {
-                    		routeNodeInCriteria.append(", ");
-                    	}
-                    	routeNodeInCriteria.append("'" + routeNode.getRouteNodeName() + "'");
+                        if (routeNodeInCriteria.length() > 0) {
+                            routeNodeInCriteria.append(", ");
+                        }
+                        routeNodeInCriteria.append("'" + routeNode.getRouteNodeName() + "'");
                     }
-    			}
-    			if (routeNodeInCriteria.length() > 0) {
-            		routeNodeCriteria.append(routeNodeInCriteria);
-    			} else {
-    				routeNodeCriteria.append("''");
-    			}
-        		routeNodeCriteria.append(") ");
-        	}
+                }
+                if (routeNodeInCriteria.length() > 0) {
+                    routeNodeCriteria.append(routeNodeInCriteria);
+                } else {
+                    routeNodeCriteria.append("''");
+                }
+                routeNodeCriteria.append(") ");
+            }
             returnSql = whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_ID = " + ROUTE_NODE_INST_TABLE + ".DOC_HDR_ID and " + ROUTE_NODE_INST_TABLE + ".RTE_NODE_ID = " + ROUTE_NODE_TABLE + ".RTE_NODE_ID and " + ROUTE_NODE_INST_TABLE + ".ACTV_IND = 1 " + routeNodeCriteria.toString() + " ";
         }
         return returnSql;
@@ -1573,23 +1576,23 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             return whereClausePredicatePrefix + "DOC_HDR.DOC_HDR_STAT_CD != '" + KEWConstants.ROUTE_HEADER_INITIATED_CD + "'";
         } else {
 
-        	// doc status can now be a comma deliminated list
-        	List<String> docRouteStatusList = Arrays.asList(docRouteStatuses.split(","));
-        	String inList = "";
+            // doc status can now be a comma deliminated list
+            List<String> docRouteStatusList = Arrays.asList(docRouteStatuses.split(","));
+            String inList = "";
 
-        	for(String docRouteStatus : docRouteStatusList){
-        		if(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.containsKey(docRouteStatus)){
-        			// build the sql
-        			for(String docStatusCd : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(docRouteStatus)){
-            			inList += "'" + getDbPlatform().escapeString(docStatusCd.trim()) + "',";
-            		}
-        		} else{
-        			inList += "'" + getDbPlatform().escapeString(docRouteStatus.trim()) + "',";
-        		}
-        	}
-        		inList = inList.substring(0,inList.length()-1); // remove trailing ','
+            for(String docRouteStatus : docRouteStatusList){
+                if(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.containsKey(docRouteStatus)){
+                    // build the sql
+                    for(String docStatusCd : KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(docRouteStatus)){
+                        inList += "'" + getDbPlatform().escapeString(docStatusCd.trim()) + "',";
+                    }
+                } else{
+                    inList += "'" + getDbPlatform().escapeString(docRouteStatus.trim()) + "',";
+                }
+            }
+            inList = inList.substring(0,inList.length()-1); // remove trailing ','
 
-        	return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD in (" + inList +")";
+            return whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_STAT_CD in (" + inList +")";
         }
     }
 
@@ -1638,53 +1641,53 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public String getGeneratedPredicatePrefix(int whereClauseSize) {
-    	return (whereClauseSize > 0) ? " and " : " where ";
+        return (whereClauseSize > 0) ? " and " : " where ";
     }
 
     public String establishDateString(String fromDate, String toDate, String tableName, String tableAlias, String colName, String whereStatementClause) {
   /*
-    	String[] splitPropVal = StringUtils.split(columnDbName, "\\.");
-    	String tableAlias = splitPropVal[0];
-    	String colName = splitPropVal[1];
+        String[] splitPropVal = StringUtils.split(columnDbName, "\\.");
+        String tableAlias = splitPropVal[0];
+        String colName = splitPropVal[1];
 */
 
-    	String searchVal = "";
+        String searchVal = "";
 
-    	if(toDate != null && !"".equals(toDate)){
-			try{
-	    		java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);
-				SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+        if(toDate != null && !"".equals(toDate)){
+            try{
+                java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);
+                SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
-				if("00:00:00".equals(sdfTime.format(dt))){
-					toDate += " 23:59:59";
-				}
-	    	}
-	    	catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
-		}
-
-
-    	if(fromDate != null && toDate != null && !"".equals(fromDate) && !"".equals(toDate)){
-    		searchVal = fromDate + " .. " + toDate;
-    	}else{
-    		if(fromDate != null && !"".equals(fromDate)){
-    			searchVal = ">= " + fromDate;
-    		}else if(toDate != null && !"".equals(toDate)){
-    			searchVal = "<= " + toDate;
-    		}else searchVal =  "";
-    	}
-
-    	if(searchVal == null || "".equals(searchVal))
-    		return "";
+                if("00:00:00".equals(sdfTime.format(dt))){
+                    toDate += " 23:59:59";
+                }
+            }
+            catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
+        }
 
 
-    	Criteria crit = getSqlBuilder().createCriteria(colName, searchVal, tableName, tableAlias, java.sql.Date.class, true, true);
-    	return new StringBuffer(whereStatementClause + crit.buildWhere()).toString();
+        if(fromDate != null && toDate != null && !"".equals(fromDate) && !"".equals(toDate)){
+            searchVal = fromDate + " .. " + toDate;
+        }else{
+            if(fromDate != null && !"".equals(fromDate)){
+                searchVal = ">= " + fromDate;
+            }else if(toDate != null && !"".equals(toDate)){
+                searchVal = "<= " + toDate;
+            }else searchVal =  "";
+        }
+
+        if(searchVal == null || "".equals(searchVal))
+            return "";
+
+
+        Criteria crit = getSqlBuilder().createCriteria(colName, searchVal, tableName, tableAlias, java.sql.Date.class, true, true);
+        return new StringBuffer(whereStatementClause + crit.buildWhere()).toString();
 
 /*
 
 
-    	DatabasePlatform platform = getDbPlatform();
-    	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + platform.escapeString(columnDbName) + " ");
+        DatabasePlatform platform = getDbPlatform();
+        StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + platform.escapeString(columnDbName) + " ");
         if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null && toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
             return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
         } else {
@@ -1704,17 +1707,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public boolean isProcessResultSet(){
-    	return this.isProcessResultSet;
+        return this.isProcessResultSet;
     }
     public void setProcessResultSet(boolean isProcessResultSet){
-    	this.isProcessResultSet = isProcessResultSet;
+        this.isProcessResultSet = isProcessResultSet;
     }
 
     public DatabasePlatform getDbPlatform() {
-    	if (dbPlatform == null) {
-    		dbPlatform = (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
-    	}
-    	return dbPlatform;
+        if (dbPlatform == null) {
+            dbPlatform = (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+        }
+        return dbPlatform;
     }
 
     public MessageMap getMessageMap(DocSearchCriteriaDTO searchCriteria) {
@@ -1723,40 +1726,40 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     private List<String> tokenizeCriteria(String input){
-		List<String> lRet = null;
+        List<String> lRet = null;
 
-		lRet = Arrays.asList(input.split("\\|"));
+        lRet = Arrays.asList(input.split("\\|"));
 
-		return lRet;
-	}
+        return lRet;
+    }
     private boolean validateNumber(List<String> integers) {
-		for(String integer: integers){
-    	//	if(!this.validateNumber(integer)){
-    	//		return false;
-    	//	}
-    	}
-    	return true;
-	}
+        for(String integer: integers){
+        //  if(!this.validateNumber(integer)){
+        //      return false;
+        //  }
+        }
+        return true;
+    }
 
-	/**
-	 * @return the sqlBuilder
-	 */
-	public SqlBuilder getSqlBuilder() {
-		if(sqlBuilder == null){
-			sqlBuilder = new SqlBuilder();
-			sqlBuilder.setDbPlatform(getDbPlatform());
-			sqlBuilder.setDateTimeService(KNSServiceLocator.getDateTimeService());
-		}
-		return this.sqlBuilder;
-	}
+    /**
+     * @return the sqlBuilder
+     */
+    public SqlBuilder getSqlBuilder() {
+        if(sqlBuilder == null){
+            sqlBuilder = new SqlBuilder();
+            sqlBuilder.setDbPlatform(getDbPlatform());
+            sqlBuilder.setDateTimeService(KNSServiceLocator.getDateTimeService());
+        }
+        return this.sqlBuilder;
+    }
 
-	/**
-	 * @param sqlBuilder the sqlBuilder to set
-	 */
-	public void setSqlBuilder(SqlBuilder sqlBuilder) {
-		this.sqlBuilder = sqlBuilder;
-	}
-	
+    /**
+     * @param sqlBuilder the sqlBuilder to set
+     */
+    public void setSqlBuilder(SqlBuilder sqlBuilder) {
+        this.sqlBuilder = sqlBuilder;
+    }
+    
     /**
      * A helper method for determining whether any searchable attributes are in use for the search. Subclasses can override this method to add their
      * own logic for checking searchable attribute existence.
@@ -1764,8 +1767,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @return True if the search criteria contains at least one searchable attribute or the criteria's doc type name is non-blank; false otherwise.
      */
     protected boolean isUsingAtLeastOneSearchAttribute() {
-    	return ( (criteria.getSearchableAttributes() != null && criteria.getSearchableAttributes().size() > 0) ||
-    			StringUtils.isNotBlank(criteria.getDocTypeFullName()) );
+        return ( (criteria.getSearchableAttributes() != null && criteria.getSearchableAttributes().size() > 0) ||
+                StringUtils.isNotBlank(criteria.getDocTypeFullName()) );
     }
 
 }

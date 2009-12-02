@@ -16,7 +16,10 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.List;
+
 import org.apache.log4j.MDC;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -78,4 +81,10 @@ public class LogDocumentActionAction extends ActionTakenEvent {
         // LogDocumentAction should not contact the PostProcessor which is why we don't call notifyActionTaken
        
     }
+
+	@Override
+	public String validateActionRules(List<ActionRequestValue> actionRequests) {
+        // log action is always valid so return no error message
+		return "";
+	}
 }

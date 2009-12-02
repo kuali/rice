@@ -86,10 +86,15 @@ public class AdHocAction extends ActionTakenEvent {
     @Override
     public String validateActionRules() {
         List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
-        return validateActionRules(targetNodes);
+        return validateActionRulesInternal(targetNodes);
+    }
+    
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
     }
 
-    private String validateActionRules(List targetNodes) {
+    private String validateActionRulesInternal(List targetNodes) {
     	// recipient will be null when this is invoked from ActionRegistry.getValidActions
     	if (recipient != null) {
     		if (recipient instanceof KimPrincipalRecipient) {

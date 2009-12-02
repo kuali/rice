@@ -72,6 +72,16 @@ public class SaveActionEvent extends ActionTakenEvent {
     	}
     	return "";
     }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules(java.util.List)
+     */
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
+    }
 
     public void recordAction() throws InvalidActionTakenException {
 	MDC.put("docId", getRouteHeader().getRouteHeaderId());

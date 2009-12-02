@@ -89,7 +89,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) {
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if ( (nodeNames != null) && (!nodeNames.isEmpty()) ) {
             String nodeName = isGivenNodeListValid();
             if (!Utilities.isEmpty(nodeName)) {

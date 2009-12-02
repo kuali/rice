@@ -68,6 +68,16 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
             return performReleaseWorkgroupAuthority(true);
         }
     }
+    
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kew.actions.ActionTakenEvent#validateActionRules(java.util.List)
+     */
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
+    }
 
     public void recordAction() throws InvalidActionTakenException {
         String error = performReleaseWorkgroupAuthority(false);

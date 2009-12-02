@@ -72,6 +72,11 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 KEWConstants.ACTION_REQUEST_COMPLETE_REQ), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
     }
 
+    @Override
+	public String validateActionRules(List<ActionRequestValue> actionRequests) {
+        return validateActionRules(actionRequests, KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
+	}
+
     private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be moved";

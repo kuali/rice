@@ -123,7 +123,8 @@ public abstract class ActionTakenEvent {
 	 *
 	 * @return error message string of specific error message
 	 */
-	protected abstract String validateActionRules();
+	public abstract String validateActionRules();
+	public abstract String validateActionRules(List<ActionRequestValue> actionRequests);
 
 	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {
 		LOG.debug("isActionCompatibleRequest() Default method = returning true");

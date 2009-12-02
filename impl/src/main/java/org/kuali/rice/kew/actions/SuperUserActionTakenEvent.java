@@ -67,6 +67,11 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
         return "";
     }
 
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
+    }
+
     public void recordAction() throws InvalidActionTakenException {
 
         String errorMessage = validateActionRules();

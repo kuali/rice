@@ -330,6 +330,15 @@
   -->
 
   <bean id="kimIdentityManagementNotificationService" class="org.kuali.rice.kim.service.impl.IdentityManagementNotificationServiceImpl"/>
+  
+  <bean parent="kimLocalServiceExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker" />
+    <property name="serviceDefinition">
+      <bean parent="kimService" 
+        p:service-ref="kimIdentityManagementNotificationService" 
+        p:localServiceName="kimIdentityManagementNotificationService" />
+    </property>
+  </bean>
 
   <bean parent="kimLocalServiceExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>

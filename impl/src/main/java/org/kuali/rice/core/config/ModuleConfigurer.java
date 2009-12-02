@@ -23,13 +23,14 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
+import org.kuali.rice.core.config.event.RiceConfigEventListener;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.springframework.beans.factory.InitializingBean;
 
-public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean {
+public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, RiceConfigEventListener {
     /**
      * Protected logger for use by subclasses
      */

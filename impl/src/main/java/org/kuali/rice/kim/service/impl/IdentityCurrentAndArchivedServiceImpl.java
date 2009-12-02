@@ -132,9 +132,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	public KimEntityDefaultInfo getEntityDefaultInfo(String entityId) {
 		KimEntityDefaultInfo entity = getInnerIdentityService().getEntityDefaultInfo(entityId);
     	if ( entity == null ) {
-    		entity = getIdentityCacheService().getEntityDefaultInfoFromArchive( entityId );
+    		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchive( entityId );
     	} else {
-			getIdentityCacheService().saveDefaultInfoToArchive(entity);
+			getIdentityArchiveService().saveDefaultInfoToArchive(entity);
     	}
 		return entity;
 	}
@@ -149,9 +149,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 			String principalId) {
 		KimEntityDefaultInfo entity = getInnerIdentityService().getEntityDefaultInfoByPrincipalId(principalId);
     	if ( entity == null ) {
-    		entity = getIdentityCacheService().getEntityDefaultInfoFromArchiveByPrincipalId( principalId );
+    		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchiveByPrincipalId( principalId );
     	} else {
-			getIdentityCacheService().saveDefaultInfoToArchive(entity);
+			getIdentityArchiveService().saveDefaultInfoToArchive(entity);
     	}
     	return entity;
 	}
@@ -166,9 +166,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 			String principalName) {
 		KimEntityDefaultInfo entity = getInnerIdentityService().getEntityDefaultInfoByPrincipalName(principalName);
     	if ( entity == null ) {
-    		entity = getIdentityCacheService().getEntityDefaultInfoFromArchiveByPrincipalName( principalName );
+    		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchiveByPrincipalName( principalName );
     	} else {
-			getIdentityCacheService().saveDefaultInfoToArchive(entity);
+			getIdentityArchiveService().saveDefaultInfoToArchive(entity);
     	}
     	return entity;
 	}
@@ -281,7 +281,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 		return innerIdentityService;
 	}
 	
-	private IdentityArchiveService getIdentityCacheService() {
+	private IdentityArchiveService getIdentityArchiveService() {
 		return identityArchiveService;
 	}
 

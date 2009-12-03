@@ -169,22 +169,31 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
     
     /**
      * Utility method to force a flush of the write queue.  It's intended to be called on a miss in the archive.
-     * It's aggressive in that it requires the missRetryWriter callable to return true, meaning it executed (and 
-     * didn't just bail because another writer was running).  Otherwise it will try repeatedly.
      */
 	private void flushOnMiss() {
 		try {
 			int sleepDuration = 100;
-			// retry until we get a TRUE back, meaning it actually executed a flush
-			while (Boolean.FALSE.equals(KSBServiceLocator.getThreadPool().submit(missRetryWriter).get())) {
-				// sleep and retry
-				try {
-					Thread.sleep(sleepDuration); // a medium sized sleep
-				} catch (InterruptedException e) {
-					// restore the interrupted status
-					Thread.currentThread().interrupt();
+			Boolean executed = null;
+			
+			for (int retries = 5; retries > 0; retries--) {
+				// retry until we get a TRUE back, meaning it actually executed a flush
+				executed = (Boolean)KSBServiceLocator.getThreadPool().submit(missRetryWriter).get(); 
+				if (executed == null || !executed) {
+					// sleep and retry
+					try {
+						Thread.sleep(sleepDuration); // a medium sized sleep
+					} catch (InterruptedException e) {
+						// restore the interrupted status
+						Thread.currentThread().interrupt();
+					}
+					sleepDuration *= 2; // back off by doubling sleep duration 
+				} else {
+					break;
 				}
-				sleepDuration *= 2; // back off by doubling sleep duration 
+			}
+			
+			if (executed == null || !executed) {
+				LOG.error("failed to flush on miss");
 			}
 		} catch (ExecutionException e) {
 			LOG.error("failed to flush on miss", e);

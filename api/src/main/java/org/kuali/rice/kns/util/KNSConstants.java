@@ -63,6 +63,9 @@ public class KNSConstants extends JSTLConstants {
     public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview"; 
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
 
+    public static final String KUALI_POPUP_KEY = "KUALI.POPUP";
+    public static final String KUALI_POPUP_VALUE = "TRUE";
+    
     public static class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";

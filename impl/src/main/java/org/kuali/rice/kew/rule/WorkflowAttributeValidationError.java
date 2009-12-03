@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kns.util.MessageMap;
 
 
 /**
@@ -33,12 +34,20 @@ public class WorkflowAttributeValidationError implements Serializable {
 
 	private static final long serialVersionUID = 6785629049454272657L;
 
+	private MessageMap messageMap;
+
 	private String key;
 	private String message;
-	
+
 	public WorkflowAttributeValidationError(String key, String message) {
 		this.key = key;
 		this.message = message;
+	}
+
+	public WorkflowAttributeValidationError(String key, String message, MessageMap messageMap) {
+		this.key = key;
+		this.message = message;
+		this.messageMap = messageMap;
 	}
 
 	/**
@@ -69,5 +78,20 @@ public class WorkflowAttributeValidationError implements Serializable {
 		return message;
 	}
 
-	
+	/**
+	 * @return the messageMap
+	 */
+	public MessageMap getMessageMap() {
+		return this.messageMap;
+	}
+
+	/**
+	 * @param messageMap the messageMap to set
+	 */
+	public void setMessageMap(MessageMap messageMap) {
+		this.messageMap = messageMap;
+	}
+
+
+
 }

@@ -201,7 +201,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 	                		searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
 	                if(!Utilities.isEmpty(searchableErrors)){
 	                    for (WorkflowAttributeValidationError error : searchableErrors) {
-	                        errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", error.getMessage()));
+	                    	if (error.getMessageMap() != null && error.getMessageMap().hasErrors()) {
+	                    		// In order to pass the map along we've added a member to the WorkflowServiceErrorImpl
+	                    		errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", 
+	                    				error.getMessage(), null, error.getMessageMap()));
+	                    	} else {
+	                    		errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", error.getMessage()));
+	                    	}
 	                    }
 	                }
 	            }

@@ -1,12 +1,12 @@
 /*
  * Copyright 2008-2009 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,7 +48,9 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -193,7 +195,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
-        List<WorkflowAttributeValidationError> validationErrors = new ArrayList<WorkflowAttributeValidationError>();
+        List<WorkflowAttributeValidationError> validationErrors = null;
         DictionaryValidationService validationService = KNSServiceLocator.getDictionaryValidationService();
         
         for (Object key : paramMap.keySet()) {
@@ -213,11 +215,20 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
         }
 
-        return null;
+        if(GlobalVariables.getMessageMap().hasErrors()){
+        	validationErrors = new ArrayList<WorkflowAttributeValidationError>();
+        	MessageMap deepCopy = (MessageMap)ObjectUtils.deepCopy(GlobalVariables.getMessageMap()); 
+        	validationErrors.add(new WorkflowAttributeValidationError(null,null,deepCopy));
+        	// we should now strip the error messages from the map because they have moved to validationErrors
+        	GlobalVariables.getMessageMap().clearErrorMessages();
+        }
+
+
+        return validationErrors;
     }
-    
+
     /**
-     * Creates a list of search fields, one for each primary key of the maintained business object 
+     * Creates a list of search fields, one for each primary key of the maintained business object
      * @param businessObjectClass the class of the maintained business object
      * @return a List of KEW search fields
      */
@@ -242,7 +253,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
             Field searchField = FieldUtils.getPropertyField(boClass, attributeName, false);
             searchField.setColumnVisible(attr.isShowAttributeInResultSet());
-            
+
             //TODO this is a workaround to hide the Field from the search criteria.
             //This should be removed once hiding the entire Row is working
             if (!attr.isShowAttributeInSearchCriteria()){
@@ -253,12 +264,12 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN)) {
                 fieldDataType = SearchableAttribute.DATA_TYPE_STRING;
             }
-            
+
             // Allow inline range searching on dates and numbers
             if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_FLOAT) ||
                 fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_LONG) ||
                 fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_DATE)) {
-                
+
                 searchField.setAllowInlineRange(true);
             }
             searchField.setFieldDataType(fieldDataType);
@@ -271,7 +282,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
             Row row = new Row(fieldList);
             if (!attr.isShowAttributeInSearchCriteria()) {
-                row.setHidden(true);   
+                row.setHidden(true);
             }
             searchFields.add(row);
         }
@@ -281,7 +292,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
 
     /**
-     * 
+     *
      * @param businessObjectClass
      * @param documentContent
      * @return
@@ -352,7 +363,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     /**
-     * 
+     *
      * @param documentNumber
      * @param businessObjectClass
      * @param document
@@ -373,7 +384,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     /**
-     * 
+     *
      * @param globalBO
      * @return
      */
@@ -391,7 +402,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     /**
-     * 
+     *
      * @param changeToPersist
      * @return
      */
@@ -414,7 +425,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     /**
-     * Creates a list of search fields, one for each primary key of the maintained business object 
+     * Creates a list of search fields, one for each primary key of the maintained business object
      * @param businessObjectClass the class of the maintained business object
      * @return a List of KEW search fields
      */

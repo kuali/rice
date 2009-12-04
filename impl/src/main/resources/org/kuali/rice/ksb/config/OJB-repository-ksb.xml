@@ -62,8 +62,19 @@
 		<field-descriptor column="SVC_URL" name="endpointUrl" jdbc-type="VARCHAR"></field-descriptor>
 		<field-descriptor column="SVC_ALIVE" name="alive" jdbc-type="BIT" />
 		<field-descriptor column="SVC_NM" name="serviceName" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor column="SVC_DEF" name="serializedServiceNamespace" jdbc-type="CLOB" />
+		<field-descriptor column="FLT_SVC_DEF_ID" name="flattenedServiceDefinitionId" jdbc-type="BIGINT" access="anonymous" indexed="true" />
 		<field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"></field-descriptor>
+		<field-descriptor column="SVC_DEF_CHKSM" name="checksum" jdbc-type="VARCHAR" />
+		<reference-descriptor name="serializedServiceNamespace" class-ref="org.kuali.rice.ksb.messaging.FlattenedServiceDefinition"
+				proxy="true" auto-retrieve="true" auto-update="true" auto-delete="true">
+			<foreignkey field-ref="flattenedServiceDefinitionId" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.rice.ksb.messaging.FlattenedServiceDefinition" table="KRSB_FLT_SVC_DEF_T">
+		<field-descriptor column="FLT_SVC_DEF_ID" name="flattenedServiceDefinitionId" jdbc-type="BIGINT" primarykey="true" autoincrement="true"
+			sequence-name="KRSB_FLT_SVC_DEF_S" />
+		<field-descriptor column="FLT_SVC_DEF" name="flattenedServiceDefinitionData" jdbc-type="CLOB" nullable="false" />
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.ksb.messaging.bam.BAMTargetEntry" table="KRSB_BAM_T">

@@ -45,7 +45,7 @@ public abstract class ServiceDefinition implements Serializable {
 	
 	private static final long serialVersionUID = 43631161206712702L;
 	
-	private Object service;
+	private transient Object service;
 	private String localServiceName;
 	private String serviceNameSpaceURI;
 	private transient QName serviceName;

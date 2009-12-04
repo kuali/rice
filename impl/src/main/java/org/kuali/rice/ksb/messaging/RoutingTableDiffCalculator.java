@@ -150,6 +150,7 @@ public class RoutingTableDiffCalculator {
 		deployedServiceInfo.setServiceNamespace(configuredServiceInfo.getServiceNamespace());
 		deployedServiceInfo.setServerIp(configuredServiceInfo.getServerIp());
 		deployedServiceInfo.setServiceDefinition(configuredServiceInfo.getServiceDefinition(getEnMessageHelper()));
+		deployedServiceInfo.setChecksum(configuredServiceInfo.getChecksum());
 	}
 	
 	private boolean isSame(ServiceInfo configured, ServiceInfo deployed) {
@@ -157,7 +158,7 @@ public class RoutingTableDiffCalculator {
 				configured.getQname().equals(deployed.getQname()) &&
 				configured.getServerIp().equals(deployed.getServerIp()) && 
 				configured.getServiceNamespace().equals(deployed.getServiceNamespace()) &&
-				configured.getServiceDefinition(getEnMessageHelper()).isSame(deployed.getServiceDefinition(getEnMessageHelper()));
+				configured.getChecksum().equals(deployed.getChecksum());
 	}
 
 	public List<ServiceInfo> getServicesNeedRemoved() {

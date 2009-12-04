@@ -48,6 +48,7 @@
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusName"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusShortName"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusTypeCode"/>
+        <bean parent="MaintainableFieldDefinition" p:defaultValue="true" p:name="active"/>
         <bean parent="MaintainableFieldDefinition" p:name="versionNumber"/>
       </list>
     </property>

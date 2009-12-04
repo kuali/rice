@@ -139,25 +139,7 @@ public abstract class ActionTakenEvent {
 	 * @return the filtered List of ActionRequestValues
 	 */
 	public List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String requestCode) {
-		List<ActionRequestValue> filteredActionRequests = new ArrayList<ActionRequestValue>();
-		
-		List<String> arGroups = null;
-        for (ActionRequestValue ar : actionRequests) {
-            if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode, true) > 0) {
-                continue;
-            }
-            if (ar.isUserRequest() && getPrincipal().getPrincipalId().equals(ar.getPrincipalId())) {
-            	filteredActionRequests.add(ar);
-            } else if (ar.isGroupRequest() && getGroupIdsForPrincipal() != null && !getGroupIdsForPrincipal().isEmpty()) {
-            	for (String groupId : getGroupIdsForPrincipal()) {
-            		if (groupId.equals(ar.getGroupId())) {
-            			filteredActionRequests.add(ar);
-            		}
-            	}
-            }
-        }
-		
-		return filteredActionRequests;
+		return getActionRequestService().filterActionRequestsByCode(actionRequests, getPrincipal().getPrincipalId(), getGroupIdsForPrincipal(), requestCode);
 	}
 
 	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {

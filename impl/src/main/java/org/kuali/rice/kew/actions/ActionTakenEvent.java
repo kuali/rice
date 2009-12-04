@@ -70,6 +70,8 @@ public abstract class ActionTakenEvent {
 	private final KimPrincipal principal;
 
     private final boolean runPostProcessorLogic;
+    
+    private List<String> groupIdsForPrincipal;
 
 	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
 		this(actionTakenCode, routeHeader, principal, null, true);
@@ -146,11 +148,8 @@ public abstract class ActionTakenEvent {
             }
             if (ar.isUserRequest() && getPrincipal().getPrincipalId().equals(ar.getPrincipalId())) {
             	filteredActionRequests.add(ar);
-            } else if (ar.isGroupRequest()) {
-            	if (arGroups == null) {
-            		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
-            	}
-            	for (String groupId : arGroups) {
+            } else if (ar.isGroupRequest() && getGroupIdsForPrincipal() != null && !getGroupIdsForPrincipal().isEmpty()) {
+            	for (String groupId : getGroupIdsForPrincipal()) {
             		if (groupId.equals(ar.getGroupId())) {
             			filteredActionRequests.add(ar);
             		}
@@ -301,4 +300,11 @@ public abstract class ActionTakenEvent {
 	protected boolean isRunPostProcessorLogic() {
         return this.runPostProcessorLogic;
     }
+	
+	protected List<String> getGroupIdsForPrincipal() {
+		if (groupIdsForPrincipal == null) {
+			groupIdsForPrincipal = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
+		}
+		return groupIdsForPrincipal;
+	}
 }

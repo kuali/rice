@@ -30,6 +30,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -50,7 +51,6 @@ import org.kuali.test.KNSTestCase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@Ignore("Cannot be run until SEARCH_ATTR_INDX_TST_DOC_T is added to unit test database")
 @TransactionalTest
 public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	final static String SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE = "SearchAttributeIndexTestDocument";
@@ -122,6 +122,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		final String principalName = "quickstart";
         final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         GlobalVariables.setUserSession(new UserSession(principalName));
+        RouteContext.clearCurrentRouteContext();
 
 		SearchAttributeIndexTestDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
 		document.getDocumentHeader().setDocumentDescription("Routed SAIndexTestDoc");

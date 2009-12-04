@@ -101,10 +101,25 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
             multipleValueLookupForm.setPrimaryKeyFieldLabels(KNSConstants.EMPTY_STRING);
         }
         
-        request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
+        //request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
+        
+        if ( displayList instanceof CollectionIncomplete ){
+            request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
+        } else {
+            request.setAttribute("reqSearchResultsActualSize", displayList.size() );
+        }
+        
         request.setAttribute("reqSearchResults", resultTable);
         
-        multipleValueLookupForm.setResultsActualSize((int) ((CollectionIncomplete) displayList).getActualSizeIfTruncated().longValue());
+        //multipleValueLookupForm.setResultsActualSize((int) ((CollectionIncomplete) displayList).getActualSizeIfTruncated().longValue());
+        
+        if ( displayList instanceof CollectionIncomplete ){
+        	multipleValueLookupForm.setResultsActualSize((int) ((CollectionIncomplete) displayList).getActualSizeIfTruncated().longValue());    
+        } else {
+        	multipleValueLookupForm.setResultsActualSize(displayList.size()); 
+        }
+        
+        
         multipleValueLookupForm.setResultsLimitedSize(resultTable.size());
 
         if (request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY) != null) {

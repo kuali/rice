@@ -122,6 +122,13 @@ public interface ActionRequestService {
     public List findPendingByDocRequestCdRouteLevel(Long routeHeaderId, String requestCode, Integer routeLevel);
 
     public List findPendingByDocRequestCdNodeName(Long routeHeaderId, String requestCode, String nodeName);
+    
+    /**
+     * Returns all pending requests for a given routing entity
+     * @param routeHeaderId the id of the document header being routed
+     * @return a List of all pending ActionRequestValues for the document
+     */
+    public abstract List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId);
 
     /**
      * Returns the highest priority delegator in the list of action requests.

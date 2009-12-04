@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -40,6 +42,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -125,6 +128,38 @@ public abstract class ActionTakenEvent {
 	 */
 	public abstract String validateActionRules();
 	public abstract String validateActionRules(List<ActionRequestValue> actionRequests);
+	
+	/**
+	 * Filters action requests based on if they occur after the given requestCode, and if they relate to this
+	 * event's principal
+	 * @param actionRequests the List of ActionRequestValues to filter
+	 * @param requestCode the request code for all ActionRequestValues to be after
+	 * @return the filtered List of ActionRequestValues
+	 */
+	public List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String requestCode) {
+		List<ActionRequestValue> filteredActionRequests = new ArrayList<ActionRequestValue>();
+		
+		List<String> arGroups = null;
+        for (ActionRequestValue ar : actionRequests) {
+            if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode, true) > 0) {
+                continue;
+            }
+            if (ar.isUserRequest() && getPrincipal().getPrincipalId().equals(ar.getPrincipalId())) {
+            	filteredActionRequests.add(ar);
+            } else if (ar.isGroupRequest()) {
+            	if (arGroups == null) {
+            		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
+            	}
+            	for (String groupId : arGroups) {
+            		if (groupId.equals(ar.getGroupId())) {
+            			filteredActionRequests.add(ar);
+            		}
+            	}
+            }
+        }
+		
+		return filteredActionRequests;
+	}
 
 	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {
 		LOG.debug("isActionCompatibleRequest() Default method = returning true");

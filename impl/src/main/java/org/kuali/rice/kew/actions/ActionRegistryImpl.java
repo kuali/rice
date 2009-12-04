@@ -132,7 +132,7 @@ public class ActionRegistryImpl implements ActionRegistry {
         ValidActions validActions = new ValidActions();
         ArrayList<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
         for ( ActionRequestValue ar : document.getActionRequests() ) {
-        	if ( StringUtils.equals( ar.getStatus(), KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+        	if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator().booleanValue()) && StringUtils.equals( ar.getStatus(), KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
         		activeRequests.add(ar);
         	}
         }

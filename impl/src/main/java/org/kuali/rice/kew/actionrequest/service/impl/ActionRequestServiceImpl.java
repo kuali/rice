@@ -460,6 +460,17 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         return actionRequest;
     }
+    
+    /**
+     * Returns all pending requests for a given routing entity
+     * @param routeHeaderId the id of the document header being routed
+     * @return a List of all pending ActionRequestValues for the document
+     */
+    public List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId) {
+    	ActionRequestDAO arDAO = getActionRequestDAO();
+        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
+        return (List<ActionRequestValue>)pendingArs;
+    }
 
     public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
         ActionRequestDAO arDAO = getActionRequestDAO();

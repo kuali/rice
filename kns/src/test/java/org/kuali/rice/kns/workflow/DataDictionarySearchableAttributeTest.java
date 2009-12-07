@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -56,7 +55,6 @@ import org.kuali.test.KNSTestCase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Ignore("Requires the creation of the ACCT_DD_ATTR_DOC table beforehand.")
 @TransactionalTest
 public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 

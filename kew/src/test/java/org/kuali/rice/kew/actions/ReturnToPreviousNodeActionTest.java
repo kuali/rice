@@ -36,26 +36,26 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-
+import org.kuali.rice.test.TransactionalTest;
 
 public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     
 	@Test public void testReturnToPreviousSequential() throws Exception {
         
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdByName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
         // approve the document to the third node (workflow document 2)
-        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("bmcgough"), document.getRouteHeaderId());
         assertTrue("bmcgough should have approve.", document.isApprovalRequested());
         document.approve("");
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have approve.", document.isApprovalRequested());
         document.approve("");
         
         // we should now be at workflow document 2 node with request to pmckown
         assertEquals("Should be at WorkflowDocument2.", SequentialSetup.WORKFLOW_DOCUMENT_2_NODE, document.getNodeNames()[0]);
-        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         assertTrue("pmckown should have approve.", document.isApprovalRequested());
         
@@ -77,14 +77,14 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         assertEquals("Should be 1 requests.", 1, actionRequests.size());
 
         // Route a new document, and test the notification requests
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(getPrincipalIdByName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         // there should now be 2 requests, one to rkirkend and one to bmcgough
         actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
         assertEquals("There should be 2 requests.", 2, actionRequests.size());
         
         // now return to the current node we are on, effectively refreshing it, initiate this action as rkirkend so that bmcgough gets an FYI
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("rkirkend"), document.getRouteHeaderId());
         RouteNodeInstance preReturnNodeInstance = (RouteNodeInstance)KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId()).iterator().next();
         document.returnToPreviousNode("", SequentialSetup.WORKFLOW_DOCUMENT_NODE);
         preReturnNodeInstance = KEWServiceLocator.getRouteNodeService().findRouteNodeInstanceById(preReturnNodeInstance.getRouteNodeInstanceId());
@@ -126,6 +126,46 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         assertTrue(isFyiToBmcgough);
                
     }
+	
+	@Test public void testReturnToPreviousApproverSequential() throws Exception {
+        
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdByName("ewestfal"), SequentialWithSplitSetup.DOCUMENT_TYPE_NAME);
+        document.routeDocument("");
+        
+        // approve the document to the third node (workflow document 2)
+        document = new WorkflowDocument(getPrincipalIdByName("bmcgough"), document.getRouteHeaderId());
+        assertTrue("bmcgough should have approve.", document.isApprovalRequested());
+        document.approve("");
+        document = new WorkflowDocument(getPrincipalIdByName("rkirkend"), document.getRouteHeaderId());
+        assertTrue("rkirkend should have approve.", document.isApprovalRequested());
+        document.approve("");
+        
+        //assertAtNodes(document.getRouteHeaderId(), new String[] { SequentialWithSplitSetup.WORKFLOW_DOCUMENT_2_NODE });
+        
+        // we should now be at workflow document 2 node with request to pmckown
+        //assertEquals("Should be at WorkflowDocument2.", SequentialWithSplitSetup.WORKFLOW_DOCUMENT_2_NODE, document.getNodeNames()[0]);
+        document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
+        assertTrue("Document should be enroute.", document.stateIsEnroute());
+        assertTrue("pmckown should have approve.", document.isApprovalRequested());
+        
+        KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(getPrincipalIdByName("ewestfal"), document.getRouteHeaderId(), "WorkflowDocument", "pmckown is sending it back to bmcgough", true);
+                
+        document = new WorkflowDocument(getPrincipalIdByName("bmcgough"), document.getRouteHeaderId());
+        assertEquals("Should be at WorkflowDocument.", SequentialWithSplitSetup.WORKFLOW_DOCUMENT_NODE, document.getNodeNames()[0]);
+        assertTrue("bmcgough should have approve again.", document.isApprovalRequested());
+        document.approve("");
+        
+        document = new WorkflowDocument(getPrincipalIdByName("rkirkend"), document.getRouteHeaderId());
+        assertTrue("rkirkend should have approve.", document.isApprovalRequested());
+        document.approve("");
+        
+        // we should now have returned workflow document 2 node with request to pmckown
+        assertEquals("Should be at WorkflowDocument2.", SequentialWithSplitSetup.WORKFLOW_DOCUMENT_2_NODE, document.getNodeNames()[0]);
+        document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
+        assertTrue("Document should be enroute.", document.stateIsEnroute());
+        assertTrue("pmckown should have approve.", document.isApprovalRequested());
+    }
+
     /**
      * our routing all force action:
      * 
@@ -165,13 +205,13 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     	KEWServiceLocator.getDocumentTypeService().save(docType);
     	
     	// route a document
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdByName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
                 
         //M branch
-        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("bmcgough"), document.getRouteHeaderId());
         document.approve("");
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("rkirkend"), document.getRouteHeaderId());
         document.approve("");
         
         assertAtNodes(document.getRouteHeaderId(), new String[] { ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE, ParallelSetup.WORKFLOW_DOCUMENT_3_B2_NODE, ParallelSetup.WORKFLOW_DOCUMENT_4_B3_NODE});
@@ -179,15 +219,15 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         assertAllBranchesSameParent(document.getRouteHeaderId(), "PRIMARY");
         
         // assert that the proper parties have the document
-        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("jitrue"), document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
-        document = new WorkflowDocument(new NetworkIdDTO("jthomas"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("jthomas"), document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
         
         // Approve as pmckown on B1 to transition to next node in B1, this is where we'll return from
-        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
         document.approve("");
    
         // now assert that the document is in the proper state
@@ -200,16 +240,16 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         ReturnToPreviousPostProcessor.clearRouteLevelChanges();
         
         // verify that pmckown no longer has approve request
-        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
         assertFalse("pmckown should not have an approve request", document.isApprovalRequested());
         
         //rollback from B2.1 to B2
-        document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("jitrue"), document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());
         document.returnToPreviousNode("", ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE);
         
         // now pmckown shold have the document again
-        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
         assertTrue("Document should be back to pmckown", document.isApprovalRequested());
         
         // check that the post processor was notified properly on the rollback
@@ -274,14 +314,14 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     @Test public void testReturnToPreviousFromFinalNode() throws Exception {
     	// the BlanketApproveMandatoryNodeTest document type defined in ActionsConfig.xml defines WorkflowDocument2
     	// as a final approval node.
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "BlanketApproveMandatoryNodeTest");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdByName("ewestfal"), "BlanketApproveMandatoryNodeTest");
     	// blanket approve to the final approver node
     	document.blanketApprove("", "WorkflowDocument2");
     	
     	// the document should now be routed to Sir pmckown
     	assertTrue("Document should be enroute.", document.stateIsEnroute());
     	TestUtilities.assertAtNode("Should be at ye old WorkflowDocument2 node.", document, "WorkflowDocument2");
-    	document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
     	assertTrue("Document should be to pmckown.", document.isApprovalRequested());
     	List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
     	assertEquals(1, activeNodeInstances.size());
@@ -292,22 +332,22 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     	document.returnToPreviousNode("", "AdHoc");
     	assertTrue("Document should be enroute.", document.stateIsEnroute());
     	TestUtilities.assertAtNode("We should be at the AdHoc node.", document, "AdHoc");
-    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdByName("ewestfal"), document.getRouteHeaderId());
     	
     	// now blanket approve back to WorkflowDocument2 again, before the bug fix this is where the policy failure would happen
     	document.blanketApprove("", "WorkflowDocument2");
     	assertTrue("Document should be enroute.", document.stateIsEnroute());
     	TestUtilities.assertAtNode("Should be at ye old WorkflowDocument2 node.", document, "WorkflowDocument2");
-    	document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdByName("pmckown"), document.getRouteHeaderId());
     	assertTrue("Document should be to pmckown.", document.isApprovalRequested());
     	
     	// now return it back one node to WorkflowDocument, this should send approve requests to bmcgough and rkirkend
     	document.returnToPreviousNode("", "WorkflowDocument");
     	assertTrue("Document should be enroute.", document.stateIsEnroute());
     	TestUtilities.assertAtNode("Should be at ye old WorkflowDocument node.", document, "WorkflowDocument");
-    	document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdByName("bmcgough"), document.getRouteHeaderId());
     	assertTrue("Bmcgough should have an approve.", document.isApprovalRequested());
-    	document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdByName("rkirkend"), document.getRouteHeaderId());
     	assertTrue("Rkirkend should have an approve.", document.isApprovalRequested());
     	
     	// now blanket approve it to the end and the document should be processed
@@ -327,6 +367,15 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         public static final String WORKFLOW_DOCUMENT_2_NODE = "WorkflowDocument2";
         public static final String ACKNOWLEDGE_1_NODE = "Acknowledge1";
         public static final String ACKNOWLEDGE_2_NODE = "Acknowledge2";
+                
+    }
+    
+    private class SequentialWithSplitSetup {
+
+        public static final String DOCUMENT_TYPE_NAME = "ReturnToPreviousWithSplitTest";
+        public static final String ADHOC_NODE = "AdHoc";
+        public static final String WORKFLOW_DOCUMENT_NODE = "WorkflowDocument";
+        public static final String WORKFLOW_DOCUMENT_2_NODE = "WorkflowDocument2";
                 
     }
     
@@ -364,6 +413,14 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
 			routeLevelChanges.clear();
 		}
     	
+    }
+    
+    /**
+     * @param principalName the name of the principal to find the principal id for
+     * @return the principal id
+     */
+    public String getPrincipalIdByName(String principalName) {
+    	return KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
     
 }

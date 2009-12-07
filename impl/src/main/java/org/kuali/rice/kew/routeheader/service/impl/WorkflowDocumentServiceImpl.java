@@ -418,8 +418,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		KimPrincipal principal = loadPrincipal(principalId);
 		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, principal, annotation, runPostProcessor, nodeName);
-		action.recordAction();
-		// action.queueDocument();
+		action.performAction();
 
 		return finish(routeHeader);
 	}

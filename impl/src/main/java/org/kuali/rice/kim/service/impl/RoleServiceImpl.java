@@ -2060,6 +2060,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	}
 	
 	protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
     }
 }

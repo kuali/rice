@@ -238,9 +238,10 @@ public class SqlBuilder {
 	public boolean isValidDate(String dateString){
 		dateString = dateString.trim();
 		try {
+			int oldErrorCount = GlobalVariables.getMessageMap().getErrorCount();
 			this.createCriteria("date", dateString, "validation", "test", Date.class);
 			//Timestamp dt =  this.getDateTimeService().convertToSqlTimestamp(cleanDate(dateString));
-			return true;
+			return (GlobalVariables.getMessageMap().getErrorCount() <= oldErrorCount);
 		} catch (Exception ex) {
 			return false;
 		}

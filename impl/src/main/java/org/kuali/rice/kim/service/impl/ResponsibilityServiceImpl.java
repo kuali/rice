@@ -488,11 +488,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 	    	// flush the IdM service caches
 	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
 	    	// flush the local implementation class cache
-	    	getCacheAdministrator().flushGroup(RESPONSIBILITY_IMPL_CACHE_GROUP);
+	    	flushResponsibilityImplCache();
     	} catch ( RuntimeException ex ) {
     		LOG.error( "Exception in saveResponsibility: ", ex );
     		throw ex;
     	}
+    }
+    
+    public void flushResponsibilityImplCache() {
+    	getCacheAdministrator().flushGroup(RESPONSIBILITY_IMPL_CACHE_GROUP);
     }
 
     protected String getNewAttributeDataId(){

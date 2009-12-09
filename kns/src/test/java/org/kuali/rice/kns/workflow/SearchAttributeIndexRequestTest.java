@@ -108,7 +108,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 				new int[] {1, 1, 0}
 		);
 		
-		assertEquals("Read Access Count not at expected value", 6, document.getReadAccessCount());
+		assertEquals("Read Access Count not at expected value", 3, document.getReadAccessCount());
 		
 		GlobalVariables.setUserSession(null);
 	}
@@ -137,28 +137,6 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 				
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
 				new String[] {"1","0","2","7"},
-				new int[] {0, 1, 0, 0}
-		);
-		
-		assertDDSearchableAttributesWork(docType,principalId,"constantString",
-				new String[] {"hippo","monkey"},
-				new int[] {1, 0}
-		);
-		
-		assertDDSearchableAttributesWork(docType,principalId,"routedString",
-				new String[] {"routing","","hippo"},
-				new int[] {0, 1, 0}
-		);
-		
-		GlobalVariables.setUserSession(new UserSession("user1"));
-		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
-		documentService.approveDocument(document, "User1 approved document", null);
-		
-		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
-		searchAttributeService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-				
-		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
-				new String[] {"1","0","2","7"},
 				new int[] {1, 0, 0, 0}
 		);
 		
@@ -172,18 +150,16 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 				new int[] {1, 1, 0}
 		);
 		
-		assertEquals("Read Access Count not at expected value", 6, document.getReadAccessCount());
-		
-		GlobalVariables.setUserSession(new UserSession("user2"));
+		GlobalVariables.setUserSession(new UserSession("user1"));
 		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
 		documentService.approveDocument(document, "User1 approved document", null);
 		
 		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
 		searchAttributeService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-		
+				
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
-				new String[] {"1","0","2","3","4","7"},
-				new int[] {0, 0, 1, 0, 0, 0}
+				new String[] {"1","0","2","7"},
+				new int[] {0, 0, 1, 0}
 		);
 		
 		assertDDSearchableAttributesWork(docType,principalId,"constantString",
@@ -196,7 +172,31 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 				new int[] {1, 1, 0}
 		);
 		
-		assertEquals("Read Access Count not at expected value", 9, document.getReadAccessCount());
+		assertEquals("Read Access Count not at expected value", 8, document.getReadAccessCount());
+		
+		GlobalVariables.setUserSession(new UserSession("user2"));
+		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
+		documentService.approveDocument(document, "User1 approved document", null);
+		
+		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
+		searchAttributeService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
+		
+		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
+				new String[] {"1","0","2","3","4","7"},
+				new int[] {0, 0, 0, 1, 0, 0}
+		);
+		
+		assertDDSearchableAttributesWork(docType,principalId,"constantString",
+				new String[] {"hippo","monkey"},
+				new int[] {1, 0}
+		);
+		
+		assertDDSearchableAttributesWork(docType,principalId,"routedString",
+				new String[] {"routing","","hippo"},
+				new int[] {1, 1, 0}
+		);
+		
+		assertEquals("Read Access Count not at expected value", 12, document.getReadAccessCount());
 		
 		GlobalVariables.setUserSession(new UserSession("user3"));
 		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
@@ -220,7 +220,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 				new int[] {1, 1, 0}
 		);
 		
-		assertEquals("Read Access Count not at expected value", 12, document.getReadAccessCount());
+		assertEquals("Read Access Count not at expected value", 15, document.getReadAccessCount());
 		
 		GlobalVariables.setUserSession(null);
 	}

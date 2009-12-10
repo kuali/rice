@@ -44,6 +44,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
@@ -60,6 +61,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	private static final Logger LOG = Logger.getLogger( RoleManagementServiceImpl.class );
 	
 	private RoleService roleService;
+	private KimTypeInfoService typeInfoService;
 	private RoleUpdateService roleUpdateService;
 	private BusinessObjectService boService;
 	
@@ -434,9 +436,11 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     	KimRoleTypeService service = null;
     		
     	final KimRoleInfo roleInfo = getRoleService().getRole(roleId);
-    	final KimTypeInfo roleType = KIMServiceLocator.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
-    	if ( roleType != null ) {
-        	service = getRoleTypeService(roleType);
+    	if (roleInfo != null) {
+	    	final KimTypeInfo roleType = getTypeInfoService().getKimType(roleInfo.getKimTypeId());
+	    	if ( roleType != null ) {
+	        	service = getRoleTypeService(roleType);
+	    	}
     	}
     	return service;
     }
@@ -755,11 +759,11 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return roleService;
 	}
 	
-	public BusinessObjectService getBusinessObjectService() {
-		if ( boService == null ) {
-			boService = KNSServiceLocator.getBusinessObjectService();
+	public KimTypeInfoService getTypeInfoService() {
+		if (typeInfoService == null) {
+			typeInfoService = KIMServiceLocator.getTypeInfoService();
 		}
-		return boService;
+		return typeInfoService;
 	}
 
 	public RoleUpdateService getRoleUpdateService() {

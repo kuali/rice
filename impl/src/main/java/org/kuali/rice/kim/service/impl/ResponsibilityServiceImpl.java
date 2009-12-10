@@ -64,7 +64,7 @@ import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
  *
  */
 public class ResponsibilityServiceImpl implements ResponsibilityService, ResponsibilityUpdateService {
-	private static final String RESPONSIBILITY_IMPL_CACHE_PREFIX = "ResponsibilityImpl-Template-";
+	protected static final String RESPONSIBILITY_IMPL_CACHE_PREFIX = "ResponsibilityImpl-Template-";
 	protected static final String RESPONSIBILITY_IMPL_CACHE_GROUP = "ResponsibilityImpl";
 	private static final String DEFAULT_RESPONSIBILITY_TYPE_SERVICE = "defaultResponsibilityTypeService";
 	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );

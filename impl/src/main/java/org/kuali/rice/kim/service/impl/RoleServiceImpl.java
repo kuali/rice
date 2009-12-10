@@ -648,6 +648,12 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	return result;
     }
 
+    /**
+     * Retrieves the role type service associated with the given role ID
+     * 
+     * @param roleId the role ID to get the role type service for
+     * @return the Role Type Service
+     */
     protected KimRoleTypeService getRoleTypeService( String roleId ) {
         KimRoleTypeService service = roleTypeServiceCache.get( roleId );
     	if ( service == null && !roleTypeServiceCache.containsKey( roleId ) ) {

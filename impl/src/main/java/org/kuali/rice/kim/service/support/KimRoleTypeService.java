@@ -115,4 +115,13 @@ public interface KimRoleTypeService extends KimTypeService {
      */
     void principalInactivated( String principalId, String namespaceCode, String roleName );
     
+    /**
+     * Determines if the role specified by the given namespace and role name should have membership queries cached
+     * 
+     * @param namespaceCode the namespace code of the role to determine caching on
+     * @param roleName the name of the role to determine caching on
+     * @return true if the membership results of the Role should be cached, false otherwise
+     */
+    public abstract boolean shouldCacheRoleMembershipResults(String namespaceCode, String roleName);
+    
 }

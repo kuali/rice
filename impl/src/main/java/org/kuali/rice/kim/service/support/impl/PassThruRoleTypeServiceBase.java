@@ -121,4 +121,14 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 		return new AttributeSet();
 	}
 
+	/**
+	 * Returns false by default.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 */
+	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
+			String roleName) {
+		return false;
+	}
+
 }

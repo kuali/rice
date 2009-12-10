@@ -162,4 +162,14 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		return performMatch(translatedQualification, roleQualifier);
 	}
 
+	/**
+	 * Returns true as a default
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 */
+	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
+			String roleName) {
+		return true;
+	}
+
 }

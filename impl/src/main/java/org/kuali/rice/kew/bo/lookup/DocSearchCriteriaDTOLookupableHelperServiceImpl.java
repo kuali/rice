@@ -777,15 +777,15 @@ KualiLookupableHelperServiceImpl {
 		StringBuilder suppMenuBar = new StringBuilder();
 
 		// Add the detailed-search-toggling button.
-		suppMenuBar.append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(((").append(detailed ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO").append(
+		suppMenuBar.append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append(detailed ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO").append(
 				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(detailed ? "/images/tinybutton-basicsearch.gif\" alt=\"basic search\" title=\"basic search\" />" : "/images/tinybutton-detailedsearch.gif\" alt=\"detailed search\" title=\"detailed search\" />");
 
 		// Add the superuser-search-toggling button.
-		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(((").append((!detailed && superSearch) ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? "NO" : DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING).append(
+		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append((!detailed && superSearch) ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? "NO" : DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING).append(
 				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(superSearch ? "/images/tinybutton-nonsupusearch.gif\" alt=\"non-superuser search\" title=\"non-superuser search\" />" : "/images/tinybutton-superusersearch.gif\" alt=\"superuser search\" title=\"superuser search\" />");
 
 		// Add the "clear saved searches" button.
-		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
+		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
 
         Properties parameters = new Properties();
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.getBusinessObjectClass().getName());
@@ -931,6 +931,24 @@ KualiLookupableHelperServiceImpl {
 
 		// Determine if there are any properties embedded in the methodToCall parameter, and retrieve them if so.
 		String[] methodToCallArray = ((String[])this.getParameters().get(KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
+		if (methodToCallArray == null) {
+    		for (String parameter: new ArrayList<String>(this.getParameters().keySet())) {
+    		    String[] parameterSplit = StringUtils.split(parameter, ".");
+    		    String parameterValue = "";
+    		    if (StringUtils.contains(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.")) {
+    		        if (parameter.trim().endsWith(".x")) {
+    		            parameterValue = StringUtils.substringBetween(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".x");
+    		        } else if (parameter.trim().endsWith(".y")) {
+    		            parameterValue = StringUtils.substringBetween(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".y");
+    		        } 
+    		        if (StringUtils.isNotEmpty(parameterValue)) {
+    		            methodToCallArray = new String[]{ parameterValue };
+    	                break;
+    		        }
+    		    }
+    		}
+		}
+		//String[] methodToCallArray = ((String[])this.getParameters().get(KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
 		if (ObjectUtils.isNotNull(methodToCallArray) && methodToCallArray.length > 0) {
 			String methodToCallVal = methodToCallArray[0];
 			if (StringUtils.isNotBlank(methodToCallVal)) {

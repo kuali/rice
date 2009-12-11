@@ -92,12 +92,20 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward getDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
+		Long docId = null;
 		
+		// check if we have a plausible docId first
 		if (StringUtils.isEmpty(docForm.getRouteHeaderId())) {
 			GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_REQUIRED, "Document ID");
 		} else {
-			Long docId = Long.valueOf(docForm.getRouteHeaderId().trim());
-			
+			try {
+				docId = Long.valueOf(docForm.getRouteHeaderId().trim());
+			} catch (NumberFormatException nfe) {
+				GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_NUMERIC, "Document ID");
+			}
+		}
+
+		if (docId != null) {
 			//to clear Document Field first;
 			docForm.resetOps();
 			DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(docId);
@@ -143,9 +151,9 @@ public class DocumentOperationAction extends KewKualiAction {
 				branches1.clear();
 				request.getSession().setAttribute("branches",branches);
 				docForm.setBranches(branches);
-
 			}
 		}
+			
 		return mapping.findForward("basic");
 	}
 

@@ -205,6 +205,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         String activeParam = (String) fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
         String ruleIdParam = (String) fieldValues.get(RULE_ID_PROPERTY_NAME);
         String ruleDescription = (String) fieldValues.get(RULE_DESC_PROPERTY_NAME);
+        String deleteSelection = (String) fieldValues.get(DELEGATE_RULE_PROPERTY_NAME);
 
         String docTypeSearchName = null;
         String workflowId = null;
@@ -213,7 +214,17 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         Boolean isDelegateRule = null;
         Boolean isActive = null;
         Long ruleId = null;
-
+      
+        
+        //for KULRICE-3678
+        if(deleteSelection != null && !"".equals(deleteSelection.trim()))
+        {
+        	if(deleteSelection.equalsIgnoreCase("Y"))
+        		isDelegateRule = Boolean.TRUE;
+        	else
+        		isDelegateRule = Boolean.FALSE;
+        }
+        
         if (ruleIdParam != null && !"".equals(ruleIdParam.trim())) {
             try {
                 ruleId = new Long(ruleIdParam.trim());

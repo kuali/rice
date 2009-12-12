@@ -521,8 +521,7 @@
         <bean parent="FieldDefinition" p:attributeName="personReviewerType"/>
         <bean parent="FieldDefinition" p:attributeName="ruleBaseValuesId"/>
         <bean parent="FieldDefinition" p:attributeName="activeInd"/>
-        <!-- <bean parent="FieldDefinition"
-              p:attributeName="delegateRule"/>-->
+        <bean parent="FieldDefinition" p:attributeName="delegateRule"/>
       </list>
     </property>
     <property name="resultFields">

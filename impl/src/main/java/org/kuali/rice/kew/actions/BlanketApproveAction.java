@@ -26,9 +26,11 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -163,9 +165,15 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     protected void queueDeferredWork(ActionTakenValue actionTaken) {
         try {
-
+        	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
+        	
             BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
             blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames);
+            
+            if (shouldIndex) {
+    	    	SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(getRouteHeader());
+    			searchableAttService.indexDocument(getRouteHeader().getRouteHeaderId());
+    	    }
 //
 
 //          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(

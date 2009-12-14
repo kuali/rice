@@ -54,15 +54,15 @@ public class RouteDocumentMessageService implements KSBXMLService {
 		public static boolean runPostProcessor = true;
 		public static boolean shouldSearchAttributeIndex = false;
 		public RouteMessageXmlElement(Long routeHeaderId) {
-			RouteMessageXmlElement.routeHeaderId = routeHeaderId;
+			this.routeHeaderId = routeHeaderId;
 		}
 		public RouteMessageXmlElement(Long routeHeaderId, boolean runPostProcessor) {
 			this(routeHeaderId);
-			RouteMessageXmlElement.runPostProcessor = runPostProcessor;
+			this.runPostProcessor = runPostProcessor;
 		}
 		public RouteMessageXmlElement(Long routeHeaderId, boolean runPostProcessor, boolean shouldIndex) {
 			this(routeHeaderId, runPostProcessor);
-			RouteMessageXmlElement.shouldSearchAttributeIndex = shouldIndex;
+			this.shouldSearchAttributeIndex = shouldIndex;
 		}
 		private static final String SPLIT = "::~~::";
 		public static RouteMessageXmlElement construct(String content) {

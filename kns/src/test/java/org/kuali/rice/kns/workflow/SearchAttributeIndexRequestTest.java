@@ -74,46 +74,6 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	}
 	
 	/**
-	 * Tests that a blanket approved document is indexed correctly
-	 */
-	@Test
-	public void blanketApproveTest() throws Exception {
-		final DocumentService documentService = KNSServiceLocator.getDocumentService();
-		final String principalName = "admin";
-        final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
-        GlobalVariables.setUserSession(new UserSession(principalName));
-
-		SearchAttributeIndexTestDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
-		document.getDocumentHeader().setDocumentDescription("Blanket Approved SAIndexTestDoc");
-		final String documentNumber = document.getDocumentNumber();
-		final DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(SearchAttributeIndexRequestTest.SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE);
-				
-		documentService.blanketApproveDocument(document, "Blanket Approved SearchAttributeIndexTestDocument", null);
-		
-		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
-		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
-						
-		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
-				new String[] {"1","0","2","3","7"},
-				new int[] {0, 0, 0, 1, 0}
-		);
-		
-		assertDDSearchableAttributesWork(docType,principalId,"constantString",
-				new String[] {"hippo","monkey"},
-				new int[] {1, 0}
-		);
-		
-		assertDDSearchableAttributesWork(docType,principalId,"routedString",
-				new String[] {"routing","","hippo"},
-				new int[] {1, 1, 0}
-		);
-		
-		LOG.info("Read Access Count not at expected value: "+document.getReadAccessCount());
-		
-		GlobalVariables.setUserSession(null);
-	}
-	
-	/**
 	 * Tests that a document, which goes through a regular approval process, is indexed correctly
 	 */
 	@Test
@@ -204,6 +164,46 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
 				new String[] {"1","0","2","3","4","7"},
 				new int[] {0, 0, 0, 1, 0, 0}
+		);
+		
+		assertDDSearchableAttributesWork(docType,principalId,"constantString",
+				new String[] {"hippo","monkey"},
+				new int[] {1, 0}
+		);
+		
+		assertDDSearchableAttributesWork(docType,principalId,"routedString",
+				new String[] {"routing","","hippo"},
+				new int[] {1, 1, 0}
+		);
+		
+		LOG.info("Read Access Count not at expected value: "+document.getReadAccessCount());
+		
+		GlobalVariables.setUserSession(null);
+	}
+	
+	/**
+	 * Tests that a blanket approved document is indexed correctly
+	 */
+	@Test
+	public void blanketApproveTest() throws Exception {
+		final DocumentService documentService = KNSServiceLocator.getDocumentService();
+		final String principalName = "admin";
+        final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        GlobalVariables.setUserSession(new UserSession(principalName));
+
+		SearchAttributeIndexTestDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
+		document.getDocumentHeader().setDocumentDescription("Blanket Approved SAIndexTestDoc");
+		final String documentNumber = document.getDocumentNumber();
+		final DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(SearchAttributeIndexRequestTest.SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE);
+				
+		documentService.blanketApproveDocument(document, "Blanket Approved SearchAttributeIndexTestDocument", null);
+		
+		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
+		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
+						
+		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
+				new String[] {"1","0","2","3","7"},
+				new int[] {0, 0, 0, 1, 0}
 		);
 		
 		assertDDSearchableAttributesWork(docType,principalId,"constantString",

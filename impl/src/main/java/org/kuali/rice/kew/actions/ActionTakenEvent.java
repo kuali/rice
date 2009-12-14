@@ -164,9 +164,6 @@ public abstract class ActionTakenEvent {
 		RouteContext routeContext = RouteContext.getCurrentRouteContext();
 		if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
 			routeContext.requestSearchIndexingForContext();
-			
-			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-			searchableAttService.indexDocument(getRouteHeaderId());
 		}
 	}
 
@@ -218,7 +215,7 @@ public abstract class ActionTakenEvent {
 		KSBXMLService documentRoutingService = (KSBXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
 		try {
 //			String content = String.valueOf(getRouteHeaderId());
-			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getRouteHeaderId(),isRunPostProcessorLogic());
+			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getRouteHeaderId(),isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
 			String content = element.translate();
 			documentRoutingService.invoke(content);
 		} catch (Exception e) {

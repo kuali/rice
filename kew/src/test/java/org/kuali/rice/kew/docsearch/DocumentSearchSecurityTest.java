@@ -39,6 +39,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -264,6 +265,8 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     }
 
     @Test public void testFiltering_SearchAttribute() throws Exception {
+    	LOG.info("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+    	
         String searchAttributeName = "UserEmployeeId";
         String searchAttributeFieldName = "employeeId";
         String documentTypeName = "SecurityDoc_SearchAttributeOnly";

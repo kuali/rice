@@ -20,7 +20,9 @@ import java.util.Set;
 
 import org.kuali.rice.kew.actions.BlanketApproveAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -34,8 +36,12 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
-
+	
 	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames) {
+		doBlanketApproveWork(documentId, principalId, actionTakenId, nodeNames, false);
+	}
+
+	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
@@ -46,6 +52,10 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 			blanketApprove.performDeferredBlanketApproveWork(actionTaken);
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
+		}
+		if (shouldSearchIndex) {
+			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId));
+			searchableAttService.indexDocument(documentId);
 		}
 		LOG.debug("Work done and document requeued, document " + document.getRouteHeaderId());
 	}

@@ -168,12 +168,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
             BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
-            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames);
-            
-            if (shouldIndex) {
-    	    	SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(getRouteHeader());
-    			searchableAttService.indexDocument(getRouteHeader().getRouteHeaderId());
-    	    }
+            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames, shouldIndex);
 //
 
 //          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(

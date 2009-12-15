@@ -759,7 +759,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				}
 			}
 			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
-			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames);
+			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames, true);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);

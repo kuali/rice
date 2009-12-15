@@ -140,6 +140,8 @@
     <param name="attachments.pending.directory" override="false">${java.io.tmpdir}/${environment}/attachments/pending</param>
 
     <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck">true</param>
+    
+    <param name="kns.editable.properties.history.size">20</param>
 
     <!-- KSB -->
 

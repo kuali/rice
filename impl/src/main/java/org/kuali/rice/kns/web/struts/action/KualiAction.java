@@ -437,7 +437,6 @@ public abstract class KualiAction extends DispatchAction {
         
         // when we return from the lookup, our next request's method to call is going to be refresh
         kualiForm.registerEditableProperty(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-        kualiForm.registerNextMethodToCallIsRefresh(true);
         
         // parse out the baseLookupUrl if there is one
         String baseLookupUrl = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM14_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM14_RIGHT_DEL);
@@ -640,7 +639,6 @@ public abstract class KualiAction extends DispatchAction {
         // our next request's method to call is going to be refresh
         KualiForm kualiForm = (KualiForm) form;
         kualiForm.registerEditableProperty(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-        kualiForm.registerNextMethodToCallIsRefresh(true);
         
         // parse out business object class name for lookup
         String boClassName = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL, KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL);

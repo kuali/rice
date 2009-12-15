@@ -449,7 +449,7 @@ public class WebUtils {
     		LOG.debug("isPropertyEditable("+ propertyName+")");
     	}
     	
-    	boolean returnVal =  editableProperties.contains(propertyName) ||
+    	boolean returnVal = editableProperties == null || editableProperties.contains(propertyName) ||
     			(getIndexOfCoordinateExtension(propertyName)==-1?false:
     				editableProperties.contains(
     						propertyName.substring(0, getIndexOfCoordinateExtension(propertyName))));
@@ -581,21 +581,6 @@ public class WebUtils {
     	}
     	GlobalVariables.setMessageMap(kualiDocumentFormBase.getMessageMapFromPreviousRequest());
     	GlobalVariables.getMessageMap().clearErrorPath();
-    }
-    
-    /**
-     * When a struts action handler method attempts to upload a file to the user's browser, editable properties are cleared out because the JSP is not rendered,
-     * but the HTML page is still viewable to the user.  After downloading the file, when the user tries to click on a button on the screen, it will complain that
-     * the methodToCall couldn't be verified.  This method will re-register all of the editable properties from the previous request (i.e. the request that rendered the 
-     * HTML page) so that the user can use the HTML page. 
-     * 
-     * @param kualiForm
-     */
-    public static void reRegisterEditablePropertiesFromPreviousRequest(KualiForm kualiForm) {
-    	Set<String> editableProperties = kualiForm.getEditablePropertiesFromPreviousRequest();
-        for (String editableProperty : editableProperties) {
-            kualiForm.registerEditableProperty(editableProperty);
-        }
     }
     
     /**

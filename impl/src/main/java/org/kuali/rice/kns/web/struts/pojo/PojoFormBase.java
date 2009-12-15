@@ -57,6 +57,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     
     // begin Kuali Foundation modification
     private static final Logger LOG = Logger.getLogger(PojoFormBase.class);
+    
+    private static final String PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID = "editablePropertiesGuid";
 
 	// removed member variables: cachedActionErrors, coder, errorInfo, fieldOrder, formConfig, HEADING_KEY, IGNORED_KEYS,
 	//     invalidValueKeys, logger, messageResourceKey, messageResources, padNonRequiredFields, valueBinder
@@ -71,10 +73,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     private Map formatterTypes = new HashMap();
     private List<String> maxUploadFileSizes = new ArrayList<String>();
     private Set<String> editableProperties = new HashSet<String>();
-    private transient Set<String> editablePropertiesFromPreviousRequest;
     protected Set<String> requiredNonEditableProperties = new HashSet<String>();
     private String strutsActionMappingScope; 
     private boolean isNewForm = true;
+    
+    private String populateEditablePropertiesGuid;
+    private String actionEditablePropertiesGuid;
 
     // removed methods: PojoFormBase()/SLActionForm(), addFormLevelMessageInfo, addGlobalMessage, addIgnoredKey, addIgnoredKeys, addLengthValidation, addMessageIfAbsent
     //     addPatternValidation, addPropertyValidationRules, addRangeValidation, addRequiredField, addRequiredFields
@@ -499,7 +503,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
  
     public boolean isPropertyEditable(String propertyName) {
-        return WebUtils.isPropertyEditable(getEditablePropertiesFromPreviousRequest(), propertyName);
+    	final Set<String> populateEditableProperties = getPopulateEditableProperties();
+        return WebUtils.isPropertyEditable(populateEditableProperties, propertyName);
     }
     
     /***
@@ -552,33 +557,15 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 */
 	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request) {
 		
-		if (StringUtils.equalsIgnoreCase("session",getStrutsActionMappingScope()) && !getIsNewForm()) {
+		if (requestParameterName.equals(PojoFormBase.PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID)) {
+			return false; // don't repopulate this
+		}
+		else if (StringUtils.equalsIgnoreCase("session",getStrutsActionMappingScope()) && !getIsNewForm()) {
 			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName); 
 		}
 		return true;
 		
 	}
-	
-	/**
-	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#switchEditablePropertiesToEditablePropertiesFromPreviousRequest()
-	 */
-	public void switchEditablePropertyInformationToPreviousRequestInformation() {
-    	if ( LOG.isDebugEnabled() ) {
-    		LOG.debug( "KualiSessionId: " + GlobalVariables.getUserSession().getKualiSessionId() + " -- switchEditablePropertyInformationToPreviousRequestInformation " );
-    	}
-		editablePropertiesFromPreviousRequest = editableProperties;
-	}
-	
-	/**
-	 * Returns the list of properties that were editable when the webpage for the previous request was rendered.
-	 * 
-	 * @return
-	 */
-	public Set<String> getEditablePropertiesFromPreviousRequest() {
-		return editablePropertiesFromPreviousRequest;
-	}
-
-
 
 	/**
 	 * Base implementation that returns just "start".  sub-implementations should not add values to Set instance returned
@@ -591,7 +578,56 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 		defaultMethodToCalls.add(KNSConstants.START_METHOD);
 		return defaultMethodToCalls;
 	}
+
+
+
+	/**
+	 * Sets the guid to editable properties consulted during population
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#setEditablePropertiesGuid(java.lang.String)
+	 */
+	public void setPopulateEditablePropertiesGuid(String guid) {
+		this.populateEditablePropertiesGuid = guid;
+	}
 	
+	/**
+	 * @return the guid for the populate editable properties
+	 */
+	public String getPopulateEditablePropertiesGuid() {
+		return this.populateEditablePropertiesGuid;
+	}
+	
+	/**
+	 * Sets the guid of the editable properties which were registered by the action
+	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#setActionEditablePropertiesGuid(java.lang.String)
+	 */
+	public void setActionEditablePropertiesGuid(String guid) {
+		this.actionEditablePropertiesGuid = guid;
+	}
+	
+	/**
+	 * @return the guid of the editable properties which had been registered by the action processing
+	 */
+	public String getActionEditablePropertiesGuid() {
+		return actionEditablePropertiesGuid;
+	}
+	
+	/**
+	 * @return the editable properties to be consulted during population
+	 */
+	public Set<String> getPopulateEditableProperties() {
+		return GlobalVariables.getUserSession().getEditablePropertiesHistoryHolder().getEditableProperties(getPopulateEditablePropertiesGuid());
+	}
+	
+	/**
+	 * Copies all editable properties in the populate editable properties to the action editable properties
+	 */
+	public void copyPopulateEditablePropertiesToActionEditableProperties() {
+		Set<String> populateEditableProperties = getPopulateEditableProperties();
+		for (String property : populateEditableProperties) {
+			registerEditableProperty(property);
+		}
+	}
 	
 	// end Kuali Foundation modification
 }

@@ -43,8 +43,6 @@ import org.kuali.rice.kns.web.ui.HeaderField;
 public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
     private String methodToCall;
-    private boolean currentMethodToCallIsRefresh;
-    private boolean nextMethodToCallIsRefresh;
     private String refreshCaller;
     private String anchor;
     private Map<String, String> tabStates;
@@ -96,7 +94,6 @@ public class KualiForm extends PojoFormBase {
         this.tabStates = new HashMap<String, String>();
         this.actionFormUtilMap = new ActionFormUtilMap();
         this.docInfo = new ArrayList<HeaderField>();
-        this.nextMethodToCallIsRefresh = false;
     }
 
     /**
@@ -104,7 +101,6 @@ public class KualiForm extends PojoFormBase {
      */
     public void populate(HttpServletRequest request) {
         setMethodToCall(WebUtils.parseMethodToCall(this, request));
-        this.nextMethodToCallIsRefresh = false;
         
         super.populate(request);
 
@@ -399,25 +395,11 @@ public class KualiForm extends PojoFormBase {
     }
 
 	/**
-	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#switchEditablePropertyInformationToPreviousRequestInformation()
-	 */
-	@Override
-	public void switchEditablePropertyInformationToPreviousRequestInformation() {
-		super.switchEditablePropertyInformationToPreviousRequestInformation();
-		currentMethodToCallIsRefresh = nextMethodToCallIsRefresh;
-	}
-
-	/**
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#clearEditablePropertyInformation()
 	 */
 	@Override
 	public void clearEditablePropertyInformation() {
 		super.clearEditablePropertyInformation();
-		nextMethodToCallIsRefresh = false;
-	}
-	
-	public void registerNextMethodToCallIsRefresh(boolean nextMethodToCallIsRefresh) {
-		this.nextMethodToCallIsRefresh = nextMethodToCallIsRefresh;
 	}
 	
 	public void setDerivedValuesOnForm(HttpServletRequest request) {

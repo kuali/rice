@@ -1135,10 +1135,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
             // since we're downloading a file, all of the editable properties from the previous request will continue to be editable.
             KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
-            Set<String> editableProperties = documentForm.getEditablePropertiesFromPreviousRequest();
-            for (String editableProperty : editableProperties) {
-                documentForm.registerEditableProperty(editableProperty);
-            }
+            documentForm.copyPopulateEditablePropertiesToActionEditableProperties();
             
             WebUtils.saveMimeInputStreamAsFile(response, attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentContents(), attachment.getAttachmentFileName(), attachment.getAttachmentFileSize().intValue());
             return null;

@@ -88,18 +88,6 @@ public interface PojoForm {
 	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request);
 	
 	/**
-	 * Initializes the set of editable properties from the previous request, so that it is possible to determine which properties were
-	 * rendered as editable.
-	 */
-	public void switchEditablePropertyInformationToPreviousRequestInformation();
-	
-	/**
-	 * Returns the list of properties that were editable when the webpage for the previous request was rendered.
-	 * 
-	 */
-	public Set<String> getEditablePropertiesFromPreviousRequest();
-	
-	/**
 	 * Returns a set of methodToCalls for which the system will bypass the session.  The return value of this method may depend ONLY upon the
 	 * type of the class implementing it.  Each instance of an implementation of this interface
 	 * must return the same result.  More formally, for 2 instances of this interfaces a1 and a2, if a1.getClass().equals(a2.getClass()), then
@@ -110,6 +98,19 @@ public interface PojoForm {
 	 * @return
 	 */
 	public Set<String> getMethodToCallsToBypassSessionRetrievalForGETRequests();
+	
+	/**
+     * Sets the editable properties guid for this form
+     * @param guid the key to the editable properties for this form
+     */
+    public abstract void setPopulateEditablePropertiesGuid(String guid);
+    
+    /**
+     * Sets the guid associated with the edited properties associated with the action
+     * 
+     * @param guid the guid of the action editable properties
+     */
+    public abstract void setActionEditablePropertiesGuid(String guid);
     // end Kuali Foundation modification
 
 }

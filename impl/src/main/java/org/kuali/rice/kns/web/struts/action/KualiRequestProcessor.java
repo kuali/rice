@@ -80,6 +80,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 	private static final String MDC_USER = "user";
 
 	private static final String MDC_DOC_ID = "docId";
+	
+	private static final String PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID_PARAMETER_NAME = "actionEditablePropertiesGuid";
 
 	private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
 
@@ -281,7 +283,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			super.processPopulate(request, response, form, mapping);
 			return;
 		}
-		((PojoForm)form).switchEditablePropertyInformationToPreviousRequestInformation();	
+		
+		final String previousRequestGuid = request.getParameter(KualiRequestProcessor.PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID_PARAMETER_NAME);
 		//for KULRICE-3652 check if request is from a pop up window
 		//before popping up a window, client code need to do: 
 		//request.setAttribute(KNSConstants.KUALI_POPUP_KEY, KNSConstants.KUALI_POPUP_VALUE); 
@@ -297,6 +300,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		form.setServlet(this.servlet);
 		form.reset(mapping, request);
 
+		((PojoForm)form).setPopulateEditablePropertiesGuid(previousRequestGuid);
 		// call populate on ActionForm
 		((PojoForm) form).populate(request);
 		request.setAttribute("UnconvertedValues", ((PojoForm) form).getUnconvertedValues().keySet());
@@ -531,6 +535,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 			publishMessages(request);
 			saveMessages(request);
 			saveAuditErrors(request);
+			
+			if (form instanceof PojoForm) {
+				final String guid = GlobalVariables.getUserSession().getEditablePropertiesHistoryHolder().addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
+				((PojoForm)form).setActionEditablePropertiesGuid(guid);
+			}
 			
 			return forward;
 

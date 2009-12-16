@@ -1621,6 +1621,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     	String searchVal = "";
 
+    	if(fromDate != null && !"".equals(fromDate)) {
+    		try {
+    			KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);
+    		} catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
+    	}
+    	
     	if(toDate != null && !"".equals(toDate)){
 			try{
 	    		java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);

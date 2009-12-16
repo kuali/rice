@@ -41,6 +41,7 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SavedSearchResult;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
@@ -402,7 +403,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private boolean validateDate(String dateFieldName, String dateFieldValue, String dateFieldErrorKey) {
 		// Validates the date format via the dictionary validation service. If validation fails, the validation service adds an error to the message map.
 		int oldErrorCount = GlobalVariables.getMessageMap().getErrorCount();
-		getDictionaryValidationService().validateAttributeFormat(DOC_SEARCH_CRITERIA_DTO_CLASS, dateFieldName, dateFieldValue, dateFieldErrorKey);
+		getDictionaryValidationService().validateAttributeFormat(DOC_SEARCH_CRITERIA_DTO_CLASS, dateFieldName, dateFieldValue,
+				SearchableAttribute.DATA_TYPE_DATE, dateFieldErrorKey);
 		return (GlobalVariables.getMessageMap().getErrorCount() <= oldErrorCount);
 		//return Utilities.validateDate(date, true);
 	}

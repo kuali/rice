@@ -322,12 +322,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * objectClassName is the docTypeName
      */
     public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
-        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
-        boolean checkDateBounds = false; // this is used so we can check date bounds
-        Class<?> formatterClass = null;
-
-        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
-
         // Retrieve the field's data type, or set to the string data type if an exception occurs when retrieving the class or the DD entry.
         String attributeDataType = null;
         try {
@@ -338,6 +332,23 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         } catch (NullPointerException e) {
         	attributeDataType = SearchableAttribute.DATA_TYPE_STRING;
         }
+        
+        validateAttributeFormat(objectClassName, attributeName, attributeInValue, attributeDataType, errorKey);
+    }
+
+    /**
+     * The attributeDataType parameter should be one of the data types specified by the SearchableAttribute interface; will
+     * default to DATA_TYPE_STRING if a data type other than the ones from SearchableAttribute is specified.
+     * 
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * objectClassName is the docTypeName
+     */
+	public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
+        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+        boolean checkDateBounds = false; // this is used so we can check date bounds
+        Class<?> formatterClass = null;
+
+        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
         
         /*
          *  This will return a list of searchable attributes. so if the value is
@@ -458,15 +469,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey, errorMessageParameters);
     		}
 
-    		if(lVal.compareTo(uVal) > 0){ // check the bounds
+    		if(lVal != null && lVal.compareTo(uVal) > 0){ // check the bounds
     			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
     			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
     			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey + ".range", errorMessageParameters);
     		}
         }
-    }
+	}
 
-    /**
+	/**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeRequired
      */
     public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey) {

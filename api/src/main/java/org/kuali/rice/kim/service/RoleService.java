@@ -233,4 +233,8 @@ public interface RoleService {
 	
 	List<KimRoleInfo> lookupRoles(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
 
+	/**
+	 * Flushes an internal role cache used by the base implementation to prevent repeated database I/O.
+	 */
+	void flushInternalRoleCache();
 }

@@ -50,8 +50,6 @@ import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -63,7 +61,6 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	private RoleService roleService;
 	private KimTypeInfoService typeInfoService;
 	private RoleUpdateService roleUpdateService;
-	private BusinessObjectService boService;
 	
 	// Max age defined in seconds
 	protected int roleCacheMaxSize = 200;
@@ -89,6 +86,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	public void flushRoleCaches() {
+		flushInternalRoleCache();
 		roleByIdCache.clear();
 		roleByNameCache.clear();
 		roleMembersWithDelegationCache.clear();
@@ -408,6 +406,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	 * @param roleIds the List of role ids to split
 	 * @return an array of two Lists of role ids - the first, roles which can be cached and the second, roles which should not be cached
 	 */
+	@SuppressWarnings("unchecked")
 	protected List<String>[] filterRoleIdsByCachingAbility(List<String> roleIds) {
 		List<String> cacheRoles = new ArrayList<String>();
 		List<String> noCacheRoles = new ArrayList<String>();
@@ -798,4 +797,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return getRoleService().lookupRoles(searchCriteria);
 	}
 
+	public void flushInternalRoleCache() {
+		getRoleService().flushInternalRoleCache();
+	}
 }

@@ -34,7 +34,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
@@ -80,6 +80,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
@@ -90,6 +91,9 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @WebService(endpointInterface = KIMWebServiceConstants.RoleService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.RoleService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class RoleServiceImpl implements RoleService, RoleUpdateService {
+	protected static final String ROLE_IMPL_CACHE_PREFIX = "RoleImpl-ID-";
+	protected static final String ROLE_IMPL_BY_NAME_CACHE_PREFIX = "RoleImpl-Name-";
+	protected static final String ROLE_IMPL_CACHE_GROUP = "RoleImpl";
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 
@@ -99,12 +103,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	private ResponsibilityInternalService responsibilityInternalService;
 	private KimRoleDao roleDao;
 	private LookupService lookupService;
-
-    private static final long CACHE_MAX_AGE_SECONDS = 60L;
-
-    private Map<String,MaxAgeSoftReference<RoleImpl>> roleCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<RoleImpl>>() );
-    private Map<String,MaxAgeSoftReference<List<String>>> impliedRoleCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<List<String>>>() );
-    private Map<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>> roleImplMapCache = Collections.synchronizedMap( new HashMap<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>>() );
+	private RiceCacheAdministrator cacheAdministrator;
 
     private Map<String,KimRoleTypeService> roleTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimRoleTypeService>() );
     private Map<String,KimDelegationTypeService> delegationTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimDelegationTypeService>() );
@@ -114,60 +113,33 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     // Role Data
     // --------------------
 
-	protected RoleImpl getRoleFromCache( String roleId ) {
-    	RoleImpl cachedResult = null;
-    	MaxAgeSoftReference<RoleImpl> cacheRef = roleCache.get( roleId );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
-    	}
-    	return cachedResult;
+    protected String getRoleCacheKey( String roleId ) {
+    	return ROLE_IMPL_CACHE_PREFIX + roleId;
     }
 
-	protected RoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
-    	RoleImpl cachedResult = null;
-    	MaxAgeSoftReference<RoleImpl> cacheRef = roleCache.get( namespaceCode + "-" + roleName );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
-    	}
-    	return cachedResult;
+    protected String getRoleByNameCacheKey( String namespaceCode, String roleName ) {
+    	return ROLE_IMPL_BY_NAME_CACHE_PREFIX + namespaceCode + "-" + roleName;
     }
 
     protected void addRoleImplToCache( RoleImpl role ) {
-    	if (role != null) {
-    		synchronized ( roleCache ) {
-	    		roleCache.put( role.getRoleId(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
-	    		roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
-    		}
+    	if ( role != null ) {
+	    	getCacheAdministrator().putInCache(getRoleCacheKey(role.getRoleId()), role, ROLE_IMPL_CACHE_GROUP);
+	    	getCacheAdministrator().putInCache(getRoleByNameCacheKey(role.getNamespaceCode(),role.getRoleName()), role, ROLE_IMPL_CACHE_GROUP);
     	}
     }
-
-
-	protected List<String> getImpliedRoleIdsFromCache( String roleId ) {
-		List<String> cachedResult = null;
-    	MaxAgeSoftReference<List<String>> cacheRef = impliedRoleCache.get( roleId );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
-    	}
-    	return cachedResult;
+    
+    protected RoleImpl getRoleFromCache( String roleId ) {
+    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleCacheKey(roleId));
     }
 
-    protected void addImpliedRoleIdsToCache( String roleId, List<String> roleIds ) {
-    	impliedRoleCache.put( roleId, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
+    protected RoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
+    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleByNameCacheKey(namespaceCode,roleName));
     }
-
-	protected Map<String,RoleImpl> getRoleImplMapFromCache( Collection<String> roleIds ) {
-		Map<String,RoleImpl> cachedResult = null;
-    	MaxAgeSoftReference<Map<String,RoleImpl>> cacheRef = roleImplMapCache.get( roleIds );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
-    	}
-    	return cachedResult;
+    
+    public void flushInternalRoleCache() {
+    	getCacheAdministrator().flushGroup(ROLE_IMPL_CACHE_GROUP);
     }
-
-    protected void addRoleImplMapToCache( Collection<String> roleIds, Map<String,RoleImpl> roleMap ) {
-    	roleImplMapCache.put( roleIds, new MaxAgeSoftReference<Map<String,RoleImpl>>( CACHE_MAX_AGE_SECONDS, roleMap ) );
-    }
-
+    
 	protected RoleImpl getRoleImpl(String roleId) {
 		if ( StringUtils.isBlank( roleId ) ) {
 			return null;
@@ -178,9 +150,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			return cachedResult;
 		}
 		// otherwise, run the query
-		AttributeSet criteria = new AttributeSet();
-		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
-		RoleImpl result = (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
+		RoleImpl result = (RoleImpl)getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, roleId);
 		addRoleImplToCache( result );
 		return result;
 	}
@@ -239,14 +209,25 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	}
 
 	protected Map<String,RoleImpl> getRoleImplMap(Collection<String> roleIds) {
+		Map<String,RoleImpl> result = null;
 		// check for a non-null result in the cache, return it if found
-		Map<String,RoleImpl> cachedResult = getRoleImplMapFromCache( roleIds );
-		if ( cachedResult != null ) {
-			return cachedResult;
+		if ( roleIds.size() == 1 ) {
+			String roleId = roleIds.iterator().next();
+			RoleImpl impl = getRoleImpl(roleId);
+			if ( impl.isActive() ) {
+				result = Collections.singletonMap(roleId, getRoleImpl(roleId));
+			} else {
+				result = Collections.emptyMap();
+			}			
+		} else {
+			result = new HashMap<String,RoleImpl>(roleIds.size());
+			for ( String roleId : roleIds ) {
+				RoleImpl impl = getRoleImpl(roleId);
+				if ( impl.isActive() ) {
+					result.put(roleId, impl);
+				}				
+			}
 		}
-		// otherwise, run the query
-		Map<String,RoleImpl> result = roleDao.getRoleImplMap(roleIds);
-		addRoleImplMapToCache( roleIds, result );
 		return result;
 	}
 
@@ -2068,4 +2049,11 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
         return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
     }
+	
+	protected RiceCacheAdministrator getCacheAdministrator() {
+		if ( cacheAdministrator == null ) {
+			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
+		}
+		return cacheAdministrator;
+	}
 }

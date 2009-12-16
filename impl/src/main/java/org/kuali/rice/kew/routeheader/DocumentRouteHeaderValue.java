@@ -34,6 +34,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -43,7 +44,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.exception.RiceException;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
@@ -54,6 +54,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.KeyValueDTO;
@@ -64,7 +65,6 @@ import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -185,6 +185,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      * transition for each status transition.
      */
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST}, mappedBy="routeHeader")
+    @OrderBy("statusTransitionId ASC")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<DocumentStatusTransition> appDocStatusHistory = new ArrayList<DocumentStatusTransition>();
     

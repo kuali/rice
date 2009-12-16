@@ -79,6 +79,7 @@
     	auto-retrieve="true" 
     	auto-update="true"
       	auto-delete="true">
+      <orderby name="statusTransitionId" sort="ASC" />
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
 

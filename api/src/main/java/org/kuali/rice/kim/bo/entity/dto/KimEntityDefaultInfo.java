@@ -54,13 +54,19 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 		this.defaultName = new KimEntityNameInfo(defaultName);
 	}
 	public List<KimEntityEntityTypeDefaultInfo> getEntityTypes() {
-		return unNullify( this.entityTypes);
+		if (entityTypes == null) {
+			entityTypes = unNullify(entityTypes);
+		}
+		return entityTypes;
 	}
 	public void setEntityTypes(List<KimEntityEntityTypeDefaultInfo> entityTypes) {
 		this.entityTypes = entityTypes;
 	}
 	public List<KimEntityAffiliationInfo> getAffiliations() {
-		return unNullify( this.affiliations);
+		if (affiliations == null) {
+			affiliations = unNullify(affiliations);
+		}
+		return affiliations;
 	}
 	public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
 		this.affiliations = affiliations;
@@ -78,13 +84,19 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 		this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
 	}
 	public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
-		return unNullify( this.externalIdentifiers);
+		if (externalIdentifiers == null) {
+			externalIdentifiers = unNullify( externalIdentifiers);
+		}
+		return externalIdentifiers;
 	}
 	public void setExternalIdentifiers(List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
 		this.externalIdentifiers = externalIdentifiers;
 	}
 	public List<KimPrincipalInfo> getPrincipals() {
-		return unNullify( this.principals);
+		if (principals == null) {
+			principals = unNullify( principals);
+		}
+		return principals;
 	}
 	public void setPrincipals(List<KimPrincipalInfo> principals) {
 		this.principals = principals;

@@ -166,7 +166,10 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldRule.getToDateString(),newRule.getToDateString() );
         
         assertEquals(oldRule.getForceAction(), newRule.getForceAction());
-        assertEquals(oldRule.getPreviousVersionId(), newRule.getPreviousVersionId());
+        
+        if(!oldRule.getDelegateRule().booleanValue())
+        	assertEquals(oldRule.getPreviousVersionId(), newRule.getPreviousVersionId());
+        
         assertEquals(oldRule.getRouteHeaderId(), newRule.getRouteHeaderId());
         
         if (oldRule.getRuleTemplate() == null) {
@@ -180,8 +183,8 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
             assertEquals(oldRule.getRuleExpressionDef().getExpression(), newRule.getRuleExpressionDef().getExpression());
             assertEquals(oldRule.getRuleExpressionDef().getType(), newRule.getRuleExpressionDef().getType());
         }
-        
-        assertEquals(oldRule.getVersionNbr(), newRule.getVersionNbr());
+        if(!oldRule.getDelegateRule().booleanValue())
+        	assertEquals(oldRule.getVersionNbr(), newRule.getVersionNbr());
 
         assertRuleExtensions(oldRule.getRuleExtensions(), newRule.getRuleExtensions());
         assertResponsibilities(oldRule.getResponsibilities(), newRule.getResponsibilities());

@@ -61,7 +61,6 @@
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-api</artifactId>
-			<version>1.0.1</version>
 		</dependency>
 
 		<dependency>

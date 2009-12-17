@@ -924,6 +924,11 @@ public abstract class KualiAction extends DispatchAction {
     public static final String TEXT_AREA_FIELD_LABEL="textAreaFieldLabel";
     /**
      * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
+     * <p>Value is textAreaReadOnly
+    */
+    public static final String TEXT_AREA_READ_ONLY="textAreaReadOnly";
+    /**
+     * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
      * <p>Value is textAreaFieldAnchor
     */
     public static final String TEXT_AREA_FIELD_ANCHOR="textAreaFieldAnchor";
@@ -978,39 +983,12 @@ public abstract class KualiAction extends DispatchAction {
             LOG.trace(lm);
         }
                                 
-        // parse out the important strings from our methodToCall parameter
-        String fullParameter = (String) request.getAttribute(
-                KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
-
-        // parse textfieldname:htmlformaction
-        String parameterFields = StringUtils.substringBetween(fullParameter,
-                KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL,
-                KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug( "fullParameter: " + fullParameter );
-            LOG.debug( "parameterFields: " + parameterFields );
-        }
-        String[] keyValue = null;
-        if (StringUtils.isNotBlank(parameterFields)) {
-            String[] textAreaParams = parameterFields.split(
-                    KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
-            if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "lookupParams: " + textAreaParams );
-            }
-            for (int i = 0; i < textAreaParams.length; i++) {
-                keyValue = textAreaParams[i].split(
-                        KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
-
-                if ( LOG.isDebugEnabled() ) {
-                    LOG.debug( "keyValue[0]: " + keyValue[0] );
-                    LOG.debug( "keyValue[1]: " + keyValue[1] );
-                }
-            }
-        }
+        final String[] keyValue = getTextAreaParams(request);
         
         request.setAttribute(TEXT_AREA_FIELD_NAME, keyValue[0]);
         request.setAttribute(FORM_ACTION,keyValue[1]);
         request.setAttribute(TEXT_AREA_FIELD_LABEL,keyValue[2]);
+        request.setAttribute(TEXT_AREA_READ_ONLY,keyValue[3]);
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getAnchor())) {
             request.setAttribute(TEXT_AREA_FIELD_ANCHOR,((KualiForm) form).getAnchor());
         }
@@ -1035,6 +1013,56 @@ public abstract class KualiAction extends DispatchAction {
                         
         return forward;
     }
+    
+    /**
+     * This method takes the {@link KNSConstants.METHOD_TO_CALL_ATTRIBUTE} out of the request
+     * and parses it returning the required fields needed for a text area. The fields returned
+     * are the following in this order.
+     * <ol>
+     * <li>{@link #TEXT_AREA_FIELD_NAME}</li>
+     * <li>{@link #FORM_ACTION}</li>
+     * <li>{@link #TEXT_AREA_FIELD_LABEL}</li>
+     * <li>{@link #TEXT_AREA_READ_ONLY}</li>
+     * </ol>
+     * 
+     * @param request the request to retrieve the textarea parameters
+     * @return a string array holding the parsed fields
+     */
+    private String[] getTextAreaParams(HttpServletRequest request) {
+        // parse out the important strings from our methodToCall parameter
+        String fullParameter = (String) request.getAttribute(
+                KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
+
+        // parse textfieldname:htmlformaction
+        String parameterFields = StringUtils.substringBetween(fullParameter,
+                KNSConstants.METHOD_TO_CALL_PARM2_LEFT_DEL,
+                KNSConstants.METHOD_TO_CALL_PARM2_RIGHT_DEL);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "fullParameter: " + fullParameter );
+            LOG.debug( "parameterFields: " + parameterFields );
+        }
+        String[] keyValue = null;
+        if (StringUtils.isNotBlank(parameterFields)) {
+            String[] textAreaParams = parameterFields.split(
+                    KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "lookupParams: " + textAreaParams );
+            }
+            for (final String textAreaParam : textAreaParams) {
+                keyValue = textAreaParam.split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug( "keyValue[0]: " + keyValue[0] );
+                    LOG.debug( "keyValue[1]: " + keyValue[1] );
+                    LOG.debug( "keyValue[2]: " + keyValue[2] );
+                    LOG.debug( "keyValue[3]: " + keyValue[3] );
+                }
+            }
+        }
+        
+        return keyValue;
+    }
+    
     /**
      * This method is invoked from the TextArea.jsp for posting its value to the parent
      * page that called the extended text area page. The invocation is done through

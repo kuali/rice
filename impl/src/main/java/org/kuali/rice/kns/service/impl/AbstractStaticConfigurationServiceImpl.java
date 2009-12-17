@@ -66,12 +66,14 @@ public abstract class AbstractStaticConfigurationServiceImpl {
             throw new IllegalArgumentException("invalid (null) key");
         }
         String property = this.propertyHolder.getProperty(key);
-        if ( property != null 
-                && (property.equalsIgnoreCase( "true" ) 
-                        || property.equalsIgnoreCase( "yes" )
-                        || property.equalsIgnoreCase( "on" )
-                        || property.equalsIgnoreCase( "1" )) ) {
-            return true;
+        if ( property != null ) {
+            property = property.trim();
+            if ((property.equalsIgnoreCase( "true" ) 
+                    || property.equalsIgnoreCase( "yes" )
+                    || property.equalsIgnoreCase( "on" )
+                    || property.equalsIgnoreCase( "1" )) ) {
+                return true;
+            }
         }
         return false;
     }

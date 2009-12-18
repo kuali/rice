@@ -639,10 +639,4 @@ public class WebUtils {
     	}
     	return false;
     }
-    
-    public static boolean isRequestFormPopup(HttpServletRequest request){
-
-    	return ( StringUtils.equalsIgnoreCase(((String)request.getAttribute(KNSConstants.KUALI_POPUP_KEY)),  KNSConstants.KUALI_POPUP_VALUE) );     	
-    	  
-    }
 }

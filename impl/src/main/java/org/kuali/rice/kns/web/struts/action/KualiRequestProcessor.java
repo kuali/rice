@@ -288,8 +288,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 		//for KULRICE-3652 check if request is from a pop up window
 		//before popping up a window, client code need to do: 
 		//request.setAttribute(KNSConstants.KUALI_POPUP_KEY, KNSConstants.KUALI_POPUP_VALUE); 
-		if(!WebUtils.isRequestFormPopup(request))
-			((PojoForm)form).clearEditablePropertyInformation();
+		//if(!WebUtils.isRequestFormPopup(request))
+		((PojoForm)form).clearEditablePropertyInformation();
 		((PojoForm)form).registerStrutsActionMappingScope(mapping.getScope());
 		
 		String multipart = mapping.getMultipartClass();

@@ -78,7 +78,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	 */
 	@Test
 	public void regularApproveTest() throws Exception {
-		LOG.info("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+		LOG.warn("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
 		
 		final DocumentService documentService = KNSServiceLocator.getDocumentService();
 		final String principalName = "quickstart";
@@ -188,6 +188,8 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	 */
 	@Test
 	public void blanketApproveTest() throws Exception {
+		LOG.warn("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+		
 		final DocumentService documentService = KNSServiceLocator.getDocumentService();
 		final String principalName = "admin";
         final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();

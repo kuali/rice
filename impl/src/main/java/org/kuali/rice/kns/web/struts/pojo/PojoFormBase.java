@@ -151,61 +151,74 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	            Object param = params.get(keypath);
 	            //LOG.debug("(keypath,paramType)=(" + keypath + "," + param.getClass().getName() + ")");
 	
-	            // get type for property
-	            Class type = null;
-	            try {
-	                // TODO: see KULOWF-194
-	                //testForPojoHack(this, keypath);
-	                type = getPropertyType(keypath);
-	            }
-	            catch (Exception e) {
-	                // deleted redundant unknownKeys.add(keypath)
-	            }
-	
-	            // keypath does not match anything on form
-	            if (type == null) {
-	                unknownKeys.add(keypath);
-	            }
-	            else {
-	                Formatter formatter = null;
-	                try {
-	                    formatter = buildFormatter(keypath, type, params);
-	
-	                    ObjectUtils.setObjectProperty(formatter, this, keypath, type, param);
-	                	}
-	                catch (FormatException e1) {
-	                    GlobalVariables.getMessageMap().putError(keypath, e1.getErrorKey(), e1.getErrorArgs());
-	                    cacheUnconvertedValue(keypath, param);
-	                }
-	                catch (InvocationTargetException e1) {
-	                    if (e1.getTargetException().getClass().equals(FormatException.class)) {
-	                        // Handle occasional case where FormatException is wrapped in an InvocationTargetException
-	                        FormatException formatException = (FormatException) e1.getTargetException();
-	                        GlobalVariables.getMessageMap().putError(keypath, formatException.getErrorKey(), formatException.getErrorArgs());
-	                        cacheUnconvertedValue(keypath, param);
-	                    }
-	                    else {
-	                        LOG.error("Error occurred in populate " + e1.getMessage());
-	                        throw new RuntimeException(e1.getMessage(), e1);
-	                    }
-	                }
-	                catch (Exception e1) {
-	                    LOG.error("Error occurred in populate " + e1.getMessage());
-	                	LOG.error("FormClass:       " + this.getClass().getName() );
-	                	LOG.error("keypath:         " + keypath );
-	                	LOG.error("Detected Type:   " + type.getName() );
-	                	LOG.error( "Value:          " + param );
-	                	if ( param != null ) {
-                			LOG.error( "Value Class:    " + param.getClass().getName() );
-	                	}
-	                    throw new RuntimeException(e1.getMessage(), e1);
-	                }
-	            }
+	            populateForProperty(keypath, param, params);
             }
         }
         this.registerIsNewForm(false);
         t0.log();
     }
+
+
+
+	/**
+	 * Populates a given parameter value into the given property path
+	 * @param paramPath the path to a property within the form
+	 * @param paramValue the value of that property
+	 * @param params the Map of parameters from the request
+	 */
+	protected void populateForProperty(String paramPath, Object paramValue,
+			Map params) {
+		// get type for property
+		Class type = null;
+		try {
+		    // TODO: see KULOWF-194
+		    //testForPojoHack(this, keypath);
+		    type = getPropertyType(paramPath);
+		}
+		catch (Exception e) {
+		    // deleted redundant unknownKeys.add(keypath)
+		}
+
+		// keypath does not match anything on form
+		if (type == null) {
+		    unknownKeys.add(paramPath);
+		}
+		else {
+		    Formatter formatter = null;
+		    try {
+		        formatter = buildFormatter(paramPath, type, params);
+
+		        ObjectUtils.setObjectProperty(formatter, this, paramPath, type, paramValue);
+		    	}
+		    catch (FormatException e1) {
+		        GlobalVariables.getMessageMap().putError(paramPath, e1.getErrorKey(), e1.getErrorArgs());
+		        cacheUnconvertedValue(paramPath, paramValue);
+		    }
+		    catch (InvocationTargetException e1) {
+		        if (e1.getTargetException().getClass().equals(FormatException.class)) {
+		            // Handle occasional case where FormatException is wrapped in an InvocationTargetException
+		            FormatException formatException = (FormatException) e1.getTargetException();
+		            GlobalVariables.getMessageMap().putError(paramPath, formatException.getErrorKey(), formatException.getErrorArgs());
+		            cacheUnconvertedValue(paramPath, paramValue);
+		        }
+		        else {
+		            LOG.error("Error occurred in populate " + e1.getMessage());
+		            throw new RuntimeException(e1.getMessage(), e1);
+		        }
+		    }
+		    catch (Exception e1) {
+		        LOG.error("Error occurred in populate " + e1.getMessage());
+		    	LOG.error("FormClass:       " + this.getClass().getName() );
+		    	LOG.error("keypath:         " + paramPath );
+		    	LOG.error("Detected Type:   " + type.getName() );
+		    	LOG.error( "Value:          " + paramValue );
+		    	if ( paramValue != null ) {
+					LOG.error( "Value Class:    " + paramValue.getClass().getName() );
+		    	}
+		        throw new RuntimeException(e1.getMessage(), e1);
+		    }
+		}
+	}
 
 	// begin Kuali Foundation modification
     private Formatter buildFormatter(String keypath, Class propertyType, Map requestParams) {

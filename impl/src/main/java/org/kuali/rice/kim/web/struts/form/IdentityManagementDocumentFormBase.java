@@ -18,6 +18,7 @@ package org.kuali.rice.kim.web.struts.form;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,6 +56,8 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 	@Override
     public void populate(HttpServletRequest request) {
         super.populate(request);
+        
+        populateFalseCheckboxes(request);
 
         memberTableMetadata = new KualiTableRenderFormMetadata();
 
@@ -93,6 +96,27 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 //            }
 //        }
 
+    }
+    
+    /**
+     * Uses the "checkboxToReset" parameter to find checkboxes which had not been
+     * populated in the request and attempts to populate them
+     * 
+     * @param request the request to populate
+     */
+    protected void populateFalseCheckboxes(HttpServletRequest request) {
+    	Map<String, String[]> parameterMap = request.getParameterMap();
+    	if (parameterMap.get("checkboxToReset") != null) {
+    		final String[] checkboxesToReset = request.getParameterValues("checkboxToReset");
+            if(checkboxesToReset != null && checkboxesToReset.length > 0) {
+                for (int i = 0; i < checkboxesToReset.length; i++) {
+                    String propertyName = (String) checkboxesToReset[i];
+                    if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) == null ) {
+                    	populateForProperty(propertyName, "off", parameterMap);
+                    }
+                }
+            }
+    	}
     }
 
 	public KualiTableRenderFormMetadata getMemberTableMetadata() {

@@ -65,8 +65,10 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
@@ -1296,6 +1298,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 										attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
 										attribute.setRoleMemberId(qualifier.getRoleMemberId());
 										attribute.setKimTypeId(qualifier.getKimTypId());
+										
+										updateAttrValIfNecessary(attribute);
+										
 										if(ObjectUtils.isNotNull(origAttributes)){
 											for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
 												if (origAttribute.getAttributeDataId()!=null && StringUtils.equals(origAttribute.getAttributeDataId(), qualifier.getAttrDataId())) {
@@ -2145,6 +2150,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					newRoleMemberAttributeData.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
 					newRoleMemberAttributeData.setKimTypeId(memberRoleQualifier.getKimTypId());
 					newRoleMemberAttributeData.setKimAttributeId(memberRoleQualifier.getKimAttrDefnId());
+					
+					updateAttrValIfNecessary(newRoleMemberAttributeData);
+					
 					if(ObjectUtils.isNotNull(origAttributes)){
 						for(RoleMemberAttributeDataImpl origAttribute: origAttributes){
 							if(activatingInactive && StringUtils.equals(origAttribute.getKimAttributeId(), newRoleMemberAttributeData.getKimAttributeId()) &&
@@ -2162,6 +2170,57 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 		return roleMemberAttributeDataList;
+	}
+	
+	/**
+	 * Determines if the attribute value on the attribute data should be updated; if so, it performs some attribute value formatting.
+	 * In the default implementation, this method formats checkbox controls
+	 * 
+	 * @param roleMemberAttributeData a role member qualifier attribute to update
+	 */
+	protected void updateAttrValIfNecessary(RoleMemberAttributeDataImpl roleMemberAttributeData) {
+		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleMemberAttributeData);
+		if (attributeDefinition != null) {
+			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
+				formatCheckboxAttributeData(roleMemberAttributeData);
+			}
+		}
+	}
+	
+	/**
+	 * Finds the KNS attribute used to render the given KimAttributeData
+	 * 
+	 * @param roleMemberAttributeData a qualifier's attribute information
+	 * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
+	 */
+	protected AttributeDefinition getKNSAttributeDefinition(RoleMemberAttributeDataImpl roleMemberAttributeData) {
+		final KimTypeInfo type = getKimTypeInfoService().getKimType(roleMemberAttributeData.getKimTypeId());
+		if (type != null) {
+			final KimTypeService typeService = (KimTypeService)KIMServiceLocator.getBean(type.getKimTypeServiceName());
+			if (typeService != null) {
+				final KimTypeAttributeInfo attributeInfo = type.getAttributeDefinition(roleMemberAttributeData.getKimAttributeId());
+				if (attributeInfo != null) {
+					final AttributeDefinitionMap attributeMap = typeService.getAttributeDefinitions(type.getKimTypeId());
+					if (attributeMap != null) {
+						return attributeMap.getByAttributeName(attributeInfo.getAttributeName());
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Formats the attribute value on this checkbox attribute, changing "on" to "Y" and "off" to "N"
+	 * 
+	 * @param roleMemberAttributeData the attribute data to format the attribute value of
+	 */
+	protected void formatCheckboxAttributeData(RoleMemberAttributeDataImpl roleMemberAttributeData) {
+		if (roleMemberAttributeData.getAttributeValue().equals("on")) {
+			roleMemberAttributeData.setAttributeValue("Y");
+		} else if (roleMemberAttributeData.getAttributeValue().equals("off")) {
+			roleMemberAttributeData.setAttributeValue("N");
+		}
 	}
 
 	protected List<KimDelegationImpl> getRoleDelegations(IdentityManagementRoleDocument identityManagementRoleDocument, List<KimDelegationImpl> origDelegations){

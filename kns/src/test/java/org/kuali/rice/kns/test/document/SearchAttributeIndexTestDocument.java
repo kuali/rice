@@ -17,6 +17,7 @@ package org.kuali.rice.kns.test.document;
 
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
+import org.kuali.rice.kns.workflow.SearchAttributeIndexRequestTest;
 
 /**
  * This is a description of what this class does - jksmith don't forget to fill this in. 
@@ -25,6 +26,7 @@ import org.kuali.rice.kns.document.TransactionalDocumentBase;
  *
  */
 public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase {
+	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeIndexRequestTest.class);
 	private static final long serialVersionUID = -2290510385815271758L;
 	private int routeLevelCount = 0;
 	private String constantString;
@@ -83,6 +85,7 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
 		if (routedString == null) {
 			routedString = heldRoutedString;
 		}
+		LOG.info("Performing route level change on SearchAttributeIndexTestDocument; routeLevelCount is "+routeLevelCount);
 	}
 	
 }

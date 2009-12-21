@@ -19,6 +19,7 @@ package org.kuali.rice.kew.actions;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -115,33 +116,17 @@ public class AdHocAction extends ActionTakenEvent {
     }
 
     private String adhocRouteAction(List targetNodes, boolean forValidationOnly) {
-        if (targetNodes.isEmpty()) {
-            return "Could not locate an node instance on the document with the name '" + nodeName + "'";
-        }
+        //if (targetNodes.isEmpty()) {
+        //    return "Could not locate an node instance on the document with the name '" + nodeName + "'";
+        //}
         boolean requestCreated = false;
         for (Iterator iter = targetNodes.iterator(); iter.hasNext();) {
             RouteNodeInstance routeNode = (RouteNodeInstance) iter.next();
             // if the node name is null, then adhoc it to the first available node
             if (nodeName == null || routeNode.getName().equals(nodeName)) {
-                ActionRequestValue adhocRequest = new ActionRequestValue();
-                if (!forValidationOnly) {
-                    ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
-                    adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, forceAction, annotation);
-                    adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
-                    adhocRequest.setRequestLabel(requestLabel);
-                } else {
-                    adhocRequest.setActionRequested(actionRequested);
-                }
-                if (adhocRequest.isApproveOrCompleteRequest() && ! (routeHeader.isEnroute() || routeHeader.isStateInitiated() ||
-                        routeHeader.isStateSaved())) {
-                    return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getDocRouteStatusLabel() + "'.";
-                }
-                if (!forValidationOnly) {
-                    if (routeHeader.isDisaproved() || routeHeader.isFinal() || routeHeader.isProcessed()) {
-                        getActionRequestService().activateRequest(adhocRequest);
-                    } else {
-                        KEWServiceLocator.getActionRequestService().saveActionRequest(adhocRequest);
-                    }
+                String message = createAdHocRequest(routeNode, forValidationOnly);
+                if (!StringUtils.isEmpty(message)) {
+                    return message;
                 }
                 requestCreated = true;
                 if (nodeName == null) {
@@ -149,8 +134,41 @@ public class AdHocAction extends ActionTakenEvent {
                 }
             }
         }
+        
+        if (!requestCreated && targetNodes.isEmpty()) {
+            String message = createAdHocRequest(null, forValidationOnly);
+            if (!StringUtils.isEmpty(message)) {
+                return message;
+            }
+            requestCreated = true;
+        }
+        
         if (!requestCreated) {
             return "Didn't create request.  The node name " + nodeName + " given is probably invalid ";
+        }
+        return "";
+    }
+    
+    private String createAdHocRequest(RouteNodeInstance routeNode, boolean forValidationOnly) {
+        ActionRequestValue adhocRequest = new ActionRequestValue();
+        if (!forValidationOnly) {
+            ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
+            adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, forceAction, annotation);
+            adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
+            adhocRequest.setRequestLabel(requestLabel);
+        } else {
+            adhocRequest.setActionRequested(actionRequested);
+        }
+        if (adhocRequest.isApproveOrCompleteRequest() && ! (routeHeader.isEnroute() || routeHeader.isStateInitiated() ||
+                routeHeader.isStateSaved())) {
+            return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getDocRouteStatusLabel() + "'.";
+        }
+        if (!forValidationOnly) {
+            if (routeHeader.isDisaproved() || routeHeader.isFinal() || routeHeader.isProcessed()) {
+                getActionRequestService().activateRequest(adhocRequest);
+            } else {
+                KEWServiceLocator.getActionRequestService().saveActionRequest(adhocRequest);
+            }
         }
         return "";
     }

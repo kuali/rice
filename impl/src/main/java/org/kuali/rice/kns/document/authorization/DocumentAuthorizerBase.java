@@ -21,7 +21,9 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.dto.ProcessDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -32,6 +34,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -238,11 +241,20 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	}
 	
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
-		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)){
-		    DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(Long.parseLong(document.getDocumentNumber()));
-	        if (routeHeader.getRootBranch() == null) {
-	            return false;
-	        }
+		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
+		    try {
+                DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+                ProcessDTO process = docType.getRoutePath().getPrimaryProcess();
+                if (process != null) {
+                    if (process.getInitialRouteNode() == null) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+		    } catch (WorkflowException e) {
+                return false;
+            }
 			return true;
 		}else if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)){
 			return true;

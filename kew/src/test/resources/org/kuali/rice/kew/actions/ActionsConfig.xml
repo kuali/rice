@@ -992,9 +992,6 @@
             <description>RouteLogActionTestTrivial</description>
             <label>RouteLogActionTestTrivial</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
-            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
-            <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
             <docHandler>_blank</docHandler>
             <active>true</active>
             <routePaths>
@@ -1008,8 +1005,20 @@
                 </start>
             </routeNodes>
         </documentType>
-        
-        <!-- Test Return to Previous with split -->
+    	<documentType>
+      		<name>AdHocNoNodeTest</name>
+      		<description>AdHocNoNodeTest</description>
+      		<label>AdHocNoNodeTest</label>
+      		<postProcessorName />
+      		<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+      		<docHandler>_blank</docHandler>
+      		<active>true</active>
+      		<routePaths />
+    	</documentType> 
+    	        
+    	<!-- Test Return to Previous with split -->
         <documentType>
 			<name>ReturnToPreviousWithSplitTest</name>
 			<parent>BlanketApproveTest</parent>
@@ -1061,7 +1070,6 @@
 				<join name="Join"/>
 			</routeNodes>
 		</documentType>
-    
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>

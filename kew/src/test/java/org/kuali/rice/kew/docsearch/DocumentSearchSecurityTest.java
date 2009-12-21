@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -307,6 +308,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
+        RouteContext.clearCurrentRouteContext();
         Person approverUser = loginUser(APPROVER_USER_NETWORK_ID);
         document = new WorkflowDocument(new NetworkIdDTO(approverUser.getPrincipalName()), document.getRouteHeaderId());
         document.clearSearchableContent();

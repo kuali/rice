@@ -301,7 +301,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     				// in the roles Map created earlier
     				RoleImpl nestedRole = getRoleImpl(rm.getMemberId());
     				//it is possible that the the roleTypeService is coming from a remote application 
-                    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
     				try {
     				    nestedQualification = roleTypeService.convertQualificationForMemberRoles(role.getNamespaceCode(), role.getRoleName(), nestedRole.getNamespaceCode(), nestedRole.getRoleName(), qualification);
     				} catch (Exception ex) {
@@ -320,7 +320,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		for ( String roleId : roleIdToMembershipMap.keySet() ) {
 			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
 			//it is possible that the the roleTypeService is coming from a remote application 
-            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
     			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
     			for ( RoleMembershipInfo rmi : matchingMembers ) {
@@ -361,7 +361,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		for ( String roleId : roleIdToMembershipMap.keySet() ) {
 			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
 			//it is possible that the the roleTypeService is coming from a remote application 
-            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
     			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
     			for ( RoleMembershipInfo rmi : matchingMembers ) {
@@ -500,7 +500,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		// for evaluation, the service will return those which match
     		for ( String roleId : roleIdToMembershipMap.keySet() ) {
     		    //it is possible that the the roleTypeService is coming from a remote application 
-                // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
         			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
         			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
@@ -576,7 +576,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         	    String roleId = matchingRoleIds.iterator().next();
         		KimRoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
         		//it is possible that the the roleTypeService is coming from a remote application 
-                // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
             		if ( kimRoleTypeService != null ) {
             			results = kimRoleTypeService.sortRoleMembers( results );
@@ -599,7 +599,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         		if ( !multipleServices ) {
         		    String roleId = matchingRoleIds.iterator().next();
         		    //it is possible that the the roleTypeService is coming from a remote application 
-                    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                     try {                       
                 		KimRoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
                 		if ( kimRoleTypeService != null ) {
@@ -939,7 +939,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rr.getRoleId() );
     		if ( roleTypeService != null ) {
     			//it is possible that the the roleTypeService is coming from a remote application 
-    		    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+    		    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
     		    try {
         		    if ( roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
                         RoleImpl memberRole = getRoleImpl( rr.getMemberId() );
@@ -982,7 +982,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
     		// check if an application role
     		//it is possible that the the roleTypeService is coming from a remote application 
-            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
         		if ( isApplicationRoleType(role.getKimTypeId(), roleTypeService)  ) {
         			if ( roleTypeService.hasApplicationRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getRoleName(), qualification) ) {
@@ -1055,45 +1055,60 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     			}
     			// OK, the member matches the current user, now check the qualifications
 
-    			// NOTE: this compare is slightly different then the member enumeration
+    			// NOTE: this compare is slightly different than the member enumeration
     			// since the requested qualifier is always being used rather than
     			// the role qualifier for the member (which is not available)
-        		if ( roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, dmi.getQualifier() ) ) {
-    				// role service matches this qualifier
-        			// now try the delegation service
-        			KimDelegationTypeService delegationTypeService = getDelegationTypeService( dmi.getDelegationId());
-        			// QUESTION: does the qualifier map need to be merged with the main delegation qualification?
-        			if ( delegationTypeService != null && !delegationTypeService.doesDelegationQualifierMatchQualification(qualification, dmi.getQualifier())) {
-        				continue; // no match - skip to next record
-        			}
-        			// check if a role member ID is present on the delegation record
-        			// if so, check that the original role member would match the given qualifiers
-        			if ( StringUtils.isNotBlank( dmi.getRoleMemberId() ) ) {
-        				RoleMemberImpl rm = getRoleMemberImpl( dmi.getRoleMemberId() );
-        				if ( rm != null ) {
-        					// check that the original role member's is active and that their
-        					// qualifier would have matched this request's
-        					// qualifications (that the original person would have the permission/responsibility
-        					// for an action)
-        					// this prevents a role-membership based delegation from surviving the inactivation/
-        					// changing of the main person's role membership
-        					if ( !rm.isActive() ) {
-        						continue;
-        					}
-        					AttributeSet roleQualifier = rm.getQualifier();
-        					if ( !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
-        						continue;
-        					}
-        				} else {
-        					LOG.warn( "Unknown role member ID cited in the delegation member table:" );
-        					LOG.warn( "       delegationMemberId: " + dmi.getDelegationMemberId() + " / roleMemberId: " + dmi.getRoleMemberId() );
-        				}
-        			}
-        			// all tests passed, return true
-        			return true;
-    			} else {
-    				continue; // no match - skip to next record
+    			
+    	   		//it is possible that the the roleTypeService is coming from a remote application 
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+    			try {
+    				if ( roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification( qualification, dmi.getQualifier() ) ) {
+    					continue; // no match - skip to next record
+    				}
+    			} catch (Exception ex) {
+    				LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
+    				continue;
     			}
+    			
+   				// role service matches this qualifier
+       			// now try the delegation service
+       			KimDelegationTypeService delegationTypeService = getDelegationTypeService( dmi.getDelegationId());
+       			// QUESTION: does the qualifier map need to be merged with the main delegation qualification?
+       			if ( delegationTypeService != null && !delegationTypeService.doesDelegationQualifierMatchQualification(qualification, dmi.getQualifier())) {
+       				continue; // no match - skip to next record
+       			}
+       			// check if a role member ID is present on the delegation record
+       			// if so, check that the original role member would match the given qualifiers
+       			if ( StringUtils.isNotBlank( dmi.getRoleMemberId() ) ) {
+       				RoleMemberImpl rm = getRoleMemberImpl( dmi.getRoleMemberId() );
+       				if ( rm != null ) {
+       					// check that the original role member's is active and that their
+       					// qualifier would have matched this request's
+       					// qualifications (that the original person would have the permission/responsibility
+       					// for an action)
+       					// this prevents a role-membership based delegation from surviving the inactivation/
+       					// changing of the main person's role membership
+       					if ( !rm.isActive() ) {
+       						continue;
+       					}
+       					AttributeSet roleQualifier = rm.getQualifier();
+       					//it is possible that the the roleTypeService is coming from a remote application 
+       	                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+       					try {
+       						if (roleTypeService == null || !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
+       							continue;
+       						}
+       					} catch (Exception ex) {
+       						LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
+       	    				continue;
+       					}
+       				} else {
+       					LOG.warn( "Unknown role member ID cited in the delegation member table:" );
+       					LOG.warn( "       delegationMemberId: " + dmi.getDelegationMemberId() + " / roleMemberId: " + dmi.getRoleMemberId() );
+       				}
+       			}
+       			// all tests passed, return true
+       			return true;
     		}
     	}
     	return false;

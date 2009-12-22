@@ -155,5 +155,21 @@ public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
     public String escapeString(String sqlString) {
     	return (sqlString != null) ? APOS_PAT.matcher(sqlString).replaceAll("''") : null;
     }
-  
+
+    /**
+     * Converts date-only values into JDBC d{...} date literals, but converts date-and-time values into timestamp
+     * strings that are then converted into date values via the strToDateFunction.
+     * 
+     * @see org.kuali.rice.core.database.platform.ANSISqlDatabasePlatform#getDateSQL(java.lang.String, java.lang.String)
+     */
+	@Override
+	public String getDateSQL(String date, String time) {
+		String d = date.replace('/', '-');
+        if (time == null) {
+            return new StringBuilder("{d '").append(d).append("'}").toString();
+        } else {
+            return new StringBuilder(getStrToDateFunction()).append("('").append(d).append(" ").append(
+            		time).append("', 'YYYY-MM-DD HH24:MI:SS')").toString(); 
+        }
+	}
 }

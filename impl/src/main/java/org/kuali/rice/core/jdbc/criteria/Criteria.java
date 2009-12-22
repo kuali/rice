@@ -153,7 +153,7 @@ public class Criteria {
 		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
-		String sql = DocSearchUtils.getDateSQL(sdfDate.format(dt),sdfTime.format(dt)) ;
+		String sql = getDbPlatform().getDateSQL(sdfDate.format(dt),sdfTime.format(dt)) ;
 		return sql;
 	}
 
@@ -510,12 +510,12 @@ public class Criteria {
     	DatabasePlatform platform = getDbPlatform();
     	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + platform.escapeString(columnDbName) + " ");
         if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null && toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-            return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
+            return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
         } else {
             if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null) {
-                return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null)).toString();
+                return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null)).toString();
             } else if (toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-                return dateSqlString.append(" <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
+                return dateSqlString.append(" <= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
             } else {
                 return "";
             }

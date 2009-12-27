@@ -164,6 +164,9 @@ public abstract class ActionTakenEvent {
 		RouteContext routeContext = RouteContext.getCurrentRouteContext();
 		if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
 			routeContext.requestSearchIndexingForContext();
+			
+			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(getRouteHeader());
+			searchableAttService.indexDocument(getRouteHeaderId());
 		}
 	}
 

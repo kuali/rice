@@ -278,14 +278,14 @@ public class KualiHelpForm extends KualiForm {
 	}
 	
 	/**
-     * @param lookupDocumentTypeName the lookupDocumentTypeName to set
+     * @param searchDocumentTypeName the searchDocumentTypeName to set
      */
-    public void setSearchDocumentTypeName(String lookupDocumentTypeName) {
-        this.searchDocumentTypeName = lookupDocumentTypeName;
+    public void setSearchDocumentTypeName(String searchDocumentTypeName) {
+        this.searchDocumentTypeName = searchDocumentTypeName;
     }
     
     /**
-     * @return the lookupDocumentTypeName
+     * @return the searchDocumentTypeName
      */
     public String getSearchDocumentTypeName() {
         return this.searchDocumentTypeName;

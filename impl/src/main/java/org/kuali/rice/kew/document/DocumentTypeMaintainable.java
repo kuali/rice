@@ -142,6 +142,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
                     prevDocType.setLabel(newDocumentType.getLabel());
                     prevDocType.setDescription(newDocumentType.getDescription());
                     prevDocType.setUnresolvedHelpDefinitionUrl(newDocumentType.getUnresolvedHelpDefinitionUrl());
+                    prevDocType.setUnresolvedDocSearchHelpUrl(newDocumentType.getUnresolvedDocSearchHelpUrl());
                     docTypeService.save(prevDocType, false);
                 }
                 // TODO: delyea - do we need to call this multiple times as in "DocumentTypeServiceImpl.save(DocumentType, boolean)"

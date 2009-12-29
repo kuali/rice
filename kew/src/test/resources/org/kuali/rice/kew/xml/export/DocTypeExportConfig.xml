@@ -42,6 +42,15 @@
 			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<active>true</active>
 		</documentType>
+        <documentType>
+            <name>DocTypeWithHelpUrls</name>
+            <description>test doc type with help urls</description>
+            <label>doc types with help urls</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <helpDefinitionURL>foo/bar</helpDefinitionURL>
+            <docSearchHelpURL>baz/boo</docSearchHelpURL>
+            <active>true</active>
+        </documentType>        
 		<documentType>
 			<name>ChartOrgDocType</name>
 			<description>Chart/Org</description>

@@ -41,6 +41,7 @@ public class KualiHelpForm extends KualiForm {
     private String helpParameterName;
     private String pageName;
     private String lookupBusinessObjectClassName;
+    private String searchDocumentTypeName;
 
     /**
      * @return Returns the attributeName.
@@ -275,4 +276,18 @@ public class KualiHelpForm extends KualiForm {
 	public void setLookupBusinessObjectClassName(String lookupBusinessObjectClassName) {
 		this.lookupBusinessObjectClassName = lookupBusinessObjectClassName;
 	}
+	
+	/**
+     * @param lookupDocumentTypeName the lookupDocumentTypeName to set
+     */
+    public void setSearchDocumentTypeName(String lookupDocumentTypeName) {
+        this.searchDocumentTypeName = lookupDocumentTypeName;
+    }
+    
+    /**
+     * @return the lookupDocumentTypeName
+     */
+    public String getSearchDocumentTypeName() {
+        return this.searchDocumentTypeName;
+    }
 }

@@ -48,6 +48,7 @@
         <bean parent="MaintainableFieldDefinition" p:name="label" p:required="false"/>
         <bean parent="MaintainableFieldDefinition" p:name="description" p:required="false"/>
         <bean parent="MaintainableFieldDefinition" p:name="unresolvedHelpDefinitionUrl"/>
+        <bean parent="MaintainableFieldDefinition" p:name="unresolvedDocSearchHelpUrl"/>
         <bean parent="MaintainableFieldDefinition" p:name="applyRetroactively" p:defaultValue="false"/>
       </list>
     </property>

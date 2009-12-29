@@ -24,7 +24,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -396,7 +398,9 @@ public class KualiHelpAction extends KualiAction {
     	KualiHelpForm helpForm = (KualiHelpForm) form;
     	
     	final String lookupBusinessObjectClassName = helpForm.getLookupBusinessObjectClassName();
-    	if (!StringUtils.isBlank(lookupBusinessObjectClassName)) {
+    	if (!StringUtils.isBlank(lookupBusinessObjectClassName) && 
+    	        // don't do this for doc search
+    	        !DocSearchCriteriaDTO.class.getName().equals(lookupBusinessObjectClassName)) {
     		final DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
     		final BusinessObjectEntry entry = dataDictionary.getBusinessObjectEntry(lookupBusinessObjectClassName);
     		final LookupDefinition lookupDefinition = entry.getLookupDefinition();
@@ -415,6 +419,18 @@ public class KualiHelpAction extends KualiAction {
     				return null;
     			}
     		}
+    	}
+    	// handle doc search custom help urls
+    	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
+    	    DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(helpForm.getSearchDocumentTypeName());
+    	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
+    	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
+
+    	        if ( StringUtils.isNotBlank(docSearchHelpUrl) ) {
+    	            response.sendRedirect(docSearchHelpUrl);
+    	            return null;
+    	        }
+    	    }
     	}
     	
     	// still here?  guess we're defaulting...

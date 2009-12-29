@@ -455,6 +455,7 @@ public class DTOConverter {
         docTypeVO.setDocTypeDescription(docType.getDescription());
         docTypeVO.setDocTypeHandlerUrl(docType.getDocHandlerUrl());
         docTypeVO.setHelpDefinitionUrl(docType.getHelpDefinitionUrl());
+        docTypeVO.setDocSearchHelpUrl(docType.getDocSearchHelpUrl());
         docTypeVO.setDocTypeId(docType.getDocumentTypeId());
         docTypeVO.setDocTypeLabel(docType.getLabel());
         docTypeVO.setName(docType.getName());

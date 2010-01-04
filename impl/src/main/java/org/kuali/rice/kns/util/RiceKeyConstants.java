@@ -82,6 +82,7 @@ public class RiceKeyConstants {
     public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
     public static final String ERROR_UPLOADFILE_NULL = "error.uploadFile.null";
     public static final String ERROR_UPLOADFILE_EMPTY = "error.uploadFile.empty";
+    public static final String ERROR_UPLOADFILE_SIZE = "error.uploadFile.size";
     public static final String ERROR_UNIMPLEMENTED = "error.unimplemented";
     public static final String ERROR_OPTIMISTIC_LOCK = "error.document.optimisticLockException";
 

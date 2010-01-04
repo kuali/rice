@@ -74,4 +74,18 @@ public class KualiMultipartRequestHandler extends CommonsMultipartRequestHandler
 	}
     }
     
+    public long calculateMaxUploadSizeToMaxOfList( List<String> sizes ) {
+    	long maxSize = 0L;
+    	for ( String size : sizes ) {
+    	    long currSize = convertSizeToBytes(size, 0L);
+    	    if ( currSize == 0L ) {
+    		LOG.warn( "Unable to parse max size (" + size + ").  Ignoring." );
+    	    }
+    	    if ( currSize > maxSize ) {
+    		maxSize = currSize;    		
+    	    }
+    	}
+    	return maxSize;
+    }
+    
 }

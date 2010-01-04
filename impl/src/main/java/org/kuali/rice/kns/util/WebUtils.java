@@ -45,6 +45,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
 import org.apache.struts.config.ModuleConfig;
+import org.apache.struts.upload.CommonsMultipartRequestHandler;
+import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -321,13 +323,10 @@ public class WebUtils {
 
         // Get the ActionServletWrapper from the form bean
         //ActionServletWrapper servletWrapper = getServletWrapper();
-        boolean isMultipart = false;
-        try {
-            // Obtain a MultipartRequestHandler
-        	KualiMultipartRequestHandler multipartHandler = getMultipartHandler(request, form);
-
-            if (multipartHandler != null) {
-                isMultipart = true;
+        
+        try {                    	
+        	CommonsMultipartRequestHandler multipartHandler = new CommonsMultipartRequestHandler();  
+            if (multipartHandler != null) {        
                 // Set servlet and mapping info
                 if (servletWrapper != null) {
                     // from pojoformbase
@@ -337,18 +336,26 @@ public class WebUtils {
                 multipartHandler.setMapping((ActionMapping) request.getAttribute(Globals.MAPPING_KEY));
                 // Initialize multipart request class handler
                 multipartHandler.handleRequest(request);
-                // stop here if the maximum length has been exceeded
-                Boolean maxLengthExceeded = (Boolean) request.getAttribute(MultipartRequestHandler.ATTRIBUTE_MAX_LENGTH_EXCEEDED);
-                if ((maxLengthExceeded != null) && (maxLengthExceeded.booleanValue())) {
-                	Boolean fileUploadLimitExceededExceptionAlreadyThrown = (Boolean) request.getAttribute(FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN);
-                	if (fileUploadLimitExceededExceptionAlreadyThrown != null && fileUploadLimitExceededExceptionAlreadyThrown) {
-                		request.setAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY, new HashMap());
-                		return;
-                	}
-                	request.setAttribute(FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN, Boolean.TRUE);
-                	ModuleConfig mc = (ModuleConfig) request.getAttribute(Globals.MODULE_KEY);
-                    throw new FileUploadLimitExceededException("Uploaded file was too large.  Maximum size is " + multipartHandler.getSizeMax(mc) + " bytes.", form, mapping);
+               
+                Collection<FormFile> files = multipartHandler.getFileElements().values();
+                Enumeration keys = multipartHandler.getFileElements().keys();
+                
+                
+                while(keys.hasMoreElements()){
+                	Object key = keys.nextElement();
+                	FormFile file = (FormFile)multipartHandler.getFileElements().get(key);
+                	long maxSize = WebUtils.getMaxUploadSize(form);
+                	System.out.println(file.getFileSize()+"");
+                	if (maxSize > 0 && Long.parseLong(file.getFileSize()+"") > maxSize ) {
+                		
+                        GlobalVariables.getMessageMap().putError(key.toString(),
+                        		RiceKeyConstants.ERROR_UPLOADFILE_SIZE,
+                                new String[] {
+                                file.getFileName(), Long.toString(maxSize)});
+                      
+                    }
                 }
+              
                 // get file elements for kualirequestprocessor
                 if (servletWrapper == null) {
                     request.setAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY,getFileParametersForMultipartRequest(request, multipartHandler));
@@ -360,10 +367,22 @@ public class WebUtils {
         }
     }
 
+    public static long getMaxUploadSize(ActionForm form){
+    	long max = 0L;
+    	 KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
+         if (form instanceof PojoFormBase) {
+             max = multipartHandler.calculateMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
+         }
+         if ( LOG.isDebugEnabled() ) {
+             LOG.debug( "Max File Upload Size: " + max );
+         }
+         return  max;
+    }
+    
     private static KualiMultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
         KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
         if (form instanceof PojoFormBase) {
-            multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
+           // multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
         }
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Max File Upload Size: " + multipartHandler.getSizeMaxString() );

@@ -18,5 +18,6 @@
 
 <configuration>
     <properties fileName="KR-ApplicationResources.properties" />
+    <properties fileName="KR-Test-ApplicationResources.properties" />
 </configuration>
 

@@ -60,12 +60,14 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.ParameterConstants;
 import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.web.struts.form.QuestionPromptForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
@@ -79,10 +81,15 @@ public class WebUtils {
     private static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
     private static final String IMAGE_COORDINATE_CLICKED_Y_EXTENSION = ".y";
     
+    private static final String APPLICATION_IMAGE_URL_PROPERTY_PREFIX = "application.custom.image.url";
+    private static final String DEFAULT_IMAGE_URL_PROPERTY_NAME = "kr.externalizable.images.url";
+    
     /**
      * A request attribute name that indicates that a {@link FileUploadLimitExceededException} has already been thrown for the request.
      */
     public static final String FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN = "fileUploadLimitExceededExceptionAlreadyThrown";
+    
+    private static KualiConfigurationService configurationService;
     
     /**
      * Checks for methodToCall parameter, and picks off the value using set dot notation. Handles the problem of image submits.
@@ -657,5 +664,39 @@ public class WebUtils {
     		}
     	}
     	return false;
+    }
+    
+    /**
+     * Determines and returns the URL for question button images; looks first for a property "application.custom.image.url", 
+     * and if that is missing, uses the image url returned by getDefaultButtonImageUrl()
+     * @param imageName the name of the image to find a button for
+     * @return the URL where question button images are located
+     */
+    public static String getButtonImageUrl(String imageName) {
+    	String buttonImageUrl = getKualiConfigurationService().getPropertyString(WebUtils.APPLICATION_IMAGE_URL_PROPERTY_PREFIX+"."+imageName);
+    	if (StringUtils.isBlank(buttonImageUrl)) {
+    		buttonImageUrl = getDefaultButtonImageUrl(imageName);
+    	}
+    	return buttonImageUrl;
+    }
+
+    /**
+     * Generates a default button image URL, in the form of: ${kr.externalizable.images.url}buttonsmall_${imageName}.gif
+     * 
+     * @param imageName the image name to generate a default button name for
+     * @return the default button image url
+     */
+    public static String getDefaultButtonImageUrl(String imageName) {
+    	return getKualiConfigurationService().getPropertyString(WebUtils.DEFAULT_IMAGE_URL_PROPERTY_NAME)+"buttonsmall_"+imageName+".gif";
+    }
+    
+    /**
+     * @return an implementation of the KualiConfigurationService
+     */
+    public static KualiConfigurationService getKualiConfigurationService() {
+    	if (configurationService == null) {
+    		configurationService = KNSServiceLocator.getKualiConfigurationService();
+    	}
+    	return configurationService;
     }
 }

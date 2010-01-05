@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.core.resourceloader;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -26,11 +27,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.ServiceLocator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * A BaseResourceLoader implementation which wraps services with a Proxy that

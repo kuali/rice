@@ -24,8 +24,6 @@ import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 
-import edu.emory.mathcs.backport.java.util.Collections;
-
 /**
  * A single BusinessObject entry in the DataDictionary, which contains information relating to the display, validation, and general
  * maintenance of a BusinessObject and its attributes.

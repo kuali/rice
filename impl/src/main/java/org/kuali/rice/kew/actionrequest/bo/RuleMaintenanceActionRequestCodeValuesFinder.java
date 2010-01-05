@@ -60,7 +60,7 @@ public class RuleMaintenanceActionRequestCodeValuesFinder extends ActionRequestC
 				KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ};
 		// Add the rule options to the list if they are not defined (true by default) or if they are explicitly set to true.
 		for (int i = 0; i < ruleOpts.length; i++) {
-			if (ruleOpts[i] == null || "true".equals(ruleOpts[i].getValue())) {
+			if (ruleOpts[i] == null || ruleOpts[i].getValue() == null || "true".equals(ruleOpts[i].getValue())) {
 				actionRequestCodes.add(new KeyLabelPair(ruleConsts[i], KEWConstants.ACTION_REQUEST_CODES.get(ruleConsts[i])));
 			}
 		}

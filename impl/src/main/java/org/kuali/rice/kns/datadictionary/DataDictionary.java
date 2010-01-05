@@ -501,17 +501,15 @@ public class DataDictionary {
     	BusinessObject boInstance;
         try {
             boInstance = (BusinessObject) boClass.newInstance();
-        }
-        catch (Exception e) {
-        	throw new RuntimeException(e);
+        } catch (Exception e) {
+        	throw new RuntimeException("Unable to instantiate BO: " + boClass, e);
         }
 
         // attempt to retrieve the class of the property
         try {
             return ObjectUtils.getPropertyType(boInstance, attributeName, getPersistenceStructureService());
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to determine property type for: " + boClass.getName() + "." + attributeName, e);
         }
     }
 

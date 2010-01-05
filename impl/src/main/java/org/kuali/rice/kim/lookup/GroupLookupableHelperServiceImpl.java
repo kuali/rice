@@ -20,6 +20,7 @@ import static java.util.Collections.sort;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,8 +68,6 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.

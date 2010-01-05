@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.inquiry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,6 @@ import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 

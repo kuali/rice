@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,8 +38,6 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.

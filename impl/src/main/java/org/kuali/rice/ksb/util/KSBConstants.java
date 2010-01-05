@@ -94,5 +94,22 @@ public class KSBConstants extends JSTLConstants {
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";
     public static final String KEYSTORE_ALIAS_HEADER = "KEW_KEYSTORE_ALIAS";
     public static final String KEYSTORE_CERTIFICATE_HEADER = "KEW_CERTIFICATE_ALIAS";
+    
+    public class ServiceNames {
+    	public static final String OBJECT_REMOTER = "ObjectRemoterService";
+        public static final String SERVICE_REMOVER_SERVICE = "RemoteClassRemoverService";
+        public static final String THREAD_POOL_SERVICE = "enThreadPool";
+        public static final String REMOTED_SERVICE_REGISTRY = "enServiceInvoker";
+        public static final String REPEAT_TOPIC_INVOKING_QUEUE = "enRepeatTopicInvokerQueue";
+        public static final String ENCRYPTION_SERVICE = "enEncryptionService";
+        public static final String DIGITAL_SIGNATURE_SERVICE = "digitalSignatureService";
+        public static final String JAVA_SECURITY_MANAGEMENT_SERVICE = "ksbJavaSecurityManagementService";
+        public static final String CACHE_ADMINISTRATOR_FACTORY = "enKEWCacheAdministratorFactoryService";
+        public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";
+        public static final String SCHEDULED_THREAD_POOL_SERVICE = "enScheduledThreadPool";
+        public static final String BUS_ADMIN_SERVICE = "busAdminService";
+        public static final String MESSAGE_ENTITY_MANAGER_FACTORY = "ksbMessageEntityManagerFactory";
+        public static final String REGISTRY_ENTITY_MANAGER_FACTORY = "ksbRegistryEntityManagerFactory";
+    }
 
 }

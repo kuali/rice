@@ -40,6 +40,7 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
@@ -104,9 +105,16 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 			WorkflowDocumentActions documentActions = getWorkflowDocument();
 			services.put(serviceName, documentActions);
 			return documentActions;
+		} else if (serviceName.equals(KIMServiceLocator.KIM_IDENTITY_SERVICE)) {
+			IdentityService identityService = getIdentityService();
+			services.put(serviceName, identityService);
+			return identityService;
+		} else if (serviceName.equals(KIMServiceLocator.KIM_GROUP_SERVICE)) {
+			GroupService groupService = getGroupService();
+			services.put(serviceName, groupService);
+			return groupService;
 		}
-	    	return null;
-		//return SpringLoader.getInstance().getService(serviceName);
+	    return null;
 	}
 
 	public WorkflowUtility getWorkflowUtility() {

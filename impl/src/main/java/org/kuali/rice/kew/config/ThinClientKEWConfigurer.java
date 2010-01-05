@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.kew.config;
 
-import org.kuali.rice.core.config.RiceConfigurer;
+import org.kuali.rice.core.config.RiceConfigurerBase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.config.KIMThinClientConfigurer;
 import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
 
 /**
@@ -24,14 +25,16 @@ import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
  *      
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ThinClientKEWConfigurer extends RiceConfigurer {
+public class ThinClientKEWConfigurer extends RiceConfigurerBase {
+	
+	private KEWConfigurer kewConfigurer;
 	
 	public ThinClientKEWConfigurer() {
 		setServiceNamespace(KEWConstants.KEW_MESSAGING_ENTITY);
 		// thin client allows us to still have access to the DigitalSignatureService but not use the full capabilities of the bus
-		getModules().add(new KSBThinClientConfigurer());
+		getModules().add(new KSBThinClientConfigurer());		
 		
-		KEWConfigurer kewConfigurer = new KEWConfigurer();
+		this.kewConfigurer = new KEWConfigurer();
 		
 		// If this flag is not set, KEWConfigurer will need a database connection and other
 		// things we haven't configured.
@@ -39,5 +42,16 @@ public class ThinClientKEWConfigurer extends RiceConfigurer {
 		kewConfigurer.setClientProtocol(KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
 		
 		getModules().add(kewConfigurer);
+		
+		getModules().add(new KIMThinClientConfigurer());
 	}
+
+	@Override
+	protected void addModulesResourceLoaders() throws Exception {
+		// TODO: this seems like a total hack the way this is happening, see the addModulesResourceLoaders
+		// method RiceConfigurer as well
+		kewConfigurer.getResourceLoaderToRegister();
+	}
+	
+	
 }

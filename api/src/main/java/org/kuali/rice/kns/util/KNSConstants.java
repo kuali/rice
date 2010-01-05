@@ -151,7 +151,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String BUSINESS_OBJECT_CLASS_ATTRIBUTE = "businessObjectClassName";
     public static final String CALLING_METHOD = "caller";
     public static final String CONFIRMATION_QUESTION = "confirmationQuestion";
-    public static final String CONFIGURATION_SERVICE_DATA_FILE_NAME = "configurationServiceData.xml";
     public static final String CONVERSION_FIELDS_PARAMETER = "conversionFields";
     public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";

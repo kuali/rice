@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,8 +30,6 @@ import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Tests the web GUI for the Document Search.

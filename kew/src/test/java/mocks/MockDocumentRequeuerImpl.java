@@ -15,15 +15,12 @@
  */
 package mocks;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
 import org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * a DocumentRequeuerImpl extension that keeps track of the ids for docs that were requeued

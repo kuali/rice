@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.test.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,8 +29,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * Unit test for the IdentityArchiveService

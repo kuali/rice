@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -41,8 +42,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * This is a test class to test the document search security and row filtering

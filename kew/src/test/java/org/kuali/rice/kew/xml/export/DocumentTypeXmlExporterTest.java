@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
@@ -73,6 +73,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldDocType.getDescription(), newDocType.getDescription());
         assertEquals(oldDocType.getUnresolvedDocHandlerUrl(), newDocType.getUnresolvedDocHandlerUrl());
         assertEquals(oldDocType.getUnresolvedHelpDefinitionUrl(), newDocType.getUnresolvedHelpDefinitionUrl());
+        assertEquals(oldDocType.getUnresolvedDocSearchHelpUrl(), newDocType.getUnresolvedDocSearchHelpUrl());
         assertEquals(oldDocType.getLabel(), newDocType.getLabel());
         assertEquals(oldDocType.getPostProcessorName(), newDocType.getPostProcessorName());
         assertEquals(oldDocType.getRoutingVersion(), newDocType.getRoutingVersion());
@@ -93,7 +94,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
      * @param a a workgroup
      * @param b another workgroup
      */
-    private void assertWorkgroupsEqual(KimGroup a, KimGroup b) {
+    private void assertWorkgroupsEqual(Group a, Group b) {
         if (a == null) {
             assertNull(b);
         } else {

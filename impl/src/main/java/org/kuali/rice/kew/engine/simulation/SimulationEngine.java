@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,15 +62,15 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
  * A WorkflowEngine implementation which runs simulations.  This object is not thread-safe
  * and therefore a new instance needs to be instantiated on every use.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SimulationEngine extends StandardWorkflowEngine {
 
@@ -108,7 +108,11 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		routeDocumentIfNecessary(document, criteria, context);
     		results.setDocument(document);
     		documentId = document.getRouteHeaderId();
-    		MDC.put("docID", documentId);
+    		
+    		// detect if MDC already has docId param (to avoid nuking it below)
+    		boolean mdcHadDocId = MDC.get("docId") != null;
+    		if (!mdcHadDocId) { MDC.put("docId", documentId); }
+    		
     		PerformanceLogger perfLog = new PerformanceLogger(documentId);
     		try {
     		    if ( LOG.isInfoEnabled() ) {
@@ -153,7 +157,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
     		} finally {
     			perfLog.log("Time to run simulation.");
     			RouteContext.clearCurrentRouteContext();
-    			MDC.remove("docID");
+    			
+    			if (!mdcHadDocId) { MDC.remove("docID"); }
     		}
     	} finally {
     		RouteContext.releaseCurrentRouteContext();
@@ -510,7 +515,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
 			if (delegator instanceof KimPrincipalRecipient) {
 				val.setDelegatorPrincipalId(((KimPrincipalRecipient) delegator).getPrincipalId());
 			} else if (delegator instanceof KimGroupRecipient) {
-				KimGroup group = ((KimGroupRecipient) delegator).getGroup();
+				Group group = ((KimGroupRecipient) delegator).getGroup();
 				val.setDelegatorGroupId(group.getGroupId());
 			} else{
 				throw new IllegalArgumentException("Invalid Recipient type received: " + delegator.getClass().getName());

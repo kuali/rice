@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,9 +60,9 @@ import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -70,7 +70,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains
  * references to children/parent if a member of a graph
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_ACTN_RQST_T")
@@ -137,8 +137,8 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Integer jrfVerNbr;
     @Column(name="PRNCPL_ID")
 	private String principalId;
-    @Column(name="IGN_PREV_ACTN_IND")
-	private Boolean ignorePrevAction;
+    @Column(name="FRC_ACTN")
+	private Boolean forceAction;
     @Column(name="PARNT_ID", insertable=false, updatable=false)
 	private Long parentActionRequestId;
     @Column(name="QUAL_ROLE_NM")
@@ -200,7 +200,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
    
-    public KimGroup getGroup() {
+    public Group getGroup() {
         if (getGroupId() == null) {
             LOG.error("Attempting to get a group with a blank group id");
             return null;
@@ -246,8 +246,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     public String getDisplayName() {
     	if (isUserRequest()) {
-    		UserSession userSession = UserSession.getAuthenticatedUser();
-        	return UserUtils.getDisplayableName(userSession, getPrincipal());
+    	    return getPerson().getName();
     	} else if (isGroupRequest()) {
     		return getGroup().getGroupName();
     	} else if (isRoleRequest()) {
@@ -279,14 +278,10 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public String getActionRequestedLabel() {
-    	String sRet = null;
-    	if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequested())){
-    		sRet = getRequestLabel();
+    	if (StringUtils.isNotBlank(getRequestLabel())) {
+    		return getRequestLabel();
     	}
-    	if ( StringUtils.isBlank( sRet ) ) {
-    		sRet = CodeTranslator.getActionRequestLabel(getActionRequested());
-    	}
-        return sRet;
+    	return CodeTranslator.getActionRequestLabel(getActionRequested());
     }
 
     /**
@@ -411,18 +406,18 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
     
     /**
-     * @return Returns the ignorePrevAction.
+     * @return Returns the forceAction.
      */
-    public Boolean getIgnorePrevAction() {
-        return ignorePrevAction;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
     /**
-     * @param ignorePrevAction
-     *            The ignorePrevAction to set.
+     * @param forceAction
+     *            The forceAction to set.
      */
-    public void setIgnorePrevAction(Boolean ignorePrevAction) {
-        this.ignorePrevAction = ignorePrevAction;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     /**
@@ -581,7 +576,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	if (isReviewerUser()) {
     			isRecipientInGraph = getPrincipalId().equals(principalId);
     	} else if (isGroupRequest()) {
-    		KimGroup group = getGroup();
+    		Group group = getGroup();
 			if (group == null){
 				LOG.error("Was unable to retrieve workgroup " + getGroupId());
 			}
@@ -613,7 +608,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     		}
 
     	} else if (isGroupRequest()) {
-    		KimGroup group = getGroup();
+    		Group group = getGroup();
 			if (group == null){
 				LOG.error("Was unable to retrieve workgroup " + getGroupId());
 			}
@@ -647,7 +642,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isApproveRequest() {
-        return KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested()) || KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
+        return KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
     }
 
     public boolean isCompleteRequst() {
@@ -665,9 +660,12 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @param code2
      * @return -1 if less than, 0 if equal, 1 if greater than
      */
-    public static int compareActionCode(String code1, String code2) {
-        // hacked so that APPROVE and COMPLETE are equal
-        int cutoff = ACTION_CODE_RANK.length() - 3;
+    public static int compareActionCode(String code1, String code2, boolean completeAndApproveTheSame) {
+    	int cutoff = Integer.MAX_VALUE;
+    	if (completeAndApproveTheSame) {
+    		// hacked so that APPROVE and COMPLETE are equal
+    		cutoff = ACTION_CODE_RANK.length() - 3;
+    	}
         Integer code1Index = new Integer(Math.min(ACTION_CODE_RANK.indexOf(code1), cutoff));
         Integer code2Index = new Integer(Math.min(ACTION_CODE_RANK.indexOf(code2), cutoff));
         return code1Index.compareTo(code2Index);
@@ -924,7 +922,7 @@ public class ActionRequestValue implements WorkflowPersistable {
             .append("annotation", annotation)
             .append("jrfVerNbr", jrfVerNbr)
             .append("principalId", principalId)
-            .append("ignorePrevAction", ignorePrevAction)
+            .append("forceAction", forceAction)
             .append("parentActionRequestId", parentActionRequestId)
             .append("qualifiedRoleName", qualifiedRoleName)
             .append("roleName", roleName)

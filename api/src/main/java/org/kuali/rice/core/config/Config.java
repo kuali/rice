@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import java.util.Properties;
  * Interface encapsulating central config settings. This interface was taken
  * directly from BundleUtility which it replaces.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Config {
 
@@ -70,11 +70,7 @@ public interface Config {
 
 	public static final String EMAIL_SECURITY_PATH = "email.security.path";
 
-	public static final String BASE_URL = "base.url";
-
 	public static final String ENVIRONMENT = "environment";
-
-	public static final String INSTITUTIONAL_PLUGIN_DIR = "en.plugin.dir";
 
 	public static final String PLUGIN_DIR = "plugin.dir";
 
@@ -83,8 +79,6 @@ public interface Config {
 	public static final String EXTRA_LIB_DIR = "extra.lib.dir";
 
 	public static final String EDL_CONFIG_LOCATION = "edl.config.loc";
-
-	public static final String INSTITUTIONAL_PLUGIN_NAME = "plugin.institutional.name";
 
 	public static final String SERVICE_NAMESPACE = "service.namespace";
 
@@ -112,7 +106,32 @@ public interface Config {
 	public static final String DATASOURCE_USERNAME = "datasource.username";
 	public static final String DATASOURCE_PASSWORD = "datasource.password";
 
+	/**
+	 * Configuration key under which to specify the base url for workflow
+	 */
+	public static final String KEW_URL = "kew.url";
+
+	/**
+	 * Configuration key under which to specify the base url for rice
+	 */
+	public static final String KR_URL = "kr.url";
+
+	/**
+	 * Configuration key under which to specify the base url for kim
+	 */
+	public static final String KIM_URL = "kim.url";
+	
+	/**
+	 * Configuration key under which to specify the base url for kim
+	 */
+	public static final String KEN_URL = "ken.url";
+
+	/**
+	 * Use DEFAULT_KEW_NOTE_CLASS
+	 */
+	@Deprecated
 	public static final String DEFAULT_NOTE_CLASS = "default.note.class";
+    public static final String DEFAULT_KEW_NOTE_CLASS = "default.kew.note.class";
 	public static final String M_BEANS = "mBeans";
 	public static final String ALT_SPRING_FILE = "config.spring.file";
 	public static final String ALT_OJB_FILE	= "config.obj.file";
@@ -124,6 +143,7 @@ public interface Config {
 	public static final String STORE_AND_FORWARD = "bus.storeAndForward";
 	public static final String REFRESH_RATE = "bus.refresh.rate";
 	public static final String DEV_MODE = "dev.mode";
+	public static final String BATCH_MODE = "rice.ksb.batch.mode";
 	
 	public static final String CREDENTIALS_SOURCE_FACTORY = "credentialsSourceFactory";
 
@@ -132,13 +152,14 @@ public interface Config {
 	public static final String FIRST_DAILY_EMAIL_DELIVERY_DATE = "email.daily.firstDeliveryDate";
 	public static final String FIRST_WEEKLY_EMAIL_DELIVERY_DATE = "email.weekly.firstDeliveryDate";
 
-	public static final String RUNNING_SERVER_IN_EMBEDDED = "embedded.server";
 	public static final String ENABLE_EMAIL_REMINDER_LIFECYCLE = "email.reminder.lifecycle.enabled";
 	public static final String ENABLE_XML_PIPELINE_LIFECYCLE = "xml.pipeline.lifecycle.enabled";
 	
 	public static final String OUT_BOX_MODE = "actionlist.outbox";
 	public static final String OUT_BOX_DEFAULT_PREFERENCE_ON = "actionlist.outbox.default.preference.on";
 
+	public static final String PORTAL_SHOW_SAMPLE_APP = "portal.show.sample.app";
+	
 	public void parseConfig() throws IOException;
 
 	/**
@@ -178,6 +199,26 @@ public interface Config {
 	public String getClientWSDLFullPathAndFileName();
 
 	public String getWebServicesConnectRetry();
+	
+	/**
+	 * @return the base URL for KEW
+	 */
+	public String getKEWBaseURL();
+	
+	/**
+	 * @return the base URL for KIM
+	 */
+	public String getKIMBaseURL();
+	
+	/**
+	 * @return the base URL for KRice
+	 */
+	public String getKRBaseURL();
+
+	/**
+	 * @return the base URL for KEN
+	 */
+	public String getKENBaseURL();
 
 	public String getLog4jFileLocation();
 
@@ -187,17 +228,21 @@ public interface Config {
 
 	public String getEmailConfigurationPath();
 
-	public String getBaseUrl();
-
 	public String getEnvironment();
 
 	public String getEDLConfigLocation();
 
 	public String getServiceNamespace();
 
+    /**
+     * This method has been deprecated.  Use {@link #getDefaultKewNoteClass()} instead.
+     * @deprecated
+     */
 	public String getDefaultNoteClass();
 
-	public String getEmbeddedPluginLocation();
+    public String getDefaultKewNoteClass();
+
+    public String getEmbeddedPluginLocation();
 
 	public Integer getRefreshRate();
 
@@ -215,15 +260,22 @@ public interface Config {
 
 	public String getDocumentLockTimeout();
 
-    public Boolean getRunningEmbeddedServerMode();
-
+	/**
+	 * This has to be a string because BooleanS don't work when accessed through 
+	 * ConfigProperties like ${ConfigProperties.portal.show.sample.app} in JSPs.
+	 */
+	public String getPortalShowSampleApp();
+	
     public Boolean getEmailReminderLifecycleEnabled();
 
     public Boolean getXmlPipelineLifeCycleEnabled();
 
 	public Boolean getDevMode();
 	
+	public Boolean getBatchMode();
+	
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
 	public Boolean getOutBoxDefaultPreferenceOn();
+	
 }

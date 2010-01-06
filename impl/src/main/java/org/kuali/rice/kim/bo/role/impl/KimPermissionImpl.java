@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -27,11 +28,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -39,12 +43,14 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@SuppressWarnings("unchecked")
 @Entity
 @Table(name="KRIM_PERM_T")
 public class KimPermissionImpl extends PersistableBusinessObjectBase implements KimPermission {
-
+	private static final Logger LOG = Logger.getLogger(KimPermissionImpl.class);	
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -63,10 +69,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
 	protected List<PermissionAttributeDataImpl> detailObjects = new TypedArrayList(PermissionAttributeDataImpl.class);
 
-	@OneToMany(targetEntity=KimPermissionRequiredAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
-	protected List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes = new TypedArrayList(KimPermissionRequiredAttributeImpl.class);
-	
 	protected String templateId;
 	protected KimPermissionTemplateImpl template;
 
@@ -130,14 +132,14 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	public KimPermissionInfo toSimpleInfo() {
 		KimPermissionInfo dto = new KimPermissionInfo();
-		
 		dto.setPermissionId( getPermissionId() );
 		dto.setNamespaceCode( getNamespaceCode() );
 		dto.setName( getName() );
 		dto.setDescription( getDescription() );
 		dto.setActive( isActive() );
-		dto.setDetails( getDetails() );
 		dto.setTemplate( getTemplate().toSimpleInfo() );
+		dto.setTemplateId( getTemplateId() );
+		dto.setDetails( getDetails() );
 		
 		return dto;
 	}
@@ -166,12 +168,29 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.templateId = templateId;
 	}
 
+	protected transient AttributeSet detailsAsAttributeSet = null;
+
 	public AttributeSet getDetails() {
-		AttributeSet m = new AttributeSet();
-		for ( PermissionAttributeDataImpl data : getDetailObjects() ) {
-			m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+		if ( detailsAsAttributeSet == null ) {
+			KimTypeInfo kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
+			AttributeSet m = new AttributeSet();
+			for ( PermissionAttributeDataImpl data : getDetailObjects() ) {
+				KimTypeAttributeInfo attribute = null;
+				if ( kimType != null ) {
+					attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+				} else {
+					LOG.warn( "Unable to get KimTypeInfo for permission: " + this + "\nKim Type ID: " + getTemplate().kimTypeId );
+				}
+				if ( attribute != null ) {
+					m.put( attribute.getAttributeName(), data.getAttributeValue() );
+				} else {
+					LOG.warn( "Unable to get attribute for ID: " + data.getKimAttributeId() + " from KimTypeInfo: " + kimType );
+					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
+				}
+			}
+			detailsAsAttributeSet = m;
 		}
-		return m;
+		return detailsAsAttributeSet;
 	}
 	
 	public boolean hasDetails() {
@@ -194,15 +213,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.detailObjects = detailObjects;
 	}
 
-	public List<KimPermissionRequiredAttributeImpl> getRequiredRoleQualifierAttributes() {
-		return this.requiredRoleQualifierAttributes;
-	}
-
-	public void setRequiredRoleQualifierAttributes(
-			List<KimPermissionRequiredAttributeImpl> requiredRoleQualifierAttributes) {
-		this.requiredRoleQualifierAttributes = requiredRoleQualifierAttributes;
-	}
-
 	/**
 	 * @return the rolePermissions
 	 */
@@ -219,59 +229,51 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	
 	public String getDetailObjectsValues(){
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
-		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){
-			detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		Iterator<PermissionAttributeDataImpl> permIter = getDetailObjects().iterator();
+		while ( permIter.hasNext() ) {
+			PermissionAttributeDataImpl permissionAttributeData = permIter.next();
+			detailObjectsToDisplay.append( permissionAttributeData.getAttributeValue() );
+			if ( permIter.hasNext() ) {
+				detailObjectsToDisplay.append( KimConstants.KimUIConstants.COMMA_SEPARATOR );
+			}
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
-
 		return detailObjectsToDisplay.toString();
 	}
 
 	public String getDetailObjectsToDisplay() {
+		KimTypeInfo kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
-		for(PermissionAttributeDataImpl permissionAttributeData: detailObjects){
-			detailObjectsToDisplay.append(getAttributeDetailToDisplay(permissionAttributeData));
+		Iterator<PermissionAttributeDataImpl> permIter = getDetailObjects().iterator();
+		while ( permIter.hasNext() ) {
+			PermissionAttributeDataImpl permissionAttributeData = permIter.next();
+			detailObjectsToDisplay.append( getKimAttributeLabelFromDD(kimType.getAttributeDefinition(permissionAttributeData.getKimAttributeId())));
+			detailObjectsToDisplay.append( KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
+			detailObjectsToDisplay.append( permissionAttributeData.getAttributeValue() );
+			if ( permIter.hasNext() ) {
+				detailObjectsToDisplay.append( KimConstants.KimUIConstants.COMMA_SEPARATOR );
+			}
 		}
-        if(detailObjectsToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	detailObjectsToDisplay.delete(detailObjectsToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), detailObjectsToDisplay.length());
-
 		return detailObjectsToDisplay.toString();
 	}
-
-	public String getAttributeDetailToDisplay(PermissionAttributeDataImpl permissionAttributeData){
-		return getKimAttributeLabelFromDD(permissionAttributeData.getKimAttribute().getAttributeName())+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
-				permissionAttributeData.getAttributeValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
-	}
 	
-	public String getRequiredRoleQualifierAttributesToDisplay() {
-		StringBuffer requiredRoleQualifierAttributesToDisplay = new StringBuffer();
-		for(KimPermissionRequiredAttributeImpl permissionRequiredAttribute: requiredRoleQualifierAttributes){
-			requiredRoleQualifierAttributesToDisplay.append(getRequiredRoleQualifierAttributeToDisplay(permissionRequiredAttribute));
-		}
-        if(requiredRoleQualifierAttributesToDisplay.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	requiredRoleQualifierAttributesToDisplay.delete(requiredRoleQualifierAttributesToDisplay.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), requiredRoleQualifierAttributesToDisplay.length());
-
-		return requiredRoleQualifierAttributesToDisplay.toString();
-	}
-
-	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
-	protected String getKimAttributeLabelFromDD(String attributeName){
-    	return getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
+	protected String getKimAttributeLabelFromDD( KimTypeAttributeInfo attribute ){
+    	return getDataDictionaryService().getAttributeLabel(attribute.getComponentName(), attribute.getAttributeName() );
     }
 
-	transient private DataDictionaryService dataDictionaryService;
-	public DataDictionaryService getDataDictionaryService() {
+	private transient static DataDictionaryService dataDictionaryService;
+	
+	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
 			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
 
-	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
-	public String getRequiredRoleQualifierAttributeToDisplay(KimPermissionRequiredAttributeImpl permissionRequiredAttribute){
-		String value = getKimAttributeLabelFromDD(permissionRequiredAttribute.getKimAttribute().getAttributeName());
-		return StringUtils.isEmpty(value)?value:value+KimConstants.KimUIConstants.COMMA_SEPARATOR;
+	private transient static KimTypeInfoService kimTypeInfoService;
+	protected KimTypeInfoService getTypeInfoService() {
+		if(kimTypeInfoService == null){
+			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return kimTypeInfoService;
 	}
-
 }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,11 +23,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -38,7 +40,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * A simple implementation of an ActionRegistry which includes all of the default Workflow Actions.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRegistryImpl implements ActionRegistry {
     private static final Logger LOG = Logger.getLogger(ActionRegistryImpl.class);
@@ -128,15 +130,21 @@ public class ActionRegistryImpl implements ActionRegistry {
      */
     public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException {
         ValidActions validActions = new ValidActions();
-        for (Iterator iter = actionMap.keySet().iterator(); iter.hasNext();) {
-            String actionTakenCode = (String) iter.next();
+        ArrayList<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
+        for ( ActionRequestValue ar : document.getActionRequests() ) {
+        	if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator().booleanValue()) && StringUtils.equals( ar.getStatus(), KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+        		activeRequests.add(ar);
+        	}
+        }
+        for (Iterator<String> iter = actionMap.keySet().iterator(); iter.hasNext();) {
+            String actionTakenCode = iter.next();
             List<DataDefinition> parameters = new ArrayList<DataDefinition>();
             parameters.add(new DataDefinition(document));
             parameters.add(new DataDefinition(principal));
             ActionTakenEvent actionEvent = createAction(actionTakenCode, parameters);
-            if (actionEvent.isActionValid()) {
+            if ( StringUtils.isEmpty( actionEvent.validateActionRules(activeRequests) ) ) {
                 validActions.addActionTakenCode(actionTakenCode);
-}
+            }
         }
         return validActions;
     }

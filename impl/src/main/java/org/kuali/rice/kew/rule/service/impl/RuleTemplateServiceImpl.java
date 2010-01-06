@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -137,18 +137,14 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         ruleTemplateAttributeDAO.save(ruleTemplateAttribute);
     }
 
-    public void save(RuleBaseValues ruleBaseValues) {
-        ruleDAO.save(ruleBaseValues);
-    }
-
     /**
-     * TODO: explain...
-     * @see org.kuali.rice.kew.rule.service.RuleTemplateService#save(org.kuali.rice.kew.rule.RuleDelegation, org.kuali.rice.kew.rule.RuleBaseValues)
+     * Saves the given RuleDelegation and RuleBaseValues as the defaults for this RuleTemplate
      */
-    public void save(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues) {
-        save(ruleBaseValues);
+    public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues) {
+        KEWServiceLocator.getRuleService().saveRule(ruleBaseValues, false);
         if (ruleDelegation != null) {
-            ruleDelegationDAO.save(ruleDelegation);
+        	KEWServiceLocator.getRuleService().saveRule(ruleDelegation.getDelegationRuleBaseValues(), false);
+            KEWServiceLocator.getRuleDelegationService().save(ruleDelegation);
         }
     }
 

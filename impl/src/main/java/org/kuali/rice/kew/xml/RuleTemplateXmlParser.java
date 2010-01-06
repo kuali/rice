@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
  *
  * @see RuleTemplate
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleTemplateXmlParser implements XmlConstants {
 
@@ -167,11 +167,10 @@ public class RuleTemplateXmlParser implements XmlConstants {
      * @throws InvalidXmlException
      */
     /*
-     <element name="ruleInstructions" type="c:LongStringType"/>
      <element name="description" type="c:LongStringType"/>
      <element name="fromDate" type="c:ShortStringType" minOccurs="0"/>
      <element name="toDate" type="c:ShortStringType" minOccurs="0"/>
-     <element name="ignorePrevious" type="boolean"/>
+     <element name="forceAction" type="boolean"/>
      <element name="active" type="boolean"/>
      <element name="defaultActionRequested" type="c:ShortStringType"/>
      <element name="supportsComplete" type="boolean" default="true"/>
@@ -199,8 +198,6 @@ public class RuleTemplateXmlParser implements XmlConstants {
         // the possible defaults options
         // NOTE: the current implementation will remove any existing RuleTemplateOption records for any values which are null, i.e. not set in the incoming XML.
         // to pro-actively set default values for omitted options, simply set those values here, and records will be added if not present
-        // note, rule instructions is mandatory in rule template defaults XSD
-        String ruleInstructions = null;
         String defaultActionRequested = null;
         Boolean supportsComplete = null;
         Boolean supportsApprove = null;
@@ -213,14 +210,8 @@ public class RuleTemplateXmlParser implements XmlConstants {
         
         // read in new settings
         if (defaultsElement != null) {
-            // there's a defaults element, parse the values
-            ruleInstructions = defaultsElement.getChildText(RULE_INSTRUCTIONS, RULE_TEMPLATE_NAMESPACE);
 
-            if (ruleInstructions == null) {
-                throw new InvalidXmlException("Instructions must be specified in rule defaults");
-            }
-
-            defaultActionRequested = defaultsElement.getChildText(DEFAULT_ACTION_REQUESTED, RULE_TEMPLATE_NAMESPACE);
+        	defaultActionRequested = defaultsElement.getChildText(DEFAULT_ACTION_REQUESTED, RULE_TEMPLATE_NAMESPACE);
             supportsComplete = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_COMPLETE, RULE_TEMPLATE_NAMESPACE));
             supportsApprove = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_APPROVE, RULE_TEMPLATE_NAMESPACE));
             supportsAcknowledge = BooleanUtils.toBooleanObject(defaultsElement.getChildText(SUPPORTS_ACKNOWLEDGE, RULE_TEMPLATE_NAMESPACE));
@@ -286,7 +277,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             String fromDate = defaultsElement.getChildText(FROM_DATE, RULE_TEMPLATE_NAMESPACE);
             String toDate = defaultsElement.getChildText(TO_DATE, RULE_TEMPLATE_NAMESPACE);
             // toBooleanObject ensures that if the value is null (not set) that the Boolean object will likewise be null (will not default to a value)
-            Boolean ignorePrevious = BooleanUtils.toBooleanObject(defaultsElement.getChildText(IGNORE_PREVIOUS, RULE_TEMPLATE_NAMESPACE));
+            Boolean forceAction = BooleanUtils.toBooleanObject(defaultsElement.getChildText(FORCE_ACTION, RULE_TEMPLATE_NAMESPACE));
             Boolean active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
 
             if (isDelegation && !KEWConstants.DELEGATION_PRIMARY.equals(delegationType) && !KEWConstants.DELEGATION_SECONDARY.equals(delegationType)) {
@@ -306,7 +297,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             ruleDefaults.setDescription(description);
     
             // these are non-nullable fields, so default them if they were not set in the defaults section
-            ruleDefaults.setIgnorePrevious(Boolean.valueOf(BooleanUtils.isTrue(ignorePrevious)));
+            ruleDefaults.setForceAction(Boolean.valueOf(BooleanUtils.isTrue(forceAction)));
             ruleDefaults.setActiveInd(Boolean.valueOf(BooleanUtils.isTrue(active)));
         
             if (ruleDefaults.getActivationDate() == null) {
@@ -327,7 +318,7 @@ public class RuleTemplateXmlParser implements XmlConstants {
             }
 
             // explicitly save the new rule delegation defaults and default rule
-            KEWServiceLocator.getRuleTemplateService().save(ruleDelegationDefaults, ruleDefaults);
+            KEWServiceLocator.getRuleTemplateService().saveRuleDefaults(ruleDelegationDefaults, ruleDefaults);
         } else {
             // do nothing, rule defaults will be deleted if ruleDefaults element is omitted
         }

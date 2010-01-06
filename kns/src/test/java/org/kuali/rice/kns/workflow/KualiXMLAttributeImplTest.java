@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,12 +45,11 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.workflow.WorkflowUtils;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlAttribute;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlAttributeHelper;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlSearchableAttributeImpl;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -61,10 +60,10 @@ import org.xml.sax.InputSource;
  * This class tests the {@link KualiXmlAttributeHelper} operations of getting data from the data dictionary for workflow
  * attributes
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Ignore
-public class KualiXMLAttributeImplTest extends TestBase {
+public class KualiXMLAttributeImplTest extends KNSTestCase {
     private static Log LOG = LogFactory.getLog(KualiXMLAttributeImplTest.class);
 
     private static final String RULE_ATTRIBUTE_CONFIG_NODE_NAME = XmlConstants.ROUTING_CONFIG;

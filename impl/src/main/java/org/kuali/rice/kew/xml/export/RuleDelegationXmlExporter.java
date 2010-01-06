@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,8 +27,8 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
@@ -36,7 +36,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  *
  * @see RuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleDelegationXmlExporter implements XmlExporter, XmlConstants {
 
@@ -73,7 +73,7 @@ public class RuleDelegationXmlExporter implements XmlExporter, XmlConstants {
         	KimPrincipal principal = ruleResponsibility.getPrincipal();
         	renderer.renderTextElement(parentResponsibilityElement, PRINCIPAL_NAME, principal.getPrincipalName());
         } else if (ruleResponsibility.isUsingGroup()) {
-        	KimGroup group = ruleResponsibility.getGroup();
+        	Group group = ruleResponsibility.getGroup();
         	Element groupElement = renderer.renderElement(parentResponsibilityElement, GROUP_NAME);
         	groupElement.setText(group.getGroupName());
         	groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -45,7 +46,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
  * The BaselineMode annotation can be used on a per-test-class basis to indicate to the base class which mode to use for test
  * subclass.  It accepts a {@link Mode} value.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class BaselineTestCase extends BaseModuleTestCase {
@@ -64,6 +65,14 @@ public class BaselineTestCase extends BaseModuleTestCase {
     }
 
     private Mode mode = Mode.NONE;
+    
+    /**
+     * Whether the test environment is in a "dirty" state.  Each time the unit test starts up
+     * dirty is set to true.  If a subclass installs the {@link TransactionalLifecycle} then
+     * it should clear the dirty flag.  This flag can be used to perform cleanup in case a previous
+     * test left the test environment in a "dirty" state.
+     */
+    protected static boolean dirty = false;
 
     // propagate constructors
     public BaselineTestCase(String moduleName) {
@@ -105,33 +114,6 @@ public class BaselineTestCase extends BaseModuleTestCase {
         super.setUp();
         dirty = true;
     }
-   
-
-    @Override
-    protected List<Lifecycle> getSuiteLifecycles() {
-        switch (mode) {
-            case ROLLBACK: return getRollbackSuiteLifecycles();
-            case CLEAR_DB: return getClearDbSuiteLifecycles();
-            case NONE: return getInitialLifecycles();
-            default:
-                throw new RuntimeException("Invalid mode specified: " + mode);        
-        }
-    }
-
-    /**
-     * Override the suite lifecycles to exclude the cleardatabaselifecycle
-     * which is added by default, because we're doing it on a per-test basis anyway
-     */
-    protected List<Lifecycle> getClearDbSuiteLifecycles() {
-        return getInitialLifecycles();
-    }
-
-    /**
-     * Just returns the normal suite lifecycles since by default they clear the db (once)
-     */
-    protected List<Lifecycle> getRollbackSuiteLifecycles() {
-        return super.getSuiteLifecycles();
-    }
 
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
@@ -149,15 +131,23 @@ public class BaselineTestCase extends BaseModuleTestCase {
      */
     protected List<Lifecycle> getClearDbPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-        lifecycles.add(0, new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
+        lifecycles.add(0, new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()));
         return lifecycles;
     }
+    
+    protected List<String> getPerTestTablesToClear() {
+    	return new ArrayList<String>();
+    }
 
+    protected List<String> getPerTestTablesNotToClear() {
+    	return new ArrayList<String>();
+    }
+    
     /**
      * @return the per-test lifecycles for rolling back the database
      */
     protected List<Lifecycle> getRollbackPerTestLifecycles() {
-        List<Lifecycle> lifecycles = super.getDefaultPerTestLifecycles();
+        List<Lifecycle> lifecycles = super.getPerTestLifecycles();
         lifecycles.add(0, new TransactionalLifecycle() {
             @Override
             public void stop() throws Exception {
@@ -170,7 +160,7 @@ public class BaselineTestCase extends BaseModuleTestCase {
         // clear the db
         if (dirty) {
             log.warn("Previous test case did not clean up the database; clearing database...");
-            lifecycles.add(0, new ClearDatabaseLifecycle());
+            lifecycles.add(0, new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()));
         }
         return lifecycles;
     }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,7 +54,7 @@ import org.xml.sax.InputSource;
 /**
  * Base Ojb Configurer implementation which configures OJB for a particular rice module.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean {
 
@@ -62,7 +62,7 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
 
     public static final String RICE_OJB_PROPERTIES_PARAM = "rice.custom.ojb.properties";
     public static final String OJB_PROPERTIES_PROP = "OJB.properties";
-    private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
+    public static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
 
     /**
      * The OJB JCD aliases 
@@ -133,8 +133,9 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
         String ojbPropertiesLocation = ConfigContext.getCurrentContextConfig().getProperty(RICE_OJB_PROPERTIES_PARAM);
         if (!StringUtils.isBlank(ojbPropertiesLocation)) {
             LOG.info("Using custom OJB.properites from: " + ojbPropertiesLocation);
-        } else {
+        } else {        	
             ojbPropertiesLocation = DEFAULT_OJB_PROPERTIES;
+            ConfigContext.getCurrentContextConfig().overrideProperty(RICE_OJB_PROPERTIES_PARAM, ojbPropertiesLocation);
             LOG.info("Using default OJB.properties from: " + ojbPropertiesLocation);
         }
         return ojbPropertiesLocation;
@@ -185,7 +186,8 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
         return new BufferedInputStream(new ByteArrayInputStream(baos.toByteArray()));
     }
 
-    protected boolean isConnectionAlreadyConfigured(MetadataManager mm) {
+    @SuppressWarnings("unchecked")
+	protected boolean isConnectionAlreadyConfigured(MetadataManager mm) {
         List descriptors = mm.connectionRepository().getAllDescriptor();
         for (Iterator iterator = descriptors.iterator(); iterator.hasNext();) {
             JdbcConnectionDescriptor descriptor = (JdbcConnectionDescriptor) iterator.next();

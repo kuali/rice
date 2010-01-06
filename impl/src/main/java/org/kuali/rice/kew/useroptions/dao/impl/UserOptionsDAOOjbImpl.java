@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.useroptions.UserOptions;
@@ -42,8 +42,8 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         });
     }
 
-	protected Platform getPlatform() {
-    	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+	protected DatabasePlatform getPlatform() {
+    	return (DatabasePlatform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
     public List<UserOptions> findByUserQualified(String principalId, String likeString) {
@@ -69,7 +69,13 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     public void save(UserOptions userOptions) {
     	this.getPersistenceBrokerTemplate().store(userOptions);
     }
-
+    
+    public void save(Collection<UserOptions> userOptions) {
+    	if (userOptions != null) for (UserOptions option : userOptions) {
+    		this.getPersistenceBrokerTemplate().store(option);
+    	}
+    }
+    
     public void deleteUserOptions(UserOptions userOptions) {
     	this.getPersistenceBrokerTemplate().delete(userOptions);
     }

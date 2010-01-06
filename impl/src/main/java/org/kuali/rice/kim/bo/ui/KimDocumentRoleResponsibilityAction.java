@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,21 +20,25 @@ import java.util.LinkedHashMap;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
+	private static final long serialVersionUID = 696663543888096105L;
 	protected String roleResponsibilityActionId;
 	protected String roleResponsibilityId;
 	protected String roleMemberId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
 	protected Integer priorityNumber;
-	protected boolean ignorePrevious;
+	protected boolean forceAction;
 	protected KimResponsibilityImpl kimResponsibility;
 	protected RoleResponsibilityImpl roleResponsibility;
 	
@@ -48,7 +52,18 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 * @return the kimResponsibility
 	 */
 	public KimResponsibilityImpl getKimResponsibility() {
-		return this.kimResponsibility;
+		try {
+			if ( ObjectUtils.isNull( kimResponsibility ) && ObjectUtils.isNotNull( getRoleResponsibility() ) ) {
+				//TODO: this needs to be changed to use the KimResponsibilityInfo object
+				// but the changes are involved in the UiDocumentService based on the copyProperties method used
+				// to move the data to/from the document/real objects
+				kimResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getRoleResponsibility().getResponsibilityId());
+			}
+		} catch( RuntimeException ex ) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return kimResponsibility;
 	}
 	/**
 	 * @param kimResponsibility the kimResponsibility to set
@@ -130,7 +145,13 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	 * @return the roleResponsibility
 	 */
 	public RoleResponsibilityImpl getRoleResponsibility() {
-		return this.roleResponsibility;
+		if ( ObjectUtils.isNull( roleResponsibility ) && roleResponsibilityId != null ) {
+			//TODO: this needs to be changed to use the KimResponsibilityInfo object
+			// but the changes are involved in the UiDocumentService based on the copyProperties method used
+			// to move the data to/from the document/real objects
+			roleResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getRoleResponsibilityImpl(getRoleResponsibilityId());
+		}
+		return roleResponsibility;
 	}
 	/**
 	 * @param roleResponsibility the roleResponsibility to set
@@ -140,16 +161,16 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	}
 
 	/**
-	 * @return the ignorePrevious
+	 * @return the forceAction
 	 */
-	public boolean isIgnorePrevious() {
-		return this.ignorePrevious;
+	public boolean isForceAction() {
+		return this.forceAction;
 	}
 	/**
-	 * @param ignorePrevious the ignorePrevious to set
+	 * @param forceAction the forceAction to set
 	 */
-	public void setIgnorePrevious(boolean ignorePrevious) {
-		this.ignorePrevious = ignorePrevious;
+	public void setForceAction(boolean forceAction) {
+		this.forceAction = forceAction;
 	}
 
 }

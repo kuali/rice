@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,25 +15,18 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTestCase.ClearCacheLifecycle;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GroupXmlExporterTest extends XmlExporterTestCase {
@@ -46,7 +39,7 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
     @Override
     protected void assertExport() throws Exception {
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-        List<? extends KimGroup> oldGroups = identityManagementService.getGroupsForPrincipal(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
+        List<? extends Group> oldGroups = identityManagementService.getGroupsForPrincipal(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
 
         ExportDataSet dataSet = new ExportDataSet();
         dataSet.getGroups().addAll(oldGroups);

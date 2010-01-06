@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
@@ -37,8 +38,8 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -48,6 +49,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.LookupableHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -60,24 +63,25 @@ import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
     private List<Row> rows = new ArrayList<Row>();
     //private List<Column> columns = establishColumns();
     //private Long previousRuleTemplateId;
+    private LookupableHelperService ruleDelegationLookupableHelperService;
+    private List<?> delegationPkNames;
 
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "ruleTemplate.name";
     private static final String RULE_ID_PROPERTY_NAME = "ruleBaseValuesId";
-    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleBaseValuesId";
+    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplateId";
     private static final String ACTIVE_IND_PROPERTY_NAME = "activeInd";
     private static final String DELEGATE_RULE_PROPERTY_NAME = "delegateRule";
     private static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";
@@ -201,6 +205,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         String activeParam = (String) fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
         String ruleIdParam = (String) fieldValues.get(RULE_ID_PROPERTY_NAME);
         String ruleDescription = (String) fieldValues.get(RULE_DESC_PROPERTY_NAME);
+        String deleteSelection = (String) fieldValues.get(DELEGATE_RULE_PROPERTY_NAME);
 
         String docTypeSearchName = null;
         String workflowId = null;
@@ -209,7 +214,17 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         Boolean isDelegateRule = null;
         Boolean isActive = null;
         Long ruleId = null;
-
+      
+        
+        //for KULRICE-3678
+        if(deleteSelection != null && !"".equals(deleteSelection.trim()))
+        {
+        	if(deleteSelection.equalsIgnoreCase("Y"))
+        		isDelegateRule = Boolean.TRUE;
+        	else
+        		isDelegateRule = Boolean.FALSE;
+        }
+        
         if (ruleIdParam != null && !"".equals(ruleIdParam.trim())) {
             try {
                 ruleId = new Long(ruleIdParam.trim());
@@ -231,8 +246,15 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             docTypeSearchName = "%" + docTypeSearchName.trim() + "%";
         }
 
+        if (!Utilities.isEmpty(networkIdParam)) {
+        	Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam);
+        	if (person != null) {
+        		workflowId = person.getPrincipalId();
+        	}
+        }
+        
         if (!Utilities.isEmpty(groupIdParam) || !Utilities.isEmpty(groupNameParam)) {
-            KimGroup group = null;
+            Group group = null;
             if (groupIdParam != null && !"".equals(groupIdParam)) {
                 group = getIdentityManagementService().getGroup(groupIdParam.trim());
             } else {
@@ -242,7 +264,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 group = getIdentityManagementService().getGroupByName(groupNamespaceParam, groupNameParam.trim());
                 if (group == null) {
                     String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-                    GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
+                    GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
                 } else {
                     workgroupId = group.getGroupId();
                 }
@@ -276,12 +298,12 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 List<Row> searchRows = null;
                 if (attribute instanceof OddSearchAttribute) {
                     for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)((OddSearchAttribute)attribute).validateSearchData(fieldValues)) {
-                        GlobalVariables.getErrorMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
+                        GlobalVariables.getMessageMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
                     }
                     searchRows = ((OddSearchAttribute) attribute).getSearchRows();
                 } else {
                     for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)attribute.validateRuleData(fieldValues)) {
-                        GlobalVariables.getErrorMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
+                        GlobalVariables.getMessageMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
                     }
                     searchRows = attribute.getRuleRows();
                 }
@@ -386,19 +408,19 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
-            GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
         }
 
         if  (!Utilities.isEmpty(groupName) && Utilities.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-            GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
         }
 
         if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 String attributeLabel =  getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
-                GlobalVariables.getErrorMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
+                GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }
         }
 
@@ -406,10 +428,10 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             Person person = KIMServiceLocator.getPersonService().getPerson(personId);
             if (person == null) {
                 String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME);
-                GlobalVariables.getErrorMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
+                GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
             }
         }
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().isEmpty()) {
             throw new ValidationException("errors in search criteria");
         }
     }
@@ -438,7 +460,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         List returnKeys = getReturnKeys();
         List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
-
+        
         // iterate through result list and wrap rows with return url and action urls
         for (Iterator iter = displayList.iterator(); iter.hasNext();) {
             BusinessObject element = (BusinessObject) iter.next();
@@ -456,6 +478,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 actionUrls = ACTION_URLS_EMPTY;
             }
 
+            // Determine whether or not this rule is a delegate rule.
+            boolean isRuleDelegation = (element instanceof RuleBaseValues && ((RuleBaseValues) element).getDelegateRule().booleanValue());
+            
             List<Column> columns = getColumns();
             for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
 
@@ -520,7 +545,19 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 col.setPropertyValue(propValue);
 
                 if (StringUtils.isNotBlank(propValue)) {
-                    col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+                	if (RULE_ID_PROPERTY_NAME.equals(col.getPropertyName()) && isRuleDelegation) {
+                		// If the row represents a delegate rule, make the ID column's inquiry link lead to the corresponding delegate rule instead.
+                   		List<?> delegationList = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(
+                   				((RuleBaseValues) element).getRuleBaseValuesId());
+                		if (ObjectUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
+                			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
+                			col.setColumnAnchor(getInquiryUrl(ruleDelegation, "ruleDelegationId"));
+                		} else {
+                			col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+                		}
+                	}else {
+                		col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+                	}
 
                 }
             }
@@ -571,12 +608,36 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             List pkNames) {
         RuleBaseValues ruleBaseValues = (RuleBaseValues)businessObject;
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName()) && allowsMaintenanceEditAction(businessObject)) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
+        	if (ruleBaseValues.getDelegateRule().booleanValue()) {
+        		// If the rule is a delegate rule, have the edit/copy links open the rule delegation maintenance document screen instead.
+        		List<?> delegationList = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(ruleBaseValues.getRuleBaseValuesId());
+        		if (ObjectUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
+        			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
+    				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.
+        	        if (ruleDelegationLookupableHelperService == null) {
+        				ruleDelegationLookupableHelperService = KNSServiceLocator.getLookupable(
+        						KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(
+        								ruleDelegation.getClass())).getLookupableHelperService();
+        				if (ruleDelegationLookupableHelperService.getBusinessObjectClass() == null) {
+        					ruleDelegationLookupableHelperService.setBusinessObjectClass(ruleDelegation.getClass());
+        				}
+        				delegationPkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(ruleDelegation.getClass());
+        			}
+        	        // Allow the rule delegation's lookupable helper service to handle the custom action URL generation instead.
+        			htmlDataList = ruleDelegationLookupableHelperService.getCustomActionUrls(ruleDelegation, delegationPkNames);
+        		}
+        	} else {
+        		// Otherwise, have the links open the regular routing rule maintenance document screen.
+        		if (allowsMaintenanceEditAction(businessObject)) {
+        			htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+        		}
+        		if (allowsMaintenanceNewOrCopyAction()) {
+                	htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+            	}
+        	}
         }
-        if (allowsMaintenanceNewOrCopyAction()) {
-            htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
-        }
+        
         return htmlDataList;
     }
 

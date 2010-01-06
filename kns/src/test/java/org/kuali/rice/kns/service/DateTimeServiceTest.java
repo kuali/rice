@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,12 +22,12 @@ import java.util.Date;
 
 import org.junit.Test;
 import org.kuali.rice.kns.test.KualiTestAssertionUtils;
-import org.kuali.test.KNSTestBase;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the DateTime service.
  */
-public class DateTimeServiceTest extends KNSTestBase {
+public class DateTimeServiceTest extends KNSTestCase {
 
     @Test public void testGetCurrentDate() {
         Date beforeServiceDate = new Date();
@@ -142,8 +142,8 @@ public class DateTimeServiceTest extends KNSTestBase {
         assertTrue("invalid dateString failed to fail", failedAsExpected);
     }
 
-    @Test public void testConvertToSqlDate_validDateeString() throws ParseException {
-        java.sql.Date serviceDate = KNSServiceLocator.getDateTimeService().convertToSqlDate("1966-05-01");
+    @Test public void testConvertToSqlDate_validDateString() throws ParseException {
+        java.sql.Date serviceDate = KNSServiceLocator.getDateTimeService().convertToSqlDate("05/01/1966");
 
         Calendar serviceCalendar = Calendar.getInstance();
         serviceCalendar.setTime(serviceDate);

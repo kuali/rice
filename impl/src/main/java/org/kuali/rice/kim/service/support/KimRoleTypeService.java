@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * 
  * Is it used to interpret the qualifiers which may be attached.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimRoleTypeService extends KimTypeService {
@@ -105,20 +105,23 @@ public interface KimRoleTypeService extends KimTypeService {
     List<RoleMembershipInfo> sortRoleMembers( List<RoleMembershipInfo> roleMembers );
     
     /**
-     * Convert a set of attributes that need to be converted.  For example,
-     * this method could take [chart=BL,org=PSY] and return [campus=BLOOMINGTON]
-     * if this role was based on the campus and the role assigned to it was based 
-     * on organization.
-     * 
-     * The contents of the passed in attribute set should not be modified as they may be used in future calls by
-     * the role service.
-     * 
-     */
-    AttributeSet convertQualificationAttributesToRequired( AttributeSet qualificationAttributes );
-    
-    /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
      */
     AttributeSet convertQualificationForMemberRoles( String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification );
+    
+    /**
+     * Called by the role service when it is notified that a principal has been inactivated.  Can be used 
+     * to perform local data cleanup by application roles.
+     */
+    void principalInactivated( String principalId, String namespaceCode, String roleName );
+    
+    /**
+     * Determines if the role specified by the given namespace and role name should have membership queries cached
+     * 
+     * @param namespaceCode the namespace code of the role to determine caching on
+     * @param roleName the name of the role to determine caching on
+     * @return true if the membership results of the Role should be cached, false otherwise
+     */
+    public abstract boolean shouldCacheRoleMembershipResults(String namespaceCode, String roleName);
     
 }

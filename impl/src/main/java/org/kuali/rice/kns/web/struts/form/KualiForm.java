@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ActionFormUtilMap;
@@ -40,8 +43,6 @@ import org.kuali.rice.kns.web.ui.HeaderField;
 public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
     private String methodToCall;
-    private boolean currentMethodToCallIsRefresh;
-    private boolean nextMethodToCallIsRefresh;
     private String refreshCaller;
     private String anchor;
     private Map<String, String> tabStates;
@@ -93,7 +94,6 @@ public class KualiForm extends PojoFormBase {
         this.tabStates = new HashMap<String, String>();
         this.actionFormUtilMap = new ActionFormUtilMap();
         this.docInfo = new ArrayList<HeaderField>();
-        this.nextMethodToCallIsRefresh = false;
     }
 
     /**
@@ -101,7 +101,6 @@ public class KualiForm extends PojoFormBase {
      */
     public void populate(HttpServletRequest request) {
         setMethodToCall(WebUtils.parseMethodToCall(this, request));
-        this.nextMethodToCallIsRefresh = false;
         
         super.populate(request);
 
@@ -122,7 +121,7 @@ public class KualiForm extends PojoFormBase {
      */
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
     	if ( ENABLE_FIELD_LEVEL_HELP_IND == null ) {
-    		ENABLE_FIELD_LEVEL_HELP_IND = KNSServiceLocator.getKualiConfigurationService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE,
+    		ENABLE_FIELD_LEVEL_HELP_IND = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE,
     	        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND);
     	}
     	setFieldLevelHelpEnabled( ENABLE_FIELD_LEVEL_HELP_IND.booleanValue() );
@@ -357,11 +356,21 @@ public class KualiForm extends PojoFormBase {
 		if (requestParameterName.startsWith(KNSConstants.TAB_STATES)) {
 			return true;
 		}
+		
+		if (requestParameterName.equals(KNSConstants.DISPATCH_REQUEST_PARAMETER)) {
+			String methodToCallParameterName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+			if(StringUtils.equals(methodToCallParameterName, KNSConstants.RETURN_METHOD_TO_CALL)){
+				return true;
+			}
+		}
+		
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
 	}
     
     public boolean shouldMethodToCallParameterBeUsed(String methodToCallParameterName, String methodToCallParameterValue, HttpServletRequest request) {
-    	
+    	if ("GET".equalsIgnoreCase(request.getMethod())) {
+    		return true;
+    	}
     	if (shouldPropertyBePopulatedInForm(methodToCallParameterName, request)) {
     		return true;
     	}
@@ -386,27 +395,49 @@ public class KualiForm extends PojoFormBase {
     }
 
 	/**
-	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#switchEditablePropertyInformationToPreviousRequestInformation()
-	 */
-	@Override
-	public void switchEditablePropertyInformationToPreviousRequestInformation() {
-		super.switchEditablePropertyInformationToPreviousRequestInformation();
-		currentMethodToCallIsRefresh = nextMethodToCallIsRefresh;
-	}
-
-	/**
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#clearEditablePropertyInformation()
 	 */
 	@Override
 	public void clearEditablePropertyInformation() {
 		super.clearEditablePropertyInformation();
-		nextMethodToCallIsRefresh = false;
-	}
-	
-	public void registerNextMethodToCallIsRefresh(boolean nextMethodToCallIsRefresh) {
-		this.nextMethodToCallIsRefresh = nextMethodToCallIsRefresh;
 	}
 	
 	public void setDerivedValuesOnForm(HttpServletRequest request) {
+	}
+
+	/**
+	 * @see org.apache.struts.action.ActionForm#reset(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public void reset(ActionMapping mapping, HttpServletRequest request) {
+		super.reset(mapping, request);
+		if (extraButtons != null) {
+			extraButtons.clear();
+		}
+		clearDisplayedMessages();
+	}
+
+	/**
+	 * @see org.apache.struts.action.ActionForm#reset(org.apache.struts.action.ActionMapping, javax.servlet.ServletRequest)
+	 */
+	@Override
+	public void reset(ActionMapping mapping, ServletRequest request) {
+		super.reset(mapping, request);
+		if (extraButtons != null) {
+			extraButtons.clear();
+		}
+		clearDisplayedMessages();
+	}
+	
+	private void clearDisplayedMessages() {
+		if (displayedErrors != null) {
+			displayedErrors.clear();
+		}
+		if (displayedWarnings != null) {
+			displayedWarnings.clear();
+		}
+		if (displayedInfo != null) {
+			displayedInfo.clear();
+		}
 	}
 }

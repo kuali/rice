@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -32,7 +31,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
 
 
@@ -40,11 +39,11 @@ import org.kuali.rice.kew.web.session.UserSession;
  * A Struts Action for redirecting from the KEW web application to the appropriate
  * Doc Handler for a document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
+public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
 
         String docHandler = null;
@@ -91,7 +90,7 @@ public class ClientAppDocHandlerRedirectAction extends WorkflowAction {
         return new ActionForward(docHandler, true);
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        return null;
+    public static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
     }
 }

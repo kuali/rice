@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,10 +18,13 @@ package org.kuali.rice.ksb.messaging.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.DataAccessUtils;
-import org.kuali.rice.ksb.messaging.MessageHelper;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.ksb.messaging.FlattenedServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
@@ -50,12 +53,15 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 
 	public void saveEntry(ServiceInfo entry) {
 		try {
-			Object service = entry.getServiceDefinition().getService();
-			entry.getServiceDefinition().setService(null);
-			entry.setSerializedServiceNamespace(serviceLocator==null?
-					KSBServiceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()):
-						serviceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()));
-			entry.getServiceDefinition().setService(service);
+			if (ObjectUtils.isNull(entry.getSerializedServiceNamespace())) {
+				entry.setSerializedServiceNamespace(new FlattenedServiceDefinition(serviceLocator==null ?
+						KSBServiceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()) :
+								serviceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition())));
+			} else {
+				entry.getSerializedServiceNamespace().setFlattenedServiceDefinitionData(serviceLocator==null ?
+						KSBServiceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()) :
+								serviceLocator.getMessageHelper().serializeObject(entry.getServiceDefinition()));
+			}
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);
 		}
@@ -70,6 +76,18 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	    return dao.fetchAllActive();
 	}
 
+	public List<ServiceInfo> fetchActiveByName(String serviceName) {
+		return getDao().fetchActiveByName(serviceName);
+	}
+	
+	public List<ServiceInfo> fetchActiveByQName(QName qname) {
+		return getDao().fetchActiveByQName(qname);		
+	}
+	
+	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
+		return getDao().fetchActiveByNamespace(serviceNamespace);
+	}
+	
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
 		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			return new ArrayList<ServiceInfo>();

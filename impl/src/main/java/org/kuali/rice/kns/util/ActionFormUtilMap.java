@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,15 +33,17 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  *
  */
+@SuppressWarnings("unchecked")
 public class ActionFormUtilMap extends HashMap {
-    private boolean cacheValueFinderResults;
+    private static final long serialVersionUID = 1L;
+	private boolean cacheValueFinderResults;
 
     /**
      * This method parses from the key the actual method to run.
      *
      * @see java.util.Map#get(java.lang.Object)
      */
-    public Object get(Object key) {
+	public Object get(Object key) {
     	if (cacheValueFinderResults) {
     	    if (super.containsKey(key)) {
     		// doing a 2 step retrieval allows us to also cache the null key correctly
@@ -92,7 +94,7 @@ public class ActionFormUtilMap extends HashMap {
      * KeyValue pairs. This is used by the htmlControlAttribute.tag to render select options from a given finder class specified in
      * the data dictionary.
      */
-    public Object getOptionsMap(Object key) {
+	public Object getOptionsMap(Object key) {
         List optionsList = new ArrayList();
 
         if (StringUtils.isBlank((String) key)) {
@@ -128,9 +130,9 @@ public class ActionFormUtilMap extends HashMap {
         return optionsList;
     }
 
-    // Method added to keep backward compatibility for non-kimTypeName cases
+    // Method added to keep backward compatibility for non-kimTypeId cases
     public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeKeyInLabel) {
-    	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, includeKeyInLabel, null);
+    	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, null, includeKeyInLabel );
     }
     
     public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel) {
@@ -152,10 +154,10 @@ public class ActionFormUtilMap extends HashMap {
      * @param keyAttribute name of BO attribute for key
      * @param labelAttribute name of BO attribute for label
      * @param includeKeyInLabel whether to include the key in the label or not
-     * @param kimTypeName the KIM Type to use in case of KimAttributeValuesFinder 
+     * @param kimTypeId the KIM Type to use in case of KimAttributeValuesFinder 
      * @return list of KeyValue pairs
      */
-    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel, String kimTypeName) {
+	public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel, Object kimTypeId) {
         List optionsList = new ArrayList();
 
         if (StringUtils.isBlank((String) key)) {
@@ -170,7 +172,7 @@ public class ActionFormUtilMap extends HashMap {
 
         KeyValuesFinder finder;
         try {
-            Class finderClass = Class.forName((String) key);
+    		Class finderClass = Class.forName((String) key);
             finder = (KeyValuesFinder) finderClass.newInstance();
             if (finder instanceof ApcValuesFinder) {
                 throw new IllegalArgumentException("Cannot currently use <apcSelect> in this form");
@@ -183,11 +185,11 @@ public class ActionFormUtilMap extends HashMap {
                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(Boolean.parseBoolean((String)includeBlankRow)); 
                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(Boolean.parseBoolean((String)includeKeyInLabel));
             } else if (finder instanceof KimAttributeValuesFinder) {
-            	if (kimTypeName == null) {
-            		throw new RuntimeException("kimTypeName must be specified for KimAttributeValuesFinder");
+            	if (kimTypeId == null) {
+            		throw new RuntimeException("kimTypeId must be specified for KimAttributeValuesFinder");
             	}
-                ((KimAttributeValuesFinder) finder).setKimTypeName(kimTypeName);
-                ((KimAttributeValuesFinder) finder).setKimAttributeName((String)keyAttribute);
+                ((KimAttributeValuesFinder) finder).setKimTypeId(kimTypeId.toString());
+                ((KimAttributeValuesFinder) finder).setKimAttributeName(keyAttribute.toString());
             }
             
             optionsList = finder.getKeyValues();

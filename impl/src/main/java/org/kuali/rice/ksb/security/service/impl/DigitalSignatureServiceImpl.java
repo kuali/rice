@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,19 +23,21 @@ import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.kuali.rice.ksb.security.service.DigitalSignatureService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 public class DigitalSignatureServiceImpl implements DigitalSignatureService {
 
 	public Signature getSignatureForSigning() throws IOException, GeneralSecurityException {
 		Signature signature = getSignature();
-		signature.initSign(KSBServiceLocator.getJavaSecurityManagementService().getModulePrivateKey());
+		signature.initSign(getJavaSecurityManagementService().getModulePrivateKey());
 		return signature;
 	}
 
     public Signature getSignatureForVerification(String verificationAlias) throws IOException, GeneralSecurityException {
-        Certificate cert = KSBServiceLocator.getJavaSecurityManagementService().getCertificate(verificationAlias);
+        Certificate cert = getJavaSecurityManagementService().getCertificate(verificationAlias);
         return getSignatureForVerification(cert);
     }
 
@@ -53,7 +55,12 @@ public class DigitalSignatureServiceImpl implements DigitalSignatureService {
     }
     
 	protected Signature getSignature() throws GeneralSecurityException {
-		return Signature.getInstance(KSBServiceLocator.getJavaSecurityManagementService().getModuleSignatureAlgorithm());
+		return Signature.getInstance(getJavaSecurityManagementService().getModuleSignatureAlgorithm());
 	}
+	
+	protected JavaSecurityManagementService getJavaSecurityManagementService() {
+		return (JavaSecurityManagementService)GlobalResourceLoader.getService(KSBConstants.ServiceNames.JAVA_SECURITY_MANAGEMENT_SERVICE);
+	}
+
 
 }

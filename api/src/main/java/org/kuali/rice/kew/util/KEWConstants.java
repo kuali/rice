@@ -1,20 +1,39 @@
+/*
+ * Copyright 2007-2009 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kew.util;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.RiceConstants;
 
-public class KEWConstants {
+public class KEWConstants extends JSTLConstants {
 
     private static final long serialVersionUID = -3897059085433394648L;
 
     public static final String WEBAPP_DIRECTORY = "/kew";
-    
+
     /**
      * Node state key under which rule selector can be specified on a per-nodeinstance basis
      */
@@ -25,7 +44,7 @@ public class KEWConstants {
     public static final String RULE_NAME_NODE_STATE_KEY = "__RULE_NAME__";
 
     public static final String DEFAULT_DOCUMENT_TYPE_LABEL = "Undefined";
-    
+
     public static final String DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR = "(Inherited from Parent)";
     public static final String DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR = "(System Default)";
 
@@ -79,18 +98,18 @@ public class KEWConstants {
     /**
      * This is a UI option, not valid data for a delgationType value.
      */
-    public static final String DELEGATION_EITHER = "E";
-    
-    public static final String DELEGATION_PRIMARY_LABEL = "PRIMARY";
-    public static final String DELEGATION_SECONDARY_LABEL = "SECONDARY";
-    public static final String DELEGATION_EITHER_LABEL = "EITHER";
-    
-    // Linked hash amap to preseve order for iteration
+    public static final String DELEGATION_BOTH = "E";
+
+    public static final String DELEGATION_PRIMARY_LABEL = "Primary";
+    public static final String DELEGATION_SECONDARY_LABEL = "Secondary";
+    public static final String DELEGATION_BOTH_LABEL = "Both";
+
+    // Linked hash map to preseve order for iteration
     public static final Map<String, String> DELEGATION_TYPES = new LinkedHashMap<String, String>();
     static {
     	DELEGATION_TYPES.put(DELEGATION_PRIMARY, DELEGATION_PRIMARY_LABEL);
     	DELEGATION_TYPES.put(DELEGATION_SECONDARY, DELEGATION_SECONDARY_LABEL);
-    	DELEGATION_TYPES.put(DELEGATION_EITHER, DELEGATION_EITHER_LABEL);
+    	DELEGATION_TYPES.put(DELEGATION_BOTH, DELEGATION_BOTH_LABEL);
     }
 
     public static final String FLEX_RM_NAME = "FRM";
@@ -106,8 +125,6 @@ public class KEWConstants {
     public static final String DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME = "showCloseButton";
     public static final String DISPLAY_CLOSE_BUTTON_TRUE_VALUE = "showCloseButton";
 
-    public static final String WORKFLOW_SUPER_USER_WORKGROUP_NAME = "WorkflowAdmin";
-
     public static final String DAILY_UNIT = "Daily";
     public static final String WEEKLY_UNIT = "Weekly";
     public static final String MONTHLY_UNIT = "Monthly";
@@ -116,7 +133,7 @@ public class KEWConstants {
     public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
     public static final String APP_CODE = "en";
-    public static final String PROD_DEPLOYMENT_CODE = "prd";
+    public static final String PROD_DEPLOYMENT_CODE = "production.environment.code";
 
     public static final String YES_LABEL = "Yes";
     public static final String NO_LABEL = "No";
@@ -141,12 +158,25 @@ public class KEWConstants {
         DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE,
         DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY
     };
-    
+
     //determines if route log will show the look into the future link
     public static final String LOOK_INTO_FUTURE_POLICY = "LOOK_FUTURE";
     public static final String SUPPORTS_QUICK_INITIATE_POLICY = "SUPPORTS_QUICK_INITIATE";
     public static final String NOTIFY_ON_SAVE_POLICY = "NOTIFY_ON_SAVE";
 
+    // alternate kew status policy constants.  Determines if route header will show the KEW Route Status
+    // or the application doc status, or both
+    public static final String DOCUMENT_STATUS_POLICY = "DOCUMENT_STATUS_POLICY";
+    public static final String DOCUMENT_STATUS_POLICY_KEW_STATUS = "KEW";
+    public static final String DOCUMENT_STATUS_POLICY_APP_DOC_STATUS = "APP";
+    public static final String DOCUMENT_STATUS_POLICY_BOTH = "BOTH";   
+    public static final String[] DOCUMENT_STATUS_POLICY_VALUES = {
+    	DOCUMENT_STATUS_POLICY_KEW_STATUS,
+    	DOCUMENT_STATUS_POLICY_APP_DOC_STATUS,
+    	DOCUMENT_STATUS_POLICY_BOTH
+    };
+    
+    
     public static final String SUPER_USER_CANCEL="SU_CANCEL";
     public static final String SUPER_USER_APPROVE="SU_APPROVE";
     public static final String SUPER_USER_DISAPPROVE="SU_DISAPPROVE";
@@ -172,6 +202,8 @@ public class KEWConstants {
     public static final String ACTION_LIST_NONDELEGATED_REQUESTS = "nondelegated";
     public static final String DELEGATORS_ON_FILTER_PAGE = "Secondary Delegators only on Filter Page";
     public static final String DELEGATORS_ON_ACTION_LIST_PAGE = "Secondary Delegators on Action List Page";
+    public static final String PRIMARY_DELEGATES_ON_FILTER_PAGE = "Primary Delegates only on Filter Page";
+    public static final String PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE = "Primary Delegates on Action List Page";
 
     public static final Map<String, String> ACTION_LIST_CONTENT;
     static {
@@ -207,6 +239,42 @@ public class KEWConstants {
     public static final int TITLE_MAX_LENGTH = 255;
 
     public static final Date CURRENT_DATE = new Date(-7);
+
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_PENDING = "Pending";
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_SUCCESSFUL = "Successful";
+    public static final String DOCUMENT_STATUS_PARENT_TYPE_UNSUCCESSFUL = "Unsuccessful";
+
+    public static final Map<String, List<String>> DOCUMENT_STATUS_PARENT_TYPES;
+
+    static {
+
+    	DOCUMENT_STATUS_PARENT_TYPES = new HashMap<String, List<String>>();
+
+    	// Pending Statuses
+    	List<String> pendingList = new ArrayList<String>();
+    	pendingList.add(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_SAVED_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_INITIATED_CD);
+    	pendingList.add(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+
+    	// Successful Statuses
+    	List<String> successfulList = new ArrayList<String>();
+    	successfulList.add(KEWConstants.ROUTE_HEADER_FINAL_CD);
+    	successfulList.add(KEWConstants.ROUTE_HEADER_PROCESSED_CD);
+    	successfulList.add(KEWConstants.ROUTE_HEADER_APPROVED_CD);
+
+    	// Unsuccessful Statuses
+    	List<String> unsuccessfulList = new ArrayList<String>();
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD);
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_CANCEL_CD);
+    	unsuccessfulList.add(KEWConstants.ROUTE_HEADER_CANCEL_DISAPPROVE_CD);
+
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_PENDING, pendingList);
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_SUCCESSFUL, successfulList);
+    	DOCUMENT_STATUS_PARENT_TYPES.put(KEWConstants.DOCUMENT_STATUS_PARENT_TYPE_UNSUCCESSFUL, unsuccessfulList);
+
+    }
+
     public static final Map<String, String> DOCUMENT_STATUSES;
 
     static {
@@ -244,6 +312,17 @@ public class KEWConstants {
         ACTION_LIST_COLOR_PALETTE.put("slate", "#BDDABD");
         ACTION_LIST_COLOR_PALETTE.put("purple", "#DFCAFA");
         ACTION_LIST_COLOR_PALETTE.put("tan", "#E5E5B7");
+    }
+
+    // This is just the above map, but with the keys in the place of the values and vice versa. This assumes the map above
+    // is a one-to-one correspondence; if it's not, then the static{} block below will need modification.
+    public static final Map<String, String> ACTION_LIST_COLOR_NAMES;
+    static {
+    	ACTION_LIST_COLOR_NAMES = new HashMap<String,String>();
+    	for (Iterator<Map.Entry<String,String>> iterator = ACTION_LIST_COLOR_PALETTE.entrySet().iterator(); iterator.hasNext();) {
+    		Map.Entry<String,String> colorEntry = iterator.next();
+    		ACTION_LIST_COLOR_NAMES.put(colorEntry.getValue(), colorEntry.getKey());
+    	}
     }
 
     public static final String HEADER_TAG = "ROUTE_HEADER";
@@ -304,6 +383,8 @@ public class KEWConstants {
     public static final String ROUTE_HEADER_ENROUTE_LABEL = "ENROUTE";
     /** The document is currently being routed. */
     public static final String ROUTE_HEADER_ENROUTE_CD = "R";
+    
+    public static String UNKNOWN_STATUS = "";
 
     /** Actions Taken Constants **/
     public static final String ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD = "k";
@@ -408,14 +489,14 @@ public class KEWConstants {
 
     public static final String APPROVE_POLICY_ALL_APPROVE_LABEL = "ALL";
     public static final String APPROVE_POLICY_FIRST_APPROVE_LABEL = "FIRST";
-    
+
     public static final Map<String, String> APPROVE_POLICIES = new HashMap<String, String>();
     static {
     	APPROVE_POLICIES.put(APPROVE_POLICY_FIRST_APPROVE, APPROVE_POLICY_FIRST_APPROVE_LABEL);
     	APPROVE_POLICIES.put(APPROVE_POLICY_ALL_APPROVE, APPROVE_POLICY_ALL_APPROVE_LABEL);
     }
 
-    public static final boolean ACTION_REQUEST_IGNORE_PREV_ACTION = true;
+    public static final boolean ACTION_REQUEST_FORCE_ACTION = true;
     public static final boolean ACTION_REQUEST_PREV_ACTION_AWARE = false;
     /** Action Request is for a workgroup. */
     public static final String ACTION_REQUEST_GROUP_RECIPIENT_CD = "W";
@@ -504,11 +585,11 @@ public class KEWConstants {
     public static final String RULE_RESPONSIBILITY_WORKFLOW_ID = "F";
     public static final String RULE_RESPONSIBILITY_GROUP_ID = "G";
     public static final String RULE_RESPONSIBILITY_ROLE_ID = "R";
-    
+
     public static final String RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL = "PERSON";
 	public static final String RULE_RESPONSIBILITY_GROUP_ID_LABEL = "GROUP";
 	public static final String RULE_RESPONSIBILITY_ROLE_ID_LABEL = "ROLE";
-    
+
     public static final Map<String, String> RULE_RESPONSIBILITY_TYPES = new HashMap<String, String>();
     static {
     	RULE_RESPONSIBILITY_TYPES.put(RULE_RESPONSIBILITY_WORKFLOW_ID, RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL);
@@ -775,6 +856,7 @@ public class KEWConstants {
     // system branch state keys
     public static final String POST_PROCESSOR_PROCESSED_KEY = "System.PostProcessorProcessed";
     public static final String POST_PROCESSOR_FINAL_KEY = "System.PostProcessorFinal";
+    public static final String POST_PROCESSOR_NON_DEFINED_VALUE = "none";
 
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";
@@ -784,8 +866,6 @@ public class KEWConstants {
 	public static final int MAX_RETURNED_ROWS = 1000;
 
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
-
-    public static final String LEGACY_DEFAULT_WORKGROUP_TYPE = "W";
 
     public static final String SIMPLE_DOCUMENT_ACTIONS_SECURITY = "simpleDocumentActionsService.security";
     public static final String DAILY_EMAIL_CRON_EXPRESSION = "dailyEmail.cronExpression";
@@ -893,11 +973,9 @@ public class KEWConstants {
     public static final String ACTION_LIST_DOCUMENT_POPUP_IND = "ACTION_LIST_DOCUMENT_POPUP_IND";
     public static final String ACTION_LIST_ROUTE_LOG_POPUP_IND  = "ACTION_LIST_ROUTE_LOG_POPUP_IND";
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND = "SEND_EMAIL_NOTIFICATION_IND";
-    public static final String APPLICATION_CONTEXT = "APPLICATION_CONTEXT";
     public static final String SHOW_BACK_DOOR_LOGIN_IND = "SHOW_BACK_DOOR_LOGIN_IND";
     public static final String RULE_DELEGATE_LIMIT = "DELEGATE_LIMIT";
-    public static final String RULE_LOCKING_ON_IND = "RULE_LOCKING_ON_IND";
-    public static final String BACKDOOR_TARGET_FRAME_NAME = "TARGET_FRAME_NAME";
+    //public static final String BACKDOOR_TARGET_FRAME_NAME = "TARGET_FRAME_NAME";
     public static final String EMAIL_REMINDER_FROM_ADDRESS = "FROM_ADDRESS";
     public static final String MAX_NODES_BEFORE_RUNAWAY_PROCESS = "MAXIMUM_NODES_BEFORE_RUNAWAY";
     public static final String NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND = "NOTIFY_EXCLUDED_USERS_IND";
@@ -905,24 +983,16 @@ public class KEWConstants {
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_IND = "DOCUMENT_SEARCH_POPUP_IND";
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND = "DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND";
     public static final String DOC_SEARCH_RESULT_CAP = "RESULT_CAP";
-    public static final String DOCUMENT_TYPE_SEARCH_INSTRUCTION = "DOCUMENT_TYPE_SEARCH_INSTRUCTION";
     public static final String EDL_DEBUG_TRANSFORM_IND = "DEBUG_TRANSFORM_IND";
     public static final String EDL_USE_XSLTC_IND = "USE_XSLTC_IND";
     public static final String IS_LAST_APPROVER_ACTIVATE_FIRST_IND = "IS_LAST_APPROVER_ACTIVATE_FIRST_IND";
-    public static final String GLOBAL_REVIEWER_REPLACE_INSTRUCTION = "REPLACE_INSTRUCTION";
     public static final String HELP_DESK_ACTION_LIST = "HELP_DESK_NAME_GROUP";
-    public static final String NOTE_CREATE_NEW_INSTRUCTION = "NOTE_CREATE_NEW_INSTRUCTION";
     public static final String QUICK_LINKS_RESTRICT_DOCUMENT_TYPES = "RESTRICT_DOCUMENT_TYPES";
     public static final String RULE_CUSTOM_DOC_TYPES = "CUSTOM_DOCUMENT_TYPES";
-    public static final String RULE_CREATE_NEW_INSTRUCTION = "RULE_CREATE_NEW_INSTRUCTION";
-    public static final String RULE_ROUTE_LOG_POPUP_IND = "ROUTE_LOG_POPUP_IND";
-    public static final String RULE_SEARCH_INSTRUCTION = "RULE_SEARCH_INSTRUCTION";
     public static final String RULE_GENERATE_ACTION_REQESTS_IND = "GENERATE_ACTION_REQUESTS_IND";
-    public static final String RULE_TEMPLATE_CREATE_NEW_INSTRUCTION = "RULE_TEMPLATE_CREATE_NEW_INSTRUCTION";
-    public static final String RULE_TEMPLATE_SEARCH_INSTRUCTION = "RULE_TEMPLATE_SEARCH_INSTRUCTION";
     public static final String SHOW_ATTACHMENTS_IND = "SHOW_ATTACHMENTS_IND";
     public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";
-    public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIl_NOTIFICATION_TEST_ADDRESS";
+    public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIL_NOTIFICATION_TEST_ADDRESS";
 
     //System parameter value comparisons
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "Y";
@@ -930,12 +1000,12 @@ public class KEWConstants {
     public static final String YES_DELEGATE_CHANGE_AR_GENERATION_VALUE = "Y";
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE = "Y";
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "Y";
-    
+
     public class PermissionNames {
         public static final String VIEW_OTHER_ACTION_LIST = "View Other Action List";
         public static final String UNRESTRICTED_DOCUMENT_SEARCH = "Unrestricted Document Search";
     }
-    
+
     // special user used when no other user is available
     public static final String SYSTEM_USER = "kr";
     public static final String ENABLE_KEN_NOTIFICATION = "rice.kew.enableKENNotification";

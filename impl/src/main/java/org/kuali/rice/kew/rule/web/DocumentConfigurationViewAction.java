@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation
+ * Copyright 2008-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,6 +45,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
@@ -60,7 +61,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentConfigurationViewAction extends KewKualiAction {
@@ -115,7 +116,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			// just skip - and don't display links
         	LOG.error( "Unable to check Permission initiation permission for "+ permissionDocumentType, ex );
 		}
-    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimPermissionImpl.class);
+    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(KimResponsibilityImpl.class);
         try {
             if ((responsibilityDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(responsibilityDocumentType).canInitiate(responsibilityDocumentType, GlobalVariables.getUserSession().getPerson())) {
                 form.setCanInitiateResponsibilityDocument( true );
@@ -217,14 +218,67 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 	}
 	
+	// loop over nodes
+	// if split node, push onto stack
+		// note the number of children, this is the number of times the join node needs to be found
+	// when join node found, return to last split on stack
+		// move to next child of the split
+	
+	protected RouteNode flattenSplitNode( RouteNode splitNode, Map<String,RouteNode> nodes ) {
+		nodes.put( splitNode.getRouteNodeName(), splitNode );
+		RouteNode joinNode = null;
+		
+		for ( RouteNode nextNode : splitNode.getNextNodes() ) {
+			joinNode = flattenRouteNodes(nextNode, nodes);
+		}
+		
+		if ( joinNode != null ) {
+			nodes.put( joinNode.getRouteNodeName(), joinNode );
+		}
+		return joinNode;
+	}
+	
+	/**
+	 * @param node
+	 * @param nodes
+	 * @return The last node processed by this method.
+	 */
+	protected RouteNode flattenRouteNodes( RouteNode node, Map<String,RouteNode> nodes ) {
+		RouteNode lastProcessedNode = null;
+		// if we've seen the node before - skip, avoids infinite loop
+		if ( nodes.containsKey(node.getRouteNodeName()) ) {
+			return node;
+		}
+		
+		if ( node.getNodeType().contains( "SplitNode" ) ) { // Hacky - but only way when the class may not be present in the KEW JVM
+			lastProcessedNode = flattenSplitNode(node, nodes); // special handling to process all split children before continuing
+			// now, process the join node's children
+			for ( RouteNode nextNode : lastProcessedNode.getNextNodes() ) {
+				lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+			}
+		} else if ( node.getNodeType().contains( "JoinNode" ) ) {
+			lastProcessedNode = node; // skip, handled by the split node
+		} else {
+			// normal node, add to list and process all children
+			nodes.put(node.getRouteNodeName(), node);
+			for ( RouteNode nextNode : node.getNextNodes() ) {
+				lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+			}
+		}
+		return lastProcessedNode;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void populateRoutingResponsibilities( DocumentConfigurationViewForm form ) {
 		// pull all the responsibilities
 		// merge the data and attach to route levels
 		// pull the route levels and store on form
-		List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
+		//List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
+		RouteNode rootNode = ((List<org.kuali.rice.kew.engine.node.Process>)form.getDocumentType().getProcesses()).get(0).getInitialRouteNode();
+		LinkedHashMap<String, RouteNode> routeNodeMap = new LinkedHashMap<String, RouteNode>();
+		flattenRouteNodes(rootNode, routeNodeMap);
 		
-		form.setRouteNodes( routeNodes );
+		form.setRouteNodes( new ArrayList<RouteNode>( routeNodeMap.values() ) );
 		// pull all the responsibilities and store into a map for use by the JSP
 		
 		// FILTER TO THE "Review" template only
@@ -274,6 +328,17 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		form.setResponsibilityRoles( respToRoleMap );
 	}
 	
+	/**
+	 * @see org.kuali.rice.kns.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// Repopulating the form is necessary when toggling tab states on the server side.
+		ActionForward actionForward = super.toggleTab(mapping, form, request, response);
+		populateForm( (DocumentConfigurationViewForm)form );
+		return actionForward;
+	}
+
 	/**
 	 * Internal delegate class to wrap a responsibility and add an overridden flag.
 	 */

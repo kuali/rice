@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,9 +39,9 @@ import org.kuali.rice.kew.util.Utilities;
  * A node which will activate any requests on it, returning true when there are no more requests 
  * which require activation.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RequestActivationNode implements SimpleNode {
+public class RequestActivationNode extends RequestActivationNodeBase {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger( RequestActivationNode.class );
     private static long generatedRequestPriority = 0;
@@ -88,7 +88,7 @@ public class RequestActivationNode implements SimpleNode {
      * @throws WorkflowException
      */
     public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
-        MDC.put("docID", document.getRouteHeaderId());
+        MDC.put("docId", document.getRouteHeaderId());
         PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
         List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
         List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
@@ -110,11 +110,11 @@ public class RequestActivationNode implements SimpleNode {
         	LOG.debug("Pending Root Requests " + requests.size());
         }
         boolean activatedApproveRequest = activateRequestsCustom( context, requests, generatedActionItems, document, nodeInstance );
+
         // now let's send notifications, since this code needs to be able to activate each request individually, we need
         // to collection all action items and then notify after all have been generated
-        if (!context.isSimulation()) {
-            KEWServiceLocator.getNotificationService().notify(generatedActionItems);
-        }
+        notify(context, generatedActionItems, nodeInstance);
+
         performanceLogger.log("Time to activate requests.");
         return activatedApproveRequest;
     }

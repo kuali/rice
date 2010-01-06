@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.kuali.rice.kns.util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.kuali.rice.core.util.JSTLConstants;
 
@@ -32,7 +35,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
-
+    
     public static final String KNS_NAMESPACE = "KR-NS";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
@@ -55,8 +58,11 @@ public class KNSConstants extends JSTLConstants {
     public static final String KUALI_ACTION_CAN_DISAPPROVE = "canDisapprove";
     public static final String KUALI_ACTION_CAN_CREATE = "canCreate";
     public static final String KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS = "canSendAdHocRequests";
+    public static final String KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS = "canAddAdHocRequests";
+    public static final String KUALI_ACTION_CAN_SEND_NOTE_FYI = "canSendNoteFyi";
+    public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview"; 
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
-
+    
     public static class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";
@@ -68,7 +74,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String RULE_DETAIL_TYPE = "Rule";
         public static final String ACTION_LIST_DETAIL_TYPE = "ActionList";
         public static final String BACKDOOR_DETAIL_TYPE = "Backdoor";
-        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocumentSearch";
+        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocSearchCriteriaDTO";
         public static final String EDOC_LITE_DETAIL_TYPE = "EDocLite";
         public static final String FEATURE_DETAIL_TYPE = "Feature";
         public static final String GLOBAL_REVIEWER_DETAIL_TYPE = "GlobalReviewer";
@@ -77,9 +83,9 @@ public class KNSConstants extends JSTLConstants {
         public static final String QUICK_LINK_DETAIL_TYPE = "QuickLink";
         public static final String ROUTE_QUEUE_DETAIL_TYPE = "RouteQueue";
         public static final String ROUTE_DETAIL_TYPE = "Route";
-        public static final String RULE_SERVICE_DETAIL_TYPE = "RuleService";
+        public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
-        public static final String WORKGROUP_DETAIL_TYPE = "Workgroup";
+        public static final String WORKGROUP_DETAIL_TYPE = "Notification";
     }
 
     public static class DocumentFormHeaderFieldIds {
@@ -102,6 +108,7 @@ public class KNSConstants extends JSTLConstants {
 
 //    public static final String CONFIGURATION_FILE_NAME = "configuration";
     public static final String ENVIRONMENT_KEY = "environment";
+    public static final String MESSAGE_RESOURCES = "rice.struts.message.resources";
 //    public static final String VERSION_KEY = "version";
 //    public static final String LOG4J_SETTINGS_FILE_KEY = "log4j.settings.file";
 //    public static final String LOGS_DIRECTORY_KEY = "logs.directory";
@@ -132,7 +139,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER = "~";
     public static final String ADD_LINE_METHOD = "addLine";
     public static final String ADD_PREFIX = "add";
-//    public static final String ACTIVE_INDICATOR = "Y";
+    public static final String YES_INDICATOR_VALUE = "Y";
+    public static final String NO_INDICATOR_VALUE = "N";
 //    public static final String AMOUNT_PROPERTY_NAME = "amount";
 //    public static final String APPROVE_METHOD = "approve";
 //    public static final String NON_ACTIVE_INDICATOR = "N";
@@ -143,11 +151,11 @@ public class KNSConstants extends JSTLConstants {
     public static final String BUSINESS_OBJECT_CLASS_ATTRIBUTE = "businessObjectClassName";
     public static final String CALLING_METHOD = "caller";
     public static final String CONFIRMATION_QUESTION = "confirmationQuestion";
-    public static final String CONFIGURATION_SERVICE_DATA_FILE_NAME = "configurationServiceData.xml";
     public static final String CONVERSION_FIELDS_PARAMETER = "conversionFields";
     public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";
     public static final String LOOKUP_AUTO_SEARCH = "autoSearch";
+    public static final String SEARCH_METHOD = "search";
 //    public static final String DEFAULT_RETURN_LOCATION = "lookup.do";
     public static final String DELETE_LINE_METHOD = "deleteLine";
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
@@ -176,11 +184,13 @@ public class KNSConstants extends JSTLConstants {
     public static final String FIELD_CONVERSION_PAIR_SEPARATOR = ":";
     public static final String FIELD_CONVERSIONS_SEPARATOR = ",";
     public static final String REFERENCES_TO_REFRESH_SEPARATOR = ",";
+    public static final String RESTRICTED_DATA_MASK = "xxxxxx";
 //    public static final String GENERIC_FIELD_NAME = "Field";
 //    public static final String GENERIC_CODE_PROPERTY_NAME = "code";
 //    public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";
     public static final String OVERRIDE_KEYS = "overrideKeys";
-
+    public static final String COPY_KEYS = "cpKys";
+    
     public static final String KNS_APPLICATION_DATASOURCE = "knsApplication.datasource";
     public static final String KNS_SERVER_DATASOURCE = "knsServer.datasource";
     public static final String KNS_APPLICATION_DATASOURCE_JNDI = "knsApplication.datasource.jndi.location";
@@ -205,7 +215,7 @@ public class KNSConstants extends JSTLConstants {
      */
     public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
 
-    public static final String NOTE_WITHOUT_ATTACHMENT_INDICATOR ="noteWithoutAttachment";
+    
     /**
      * Property name for enabling attachments to note, overriding the defaults defined by the document template - Value is
      * "enableNoteAttachments"
@@ -254,7 +264,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
 
-//    public static final String KUALI_WORKFLOW_APPLICATION_CODE = "kuali";
+    public static final String DEFAULT_APPLICATION_CODE = "KUALI";
+    public static final String APPLICATION_CODE = "app.namespace";
     public static final String LOOKUP_ACTION = "lookup.do";
     public static final String MULTIPLE_VALUE_LOOKUP_ACTION = "multipleValueLookup.do";
     public static final String LOOKUP_RESULTS_SEQUENCE_NUMBER = "lookupResultsSequenceNumber";
@@ -271,14 +282,21 @@ public class KNSConstants extends JSTLConstants {
     public static final String PARAMETER_DOC_ID = "docId";
     public static final String PARAMETER_COMMAND = "command";
 //    public static final String LOOKUP_METHOD = "performLookup";
+    public static final String LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL = "From";
+    public static final String LOOKUP_DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL = "To";
+    public static final String LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX = "rangeLowerBoundKeyPrefix_";
+    public static final String LOOKUP_RANGE_UPPER_BOUND_PROPERTY_PREFIX = "rangeUpperBoundKeyPrefix_";
+
     public static final String METHOD_DISPLAY_DOC_SEARCH_VIEW = "displayDocSearchView";
     public static final String MAINTENANCE_ACTION = "maintenance.do";
     public static final String MAINTENANCE_ADD_PREFIX = "add.";
     public static final String MAINTENANCE_COPY_ACTION = "Copy";
     public static final String MAINTENANCE_EDIT_ACTION = "Edit";
+    public static final String MAINTENANCE_DELETE_ACTION = "Delete";
     public static final String MAINTENANCE_NEW_ACTION = "New";
     public static final String MAINTENANCE_COPY_METHOD_TO_CALL = "copy";
     public static final String MAINTENANCE_EDIT_METHOD_TO_CALL = "edit";
+    public static final String MAINTENANCE_DELETE_METHOD_TO_CALL = "delete";
     public static final String MAINTENANCE_NEW_METHOD_TO_CALL = "start";
     public static final String MAINTENANCE_NEWWITHEXISTING_ACTION = "newWithExisting";
     public static final String MAINTENANCE_ACTN = "maintenanceAction";
@@ -325,8 +343,12 @@ public class KNSConstants extends JSTLConstants {
     // below 2 fields used in rowDisplay.tag file
     public static final String METHOD_TO_CALL_PARM13_LEFT_DEL = "(:::;";
     public static final String METHOD_TO_CALL_PARM13_RIGHT_DEL = ";:::)";
+    // used for baseLookupURL
+    public static final String METHOD_TO_CALL_PARM14_LEFT_DEL = "(::::;";
+    public static final String METHOD_TO_CALL_PARM14_RIGHT_DEL = ";::::)";
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
-
+    
+    
     // Pessimistic Locking Constants
     public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
     public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";
@@ -359,6 +381,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String RETURN_LOCATION_PARAMETER = "returnLocation";
     public static final String RETURN_METHOD_TO_CALL = "refresh";
 //    public static final String ROUTE_METHOD = "route";
+    // Another possible value for the "refreshCaller" request parameter, as a fix for KULRICE-2903.
+    public static final String TEXT_AREA_REFRESH = "TextAreaRefresh";
     // below field used in tag files
 
     // KualiDocumentActionBase Method Names
@@ -443,9 +467,11 @@ public class KNSConstants extends JSTLConstants {
     public static final String AND_LOGICAL_OPERATOR = "&&";
     public static final String OR_LOGICAL_OPERATOR = "|";
     public static final String NOT_LOGICAL_OPERATOR = "!";
+    public static final String BETWEEN_OPERATOR = "..";
 //    // add AND operator to thest if it is uncommented below
 //    public static final String[] LOGICAL_OPERATORS = {OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR};
-    public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", "..", OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
+    public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", BETWEEN_OPERATOR, OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
+    public static final String[] RANGE_CHARACTERS = {">=","<=",">","<",BETWEEN_OPERATOR};
     public static final String AUDIT_ERRORS = "AuditErrors";
 
     // Header Tab navigation constant values
@@ -468,12 +494,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
     public static final String SESSION_SCOPE = "session";
 
-    public static class CoreApcParms {
-
-        public static final String WORKFLOW_EXCEPTION_WORKGROUP = "EXCEPTION_GROUP";
-        public static final String SUPERVISOR_WORKGROUP = "SUPERVISOR_GROUP";
-    }
-
     public static class SystemGroupParameterNames {
         public static final String CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND = "CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND";
 
@@ -482,7 +502,7 @@ public class KNSConstants extends JSTLConstants {
 //        public static final String MULTIPLE_VALUE_LOOKUP_RESULTS_EXPIRATION_AGE = "MULTIPLE_VALUE_RESULTS_EXPIRATION_SECONDS";
 
         public static final String DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND = "DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND";
-
+        public static final String ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND = "ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND";
         /**
          * Used to indicate whether field level help is enabled. Depending on the namespace this parameter is in, it may
          * affect either lookups (i.e. the search criteria fields) or maintenance documents.
@@ -498,9 +518,13 @@ public class KNSConstants extends JSTLConstants {
         public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
         public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
         
-        public static final String DATE_TIME_SERVICE_SQL_DATE_FORMATS = "DATE_TIME_SERVICE_SQL_DATE_FORMATS";
-        public static final String DATE_TIME_SERVICE_STRING_DATE_FORMAT_FOR_FILE_NAME = "DATE_TIME_SERVICE_STRING_DATE_FORMAT_FOR_FILE_NAME";
-        public static final String DATE_TIME_SERVICE_STRING_TIMESTAMP_FORMAT_FOR_FILE_NAME = "DATE_TIME_SERVICE_STRING_TIMESTAMP_FORMAT_FOR_FILE_NAME";
+        public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
+        public static final String STRING_TO_TIMESTAMP_FORMATS = "STRING_TO_TIMESTAMP_FORMATS";
+        public static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE";
+        public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE";
+        public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
+        public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
+        public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
     }
 
     public static class Maintenance {
@@ -514,6 +538,8 @@ public class KNSConstants extends JSTLConstants {
     public static class TableRenderConstants {
         public static final String SWITCH_TO_PAGE_METHOD = "switchToPage";
         public static final String SORT_METHOD = "sort";
+        public static final String SELECT_ALL_METHOD = "selectAll";
+        public static final String UNSELECT_ALL_METHOD = "unselectAll";
 
         // below field used on displayMultipleValueLookupResults.tag
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
@@ -521,7 +547,23 @@ public class KNSConstants extends JSTLConstants {
     }
 
     public static final String TAB_STATES = "tabStates";
+    
+    public static final List<String> ALWAYS_VALID_PARAMETER_PREFIXES = new ArrayList<String>();
+    static {
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( TAB_STATES );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".hideAllTabs" );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".showAllTabs" );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+".toggleTab" );
+    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SWITCH_TO_PAGE_METHOD );
+//    	ALWAYS_VALID_PARAMETER_PREFIXES.add( DISPATCH_REQUEST_PARAMETER+"."+TableRenderConstants.SORT_METHOD );
+    }
 
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
 
+    public class Config {
+    	public static final String APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK = "rice.kns.illegalBusinessObjectsForSave.applyCheck";
+    	public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.kns.illegalBusinessObjectsForSave";
+    }
+
+	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
 }

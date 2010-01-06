@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,23 +17,16 @@ package org.kuali.rice.kns.service.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.beanutils.PropertyUtilsBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentSerializerService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.SerializerService;
 import org.kuali.rice.kns.service.XmlObjectSerializerService;
-import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.PropertyType;
@@ -42,7 +35,6 @@ import org.kuali.rice.kns.util.documentserializer.SerializationState;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.converters.collections.CollectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -59,7 +51,7 @@ import com.thoughtworks.xstream.mapper.Mapper;
  * will selectively serialize items.
  */
 public abstract class SerializerServiceBase implements SerializerService  {
-	protected static final Log LOG = LogFactory.getLog(SerializerServiceBase.class);
+//	private static final Log LOG = LogFactory.getLog(SerializerServiceBase.class);
     
     protected PersistenceService persistenceService;
     protected XmlObjectSerializerService xmlObjectSerializerService;
@@ -74,7 +66,6 @@ public abstract class SerializerServiceBase implements SerializerService  {
         
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
-        xstream.registerConverter(new PersonConverter(xstream.getMapper(), new PersonReflectionProvider()));
         xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
         //xstream.registerConverter(new TypedArrayListConverter(xstream.getMapper()));
     }
@@ -156,53 +147,6 @@ public abstract class SerializerServiceBase implements SerializerService  {
         }
     }
 
-    public class PersonConverter extends ReflectionConverter {
-        private PersonReflectionProvider reflectionProvider;
-        
-        public PersonConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
-            super(mapper, reflectionProvider);
-            this.reflectionProvider = (PersonReflectionProvider) reflectionProvider;
-        }
-        
-        @Override
-        public boolean canConvert(Class type) {
-            return Person.class.isAssignableFrom(type);
-        }
-    }
-    
-    public class PersonReflectionProvider extends ProxyAndStateAwareJavaReflectionProvider {
-        private Set<String> primitivePropertiesPopulatedByServices;
-        private PropertyUtilsBean propertyUtilsBean;
-        
-        public PersonReflectionProvider() {
-            initializePrimitivePropertiesPopulatedByServices();
-            propertyUtilsBean = new PropertyUtilsBean();
-        }
-        
-        @Override
-        protected void initializeField(Object object, Field field) {
-            Person user = (Person) object;
-            String fieldName = field.getName();
-            
-            if (primitivePropertiesPopulatedByServices.contains(fieldName)) {
-                try {
-                    // some universal user properties are initialized by calling the getter method for the appropriate method
-                    // so, here, we use property utils bean/introspection to call the getter method, so that it will be populated
-                    // when the reflection provider attempts to access these properties
-                    propertyUtilsBean.getProperty(user, fieldName);
-                } catch (Exception e) {
-                    LOG.error("Cannot use getter method for Person property: " + fieldName, e);
-                }
-            }
-        }
-
-        protected void initializePrimitivePropertiesPopulatedByServices() {
-            primitivePropertiesPopulatedByServices = new HashSet<String>();
-            primitivePropertiesPopulatedByServices.add("moduleProperties");
-            primitivePropertiesPopulatedByServices.add("moduleUsers");
-        }
-    }
-    
     public PersistenceService getPersistenceService() {
         return this.persistenceService;
     }
@@ -223,18 +167,18 @@ public abstract class SerializerServiceBase implements SerializerService  {
         return new SerializationState();
     }
     
-    public class TypedArrayListConverter extends CollectionConverter {
-
-    	public TypedArrayListConverter(Mapper mapper){
-    		super(mapper);
-    	}
-
-    	public boolean canConvert(Class clazz) {
-    		return clazz.equals(TypedArrayList.class);
-        }
-
-    }
-    
+//    public class TypedArrayListConverter extends CollectionConverter {
+//
+//    	public TypedArrayListConverter(Mapper mapper){
+//    		super(mapper);
+//    	}
+//
+//    	public boolean canConvert(Class clazz) {
+//    		return clazz.equals(TypedArrayList.class);
+//        }
+//
+//    }
+//    
     
 }
 

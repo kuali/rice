@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ import com.thoughtworks.xstream.XStream;
 /**
  * A node which will send emails using the configured stylesheet to generate the email content.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EmailNode implements SimpleNode {
 
@@ -93,6 +93,8 @@ public class EmailNode implements SimpleNode {
         emailNodeElem.appendChild(doc.importNode(docElem, true));
         emailNodeElem.appendChild(doc.importNode(nodeElem, true));
         emailNodeElem.appendChild(doc.importNode(documentContent.getDocumentElement(), true));
+        Element dConElem = context.getDocumentContent().getApplicationContent();//Add document Content element for
+ 	 	emailNodeElem.appendChild(doc.importNode(dConElem, true));//access by the stylesheet when creating the email
         return doc;
     }
 
@@ -115,7 +117,8 @@ public class EmailNode implements SimpleNode {
     }
 
     protected boolean isProduction() {
-	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
+	return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
+			ConfigContext.getCurrentContextConfig().getEnvironment());
     }
 
     protected void loadConfiguration(RouteContext context) throws Exception {
@@ -136,7 +139,7 @@ public class EmailNode implements SimpleNode {
 	    if ("initiator".equalsIgnoreCase(to))
 	    {	
 	    	Person person = KIMServiceLocator.getPersonService().getPerson(context.getDocument().getInitiatorWorkflowId());
-			to = (person == null ? "" : person.getEmailAddress());
+			to = (person == null ? "" : person.getEmailAddressUnmasked());
 	    }
 	    if (StringUtils.isBlank(to)) {
 	    	throw new WorkflowRuntimeException("Email Address is missing from user's profile.");
@@ -149,6 +152,22 @@ public class EmailNode implements SimpleNode {
 	}
 	this.from = fromAddresses.item(0).getTextContent();
 
+	if ("initiator".equalsIgnoreCase(this.from)) {
+		Person initiator = KEWServiceLocator.getIdentityHelperService().getPerson(context.getDocument().getInitiatorWorkflowId());
+		// contructs the email from so that it includes name as well as address
+		// for example: "Doe, John D" <john@doe.com>
+ 	 	this.from = "\"" + initiator.getName() + "\" <";
+ 	 	this.from += initiator.getEmailAddress() + ">";
+	}
+	if (StringUtils.isBlank(this.from)) {
+		throw new WorkflowRuntimeException("No email address could be found found for principal with id " + context.getDocument().getInitiatorWorkflowId());
+	}
+	
+	if (LOG.isInfoEnabled()) {
+ 	 	LOG.info("Email From is set to:" + this.from);
+ 	 	LOG.info("Email To is set to:" + this.to);
+	}
+	
 	NodeList styleNames = document.getElementsByTagName("style");
 	if (styleNames.getLength() != 1) {
 	    throw new WorkflowRuntimeException("Must have exactly one 'style'");

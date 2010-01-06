@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
@@ -31,12 +33,32 @@ public class GlobalVariables {
 
     private static ThreadLocal<UserSession> userSessions = new ThreadLocal<UserSession>();
     private static ThreadLocal<String> hideSessionFromTestsMessage = new ThreadLocal<String>();
-    private static ThreadLocal<ErrorMap> errorMaps = new ThreadLocal<ErrorMap>();
-    // todo: generic collections
-    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>();
-    private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>();
     private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
-    private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>();
+    
+    private static ThreadLocal<MessageMap> messageMaps = new ThreadLocal<MessageMap>()  {
+		protected MessageMap initialValue() {
+			return new MessageMap();
+		}
+	};
+	
+    // todo: generic collections
+    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>() {
+		protected MessageList initialValue() {
+			return new MessageList();
+		}
+	};
+	
+    private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>() {
+    	protected HashMap initialValue() {
+    		return new HashMap();
+    	}
+    };
+    
+    private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>() {
+    	protected HashMap<String, Object> initialValue() {
+    		return new HashMap<String, Object>();
+    	}
+    };
 
     /**
      * @return the UserSession that has been assigned to this thread of execution it is important that this not be called by
@@ -70,19 +92,48 @@ public class GlobalVariables {
     }
 
     /**
+     * @deprecated use {@link #getMessageMap()} instead.
+     * 
      * @return ErrorMap containing error messages.
      */
+    @Deprecated
     public static ErrorMap getErrorMap() {
-        return errorMaps.get();
+        return new ErrorMap(getMessageMap());
+    }
+    
+    public static MessageMap getMessageMap() {
+    	return messageMaps.get();
+    }
+
+    /**
+     * Merges a message map into the global variables error map
+     * @param messageMap
+     */
+    public static void mergeErrorMap(MessageMap messageMap) {
+        getMessageMap().getErrorMessages().putAll(messageMap.getErrorMessages());
+        getMessageMap().getWarningMessages().putAll(messageMap.getWarningMessages());
+        getMessageMap().getInfoMessages().putAll(messageMap.getInfoMessages());
+    }
+    
+    /**
+     * Sets a new (clean) MessageMap
+     *
+     * @param messageMap
+     */
+    public static void setMessageMap(MessageMap messageMap) {
+    	messageMaps.set(messageMap);
     }
 
     /**
      * Sets a new (clean) ErrorMap
      *
+     * @deprecated use {@link #setMessageMap(MessageMap)} instead
+     *
      * @param errorMap
      */
+    @Deprecated
     public static void setErrorMap(ErrorMap errorMap) {
-        errorMaps.set(errorMap);
+    	setMessageMap(errorMap);
     }
 
     /**
@@ -136,17 +187,17 @@ public class GlobalVariables {
     public static Object getRequestCache( String cacheName ) {
     	return requestCaches.get().get(cacheName);
     }
-    
+
     public static void setRequestCache( String cacheName, Object cacheObject ) {
     	requestCaches.get().put(cacheName, cacheObject);
     }
-    
-    
+
+
     /**
-     * Clears out GlobalVariable objects
+     * Clears out GlobalVariable objects with the exception of the UserSession
      */
     public static void clear() {
-        errorMaps.set(new ErrorMap());
+        messageMaps.set(new MessageMap());
         auditErrorMaps.set(new HashMap());
         messageLists.set(new MessageList());
         requestCaches.set(new HashMap<String,Object>() );

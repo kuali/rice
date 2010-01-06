@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,8 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -43,8 +41,8 @@ import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.JSTLConstants;
-import org.kuali.rice.ken.service.KENServiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
@@ -52,24 +50,20 @@ import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
-import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 
@@ -77,24 +71,35 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 /**
  * Action doing Action list stuff
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ActionListAction extends KualiAction {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListAction.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListAction.class);
 
-    private static String ACTION_LIST_KEY = "actionList";
-    private static String ACTION_LIST_PAGE_KEY = "actionListPage";
-    private static String ACTION_LIST_USER_KEY = "actionList.user";
-    private static String REQUERY_ACTION_LIST_KEY = "requeryActionList";
-    private static String ROUTEHEADERID = "routeHeaderId";
-    private static String ACTIONITEM_ROUTEHEADERID_INVALID = "actionitem.routeheaderid.invalid";
-    private static String ACTIONREQUESTCD = "actionRequestCd";
-    private static String DOCTITLE = "docTitle";
-    private static String ACTIONITEM_DOCTITLENAME_EMPTY = "actionitem.doctitlename.empty";
-    private static String  ACTIONITEM_ACTIONREQUESTCD_INVALID = "actionitem.actionrequestcd.invalid";
+    private static final String ACTION_LIST_KEY = "actionList";
+    private static final String ACTION_LIST_PAGE_KEY = "actionListPage";
+    private static final String ACTION_LIST_USER_KEY = "actionList.user";
+    private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";
 
+    // property names used for errors -- some of these are bogus, as there isn't
+    // really a form whose fields can be highlighted.
+    private static final String ROUTEHEADERID_PROP = "routeHeaderId";
+    private static final String ACTIONREQUESTCD_PROP = "actionRequestCd";
+    private static final String CUSTOMACTIONLIST_PROP = "customActionList";
+    private static final String DOCTITLE_PROP = "docTitle";
+    private static final String ACTIONITEM_PROP = "actionitem";
+    private static final String HELPDESK_ACTIONLIST_USERNAME = "helpDeskActionListUserName";
+
+    // error keys
+    private static final String ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY = "actionitem.routeheaderid.invalid";
+    private static final String ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY = "actionitem.doctitlename.empty";
+    private static final String ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY = "actionitem.actionrequestcd.invalid";
+    private static final String ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY = "actionlist.badCustomActionListItems";
+	private static final String ACTIONLIST_BAD_ACTION_ITEMS_ERRKEY = "actionlist.badActionItems";
+	private static final String HELPDESK_LOGIN_EMPTY_ERRKEY = "helpdesk.login.empty";
+	private static final String HELPDESK_LOGIN_INVALID_ERRKEY = "helpdesk.login.invalid";
 
 
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -108,18 +113,19 @@ public class ActionListAction extends KualiAction {
     private List<ExtraButton> getHeaderButtons(){
     	List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
     	ExtraButton eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-preferences.gif");
-    	eb.setExtraButtonOnclick("../en/Preferences.do?returnMapping=viewActionList");
+    	String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
+    	eb.setExtraButtonSource( krBaseUrl + "/images/tinybutton-preferences.gif");
+    	eb.setExtraButtonOnclick("Preferences.do?returnMapping=viewActionList");
 
     	headerButtons.add(eb);
     	eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-refresh.gif");
+    	eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-refresh.gif");
     	eb.setExtraButtonProperty("methodToCall.start");
 
     	headerButtons.add(eb);
     	eb = new ExtraButton();
-    	eb.setExtraButtonSource("../kr/images/tinybutton-filter.gif");
-    	eb.setExtraButtonOnclick("javascript: window.open('..en/ActionListFilter.do?methodToCall=start');");
+    	eb.setExtraButtonSource(krBaseUrl + "/images/tinybutton-filter.gif");
+    	eb.setExtraButtonOnclick("javascript: window.open('ActionListFilter.do?methodToCall=start');");
     	headerButtons.add(eb);
 
 
@@ -139,7 +145,6 @@ public class ActionListAction extends KualiAction {
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListForm form = (ActionListForm) actionForm;
-        ActionErrors errors = new ActionErrors();
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
 
 
@@ -156,7 +161,7 @@ public class ActionListAction extends KualiAction {
         }
         // if both the page and the sort criteria are null, that means its the first entry into the page, use defaults
         if (page == null && sortCriterion == null) {
-        	page = new Integer(1);
+        	page = Integer.valueOf(1);
         	sortCriterion = ActionItemComparator.DOCUMENT_ID;
         }
         else if ( !StringUtils.isEmpty(getUserSession(request).getSortCriteria()))     {
@@ -212,16 +217,45 @@ public class ActionListAction extends KualiAction {
             Preferences preferences = getUserSession(request).getPreferences();
 
             if (!StringUtils.isEmpty(form.getDelegationId())) {
-                uSession.getActionListFilter().setDelegatorId(form.getDelegationId());
-                uSession.getActionListFilter().setExcludeDelegatorId(false);
-                actionList = null;
+            	if (!KEWConstants.DELEGATION_DEFAULT.equals(form.getDelegationId())) {
+            		// If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
+            		// then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
+            		// but the secondary drop-down's value has been altered; but if one of these alteration situations does not apply, reset the
+            		// secondary delegation drop-down.
+            		if (StringUtils.isNotBlank(form.getPrimaryDelegateId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId())){
+            			if (form.getPrimaryDelegateId().equals(request.getParameter("oldPrimaryDelegateId")) &&
+            					!form.getDelegationId().equals(request.getParameter("oldDelegationId"))) {
+            				form.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
+            			} else {
+            				form.setDelegationId(KEWConstants.DELEGATION_DEFAULT);
+            			}
+            		} else if (StringUtils.isNotBlank(uSession.getActionListFilter().getPrimaryDelegateId()) &&
+            				!KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(uSession.getActionListFilter().getPrimaryDelegateId())) {
+            			// If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
+            			// drop-down has a non-default value selected, then reset the primary delegation filtering.
+            			uSession.getActionListFilter().setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
+            		}
+            	}
+            	// Enable the secondary delegation filtering.
+           		uSession.getActionListFilter().setDelegatorId(form.getDelegationId());
+           		uSession.getActionListFilter().setExcludeDelegatorId(false);
+           		actionList = null;
             }
 
             if (!StringUtils.isEmpty(form.getPrimaryDelegateId())) {
-                uSession.getActionListFilter().setPrimaryDelegateId(form.getPrimaryDelegateId());
-                actionList = null;
+            	// If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
+            	// drop-down has a non-default value selected, then reset the secondary delegation filtering.
+            	if (StringUtils.isBlank(form.getDelegationId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId()) && 
+            			StringUtils.isNotBlank(uSession.getActionListFilter().getDelegatorId()) &&
+            					!KEWConstants.DELEGATION_DEFAULT.equals(uSession.getActionListFilter().getDelegatorId())) {
+            		uSession.getActionListFilter().setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
+            	}
+            	// Enable the primary delegation filtering.
+            	uSession.getActionListFilter().setPrimaryDelegateId(form.getPrimaryDelegateId());
+            	uSession.getActionListFilter().setExcludeDelegatorId(false);
+            	actionList = null;
             }
-
+            
             // if the user has changed, we need to refresh the action list
             if (!principalId.equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
@@ -257,18 +291,24 @@ public class ActionListAction extends KualiAction {
                 Collection delegators = actionListSrv.findUserSecondaryDelegators(principalId);
                 form.setDelegators(getWebFriendlyRecipients(delegators));
                 form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
-                Collection delegates = actionListSrv.findUserPrimaryDelegations(principalId);
-                form.setPrimaryDelegates(getWebFriendlyRecipients(delegates));
-                form.setPrimaryDelegateId(uSession.getActionListFilter().getDelegatorId());
             }
 
+            // Build the drop-down of primary delegates.
+            if (KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getPrimaryDelegateFilter())) {
+            	Collection<Recipient> pDelegates = actionListSrv.findUserPrimaryDelegations(principalId);
+            	form.setPrimaryDelegates(getWebFriendlyRecipients(pDelegates));
+            	form.setPrimaryDelegateId(uSession.getActionListFilter().getPrimaryDelegateId());
+            }
+            
             form.setFilterLegend(uSession.getActionListFilter().getFilterLegend());
             plog.log("Setting attributes");
 
             int pageSize = getPageSize(preferences);
             // initialize the action list if necessary
             if (freshActionList) {
-            	initializeActionList(actionList, preferences, errors);
+            	plog.log("calling initializeActionList");
+            	initializeActionList(actionList, preferences);
+            	plog.log("done w/ initializeActionList");
             	// put this in to resolve EN-112 (http://beatles.uits.indiana.edu:8081/jira/browse/EN-112)
                 // if the action list gets "refreshed" in between page switches, we need to be sure and re-sort it, even though we don't have sort criteria on the request
             	if (sortCriterion == null) {
@@ -280,7 +320,11 @@ public class ActionListAction extends KualiAction {
             if (sortCriterion != null) {
             	sortActionList(actionList, sortCriterion, sortOrder);
             }
-            PaginatedList currentPage = buildCurrentPage(actionList, form.getCurrentPage(), form.getCurrentSort(), form.getCurrentDir(), pageSize, preferences, errors, form);
+            
+            plog.log("calling buildCurrentPage");
+            PaginatedList currentPage = buildCurrentPage(actionList, form.getCurrentPage(), form.getCurrentSort(), 
+            			form.getCurrentDir(), pageSize, preferences, form);
+            plog.log("done w/ buildCurrentPage");
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
             uSession.actionListUpdated();
             uSession.setCurrentPage(form.getCurrentPage());
@@ -291,7 +335,6 @@ public class ActionListAction extends KualiAction {
             LOG.error("Error loading action list.", e);
         }
 
-        saveErrors(request, errors);
         LOG.debug("end start ActionListAction");
         return mapping.findForward("viewActionList");
     }
@@ -329,10 +372,8 @@ public class ActionListAction extends KualiAction {
 
 	boolean outBoxView = false;
 
-	Person user = UserSession.getAuthenticatedUser().getPerson();
-
 	if (! preferences.isUsingOutbox() || ! ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
-	    request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(false));
+	    request.getSession().setAttribute(OUT_BOX_MODE, Boolean.valueOf(false));
 	    alForm.setViewOutbox("false");
 	    alForm.setShowOutbox(false);
 	    return false;
@@ -340,11 +381,11 @@ public class ActionListAction extends KualiAction {
 
 	alForm.setShowOutbox(true);
 	if (StringUtils.isNotEmpty(alForm.getViewOutbox())) {
-	    if (!new Boolean(alForm.getViewOutbox())) {
-		request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(false));
+	    if (!Boolean.valueOf(alForm.getViewOutbox())) {
+		request.getSession().setAttribute(OUT_BOX_MODE, Boolean.valueOf(false));
 		outBoxView = false;
 	    } else {
-		request.getSession().setAttribute(OUT_BOX_MODE, new Boolean(true));
+		request.getSession().setAttribute(OUT_BOX_MODE, Boolean.valueOf(true));
 		outBoxView = true;
 	    }
 	} else {
@@ -376,11 +417,11 @@ public class ActionListAction extends KualiAction {
     	int index = 0;
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItemActionListExtension actionItem = (ActionItemActionListExtension) iterator.next();
-			actionItem.setActionItemIndex(new Integer(index++));
+			actionItem.setActionItemIndex(Integer.valueOf(index++));
 		}
     }
 
-    private void initializeActionList(List actionList, Preferences preferences, ActionErrors errors) throws WorkflowException {
+    private void initializeActionList(List actionList, Preferences preferences) throws WorkflowException {
     	List actionItemProblemIds = new ArrayList();
     	int index = 0;
     	generateActionItemErrors(actionList);
@@ -395,7 +436,7 @@ public class ActionListAction extends KualiAction {
     			actionItem.initialize(preferences);
     			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = (DocumentRouteHeaderValueActionListExtension)actionItem.getRouteHeader();
     			routeHeaderExtension.setActionListInitiatorPrincipal(routeHeaderExtension.getInitiatorPrincipal());
-    			actionItem.setActionItemIndex(new Integer(index));
+    			actionItem.setActionItemIndex(Integer.valueOf(index));
     			//set background colors for document statuses
     			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(actionItem.getRouteHeader().getDocRouteStatus())) {
     				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
@@ -425,7 +466,7 @@ public class ActionListAction extends KualiAction {
     			actionItemProblemIds.add(actionItem.getRouteHeaderId());
     		}
     	}
-    	generateActionItemErrors(errors, "actionlist.badActionItems", actionItemProblemIds);
+    	generateActionItemErrors(ACTIONITEM_PROP, ACTIONLIST_BAD_ACTION_ITEMS_ERRKEY, actionItemProblemIds);
     }
 
     /**
@@ -436,7 +477,8 @@ public class ActionListAction extends KualiAction {
     	return Integer.parseInt(preferences.getPageSize());
     }
 
-    protected PaginatedList buildCurrentPage(List actionList, Integer page, String sortCriterion, String sortDirection, int pageSize, Preferences preferences, ActionErrors errors, ActionListForm form) throws WorkflowException {
+    protected PaginatedList buildCurrentPage(List actionList, Integer page, String sortCriterion, String sortDirection, 
+    		int pageSize, Preferences preferences, ActionListForm form) throws WorkflowException {
     	List currentPage = new ArrayList(pageSize);
     	boolean haveFyis = false;
     	boolean haveApproves = false;
@@ -444,6 +486,7 @@ public class ActionListAction extends KualiAction {
     	boolean haveCancels = false;
     	boolean haveDisapproves = false;
     	boolean haveCustomActions = false;
+    	boolean haveDisplayParameters = false;
     	List customActionListProblemIds = new ArrayList();
     	SortOrderEnum sortOrder = parseSortOrder(sortDirection);
     	int startIndex = (page.intValue() - 1) * pageSize;
@@ -495,6 +538,7 @@ public class ActionListAction extends KualiAction {
     				haveDisapproves = haveDisapproves || itemHasDisapproves;
     				haveCancels = haveCancels || itemHasCancels;
     				haveCustomActions = haveCustomActions || itemHasCustomActions;
+    				haveDisplayParameters = haveDisplayParameters || (actionItem.getDisplayParameters() != null);
     			}
     		} catch (Exception e) {
     			// if there's a problem loading the custom action list attribute, let's go ahead and display the vanilla action item
@@ -505,7 +549,7 @@ public class ActionListAction extends KualiAction {
     	}
 
     	// configure custom actions on form
-    	form.setHasCustomActions(new Boolean(haveCustomActions));
+    	form.setHasCustomActions(Boolean.valueOf(haveCustomActions));
     	Map defaultActions = new LinkedHashMap();
     	defaultActions.put("NONE", "NONE");
     	if (haveApproves) {
@@ -532,27 +576,33 @@ public class ActionListAction extends KualiAction {
     		form.setDefaultActions(defaultActions);
     	}
 
-    	generateActionItemErrors(errors, "actionlist.badCustomActionListItems", customActionListProblemIds);
+   		form.setHasDisplayParameters(haveDisplayParameters);
+    	
+    	generateActionItemErrors(CUSTOMACTIONLIST_PROP, ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY, customActionListProblemIds);
     	return new PaginatedActionList(currentPage, actionList.size(), page.intValue(), pageSize, "actionList", sortCriterion, sortOrder);
     }
 
-    private void generateActionItemErrors(ActionErrors errors, String errorKey, List documentIds) {
+    private void generateActionItemErrors(String propertyName, String errorKey, List documentIds) {
     	if (!documentIds.isEmpty()) {
     		String documentIdsString = StringUtils.join(documentIds.iterator(), ", ");
-    		errors.add(Globals.ERROR_KEY, new ActionMessage(errorKey, documentIdsString));
+    		GlobalVariables.getMessageMap().putError(propertyName, errorKey, documentIdsString);
     	}
     }
+    
     private void generateActionItemErrors(List actionList) {
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)iterator.next();
-    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
-    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID, ACTIONITEM_ROUTEHEADERID_INVALID,actionItem.getActionItemId()+"");
-    		}
+    		
+    		// removing this check for the time being, it hinders action list performance. (KULRICE-2931)
+//    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
+//    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID_PROP, ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY,actionItem.getActionItemId()+"");
+//    		}
+    		
     		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
-    			GlobalVariables.getErrorMap().putError(ACTIONREQUESTCD,ACTIONITEM_ACTIONREQUESTCD_INVALID,actionItem.getActionItemId()+"");
+    			GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getActionItemId()+"");
     		}
     		if (actionItem.getDocTitle() == null) {
-    			GlobalVariables.getErrorMap().putError(DOCTITLE, ACTIONITEM_DOCTITLENAME_EMPTY,actionItem.getActionItemId()+"");
+    			GlobalVariables.getMessageMap().putError(DOCTITLE_PROP, ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY,actionItem.getActionItemId()+"");
     			continue;
     		}
      	}
@@ -604,11 +654,23 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward helpDeskActionListLogin(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;
+        String name = actionListForm.getHelpDeskActionListUserName();
         if (!"true".equals(request.getAttribute("helpDeskActionList"))) {
         	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalId(), "helpDeskActionListLogin", getClass().getSimpleName());
         }
-        getUserSession(request).establishHelpDeskWithPrincipalName(actionListForm.getHelpDeskActionListUserName());
-        actionListForm.setDelegator(null);
+        try
+        {
+	        getUserSession(request).establishHelpDeskWithPrincipalName(name);
+        }
+        catch (RiceRuntimeException rre)
+        {
+        	GlobalVariables.getMessageMap().putError(HELPDESK_ACTIONLIST_USERNAME, HELPDESK_LOGIN_INVALID_ERRKEY, name);
+        }
+        catch (NullPointerException npe)
+        {
+        	GlobalVariables.getMessageMap().putError("null", HELPDESK_LOGIN_EMPTY_ERRKEY, name);
+        }
+    	actionListForm.setDelegator(null);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, form, request, response);
     }
@@ -651,6 +713,22 @@ public class ActionListAction extends KualiAction {
 	return start(mapping, form, request, response);
     }
 
+    /**
+     * Navigate to the Action List Filter page, preserving any newly-modified primary/secondary delegation filters as necessary.
+     */
+    public ActionForward viewFilter(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	start(mapping, actionForm, request, response);
+    	return mapping.findForward("viewFilter");
+    }
+    
+    /**
+     * Navigate to the user's Preferences page, preserving any newly-modified primary/secondary delegation filters as necessary.
+     */
+    public ActionForward viewPreferences(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	start(mapping, actionForm, request, response);
+    	return mapping.findForward("viewPreferences");
+    }
+    
     private boolean isActionCompatibleRequest(ActionItemActionListExtension actionItem, String actionTakenCode) {
         boolean actionCompatible = false;
         String requestCd = actionItem.getActionRequestCd();
@@ -698,7 +776,7 @@ public class ActionListAction extends KualiAction {
 		return UserSession.getAuthenticatedUser();
 	}
 
-    private class ActionItemComparator implements Comparator {
+    private static class ActionItemComparator implements Comparator {
 
     	private static final String DOCUMENT_ID = "routeHeaderId";
 

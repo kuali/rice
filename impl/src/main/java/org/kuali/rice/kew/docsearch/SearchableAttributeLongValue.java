@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,17 +39,18 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DOC_HDR_EXT_LONG_T")
@@ -66,7 +67,7 @@ public class SearchableAttributeLongValue implements WorkflowPersistable, Search
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = false;
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
-    private static final String DEFAULT_VALIDATION_REGEX_EXPRESSION = "^[0-9]+$";
+    private static final String DEFAULT_VALIDATION_REGEX_EXPRESSION = "^-?[0-9]+$";
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_LONG;
     private static final String DEFAULT_FORMAT_PATTERN = "#";
 
@@ -116,27 +117,13 @@ public class SearchableAttributeLongValue implements WorkflowPersistable, Search
 		this.setSearchableAttributeValue(resultSet.getLong(columnName));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue()
-	 */
-    public String getSearchableAttributeDisplayValue() {
-        return getSearchableAttributeDisplayValue(new HashMap<String,String>());
-    }
-
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
      */
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
+    public String getSearchableAttributeDisplayValue() {
         NumberFormat format = DecimalFormat.getInstance();
-        ((DecimalFormat)format).applyPattern(getFormatPatternToUse(displayParameters.get(DISPLAY_FORMAT_PATTERN_MAP_KEY)));
+        ((DecimalFormat)format).applyPattern(DEFAULT_FORMAT_PATTERN);
         return format.format(getSearchableAttributeValue().longValue());
-    }
-
-    private String getFormatPatternToUse(String parameterFormatPattern) {
-        if (StringUtils.isNotBlank(parameterFormatPattern)) {
-            return parameterFormatPattern;
-        }
-        return DEFAULT_FORMAT_PATTERN;
     }
 
 	/* (non-Javadoc)
@@ -178,10 +165,54 @@ public class SearchableAttributeLongValue implements WorkflowPersistable, Search
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
 	 */
 	public boolean isPassesDefaultValidation(String valueEntered) {
+
+    	boolean bRet = true;
+    	boolean bSplit = false;
+
+		if (StringUtils.contains(valueEntered, KNSConstants.BETWEEN_OPERATOR)) {
+			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
+			for(String value : l){
+				bSplit = true;
+				if(!isPassesDefaultValidation(value)){
+					bRet = false;
+				}
+			}
+		}
+		if (StringUtils.contains(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR));
+			for(String value : l){
+				bSplit = true;
+				if(!isPassesDefaultValidation(value)){
+					bRet = false;
+				}
+			}
+		}
+		if (StringUtils.contains(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR));
+			for(String value : l){
+				bSplit = true;
+				if(!isPassesDefaultValidation(value)){
+					bRet = false;
+				}
+			}
+		}
+
+		if(bSplit){
+			return bRet;
+		}
+
 		Pattern pattern = Pattern.compile(DEFAULT_VALIDATION_REGEX_EXPRESSION);
-		Matcher matcher = pattern.matcher(valueEntered);
-		return (matcher.matches());
-	}
+		Matcher matcher = pattern.matcher(SqlBuilder.cleanNumericOfValidOperators(valueEntered).trim());
+		if(!matcher.matches()){
+			bRet = false;
+		}
+
+		return bRet;
+
+    }
+
 
     /* (non-Javadoc)
      * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isRangeValid(java.lang.String, java.lang.String)
@@ -252,10 +283,10 @@ public class SearchableAttributeLongValue implements WorkflowPersistable, Search
     public Object copy(boolean preserveKeys) {
         return null;
     }
-    
+
 	@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 }
 

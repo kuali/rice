@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2006-2007 The Kuali Foundation.
+	Copyright 2006-2007 The Kuali Foundation
 
-	Licensed under the Educational Community License, Version 1.0 (the "License");
+	Licensed under the Educational Community License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
 
-	http://www.opensource.org/licenses/ecl1.php
+	http://www.opensource.org/licenses/ecl2.php
 
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@
                            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
 	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
@@ -88,23 +89,13 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimGroupImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
             <list>
                 <value>org.kuali.rice.kns.</value>
             </list>
-        </property>
-        <property name="externalizableBusinessObjectImplementations">
-            <map>
-	           <entry key="org.kuali.rice.kns.bo.Country" value="org.kuali.rice.kns.bo.CountryImpl" />
-			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
-			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
-			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
-			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />
-			   <entry key="org.kuali.rice.kns.bo.CampusType" value="org.kuali.rice.kns.bo.CampusTypeImpl" />
-            </map>
         </property>
 	</bean>
 
@@ -125,7 +116,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/County.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/RiceNamespace.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Namespace.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PostalCode.xml</value>
@@ -136,7 +127,7 @@
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kns/document/datadictionary/RiceNamespaceMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kns/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
@@ -159,27 +150,9 @@
         </property>
 	</bean>
 
-	<bean id="dbPlatformFactory" class="org.kuali.rice.kns.dbplatform.ConfigurableKualiDBPlatformFactory">
-		<property name="ojbPlatform" value="${datasource.ojb.platform}" />
-		<property name="dataSource" ref="knsApplicationDataSource" />
-	</bean>
-
-	<bean id="dbPlatform" factory-bean="dbPlatformFactory" factory-method="getPlatform" />
-
-	<bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
-		<property name="dataSource" ref="knsApplicationDataSource" />
-		<property name="dbPlatform" ref="dbPlatform" />
-	</bean>
-
 	<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="knsApplicationDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />
-	</bean>
-
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
 	</bean>
 
 	<bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
@@ -198,7 +171,7 @@
 		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
 	</bean>
 
-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<bean id="transactionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>
@@ -230,7 +203,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/State.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PostalCode.xml</value>
 
-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/RiceNamespace.xml</value>
+                <value>classpath:org/kuali/rice/kns/bo/datadictionary/Namespace.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
@@ -239,7 +212,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 
-                <value>classpath:org/kuali/rice/kns/document/datadictionary/RiceNamespaceMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kns/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
@@ -362,19 +335,7 @@
 	</bean>
 
 
-	<bean id="dateTimeService" class="org.kuali.rice.kns.service.impl.DateTimeServiceImpl">
-		<property name="sqlDateFormats">
-			<list>
-				<value>yyyy-MM-dd</value>
-				<value>MM/dd/yyyy</value>
-				<value>MM/dd/yy</value>
-				<value>MM-dd-yyyy</value>
-				<value>MM-dd-yy</value>
-			</list>
-		</property>
-		<property name="stringDateFormat" value="MM/dd/yyyy" />
-		<property name="stringDateTimeFormat" value="MM/dd/yyyy hh:mm a" />
-	</bean>
+	<bean id="dateTimeService" class="org.kuali.rice.kns.service.impl.DateTimeServiceImpl"/>
 
 	<bean id="businessObjectDictionaryService" class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
 		<property name="dataDictionaryService">
@@ -472,9 +433,17 @@
     	<property name="persistenceDaoOjb" ref="persistenceDaoOjb" />
 	</bean>
 
+    <bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
+        <property name="dataSource" ref="knsApplicationDataSource" />
+        <property name="dbPlatform" ref="dbPlatform" />
+    </bean>
+        
 	<bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistenceDaoJpa" />
 
-    <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb" />
+    <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb">
+        <property name="jcdAlias" value="knsApplicationDataSource" />
+        <property name="dbPlatform" ref="dbPlatform" />    
+    </bean>
 
 	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
 		<property name="dataDictionaryService">
@@ -500,7 +469,7 @@
 		</property>
 	</bean>
 
-	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc" />
+	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc"/>
 
 	<bean id="sequenceAccessorService" class="org.kuali.rice.kns.service.impl.SequenceAccessorServiceImpl">
 		<property name="sequenceAccessorDao" ref="sequenceAccessorDao" />
@@ -642,13 +611,15 @@
 			<ref bean="kualiModuleService" />
 		</property>
 	</bean>
-<!--
-	<bean id="parameterService" class="org.kuali.rice.kns.service.impl.ParameterServiceImpl">
+    <bean id="namespaceService" class="org.kuali.rice.kns.service.impl.NamespaceServiceImpl">
+    </bean>	
+    
+	<bean id="parameterService" class="org.kuali.rice.kns.service.impl.ParameterServiceProxyImpl"/>
+	<bean id="parameterServerService" class="org.kuali.rice.kns.service.impl.ParameterServiceImpl">
 		<property name="dataDictionaryService" ref="dataDictionaryService" />
 		<property name="kualiModuleService" ref="kualiModuleService" />
 		<property name="businessObjectService" ref="businessObjectService" />
 	</bean>
--->
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
@@ -825,8 +796,9 @@
 
   <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.LookupDaoOjb">
     <property name="persistenceStructureService" ref="persistenceStructureService" />
-		<property name="dateTimeService" ref="dateTimeService" />
-	</bean>
+    <property name="dateTimeService" ref="dateTimeService" />
+    <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
+  </bean>
 
   <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
     <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa" />
@@ -924,12 +896,10 @@
   <!-- Used for @Transactional so you don't have to wire services up in here-->
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
-  <bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
-
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
-        <idref local="NoResultExceptionInterceptor" />
+        <idref bean="NoResultExceptionInterceptor" />
       </list>
     </property>
     <property name="beanNames">
@@ -997,16 +967,10 @@
     	<property name="kualiModuleService" ref="kualiModuleService" />
     	<property name="businessObjects">
             <list>
-                <value>org.kuali.rice.kns.bo.Campus</value>
-				<value>org.kuali.rice.kns.bo.CampusType</value>
-				<value>org.kuali.rice.kns.bo.RiceNamespace</value>
+				<value>org.kuali.rice.kns.bo.Namespace</value>
 				<value>org.kuali.rice.kns.bo.ParameterType</value>
 				<value>org.kuali.rice.kns.bo.ParameterDetailType</value>
 				<value>org.kuali.rice.kns.bo.Parameter</value>
-				<value>org.kuali.rice.kns.bo.CountryImpl</value>
-				<value>org.kuali.rice.kns.bo.StateImpl</value>
-				<value>org.kuali.rice.kns.bo.PostalCodeImpl</value>
-				<value>org.kuali.rice.kns.bo.CountyImpl</value>
             </list>
         </property>
     </bean>
@@ -1017,182 +981,69 @@
     </bean>
 
     <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="documentTypePermissionTypeService"
-	      p:localServiceName="documentTypePermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="campusRoleService" class="org.kuali.rice.kns.service.impl.CampusRoleTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="campusRoleService"
-	      p:localServiceName="campusRoleService" />
-	  </property>
-	</bean>
 
     <bean id="documentTypeAndAttachmentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndAttachmentTypePermissionTypeService"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="documentTypeAndAttachmentTypePermissionTypeService"
-	      p:localServiceName="documentTypeAndAttachmentTypePermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="documentTypeAndRelationshipToNoteAuthorPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="documentTypeAndRelationshipToNoteAuthorPermissionTypeService"
-	      p:localServiceName="documentTypeAndRelationshipToNoteAuthorPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="documentTypeAndNodeOrStatePermissionTypeService"
-	      p:localServiceName="documentTypeAndNodeOrStatePermissionTypeService" />
-	  </property>
-	</bean>
+
+    <bean id="namespacePermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespacePermissionTypeServiceImpl" />
 
     <bean id="namespaceOrComponentPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="componentName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
     </bean>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="namespaceOrComponentPermissionTypeService"
-	      p:localServiceName="namespaceOrComponentPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="parameterPermissionTypeService" class="org.kuali.rice.kns.service.impl.ParameterPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="componentName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
     </bean>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="parameterPermissionTypeService"
-	      p:localServiceName="parameterPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="batchFeedOrJobPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="beanName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
     </bean>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="batchFeedOrJobPermissionTypeService"
-	      p:localServiceName="batchFeedOrJobPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="buttonPermissionTypeService" class="org.kuali.rice.kns.service.impl.ButtonPermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="buttonPermissionTypeService"
-	      p:localServiceName="buttonPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="actionRequestTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.ActionRequestTypePermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="actionRequestTypePermissionTypeService"
-	      p:localServiceName="actionRequestTypePermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="namespaceOrActionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="actionClass" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="false" />
     </bean>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="namespaceOrActionPermissionTypeService"
-	      p:localServiceName="namespaceOrActionPermissionTypeService" />
-	  </property>
-	</bean>
 
-    <bean id="editModePermissionTypeService" class="org.kuali.rice.kns.service.impl.EditModePermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="editModePermissionTypeService"
-	      p:localServiceName="editModePermissionTypeService" />
-	  </property>
-	</bean>
+    <bean id="documentTypeAndEditModePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndEditModePermissionTypeServiceImpl"/>
 
     <bean id="componentFieldPermissionTypeService" class="org.kuali.rice.kns.service.impl.ComponentFieldPermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="componentFieldPermissionTypeService"
-	      p:localServiceName="componentFieldPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="componentSectionPermissionTypeService" class="org.kuali.rice.kns.service.impl.ComponentSectionPermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="componentSectionPermissionTypeService"
-	      p:localServiceName="componentSectionPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="documentTypeAndNodeAndFieldsPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="documentTypeAndNodeAndFieldsPermissionTypeService"
-	      p:localServiceName="documentTypeAndNodeAndFieldsPermissionTypeService" />
-	  </property>
-	</bean>
 
     <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean parent="knsService"
-	      p:service-ref="documentTypeAndExistingRecordsOnlyPermissionTypeService"
-	      p:localServiceName="documentTypeAndExistingRecordsOnlyPermissionTypeService" />
-	  </property>
-	</bean>
 
-	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl" />
+	<bean id="riceApplicationConfigurationMediationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationMediationServiceImpl"
+	  p:configurationParameterCacheMaxSize="${kns.cache.parameter.max.size}"
+      p:configurationParameterCacheMaxAgeSeconds="${kns.cache.parameter.max.age.seconds}"
+      p:nonDatabaseComponentsCacheMaxSize="${kns.cache.nonDatabaseComponent.max.size}"
+      p:nonDatabaseComponentsCacheMaxAgeSeconds="${kns.cache.nonDatabaseComponent.max.age.seconds}"/>
+
+	<!-- RiceApplicationConfigurationService needs to be published using the serviceNamespace as its namespace and not KNS -->
+	<bean id="riceApplicationConfigurationService" class="org.kuali.rice.kns.service.impl.RiceApplicationConfigurationServiceImpl">
+        <property name="packagePrefixes">
+            <list>
+                <value>org.kuali.rice</value>
+            </list>
+        </property>	
+	</bean>
 	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 	  <property name="serviceDefinition">
-	    <bean parent="knsService"
+	    <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition"
 	      p:service-ref="riceApplicationConfigurationService"
 	      p:localServiceName="riceApplicationConfigurationService" />
 	  </property>
@@ -1200,4 +1051,11 @@
 
 
 	<bean id="businessObjectAuthorizationService" class="org.kuali.rice.kns.service.impl.BusinessObjectAuthorizationServiceImpl"/>
+	 
+    <bean id="workflowAttributesPropertyResolutionService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowAttributePropertyResolutionServiceImpl">
+    	<property name="persistenceStructureService"><ref bean="persistenceStructureService" /></property>
+    </bean>
+    
+    <bean id="campusGroupTypeService" class="org.kuali.rice.kns.service.impl.CampusGroupTypeServiceImpl" />
+    
 </beans>

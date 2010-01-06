@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +23,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -36,7 +37,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
@@ -62,27 +63,14 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     protected static final String DETAIL_OBJECTS_ATTRIBUTE_NAME = "detailObjects.kimAttribute.attributeName";
     
     @Override
-    public List<? extends BusinessObject> getSearchResults(Map<String,String> fieldValues) {
+    protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
     	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
     	if(searchCriteria == null)
     		return new ArrayList<BusinessObject>();
-        return getMemberSearchResults(fieldValues);
-    }
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResultsUnbounded(java.util.Map)
-     */
-    @Override
-    public List<? extends BusinessObject> getSearchResultsUnbounded(
-    		Map<String, String> fieldValues) {
-    	Map<String, String> searchCriteria = buildRoleSearchCriteria(fieldValues);
-    	if(searchCriteria == null)
-    		return new ArrayList<BusinessObject>();
-        return getMemberSearchResults(fieldValues);
+        return getMemberSearchResults(fieldValues, unbounded);
     }
 
-    protected abstract List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria);
+    protected abstract List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria, boolean unbounded);
     
     protected Map<String, String> buildSearchCriteria(Map<String, String> fieldValues){
         String templateNamespaceCode = fieldValues.get(TEMPLATE_NAMESPACE_CODE);
@@ -170,7 +158,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         }
         String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
         String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
-        List<KimGroupImpl> groupImpls = null;
+        List<GroupImpl> groupImpls = null;
         if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
         		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
         		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
@@ -178,7 +166,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
         	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
         	groupImpls = 
-        		(List<KimGroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimGroupImpl.class, searchCriteria);
+        		(List<GroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(GroupImpl.class, searchCriteria);
         	if(groupImpls==null || groupImpls.size()==0)
         		return null;
         }
@@ -206,7 +194,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         		memberQueryString = new StringBuffer();
         	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
         		memberQueryString.append(KimConstants.KimUIConstants.OR_OPERATOR);
-        	for(KimGroupImpl group: groupImpls){
+        	for(GroupImpl group: groupImpls){
         		memberQueryString.append(group.getGroupId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
             if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))
@@ -268,24 +256,58 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 		Iterator<Row> i = rows.iterator();
 		while ( i.hasNext() ) {
 			Row row = i.next();
-			Field field = row.getField(0);
-			String propertyName = field.getPropertyName();
-			if ( propertyName.equals(DETAIL_CRITERIA) ) {
-				Object val = getParameters().get( propertyName );
-				String propVal = null;
-				if ( val != null ) {
-					propVal = (val instanceof String)?(String)val:((String[])val)[0];
+			int numFieldsRemoved = 0;
+			boolean rowIsBlank = true;
+			for (Iterator<Field> fieldIter = row.getFields().iterator(); fieldIter.hasNext();) {
+				Field field = fieldIter.next();
+				String propertyName = field.getPropertyName();
+				if ( propertyName.equals(DETAIL_CRITERIA) ) {
+					Object val = getParameters().get( propertyName );
+					String propVal = null;
+					if ( val != null ) {
+						propVal = (val instanceof String)?(String)val:((String[])val)[0];
+					}
+					if ( StringUtils.isBlank( propVal ) ) {
+						fieldIter.remove();
+						numFieldsRemoved++;
+					} else {
+						field.setReadOnly(true);
+						rowIsBlank = false;
+						// leaving this in would prevent the "clear" button from resetting this value
+//						field.setDefaultValue( propVal );
+					}
+				} else if (!Field.BLANK_SPACE.equals(field.getFieldType())) {
+					rowIsBlank = false;
 				}
-				if ( StringUtils.isBlank( propVal ) ) {
+			}
+			// Check if any fields were removed from the row.
+			if (numFieldsRemoved > 0) {
+				// If fields were removed, check whether or not the remainder of the row is empty or only has blank space fields.
+				if (rowIsBlank) {
+					// If so, then remove the row entirely.
 					i.remove();
 				} else {
-					field.setReadOnly(true);
-					// leaving this in would prevent the "clear" button from resetting this value
-//					field.setDefaultValue( propVal );
+					// Otherwise, add one blank space for each field that was removed, using a technique similar to FieldUtils.createBlankSpace.
+					// It is safe to just add blank spaces as needed, since the removable field is the last of the visible ones in the list (or
+					// at least for the Permission and Responsibility lookups).
+					while (numFieldsRemoved > 0) {
+						Field blankSpace = new Field();
+						blankSpace.setFieldType(Field.BLANK_SPACE);
+						blankSpace.setPropertyName(Field.BLANK_SPACE);
+						row.getFields().add(blankSpace);
+						numFieldsRemoved--;
+					}
 				}
 			}
 		}
 		return rows;
 	}
     
+	protected Long getActualSizeIfTruncated(List result){
+		Long actualSizeIfTruncated = new Long(0); 
+		if(result instanceof CollectionIncomplete)
+			actualSizeIfTruncated = ((CollectionIncomplete)result).getActualSizeIfTruncated();
+		return actualSizeIfTruncated;
+	}
+
 }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,10 +35,9 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -47,7 +46,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebRuleResponsibility extends RuleResponsibility {
 
@@ -125,7 +124,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
-				KimGroup group = KIMServiceLocator.getIdentityManagementService().
+				Group group = KIMServiceLocator.getIdentityManagementService().
 	                  getGroup(getRuleResponsibilityName());
 				setReviewer(group.getGroupName());
 				setReviewerId(group.getGroupId());
@@ -178,7 +177,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void setWorkgroupId(String workgroupId) {
-	    KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
+	    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
 		//Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
 		if (workgroup != null) {
 			setReviewer(workgroup.getGroupName());
@@ -317,7 +316,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			boolean invalidWorkgroup = Utilities.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
-			    KimGroup workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
+			    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
 				if (workgroup == null) {
 					invalidWorkgroup = true;
 				} else {
@@ -445,7 +444,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	 * on the delegation rules if they haven't been materialized from the
 	 * database yet (they are currenty proxied by OJB)
 	 *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
 	private class DelegationRulesProxy implements InvocationHandler, java.io.Serializable {
 

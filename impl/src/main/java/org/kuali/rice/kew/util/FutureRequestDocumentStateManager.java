@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * Manages document state in relation to users seeing future requests for a particular document.
  * Construct the object with a document and a user and ask it questions in relation to future requests.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class FutureRequestDocumentStateManager {
@@ -48,26 +48,28 @@ public class FutureRequestDocumentStateManager {
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, String principalId)
     {
-    	for (BranchState state : document.getRootBranchState()) {
-    	    if (isStateForUser(state, principalId)) {
-    		if (isReceiveFutureRequests(state)) {
-    		    this.receiveFutureRequests = true;
-    		} else if (isDoNotReceiveFutureRequests(state)) {
-    		    this.doNotReceiveFutureRequests = true;
-    		} else if (isClearFutureRequests(state)) {
-    		    this.clearFutureRequestState = true;
-    		    this.receiveFutureRequests = false;
-    		    this.doNotReceiveFutureRequests = false;
-    		    break;
-    		}
-    	    }
-    	}
+        if (document.getRootBranch() != null) {
+        	for (BranchState state : document.getRootBranchState()) {
+        	    if (isStateForUser(state, principalId)) {
+            		if (isReceiveFutureRequests(state)) {
+            		    this.receiveFutureRequests = true;
+            		} else if (isDoNotReceiveFutureRequests(state)) {
+            		    this.doNotReceiveFutureRequests = true;
+            		} else if (isClearFutureRequests(state)) {
+            		    this.clearFutureRequestState = true;
+            		    this.receiveFutureRequests = false;
+            		    this.doNotReceiveFutureRequests = false;
+            		    break;
+            		}
+        	    }
+        	}
+        }
     	if (this.isClearFutureRequestState()) {
     	    this.clearStateFromDocument(document);
     	}
     }
 
-    public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, KimGroup kimGroup)
+    public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, Group kimGroup)
     {
         IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         List<String> principalIds =
@@ -86,13 +88,15 @@ public class FutureRequestDocumentStateManager {
     }
 
     protected void clearStateFromDocument(DocumentRouteHeaderValue document) {
-    	for (BranchState state : document.getRootBranchState()) {
-    	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
-    		String values[] = state.getKey().split(",");
-    		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[1] + "," + new Date().toString());
-    	    }
-    	}
-    	KEWServiceLocator.getRouteNodeService().save(document.getRootBranch());
+        if (document.getRootBranchState() != null) {
+        	for (BranchState state : document.getRootBranchState()) {
+        	    if (state.getKey().contains(FUTURE_REQUESTS_VAR_KEY)) {
+        		String values[] = state.getKey().split(",");
+        		state.setKey(DEACTIVATED_REQUESTS_VARY_KEY + "," + values[1] + "," + new Date().toString());
+        	    }
+        	}
+        	KEWServiceLocator.getRouteNodeService().save(document.getRootBranch());
+        }
     }
 
     protected boolean isStateForUser(BranchState state, String principalId)

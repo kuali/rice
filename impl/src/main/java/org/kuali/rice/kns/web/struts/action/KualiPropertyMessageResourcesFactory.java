@@ -1,10 +1,10 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -12,18 +12,15 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
-import java.util.Locale;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.util.MessageResources;
-import org.apache.struts.util.MessageResourcesFactory;
-import org.apache.struts.util.PropertyMessageResources;
 import org.apache.struts.util.PropertyMessageResourcesFactory;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResources;
 
 /**
- * A custom MessageResourceFactory that delegates to the KualiConfigurationService's pre-loaded properties. It will first try
- * to get properties the standard struts way, and if a property is not found, it will delegate. This then allows the use of
- * multiple ApplicationResources.properties files to be used in the order specified in configurationServiceData.xml.
+ * A custom MessageResourceFactory that delegates to the KualiConfigurationService's pre-loaded properties. 
  * 
  * This factory can be used in struts-config.xml files by specifying a factory attribute in the <message-resources/> tag.  
  * Example: 
@@ -35,30 +32,18 @@ public class KualiPropertyMessageResourcesFactory extends PropertyMessageResourc
 
     private static final long serialVersionUID = 9045578011738154255L;
 
+    /**
+     * Uses KualiPropertyMessageResources, which allows multiple property files to be loaded into the defalt message set.
+     * 
+     * @see org.apache.struts.util.MessageResourcesFactory#createResources(java.lang.String)
+     */
+    @Override
     public MessageResources createResources(String config) {
-	return new KualiPropertyMessageResources(this, config, this.returnNull);
+        if (StringUtils.isBlank(config)) {
+            config = (String)ConfigContext.getCurrentContextConfig().getProperties().get(KNSConstants.MESSAGE_RESOURCES);
+            //config = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.MESSAGE_RESOURCES);
+        }
+        return new KualiPropertyMessageResources(this, config, this.returnNull);
     }
-
-    private class KualiPropertyMessageResources extends PropertyMessageResources {
-
-	private static final long serialVersionUID = -7712311580595112293L;
-
-	public KualiPropertyMessageResources(MessageResourcesFactory factory, String config) {
-	    super(factory, config);
-	}
-
-	public KualiPropertyMessageResources(MessageResourcesFactory factory, String config, boolean returnNull) {
-	    super(factory, config, returnNull);
-	}
-
-	@Override
-	public String getMessage(Locale locale, String key) {
-	    String value = super.getMessage(locale, key);
-	    if (value == null || value.trim().length() == 0) {
-		value = KNSServiceLocator.getKualiConfigurationService().getPropertyString(key);
-	    }
-	    return value;
-	}
-
-    }
+    
 }

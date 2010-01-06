@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
+			<name>WorkflowAdmin</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>WorkflowAdmin</description>
+			<members>
+				<principalName>quickstart</principalName>
+                <principalName>admin</principalName>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_PED</name>
+			<namespace>KUALI</namespace>
+			<description>KUALI_PED</description>
+			<members>
+				<principalName>employee</principalName>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_OPERATIONS</name>
+			<namespace>KUALI</namespace>
+			<description>KUALI_OPERATIONS</description>
+			<members>
+				<principalName>employee</principalName>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_ROLE_MAINTENANCE</name>
+			<namespace>KUALI</namespace>
+			<description>KUALI_ROLE_MAINTENANCE</description>
+			<members>
+				<principalName>employee</principalName>
+			</members>
+		</group>
+		<group>
+			<name>KUALI_ROLE_SUPERVISOR</name>
+			<namespace>KUALI</namespace>
+			<description>KUALI_ROLE_SUPERVISOR</description>
+			<members>
+				<principalName>supervisr</principalName>
+			</members>
+		</group>
+	</groups>
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>DestinationAttribute</name>
+			<className>edu.sampleu.travel.workflow.DestinationRuleAttribute</className>
+			<label>Department of Prudence Routing</label>
+			<description>Department of Prudence Routing</description>
+			<serviceNamespace>TRAVEL</serviceNamespace>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>EmployeeAttribute</name>
+			<className>edu.sampleu.travel.workflow.EmployeeAttribute</className>
+			<label>Employee Routing</label>
+			<description>Employee Routing</description>
+			<serviceNamespace>TRAVEL</serviceNamespace>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+		<ruleAttribute>
+			<name>AccountAttribute</name>
+			<className>edu.sampleu.travel.workflow.AccountAttribute</className>
+			<label>Account Routing</label>
+			<description>Account Routing</description>
+			<serviceNamespace>TRAVEL</serviceNamespace>
+			<type>RuleAttribute</type>
+		</ruleAttribute>
+	</ruleAttributes>
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate allowOverwrite="true">
+			<name>WorkflowDocumentTemplate</name>
+			<description>Workflow Document Template</description>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>TravelRequest-DestinationRouting</name>
+			<description>Destination Routing</description>
+			<attributes>
+				<attribute>
+					<name>DestinationAttribute</name>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>TravelRequest-TravelerRouting</name>
+			<description>Traveler Routing</description>
+			<attributes>
+				<attribute>
+					<name>EmployeeAttribute</name>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>TravelRequest-SupervisorRouting</name>
+			<description>Supervisor Routing</description>
+			<attributes>
+				<attribute>
+					<name>EmployeeAttribute</name>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>TravelRequest-AccountRouting</name>
+			<description>Travel Account Routing</description>
+			<attributes>
+				<attribute>
+					<name>AccountAttribute</name>
+				</attribute>
+			</attributes>
+		</ruleTemplate>
+	</ruleTemplates>
+
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>RiceDocument</name>
+			<description>Workflow Maintenance Document</description>
+			<label>Workflow Maintenance Document</label>
+			<postProcessorName>none</postProcessorName>
+			<docHandler>docHandler is now mandatory...</docHandler>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<active>true</active>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>true</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="adhoc" nextNode="exception" />
+					<requests name="exception" nextNode="Workflow Document Routing" />
+					<requests name="Workflow Document Routing" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="adhoc">
+					<exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
+					<activationType>S</activationType>
+				</start>
+				<requests name="exception">
+					<exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
+					<activationType>S</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+				<requests name="Workflow Document Routing">
+					<exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
+					<activationType>S</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+					<mandatoryRoute>true</mandatoryRoute>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>RiceDocument.DocumentType</name>
+			<parent>RiceDocument</parent>
+			<description>Workflow Maintenance Document Type Document</description>
+			<label>Workflow Maintenance Document Type Document</label>
+			<postProcessorName>org.kuali.rice.kew.doctype.DocumentTypePostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<docHandler>http://localhost:8080/SampleRiceClient/kew/DocumentType.do?methodToCall=docHandler</docHandler>
+			<active>true</active>
+			<policies />
+			<routePaths>
+				<routePath>
+					<start name="placeholder" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="placeholder">
+					<exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
+					<activationType>S</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>RiceDocument.RuleDocument</name>
+			<parent>RiceDocument</parent>
+			<description>Rule Maintenance Document Type Document</description>
+			<label>Rule Maintenance Document Type Document</label>
+			<postProcessorName>org.kuali.rice.kew.rule.RulePostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<docHandler>http://localhost:8080/SampleRiceClient/kew/Rule.do?methodToCall=docHandler</docHandler>
+			<active>true</active>
+			<policies />
+			<routePaths>
+				<routePath>
+					<start name="placeholder" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="placeholder">
+					<exceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</exceptionGroupName>
+					<activationType>S</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>RiceDocument.WKGRPREQ</name>
+			<parent>RiceDocument</parent>
+			<description>Document to generate a new workgroup</description>
+			<label>Add/modify EDEN workgroup</label>
+			<postProcessorName>org.kuali.rice.kew.workgroup.WorkgroupPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>http://localhost:8080/SampleRiceClient/kew/Workgroup.do?methodToCall=docHandler</docHandler>
+			<active>true</active>
+			<routingVersion>1</routingVersion>
+			<routePaths>
+				<routePath>
+					<start name="Adhoc Routing" nextNode="Workgroup Approvers" />
+					<requests name="Workgroup Approvers" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Adhoc Routing">
+					<activationType>P</activationType>
+					<mandatoryRoute>false</mandatoryRoute>
+					<finalApproval>false</finalApproval>
+				</start>
+				<requests name="Workgroup Approvers">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+					<mandatoryRoute>true</mandatoryRoute>
+					<finalApproval>false</finalApproval>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>TravelRequest</name>
+			<parent>RiceDocument</parent>
+			<description>Create a New Travel Request</description>
+			<label>Travel Request</label>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>http://localhost:8080/SampleRiceClient/travelDocument2.do?methodToCall=docHandler</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="Initiated" nextNode="DestinationApproval" />
+					<requests name="DestinationApproval" nextNode="TravelerApproval" />
+					<requests name="TravelerApproval" nextNode="SupervisorApproval" />
+					<requests name="SupervisorApproval" nextNode="AccountApproval" />
+					<requests name="AccountApproval" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initiated">
+					<activationType>P</activationType>
+				</start>
+				<requests name="DestinationApproval">
+					<ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
+				</requests>
+				<requests name="TravelerApproval">
+					<ruleTemplate>TravelRequest-TravelerRouting</ruleTemplate>
+				</requests>
+				<requests name="SupervisorApproval">
+					<ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
+				</requests>
+				<requests name="AccountApproval">
+					<ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>TravelAccountMaintenanceDocument</name>
+			<description>Create a New Travel Request</description>
+			<label>Travel Request</label>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>http://localhost:8080/SampleRiceClient/docHandler.do</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="Initiated" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initiated">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>FiscalOfficerMaintenanceDocument</name>
+			<description>Create a New Travel Fiscal Officer</description>
+			<label>Travel Fiscal Officer</label>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>http://localhost:8080/SampleRiceClient/docHandler.do</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="Initiated" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initiated">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>RiceDocument</documentType>
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>workflowdocumenttemplate description</description>
+			<forceAction>false</forceAction>
+			<responsibilities>
+				<responsibility>
+					<user>quickstart</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>RiceDocument.WKGRPREQ</documentType>
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+			<description>Workgroup Approval Rule</description>
+			<forceAction>false</forceAction>
+			<responsibilities>
+				<responsibility>
+					<groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>TravelRequest</documentType>
+            <ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
+			<description>Destination Rule</description>
+			<ruleExtensions>
+				<ruleExtension>
+					<attribute>DestinationAttribute</attribute>
+					<ruleTemplate>TravelRequest-DestinationRouting</ruleTemplate>
+					<ruleExtensionValues>
+						<ruleExtensionValue>
+							<key>destination</key>
+							<value>las vegas</value>
+						</ruleExtensionValue>
+					</ruleExtensionValues>
+				</ruleExtension>
+			</ruleExtensions>
+			<responsibilities>
+				<responsibility>
+					<user>user4</user>
+					<actionRequested>A</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>TravelRequest</documentType>
+            <ruleTemplate>TravelRequest-TravelerRouting</ruleTemplate>
+			<description>Traveler Routing</description>
+			<responsibilities>
+				<responsibility>
+					<role>edu.sampleu.travel.workflow.EmployeeAttribute!employee</role>
+					<actionRequested>A</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>TravelRequest</documentType>
+            <ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
+			<description>Supervisor Routing</description>
+			<responsibilities>
+				<responsibility>
+					<role>edu.sampleu.travel.workflow.EmployeeAttribute!supervisr</role>
+					<actionRequested>A</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>TravelRequest</documentType>
+            <ruleTemplate>TravelRequest-SupervisorRouting</ruleTemplate>
+			<description>Dean/Director Routing</description>
+			<responsibilities>
+				<responsibility>
+					<role>edu.sampleu.travel.workflow.EmployeeAttribute!director</role>
+					<actionRequested>K</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>TravelRequest</documentType>
+            <ruleTemplate>TravelRequest-AccountRouting</ruleTemplate>
+			<description>Fiscal Officer Routing</description>
+			<responsibilities>
+				<responsibility>
+					<role>edu.sampleu.travel.workflow.AccountAttribute!FO</role>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

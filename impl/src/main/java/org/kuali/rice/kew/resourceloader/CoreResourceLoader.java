@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,18 +23,15 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
-import org.kuali.rice.kew.plugin.Plugin;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
- * A resource loader which is responsible for loading resources from the Workflow ConfigContext.  It is responsible for
- * searching for service overrides in the Institutional Plugin before falling back to default services
- * from the core.
+ * A resource loader which is responsible for loading resources from the Workflow ConfigContext.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CoreResourceLoader extends BaseWrappingResourceLoader {
 
@@ -51,25 +48,11 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	}
 
 	/**
-	 * Overrides the standard getService method to first look in the institutional plugin for the
-	 * service with the given name and then fall back to the default implementation in the
-	 * core (if it exists).
+	 * Overrides the standard getService method to looks for the service in the plugin if it can't find it in the core.
 	 */
 	public Object getService(QName serviceName) {
-	    	if (isRemoteService(serviceName)) {
-	    	    return null;
-	    	}
-		if (getRegistry() != null) {
-			Plugin institutionalPlugin = getRegistry().getInstitutionalPlugin();
-			if (institutionalPlugin != null) {
-				Object service = institutionalPlugin.getService(serviceName);
-				if (service != null) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Retrieved service override for '" + serviceName + "' from the institutional plugin.");
-					}
-					return postProcessService(serviceName, service);
-				}
-			}
+		if (isRemoteService(serviceName)) {
+			return null;
 		}
 		Object service = super.getService(serviceName);
 		if (service == null && getRegistry() != null) {
@@ -98,6 +81,16 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 		return super.shouldWrapService(serviceName, service);
 	}
 	
+	
+	
+	@Override
+	public void stop() throws Exception {
+		if (getRegistry() != null) {
+			registry.stop();
+		}
+		super.stop();
+	}
+
 	/**
 	 * Returns true if the given service name is one which should be loaded from the service bus.  This is used
 	 * primarily for embedded clients that want to reference the workgroup and user services on a standalone
@@ -119,4 +112,5 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	public PluginRegistry getRegistry() {
 		return registry;
 	}
+	
 }

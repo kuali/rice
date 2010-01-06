@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,28 +15,34 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * This is a description of what this class does - bhargavp don't forget to fill this in.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementGroupDocument extends IdentityManagementTypeAttributeTransactionalDocument {
-
+	private static final Logger LOG = Logger.getLogger(IdentityManagementGroupDocument.class);
+	
+	private static final long serialVersionUID = 1L;
+	
 	// principal data
 	protected String groupId;
 	protected String groupTypeId;
@@ -46,13 +52,13 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected boolean active = true;
 
 	protected boolean editing;
-	
+
 	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
 	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
-	
+
 	public IdentityManagementGroupDocument() {
 	}
-
+	
 	/**
 	 * @return the active
 	 */
@@ -82,63 +88,87 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	}
 
 	/**
+	 * @return the kimType
+	 */
+	public KimTypeInfo getKimType() {
+		return KIMServiceLocator.getTypeInfoService().getKimType(getGroupTypeId());
+	}
+	
+	/**
 	 * @param members the members to set
 	 */
 	public GroupDocumentMember getBlankMember() {
-		GroupDocumentMember member = new GroupDocumentMember();
-       	return member;
+		return new GroupDocumentMember();
 	}
-    
-    private void setAttrDefnIdForDelMemberQualifier(GroupDocumentQualifier qualifier,AttributeDefinition definition) {
-    	if (definition instanceof KimDataDictionaryAttributeDefinition) {
-    		qualifier.setKimAttributeId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
-    	} else {
-    		qualifier.setKimAttributeId(((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
-    		//qualifier.refreshReferenceObject("kimAttribute");
 
-    	}
-    }
-    
 	/**
-	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
+	 * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
 	 */
 	@Override
-	public void handleRouteStatusChange() {
-		super.handleRouteStatusChange();
-		if (getDocumentHeader().getWorkflowDocument().stateIsFinal()) {
+	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
+		super.doRouteStatusChange(statusChangeEvent);
+		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
 			KIMServiceLocator.getUiDocumentService().saveGroup(this);
 		}
 	}
-	
+
 	@Override
 	public void prepareForSave(){
 		String groupId;
 		if(StringUtils.isBlank(getGroupId())){
-			groupId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S").toString();
+			SequenceAccessorService sas = getSequenceAccessorService();
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					"KRIM_GRP_ID_S", this.getClass());
+			groupId = nextSeq.toString();
 			setGroupId(groupId);
-		} else
+		} else{
 			groupId = getGroupId();
+		}
 		if(getMembers()!=null){
 			String groupMemberId;
 			for(GroupDocumentMember member: getMembers()){
 				member.setGroupId(groupId);
 				if(StringUtils.isBlank(member.getGroupMemberId())){
-					groupMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S").toString();
+					SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_GRP_MBR_ID_S", this.getClass());
+					groupMemberId = nextSeq.toString();
 					member.setGroupMemberId(groupMemberId);
 				}
-				/*for(KimDocumentGroupQualifier qualifier: member.getQualifiers()){
-					qualifier.setKimTypId(getKimType().getKimTypeId());
-				}*/
 			}
+		}
+		int index = 0;
+		// this needs to be checked - are all qualifiers present?
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+				if ( getQualifiers().size() > index ) {
+					GroupDocumentQualifier qualifier = getQualifiers().get(index);
+					qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+					qualifier.setKimTypId(getKimType().getKimTypeId());
+					qualifier.setGroupId(groupId);
+				}
+				index++;
+	        }
 		}
 	}
 
-	/**
-	 * @return the groupId
-	 */
-	public String getGroupId() {
-		return this.groupId;
+	public void initializeDocumentForNewGroup() {
+		if(StringUtils.isBlank(this.groupId)){
+			SequenceAccessorService sas = getSequenceAccessorService();
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					KimConstants.SequenceNames.KRIM_GROUP_ID_S, this.getClass());
+			this.groupId = nextSeq.toString();
+		}
+		if(StringUtils.isBlank(this.groupTypeId)) {
+			this.groupTypeId = "1";
+		}
+	}
+	
+	public String getGroupId(){
+//		if(StringUtils.isBlank(this.groupId)){
+//			initializeDocumentForNewGroup();
+//		}
+		return groupId;
 	}
 
 	/**
@@ -232,20 +262,61 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		this.qualifiers = qualifiers;
 	}
 
-	public String getWorkflowDocumentTypeName(){
-		String workflowDocumentTypeName = getKimTypeService(kimType).getWorkflowDocumentTypeName();
-		if(StringUtils.isBlank(workflowDocumentTypeName)){
-			workflowDocumentTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
-		}
-		return workflowDocumentTypeName;
-	}
-
 	public GroupDocumentQualifier getQualifier(String kimAttributeDefnId) {
 		for(GroupDocumentQualifier qualifier: qualifiers){
-			if(qualifier.getKimAttributeId().equals(kimAttributeDefnId))
+			if(qualifier.getKimAttrDefnId().equals(kimAttributeDefnId))
 				return qualifier;
 		}
 		return null;
 	}
 
+	public AttributeSet getQualifiersAsAttributeSet() {
+		AttributeSet attributes = new AttributeSet(qualifiers.size());
+		for(GroupDocumentQualifier qualifier: qualifiers){
+			if ( qualifier.getKimAttribute() != null ) {
+				attributes.put(qualifier.getKimAttribute().getAttributeName(), qualifier.getAttrVal());
+			} else {
+				LOG.warn( "Unknown attribute ID on group: " + qualifier.getKimAttrDefnId() + " / value=" + qualifier.getAttrVal());
+				attributes.put("Unknown Attribute ID: " + qualifier.getKimAttrDefnId(), qualifier.getAttrVal());
+			}
+		}
+		return attributes;
+	}
+	
+	public void setDefinitions(AttributeDefinitionMap definitions) {
+		super.setDefinitions(definitions);
+		if(getQualifiers()==null || getQualifiers().size()<1){
+			GroupDocumentQualifier qualifier;
+			setQualifiers(new ArrayList<GroupDocumentQualifier>());
+			if(getDefinitions()!=null){
+				for(String key : getDefinitions().keySet()) {
+					qualifier = new GroupDocumentQualifier();
+		        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+		        	getQualifiers().add(qualifier);
+		        }
+			}
+		}
+	}
+
+	/**
+	 * @return the editing
+	 */
+	public boolean isEditing() {
+		return this.editing;
+	}
+
+	/**
+	 * @param editing the editing to set
+	 */
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+	}
+
+	public void setKimType(KimTypeInfo kimType) {
+		super.setKimType(kimType);
+		if (kimType != null){
+			setGroupTypeId(kimType.getKimTypeId());
+			setGroupTypeName(kimType.getName());
+		}
+	}
 }

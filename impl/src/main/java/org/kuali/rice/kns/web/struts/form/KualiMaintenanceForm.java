@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
@@ -44,6 +45,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 /**
@@ -52,18 +54,18 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  */
 public class KualiMaintenanceForm extends KualiDocumentFormBase {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceForm.class);
+    protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceForm.class);
 
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
-    private String businessObjectClassName;
-    private String description;
-    private boolean readOnly;
-    private Map oldMaintainableValues;
-    private Map newMaintainableValues;
-    private String maintenanceAction;
-    
-    /**
+    protected String businessObjectClassName;
+    protected String description;
+    protected boolean readOnly;
+    protected Map<String, String> oldMaintainableValues;
+    protected Map<String, String> newMaintainableValues;
+    protected String maintenanceAction;
+
+	/**
      * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#addRequiredNonEditableProperties()
      */
     @Override
@@ -78,20 +80,20 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     /**
      * Used to indicate which result set we're using when refreshing/returning from a multi-value lookup
      */
-    private String lookupResultsSequenceNumber;
+    protected String lookupResultsSequenceNumber;
     /**
      * The type of result returned by the multi-value lookup
      * 
      * TODO: to be persisted in the lookup results service instead?
      */
-    private String lookupResultsBOClassName;
+    protected String lookupResultsBOClassName;
     
     /**
      * The name of the collection looked up (by a multiple value lookup)
      */
-    private String lookedUpCollectionName;
+    protected String lookedUpCollectionName;
     
-    private MaintenanceDocumentRestrictions authorizations;
+    protected MaintenanceDocumentRestrictions authorizations;
     
     /**
      * Override the default method to add the if statement which can't be called until after parameters from a multipart request
@@ -177,8 +179,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
         // document type name is null on start, otherwise should be here
         if (StringUtils.isNotBlank(getDocTypeName())) {
-            Map localOldMaintainableValues = new HashMap();
-            Map localNewMaintainableValues = new HashMap();
+            Map<String, String> localOldMaintainableValues = new HashMap<String, String>();
+            Map<String, String> localNewMaintainableValues = new HashMap<String, String>();
             Map<String,String> localNewCollectionValues = new HashMap<String,String>();
             for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
                 String parameter = (String) i.nextElement();
@@ -198,11 +200,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             
             // now, get all add lines and store them to a separate map
             // for use in a separate call to the maintainable
-            for ( Object obj : localNewMaintainableValues.entrySet() ) {
-                String key = (String)((Map.Entry)obj).getKey(); 
+            for ( Map.Entry<String, String> entry : localNewMaintainableValues.entrySet() ) {
+                String key = entry.getKey(); 
                 if ( key.startsWith( KNSConstants.MAINTENANCE_ADD_PREFIX ) ) {
                     localNewCollectionValues.put( key.substring( KNSConstants.MAINTENANCE_ADD_PREFIX.length() ),
-                            (String)((Map.Entry)obj).getValue() );
+                            entry.getValue() );
                 }
             }
             if ( LOG.isDebugEnabled() ) {
@@ -214,14 +216,14 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
             MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
 
-            GlobalVariables.getErrorMap().addToErrorPath("document.oldMaintainableObject");
-            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument);
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.oldMaintainableObject");
+            GlobalVariables.getMessageMap().addToErrorPath("document.oldMaintainableObject");
+            maintenanceDocument.getOldMaintainableObject().populateBusinessObject(localOldMaintainableValues, maintenanceDocument, getMethodToCall());
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.oldMaintainableObject");
 
-            GlobalVariables.getErrorMap().addToErrorPath("document.newMaintainableObject");
+            GlobalVariables.getMessageMap().addToErrorPath("document.newMaintainableObject");
             // update the main object
             Map cachedValues = 
-            	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument);
+            	maintenanceDocument.getNewMaintainableObject().populateBusinessObject(localNewMaintainableValues, maintenanceDocument, getMethodToCall());
             
             if(maintenanceDocument.getFileAttachment() != null) {
                 populateAttachmentPropertyForBO(maintenanceDocument);
@@ -229,11 +231,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             
             // update add lines
             localNewCollectionValues = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().resolvePrincipalNamesToPrincipalIds((BusinessObject)maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
-            cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues ) );
-            GlobalVariables.getErrorMap().removeFromErrorPath("document.newMaintainableObject");
+            cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues, maintenanceDocument, getMethodToCall() ) );
+            GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
 
             if (cachedValues.size() > 0) {
-                GlobalVariables.getErrorMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
+                GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR);
                 for (Iterator iter = cachedValues.keySet().iterator(); iter.hasNext();) {
                     String propertyName = (String) iter.next();
                     String value = (String) cachedValues.get(propertyName);
@@ -243,7 +245,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         }
     }
 
-    private void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {
+    protected void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {
         try {
             Class type = ObjectUtils.easyGetPropertyType(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName());
             ObjectUtils.setObjectProperty(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName(), type, maintenanceDocument.getFileAttachment());
@@ -271,7 +273,10 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         if (((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject() == null) {
             throw new RuntimeException("New maintainable not set in document.");
         }
-        if ((KNSConstants.MAINTENANCE_EDIT_ACTION.equals(this.getMaintenanceAction()) || KNSConstants.MAINTENANCE_COPY_ACTION.equals(this.getMaintenanceAction())) && ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject() == null) {
+        if ((KNSConstants.MAINTENANCE_EDIT_ACTION.equals(this.getMaintenanceAction()) 
+        		|| KNSConstants.MAINTENANCE_COPY_ACTION.equals(this.getMaintenanceAction())
+        		|| KNSConstants.MAINTENANCE_DELETE_ACTION.equals(this.getMaintenanceAction())) 
+        		&& ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject() == null) {
             throw new RuntimeException("Old maintainable not set in document.");
         }
 
@@ -292,9 +297,13 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         Maintainable newMaintainable = ((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject();
         newMaintainable.setMaintenanceAction(getMaintenanceAction());
         List newMaintSections = newMaintainable.getSections((MaintenanceDocument) getDocument(), oldMaintainable);
+        KualiWorkflowDocument workflowDocument = this.getDocument().getDocumentHeader().getWorkflowDocument();
+        String documentStatus =  workflowDocument.getRouteHeader().getDocRouteStatus();
+        String documentInitiatorPrincipalId = workflowDocument.getInitiatorPrincipalId();
+        
 
         // mesh sections for proper jsp display
-        List meshedSections = FieldUtils.meshSections(oldMaintSections, newMaintSections, keyFieldNames, getMaintenanceAction(), isReadOnly(), authorizations);
+        List meshedSections = FieldUtils.meshSections(oldMaintSections, newMaintSections, keyFieldNames, getMaintenanceAction(), isReadOnly(), authorizations, documentStatus, documentInitiatorPrincipalId);
 
         return meshedSections;
     }    
@@ -460,35 +469,78 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 	@Override
 	public String retrieveFormValueForLookupInquiryParameters(String parameterName, String parameterValueLocation) {
 		MaintenanceDocument maintDoc = (MaintenanceDocument) getDocument();
-		if (parameterValueLocation.toUpperCase().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.toUpperCase())) {
-            String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
-            if (maintDoc.getOldMaintainableObject() != null && maintDoc.getOldMaintainableObject().getBusinessObject() != null) {
-            	Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getOldMaintainableObject().getBusinessObject(), propertyName);
-            	if (parameterValue == null) {
-            		return null;
-            	}
-            	if (parameterValue instanceof String) {
-            		return (String) parameterValue;
-            	}
-            	Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
-        		return (String) formatter.format(parameterValue);	
-            }
-        }
-        if (parameterValueLocation.toUpperCase().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.toUpperCase())) {
-            String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
-            if (maintDoc.getNewMaintainableObject() != null && maintDoc.getNewMaintainableObject().getBusinessObject() != null) {
-            	Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getNewMaintainableObject().getBusinessObject(), propertyName);
-            	if (parameterValue == null) {
-            		return null;
-            	}
-            	if (parameterValue instanceof String) {
-            		return (String) parameterValue;
-            	}
-            	Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
-        		return (String) formatter.format(parameterValue);	
-            }
-        }
+		if (parameterValueLocation.toLowerCase().startsWith(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.toLowerCase())) {
+			String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_OLD_MAINTAINABLE.length());
+			if (maintDoc.getOldMaintainableObject() != null && maintDoc.getOldMaintainableObject().getBusinessObject() != null) {
+				Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getOldMaintainableObject().getBusinessObject(), propertyName);
+				if (parameterValue == null) {
+					return null;
+				}
+				if (parameterValue instanceof String) {
+					return (String) parameterValue;
+				}
+				Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+				return (String) formatter.format(parameterValue); 
+			}
+		}
+		if (parameterValueLocation.toLowerCase().startsWith(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.toLowerCase())) {
+			// remove MAINT_NEW_MAINT from the pVL
+			String propertyName = parameterValueLocation.substring(KNSConstants.MAINTENANCE_NEW_MAINTAINABLE.length());
+			String addPrefix = KNSConstants.ADD_PREFIX.toLowerCase() + ".";
+
+			if (propertyName.toLowerCase().startsWith(addPrefix)) { // 
+				propertyName = propertyName.substring(addPrefix.length()); // remove addPrefix from the propertyName
+				String collectionName = parseAddCollectionName(propertyName);
+				propertyName = propertyName.substring(collectionName.length()); // remove collectionName from pN
+				if (propertyName.startsWith(".")) { propertyName = propertyName.substring(1); } // strip beginning "."
+				PersistableBusinessObject newCollectionLine = 
+					maintDoc.getNewMaintainableObject().getNewCollectionLine(collectionName);
+				Object parameterValue = ObjectUtils.getPropertyValue(newCollectionLine, propertyName);
+				if (parameterValue == null) {
+					return null;
+				}
+				if (parameterValue instanceof String) {
+					return (String) parameterValue;
+				}
+				Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+				return (String) formatter.format(parameterValue);
+			} else if (maintDoc.getNewMaintainableObject() != null && maintDoc.getNewMaintainableObject().getBusinessObject() != null) {
+				Object parameterValue = ObjectUtils.getPropertyValue(maintDoc.getNewMaintainableObject().getBusinessObject(), propertyName);
+				if (parameterValue == null) {
+					return null;
+				}
+				if (parameterValue instanceof String) {
+					return (String) parameterValue;
+				}
+				Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+				return (String) formatter.format(parameterValue); 
+			}
+		}
 		return super.retrieveFormValueForLookupInquiryParameters(parameterName, parameterValueLocation);
+	}
+
+	/**
+	 * This method returns the collection name (including nested collections) from a propertyName string
+	 * 
+	 * @param propertyName a parameterValueLocation w/ KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + 
+	 * KNSConstants.ADD_PREFIX + "." stripped off the front
+	 * @return the collectionName
+	 */
+	protected String parseAddCollectionName(String propertyName) {
+		StringBuilder collectionNameBuilder = new StringBuilder();
+
+		boolean firstPathElement = true;
+		for (String pathElement : propertyName.split("\\.")) if (!StringUtils.isBlank(pathElement)) {
+			if (firstPathElement) {
+				firstPathElement = false;
+			} else {
+				collectionNameBuilder.append(".");
+			}
+			collectionNameBuilder.append(pathElement);
+			if (!(pathElement.endsWith("]") && pathElement.contains("["))) break; 
+		}
+		String collectionName = collectionNameBuilder.toString();
+		return collectionName;
 	}
 
 
@@ -501,11 +553,13 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 	public boolean shouldPropertyBePopulatedInForm(
 			String requestParameterName, HttpServletRequest request) {
 		// the user clicked on a document initiation link
-		String methodToCallParameterName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
-		if (StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+		//add delete check for 3070
+		String methodToCallActionName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
+		if (StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION) ||
+				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
 			return true;
 		}
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
@@ -521,13 +575,16 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 			String methodToCallParameterName,
 			String methodToCallParameterValue, HttpServletRequest request) {
 		// the user clicked on a document initiation link
-		if (StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
-				StringUtils.equals(methodToCallParameterName, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION)) {
+		if (StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION) ||
+				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
 			return true;
 		}
 		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,
 				methodToCallParameterValue, request);
 	}
 }
+
+

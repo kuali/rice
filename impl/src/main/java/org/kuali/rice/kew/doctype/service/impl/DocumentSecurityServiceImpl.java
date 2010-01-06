@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kew.doctype.service.impl;
 
 import java.util.Collection;
@@ -19,6 +34,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -35,22 +51,29 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
       return checkAuthorization(userSession, session, routeHeader.getDocumentType().getName(), routeHeader.getRouteHeaderId(), routeHeader.getInitiatorWorkflowId());
   }
 
-  protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorWorkflowId) {
-      DocumentTypeSecurity security = getDocumentTypeSecurity(userSession, documentTypeName, session);
-      if (security == null || !security.isActive()) {
-        // Security is not enabled for this doctype.  Everyone can see this doc.
-        return true;
-      }
-      if (isAdmin(session)) {
-          return true;
-      }
-      for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
-          Boolean authorized = securityAttribute.docSearchAuthorized(security, userSession.getPerson(), userSession.getAuthentications(), documentTypeName, routeHeaderId, initiatorWorkflowId, session);
-          if (authorized != null) {
-              return authorized.booleanValue();
+  protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorPrincipalId) {
+      DocumentTypeSecurity security = null;
+      try {
+          security = getDocumentTypeSecurity(userSession, documentTypeName, session);
+          if (security == null || !security.isActive()) {
+            // Security is not enabled for this doctype.  Everyone can see this doc.
+            return true;
           }
+          if (isAdmin(session)) {
+              return true;
+          }
+          for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
+              Boolean authorized = securityAttribute.docSearchAuthorized(userSession.getPerson(), documentTypeName, routeHeaderId, initiatorPrincipalId);
+              if (authorized != null) {
+                  return authorized.booleanValue();
+              }
+          }
+      } 
+      catch (Exception e) {
+          LOG.warn("Not able to retrieve DocumentTypeSecurity from remote system for doctype: " + documentTypeName, e);
+          return false;
       }
-      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorWorkflowId, session);
+      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorPrincipalId, session);
   }
 
   protected boolean isAdmin(SecuritySession session) {
@@ -60,14 +83,14 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 	  return KIMServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
-  protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorWorkflowId, SecuritySession session) {
+  protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorPrincipalId, SecuritySession session) {
 	Person user = userSession.getPerson();
 
     LOG.debug("auth check user=" + user.getPrincipalId() +" docId=" + documentId);
 
     // Doc Initiator Authorization
     if (security.getInitiatorOk() != null && security.getInitiatorOk()) {
-      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getPrincipalId());
+      boolean isInitiator = StringUtils.equals(initiatorPrincipalId, user.getPrincipalId());
       if (isInitiator) {
         return true;
       }
@@ -94,11 +117,10 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     //  Workgroup Authorization
-    List<String> securityWorkgroups = security.getWorkgroups();
+    List<Group> securityWorkgroups = security.getWorkgroups();
     if (securityWorkgroups != null) {
-      for (String workgroupName : securityWorkgroups) {
-        //TODO Might want security to hold group Id instead of name
-        if (isWorkgroupAuthenticated(Utilities.parseGroupNamespaceCode(workgroupName), Utilities.parseGroupName(workgroupName), session)) {
+      for (Group securityWorkgroup : securityWorkgroups) {
+        if (isWorkgroupAuthenticated(securityWorkgroup.getNamespaceCode(), securityWorkgroup.getGroupName(), session)) {
         	return true;
         }
       }
@@ -122,7 +144,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 
     // Route Log Authorization
     if (security.getRouteLogAuthenticatedOk() != null && security.getRouteLogAuthenticatedOk()) {
-      boolean isInitiator = StringUtils.equals(initiatorWorkflowId, user.getPrincipalId());
+      boolean isInitiator = StringUtils.equals(initiatorPrincipalId, user.getPrincipalId());
       if (isInitiator) {
         return true;
       }

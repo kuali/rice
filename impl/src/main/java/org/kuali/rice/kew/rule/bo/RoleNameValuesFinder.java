@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -26,7 +27,6 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 /**
  * A values finder for generating a list of Role names that can be selected for a given RuleTemplate.
@@ -35,7 +35,7 @@ import org.kuali.rice.kns.web.ui.KeyLabelPair;
  * GlobalVariables to get a reference to the KualiForm so it can examine the business object
  * and extract the role names from the RuleTemplate.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoleNameValuesFinder extends KeyValuesBase {
 	

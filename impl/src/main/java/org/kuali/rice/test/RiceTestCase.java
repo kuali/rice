@@ -1,10 +1,10 @@
 /*
  * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -35,6 +35,8 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -47,7 +49,7 @@ import org.springframework.core.io.ResourceLoader;
  * for running custom transactional setUp. Tear down handles automatic tear down of objects created inside the test
  * environment.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
 public abstract class RiceTestCase extends BaseRiceTestCase {
@@ -70,14 +72,6 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     private List<String> reports = new ArrayList<String>();
 
     private SpringResourceLoader testHarnessSpringResourceLoader;
-
-    /**
-     * Whether the test environment is in a "dirty" state.  Each time the unit test starts up
-     * dirty is set to true.  If a subclass installs the {@link TransactionalLifecycle} then
-     * it should clear the dirty flag.  This flag can be used to perform cleanup in case a previous
-     * test left the test environment in a "dirty" state.
-     */
-    protected static boolean dirty = false;
 
     @Before
     public void setUp() throws Exception {
@@ -132,12 +126,11 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         startSuiteDataLoaderLifecycles();
 
         startLifecycles(this.perTestLifeCycles);
-        
-        dirty = true;
+
     }
 
     /**
-     * This block is walking up the class hierarchy looking for PerSuiteUnitTestData annotations. If it finds one,
+     * This block is walking up the class hierarchy of the current unit test looking for PerSuiteUnitTestData annotations. If it finds one,
      * it will run it once, then add it to a set so that it does not get run again. This is needed so that multiple 
      * tests can extend from the same suite and so that there can be multiple suites throughout the test source branch.
      * 
@@ -176,8 +169,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     @After
     public void tearDown() throws Exception {
-    	// wait for outstanding threads to complete for 2 minutes
-    	ThreadMonitor.tearDown(120000);
+    	// wait for outstanding threads to complete for 1 minute
+    	ThreadMonitor.tearDown(60000);
         stopLifecycles(this.perTestLifeCycles);
         logAfterRun();
     }
@@ -222,12 +215,19 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         PropertyConfigurator.configure(p);
     }
 
+	/**
+	 * Executes the start() method of each of the lifecycles in the given list.
+	 */
     protected void startLifecycles(List<Lifecycle> lifecycles) throws Exception {
         for (Lifecycle lifecycle : lifecycles) {
             lifecycle.start();
         }
     }
 
+    /**
+     * Executes the stop() method of each of the lifecyles in the given list.  The
+     * List of lifecycles is processed in reverse order.
+     */
     protected void stopLifecycles(List<Lifecycle> lifecycles) throws Exception {
         final ListIterator<Lifecycle> iter = lifecycles.listIterator();
         while (iter.hasNext()) {
@@ -239,7 +239,9 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
             	if (lifeCycle == null) {
             		LOG.warn("Attempted to stop a null lifecycle");
             	} else {
-            		lifeCycle.stop();
+            		if (lifeCycle.isStarted()) {
+            			lifeCycle.stop();
+            		}
             	}
             } catch (Exception e) {
                 LOG.warn("Failed to shutdown one of the lifecycles!", e);
@@ -248,11 +250,14 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     }
 
     /**
-     * Returns initial lifecycles up to but excluding the ClearDatabaseLifecycle
-     * @return the initial lifecycles up to but excluding the ClearDatabaseLifecycle
+     * Returns the List of Lifecycles to start when the unit test suite is started
      */
-    protected List<Lifecycle> getInitialLifecycles() {
+    protected List<Lifecycle> getSuiteLifecycles() {
         List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+        
+        /**
+         * Initializes Rice configuration from the test harness configuration file.
+         */
         lifecycles.add(new BaseLifecycle() {
             public void start() throws Exception {
                 Config config = getTestHarnessConfig();
@@ -260,57 +265,88 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
                 super.start();
             }
         });
+        
+        /**
+         * Loads the TestHarnessSpringBeans.xml file which obtains connections to the DB for us
+         */
         lifecycles.add(getTestHarnessSpringResourceLoader());
+        
+        /**
+         * Establishes the TestHarnessServiceLocator so that it has a reference to the Spring context
+         * created from TestHarnessSpringBeans.xml
+         */
         lifecycles.add(new BaseLifecycle() {
             public void start() throws Exception {
                 TestHarnessServiceLocator.setContext(getTestHarnessSpringResourceLoader().getContext());
                 super.start();
             }
         });
-        lifecycles.add(new DerbyDBCreationLifecycle(getDerbySQLFileLocation()));
-
-        return lifecycles;
-    }
-
-    /**
-     * @return the default lifecycles this class defines
-     */
-    protected List<Lifecycle> getDefaultSuiteLifecycles() {
-        List<Lifecycle> lifecycles = getInitialLifecycles();
-        lifecycles.add(new ClearDatabaseLifecycle(getTablesToClear(), getTablesNotToClear()));
-        // lifecycles.add(new PerSuiteDataLoaderLifecycle(getClass()));
+        
+        /**
+         * Clears the tables in the database.
+         */
+        lifecycles.add(new ClearDatabaseLifecycle());
+        
+        /**
+         * Loads Suite Test Data
+         */
+        lifecycles.add(new BaseLifecycle() {
+        	public void start() throws Exception {
+        		loadSuiteTestData();
+        		super.start();
+        	}
+        });
+        
+        Lifecycle loadApplicationLifecycle = getLoadApplicationLifecycle();
+        if (loadApplicationLifecycle != null) {
+        	lifecycles.add(loadApplicationLifecycle);
+        }
         return lifecycles;
     }
     
     /**
-     * @return Lifecycles run once during the suite
+     * This should return a Lifecycle that can be used to load the application
+     * being tested.  For example, this could start a Jetty Server which loads
+     * the application, or load a Spring context to establish a set of services,
+     * or any other application startup activities that the test depends upon.
      */
-    protected List<Lifecycle> getSuiteLifecycles() {
-        return getDefaultSuiteLifecycles();
-    }
-
-    /**
-     * @return the default lifecycles this class defines
-     */
-    protected List<Lifecycle> getDefaultPerTestLifecycles() {
-        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-        lifecycles.add(getPerTestDataLoaderLifecycle());
-        return lifecycles;
+    protected Lifecycle getLoadApplicationLifecycle() {
+    	// by default return null, do nothing
+    	return null;
     }
 
     /**
      * @return Lifecycles run every test run
      */
     protected List<Lifecycle> getPerTestLifecycles() {
-        return getDefaultPerTestLifecycles();
+    	List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+    	if (getClass().isAnnotationPresent(TransactionalTest.class)) {
+    		String transactionManagerName = getClass().getAnnotation(TransactionalTest.class).transactionManager();
+			TransactionalLifecycle transactionalLifecycle = new TransactionalLifecycle(transactionManagerName);
+			lifecycles.add(transactionalLifecycle);
+		}
+        lifecycles.add(getPerTestDataLoaderLifecycle());
+        lifecycles.add(new BaseLifecycle() {
+            public void start() throws Exception {
+                loadPerTestData();
+                super.start();
+            }
+        });
+        return lifecycles;
     }
-
-    protected List<String> getTablesToClear() {
-        return new ArrayList<String>();
+    
+    /**
+     * A method that can be overridden to load test data for the unit test Suite.
+     */
+    protected void loadSuiteTestData() throws Exception {
+    	// do nothing by default, subclass can override
     }
-
-    protected List<String> getTablesNotToClear() {
-        return new ArrayList<String>();
+    
+    /**
+     * A method that can be overridden to load test data on a test-by-test basis
+     */
+    protected void loadPerTestData() throws Exception {
+    	// do nothing by default, subclass can override
     }
 
     protected void report(final String report) {
@@ -337,18 +373,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @return the location of the test harness spring beans context file.
      */
     protected String[] getTestHarnessSpringBeansLocation() {
-        String[] locations;
-        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
-        LOG.debug("Looking for module override test harness spring beans: " + moduleTestHarnessSpringBeansPath);
-        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
-        if (resource.exists()) {
-            LOG.debug("Found: " + resource);
-            locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS, "classpath:" + moduleTestHarnessSpringBeansPath };  
-        } else {
-            LOG.debug("Not found: " + resource);
-            locations = new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
-        }
-        return locations;
+        return new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
     }
 
     protected Config getTestHarnessConfig() throws Exception {
@@ -383,15 +408,5 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * @return name of module that the tests located
      */
     protected abstract String getModuleName();
-
-    /**
-     * Note: We may want to make this more automagical and base this off of convention from the module name Typical return
-     * value "classpath:db/derby/testharness.sql"
-     * 
-     * @return location of sql file containing ddl for a derby db to be ran before start up.
-     */
-    protected String getDerbySQLFileLocation() {
-        return null;
-    }
 
 }

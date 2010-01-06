@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DOC_HDR_EXT_T")
@@ -57,7 +57,7 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
 
     private static final String ATTRIBUTE_DATABASE_TABLE_NAME = "KREW_DOC_HDR_EXT_T";
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = true;
-    private static final boolean ALLOWS_RANGE_SEARCH = false;
+    private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = true;
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_STRING;
     private static final int STRING_MAX_LENGTH = 2000; // should match table creation
@@ -107,13 +107,6 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
         return getSearchableAttributeValue();
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
-     */
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
-        return getSearchableAttributeDisplayValue();
-    }
-
 	/* (non-Javadoc)
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getAttributeDataType()
 	 */
@@ -150,7 +143,7 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
 	}
 
 	/**
-	 * @return true if the {@code valueEntered} parameter is not null and is equal to or 
+	 * @return true if the {@code valueEntered} parameter is not null and is equal to or
 	 * less than the specified max length defined by {@link #STRING_MAX_LENGTH}
 	 *
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
@@ -226,10 +219,10 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
     public Object copy(boolean preserveKeys) {
         return null;
     }
-    
+
 	@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 }
 

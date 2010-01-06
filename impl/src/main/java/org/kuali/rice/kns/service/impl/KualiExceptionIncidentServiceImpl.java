@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * This is a basic implementation of the KualiReporterService. Currently, it only has
  * a mail service as reporting mechanism.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncidentService {
@@ -120,8 +120,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         // First check if message template already define mailing list
         Set emails=messageTemplate.getToAddresses();
         if (emails == null || emails.isEmpty()) {
-            String mailingList=KNSServiceLocator.getKualiConfigurationService().
-            getPropertyString(REPORT_MAIL_LIST);
+            String mailingList=KNSServiceLocator.getKualiConfigurationService().getPropertyString(REPORT_MAIL_LIST);
             if (mailingList == null || mailingList.trim().length() == 0) {
                 String em=REPORT_MAIL_LIST+"?";
                 LOG.error(em);
@@ -237,9 +236,11 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * @see org.kuali.rice.kns.service.KualiExceptionIncidentService#getExceptionIncident(
      * java.lang.Exception,java.util.Map)
      */
-    @SuppressWarnings("unchecked")
     public KualiExceptionIncident getExceptionIncident(Exception exception,
             Map<String, String> properties) {
+    	if ( exception == null ) {
+    		return getExceptionIncident(properties);
+    	}
         if (LOG.isTraceEnabled()) {
             String lm=String.format("ENTRY %s;%s", exception.getMessage(),
                     properties.toString());

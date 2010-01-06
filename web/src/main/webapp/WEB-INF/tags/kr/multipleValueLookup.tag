@@ -1,11 +1,11 @@
 <%--
- Copyright 2007 The Kuali Foundation.
+ Copyright 2007 The Kuali Foundation
  
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
  
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
  
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="boClassName" required="true" %>
+<%@ attribute name="lookupParameters" required="false" %>
 <%@ attribute name="tabindexOverride" required="false" %>
 <%@ attribute name="anchor" required="false" %>
 <%@ attribute name="lookedUpBODisplayName" required="false" description="this value is the human readable name of the BO being looked up" %>
@@ -33,7 +34,7 @@
 <c:if test="${!empty lookedUpBODisplayName}">
   <bean-el:message key="multiple.value.lookup.icon.label" arg0="${lookedUpBODisplayName}"/>
 </c:if>
-<c:set var="epMethodToCallAttribute" value="methodToCall.performLookup.(!!${boClassName}!!).(:;${lookedUpCollectionName};:).((%true%)).anchor${anchor}"/>
+<c:set var="epMethodToCallAttribute" value="methodToCall.performLookup.(!!${boClassName}!!).((#${lookupParameters}#)).(:;${lookedUpCollectionName};:).((%true%)).anchor${anchor}"/>
 ${kfunc:registerEditableProperty(KualiForm, epMethodToCallAttribute)} 
 <input type="image" tabindex="${tabindex}" name="${epMethodToCallAttribute}"
    src="${ConfigProperties.kr.externalizable.images.url}searchicon.gif" border="0" class="tinybutton" valign="middle" alt="Multiple Value Search on ${lookedUpBODisplayName}" title="Multiple Value Search on ${lookedUpBODisplayName}" />

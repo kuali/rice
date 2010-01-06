@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ package org.kuali.rice.kew.actions;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -30,14 +31,14 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 
 /**
  * Responsible for creating adhoc requests that are requested from the client.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AdHocAction extends ActionTakenEvent {
     /**
@@ -48,7 +49,7 @@ public class AdHocAction extends ActionTakenEvent {
 	private String actionRequested;
 	private String nodeName;
 	private String responsibilityDesc;
-	private Boolean ignorePrevious;
+	private Boolean forceAction;
 	private Recipient recipient;
 	private String annotation;
 	private String requestLabel;
@@ -57,12 +58,12 @@ public class AdHocAction extends ActionTakenEvent {
         super(NO_ACTION_TAKEN_CODE, routeHeader, principal);
     }
 
-	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean ignorePrevActions, String requestLabel) {
+	public AdHocAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean forceAction, String requestLabel) {
 		super(NO_ACTION_TAKEN_CODE, routeHeader, principal, annotation);
 		this.actionRequested = actionRequested;
 		this.nodeName = nodeName;
 		this.responsibilityDesc = responsibilityDesc;
-		this.ignorePrevious = ignorePrevActions;
+		this.forceAction = forceAction;
 		this.recipient = recipient;
 		this.annotation = annotation;
 		this.requestLabel = requestLabel;
@@ -86,10 +87,15 @@ public class AdHocAction extends ActionTakenEvent {
     @Override
     public String validateActionRules() {
         List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
-        return validateActionRules(targetNodes);
+        return validateActionRulesInternal(targetNodes);
+    }
+    
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
     }
 
-    private String validateActionRules(List targetNodes) {
+    private String validateActionRulesInternal(List targetNodes) {
     	// recipient will be null when this is invoked from ActionRegistry.getValidActions
     	if (recipient != null) {
     		if (recipient instanceof KimPrincipalRecipient) {
@@ -98,7 +104,7 @@ public class AdHocAction extends ActionTakenEvent {
     				return "The principal '" + principalRecipient.getPrincipal().getPrincipalName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
     		} else if (recipient instanceof KimGroupRecipient) {
-    			KimGroup group = ((KimGroupRecipient)recipient).getGroup();
+    			Group group = ((KimGroupRecipient)recipient).getGroup();
     			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getGroupId(), getRouteHeader().getDocumentType(), actionRequested)) {
     				return "The group '" + group.getGroupName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
@@ -110,18 +116,44 @@ public class AdHocAction extends ActionTakenEvent {
     }
 
     private String adhocRouteAction(List targetNodes, boolean forValidationOnly) {
-        if (targetNodes.isEmpty()) {
-            return "Could not locate an node instance on the document with the name '" + nodeName + "'";
-        }
+        //if (targetNodes.isEmpty()) {
+        //    return "Could not locate an node instance on the document with the name '" + nodeName + "'";
+        //}
         boolean requestCreated = false;
         for (Iterator iter = targetNodes.iterator(); iter.hasNext();) {
             RouteNodeInstance routeNode = (RouteNodeInstance) iter.next();
             // if the node name is null, then adhoc it to the first available node
             if (nodeName == null || routeNode.getName().equals(nodeName)) {
+                String message = createAdHocRequest(routeNode, forValidationOnly);
+                if (!StringUtils.isEmpty(message)) {
+                    return message;
+                }
+                requestCreated = true;
+                if (nodeName == null) {
+                    break;
+                }
+            }
+        }
+        
+        if (!requestCreated && targetNodes.isEmpty()) {
+            String message = createAdHocRequest(null, forValidationOnly);
+            if (!StringUtils.isEmpty(message)) {
+                return message;
+            }
+            requestCreated = true;
+        }
+        
+        if (!requestCreated) {
+            return "Didn't create request.  The node name " + nodeName + " given is probably invalid ";
+        }
+        return "";
+    }
+    
+    private String createAdHocRequest(RouteNodeInstance routeNode, boolean forValidationOnly) {
                 ActionRequestValue adhocRequest = new ActionRequestValue();
                 if (!forValidationOnly) {
                     ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
-                    adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, ignorePrevious, annotation);
+                    adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, forceAction, annotation);
                     adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
                     adhocRequest.setRequestLabel(requestLabel);
                 } else {
@@ -129,7 +161,7 @@ public class AdHocAction extends ActionTakenEvent {
                 }
                 if (adhocRequest.isApproveOrCompleteRequest() && ! (routeHeader.isEnroute() || routeHeader.isStateInitiated() ||
                         routeHeader.isStateSaved())) {
-                    return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getDocRouteStatusLabel() + "'.";
+                    return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getRouteStatusLabel() + "'.";
                 }
                 if (!forValidationOnly) {
                     if (routeHeader.isDisaproved() || routeHeader.isFinal() || routeHeader.isProcessed()) {
@@ -138,15 +170,6 @@ public class AdHocAction extends ActionTakenEvent {
                         KEWServiceLocator.getActionRequestService().saveActionRequest(adhocRequest);
                     }
                 }
-                requestCreated = true;
-                if (nodeName == null) {
-                    break;
-                }
-            }
-        }
-        if (!requestCreated) {
-            return "Didn't create request.  The node name " + nodeName + " given is probably invalid ";
-        }
         return "";
     }
 }

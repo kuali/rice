@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,14 +25,18 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -40,6 +44,9 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
+import org.apache.struts.config.ModuleConfig;
+import org.apache.struts.upload.CommonsMultipartRequestHandler;
+import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -53,10 +60,14 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.ParameterConstants;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.web.struts.form.QuestionPromptForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
@@ -69,6 +80,16 @@ public class WebUtils {
 
     private static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
     private static final String IMAGE_COORDINATE_CLICKED_Y_EXTENSION = ".y";
+    
+    private static final String APPLICATION_IMAGE_URL_PROPERTY_PREFIX = "application.custom.image.url";
+    private static final String DEFAULT_IMAGE_URL_PROPERTY_NAME = "kr.externalizable.images.url";
+    
+    /**
+     * A request attribute name that indicates that a {@link FileUploadLimitExceededException} has already been thrown for the request.
+     */
+    public static final String FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN = "fileUploadLimitExceededExceptionAlreadyThrown";
+    
+    private static KualiConfigurationService configurationService;
     
     /**
      * Checks for methodToCall parameter, and picks off the value using set dot notation. Handles the problem of image submits.
@@ -304,18 +325,15 @@ public class WebUtils {
         return key;
     }
 
-    public static void getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form) {
+    public static void getMultipartParameters(HttpServletRequest request, ActionServletWrapper servletWrapper, ActionForm form, ActionMapping mapping) {
         Map params = new HashMap();
 
         // Get the ActionServletWrapper from the form bean
         //ActionServletWrapper servletWrapper = getServletWrapper();
-        boolean isMultipart = false;
-        try {
-            // Obtain a MultipartRequestHandler
-            MultipartRequestHandler multipartHandler = getMultipartHandler(request, form);
-
-            if (multipartHandler != null) {
-                isMultipart = true;
+        
+        try {                    	
+        	CommonsMultipartRequestHandler multipartHandler = new CommonsMultipartRequestHandler();  
+            if (multipartHandler != null) {        
                 // Set servlet and mapping info
                 if (servletWrapper != null) {
                     // from pojoformbase
@@ -325,11 +343,26 @@ public class WebUtils {
                 multipartHandler.setMapping((ActionMapping) request.getAttribute(Globals.MAPPING_KEY));
                 // Initialize multipart request class handler
                 multipartHandler.handleRequest(request);
-                // stop here if the maximum length has been exceeded
-                Boolean maxLengthExceeded = (Boolean) request.getAttribute(MultipartRequestHandler.ATTRIBUTE_MAX_LENGTH_EXCEEDED);
-                if ((maxLengthExceeded != null) && (maxLengthExceeded.booleanValue())) {
-                    throw new FileUploadLimitExceededException("");
+               
+                Collection<FormFile> files = multipartHandler.getFileElements().values();
+                Enumeration keys = multipartHandler.getFileElements().keys();
+                
+                
+                while(keys.hasMoreElements()){
+                	Object key = keys.nextElement();
+                	FormFile file = (FormFile)multipartHandler.getFileElements().get(key);
+                	long maxSize = WebUtils.getMaxUploadSize(form);
+                	System.out.println(file.getFileSize()+"");
+                	if (maxSize > 0 && Long.parseLong(file.getFileSize()+"") > maxSize ) {
+                		
+                        GlobalVariables.getMessageMap().putError(key.toString(),
+                        		RiceKeyConstants.ERROR_UPLOADFILE_SIZE,
+                                new String[] {
+                                file.getFileName(), Long.toString(maxSize)});
+                      
+                    }
                 }
+              
                 // get file elements for kualirequestprocessor
                 if (servletWrapper == null) {
                     request.setAttribute(KNSConstants.UPLOADED_FILE_REQUEST_ATTRIBUTE_KEY,getFileParametersForMultipartRequest(request, multipartHandler));
@@ -341,10 +374,22 @@ public class WebUtils {
         }
     }
 
-    private static MultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
+    public static long getMaxUploadSize(ActionForm form){
+    	long max = 0L;
+    	 KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
+         if (form instanceof PojoFormBase) {
+             max = multipartHandler.calculateMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
+         }
+         if ( LOG.isDebugEnabled() ) {
+             LOG.debug( "Max File Upload Size: " + max );
+         }
+         return  max;
+    }
+    
+    private static KualiMultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
         KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
         if (form instanceof PojoFormBase) {
-            multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
+           // multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
         }
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Max File Upload Size: " + multipartHandler.getSizeMaxString() );
@@ -427,13 +472,18 @@ public class WebUtils {
     
     public static boolean isPropertyEditable(Set<String> editableProperties, String propertyName){
     	if (LOG.isDebugEnabled()) {
-    		LOG.debug("editableProperties: "+editableProperties);
+    		LOG.debug("isPropertyEditable("+ propertyName+")");
     	}
     	
-    	boolean returnVal =  editableProperties.contains(propertyName) ||
+    	boolean returnVal = editableProperties == null || editableProperties.contains(propertyName) ||
     			(getIndexOfCoordinateExtension(propertyName)==-1?false:
     				editableProperties.contains(
     						propertyName.substring(0, getIndexOfCoordinateExtension(propertyName))));
+    	if ( !returnVal ) {
+        	if (LOG.isDebugEnabled()) {
+        		LOG.debug("isPropertyEditable("+propertyName+") == false / editableProperties: "+editableProperties);
+        	}
+    	}
     	return returnVal;
     }
     
@@ -449,7 +499,7 @@ public class WebUtils {
 		return indexOfCoordinateExtension;
     }
     
-    public static String getDisplayMaskValue(String className, String fieldName, Object formObject, String propertyName){
+    public static String getFullyMaskedValue(String className, String fieldName, Object formObject, String propertyName){
     	String displayMaskValue = null;
     	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
     	
@@ -457,49 +507,66 @@ public class WebUtils {
     	AttributeDefinition a = entry.getAttributeDefinition(fieldName);
     	
     	AttributeSecurity attributeSecurity = a.getAttributeSecurity();
-    	
     	if(attributeSecurity != null && attributeSecurity.isMask()){
     		MaskFormatter maskFormatter = attributeSecurity.getMaskFormatter();
     		displayMaskValue =  maskFormatter.maskValue(propertyValue);
     		
-    	}else if(attributeSecurity != null && attributeSecurity.isPartialMask()){
-    		MaskFormatter maskFormatter = attributeSecurity.getPartialMaskFormatter();
-    		displayMaskValue =  maskFormatter.maskValue(propertyValue);
-    	}
-        
+    	}        
     	return displayMaskValue;
     }
     
+    public static String getPartiallyMaskedValue(String className, String fieldName, Object formObject, String propertyName){
+    	String displayMaskValue = null;
+    	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
+    	
+    	DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(className);
+    	AttributeDefinition a = entry.getAttributeDefinition(fieldName);
+    	
+    	AttributeSecurity attributeSecurity = a.getAttributeSecurity();
+    	if(attributeSecurity != null && attributeSecurity.isPartialMask()){
+    		MaskFormatter partialMaskFormatter = attributeSecurity.getPartialMaskFormatter();
+    		displayMaskValue =  partialMaskFormatter.maskValue(propertyValue);
+    		
+    	}        
+    	return displayMaskValue;
+    }
     
-    public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName) {
+    public static boolean canFullyUnmaskField(String businessObjectClassName, String fieldName, KualiForm form ) {
 		    Class businessObjClass = null;
 		    try{
 		    	businessObjClass = Class.forName(businessObjectClassName);
-		    	
 		    }catch(Exception e){
-		    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+		    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 		    }
-		    return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
-		  			   businessObjClass, fieldName);
+		    if ( form instanceof KualiDocumentFormBase ) {
+		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+		    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
+		    } else {
+		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+		    			businessObjClass, fieldName, null);
+		    }
     }
     
-    public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName) {
+    public static boolean canPartiallyUnmaskField(String businessObjectClassName, String fieldName, KualiForm form ) {
 	    Class businessObjClass = null;
 	    try{
-	    	businessObjClass = Class.forName(businessObjectClassName);
-	    	
+	    	businessObjClass = Class.forName(businessObjectClassName);	    	
 	    }catch(Exception e){
-	    	throw new RuntimeException("Unable to create instance of the class: " + businessObjClass.getName());
+	    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 	    }
-	    return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
-	  			   businessObjClass, fieldName);
+	    if ( form instanceof KualiDocumentFormBase ) {
+	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+	    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
+	    } else {
+	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+	    			businessObjClass, fieldName, null);
+	    }
     }
     
     public static boolean canAddNoteAttachment(Document document) {
     	boolean canViewNoteAttachment = false;
     	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
-    	//NoteWithoutAttachment is used to skip kim attachmentType match for new note (JIRA KFSMI-2849)
-    	canViewNoteAttachment = documentAuthorizer.canAddNoteAttachment(document, KNSConstants.NOTE_WITHOUT_ATTACHMENT_INDICATOR, GlobalVariables.getUserSession().getPerson());
+    	canViewNoteAttachment = documentAuthorizer.canAddNoteAttachment(document, null, GlobalVariables.getUserSession().getPerson());
     	return canViewNoteAttachment;
     }
     
@@ -518,41 +585,118 @@ public class WebUtils {
     		return canDeleteNoteAttachment;
     	}else{
     		canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "true", GlobalVariables.getUserSession().getPerson());
-    		if(canDeleteNoteAttachment && authorUniversalIdentifier.equals(GlobalVariables.getUserSession().getPerson().getPrincipalId())){
-    			return true;
+    		if(canDeleteNoteAttachment && !authorUniversalIdentifier.equals(GlobalVariables.getUserSession().getPerson().getPrincipalId())){
+    			canDeleteNoteAttachment = false;
     		}
     	}
     	return canDeleteNoteAttachment;
     }
     
     public static void reuseErrorMapFromPreviousRequest(KualiDocumentFormBase kualiDocumentFormBase) {
-    	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == null) {
-    		throw new RuntimeException("Error map from previous request is null!");
+    	if (kualiDocumentFormBase.getMessageMapFromPreviousRequest() == null) {
+    		LOG.error("Error map from previous request is null!");
+    		return;
     	}
-    	ErrorMap errorMapFromGlobalVariables = GlobalVariables.getErrorMap();
-    	if (kualiDocumentFormBase.getErrorMapFromPreviousRequest() == errorMapFromGlobalVariables) {
+    	MessageMap errorMapFromGlobalVariables = GlobalVariables.getMessageMap();
+    	if (kualiDocumentFormBase.getMessageMapFromPreviousRequest() == errorMapFromGlobalVariables) {
     		// if we've switched them already, then return early and do nothing
     		return;
     	}
     	if (!errorMapFromGlobalVariables.isEmpty()) {
     		throw new RuntimeException("Cannot replace error map because it is not empty");
     	}
-    	GlobalVariables.setErrorMap(kualiDocumentFormBase.getErrorMapFromPreviousRequest());
-    	GlobalVariables.getErrorMap().clearErrorPath();
+    	GlobalVariables.setMessageMap(kualiDocumentFormBase.getMessageMapFromPreviousRequest());
+    	GlobalVariables.getMessageMap().clearErrorPath();
     }
     
     /**
-     * When a struts action handler method attempts to upload a file to the user's browser, editable properties are cleared out because the JSP is not rendered,
-     * but the HTML page is still viewable to the user.  After downloading the file, when the user tries to click on a button on the screen, it will complain that
-     * the methodToCall couldn't be verified.  This method will re-register all of the editable properties from the previous request (i.e. the request that rendered the 
-     * HTML page) so that the user can use the HTML page. 
+     * Excapes out HTML to prevent XSS attacks, and replaces the following strings to allow for a limited set of HTML tags
      * 
-     * @param kualiForm
+     * <li> [X] and [/X], where X represents any 1 or 2 letter string may be used to specify the equivalent tag in HTML (i.e. &lt;X&gt; and &lt;/X&gt;)
+     * <li> [font COLOR], where COLOR represents any valid html color (i.e. color name or hexcode preceeded by #) will be filtered into &lt;font color="COLOR"/&gt;
+     * <li> [/font] will be filtered into &lt;/font&gt;
+     *  
+     * @param inputString
+     * @return
      */
-    public static void reRegisterEditablePropertiesFromPreviousRequest(KualiForm kualiForm) {
-    	Set<String> editableProperties = kualiForm.getEditablePropertiesFromPreviousRequest();
-        for (String editableProperty : editableProperties) {
-            kualiForm.registerEditableProperty(editableProperty);
-        }
+    public static String filterHtmlAndReplaceRiceMarkup(String inputString) {
+    	String outputString = StringEscapeUtils.escapeHtml(inputString);
+    	// string has been escaped of all <, >, and & (and other characters)
+    	
+    	Map<String, String> findAndReplacePatterns = new HashMap<String, String>();
+    	
+    	// now replace our rice custom markup into html
+
+    	// DON'T ALLOW THE SCRIPT TAG OR ARBITRARY IMAGES/URLS/ETC. THROUGH
+    	
+    	// filter any one character tags
+    	findAndReplacePatterns.put("\\[([A-Za-z])\\]", "<$1>");
+    	findAndReplacePatterns.put("\\[/([A-Za-z])\\]", "</$1>");    	
+    	// filter any two character tags
+    	findAndReplacePatterns.put("\\[([A-Za-z]{2})\\]", "<$1>");
+    	findAndReplacePatterns.put("\\[/([A-Za-z]{2})\\]", "</$1>");
+    	// filter the font tag
+    	findAndReplacePatterns.put("\\[font (#[0-9A-Fa-f]{1,6}|[A-Za-z]+)\\]", "<font color=\"$1\">");
+    	findAndReplacePatterns.put("\\[/font\\]", "</font>");
+    	
+    	for (String findPattern : findAndReplacePatterns.keySet()) {
+    		Pattern p = Pattern.compile(findPattern);
+    		Matcher m = p.matcher(outputString);
+    		if (m.find()) {
+    			String replacePattern = findAndReplacePatterns.get(findPattern);
+    			outputString = m.replaceAll(replacePattern);
+    		}
+    	}
+    	
+    	return outputString;
+    }
+    
+    public static boolean containsSensitiveDataPatternMatch(String fieldValue) {
+    	if (StringUtils.isBlank(fieldValue)) {
+    		return false;
+    	}
+    	ParameterService parameterService = KNSServiceLocator.getParameterService();
+    	List<String> sensitiveDataPatterns = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT, 
+    			KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
+    	for (String pattern : sensitiveDataPatterns){
+    		if (Pattern.compile(pattern).matcher(fieldValue).find()) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    /**
+     * Determines and returns the URL for question button images; looks first for a property "application.custom.image.url", 
+     * and if that is missing, uses the image url returned by getDefaultButtonImageUrl()
+     * @param imageName the name of the image to find a button for
+     * @return the URL where question button images are located
+     */
+    public static String getButtonImageUrl(String imageName) {
+    	String buttonImageUrl = getKualiConfigurationService().getPropertyString(WebUtils.APPLICATION_IMAGE_URL_PROPERTY_PREFIX+"."+imageName);
+    	if (StringUtils.isBlank(buttonImageUrl)) {
+    		buttonImageUrl = getDefaultButtonImageUrl(imageName);
+    	}
+    	return buttonImageUrl;
+    }
+
+    /**
+     * Generates a default button image URL, in the form of: ${kr.externalizable.images.url}buttonsmall_${imageName}.gif
+     * 
+     * @param imageName the image name to generate a default button name for
+     * @return the default button image url
+     */
+    public static String getDefaultButtonImageUrl(String imageName) {
+    	return getKualiConfigurationService().getPropertyString(WebUtils.DEFAULT_IMAGE_URL_PROPERTY_NAME)+"buttonsmall_"+imageName+".gif";
+    }
+    
+    /**
+     * @return an implementation of the KualiConfigurationService
+     */
+    public static KualiConfigurationService getKualiConfigurationService() {
+    	if (configurationService == null) {
+    		configurationService = KNSServiceLocator.getKualiConfigurationService();
+    	}
+    	return configurationService;
     }
 }

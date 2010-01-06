@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -144,7 +144,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
      * Subclasses the Spring Log4jConfigurer to expose a static method which accepts an initial set of
      * properties (to use for variable substitution)
      * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static final class WorkflowLog4j_1_2_13_Configurer extends Log4jConfigurer {
         public static void initLoggingWithProperties(Properties props, String location, long refreshInterval) throws FileNotFoundException {
@@ -200,7 +200,12 @@ public class Log4jLifeCycle extends BaseLifecycle {
     }
 
     public void stop() throws Exception {
-		LogManager.shutdown();
+    	// commenting out LogManager.shutdown() for now because it kills logging before shutdown of the rest of the system is complete
+    	// so if there are other errors that are encountered during shutdown, they won't be logged!
+    	
+    	// move this to the standalone initialize listener instead
+    	
+		//LogManager.shutdown();
 		super.stop();
 	}
 

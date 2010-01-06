@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,8 +79,8 @@ import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.Guid;
@@ -121,14 +121,14 @@ public class RuleServiceImpl implements RuleService {
         if (ruleBaseValues.getPreviousVersionId() != null) {
             RuleBaseValues oldRule = findRuleBaseValuesById(ruleBaseValues.getPreviousVersionId());
             ruleBaseValues.setPreviousVersion(oldRule);
-            ruleBaseValues.setCurrentInd(new Boolean(false));
+            ruleBaseValues.setCurrentInd(Boolean.FALSE);
             ruleBaseValues.setVersionNbr(getNextVersionNumber(oldRule));
         }
         if (ruleBaseValues.getVersionNbr() == null) {
-            ruleBaseValues.setVersionNbr(new Integer(0));
+            ruleBaseValues.setVersionNbr(Integer.valueOf(0));
         }
         if (ruleBaseValues.getCurrentInd() == null) {
-            ruleBaseValues.setCurrentInd(new Boolean(false));
+            ruleBaseValues.setCurrentInd(Boolean.FALSE);
         }
         // iterate through all associated responsibilities, and if they are unsaved (responsibilityId is null)
         // set a new id on them, and recursively save any associated delegation rules
@@ -374,12 +374,13 @@ public class RuleServiceImpl implements RuleService {
         	rule.setVersionNbr(getNextVersionNumber(oldRule));
         }
         Map<String, Long> notifyMap = new HashMap<String, Long>();
-        for (RuleBaseValues ruleToSave : rulesToSave.values()) {
-            getRuleDAO().save(ruleToSave);
-            performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
+        for (RuleBaseValues ruleToSave : rulesToSave.values()) {        	
+        	getRuleDAO().save(ruleToSave);
+        	performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
             installNotification(ruleToSave, notifyMap);
         }
         if (ruleDelegation != null) {
+        	responsibilityIds.add(ruleDelegation.getResponsibilityId());
         	ruleDelegation.setDelegateRuleId(rule.getRuleBaseValuesId());
         	getRuleDelegationService().save(ruleDelegation);
         }
@@ -418,10 +419,13 @@ public class RuleServiceImpl implements RuleService {
      * Ensure that we don't have any notification duplication.
      */
     private void installNotification(RuleBaseValues rule, Map<String, Long> notifyMap) {
-        String key = getRuleCacheKey(rule.getRuleTemplateName(), rule.getDocTypeName());
-        if (!notifyMap.containsKey(key)) {
-            notifyMap.put(key, rule.getRuleBaseValuesId());
-        }
+    	// don't notify the cache if it's a "template" rule!
+    	if (!rule.getTemplateRuleInd()) {
+    		String key = getRuleCacheKey(rule.getRuleTemplateName(), rule.getDocTypeName());
+    		if (!notifyMap.containsKey(key)) {
+    			notifyMap.put(key, rule.getRuleBaseValuesId());
+    		}
+    	}
     }
 
     public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
@@ -471,7 +475,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
+        Boolean cachingRules = Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (!cachingRules.booleanValue()) {
             return;
         }
@@ -803,8 +807,8 @@ public class RuleServiceImpl implements RuleService {
         if (ruleBaseValues.getDescription() == null || ruleBaseValues.getDescription().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("Description is required", "routetemplate.ruleservice.description.required"));
         }
-        if (ruleBaseValues.getIgnorePrevious() == null) {
-            errors.add(new WorkflowServiceErrorImpl("Ignore Previous is required", "routetemplate.ruleservice.ignoreprevious.required"));
+        if (ruleBaseValues.getForceAction() == null) {
+            errors.add(new WorkflowServiceErrorImpl("Force Action is required", "routetemplate.ruleservice.forceAction.required"));
         }
         if (ruleBaseValues.getResponsibilities().isEmpty()) {
             errors.add(new WorkflowServiceErrorImpl("A responsibility is required", "routetemplate.ruleservice.responsibility.required"));
@@ -856,9 +860,9 @@ public class RuleServiceImpl implements RuleService {
             errors.add(new WorkflowServiceErrorImpl("Description is required", "routetemplate.ruleservice.description.required"));
             LOG.error("Description is missing");
         }
-        if (ruleBaseValues.getIgnorePrevious() == null) {
-            errors.add(new WorkflowServiceErrorImpl("Ignore Previous is required", "routetemplate.ruleservice.ignoreprevious.required"));
-            LOG.error("Ignore Previous is missing");
+        if (ruleBaseValues.getForceAction() == null) {
+            errors.add(new WorkflowServiceErrorImpl("Force Action is required", "routetemplate.ruleservice.forceAction.required"));
+            LOG.error("Force Action is missing");
         }
 
         for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
@@ -956,7 +960,7 @@ public class RuleServiceImpl implements RuleService {
         		// user was passed but workgroups should not be parsed... do nothing
         	}
         } else if (groupId != null) {
-        	KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
+        	Group group = KEWServiceLocator.getIdentityHelperService().getGroup(groupId);
         	if (group == null) {
         		throw new IllegalArgumentException("Group does not exist in for given group id: " + groupId);
         	} else  {
@@ -982,7 +986,7 @@ public class RuleServiceImpl implements RuleService {
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        Boolean cachingRules = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
+        Boolean cachingRules = Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
         if (cachingRules.booleanValue()) {
             //Cache cache = SpringServiceLocator.getCache();
             List<RuleBaseValues> rules = getListFromCache(ruleTemplateName, documentType);
@@ -1046,9 +1050,9 @@ public class RuleServiceImpl implements RuleService {
         Collections.sort(candidates);
         Integer maxVersionNumber = (Integer) candidates.get(candidates.size() - 1);
         if (maxVersionNumber == null) {
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
-        return new Integer(maxVersionNumber.intValue() + 1);
+        return Integer.valueOf(maxVersionNumber.intValue() + 1);
     }
 
     /**
@@ -1253,7 +1257,7 @@ public class RuleServiceImpl implements RuleService {
 
     public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) throws WorkflowException {
         KimPrincipal principal = null;
-        KimGroup workgroupToRemove = null;
+        Group workgroupToRemove = null;
         if (entityToBeRemoved instanceof UserId) {
             principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeRemoved));
         } else if (entityToBeRemoved instanceof GroupId) {
@@ -1328,7 +1332,7 @@ public class RuleServiceImpl implements RuleService {
 
     public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) throws WorkflowException {
         KimPrincipal principalToBeReplaced = null;
-        KimGroup workgroupToReplace = null;
+        Group workgroupToReplace = null;
         if (entityToBeReplaced instanceof UserId) {
         	principalToBeReplaced = KEWServiceLocator.getIdentityHelperService().getPrincipal(((UserId) entityToBeReplaced));
         } else if (entityToBeReplaced instanceof GroupId) {
@@ -1337,7 +1341,7 @@ public class RuleServiceImpl implements RuleService {
             throw new WorkflowRuntimeException("Invalid ID for entity to be replaced was passed, type was: " + entityToBeReplaced);
         }
         KimPrincipal newPrincipal = null;
-        KimGroup newWorkgroup = null;
+        Group newWorkgroup = null;
         if (newEntity instanceof UserId) {
             newPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipal((UserId) newEntity);
         } else if (newEntity instanceof GroupId) {

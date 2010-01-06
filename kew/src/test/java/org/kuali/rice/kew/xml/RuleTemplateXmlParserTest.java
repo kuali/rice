@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
 /**
  * This is a Test class to test the rule template xml parser
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RuleTemplateXmlParserTest extends KEWTestCase {
@@ -55,7 +55,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         VALID_TEMPLATE_WITH_FULL_DEFAULTS("ValidRuleTemplateWithFullDefaults", "RuleTemplate_Valid_Defaults", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS("ValidRuleTemplateWithSomeDefaults", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_OVERWRITE("ValidRuleTemplateWithSomeDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE}),
-        VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT("ValidRuleTemplateWithDefaultsInstrOnly", "RuleTemplate_Valid_Instructions_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
+        VALID_TEMPLATE_WITH_DESCRIPTION_DEFAULT("ValidRuleTemplateWithDefaultsDescriptionOnly", "RuleTemplate_Valid_Description_Default", new String[]{RULE_ATTRIBUTE_TWO}, new String[0], new String[]{RULE_ATTRIBUTE_TWO}, new String[0]),
         VALID_TEMPLATE_WITH_LIMITED_DEFAULTS_REMOVED("ValidRuleTemplateWithSomeRemovedDefaultsOverwrite", "RuleTemplate_Valid_Some_Defaults", new String[]{RULE_ATTRIBUTE_THREE}, new String[0], new String[0], new String[]{RULE_ATTRIBUTE_THREE})
         ;
 
@@ -213,7 +213,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
 
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
-        assertEquals(6, options.size());
+        assertEquals(5, options.size());
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -226,7 +226,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         assertEquals("Testy Me A Template", ruleDefaults.getDescription());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
-        assertTrue(ruleDefaults.getIgnorePrevious());
+        assertTrue(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
     }
 
@@ -240,7 +240,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
 
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
-        assertEquals(6, options.size());
+        assertEquals(5, options.size());
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -251,7 +251,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
@@ -270,7 +270,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
-        assertEquals(6, options.size());
+        assertEquals(5, options.size());
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -281,7 +281,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
@@ -293,14 +293,14 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // we overwrite the template and specify a new subset of defaults...any setting omitted should be removed, i.e. reset to a default
         // value
         options = template.getRuleTemplateOptions();
-        assertEquals(2, options.size());
+        assertEquals(1, options.size());
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
 
         // test those set in the default/template rule
         ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on (updated) RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         // activation date defaults to current time
         assertNull(ruleDefaults.getFromDate());
@@ -321,7 +321,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         
         // test the rule template options
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
-        assertEquals(6, options.size());
+        assertEquals(5, options.size());
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
         assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
@@ -332,7 +332,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a rule based on RuleTemplate_Valid_Some_Defaults", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         assertEquals("01/11/2006", ruleDefaults.getFromDateString());
         assertEquals("01/01/2100", ruleDefaults.getToDateString());
@@ -349,20 +349,20 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
     /**
      * Tests loading a template with the minimal required ruleDefaults
      */
-    @Test public void testLoadValidTemplateWithInstructionsDefault() throws Exception {
-        testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.fileNameParameter, null);
+    @Test public void testLoadValidTemplateWithDescriptionDefault() throws Exception {
+        testTemplate(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_DESCRIPTION_DEFAULT.fileNameParameter, null);
         
-        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_INSTRUCTIONS_DEFAULT.ruleTemplateName);
+        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(TemplateParserGeneralFixture.VALID_TEMPLATE_WITH_DESCRIPTION_DEFAULT.ruleTemplateName);
 
         // test the rule template options; this one just has the instructions, nothing else
         List<RuleTemplateOption> options = template.getRuleTemplateOptions();
-        assertEquals(1, options.size());
+        assertEquals(0, options.size());
 
         // test those set in the default/template rule; everything default exception description which is specified
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getRuleTemplateId());
         assertTrue(ruleDefaults.getTemplateRuleInd());
         assertEquals("a description", ruleDefaults.getDescription());
-        assertFalse(ruleDefaults.getIgnorePrevious());
+        assertFalse(ruleDefaults.getForceAction());
         assertFalse(ruleDefaults.getActiveInd());
         // activation date defaults to current time
         assertNull(ruleDefaults.getFromDate());

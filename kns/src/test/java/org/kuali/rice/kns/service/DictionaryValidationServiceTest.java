@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,17 +18,18 @@ package org.kuali.rice.kns.service;
 import org.junit.Test;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.test.document.AccountRequestDocument;
-import org.kuali.rice.kns.util.ErrorMap;
+import org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.test.TestBase;
+import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the DictionaryValidationService (currently only recursive validation is tested).
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DictionaryValidationServiceTest extends TestBase {
+public class DictionaryValidationServiceTest extends KNSTestCase {
 
     public DictionaryValidationServiceTest() {
     }
@@ -36,13 +37,13 @@ public class DictionaryValidationServiceTest extends TestBase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         GlobalVariables.setUserSession(new UserSession("quickstart"));
     }
 
     @Override
     public void tearDown() throws Exception {
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         GlobalVariables.setUserSession(null);
         super.tearDown();
     }
@@ -60,13 +61,13 @@ public class DictionaryValidationServiceTest extends TestBase {
         travelDocument.setReason2("reason2");
         travelDocument.setRequester("requester");
 
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
-        int recursiveZeroErrorMapSize = errorMap.size();
+        MessageMap errorMap = GlobalVariables.getMessageMap();
+        int recursiveZeroMessageMapSize = errorMap.size();
 
         // errors should be 'account type code' and 'request type' both being required
-        assertEquals("Number of errors found is incorrect", 2, recursiveZeroErrorMapSize);
+        assertEquals("Number of errors found is incorrect", 2, recursiveZeroMessageMapSize);
     }
 
     /**
@@ -82,17 +83,46 @@ public class DictionaryValidationServiceTest extends TestBase {
         travelDocument.setReason2("reason2");
         travelDocument.setRequester("requester");
 
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
-        ErrorMap errorMap = GlobalVariables.getErrorMap();
-        int recursiveZeroErrorMapSize = errorMap.size();
+        MessageMap errorMap = GlobalVariables.getMessageMap();
+        int recursiveZeroMessageMapSize = errorMap.size();
 
-        GlobalVariables.setErrorMap(new ErrorMap());
+        GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 5, true);
-        ErrorMap errorMap2 = GlobalVariables.getErrorMap();
-        int recursiveFiveErrorMapSize = errorMap2.size();
+        MessageMap errorMap2 = GlobalVariables.getMessageMap();
+        int recursiveFiveMessageMapSize = errorMap2.size();
 
-        assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveZeroErrorMapSize, recursiveFiveErrorMapSize);
+        assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveZeroMessageMapSize, recursiveFiveMessageMapSize);
     }
 
+    @Test public void testRecursiveValidationParentChildLoop() throws Exception {
+        AccountRequestDocumentWithCyclicalReference doc1 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest3");
+        // set all required fields except 1
+        doc1.getDocumentHeader().setDocumentDescription("test document 1");
+        doc1.setReason1("reason1");
+        doc1.setReason2("reason2");
+        doc1.setRequester("requester");
+
+        AccountRequestDocumentWithCyclicalReference doc2 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocator.getDocumentService().getNewDocument("AccountRequest3");
+        doc2.getDocumentHeader().setDocumentDescription("test document 2");
+        doc2.setReason1("reason1a");
+        doc2.setReason2("reason2a");
+        doc2.setRequester("requester2");
+        doc2.setParent(doc1);
+        doc1.setChild(doc2);
+
+        GlobalVariables.setMessageMap(new MessageMap());
+        KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 5, true);
+        MessageMap errorMap = GlobalVariables.getMessageMap();
+        int recursiveFiveMessageMapSize = errorMap.size();
+
+        GlobalVariables.setMessageMap(new MessageMap());
+        KNSServiceLocator.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 10, true);
+        MessageMap errorMap2 = GlobalVariables.getMessageMap();
+        int recursiveTenMessageMapSize = errorMap2.size();
+
+        assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveFiveMessageMapSize, recursiveTenMessageMapSize);
+    }
+    
 }

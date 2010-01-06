@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Copyright 2005-2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,13 +27,14 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Kuali lookup implementation. Implements methods necessary to render the lookup and provides search and return methods.
- * 
- * 
+ *
+ *
  */
 @Transactional
 public class KualiLookupableImpl implements Lookupable {
@@ -42,6 +43,7 @@ public class KualiLookupableImpl implements Lookupable {
 
     private Class businessObjectClass;
     private LookupableHelperService lookupableHelperService;
+    private String extraOnLoad = ""; // This is supposed to be a javascript function.
 
     /**
      * Default constructor initializes services from spring
@@ -51,7 +53,7 @@ public class KualiLookupableImpl implements Lookupable {
 
     /**
      * Sets the business object class for the lookup instance, then rows can be set for search render.
-     * 
+     *
      * @param boClass Class for the lookup business object
      */
     public void setBusinessObjectClass(Class boClass) {
@@ -60,14 +62,14 @@ public class KualiLookupableImpl implements Lookupable {
         }
 
         this.businessObjectClass = boClass;
-        
+
         // next line initializes the helper to return correct values for getRow();
         getLookupableHelperService().setBusinessObjectClass(boClass);
     }
-    
+
     /**
      * Initializes the lookup with the given Map of parameters.
-     * 
+     *
      * @param parameters
      */
     public void setParameters(Map parameters) {
@@ -80,7 +82,7 @@ public class KualiLookupableImpl implements Lookupable {
     public Map getParameters() {
         return getLookupableHelperService().getParameters();
     }
-    
+
     /**
      * Constructs the list of columns for the search results. All properties for the column objects come from the DataDictionary.
      */
@@ -90,7 +92,7 @@ public class KualiLookupableImpl implements Lookupable {
 
     /**
      * Checks that any required search fields have value.
-     * 
+     *
      * @see org.kuali.rice.kns.lookup.Lookupable#validateSearchParameters(java.util.Map)
      */
     public void validateSearchParameters(Map fieldValues) {
@@ -99,7 +101,7 @@ public class KualiLookupableImpl implements Lookupable {
 
     /**
      * Uses Lookup Service to provide a basic unbounded search.
-     * 
+     *
      * @param fieldValues - Map containing prop name keys and search values
      *
      * @return List found business objects
@@ -110,9 +112,9 @@ public class KualiLookupableImpl implements Lookupable {
 
     /**
      * Uses Lookup Service to provide a basic search.
-     * 
+     *
      * @param fieldValues - Map containing prop name keys and search values
-     * 
+     *
      * @return List found business objects
      */
     public List<BusinessObject> getSearchResults(Map<String, String> fieldValues) {
@@ -144,14 +146,14 @@ public class KualiLookupableImpl implements Lookupable {
         return url;
     }
 
-  
+
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getHtmlMenuBar()
      */
     public String getHtmlMenuBar() {
         return getBusinessObjectDictionaryService().getLookupMenuBar(getBusinessObjectClass());
     }
-    
+
 	/**
 	 * @see org.kuali.rice.kns.lookup.Lookupable#getSupplementalMenuBar()
 	 */
@@ -194,12 +196,6 @@ public class KualiLookupableImpl implements Lookupable {
         return getLookupableHelperService().getReturnKeys();
     }
 
-    /**
-     * @see org.kuali.rice.kns.lookup.Lookupable#getLookupInstructions()
-     */
-    public String getLookupInstructions() {
-        return getBusinessObjectDictionaryService().getLookupInstructions(getBusinessObjectClass());
-    }
 
     /**
      * @see org.kuali.rice.kns.lookup.Lookupable#getExtraButtonSource()
@@ -282,7 +278,7 @@ public class KualiLookupableImpl implements Lookupable {
 
     /**
      * Sets the readOnlyFieldsList attribute value.
-     * 
+     *
      * @param readOnlyFieldsList The readOnlyFieldsList to set.
      */
     public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
@@ -323,7 +319,7 @@ public class KualiLookupableImpl implements Lookupable {
 
 	/**
 	 * calls the lookup helper service to do "clear" behaviors
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.Lookupable#performClear()
 	 */
 	public void performClear(LookupForm lookupForm) {
@@ -332,7 +328,7 @@ public class KualiLookupableImpl implements Lookupable {
 
 	/**
 	 * calls the lookup helper service to check if non maintenance actions should be displayed
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.lookup.Lookupable#shouldDisplayHeaderNonMaintActions()
 	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
@@ -341,7 +337,7 @@ public class KualiLookupableImpl implements Lookupable {
 
 	/**
 	 * calls the lookup helper service to check if criteria should be displayed
-	 *  
+	 *
 	 * @see org.kuali.rice.kns.lookup.Lookupable#shouldDisplayLookupCriteria()
 	 */
 	public boolean shouldDisplayLookupCriteria() {
@@ -351,5 +347,49 @@ public class KualiLookupableImpl implements Lookupable {
 	protected String getCreateNewUrl(String url){
 		return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.kns.lookup.Lookupable#performCustomAction(boolean)
+	 */
+	public boolean performCustomAction(boolean ignoreErrors) {
+		return getLookupableHelperService().performCustomAction(ignoreErrors);
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.lookup.Lookupable#getExtraField()
+	 */
+	public Field getExtraField() {
+		return getLookupableHelperService().getExtraField();
+	}
+
+	/**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.kns.lookup.Lookupable#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.kns.web.ui.Field)
+	 */
+	public void applyFieldAuthorizationsFromNestedLookups(Field field) {
+		getLookupableHelperService().applyFieldAuthorizationsFromNestedLookups(field);
+	}
+
+	/**
+	 * This overridden method returns the extraOnLoad variable. The 
+	 * varible is currently accessed in page.tag and is called in the onLoad.
+	 * it allows us to inject javascript onload.
+	 *
+	 * @see org.kuali.rice.kns.lookup.Lookupable#getExtraOnLoad()
+	 */
+	public String getExtraOnLoad() {
+		return extraOnLoad;
+	}
+
+	/**
+	 * @param extraOnLoad the extraOnLoad to set
+	 */
+	public void setExtraOnLoad(String extraOnLoad) {
+		this.extraOnLoad = extraOnLoad;
+	}
+
+
 }

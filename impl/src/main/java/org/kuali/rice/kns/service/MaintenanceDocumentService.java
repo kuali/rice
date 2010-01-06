@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,14 +57,14 @@ public interface MaintenanceDocumentService {
      */
     public String getLockingDocumentId(Maintainable maintainable, String documentNumber);
 
-    /**
-     * Retrieves maintenance documents locked by the given bo class name, then materializes the pending changes to objects of the
-     * given class.
-     * 
-     * @param businessObjectClass
-     * @return
-     */
-    public List getPendingObjects(Class businessObjectClass);
+//    /**
+//     * Retrieves maintenance documents locked by the given bo class name, then materializes the pending changes to objects of the
+//     * given class.
+//     * 
+//     * @param businessObjectClass
+//     * @return
+//     */
+//    public List getPendingObjects(Class businessObjectClass);
 
     /**
      * This method is here to call the same-named method in the Dao, since the service has access to the Dao, but the caller doesn't.

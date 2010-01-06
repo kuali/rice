@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,14 +21,14 @@ import org.jdom.Element;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GroupXmlExporter implements XmlExporter, XmlConstants {
@@ -46,7 +46,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
             Element rootElement = renderer.renderElement(null, GROUPS);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, GROUP_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
             for (Iterator iterator = dataSet.getGroups().iterator(); iterator.hasNext();) {
-                KimGroup group = (KimGroup) iterator.next();
+                Group group = (Group) iterator.next();
                 exportGroup(rootElement, group);
             }
             return rootElement;
@@ -62,7 +62,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
      * @param group
      * @param object
      */
-    private void exportGroup(Element parent, KimGroup group) {
+    private void exportGroup(Element parent, Group group) {
         Element groupElement = renderer.renderElement(parent, GROUP);
         if (group.getGroupName() != null) {
             renderer.renderTextElement(groupElement, NAME, group.getGroupName());
@@ -79,7 +79,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
 
         if (group.getKimTypeId() != null) {
             Element typeElement = renderer.renderElement(groupElement, TYPE);
-            KimTypeImpl kimType = KIMServiceLocator.getTypeInternalService().getKimType(group.getKimTypeId());
+            KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(group.getKimTypeId());
             renderer.renderTextElement(typeElement, NAMESPACE, kimType.getNamespaceCode());
             renderer.renderTextElement(typeElement, NAME, kimType.getName());
         }
@@ -100,7 +100,7 @@ public class GroupXmlExporter implements XmlExporter, XmlConstants {
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
             for (String memberGroupId : memberGroupIds) {
-                KimGroup memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
+                Group memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
                 Element groupNameElement = renderer.renderElement(membersElement, GROUP_NAME);
                 renderer.renderTextElement(groupNameElement, NAME, memberGroup.getGroupName());
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());

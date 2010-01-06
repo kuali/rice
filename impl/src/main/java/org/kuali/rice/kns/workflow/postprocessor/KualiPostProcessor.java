@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
@@ -93,4 +94,13 @@ public class KualiPostProcessor implements PostProcessorRemote {
     public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
         return KNSServiceLocator.getPostProcessorService().afterProcess(afterProcessEvent);
     }
+
+    /**
+     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#getDocumentIdsToLock(org.kuali.rice.kew.dto.DocumentLockingEventDTO)
+     */
+	public Long[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
+		return KNSServiceLocator.getPostProcessorService().getDocumentIdsToLock(documentLockingEvent);
+	}
+    
+    
  }

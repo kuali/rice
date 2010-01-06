@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,12 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kns.lookup.KualiLookupableImpl;
-import org.kuali.rice.kns.lookup.LookupableHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.test.TestBase;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSTestConstants.TestConstants;
 
 /**
@@ -32,7 +30,7 @@ import org.kuali.test.KNSTestConstants.TestConstants;
  * 
  * 
  */
-public class KualiLookupableTest extends TestBase {
+public class KualiLookupableTest extends KNSTestCase {
     private KualiLookupableImpl lookupableImpl;
 
     @Override
@@ -66,9 +64,9 @@ public class KualiLookupableTest extends TestBase {
         checkURLContains("Lookup return url does not contain docFormKey", KNSConstants.DOC_FORM_KEY + "=8888888", returnUrl);
 
         // check url goes back to our back location
-        assertTrue("Lookup return url does not go back to back location", returnUrl.startsWith(TestConstants.BASE_PATH + "ib.do"));
+        checkURLContains("Lookup return url does not go back to back location", TestConstants.BASE_PATH + "ib.do", returnUrl);
 
-        assertEquals(returnUrl, "http://localhost:8080/ib.do?refreshCaller=kualiLookupable&number=a1&methodToCall=refresh&docFormKey=8888888");
+        assertEquals(returnUrl, "<a title=\"return valueAccount Number=a1 \" href=\"http://localhost:8080/ib.do?refreshCaller=kualiLookupable&number=a1&methodToCall=refresh&docFormKey=8888888\">return value</a>");
 
         // check that field conversions are working correctly for keys
         fieldConversions.put("number", "myAccount[0].chartCode");

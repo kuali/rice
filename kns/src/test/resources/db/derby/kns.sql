@@ -1,3 +1,18 @@
+-- 
+-- Copyright 2007-2009 The Kuali Foundation
+-- 
+-- Licensed under the Educational Community License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+-- 
+-- http://www.opensource.org/licenses/ecl2.php
+-- 
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- 
 CREATE SEQUENCE LOOKUP_RESULT_SEQUENCE_NBR_SEQ INCREMENT BY 1 START WITH 2000
 ;
 CREATE SEQUENCE NTE_ID_SEQ INCREMENT BY 1 START WITH 2000
@@ -2739,6 +2754,34 @@ create table TRV_ACCT_EXT (
 CREATE SEQUENCE SEQ_TRAVEL_DOC_ID INCREMENT BY 1 START WITH 1000
 ;
 CREATE SEQUENCE SEQ_TRAVEL_FO_ID INCREMENT BY 1 START WITH 1000
+;
+
+CREATE TABLE ACCT_DD_ATTR_DOC (
+	DOC_HDR_ID VARCHAR2(14),
+	OBJ_ID VARCHAR2(36),
+	VER_NBR NUMBER(14),
+	ACCT_NUM NUMBER(14) NOT NULL,
+	ACCT_OWNR VARCHAR2(50) NOT NULL,
+	ACCT_BAL NUMBER(16,2) NOT NULL,
+	ACCT_OPN_DAT DATE NOT NULL,
+	ACCT_STAT VARCHAR2(30) NOT NULL,
+	ACCT_UPDATE_DT_TM TIMESTAMP,
+	ACCT_AWAKE VARCHAR2(1),
+	CONSTRAINT ACCT_DD_ATTR_DOC_PK PRIMARY KEY (DOC_HDR_ID)
+)
+;
+
+create table TST_SEARCH_ATTR_INDX_TST_DOC_T (
+    DOC_HDR_ID VARCHAR2(14),
+	OBJ_ID VARCHAR2(36),
+	VER_NBR NUMBER(14),
+	RTE_LVL_CNT NUMBER(14),
+	CNSTNT_STR VARCHAR2(50),
+    RTD_STR VARCHAR2(50),
+    HLD_RTD_STR VARCHAR2(50),
+    RD_ACCS_CNT NUMBER(14),
+    CONSTRAINT TST_SEARCH_ATTR_INDX_TST_DOC_T PRIMARY KEY (DOC_HDR_ID)
+)
 ;
 
 create table EN_UNITTEST_T (

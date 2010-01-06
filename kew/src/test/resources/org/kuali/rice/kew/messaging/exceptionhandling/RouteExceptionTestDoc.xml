@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">
@@ -16,9 +31,9 @@
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -105,7 +120,7 @@
 			<documentType>TestFinalApproverDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -118,7 +133,7 @@
 			<documentType>TestFinalApproverDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -131,7 +146,7 @@
 			<documentType>DocumentTypeDocument_New</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -144,7 +159,7 @@
 			<documentType>DocumentTypeDocument_New</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>

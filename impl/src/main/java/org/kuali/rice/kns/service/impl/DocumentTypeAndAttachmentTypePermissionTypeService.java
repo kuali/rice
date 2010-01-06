@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 		DocumentTypePermissionTypeServiceImpl {
@@ -34,23 +34,25 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 	public List<KimPermissionInfo> performPermissionMatches(
 			AttributeSet requestedDetails,
 			List<KimPermissionInfo> permissionsList) {
-		List<KimPermissionInfo> matchingPermissions = super
-				.performPermissionMatches(requestedDetails, permissionsList);
-		List<KimPermissionInfo> returnPermissions = new ArrayList<KimPermissionInfo>();
-		for (KimPermissionInfo kimPermissionInfo : matchingPermissions) {
-			//If a note without an attachment, byPass attachment type code check. (Fix for KFSMI-2849)
-			if(KNSConstants.NOTE_WITHOUT_ATTACHMENT_INDICATOR.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))){
-				returnPermissions.add(kimPermissionInfo);
-			}else{
-				if (!kimPermissionInfo.getDetails().containsKey(
-						KimAttributes.ATTACHMENT_TYPE_CODE)
-						|| kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
-							.equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
-				{
-					returnPermissions.add(kimPermissionInfo);
-				}
-			}
+		
+		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
+		if (requestedDetails == null) {
+			return matchingPermissions; // empty list
 		}
-		return returnPermissions;
+		// loop over the permissions, checking the non-document-related ones
+		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
+			if (!kimPermissionInfo.getDetails().containsKey(
+						KimAttributes.ATTACHMENT_TYPE_CODE)
+			  || kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
+				 .equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
+			{
+				matchingPermissions.add(kimPermissionInfo);
+			}
+
+		}
+		// now, filter the list to just those for the current document
+		matchingPermissions = super.performPermissionMatches(requestedDetails,
+				matchingPermissions);
+		return matchingPermissions;
 	}
 }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 /**
  * Represents the current context of a Document being processed by the engine.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteContext implements Serializable {
 
@@ -54,6 +54,8 @@ public class RouteContext implements Serializable {
 	private boolean doNotSendApproveNotificationEmails = false;
 
 	private Map parameters = new HashMap();
+	
+	private boolean searchIndexingRequestedForContext = false;
 
 	public RouteContext() {
 	}
@@ -173,4 +175,20 @@ public class RouteContext implements Serializable {
 	public void setParameters(Map parameters) {
 		this.parameters = parameters;
 	}
+
+	/**
+	 * Determines if search indexing has already been requested during this context
+	 * @return the searchIndexingRequestedForContext: true if search indexing has been requested, false otherwise
+	 */
+	public boolean isSearchIndexingRequestedForContext() {
+		return this.searchIndexingRequestedForContext;
+	}
+
+	/**
+	 * Sets the route context to let it know that search indexing has been requested
+	 */
+	public void requestSearchIndexingForContext() {
+		this.searchIndexingRequestedForContext = true;
+	}
+	
 }

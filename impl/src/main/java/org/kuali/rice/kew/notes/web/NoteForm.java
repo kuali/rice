@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,19 +18,19 @@ package org.kuali.rice.kew.notes.web;
 
 import java.util.List;
 
-import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
  * Struts ActionForm for {@link NoteAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NoteForm extends ActionForm {
+public class NoteForm extends KualiForm {
 
 	private static final long serialVersionUID = 1L;
 	private Note note;
@@ -89,10 +89,6 @@ public class NoteForm extends ActionForm {
 
     public void setShowEdit(String showEdit) {
         this.showEdit = showEdit;
-    }
-
-    public String getInstructionForCreateNew() {
-        return Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.NOTE_DETAIL_TYPE, KEWConstants.NOTE_CREATE_NEW_INSTRUCTION);
     }
 
     public Long getDocId() {

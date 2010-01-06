@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
-import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -30,33 +30,39 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
+import org.kuali.rice.kns.util.TableRenderUtil;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocumentFormBase {
+public class IdentityManagementRoleDocumentForm extends IdentityManagementDocumentFormBase {
+	protected static final long serialVersionUID = 7099079353241080483L;
 	{
 		requiredNonEditableProperties.add("methodToCall");
+		requiredNonEditableProperties.add("roleCommand");
 	}
 	
-	private boolean canAssignRole = true;
-	private KimTypeImpl kimType;
-	private KimDocumentRoleMember member;
+	protected String delegationMemberRoleMemberId;
+	protected String dmrmi;
+	protected boolean canAssignRole = true;
+	protected boolean canModifyAssignees = true;
+	protected KimTypeInfo kimType;
+	protected KimDocumentRoleMember member;
 	{
 		member = new KimDocumentRoleMember();
 		member.getQualifiers().add(new KimDocumentRoleQualifier());
 	}
-	private KimDocumentRolePermission permission;
-	private KimDocumentRoleResponsibility responsibility;
-	private RoleDocumentDelegationMember delegationMember;
+	protected KimDocumentRolePermission permission;
+	protected KimDocumentRoleResponsibility responsibility;
+	protected RoleDocumentDelegationMember delegationMember;
 	{
 		delegationMember = new RoleDocumentDelegationMember();
 		delegationMember.getQualifiers().add(new RoleDocumentDelegationMemberQualifier());
 	}
+	protected String roleId;
     
     /**
 	 * @return the delegationMember
@@ -74,28 +80,13 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 
 	public IdentityManagementRoleDocumentForm() {
         super();
-        this.setDocument(new IdentityManagementRoleDocument());
     }
 
-    /*
-     * Reset method - reset attributes of form retrieved from session otherwise
-     * we will always call docHandler action
-     * @param mapping
-     * @param request
-     */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-    	super.reset(mapping, request);
-    	this.setMethodToCall(null);
-        this.setRefreshCaller(null);
-        this.setAnchor(null);
-        this.setCurrentTabIndex(0);
-    }
-
-    @Override
-	public void populate(HttpServletRequest request) {
-		super.populate(request);
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementRoleDocument";
 	}
-
+	
 	public IdentityManagementRoleDocument getRoleDocument() {
         return (IdentityManagementRoleDocument) this.getDocument();
     }
@@ -173,7 +164,7 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		return getMemberBusinessObjectName(getDelegationMember().getMemberTypeCode());
 	}
 
-	private String getMemberFieldConversions(String memberTypeCode){
+	protected String getMemberFieldConversions(String memberTypeCode){
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return "principalId:member.memberId,principalName:member.memberName";
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
@@ -183,28 +174,31 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 		return "";
 	}
 
-	private String getMemberBusinessObjectName(String memberTypeCode){
+	protected String getMemberBusinessObjectName(String memberTypeCode){
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode))
 			return PersonImpl.class.getName();
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
-			return KimRoleImpl.class.getName();
+			return RoleImpl.class.getName();
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
-			return KimGroupImpl.class.getName();
+			return GroupImpl.class.getName();
 		return "";
 	}
 
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeImpl getKimType() {
+	public KimTypeInfo getKimType() {
 		return this.kimType;
 	}
 
 	/**
 	 * @param kimType the kimType to set
 	 */
-	public void setKimType(KimTypeImpl kimType) {
+	public void setKimType(KimTypeInfo kimType) {
 		this.kimType = kimType;
+		if ( kimType != null && getRoleDocument() != null ) {
+			getRoleDocument().setKimType(kimType);
+		}
 	}
 
 	/**
@@ -219,6 +213,95 @@ public class IdentityManagementRoleDocumentForm extends KualiTransactionalDocume
 	 */
 	public void setCanAssignRole(boolean canAssignRole) {
 		this.canAssignRole = canAssignRole;
+	}
+
+	/**
+	 * @return the canModifyAssignees
+	 */
+	public boolean isCanModifyAssignees() {
+		return this.canModifyAssignees;
+	}
+
+	/**
+	 * @param canModifyAssignees the canModifyAssignees to set
+	 */
+	public void setCanModifyAssignees(boolean canModifyAssignees) {
+		this.canModifyAssignees = canModifyAssignees;
+	}
+	
+	public List<KimDocumentRoleMember> getMemberRows() {
+		return getRoleDocument().getMembers();
+	}
+
+	public int getIndexOfRoleMemberFromMemberRows(String roleMemberId){
+		int index = 0;
+		for(KimDocumentRoleMember roleMember: getMemberRows()){
+			if(StringUtils.equals(roleMember.getRoleMemberId(), roleMemberId)){
+				break;
+			}
+			index++;
+		}
+		return index;
+	}
+
+	public int getPageNumberOfRoleMemberId(String roleMemberId){
+		if(StringUtils.isEmpty(roleMemberId)) return 1;
+		int index = getIndexOfRoleMemberFromMemberRows(roleMemberId);
+		return TableRenderUtil.computeTotalNumberOfPages(index+1, getRecordsPerPage())-1;
+	}
+	
+	/**
+	 * @return the roleId
+	 */
+	public String getRoleId() {
+		return this.roleId;
+	}
+
+	/**
+	 * @param roleId the roleId to set
+	 */
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
+	}
+
+	/**
+	 * @return the delegationMemberRoleMemberId
+	 */
+	public String getDelegationMemberRoleMemberId() {
+		return this.delegationMemberRoleMemberId;
+	}
+
+	/**
+	 * @param delegationMemberRoleMemberId the delegationMemberRoleMemberId to set
+	 */
+	public void setDelegationMemberRoleMemberId(String delegationMemberRoleMemberId) {
+		this.delegationMemberRoleMemberId = delegationMemberRoleMemberId;
+		getDelegationMember().setRoleMemberId(delegationMemberRoleMemberId);
+		KimDocumentRoleMember roleMember = getRoleDocument().getMember(delegationMemberRoleMemberId);
+		if(roleMember!=null){
+			delegationMember.setRoleMemberId(roleMember.getRoleMemberId());
+			delegationMember.setRoleMemberName(roleMember.getMemberName());
+			delegationMember.setRoleMemberNamespaceCode(roleMember.getMemberNamespaceCode());
+			RoleDocumentDelegationMemberQualifier delegationMemberQualifier;
+			for(KimDocumentRoleQualifier roleQualifier: roleMember.getQualifiers()){
+				delegationMemberQualifier = getDelegationMember().getQualifier(roleQualifier.getKimAttrDefnId());
+				delegationMemberQualifier.setAttrVal(roleQualifier.getAttrVal());
+			}
+		}
+	}
+
+	/**
+	 * @return the dmrmi
+	 */
+	public String getDmrmi() {
+		return this.dmrmi;
+	}
+
+	/**
+	 * @param dmrmi the dmrmi to set
+	 */
+	public void setDmrmi(String dmrmi) {
+		this.dmrmi = dmrmi;
 	}
 
 }

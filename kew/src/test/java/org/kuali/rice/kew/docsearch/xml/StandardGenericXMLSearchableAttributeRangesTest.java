@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,14 +19,15 @@ package org.kuali.rice.kew.docsearch.xml;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
@@ -34,7 +35,6 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
@@ -45,7 +45,6 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -117,6 +116,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     /*
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
      */
+    @Ignore("See KULRICE-2988")
     @Test public void testGetSearchingRowsUsingRangeSearches() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
         String documentTypeName = "SearchDocType";
@@ -346,6 +346,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         workflowDocument.routeDocument("routing this document.");
 
         workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), workflowDocument.getRouteHeaderId());
+
+        /*
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
         assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
         for (Iterator iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
@@ -361,7 +363,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
             } else if (attributeValue instanceof SearchableAttributeFloatValue) {
                 SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
                 assertEquals("The only Float attribute that should have been added has key '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
-                assertEquals("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE, realValue.getSearchableAttributeValue());
+                assertTrue("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE + "'", 0 == TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.compareTo(realValue.getSearchableAttributeValue()));
             } else if (attributeValue instanceof SearchableAttributeDateTimeValue) {
                 SearchableAttributeDateTimeValue realValue = (SearchableAttributeDateTimeValue) attributeValue;
                 assertEquals("The only DateTime attribute that should have been added has key '" + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
@@ -380,6 +382,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 fail("Searchable Attribute Value base class should be one of the four checked always");
             }
         }
+        */
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
@@ -392,12 +395,14 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, Boolean.TRUE, docType));
-        if ((new SearchableAttributeStringValue()).allowsRangeSearches()) {
+        if (!(new SearchableAttributeStringValue()).allowsRangeSearches()) {
 			fail("Cannot search by range on a String field at the database level");
         } else {
             try {
                 result = docSearchService.getList(user.getPrincipalId(), criteria);
-    			fail("Searching by range for field using key '" + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY + "' should throw exception");
+                int size = result.getSearchResults().size();
+                assertTrue("Searching for a lower bound of 'jack'. case insensitive, inclusive.  so searching for something >= 'JACK'. Should Return 1, but got" + size, 1 == size);
+//    			fail("Searching by range for field using key '" + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY + "' should throw exception");
     		} catch (Exception e) {}
         }
 
@@ -714,5 +719,90 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
             result = docSearchService.getList(user.getPrincipalId(), criteria);
             fail("Error should have been thrown for invalid range");
         } catch (WorkflowServiceErrorException e) {}
+    }
+
+    /*
+     * Tests the XML string attributes on range definitions, using a technique similar to that of the testSearchableAttributeRanges() unit test.
+     */
+    @Test public void testRangeDefinitionStringAttributes() throws Exception {
+        String documentTypeName = "RangeDefinitionTestDocType";
+    	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        String principalName = "rkirkend";
+        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        WorkflowDocument workflowDocument = new WorkflowDocument(principalId, documentTypeName);
+
+        // adding inclusive-lower-bound searchable attribute
+        WorkflowAttributeDefinitionDTO inclusiveLowerXMLDef = new WorkflowAttributeDefinitionDTO("TextFieldWithInclusiveLower");
+        inclusiveLowerXMLDef.addProperty("textFieldWithInclusiveLower", "newvalue");
+        workflowDocument.addSearchableDefinition(inclusiveLowerXMLDef);
+        // adding case-sensitive searchable attribute
+        WorkflowAttributeDefinitionDTO caseSensitiveXMLDef = new WorkflowAttributeDefinitionDTO("TextFieldWithCaseSensitivity");
+        caseSensitiveXMLDef.addProperty("textFieldWithCaseSensitivity", "thevalue");
+        workflowDocument.addSearchableDefinition(caseSensitiveXMLDef);
+        // adding searchable attribute with overridden properties
+        WorkflowAttributeDefinitionDTO overridesXMLDef = new WorkflowAttributeDefinitionDTO("TextFieldWithOverrides");
+        overridesXMLDef.addProperty("textFieldWithOverrides", "SomeVal");
+        workflowDocument.addSearchableDefinition(overridesXMLDef);
+
+        workflowDocument.setTitle("Range Def Test");
+        workflowDocument.routeDocument("routing range def doc.");
+
+        workflowDocument = new WorkflowDocument(principalId, workflowDocument.getRouteHeaderId());
+
+        // Verify that the "TextFieldWithInclusiveLower" attribute behaves as expected (lower-bound-inclusive and (by default) case-insensitive).
+        assertSearchBehavesAsExpected(docType, principalId, "textFieldWithInclusiveLower",
+        		new String[] { "newvalue", ""        , ""        , "NEWVALUD", "newValuf", "newValuj", "newvaluf"},
+        		new String[] { ""        , "newvalue", "Newvaluf", "NEWVALUF", "newValud", "NEWVALUK", ""        },
+        		new int[]    { 1         , 0         , 1         , 1         , -1        , 0         , 0         });
+
+        // Verify that the "TextFieldWithCaseSensitivity" attribute behaves as expected (bound-inclusive and case-sensitive).
+        assertSearchBehavesAsExpected(docType, principalId, "textFieldWithCaseSensitivity",
+        		new String[] { "thevalue", ""        , ""        , "THEVALUD", "thevalud", "Thevalud", "THEVALUF"},
+        		new String[] { ""        , "thevalue", "Thevalue", "THEVALUF", "THEVALUF", "Thevaluf", ""        },
+        		new int[]    { 1         , 1         , 0         , 0         , -1        , 0         , 1         });
+
+        // Verify that the "TextFieldWithOverrides" attribute behaves as expected (that is, after overriding the appropriate region definition
+        // properties, the lower bound should be case-insensitive and non-inclusive, and the upper bound should be case-sensitive and inclusive).
+        assertSearchBehavesAsExpected(docType, principalId, "textFieldWithOverrides",
+        		new String[] { "someval", "SomeVal", ""       , ""       , "SOMEVAK", "SomeVam", "SOMEVAM", "somevak", ""       },
+        		new String[] { ""       , ""       , "SOMEVAL", "SomeVal", "SomeVam", "SOMEVAK", "SomeVak", ""       , "SomeVak"},
+        		new int[]    { 0        , 0        , 0        , 1        , 1        , 0       , 0        , 1        , 0        });
+    }
+
+    /*
+     * A convenience method for performing document-searching operations involving range definitions. The array parameters must all be the same length,
+     * since this method will perform tests with the values given by entries located at the same indices.
+     * @param docType The document type to search for.
+     * @param principalId The ID of the user that will perform the search.
+     * @param fieldDefKey The name of the field given by the field definition on the searchable attribute.
+     * @param lowBounds The lower bounds to use in the tests; to ignore a lower bound for a test, use an empty String.
+     * @param upBounds The upper bounds to use in the tests; to ignore an upper bound for a test, use an empty String.
+     * @param resultSizes The expected number of documents to be returned by the search; use -1 to indicate that an exception should have occurred.
+     * @throws Exception
+     */
+    private void assertSearchBehavesAsExpected(DocumentType docType, String principalId, String fieldDefKey, String[] lowBounds, String[] upBounds,
+    		int[] resultSizes) throws Exception {
+        DocSearchCriteriaDTO criteria = null;
+        DocumentSearchResultComponents result = null;
+        List<DocumentSearchResult> searchResults = null;
+        DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
+        for (int i = 0; i < resultSizes.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setDocTypeFullName(docType.getName());
+        	criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(fieldDefKey, lowBounds[i], Boolean.TRUE, docType));
+        	criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(fieldDefKey, upBounds[i], Boolean.FALSE, docType));
+        	try {
+        		result = docSearchService.getList(principalId, criteria);
+        		searchResults = result.getSearchResults();
+        		if (resultSizes[i] < 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
+        		}
+        		assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], searchResults.size());
+        	} catch (Exception ex) {
+        		if (resultSizes[i] >= 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");
+        		}
+        	}
+        }
     }
 }

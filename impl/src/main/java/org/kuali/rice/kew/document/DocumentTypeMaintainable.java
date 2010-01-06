@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ import org.kuali.rice.kns.web.ui.Section;
 /**
  * This class is the maintainable implementation for the Workflow {@link DocumentType} 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentTypeMaintainable extends KualiMaintainableImpl {
@@ -88,11 +88,11 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
     }
 
     /**
-     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#handleRouteStatusChange(org.kuali.rice.kns.bo.DocumentHeader)
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#doRouteStatusChange(org.kuali.rice.kns.bo.DocumentHeader)
      */
     @Override
-    public void handleRouteStatusChange(DocumentHeader documentHeader) {
-        super.handleRouteStatusChange(documentHeader);
+    public void doRouteStatusChange(DocumentHeader documentHeader) {
+        super.doRouteStatusChange(documentHeader);
     }
     
     private Set<String> constructUserInterfaceEditablePropertyNamesList() {
@@ -142,6 +142,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
                     prevDocType.setLabel(newDocumentType.getLabel());
                     prevDocType.setDescription(newDocumentType.getDescription());
                     prevDocType.setUnresolvedHelpDefinitionUrl(newDocumentType.getUnresolvedHelpDefinitionUrl());
+                    prevDocType.setUnresolvedDocSearchHelpUrl(newDocumentType.getUnresolvedDocSearchHelpUrl());
                     docTypeService.save(prevDocType, false);
                 }
                 // TODO: delyea - do we need to call this multiple times as in "DocumentTypeServiceImpl.save(DocumentType, boolean)"

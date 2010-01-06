@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,12 +29,15 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
+import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
@@ -86,7 +89,10 @@ public class DocumentServiceImpl implements DocumentService {
 
     protected BusinessObjectService businessObjectService;
 
-    protected DocumentDao documentDao;
+    /**
+     * Don't access directly, use synchronized getter and setter to access
+     */
+    private DocumentDao documentDao;
 
     private DataDictionaryService dataDictionaryService;
 
@@ -125,42 +131,44 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     private KualiDocumentEvent generateKualiDocumentEvent(Document document, Class eventClass) throws ConfigurationException {
-	String potentialErrorMessage = "Found error trying to generate Kuali Document Event using event class '" + eventClass.getName() + "' for document " + document.getDocumentNumber();
-	try {
-	    Constructor usableConstructor = null;
-	    List<Object> paramList = null;
-	    for (Constructor currentConstructor : eventClass.getConstructors()) {
-		paramList = new ArrayList<Object>();
-		for (Class parameterClass : currentConstructor.getParameterTypes()) {
-		    if (Document.class.isAssignableFrom(parameterClass)) {
-			usableConstructor = currentConstructor;
-			paramList.add(document);
-		    } else {
-			paramList.add(null);
-    }
-		}
-		if (ObjectUtils.isNotNull(usableConstructor)) {
-		    break;
-		}
-	    }
-	    if (ObjectUtils.isNull(usableConstructor)) {
-		throw new RuntimeException("Cannot find a constructor for class '" + eventClass.getName() + "' that takes in a document parameter");
-	    }
-	    else {
-		usableConstructor.newInstance(paramList.toArray());
-		return (KualiDocumentEvent) usableConstructor.newInstance(paramList.toArray());
-	    }
-	} catch (SecurityException e) {
-	    throw new ConfigurationException(potentialErrorMessage, e);
-	} catch (IllegalArgumentException e) {
-	    throw new ConfigurationException(potentialErrorMessage, e);
-	} catch (InstantiationException e) {
-	    throw new ConfigurationException(potentialErrorMessage, e);
-	} catch (IllegalAccessException e) {
-	    throw new ConfigurationException(potentialErrorMessage, e);
-	} catch (InvocationTargetException e) {
-	    throw new ConfigurationException(potentialErrorMessage, e);
-	}
+    	String potentialErrorMessage = "Found error trying to generate Kuali Document Event using event class '" + 
+    	eventClass.getName() + "' for document " + document.getDocumentNumber();
+    	
+    	try {
+    		Constructor usableConstructor = null;
+    		List<Object> paramList = null;
+    		for (Constructor currentConstructor : eventClass.getConstructors()) {
+    			paramList = new ArrayList<Object>();
+    			for (Class parameterClass : currentConstructor.getParameterTypes()) {
+    				if (Document.class.isAssignableFrom(parameterClass)) {
+    					usableConstructor = currentConstructor;
+    					paramList.add(document);
+    				} else {
+    					paramList.add(null);
+    				}
+    			}
+    			if (ObjectUtils.isNotNull(usableConstructor)) {
+    				break;
+    			}
+    		}
+    		if (ObjectUtils.isNull(usableConstructor)) {
+    			throw new RuntimeException("Cannot find a constructor for class '" + eventClass.getName() + "' that takes in a document parameter");
+    		}
+    		else {
+    			usableConstructor.newInstance(paramList.toArray());
+    			return (KualiDocumentEvent) usableConstructor.newInstance(paramList.toArray());
+    		}
+    	} catch (SecurityException e) {
+    		throw new ConfigurationException(potentialErrorMessage, e);
+    	} catch (IllegalArgumentException e) {
+    		throw new ConfigurationException(potentialErrorMessage, e);
+    	} catch (InstantiationException e) {
+    		throw new ConfigurationException(potentialErrorMessage, e);
+    	} catch (IllegalAccessException e) {
+    		throw new ConfigurationException(potentialErrorMessage, e);
+    	} catch (InvocationTargetException e) {
+    		throw new ConfigurationException(potentialErrorMessage, e);
+    	}
     }
 
     /**
@@ -176,8 +184,9 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().route(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
 
@@ -263,11 +272,19 @@ public class DocumentServiceImpl implements DocumentService {
         //if (!getDocumentActionFlags(document).getCanCancel()) {
         //    throw buildAuthorizationException("cancel", document);
         //}
+        if (document instanceof MaintenanceDocument) {
+        	MaintenanceDocument maintDoc = ((MaintenanceDocument) document);
+        	if (maintDoc.getOldMaintainableObject() != null) {
+        		maintDoc.getOldMaintainableObject().getBusinessObject().refresh();
+        	}
+       		maintDoc.getNewMaintainableObject().getBusinessObject().refresh();
+        }
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
 
@@ -322,7 +339,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (document == null) {
             throw new IllegalArgumentException("invalid (null) document");
         }
-        else if (document.getDocumentNumber() == null) {
+        if (document.getDocumentNumber() == null) {
             throw new IllegalStateException("invalid (null) documentHeaderId");
         }
     }
@@ -514,8 +531,8 @@ public class DocumentServiceImpl implements DocumentService {
 
 	        KualiWorkflowDocument workflowDocument = null;
 
-	        if ( LOG.isInfoEnabled() ) {
-	        	LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
+	        if ( LOG.isDebugEnabled() ) {
+	        	LOG.debug("Retrieving doc id: " + documentHeaderId + " from workflow service.");
 	        }
 	        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
 	        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
@@ -545,8 +562,8 @@ public class DocumentServiceImpl implements DocumentService {
 
         KualiWorkflowDocument workflowDocument = null;
 
-        if ( LOG.isInfoEnabled() ) {
-            LOG.info("Retrieving doc id: " + documentHeaderId + " from workflow service.");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Retrieving doc id: " + documentHeaderId + " from workflow service.");
         }
 
         Person person = getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
@@ -555,7 +572,7 @@ public class DocumentServiceImpl implements DocumentService {
         Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
         // retrieve the Document
-        Document document = documentDao.findByDocumentHeaderId(documentClass, documentHeaderId);
+        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
         return postProcessDocument(documentHeaderId, workflowDocument, document);
 	}
 
@@ -655,8 +672,8 @@ public class DocumentServiceImpl implements DocumentService {
             LOG.error("document passed to validateAndPersist was null");
             throw new IllegalArgumentException("invalid (null) document");
         }
-        if ( LOG.isInfoEnabled() ) {
-        	LOG.info("validating and preparing to persist document " + document.getDocumentNumber());
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("validating and preparing to persist document " + document.getDocumentNumber());
         }
 
         document.validateBusinessRules(event);
@@ -741,7 +758,7 @@ public class DocumentServiceImpl implements DocumentService {
         Note note = new Note();
 
         note.setNotePostedTimestamp(getDateTimeService().getCurrentTimestamp());
-        note.setVersionNumber(new Long(1));
+        note.setVersionNumber(Long.valueOf(1));
         note.setNoteText(text);
         if(document.isBoNotesSupport()) {
             note.setNoteTypeCode(KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
@@ -782,8 +799,9 @@ public class DocumentServiceImpl implements DocumentService {
 		getWorkflowDocumentService().sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(),
         		annotation, adHocRecipients);
 		GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-		getBusinessObjectService().delete(document.getAdHocRoutePersons());
-		getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+		//getBusinessObjectService().delete(document.getAdHocRoutePersons());
+		//getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+		removeAdHocPersonsAndWorkgroups(document);
 	}
 
 	/**
@@ -982,5 +1000,14 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public void setDocumentHelperService(DocumentHelperService documentHelperService) {
         this.documentHelperService = documentHelperService;
+    }
+    
+    private void removeAdHocPersonsAndWorkgroups(Document document){
+    	List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
+    	List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
+    	getBusinessObjectService().delete(document.getAdHocRoutePersons());
+    	getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+    	document.setAdHocRoutePersons(adHocRoutePersons);
+    	document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
     }
 }

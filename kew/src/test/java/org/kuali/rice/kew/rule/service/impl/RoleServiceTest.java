@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,8 +53,8 @@ public class RoleServiceTest extends KEWTestCase {
 	private List<String> group2 = new ArrayList<String>();
 
 
-	protected void setUpTransaction() throws Exception {
-		super.setUpTransaction();
+	protected void setUpAfterDataLoad() throws Exception {
+		super.setUpAfterDataLoad();
 		roleService = KEWServiceLocator.getRoleService();
 		initializeAttribute();
 		documentId = routeDocument();
@@ -283,7 +283,7 @@ public class RoleServiceTest extends KEWTestCase {
 		responsibility1.setActionRequested(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 		responsibility1.setPriority(1);
 		TestRecipient recipient1 = new TestRecipient();
-		recipient1.setId("2");
+		recipient1.setId(getPrincipalIdForName("rkirkend"));
 		recipient1.setType(KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
 		responsibility1.setRecipient(recipient1);
 		responsibilities.add(responsibility1);

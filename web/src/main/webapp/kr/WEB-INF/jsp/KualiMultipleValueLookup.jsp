@@ -1,11 +1,11 @@
 <%--
- Copyright 2007 The Kuali Foundation.
+ Copyright 2007 The Kuali Foundation
  
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
  
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
  
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,8 @@
  limitations under the License.
 --%>
 <%@ include file="tldHeader.jsp"%>
+
+<%@ page buffer = "16kb" %>
 
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 
@@ -29,7 +31,7 @@
 
 	<div class="headerarea-small" id="headerarea-small">
 	<h1><c:out value="${KualiForm.lookupable.title}" /><kul:help
-		resourceKey="lookupHelpText" altText="lookup help" /></h1>
+		lookupBusinessObjectClassName="${KualiForm.lookupable.businessObjectClass.name}" altText="lookup help" /></h1>
 	</div>
 	<kul:enterKey methodToCall="search" />
 
@@ -96,25 +98,20 @@
 							src='<c:out value="${KualiForm.extraButtonSource}" />'
 							class="tinybutton" border="0" /></a>
 					</c:if>
+					
+					<%-- removed for 3219 --%>
+					<%--
 					<c:if test="${ KualiForm.hasReturnableRow }" >
 						<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_retselected.gif" class="tinybutton" name="methodToCall.prepareToReturnSelectedResults.x" alt="Return selected results" title="Return selected results"/>
 					</c:if>
+					--%>
+					
 					</td>
 				</tr>
 			</table>
 			</div>
-
 			<br>
-			<br>
-			<div class="right"><logic-el:present name="KualiForm"
-				property="formKey">
-				<c:if
-					test="${KualiForm.formKey!='' && KualiForm.hideReturnLink != true && !KualiForm.multipleValues}">
-					<a
-						href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}&docNum=${KualiForm.docNum}" />' title="return with no value">
-					return with no value </a>
-				</c:if>
-			</logic-el:present></div>
+			<br>	
             <kul:displayMultipleValueLookupResults resultsList="${requestScope.reqSearchResults}"/>
 			</td>
 			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"

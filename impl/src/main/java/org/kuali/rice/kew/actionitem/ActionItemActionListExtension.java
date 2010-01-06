@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,15 +24,15 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Alternate model object for action list fetches that do not automatically use
  * ojb collections.  This is here to make action list faster.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @MappedSuperclass
@@ -49,9 +49,9 @@ public class ActionItemActionListExtension extends ActionItem {
     @Transient
     private boolean isInitialized = false;
     @Transient
-    private KimGroup delegatorGroup = null;
+    private Group delegatorGroup = null;
     @Transient
-    private KimGroup group = null;
+    private Group group = null;
 
     @Transient
     public Person getDelegatorPerson() {
@@ -106,14 +106,14 @@ public class ActionItemActionListExtension extends ActionItem {
 	 * @return the group
 	 */
 	@Transient
-	public KimGroup getGroup() {
+	public Group getGroup() {
 		return this.group;
 	}
 
 	/**
 	 * @param group the group to set
 	 */
-	public void setGroup(KimGroup group) {
+	public void setGroup(Group group) {
 		this.group = group;
 	}
 
@@ -121,14 +121,14 @@ public class ActionItemActionListExtension extends ActionItem {
 	 * @return the delegatorGroup
 	 */
 	@Transient
-	public KimGroup getDelegatorGroup() {
+	public Group getDelegatorGroup() {
 		return this.delegatorGroup;
 	}
 
 	/**
 	 * @param delegatorGroup the delegatorGroup to set
 	 */
-	public void setDelegatorGroup(KimGroup delegatorGroup) {
+	public void setDelegatorGroup(Group delegatorGroup) {
 		this.delegatorGroup = delegatorGroup;
 	}
 

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import java.util.List;
  * Transport object for the DocumentRouteHeaderValue.  Represents a document to the
  * client programmer
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteHeaderDTO implements Serializable {
 
@@ -46,6 +46,8 @@ public class RouteHeaderDTO implements Serializable {
     private Integer docVersion;
     private String docTypeName;
     private String documentUrl;
+    private String appDocStatus;
+    private Calendar appDocStatusDate;
     private boolean fyiRequested;
     private boolean ackRequested;
     private boolean approveRequested;
@@ -56,6 +58,8 @@ public class RouteHeaderDTO implements Serializable {
 
     private NoteDTO[] notes = null;
     private NoteDTO[] notesToDelete = null;
+    
+//    private String docStatusPolicy;
 
     /**
      * Probably needs to be an array for web services
@@ -127,6 +131,30 @@ public class RouteHeaderDTO implements Serializable {
     public void setDocRouteStatus(String docRouteStatus) {
         this.docRouteStatus = docRouteStatus;
     }
+
+    public String getAppDocStatus() {
+        return appDocStatus;
+    }
+
+    public void setAppDocStatus(String appDocStatus) {
+        this.appDocStatus = appDocStatus;
+    }
+
+    public Calendar getAppDocStatusDate() {
+        return appDocStatusDate;
+    }
+
+    public void setAppDocStatusDate(Calendar date) {
+        this.appDocStatusDate = date;
+    }
+    
+//    public String getDocStatusPolicy() {
+//        return docStatusPolicy;
+//    }
+//
+//    public void setDocStatusPolicy(String policy) {
+//        this.docStatusPolicy = policy;
+//    }
 
     public String getDocTitle() {
         return docTitle;

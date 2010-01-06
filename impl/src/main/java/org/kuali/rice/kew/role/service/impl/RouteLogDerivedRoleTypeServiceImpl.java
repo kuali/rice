@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,15 +21,15 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
@@ -39,9 +39,11 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
     
-	protected List<String> requiredAttributes = new ArrayList<String>();
 	{
-		requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
+		//KFSMI-4938 - document number needs to be optional for this role type, 
+		//since this is also used for inquiries
+		//requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
+		checkRequiredAttributes = true;
 	}
 	
 	/**
@@ -57,30 +59,31 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	 */
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
-		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
-		
-		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
-		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
-		if (StringUtils.isNotBlank(documentNumber)) {
-			Long documentNumberLong = Long.parseLong(documentNumber);
-			try{
-				if (INITIATOR_ROLE_NAME.equals(roleName)) {
-				    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong);
-                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
-				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
-				    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
-				    for ( String id : ids ) {
-				    	if ( StringUtils.isNotBlank(id) ) {
-				    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
-				    	}
-				    }
-				} else if(ROUTER_ROLE_NAME.equals(roleName)) {
-				    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);
-                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, KimRole.PRINCIPAL_MEMBER_TYPE, null) );
+		validateRequiredAttributesAgainstReceived(qualification);
+		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();		
+		if(qualification!=null && !qualification.isEmpty()){
+			String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+			if (StringUtils.isNotBlank(documentNumber)) {
+				Long documentNumberLong = Long.parseLong(documentNumber);
+				try{
+					if (INITIATOR_ROLE_NAME.equals(roleName)) {
+					    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong);
+	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+					} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
+					    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
+					    for ( String id : ids ) {
+					    	if ( StringUtils.isNotBlank(id) ) {
+					    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, Role.PRINCIPAL_MEMBER_TYPE, null) );
+					    	}
+					    }
+					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
+					    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);
+	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
+					}
+				} catch(WorkflowException wex){
+					throw new RuntimeException(
+					"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 				}
-			} catch(WorkflowException wex){
-				throw new RuntimeException(
-				"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 			}
 		}
 		return members;
@@ -89,30 +92,40 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 	/***
 	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean hasApplicationRole(
 			String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification){
-		validateRequiredAttributesAgainstReceived(requiredAttributes, qualification, QUALIFICATION_RECEIVED_ATTIBUTES_NAME);
-	
-		String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+		validateRequiredAttributesAgainstReceived(qualification);
         boolean isUserInRouteLog = false;
-		try {
-			Long documentNumberLong = Long.parseLong(documentNumber);
-			if (INITIATOR_ROLE_NAME.equals(roleName)){
-				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
-			} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
-				isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
-			} else if(ROUTER_ROLE_NAME.equals(roleName)){
-				isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
+		if(qualification!=null && !qualification.isEmpty()){
+			String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+			try {
+				Long documentNumberLong = Long.parseLong(documentNumber);
+				if (INITIATOR_ROLE_NAME.equals(roleName)){
+					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
+				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
+					isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
+				} else if(ROUTER_ROLE_NAME.equals(roleName)){
+					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
+				}
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
+			} catch (WorkflowException wex) {
+				throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
+						"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 			}
-		} catch (NumberFormatException e) {
-			throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
-		} catch (WorkflowException wex) {
-			throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
-					"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
 		}
 		return isUserInRouteLog;
 	}
 
+	/**
+	 * Returns false, as the Route Log changes often enough that role membership is highly volatile
+	 * 
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
+			String roleName) {
+		return false;
+	}
 }

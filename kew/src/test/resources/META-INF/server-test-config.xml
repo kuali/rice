@@ -1,15 +1,10 @@
 <config>
 
-	<param name="base.url">http://localhost/</param>
-
 	<!-- default note attribute to use when none is given -->
-	<param name="default.note.class">DefaultNoteAttribute</param>
+    <param name="default.kew.note.class">DefaultNoteAttribute</param>
 
 	<!-- default edl config location -->
 	<param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
-
-	<!-- shared class loader in workflow war - don't change -->
-	<param name="en.plugin.dir">${workflow.base}WEB-INF/plugins</param>
 
 	<!-- Axis Configuration -->
     <param name="keystore.alias">rice.keystore</param>

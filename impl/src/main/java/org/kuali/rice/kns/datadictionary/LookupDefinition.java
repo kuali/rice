@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,6 @@ import org.kuali.rice.kns.util.KNSConstants;
             * lookupableID (String, optional)
             * title (String)
             * menubar (String, optional)
-            * instructions (String, optional)
             * defaultSort (Map, optional)
             * lookupFields (Map)
             * resultFields (Map)
@@ -54,11 +53,11 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  */
 public class LookupDefinition extends DataDictionaryDefinitionBase {
+    private static final long serialVersionUID = 6733008572890721359L;
 
-    protected String lookupableID;
+	protected String lookupableID;
     protected String title;
     protected String menubar;
-    protected String instructions;
     protected SortDefinition defaultSort;
 
     protected List<FieldDefinition> lookupFields = new ArrayList<FieldDefinition>();
@@ -70,6 +69,13 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
     protected String extraButtonSource;
     protected String extraButtonParams;
+    
+    protected String searchIconOverride;
+
+    protected int numOfColumns;
+    
+    protected HelpDefinition helpDefinition;
+    protected String helpUrl;
 
     public LookupDefinition() {}
 
@@ -151,33 +157,6 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         this.menubar = this.menubar.replace("${application.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
     }
 
-
-    /**
-     * @return true if this instance has instructions
-     */
-    public boolean hasInstructions() {
-        return (instructions != null);
-    }
-
-    /**
-     * @return instructions
-     */
-    public String getInstructions() {
-        return instructions;
-    }
-
-    /**
-                The instructions element is used to display instructions to the
-                user on how to use the lookup screen.  It appears that this field
-                is not currently being used on the Kuali Rice lookup screens.
-     * @throws IllegalArgumentException if the given instructions are blank
-     */
-    public void setInstructions(String instructions) {
-        if (StringUtils.isBlank(instructions)) {
-            throw new IllegalArgumentException("invalid (blank) instructions");
-        }
-        this.instructions = instructions;
-    }
 
     /**
      * @return true if this instance has a default sort defined
@@ -281,7 +260,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * @return true if this instance has instructions
+     * @return true if this instance has a result set limit
      */
     public boolean hasResultSetLimit() {
         return (resultSetLimit != null);
@@ -338,7 +317,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
                The extraButtonSource element defines the location of an image file
                to use for the extra button.
 
-                
+
      * @throws IllegalArgumentException if the given source is blank
      */
     public void setExtraButtonSource(String extraButtonSource) {
@@ -367,7 +346,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
                 appear on the lookup screen next to the Search and Clear buttons.
                 You can define the image source and additional html parameters for
                 each button.
-                
+
                 The extraButtonParams contains extra HTML parameters that be associated
                 with the button.
 
@@ -376,6 +355,35 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         this.extraButtonParams = extraButtonParams;
     }
 
+    
+    /**
+     * @return true if this instance has an alternate icon to use for lookup icon
+     */
+    public boolean hasSearchIconOverride() {
+        return searchIconOverride != null;
+    }
+
+    /**
+     * @return search icon override url
+     */
+    public String getSearchIconOverride() {
+        return searchIconOverride;
+    }
+
+    /**
+                The searchIconOverride element is used to define alternative icons
+                appear on the lookup screen next to the Search and Clear buttons.
+                You can define the image source.
+     * @throws IllegalArgumentException if the given source is blank
+     */
+    public void setSearchIconOverride(String searchIconOverride) {
+        if (StringUtils.isBlank(searchIconOverride)) {
+            throw new IllegalArgumentException("invalid (blank) search icon override");
+        }
+        this.searchIconOverride = searchIconOverride;
+    }
+
+    
     public String toString() {
         return "LookupDefinition '" + getTitle() + "'";
     }
@@ -454,14 +462,56 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
             if (resultField == null) {
                 throw new IllegalArgumentException("invalid (null) resultField");
             }
-    
+
             String keyName = resultField.getAttributeName();
             if (resultFieldMap.containsKey(keyName)) {
                 throw new DuplicateEntryException("duplicate resultField entry for attribute '" + keyName + "'");
             }
-    
+
             resultFieldMap.put(keyName, resultField);
         }
         this.resultFields = resultFields;
     }
+
+	/**
+	 * @return the numOfColumns
+	 */
+	public int getNumOfColumns() {
+		return this.numOfColumns;
+	}
+
+	/**
+	 * @param numOfColumns the numOfColumns to set
+	 */
+	public void setNumOfColumns(int numOfColumns) {
+		this.numOfColumns = numOfColumns;
+	}
+
+	/**
+	 * @return the helpDefinition
+	 */
+	public HelpDefinition getHelpDefinition() {
+		return this.helpDefinition;
+	}
+
+	/**
+	 * @param helpDefinition the helpDefinition to set
+	 */
+	public void setHelpDefinition(HelpDefinition helpDefinition) {
+		this.helpDefinition = helpDefinition;
+	}
+
+	/**
+	 * @return the helpUrl
+	 */
+	public String getHelpUrl() {
+		return this.helpUrl;
+	}
+
+	/**
+	 * @param helpUrl the helpUrl to set
+	 */
+	public void setHelpUrl(String helpUrl) {
+		this.helpUrl = helpUrl;
+	}
 }

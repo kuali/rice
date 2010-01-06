@@ -16,19 +16,19 @@
 	<param name="kew.url.host">http://localhost</param>
 	<param name="dev.mode">true</param>
     <param name="message.delivery">synchronous</param>
+    <param name="rice.ksb.allowSyncExceptionRouting">true</param>
 	<param name="message.persistence">true</param>
 	<param name="threadPool.size">5</param>
 	<param name="embedded.plugin.default.current.classloader">true</param>
 
-	<param name="keystore.alias">rice.keystore</param>
-	<param name="keystore.password">s1t0spss!xX-tst</param>
-	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/rice.keystore</param>
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.password">r1c3pw</param>
+	<param name="keystore.file">${basedir}/../ksb/src/test/resources/keystore/ricekeystore</param>
 
 	<param name="webservices.settings.url">${kew.url.host}:${http.service.port}/en-test/services</param>
     <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
 
 	<param name="plugin.dir">${workflow.base}/../../../test/plugin</param> -->
-	<param name="en.plugin.dir">./work/unit-test/en-plugins</param>
 	<param name="plugin.dir">./work/unit-test/plugins</param>
 	<param name="data.xml.pending.location">${workflow.base}xml/pending</param>
 	<param name="data.xml.loaded.location">${workflow.base}xml/loaded</param>

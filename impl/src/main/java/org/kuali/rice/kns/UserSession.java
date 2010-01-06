@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,7 @@ import java.util.Map;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
@@ -44,6 +45,7 @@ public class UserSession implements Serializable {
     private int nextObjectKey;
     private Map<String,Object> objectMap;
     private String kualiSessionId;
+    private EditablePropertiesHistoryHolder editablePropertiesHistoryHolder;
 
     /**
 	 * @return the kualiSessionId
@@ -73,6 +75,7 @@ public class UserSession implements Serializable {
         }
         this.nextObjectKey = 0;
         this.objectMap = new HashMap<String,Object>();
+        this.editablePropertiesHistoryHolder = new EditablePropertiesHistoryHolder();
     }
 
     
@@ -264,6 +267,13 @@ public class UserSession implements Serializable {
         catch (WorkflowException e) {
             throw new IllegalStateException("could not save the document in the session msg: " + e.getMessage());
         }
+    }
+    
+    /**
+     * @return this session's editable properties history holder
+     */
+    public EditablePropertiesHistoryHolder getEditablePropertiesHistoryHolder() {
+    	return editablePropertiesHistoryHolder;
     }
 
 }

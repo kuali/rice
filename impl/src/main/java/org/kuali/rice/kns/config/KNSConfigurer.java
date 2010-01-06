@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,12 +27,12 @@ import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.ksb.util.KSBConstants;
 
 public class KNSConfigurer extends ModuleConfigurer {
 
 	private boolean loadDataDictionary = true;
 	private boolean validateDataDictionary = false;
+	private boolean validateDataDictionaryEboReferences = true;
 
 	private DataSource applicationDataSource;
 	private DataSource serverDataSource;
@@ -84,6 +84,8 @@ public class KNSConfigurer extends ModuleConfigurer {
 	/**
      * Used to "poke" the Data Dictionary again after the Spring Context is initialized.  This is to
      * allow for modules loaded with KualiModule after the KNS has already been initialized to work.
+     * 
+     * Also initializes the DateTimeService
      */
     @Override
     public void onEvent(RiceConfigEvent event) throws Exception {
@@ -98,9 +100,10 @@ public class KNSConfigurer extends ModuleConfigurer {
 
     			if ( isValidateDataDictionary() ) {
                     LOG.info("KNS Configurer - Validating DD");
-    				dds.getDataDictionary().validateDD();
+    				dds.getDataDictionary().validateDD( validateDataDictionaryEboReferences );
     			}
     		}
+    		KNSServiceLocator.getDateTimeService().initializeDateTimeService();
     	}
     }
 
@@ -185,4 +188,13 @@ public class KNSConfigurer extends ModuleConfigurer {
     public void setServerDataSourceJndiName(String serverDataSourceJndiName) {
         this.serverDataSourceJndiName = serverDataSourceJndiName;
     }
+
+	public void setValidateDataDictionaryEboReferences(
+			boolean validateDataDictionaryEboReferences) {
+		this.validateDataDictionaryEboReferences = validateDataDictionaryEboReferences;
+	}
+
+	public boolean isValidateDataDictionaryEboReferences() {
+		return validateDataDictionaryEboReferences;
+	}
 }

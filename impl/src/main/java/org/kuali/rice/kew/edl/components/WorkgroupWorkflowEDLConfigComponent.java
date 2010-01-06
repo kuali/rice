@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,21 +16,20 @@
  */
 package org.kuali.rice.kew.edl.components;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
  * Looks up workgroup param to validate workgroup exists and is active.  Returns error message if workgroup is does not exist or is not active.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WorkgroupWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfigComponent {
 	
@@ -69,7 +68,7 @@ public class WorkgroupWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfig
 		}
 		String wrkgrpName = param.getParamValue();
 		// TODO add support for namespace here!
-		KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(resolveId(wrkgrpName));
+		Group group = KEWServiceLocator.getIdentityHelperService().getGroup(resolveId(wrkgrpName));
 		if (group == null) {
 		    return ("Group " + wrkgrpName + " not found.");
 		}

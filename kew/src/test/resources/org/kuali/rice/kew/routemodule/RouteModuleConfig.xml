@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
@@ -23,9 +38,9 @@
 			<label>ReportDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -41,9 +56,9 @@
 			<label>SeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -83,9 +98,9 @@
 			<label>DynChartOrgDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<active>true</active>
 			<routePaths>
 				<routePath>
@@ -137,7 +152,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -150,7 +165,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -163,7 +178,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -176,7 +191,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Ack1Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -189,7 +204,7 @@
 			<documentType>ReportDocType</documentType>
 			<ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Ack2Template Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -202,7 +217,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -231,7 +246,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -260,7 +275,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -289,7 +304,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -318,7 +333,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -347,7 +362,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>
@@ -376,7 +391,7 @@
 			<documentType>DynChartOrgDocType</documentType>
 			<ruleTemplate>OrgRouting</ruleTemplate>
 			<description>OrgRouting</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<ruleExtensions>
 				<ruleExtension>
 					<attribute>OrgRouting</attribute>

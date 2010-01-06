@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,15 +22,14 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Takes two lists of ServiceInfo objects.  One from the service def table and one from a piece 
  * of code and diffs the two.
  * 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoutingTableDiffCalculator {
@@ -97,12 +96,22 @@ public class RoutingTableDiffCalculator {
 //							"IP Address.");
 //				    }
 				    this.servicesNeedUpdated.add(deployedServiceInfo);
+//				    if ( LOG.isInfoEnabled() ) {
+//				    	LOG.info( "servicesNeedUpdated.add( " + deployedServiceInfo.getActualEndpointUrl() + " )");
+//				    }
 				}
 				updateDeployedServiceInfo(infoEntry.getValue(), deployedServiceInfo);
 				this.masterServiceList.add(deployedServiceInfo);	
+//			    if ( LOG.isInfoEnabled() ) {
+//			    	LOG.info( "masterServiceList.add( " + deployedServiceInfo.getActualEndpointUrl() + " )");
+//			    }
 			} else {
 			    this.servicesNeedUpdated.add(infoEntry.getValue());
 			    this.masterServiceList.add(infoEntry.getValue());
+//			    if ( LOG.isInfoEnabled() ) {
+//			    	LOG.info( "servicesNeedUpdated.add( " + infoEntry.getValue().getActualEndpointUrl() + " )");
+//			    	LOG.info( "masterServiceList.add( " + infoEntry.getValue().getActualEndpointUrl() + " )");
+//			    }
 			}
 		}
 		
@@ -110,6 +119,9 @@ public class RoutingTableDiffCalculator {
 		for (Map.Entry<String, ServiceInfo> infoEntry : deployedServices.entrySet()) {
 			if (! configuredServices.containsKey(infoEntry.getKey())) {
 			    this.servicesNeedRemoved.add(infoEntry.getValue());
+//			    if ( LOG.isInfoEnabled() ) {
+//			    	LOG.info( "servicesNeedRemoved.add( " + infoEntry.getValue().getActualEndpointUrl() + " )");
+//			    }
 			}
 		}
 		
@@ -119,13 +131,15 @@ public class RoutingTableDiffCalculator {
 	public Map<String, ServiceInfo> getRemotedService(List<ServiceInfo> serviceInfos) {
 		Map<String, ServiceInfo> serviceMap = new HashMap<String, ServiceInfo>();
 		for (ServiceInfo info : serviceInfos) {
-			String endpointURL = info.getEndpointUrl();
-			if (serviceMap.containsKey(endpointURL)) {
-				LOG.warn("Multiple services with same endpoint url declared and saved in routing table.  " +
-						"Service will be ingored.  Endpoint " + endpointURL);
-			} else {			
-				serviceMap.put(endpointURL, info);
-			}
+		    if (ObjectUtils.isNotNull(info)) {
+    			String endpointURL = info.getEndpointUrl();
+    			if (serviceMap.containsKey(endpointURL)) {
+    				LOG.trace("Multiple services with same endpoint url declared and saved in routing table.  " +
+    						"Service will be ingored.  Endpoint " + endpointURL);
+    			} else {
+    				serviceMap.put(endpointURL, info);
+    			}
+		    }
 		}
 		return serviceMap;
 	}
@@ -136,6 +150,7 @@ public class RoutingTableDiffCalculator {
 		deployedServiceInfo.setServiceNamespace(configuredServiceInfo.getServiceNamespace());
 		deployedServiceInfo.setServerIp(configuredServiceInfo.getServerIp());
 		deployedServiceInfo.setServiceDefinition(configuredServiceInfo.getServiceDefinition(getEnMessageHelper()));
+		deployedServiceInfo.setChecksum(configuredServiceInfo.getChecksum());
 	}
 	
 	private boolean isSame(ServiceInfo configured, ServiceInfo deployed) {
@@ -143,7 +158,7 @@ public class RoutingTableDiffCalculator {
 				configured.getQname().equals(deployed.getQname()) &&
 				configured.getServerIp().equals(deployed.getServerIp()) && 
 				configured.getServiceNamespace().equals(deployed.getServiceNamespace()) &&
-				configured.getServiceDefinition(getEnMessageHelper()).isSame(deployed.getServiceDefinition(getEnMessageHelper()));
+				configured.getChecksum().equals(deployed.getChecksum());
 	}
 
 	public List<ServiceInfo> getServicesNeedRemoved() {

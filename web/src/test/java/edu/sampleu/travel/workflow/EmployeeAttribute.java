@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -29,11 +30,11 @@ import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
+import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
@@ -118,6 +119,15 @@ public class EmployeeAttribute extends GenericRoleAttribute {
         return qualifiers;
     }
 
+	@Override
+	protected ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
+        List<Id> recipients = resolveRecipients(routeContext, qualifiedRoleName);
+        ResolvedQualifiedRole rqr = new ResolvedQualifiedRole(getLabelForQualifiedRoleName(qualifiedRoleName),
+                                                              recipients,
+                                                              qualifiedRoleName.getBaseRoleName()); // default to no annotation...
+        return rqr;
+    }
+	
 	@Override
     protected List<Id> resolveRecipients(RouteContext routeContext, QualifiedRoleName qualifiedRoleName) {
         List<Id> members = new ArrayList<Id>();

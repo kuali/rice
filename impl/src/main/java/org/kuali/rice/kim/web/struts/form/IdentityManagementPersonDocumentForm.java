@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionMapping;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -27,60 +25,71 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocumentFormBase {
+public class IdentityManagementPersonDocumentForm extends IdentityManagementDocumentFormBase {
 
-    private PersonDocumentAffiliation newAffln;
-    private PersonDocumentEmploymentInfo newEmpInfo;
-    private PersonDocumentCitizenship newCitizenship;
-    private PersonDocumentName newName;
-    private PersonDocumentAddress newAddress;
-    private PersonDocumentPhone newPhone;
-    private PersonDocumentEmail newEmail;
-    private PersonDocumentGroup newGroup;
-    private PersonDocumentRole newRole;
+	{
+		requiredNonEditableProperties.add("methodToCall");
+	}
+
+    protected static final long serialVersionUID = -4787045391777666988L;
+    protected String principalId;
+    protected PersonDocumentAffiliation newAffln;
+    protected PersonDocumentEmploymentInfo newEmpInfo;
+    protected PersonDocumentCitizenship newCitizenship;
+    protected PersonDocumentName newName;
+    protected PersonDocumentAddress newAddress;
+    protected PersonDocumentPhone newPhone;
+    protected PersonDocumentEmail newEmail;
+    protected PersonDocumentGroup newGroup;
+    protected PersonDocumentRole newRole;
+    protected RoleDocumentDelegationMember newDelegationMember = new RoleDocumentDelegationMember();
+    protected String newDelegationMemberRoleId = null;
+    protected boolean delegationMemberLookup = false;
+    protected boolean canModifyEntity = false;
+    protected boolean canOverrideEntityPrivacyPreferences = false;
+    protected boolean userSameAsPersonEdited = false;
     
-    public IdentityManagementPersonDocumentForm() {
+	/**
+	 * @return the canModifyEntity
+	 */
+	public boolean isCanModifyEntity() {
+		return this.canModifyEntity;
+	}
+
+	/**
+	 * @param canModifyEntity the canModifyEntity to set
+	 */
+	public void setCanModifyEntity(boolean canModifyEntity) {
+		this.canModifyEntity = canModifyEntity;
+	}
+
+	public IdentityManagementPersonDocumentForm() {
         super();
         //this.registerEditableProperty("methodToCall.approve.x");
-        this.setDocument(new IdentityManagementPersonDocument());
         this.setNewAffln(new PersonDocumentAffiliation());
         this.setNewAddress(new PersonDocumentAddress());
         this.setNewEmpInfo(new PersonDocumentEmploymentInfo());
         this.setNewName(new PersonDocumentName());
         this.setNewPhone(new PersonDocumentPhone());
         this.setNewEmail(new PersonDocumentEmail());
+        this.setNewDelegationMember(new RoleDocumentDelegationMember());
     }
 
-    /*
-     * Reset method - reset attributes of form retrieved from session otherwise
-     * we will always call docHandler action
-     * @param mapping
-     * @param request
-     */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-    	super.reset(mapping, request);
-    	this.setMethodToCall(null);
-        this.setRefreshCaller(null);
-        this.setAnchor(null);
-        this.setCurrentTabIndex(0);
-    }
-
-    @Override
-	public void populate(HttpServletRequest request) {
-		// TODO shyu - THIS METHOD NEEDS JAVADOCS
-		super.populate(request);
+	@Override
+	public String getDefaultDocumentTypeName(){
+		return "IdentityManagementPersonDocument";
 	}
-
-
+	
 	public IdentityManagementPersonDocument getPersonDocument() {
         return (IdentityManagementPersonDocument) this.getDocument();
     }
@@ -157,5 +166,90 @@ public class IdentityManagementPersonDocumentForm extends KualiTransactionalDocu
 		this.newRole = newRole;
 	}
 
+	public String getPrincipalId() {
+		return this.principalId;
+	}
+
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
+
+	/**
+	 * @return the newDelegationMember
+	 */
+	public RoleDocumentDelegationMember getNewDelegationMember() {
+		return this.newDelegationMember;
+	}
+
+	/**
+	 * @param newDelegationMember the newDelegationMember to set
+	 */
+	public void setNewDelegationMember(
+			RoleDocumentDelegationMember newDelegationMember) {
+		this.newDelegationMember = newDelegationMember;
+	}
+
+	/**
+	 * @return the delegationMemberLookup
+	 */
+	public boolean isDelegationMemberLookup() {
+		return this.delegationMemberLookup;
+	}
+
+	/**
+	 * @param delegationMemberLookup the delegationMemberLookup to set
+	 */
+	public void setDelegationMemberLookup(boolean delegationMemberLookup) {
+		this.delegationMemberLookup = delegationMemberLookup;
+	}
+
+	/**
+	 * @return the newDelegationMemberRoleId
+	 */
+	public String getNewDelegationMemberRoleId() {
+		return this.newDelegationMemberRoleId;
+	}
+
+	/**
+	 * @param newDelegationMemberRoleId the newDelegationMemberRoleId to set
+	 */
+	public void setNewDelegationMemberRoleId(String newDelegationMemberRoleId) {
+		this.newDelegationMemberRoleId = newDelegationMemberRoleId;
+		if(StringUtils.isNotEmpty(newDelegationMemberRoleId)){
+			newDelegationMember.getRoleImpl().setRoleId(newDelegationMemberRoleId);
+		}
+	}
+
+	/**
+	 * @return the canOverrideEntityPrivacyPreferences
+	 */
+	public boolean isCanOverrideEntityPrivacyPreferences() {
+		return this.canOverrideEntityPrivacyPreferences || isUserSameAsPersonEdited();
+	}
+
+	/**
+	 * @param canOverrideEntityPrivacyPreferences the canOverrideEntityPrivacyPreferences to set
+	 */
+	public void setCanOverrideEntityPrivacyPreferences(
+			boolean canOverrideEntityPrivacyPreferences) {
+		this.canOverrideEntityPrivacyPreferences = canOverrideEntityPrivacyPreferences;
+	}
+
+	/**
+	 * @return the userSameAsPersonEdited
+	 */
+	public boolean isUserSameAsPersonEdited() {
+		if(StringUtils.isNotEmpty(getPrincipalId())){
+			userSameAsPersonEdited = StringUtils.equals(GlobalVariables.getUserSession().getPrincipalId(), getPrincipalId());
+		}
+		return this.userSameAsPersonEdited;
+	}
+
+	/**
+	 * @param userSameAsPersonEdited the userSameAsPersonEdited to set
+	 */
+	public void setUserSameAsPersonEdited(boolean userSameAsPersonEdited) {
+		this.userSameAsPersonEdited = userSameAsPersonEdited;
+	}
 
 }

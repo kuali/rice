@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,8 @@ package org.kuali.rice.kns.bo;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerException;
 
 
 /*
@@ -28,11 +29,14 @@ public class SessionDocument extends PersistableBusinessObjectBase{
     
 	private static final long serialVersionUID = 2866566562262830639L;
 	
-	private String documentNumber;
-	private String sessionId;
-	private Timestamp lastUpdatedDate;
-	private byte[] serializedDocumentForm;
+	protected String documentNumber;
+	protected String sessionId;
+	protected Timestamp lastUpdatedDate;
+	protected byte[] serializedDocumentForm;
 	//private KualiDocumentFormBase serializedDocumentForm;
+	protected boolean encrypted = false;
+	protected String principalId;
+	protected String ipAddress;
 	
 	
 	/**
@@ -93,13 +97,80 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 		this.documentNumber = documentNumber;
 	}
 
-
 	
-	 protected LinkedHashMap toStringMapper() {
-	        LinkedHashMap m = new LinkedHashMap();
-	        m.put("documentNumber", this.documentNumber);
-	        m.put("sessionId", this.sessionId);
-	        return m;
-	    }
+	
+	/**
+	 * @return the principalId
+	 */
+	public String getPrincipalId() {
+		return this.principalId;
+	}
 
+	/**
+	 * @param principalId the principalId to set
+	 */
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
+
+	/**
+	 * @return the ipAddress
+	 */
+	public String getIpAddress() {
+		return this.ipAddress;
+	}
+
+	/**
+	 * @param ipAddress the ipAddress to set
+	 */
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap m = new LinkedHashMap();
+		m.put("documentNumber", this.documentNumber);
+		m.put("sessionId", this.sessionId);
+		m.put("principalId", this.principalId);
+		m.put("ipAddress", this.ipAddress);
+		return m;
+	}
+
+	public boolean isEncrypted() {
+		return this.encrypted;
+	}
+
+	public void setEncrypted(boolean encrypted) {
+		this.encrypted = encrypted;
+	}
+
+	public void beforeInsert() {
+		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
+		super.beforeInsert();
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
+	 */
+	@Override
+	public void beforeInsert(PersistenceBroker persistenceBroker)
+			throws PersistenceBrokerException {
+		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
+		super.beforeInsert(persistenceBroker);
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#afterLookup(org.apache.ojb.broker.PersistenceBroker)
+	 */
+	@Override
+	public void afterLookup(PersistenceBroker persistenceBroker)
+			throws PersistenceBrokerException {
+		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
+		super.afterLookup(persistenceBroker);
+	}
 }

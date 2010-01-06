@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -24,7 +24,7 @@ import org.kuali.rice.kns.bo.InactivateableFromTo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
 public abstract class InactivatableFromToImpl extends PersistableBusinessObjectBase implements InactivateableFromTo {
@@ -32,9 +32,9 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
+	protected Date activeFromDate;
 	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
+	protected Date activeToDate;
 	
 	/**
 	 * Returns active if the current time is between the from and to dates.  Null dates are 
@@ -45,19 +45,19 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
-	public void setActiveFromDate(Timestamp from) {
+	public void setActiveFromDate(Date from) {
 		this.activeFromDate = from;
 	}
 
-	public void setActiveToDate(Timestamp to) {
+	public void setActiveToDate(Date to) {
 		this.activeToDate = to;
 	}
 
-	public Timestamp getActiveFromDate() {
+	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	public Timestamp getActiveToDate() {
+	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 

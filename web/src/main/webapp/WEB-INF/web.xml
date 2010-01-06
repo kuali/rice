@@ -7,8 +7,8 @@
       <param-name>environment</param-name>
       <param-value>dev</param-value>
     </context-param>
-    
-      
+
+
     <!-- Change this if you want to use a different Spring file -->
     <context-param>
       <param-name>kew.bootstrap.spring.file</param-name>
@@ -19,6 +19,11 @@
         <filter-name>HideWebInfFilter</filter-name>
         <filter-class>org.kuali.rice.kns.web.filter.HideWebInfFilter</filter-class>
     </filter>
+    
+    <filter>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class>
+	</filter>
 
   <filter>
     <filter-name>BootstrapFilter</filter-name>
@@ -35,11 +40,16 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+	<filter-mapping>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+
     <filter-mapping>
       <filter-name>BootstrapFilter</filter-name>
       <servlet-name>action</servlet-name>
     </filter-mapping>
-    
+
     <filter-mapping>
       <filter-name>BootstrapFilter</filter-name>
       <servlet-name>notification</servlet-name>
@@ -54,7 +64,7 @@
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>notification</servlet-name>
     </filter-mapping>
-    
+
     <!-- for KCB Spring Web MVC pages -->
     <filter-mapping>
         <filter-name>BootstrapFilter</filter-name>
@@ -71,17 +81,17 @@
     </filter-mapping>
 
     <listener>
-      <listener-class>org.kuali.rice.standalone.StandaloneInitializeListener</listener-class>
+      <listener-class>org.kuali.rice.core.web.listener.StandaloneInitializeListener</listener-class>
     </listener>
 
 	<listener>
 		<listener-class>org.kuali.rice.kns.web.listener.JstlConstantsInitListener</listener-class>
 	</listener>
-	
+
 	<listener>
 		<listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener</listener-class>
 	</listener>
-	
+
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.kuali.rice.kns.web.struts.action.KualiActionServlet</servlet-class>
@@ -176,6 +186,28 @@
 		<servlet-name>edoclite</servlet-name>
 		<servlet-class>org.kuali.rice.kew.edl.EDLServlet</servlet-class>
 	</servlet>
+	
+	<!--  
+	
+		Following servlet and servlet mapping for the PostDataLoadEncryptionServlet are commented out.
+		Uncomment these if you want to run the servlet in order to encrypt some data in the Rice database
+		(this would most likely be used for external identifiers in KIM that require encryption)
+		
+		It is not recommended to enable this service for a production instance except during initial
+		data load.  It is not secured in any way and would allow for easy corruption of data if mishandled.
+	
+	-->
+	<!--
+	<servlet>
+	    <servlet-name>postDataLoadEncryption</servlet-name>
+	    <servlet-class>org.kuali.rice.kns.web.servlet.PostDataLoadEncryptionServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>postDataLoadEncryption</servlet-name>
+		<url-pattern>/postDataLoadEncryption</url-pattern>
+	</servlet-mapping>
+	-->
 
 	<servlet-mapping>
 		<servlet-name>remoting</servlet-name>
@@ -214,22 +246,22 @@
 
 	<servlet-mapping>
 		<servlet-name>attachment</servlet-name>
-		<url-pattern>/en/attachment/*</url-pattern>
+		<url-pattern>/kew/attachment/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>edoclite</servlet-name>
-		<url-pattern>/en/EDocLite</url-pattern>
+		<url-pattern>/kew/EDocLite</url-pattern>
 	</servlet-mapping>
 
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
-	
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
         <welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	
+
 </web-app>
 

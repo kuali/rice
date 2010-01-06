@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.bo.NotificationSender;
 import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
@@ -35,10 +35,10 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Tests NotificationMessageContentService
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
-public class NotificationMessageContentServiceImplTest extends NotificationTestCaseBase {
+public class NotificationMessageContentServiceImplTest extends KENTestCase {
     private static final String SAMPLE_EVENT_MESSAGE = "sample_message_event_type.xml";
     private static final String SAMPLE_SIMPLE_MESSAGE = "sample_message_simple_type.xml";
     private static final String SAMPLE_MALFORMED_EVENT_MESSAGE = "sample_malformed_message_event_type.xml";

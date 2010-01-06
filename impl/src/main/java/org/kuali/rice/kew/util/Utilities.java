@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.KeyValue;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -46,7 +47,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 /**
  * Various static utility methods.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Utilities {
     /**
@@ -55,6 +56,19 @@ public class Utilities {
      */
     private static StrSubstitutor substitutor = new StrSubstitutor(new ConfigStringLookup());
 
+    /**
+     * Performs variable substitution on the specified string, replacing variables specified like ${name}
+     * with the value of the corresponding config parameter obtained from the current context Config object.
+     * This version of the method also takes a namespace to qualify the parameter.
+     * @param namespace the namespace to use for qualifying the parameter
+     * @param string the string on which to perform variable substitution
+     * @return a string with any variables substituted with configuration parameter values
+     */
+    public static String substituteConfigParameters(String namespace, String string) {
+    	StrSubstitutor sub = new StrSubstitutor(new ConfigStringLookup(namespace));
+        return sub.replace(string);
+    }
+        
     /**
      * Performs variable substitution on the specified string, replacing variables specified like ${name}
      * with the value of the corresponding config parameter obtained from the current context Config object
@@ -66,7 +80,7 @@ public class Utilities {
     }
     
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
         if (parameter == null) {
             return null;
         }
@@ -74,9 +88,13 @@ public class Utilities {
     }
 
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = KNSServiceLocator.getKualiConfigurationService().getParameterWithoutExceptions(nameSpace, detailType, name);
-        if (parameter == null) {
-            return false;
+    	return getKNSParameterBooleanValue(nameSpace, detailType, name, false);
+    }
+    
+    public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
+        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
+        if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
+            return defaultValue;
         }
         if (parameter.getParameterValue().trim().equals("Y")) {
             return true;
@@ -188,7 +206,7 @@ public class Utilities {
         public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
             int value = ar1.getPriority().compareTo(ar2.getPriority());
             if (value == 0) {
-                value = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested());
+                value = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested(), true);
                 if (value == 0) {
                     if ( (ar1.getActionRequestId() != null) && (ar2.getActionRequestId() != null) ) {
                         value = ar1.getActionRequestId().compareTo(ar2.getActionRequestId());
@@ -256,15 +274,17 @@ public class Utilities {
 
     public static boolean checkDateRanges(String fromDate, String toDate) {
         try {
-            Date parsedDate = RiceConstants.getDefaultDateFormat().parse(fromDate.trim());
+            Date parsedDate = KNSServiceLocator.getDateTimeService().convertToDate(fromDate.trim());
             Calendar fromCalendar = Calendar.getInstance();
+            fromCalendar.setLenient(false);
             fromCalendar.setTime(parsedDate);
             fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
             fromCalendar.set(Calendar.MINUTE, 0);
             fromCalendar.set(Calendar.SECOND, 0);
             fromCalendar.set(Calendar.MILLISECOND, 0);
-            parsedDate = RiceConstants.getDefaultDateFormat().parse(toDate.trim());
+            parsedDate = KNSServiceLocator.getDateTimeService().convertToDate(toDate.trim());
             Calendar toCalendar = Calendar.getInstance();
+            toCalendar.setLenient(false);
             toCalendar.setTime(parsedDate);
             toCalendar.set(Calendar.HOUR_OF_DAY, 0);
             toCalendar.set(Calendar.MINUTE, 0);

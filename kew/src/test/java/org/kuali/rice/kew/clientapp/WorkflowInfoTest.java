@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class WorkflowInfoTest extends KEWTestCase {
@@ -72,7 +72,9 @@ public class WorkflowInfoTest extends KEWTestCase {
 	try {
 	    String status = info.getDocumentStatus(null);
 	    fail("A WorkflowException should have been thrown, instead returned status: " + status);
-	} catch (WorkflowException e) {}
+	} catch (WorkflowException e) {
+    } catch (IllegalArgumentException e) {
+    }
 	// verify that a bad document id throws an exception
 	try {
 	    String status = info.getDocumentStatus(new Long(-1));
@@ -107,6 +109,22 @@ public class WorkflowInfoTest extends KEWTestCase {
 
         String routedByPrincipalId = new WorkflowInfo().getDocumentRoutedByPrincipalId(document.getRouteHeaderId());
         assertEquals("the blanket approver should be the routed by", blanketApprover.getPrincipalId(), routedByPrincipalId);
+    }
+    
+    @Test
+    public void testGetAppDocId() throws Exception {
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	document.saveRoutingData();
+    	
+    	String appDocId = new WorkflowInfo().getAppDocId(document.getRouteHeaderId());
+    	assertNull("appDocId should be null", appDocId);
+    	
+    	String appDocIdValue = "1234";
+    	document.setAppDocId(appDocIdValue);
+    	document.saveRoutingData();
+    	
+    	appDocId = new WorkflowInfo().getAppDocId(document.getRouteHeaderId());
+    	assertEquals("Incorrect appDocId", appDocIdValue, appDocId);
     }
 
 }

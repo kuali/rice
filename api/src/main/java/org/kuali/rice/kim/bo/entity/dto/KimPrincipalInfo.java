@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincipal {
 
@@ -27,11 +29,13 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	private String principalId = "";
 	private String principalName = "";
 	private String entityId = "";
-
+	private String password = "";
+	
 	/**
 	 * 
 	 */
 	public KimPrincipalInfo() {
+		super();
 		active = true;
 	}
 	
@@ -39,16 +43,18 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	 * 
 	 */
 	public KimPrincipalInfo( KimPrincipal p ) {
+		this();
 		if ( p != null ) {
 			principalId = unNullify( p.getPrincipalId() );
 			entityId = unNullify( p.getEntityId() );
 			principalName = unNullify( p.getPrincipalName() );
+			password = unNullify( p.getPassword() );
 			active = p.isActive();
 		}
 	}
 	
 	public String getPrincipalId() {
-		return this.principalId;
+		return unNullify( this.principalId);
 	}
 
 	public void setPrincipalId(String principalId) {
@@ -56,7 +62,7 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getPrincipalName() {
-		return this.principalName;
+		return unNullify( this.principalName);
 	}
 
 	public void setPrincipalName(String principalName) {
@@ -64,11 +70,18 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	}
 
 	public String getEntityId() {
-		return this.entityId;
+		return unNullify( this.entityId);
 	}
 
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
 
+	public String getPassword() {
+		return unNullify( this.password);
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

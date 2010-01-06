@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -11,10 +26,10 @@
 			<name>ActionListDocumentType</name>
 			<label>Action List Document Type</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -41,10 +56,10 @@
 			<name>ActionListDocumentType_PrimaryDelegate</name>
 			<label>Action List Document Type 2</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -72,10 +87,10 @@
 			<label>Action List Document Type 3</label>
 			<parent>ActionListDocumentType_PrimaryDelegate</parent>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
@@ -84,7 +99,7 @@
 			<documentType>ActionListDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -102,7 +117,7 @@
 					<priority>1</priority>
 				</responsibility>
 				<responsibility>
-					<workgroup>KR-WKFLW:NonSIT</workgroup>
+					<groupName namespace="KR-WKFLW">NonSIT</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -113,7 +128,7 @@
 			<documentType>ActionListDocumentType_PrimaryDelegate</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -131,7 +146,7 @@
 					<priority>1</priority>
 				</responsibility>
 				<responsibility>
-					<workgroup>KR-WKFLW:NonSIT</workgroup>
+					<groupName namespace="KR-WKFLW">NonSIT</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -142,7 +157,7 @@
 			<documentType>ActionListDocumentType_PrimaryDelegate</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -156,7 +171,7 @@
 			<documentType>ActionListDocumentType_PrimaryDelegate2</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>Action List Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -179,7 +194,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>rkirkend</principalName>
@@ -197,7 +212,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>ewestfal</principalName>
@@ -215,7 +230,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 2</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>bmcgough</user>
@@ -233,7 +248,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>jitrue</user>
@@ -252,7 +267,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>rkirkend</principalName>
@@ -270,7 +285,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<principalName>ewestfal</principalName>
@@ -288,7 +303,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Secondary Delegation 2</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>bmcgough</user>
@@ -306,7 +321,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>jitrue</user>
@@ -325,7 +340,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>delyea</user>
@@ -344,7 +359,7 @@
 				<documentType>ActionListDocumentType</documentType>
 				<ruleTemplate>RuleTemplate1</ruleTemplate>
 				<description>Action List Test Primary Delegation 1</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>temay</user>

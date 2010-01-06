@@ -1,12 +1,12 @@
 /*
- * Copyright 2006 The Kuali Foundation.
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Copyright 2006-2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,14 +18,17 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
@@ -36,27 +39,27 @@ public class PersistenceServiceStructureImplBase {
 
 	private DescriptorRepository descriptorRepository;
 
-	// This is repeated in BaseOjbConfigurer
-	private static final String OJB_PROPERTIES_PROP = "OJB.properties";
-
-	private static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
-
 	/**
 	 * Constructs a PersistenceServiceImpl instance.
 	 */
 	public PersistenceServiceStructureImplBase() {
-		String currentValue = System.getProperty(OJB_PROPERTIES_PROP);
-		System.setProperty(OJB_PROPERTIES_PROP, DEFAULT_OJB_PROPERTIES);
+		String ojbPropertyFileLocation = ConfigContext.getCurrentContextConfig().getProperty(BaseOjbConfigurer.RICE_OJB_PROPERTIES_PARAM);
+		if ( StringUtils.isBlank(ojbPropertyFileLocation) ) {
+			ojbPropertyFileLocation = BaseOjbConfigurer.DEFAULT_OJB_PROPERTIES;
+			ConfigContext.getCurrentContextConfig().overrideProperty(BaseOjbConfigurer.RICE_OJB_PROPERTIES_PARAM, ojbPropertyFileLocation);
+		}
+        String currentValue = System.getProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP);
 		try {
+			System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, ojbPropertyFileLocation);
 			org.apache.ojb.broker.metadata.MetadataManager metadataManager = org.apache.ojb.broker.metadata.MetadataManager.getInstance();
 			descriptorRepository = metadataManager.getGlobalRepository();
-		} finally {
-			if (currentValue == null) {
-				System.getProperties().remove(OJB_PROPERTIES_PROP);
-			} else {
-				System.setProperty(OJB_PROPERTIES_PROP, currentValue);
-			}
-		}
+	    } finally {
+	        if (currentValue == null) {
+	            System.getProperties().remove(BaseOjbConfigurer.OJB_PROPERTIES_PROP);
+	        } else {
+	            System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, currentValue);
+	        }
+	    }
 	}
 
 	/**
@@ -65,9 +68,16 @@ public class PersistenceServiceStructureImplBase {
 	protected DescriptorRepository getDescriptorRepository() {
 		return descriptorRepository;
 	}
-    
+
 	/**
-	 * @see org.kuali.rice.kns.service.PersistenceMetadataExplorerService#listPrimaryKeyFieldNames(java.lang.Class)
+	 *
+	 * This method returns a list of primary key field names.  This method uses the CacheNoCopy caching method.
+	 * "NoCopy" is the faster of the caching annotations, but because it does not make a copy the list that is
+	 * returned must not be modified.  To enforce this the returned list is wrapped in a Collections.unmodifiableList
+	 * method.  This will cause an exception to be thrown if the list is altered.
+	 *
+	 * @param clazz
+	 * @return unmodifiableList of field names.  Any attempt to alter list will result in an UnsupportedOperationException
 	 */
 	@CacheNoCopy
 	public List listPrimaryKeyFieldNames(Class clazz) {
@@ -90,7 +100,7 @@ public class PersistenceServiceStructureImplBase {
 				fieldNamesLegacy.add(keyDescriptor.getAttributeName());
 			}
 			return fieldNamesLegacy;
-		}		
+		}
 	}
 
 	/* Not used anywhere... need to check KFS and batch stuff */
@@ -126,7 +136,6 @@ public class PersistenceServiceStructureImplBase {
 	 *             if the given Class is unknown to OJB
 	 */
 	// Legacy OJB - no need for JPA equivalent
-	@CacheNoCopy
 	protected ClassDescriptor getClassDescriptor(Class persistableClass) {
 		if (persistableClass == null) {
 			throw new IllegalArgumentException("invalid (null) object");
@@ -167,7 +176,7 @@ public class PersistenceServiceStructureImplBase {
 			if (objectDescriptor != null) {
 				attributeClass = objectDescriptor.getTargetEntity();
 			}
-			
+
 			// recurse if necessary
 			if (subAttributeString != null) {
 				attributeClass = getBusinessObjectAttributeClass(attributeClass, subAttributeString);
@@ -179,18 +188,18 @@ public class PersistenceServiceStructureImplBase {
 			Class attributeClassLegacy = null;
 			ClassDescriptor classDescriptor = this.getClassDescriptor(clazz);
 			ObjectReferenceDescriptor refDescriptor = classDescriptor.getObjectReferenceDescriptorByName(baseAttributeName);
-	
+
 			if (refDescriptor != null) {
 				attributeClassLegacy = refDescriptor.getItemClass();
 			}
-	
+
 			// recurse if necessary
 			if (subAttributeString != null) {
 				attributeClassLegacy = getBusinessObjectAttributeClass(attributeClassLegacy, subAttributeString);
 			}
-			
+
 			return attributeClassLegacy;
-		}		
+		}
 	}
 
 }

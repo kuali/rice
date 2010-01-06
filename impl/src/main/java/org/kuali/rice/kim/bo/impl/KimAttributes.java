@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,14 +19,15 @@ import java.util.LinkedHashMap;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
-import org.kuali.rice.kns.bo.RiceNamespace;
+import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimAttributes extends TransientBusinessObjectBase {
 
@@ -59,6 +60,8 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public static final String DOCUMENT_NUMBER = "documentNumber";	
 	public static final String DOCUMENT_TYPE_NAME = "documentTypeName";
 	public static final String SECTION_ID = "sectionId";
+	public static final String KIM_TYPE_ID = KimConstants.PrimaryKeyConstants.KIM_TYPE_ID;
+	public static final String QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER = "qualifierResolverProvidedIdentifier";
 	
 	protected String methodToCall;
 	protected String beanName;
@@ -66,8 +69,9 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String namespaceCode;
 	protected String componentName;
 	protected String propertyName;
-	protected boolean existingRecordsOnly;
-	protected boolean createdBySelfOnly;
+	protected Boolean existingRecordsOnly;
+	protected Boolean createdBySelfOnly;
+	protected String attachmentTypeCode;
 	protected String collectionItemTypeCode;
 	protected String editMode;
 	protected String parameterName;
@@ -80,13 +84,15 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String permissionName;
 	protected String responsibilityName;
 	protected String groupName;
-	protected boolean required;
-	protected boolean actionDetailsAtRoleMemberLevel;
+	protected Boolean required;
+	protected Boolean actionDetailsAtRoleMemberLevel;
 	protected String documentNumber;
 	protected String sectionId;
+	protected String kimTypeId;
+	protected String qualifierResolverProvidedIdentifier;
 	
 	protected Campus campus;
-	protected RiceNamespace parameterNamespace;
+	protected Namespace parameterNamespace;
 	protected ParameterDetailType parameterDetailType;
 	protected Parameter parameter;
 	protected DocumentType documentType;
@@ -389,49 +395,49 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	/**
 	 * @return the existingRecordsOnly
 	 */
-	public boolean isExistingRecordsOnly() {
+	public Boolean isExistingRecordsOnly() {
 		return this.existingRecordsOnly;
 	}
 
 	/**
 	 * @param existingRecordsOnly the existingRecordsOnly to set
 	 */
-	public void setExistingRecordsOnly(boolean existingRecordsOnly) {
+	public void setExistingRecordsOnly(Boolean existingRecordsOnly) {
 		this.existingRecordsOnly = existingRecordsOnly;
 	}
 
 	/**
 	 * @return the createdBySelfOnly
 	 */
-	public boolean isCreatedBySelfOnly() {
+	public Boolean isCreatedBySelfOnly() {
 		return this.createdBySelfOnly;
 	}
 
 	/**
 	 * @param createdBySelfOnly the createdBySelfOnly to set
 	 */
-	public void setCreatedBySelfOnly(boolean createdBySelfOnly) {
+	public void setCreatedBySelfOnly(Boolean createdBySelfOnly) {
 		this.createdBySelfOnly = createdBySelfOnly;
 	}
 
 	/**
 	 * @return the required
 	 */
-	public boolean isRequired() {
+	public Boolean isRequired() {
 		return this.required;
 	}
 
 	/**
 	 * @param required the required to set
 	 */
-	public void setRequired(boolean required) {
+	public void setRequired(Boolean required) {
 		this.required = required;
 	}
 
 	/**
 	 * @return the actionDetailsAtRoleMemberLevel
 	 */
-	public boolean isActionDetailsAtRoleMemberLevel() {
+	public Boolean isActionDetailsAtRoleMemberLevel() {
 		return this.actionDetailsAtRoleMemberLevel;
 	}
 
@@ -439,7 +445,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	 * @param actionDetailsAtRoleMemberLevel the actionDetailsAtRoleMemberLevel to set
 	 */
 	public void setActionDetailsAtRoleMemberLevel(
-			boolean actionDetailsAtRoleMemberLevel) {
+			Boolean actionDetailsAtRoleMemberLevel) {
 		this.actionDetailsAtRoleMemberLevel = actionDetailsAtRoleMemberLevel;
 	}
 
@@ -459,11 +465,11 @@ public class KimAttributes extends TransientBusinessObjectBase {
 		this.campus = campus;
 	}
 
-	public RiceNamespace getParameterNamespace() {
+	public Namespace getParameterNamespace() {
 		return this.parameterNamespace;
 	}
 
-	public void setParameterNamespace(RiceNamespace parameterNamespace) {
+	public void setParameterNamespace(Namespace parameterNamespace) {
 		this.parameterNamespace = parameterNamespace;
 	}
 
@@ -489,6 +495,36 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
+	}
+
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
+	}
+
+	public String getQualifierResolverProvidedIdentifier() {
+		return qualifierResolverProvidedIdentifier;
+	}
+
+	public void setQualifierResolverProvidedIdentifier(String qualifierResolverProvidedIdentifier) {
+		this.qualifierResolverProvidedIdentifier = qualifierResolverProvidedIdentifier;
+	}
+
+	/**
+	 * @return the attachmentTypeCode
+	 */
+	public String getAttachmentTypeCode() {
+		return this.attachmentTypeCode;
+	}
+
+	/**
+	 * @param attachmentTypeCode the attachmentTypeCode to set
+	 */
+	public void setAttachmentTypeCode(String attachmentTypeCode) {
+		this.attachmentTypeCode = attachmentTypeCode;
 	}
 	
 }

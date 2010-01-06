@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * another rule.  Specifies the delegation type which can be either
  * {@link KEWConstants#DELEGATION_PRIMARY} or {@link KEWConstants#DELEGATION_SECONDARY}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DLGN_RSP_T")
@@ -139,5 +139,26 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
 		return map;
 	}
 
+	/**
+	 * An override of the refresh() method that properly preserves the RuleBaseValues instance. If the delegationRuleBaseValues property
+	 * becomes null as a result of the refresh() method on the PersistableBusinessObjectBase superclass, an attempt is made to retrieve
+	 * it by calling refreshReferenceObject() for the property. If that also fails, then the RuleBaseValues instance that was in-place
+	 * prior to the refresh() superclass call will be used as the delegationRuleBaseValues property's value. This override is necessary
+	 * in order to prevent certain exceptions during the cancellation of a rule delegation maintenance document.
+	 * 
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#refresh()
+	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
+	 */
+	@Override
+	public void refresh() {
+		RuleBaseValues oldRuleBaseValues = this.getDelegationRuleBaseValues();
+		super.refresh();
+		if (this.getDelegationRuleBaseValues() == null) {
+			this.refreshReferenceObject("delegationRuleBaseValues");
+			if (this.getDelegationRuleBaseValues() == null) {
+				this.setDelegationRuleBaseValues(oldRuleBaseValues);
+			}
+		}
+	}
 }
 

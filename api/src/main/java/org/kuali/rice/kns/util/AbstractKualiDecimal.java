@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ public abstract class AbstractKualiDecimal<T extends AbstractKualiDecimal> exten
 	
 	public static final int ROUND_BEHAVIOR = BigDecimal.ROUND_HALF_UP;
 
-    public static final KualiDecimal ZERO = new KualiDecimal(new BigDecimal(0));
+    public static final KualiDecimal ZERO = new KualiDecimal(BigDecimal.ZERO);
     
 	protected BigDecimal value;
 
@@ -43,15 +43,14 @@ public abstract class AbstractKualiDecimal<T extends AbstractKualiDecimal> exten
 	 * This is the base constructor, used by constructors that take other types
 	 * 
 	 * @param value
-	 *            String containing numeric value
-	 * @throws IllegalArgumentException
-	 *             if the given String is null
+	 *            String containing numeric value - defaults to zero
 	 */
 	public AbstractKualiDecimal(String value, int scale) {
-		if (value == null) {
-			throw new IllegalArgumentException("invalid (null) String in T constructor");
+		if (StringUtils.isBlank(value)) {
+			this.value = BigDecimal.ZERO.setScale(scale,ROUND_BEHAVIOR);
+		} else {
+			this.value = new BigDecimal(value).setScale(scale, ROUND_BEHAVIOR);
 		}
-		this.value = new BigDecimal(value).setScale(scale, ROUND_BEHAVIOR);
 	}
 
 	public AbstractKualiDecimal(int value, int scale) {

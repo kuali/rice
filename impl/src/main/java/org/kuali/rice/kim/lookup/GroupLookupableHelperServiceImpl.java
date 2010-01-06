@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import static java.util.Collections.sort;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,11 +30,13 @@ import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -48,7 +51,6 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -64,19 +66,16 @@ import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl {
+public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServiceImpl {
 
 	// need this so kimtypeId value can be retained in 'rows'
 	// 1st pass populate the grprows
@@ -90,10 +89,35 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
 
     @Override
-    public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
-    	List<KimGroupImpl> groups = groupDao.getGroups(fieldValues);
+    public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
+    	GroupImpl groupImpl = (GroupImpl) bo;
+        List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
+        if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME)){
+        	anchorHtmlDataList.add(getEditGroupUrl(groupImpl));	
+        }
+    	return anchorHtmlDataList;
+    }
+    
+    protected HtmlData getEditGroupUrl(GroupImpl groupImpl) {
+    	String href = "";
 
-        for (KimGroupImpl group : groups) {
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
+        parameters.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupImpl.getGroupId());
+        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters);
+        
+        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
+        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+        return anchorHtmlData;
+    }
+
+    @Override
+    public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
+    	List<GroupImpl> groups = groupDao.getGroups(fieldValues);
+
+        for (GroupImpl group : groups) {
         	if (!group.getGroupAttributes().isEmpty()) {
                 sort(group.getGroupAttributes(), new KimAttributeDataComparator());
         	}
@@ -119,28 +143,24 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 
 	@Override
 	public List<Row> getRows() {
-		List<Row> attributeRows = new ArrayList<Row>();
 		if (getGrpRows().isEmpty()) {
 			List<Row> rows = super.getRows();
 			List<Row> returnRows = new ArrayList<Row>();
 			for (Row row : rows) {
-				Field field = (Field) row.getFields().get(0);
-				if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME)) {
-					List<Field> fields = new ArrayList<Field>();
-					Field typeField = new Field();
-					typeField.setFieldLabel("Type");
-					typeField.setPropertyName(KIM_TYPE_ID_PROPERTY_NAME);
-					typeField.setFieldValidValues(getGroupTypeOptions());
-					typeField.setFieldType(Field.DROPDOWN_REFRESH);
-					fields.add(typeField);
-					returnRows.add(new Row(fields));
-
-				} else {
-					returnRows.add(row);
+				for (int i = row.getFields().size() - 1; i >= 0; i--) {
+					Field field = row.getFields().get(i);
+					if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME)) {
+						Field typeField = new Field();
+						typeField.setFieldLabel("Type");
+						typeField.setPropertyName(KIM_TYPE_ID_PROPERTY_NAME);
+						typeField.setFieldValidValues(getGroupTypeOptions());
+						typeField.setFieldType(Field.DROPDOWN);
+						row.getFields().set(i, typeField);
+					}
 				}
+				returnRows.add(row);
 			}
 			// principalName
-			List<Field> fields = new ArrayList<Field>();
 			Field typeField = new Field();
 			typeField.setFieldLabel("Principal Name");
 			typeField.setPropertyName(KIMPropertyConstants.Person.PRINCIPAL_NAME);
@@ -150,9 +170,32 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 			typeField.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.Person");
 			typeField.setFieldConversions( "principalName:principalName" );
 			typeField.setLookupParameters( "principalName:principalName" );
-			fields.add(typeField);
-			returnRows.add(new Row(fields));
-
+			// Identify the best spot to insert the "Principal Name" search field. Note that the code below assumes that the final row of the
+			// group search fields is not a row with hidden fields; if this ever becomes the case in the future, this fix may need to
+			// be modified accordingly.
+			List<Field> fields = (returnRows.isEmpty()) ? new ArrayList<Field>() : returnRows.get(returnRows.size() - 1).getFields();
+			if (!fields.isEmpty() && fields.get(fields.size() - 1).getFieldType().equals(Field.BLANK_SPACE)) {
+				// If the last row in the list has a BLANK_SPACE field coming after any non-BLANK_SPACE fields, add the new field to that row.
+				int insertLoc = fields.size() - 1;
+				while (insertLoc >= 0 && fields.get(insertLoc).getFieldType().equals(Field.BLANK_SPACE)) {
+					insertLoc--;
+				}
+				fields.set(insertLoc + 1, typeField);
+				returnRows.get(returnRows.size() - 1).setFields(fields);
+			} else {
+				// Otherwise, add a new row containing that field.
+				int fieldLen = fields.size();
+				fields = new ArrayList<Field>();
+				fields.add(typeField);
+				for (int i = 1; i < fieldLen; i++) {
+					Field blankSpace = new Field();
+					blankSpace.setFieldType(Field.BLANK_SPACE);
+					blankSpace.setPropertyName(Field.BLANK_SPACE);
+					fields.add(blankSpace);
+				}
+				returnRows.add(new Row(fields));
+			}
+			
 			setGrpRows(returnRows);
 		}
 		if (getAttrRows().isEmpty()) {
@@ -234,7 +277,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
                 boolean skipPropTypeCheck = false;
                 if (col.getPropertyName().matches("\\w+\\.\\d+$")) {
                     String id = col.getPropertyName().substring(col.getPropertyName().lastIndexOf('.') + 1); //.split("\\d+$"))[1];
-                    prop = ((KimGroupImpl)element).getGroupAttributeById(id);
+                    prop = ((GroupImpl)element).getGroupAttributeById(id);
                 }
                 if (prop == null) {
                     prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
@@ -321,14 +364,13 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
         return displayList;
     }
 
-	@SuppressWarnings("unchecked")
 	private List<KeyLabelPair> getGroupTypeOptions() {
 		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
 		options.add(new KeyLabelPair("", ""));
 
-		List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocator.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all groups in the system
-        for (KimTypeImpl kimType : kimGroupTypes) {
+        for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
                 options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
@@ -350,16 +392,8 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 				if (!StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
-					Map<String,Object> pkMap = new HashMap<String,Object>();
-					pkMap.put(KIM_TYPE_ID_PROPERTY_NAME, field.getPropertyValue());
-					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
-					// TODO what if servicename is null.  also check other places that have similar issue
-					// use default_service ?
-					String serviceName = kimType.getKimTypeServiceName();
-					if (StringUtils.isBlank(serviceName)) {
-						serviceName = "kimTypeService";
-					}
-			        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(serviceName);
+					KimTypeInfo kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
+					KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
 		            for (AttributeDefinition definition  : definitions.values()) {
@@ -372,7 +406,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 						typeField.setPropertyValue(fieldValues.get(typeField.getPropertyName()));
 						if (definition.getControl().isSelect()) {
 					        try {
-					            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+					            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
 						        typeField.setFieldValidValues(finder.getKeyValues());
 						        typeField.setFieldType(Field.DROPDOWN);
 					        }
@@ -390,7 +424,7 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
 						    typeField.setFieldType(Field.TEXT);
 						} else if (definition.getControl().isRadio()) {
 						    try {
-                                KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
+                                KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
                                 typeField.setFieldValidValues(finder.getKeyValues());
                                 typeField.setFieldType(Field.RADIO);
                             }
@@ -483,33 +517,5 @@ public class GroupLookupableHelperServiceImpl  extends KualiLookupableHelperServ
         super.performClear(lookupForm);
         this.attrRows = new ArrayList<Row>();
     }
-    
-	/**
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
-	 */
-	@Override
-	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
-		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
-	    inquiryHtmlData.setHref(getCustomGroupInquiryHref(inquiryHtmlData.getHref()));
-		return inquiryHtmlData;
-	}
-
-	static String getCustomGroupInquiryHref(String href){
-        Properties parameters = new Properties();
-        String hrefPart = "";
-		if (StringUtils.isNotBlank(href) && href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=")!=-1) {
-			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=");
-		    int idx2 = href.indexOf("&", idx1+1);
-		    if (idx2 < 0) {
-		    	idx2 = href.length();
-		    }
-	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
-	        hrefPart = href.substring(idx1, idx2);
-	    }
-		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+
-				KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters)+hrefPart;
-	}
 
 }

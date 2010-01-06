@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,6 @@ package org.kuali.rice.kns.service;
 import java.beans.PropertyDescriptor;
 
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.document.Document;
@@ -98,6 +97,8 @@ public interface DictionaryValidationService {
      */
     public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired);
     
+    public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName);
+    
     /**
      * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to check the 
      * ErrorMap.Validates the business object primitive attributes against the data dictionary. Adds errors to the map as they are
@@ -138,10 +139,21 @@ public interface DictionaryValidationService {
      * @param entryName - name of the dd entry
      * @param attributeName - name of attribute in the bo class
      * @param attributeValue - current value to validate
-     * @param errorKey - key to place to errors under
+     * @param errorKey - key to place the errors under
      */
     public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String errorKey);
 
+    /**
+     * Validates an attribute of a given class for proper min, max length, syntax, and required. The attribute will be validated
+     * according to the specified data type.
+     * 
+     * @param entryName - name of the dd entry
+     * @param attributeName - name of attribute in the bo class
+     * @param attributeValue - current value to validate 
+     * @param attributeDataType - data type that this attribute should be treated as for validation purposes
+     * @param errorKey - key to place the errors under
+     */
+    public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String attributeDataType, String errorKey);
 
     /**
      * Validates an attribute of a given class for required check.

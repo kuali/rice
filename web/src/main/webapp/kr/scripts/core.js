@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -195,7 +195,7 @@ function setRouteLogIframeDimensions() {
 	  	
 	    if ((Math.abs(frameDocHeight - currentHeight)) > 20 ) {
 	      if (safari > -1) {
-	        if ((Math.abs(docHt - currentHeight)) > 59 ) {
+	        if ((Math.abs(frameDocHeight - currentHeight)) > 59 ) {
 	          routeLogFrame.style.height = (frameDocHeight + 30) + "px";
 	          currentHeight = frameDocHeight;
 	        }
@@ -240,20 +240,19 @@ function resizeTheRouteLogFrame() {
   window.open(baseUrl+"/kr/directInquiry.do?"+queryString, "_blank", "width=640, height=600, scrollbars=yes");
 }
  
-function textAreaPop(textAreaName,
-                     htmlFormAction,
-                     textAreaLabel,
-                     docFormKey) {
-  var documentWebScope
-
-  documentWebScope="session"
-
-  url=window.location.href
-  pathname=window.location.pathname
-  idx1=url.indexOf(pathname);
-  idx2=url.indexOf("/",idx1+1);
-  baseUrl=url.substr(0,idx2)
-  window.open(baseUrl+"/updateTextArea.do?&textAreaFieldName="+textAreaName+"&htmlFormAction="+htmlFormAction+"&textAreaFieldLabel="+textAreaLabel+"&docFormKey="+docFormKey+"&documentWebScope="+documentWebScope);
+function textAreaPop(textAreaName, htmlFormAction, textAreaLabel, docFormKey, textAreaReadOnly) {
+	
+	if (textAreaReadOnly === null || textAreaReadOnly === undefined) {
+		textAreaReadOnly = false;
+	}
+	
+	var documentWebScope="session"
+	url=window.location.href
+	pathname=window.location.pathname
+	idx1=url.indexOf(pathname);
+	idx2=url.indexOf("/",idx1+1);
+	baseUrl=url.substr(0,idx2)
+	window.open(baseUrl+"/updateTextArea.do?textAreaFieldName="+textAreaName+"&htmlFormAction="+htmlFormAction+"&textAreaFieldLabel="+textAreaLabel+"&docFormKey="+docFormKey+"&documentWebScope="+documentWebScope+"&textAreaReadOnly="+textAreaReadOnly, "_blank", "width=650, height=650, scrollbars=yes");
 }
 
 var textAreaFieldName;
@@ -267,6 +266,15 @@ function setTextArea() {
   document.getElementsByName(textAreaFieldName)[0].value = text;
   
 }
+
+function textLimit(taElement, maxlen) 
+{
+	var fieldValue = taElement.value;
+    if (fieldValue.length > maxlen) 
+    { 
+	    taElement.value = taElement.value.substr(0, maxlen); 
+    } 
+} 
 
 function postValueToParentWindow() {
   opener.document.getElementsByName(textAreaFieldName)[0].value = document.getElementsByName(textAreaFieldName)[0].value;

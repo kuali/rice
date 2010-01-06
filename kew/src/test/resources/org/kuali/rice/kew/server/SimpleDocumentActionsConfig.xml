@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="ns:workflow resource:WorkflowData">
   <groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
@@ -33,9 +48,9 @@
             <description>Services Test Request</description>
             <label>Services Test Request</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserWorkgroupName>TestAdhocWorkgroup</superUserWorkgroupName>
-            <blanketApproveWorkgroupName>TestAdhocWorkgroup</blanketApproveWorkgroupName>
-            <defaultExceptionWorkgroupName>TestAdhocWorkgroup</defaultExceptionWorkgroupName>
+            <superUserGroupName>TestAdhocWorkgroup</superUserGroupName>
+            <blanketApproveGroupName>TestAdhocWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName>TestAdhocWorkgroup</defaultExceptionGroupName>
             <docHandler>null</docHandler>
             <active>true</active>
             <policies>
@@ -81,7 +96,7 @@
       <documentType>servicesTestRequest</documentType>
             <ruleTemplate>testApproveTemplate</ruleTemplate>
       <description>Test Approve</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <user>user1</user>
@@ -94,7 +109,7 @@
       <documentType>servicesTestRequest</documentType>
             <ruleTemplate>testAcknowledgeTemplate</ruleTemplate>
       <description>Test Acknowledge</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <user>user1</user>
@@ -107,7 +122,7 @@
       <documentType>servicesTestRequest</documentType>
             <ruleTemplate>testFYITemplate</ruleTemplate>
       <description>Test FYI</description>
-      <ignorePrevious>true</ignorePrevious>
+      <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
           <user>user2</user>

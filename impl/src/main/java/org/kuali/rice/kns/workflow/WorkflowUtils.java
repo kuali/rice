@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.workflow;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -27,16 +26,15 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowFunctionResolver;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
-import org.kuali.rice.kew.util.KeyLabelPair;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Document;
 
 
@@ -120,7 +118,11 @@ public class WorkflowUtils {
         params.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
         params.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
         params.put(KNSPropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
-        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/kr/help.do", params);
+        String baseUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseHelpUrl(field.getBusinessObjectClassName());
+        if (baseUrl == null) {
+        	return null;
+        }
+        return UrlFactory.parameterizeUrl(baseUrl, params);
     }
 
     /**

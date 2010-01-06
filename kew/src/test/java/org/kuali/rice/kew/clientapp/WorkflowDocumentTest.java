@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -120,18 +120,18 @@ public class WorkflowDocumentTest extends KEWTestCase {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "UnitTestDocument");
 
     	verifyIsRouteCapable(false, new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(false, new WorkflowIdDTO("1"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(false, new WorkflowIdDTO("2001"), doc.getRouteHeaderId());
 
     	verifyIsRouteCapable(true, new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(true, new WorkflowIdDTO("2"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(true, new WorkflowIdDTO("2002"), doc.getRouteHeaderId());
 
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "NonInitiatorCanRouteDocument");
 
         verifyIsRouteCapable(true, new NetworkIdDTO("ewestfal"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new WorkflowIdDTO("1"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new WorkflowIdDTO("2001"), doc.getRouteHeaderId());
 
         verifyIsRouteCapable(true, new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, new WorkflowIdDTO("2"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, new WorkflowIdDTO("2002"), doc.getRouteHeaderId());
     }
 
     private void verifyIsRouteCapable(boolean routeCapable, UserIdDTO userId, Long docId) throws Exception {

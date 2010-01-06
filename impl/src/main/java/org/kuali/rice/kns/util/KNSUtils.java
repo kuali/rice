@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2009 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.lang.reflect.Constructor;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,4 +76,27 @@ public class KNSUtils {
 
         return StringUtils.replace(formattedAmount, ",", "");
     }
+    
+	public static Integer getIntegerValue(String numberStr){
+		Integer numberInt = null;
+		try{
+			numberInt = new Integer(numberStr);
+		} catch(NumberFormatException nfe){
+			Double numberDbl = new Double(numberStr);
+			numberInt = new Integer(numberDbl.intValue());
+		}
+		return numberInt;
+	}
+
+	public static Object createObject(Class<?> clazz, Class<?>[] argumentClasses, Object[] argumentValues) {
+		if(clazz==null)
+			return null;
+		try {
+			Constructor<?> constructor = clazz.getConstructor(argumentClasses);
+			return constructor.newInstance(argumentValues);
+	    } catch (Exception e) {
+	      	return null;
+	    }
+	}
+
 }

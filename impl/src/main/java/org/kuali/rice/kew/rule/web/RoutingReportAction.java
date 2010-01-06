@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,8 +44,6 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.AttributeDocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -66,7 +64,6 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -74,7 +71,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * A Struts Action for executing routing reports and retrieving the results.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoutingReportAction extends KewKualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoutingReportAction.class);
@@ -119,7 +116,7 @@ public class RoutingReportAction extends KewKualiAction {
 		List errors = new ArrayList();
 
 		if (getDocumentTypeService().findByName(routingForm.getDocumentType()) == null) {
-		    GlobalVariables.getErrorMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
+		    GlobalVariables.getMessageMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
 		}
 		Timestamp date = null;
 		if (!Utilities.isEmpty(routingForm.getDateRef())) {
@@ -133,11 +130,11 @@ public class RoutingReportAction extends KewKualiAction {
 				date = new Timestamp(calendar.getTimeInMillis());
 			} catch (Exception e) {
 				LOG.error("error parsing date", e);
-				GlobalVariables.getErrorMap().putError("Invalid date.", "routereport.effectiveDate.invalid");
+				GlobalVariables.getMessageMap().putError("Invalid date.", "routereport.effectiveDate.invalid");
 			}
 		}
 
-		if (!GlobalVariables.getErrorMap().isEmpty()) {
+		if (!GlobalVariables.getMessageMap().isEmpty()) {
             throw new ValidationException("Errors populating rule attributes.");
         }
 
@@ -201,7 +198,7 @@ public class RoutingReportAction extends KewKualiAction {
                 }
             }
 
-            if (!GlobalVariables.getErrorMap().isEmpty()) {
+            if (!GlobalVariables.getMessageMap().isEmpty()) {
                 throw new ValidationException("errors in search criteria");
             }
 
@@ -247,13 +244,11 @@ public class RoutingReportAction extends KewKualiAction {
 
 		if (numberOfActionRequests == 0) {
 			if (numberOfRules == 0) {
-			    GlobalVariables.getErrorMap().putError("There are no rules.", "routereport.noRules");
-				//errors.add(new WorkflowServiceErrorImpl("There are no rules.", "routereport.noRules"));
+			    GlobalVariables.getMessageMap().putError("*", "routereport.noRules");
 			} else {
-			    GlobalVariables.getErrorMap().putError("There are rules, but no matches.", "routereport.noMatchingRules");
-				//errors.add(new WorkflowServiceErrorImpl("There are rules, but no matches.", "routereport.noMatchingRules"));
+			    GlobalVariables.getMessageMap().putError("*", "routereport.noMatchingRules");
 			}
-			if (!GlobalVariables.getErrorMap().isEmpty()) {
+			if (GlobalVariables.getMessageMap().hasErrors()) {
 	            throw new ValidationException("errors in search criteria");
 	        }
 		}

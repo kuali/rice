@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,16 +17,17 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.List;
 
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 
 /**
  * Represents an Entity (person/vendor/system) within the Rice system. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimEntity extends Inactivateable {
+public interface KimEntity extends Inactivateable, ExternalizableBusinessObject {
 	
 	String getEntityId();
 	
@@ -89,5 +90,10 @@ public interface KimEntity extends Inactivateable {
 	 */
 	KimEntityName getDefaultName();
 
-	
+	public List<? extends KimEntityEthnicity> getEthnicities();
+
+	public List<? extends KimEntityResidency> getResidencies();
+
+	public List<? extends KimEntityVisa> getVisas();
+
 }

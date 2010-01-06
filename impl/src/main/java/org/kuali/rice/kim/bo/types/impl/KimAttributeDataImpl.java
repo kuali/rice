@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,14 +24,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.types.KimAttributeData;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @MappedSuperclass
@@ -42,9 +46,6 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@Id
 	@Column(name="ATTR_DATA_ID")
 	protected String attributeDataId;
-
-	@Column(name="TARGET_PRIMARY_KEY")
-	protected String targetPrimaryKey;
 
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
@@ -59,9 +60,8 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
 	protected KimAttributeImpl kimAttribute;
 
-	@ManyToOne(targetEntity=KimTypeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinColumn(name = "KIM_TYP_ID", insertable = false, updatable = false)
-	protected KimTypeImpl kimType;
+	@Transient
+	protected transient KimTypeInfo kimType;
 
 	public String getAttributeDataId() {
 		return this.attributeDataId;
@@ -69,12 +69,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	public void setAttributeDataId(String attributeDataId) {
 		this.attributeDataId = attributeDataId;
 	}
-	public String getTargetPrimaryKey() {
-		return this.targetPrimaryKey;
-	}
-	public void setTargetPrimaryKey(String targetPrimaryKey) {
-		this.targetPrimaryKey = targetPrimaryKey;
-	}
+
 	public String getAttributeValue() {
 		return this.attributeValue;
 	}
@@ -94,16 +89,19 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 		this.kimAttributeId = kimAttributeId;
 	}
 	public KimAttributeImpl getKimAttribute() {
+		if(ObjectUtils.isNull(this.kimAttribute)) {
+				this.refreshReferenceObject("kimAttribute");
+		}
 		return this.kimAttribute;
 	}
 	public void setKimAttribute(KimAttributeImpl kimAttribute) {
 		this.kimAttribute = kimAttribute;
 	}
-	public KimTypeImpl getKimType() {
-		return this.kimType;
-	}
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
+	public KimTypeInfo getKimType() {
+		if ( kimType == null ) {
+			kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		}
+		return kimType;
 	}
 
 	/**
@@ -114,7 +112,6 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
 		m.put( "attributeDataId", attributeDataId );
-		m.put( "targetPrimaryKey", targetPrimaryKey );
 		m.put( "kimTypeId", kimTypeId );
 		m.put( "kimAttributeId", kimAttributeId );
 		m.put( "attributeValue", attributeValue );

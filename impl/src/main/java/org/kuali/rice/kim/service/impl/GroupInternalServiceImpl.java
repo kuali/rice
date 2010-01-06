@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -38,11 +38,11 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 /**
  * Concrete Implementation of {@link GroupInternalService}
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GroupInternalServiceImpl implements GroupInternalService {
-    public BusinessObjectService getBusinessObjectService() {
+    protected BusinessObjectService getBusinessObjectService() {
     	return KNSServiceLocator.getBusinessObjectService();
     }
 
@@ -51,7 +51,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	return KIMServiceLocator.getGroupService();
     }
 
-    public void saveWorkgroup(KimGroupImpl group) {
+    public void saveWorkgroup(GroupImpl group) {
     	GroupService ims = getGroupService();
     	List<String> oldIds = ims.getMemberPrincipalIds(group.getGroupId());
         getBusinessObjectService().save( group );

@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation.
+ * Copyright 2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,17 +22,15 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 
 public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService {
+
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PassThruRoleTypeServiceBase.class);
+	
 	public static final String UNMATCHABLE_QUALIFICATION = "!~!~!~!~!~";
 
     public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification);
     
-    public AttributeSet convertQualificationAttributesToRequired(AttributeSet qualificationAttributes) {
-        return qualificationAttributes;
-    }
-
     public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
         return roleMemberList;
     }
@@ -61,12 +59,19 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return null;
     }
 
-    public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
-        return new ArrayList<KeyLabelPair>(0);
-    }
+//    public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
+//        return new ArrayList<KeyLabelPair>(0);
+//    }
 
     public String getWorkflowDocumentTypeName() {
         return null;
+    }
+    
+    /**
+     * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
+     */
+    public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+    	return new ArrayList<String>(0);
     }
 
     public boolean supportsAttributes(List<String> attributeNames) {
@@ -77,12 +82,53 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return inputAttributeSet;
     }
 
-    public AttributeSet validateAttributes(AttributeSet attributes) {
+    public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
         return null;
     }
     
     public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
         return roleMembers;
     }
+    
+    
+
+	/**
+	 * This base implementation does nothing but log that the method was called.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void principalInactivated(String principalId, String namespaceCode,
+			String roleName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "Principal Inactivated called: principalId="+principalId+" role=" + namespaceCode + "/" + roleName );
+		}
+		// base implementation - do nothing
+	}
+
+    public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+        return true;
+    }
+
+    public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes){
+        return new AttributeSet();
+    }
+    
+    public List<String> getUniqueAttributes(String kimTypeId){
+        return new ArrayList<String>();
+    }
+    
+	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+		return new AttributeSet();
+	}
+
+	/**
+	 * Returns false by default.
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 */
+	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
+			String roleName) {
+		return false;
+	}
 
 }

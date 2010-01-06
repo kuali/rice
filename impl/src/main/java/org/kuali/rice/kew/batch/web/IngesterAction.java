@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -47,15 +46,16 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
 
 
 /**
  * Struts action that accepts uploaded files and feeds them to the XmlIngesterService
  * @see org.kuali.rice.kew.batch.XmlIngesterService
  * @see org.kuali.rice.kew.batch.web.IngesterForm
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IngesterAction extends Action {
+public class IngesterAction extends KualiAction {
     private static final Logger LOG = Logger.getLogger(IngesterAction.class);
 
     public ActionForward execute(
@@ -66,7 +66,7 @@ public class IngesterAction extends Action {
             throws Exception {
 
     	checkAuthorization(form, "");
-    	
+
         LOG.debug(request.getMethod());
         if (!"post".equals(request.getMethod().toLowerCase())) {
             LOG.debug("returning to view");
@@ -188,21 +188,21 @@ public class IngesterAction extends Action {
         request.setAttribute("messages", messages);
         return mapping.findForward("view");
     }
-    
-    protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
+
+    protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException
     {
     	String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
     	AttributeSet roleQualifier = new AttributeSet();
     	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
-    	
-        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
+
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
+        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
         {
-            throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(), 
+            throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(),
             		methodToCall,
             		this.getClass().getSimpleName());
         }
     }
-    
-    
+
+
 }

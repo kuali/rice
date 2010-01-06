@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation
+ * Copyright 2008-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,22 +16,28 @@
 package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
+import java.util.Map;
 
-import org.kuali.rice.kim.bo.role.KimPermission;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermission, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	protected String namespaceCode;
 	protected String name;
 	protected String description;
+	protected String templateId;
 	protected KimPermissionTemplateInfo template;
 	
 	protected boolean active;
@@ -99,4 +105,44 @@ public class KimPermissionInfo extends PermissionDetailsInfo implements KimPermi
 		return (StringUtils.isBlank(getName()) && getTemplate()!=null)?getTemplate().getName():getName();
 	}
 
+	public String getDetailObjectsValues(){
+		StringBuffer detailObjectsToDisplay = new StringBuffer();
+		for( Map.Entry<String,String> entry: getDetails().entrySet() ){
+			detailObjectsToDisplay.append(entry.getKey()+KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		}
+		return StringUtils.chomp(detailObjectsToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR );
+	}
+
+	public String getDetailObjectsToDisplay() {
+		StringBuffer detailObjectsToDisplay = new StringBuffer();
+		for( Map.Entry<String,String> entry: getDetails().entrySet() ){
+			detailObjectsToDisplay.append(getAttributeDetailToDisplay(entry));
+		}
+		return StringUtils.chomp(detailObjectsToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR );
+	}
+
+	public String getAttributeDetailToDisplay(Map.Entry<String,String> entry){
+		return getKimAttributeLabelFromDD(entry.getKey())+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+				entry.getValue()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
+	}
+	
+	//TODO: remove this and find a better way to do this. Should be done by next week with role doc task
+	protected String getKimAttributeLabelFromDD(String attributeName){
+    	return getPermissionService().getPermissionDetailLabel(permissionId, template.getKimTypeId(), attributeName );
+    }
+
+	private transient static PermissionService permissionService;
+	protected PermissionService getPermissionService() {
+		if(permissionService == null){
+			permissionService = (PermissionService)GlobalResourceLoader.getService( "kimPermissionService" );
+		}
+		return permissionService;
+	}
+	public String getTemplateId() {
+		return this.templateId;
+	}
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+	
 }

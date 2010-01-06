@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class AttachmentServiceImpl implements AttachmentService {
+	private static final int MAX_DIR_LEVELS = 6;
     private static Logger LOG = Logger.getLogger(AttachmentServiceImpl.class);
 
     private KualiConfigurationService kualiConfigurationService;
@@ -157,6 +158,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     public void deleteAttachmentContents(Attachment attachment) {
+    	if (attachment.getNote() == null) throw new RuntimeException("Attachment.note must be set in order to delete the attachment");
         String fullPathUniqueFileName = getDocumentDirectory(attachment.getNote().getRemoteObjectIdentifier()) + File.separator + attachment.getAttachmentIdentifier();
         File attachmentFile = new File(fullPathUniqueFileName);
         attachmentFile.delete();
@@ -169,7 +171,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         // Create a directory; all ancestor directories must exist
         File documentDirectory = new File(getDocumentFileStorageLocation(objectId));
         if (!documentDirectory.exists()) {
-            boolean success = documentDirectory.mkdir();
+            boolean success = documentDirectory.mkdirs();
             if (!success) {
                 throw new RuntimeException("Could not generate directory for File at: " + documentDirectory.getAbsolutePath());
             }
@@ -200,8 +202,21 @@ public class AttachmentServiceImpl implements AttachmentService {
         String location = null;
         if(StringUtils.isEmpty(objectId)) {
             location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
-        } else {
-            location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_DIRECTORY_KEY)+ File.separator + objectId;
+        } else {    
+        	/* 
+        	 * We need to create a hierarchical directory structure to store
+        	 * attachment directories, as most file systems max out at 16k
+        	 * or 32k entries.  If we use 6 levels of hierarchy, it allows
+        	 * hundreds of billions of attachment directories.
+        	 */
+            char[] chars = objectId.toUpperCase().replace(" ", "").toCharArray();            
+            int count = chars.length < MAX_DIR_LEVELS ? chars.length : MAX_DIR_LEVELS;
+
+            StringBuffer prefix = new StringBuffer();            
+            for ( int i = 0; i < count; i++ )
+                prefix.append(File.separator + chars[i]);
+            
+            location = kualiConfigurationService.getPropertyString(KNSConstants.ATTACHMENTS_DIRECTORY_KEY) + prefix + File.separator + objectId;
         }
         return  location;
     }

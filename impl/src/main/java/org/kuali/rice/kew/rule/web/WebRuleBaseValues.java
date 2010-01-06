@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +62,7 @@ import org.kuali.rice.kew.util.Utilities;
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebRuleBaseValues extends RuleBaseValues {
 
@@ -389,8 +389,8 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		if (getActiveInd() == null) {
 			setActiveInd(Boolean.TRUE);
 		}
-		if (getIgnorePrevious() == null) {
-			setIgnorePrevious(Boolean.FALSE);
+		if (getForceAction() == null) {
+			setForceAction(Boolean.FALSE);
 		}
 		loadWebValues();
 		if (getResponsibilities().isEmpty()) {
@@ -502,8 +502,8 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			errors.add(keyPrefix + "description", new ActionMessage("routetemplate.ruleservice.description.required"));
 		}
 
-		if (getIgnorePrevious() == null) {
-			errors.add(keyPrefix + "ignorePrevious", new ActionMessage("routetemplate.ruleservice.ignoreprevious.required"));
+		if (getForceAction() == null) {
+			errors.add(keyPrefix + "forceAction", new ActionMessage("routetemplate.ruleservice.forceAction.required"));
 		}
 
 		if (getResponsibilities().isEmpty()) {

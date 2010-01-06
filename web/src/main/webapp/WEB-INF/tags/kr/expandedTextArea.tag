@@ -1,11 +1,11 @@
 <%--
- Copyright 2005-2007 The Kuali Foundation.
+ Copyright 2005-2008 The Kuali Foundation
  
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
  
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
  
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@
 <%@ attribute name="formKey" required="false" %>
 <%@ attribute name="sessionDocument" required="false" %>
 <%@ attribute name="title" required="false" %>
+<%@ attribute name="readOnly" required="false" %>
 
 <c:if test="${empty formKey}">
   <c:set var="formKey" value="88888888" />
@@ -34,11 +35,23 @@
            alt="Expand Text Area">
     </c:when>
     <c:otherwise>
-       <html:image property="methodToCall.updateTextArea.((#${textAreaFieldName}:${action}:${textAreaLabel}#))"
-                   src='${ConfigProperties.kr.externalizable.images.url}pencil_add.png'
-                   onclick="javascript: textAreaPop('${textAreaFieldName}','${action}','${textAreaLabel}',${formKey});return false"
+	    <c:choose>
+	    	<c:when test="${readOnly}">
+	           <c:set var="srcImage" value="${ConfigProperties.kr.externalizable.images.url}openreadonly_greenarrow01.png"/>
+	           <c:set var="altMsg" value="View Text"/>
+	    	</c:when>
+	    	<c:otherwise>
+	           <c:set var="readOnly" value="false" />
+	           <c:set var="srcImage" value="${ConfigProperties.kr.externalizable.images.url}pencil_add.png"/>
+	           <c:set var="altMsg" value="Expand Text Area"/>
+	   		</c:otherwise>
+	  	</c:choose>
+    
+       <html:image property="methodToCall.updateTextArea.((#${textAreaFieldName}:${action}:${textAreaLabel}:${readOnly}#))"
+                   src="${srcImage}"
+                   onclick="javascript: textAreaPop('${textAreaFieldName}','${action}','${textAreaLabel}','${formKey}','${readOnly}');return false"
                    styleClass="tinybutton"
                    title="${title}"
-                   alt="Expanded Text Area"/>
+                   alt="${altMsg}"/>
     </c:otherwise>
   </c:choose>

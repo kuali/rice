@@ -1,11 +1,11 @@
 /*
  * Copyright 2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.service.NotificationRecipientService;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
@@ -28,7 +28,7 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 /**
  * NotificationRecipientService implementation
  * This implementation relies on KIM user and group management
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationRecipientServiceKimImpl implements NotificationRecipientService
 {
@@ -49,7 +49,7 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public String[] getGroupMembers(String groupRecipientId)
     {
-        KimGroup group = getIdentityManagementService().getGroup(groupRecipientId);
+        Group group = getIdentityManagementService().getGroup(groupRecipientId);
 
         List<String> ids = getIdentityManagementService().getGroupMemberPrincipalIds(group.getGroupId());
 

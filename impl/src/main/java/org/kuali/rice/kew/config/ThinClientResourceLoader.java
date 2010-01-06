@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,6 +38,9 @@ import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
@@ -48,7 +51,7 @@ import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
  * Currently, the only 2 services which are exposed are the utility service and
  * the document actions service.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ThinClientResourceLoader extends BaseResourceLoader {
 
@@ -62,7 +65,11 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	public static final String SECURE_DOCUMENT_ENDPOINT = "secure.workflowdocument.javaservice.endpoint";
     	public static final String UTILITY_ENDPOINT = "workflowutility.javaservice.endpoint";
     	public static final String SECURE_UTILITY_ENDPOINT = "secure.workflowutility.javaservice.endpoint";
-
+    	public static final String IDENTITY_ENDPOINT = "identity.javaservice.endpoint"; 
+    	public static final String SECURE_IDENTITY_ENDPOINT = "secure.identity.javaservice.endpoint"; 
+    	public static final String GROUP_ENDPOINT = "group.javaservice.endpoint"; 
+    	public static final String SECURE_GROUP_ENDPOINT = "secure.group.javaservice.endpoint"; 
+    	
     	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
 	public ThinClientResourceLoader() {
@@ -98,9 +105,16 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 			WorkflowDocumentActions documentActions = getWorkflowDocument();
 			services.put(serviceName, documentActions);
 			return documentActions;
+		} else if (serviceName.equals(KIMServiceLocator.KIM_IDENTITY_SERVICE)) {
+			IdentityService identityService = getIdentityService();
+			services.put(serviceName, identityService);
+			return identityService;
+		} else if (serviceName.equals(KIMServiceLocator.KIM_GROUP_SERVICE)) {
+			GroupService groupService = getGroupService();
+			services.put(serviceName, groupService);
+			return groupService;
 		}
-	    	return null;
-		//return SpringLoader.getInstance().getService(serviceName);
+	    return null;
 	}
 
 	public WorkflowUtility getWorkflowUtility() {
@@ -109,6 +123,14 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 
 	public WorkflowDocumentActions getWorkflowDocument() {
 	    return (WorkflowDocumentActions)getServiceProxy(WorkflowDocumentActions.class, DOCUMENT_ENDPOINT, SECURE_DOCUMENT_ENDPOINT);
+	}
+	
+	public IdentityService getIdentityService() {
+	    return (IdentityService)getServiceProxy(IdentityService.class, IDENTITY_ENDPOINT, SECURE_IDENTITY_ENDPOINT);
+	}
+
+	public GroupService getGroupService() {
+	    return (GroupService)getServiceProxy(GroupService.class, GROUP_ENDPOINT, SECURE_GROUP_ENDPOINT);
 	}
 
 	protected Object getServiceProxy(Class serviceInterface, String endpointParam, String secureEndpointParam) {

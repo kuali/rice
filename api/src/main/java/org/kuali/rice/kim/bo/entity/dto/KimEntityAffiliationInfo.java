@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimEntityAffiliation {
 
@@ -33,11 +35,14 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimE
 	 * 
 	 */
 	public KimEntityAffiliationInfo() {
+		super();
+		active = true;
 	}
 	/**
 	 * 
 	 */
 	public KimEntityAffiliationInfo( KimEntityAffiliation aff ) {
+		this();
 		if ( aff != null ) {
 			entityAffiliationId = unNullify( aff.getEntityAffiliationId() );
 			affiliationTypeCode = unNullify( aff.getAffiliationTypeCode() );
@@ -50,21 +55,21 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimE
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
-		return affiliationTypeCode;
+		return unNullify(affiliationTypeCode);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getCampusCode()
 	 */
 	public String getCampusCode() {
-		return campusCode;
+		return unNullify(campusCode);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
-		return entityAffiliationId;
+		return unNullify(entityAffiliationId);
 	}
 
 	public void setAffiliationTypeCode(String affiliationTypeCode) {

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -164,10 +164,7 @@ public class KualiInquiryAction extends KualiAction {
     	
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
-            LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
-            request.setAttribute("backLocation", request.getParameter("returnLocation"));
-            return mapping.findForward("inquiryError");
+        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
         }
         
         populateSections(mapping, request, inquiryForm, bo);
@@ -187,10 +184,7 @@ public class KualiInquiryAction extends KualiAction {
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
-            LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
-            request.setAttribute("backLocation", request.getParameter("returnLocation"));
-            return mapping.findForward("inquiryError");
+        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
         }
         
         Inquirable kualiInquirable = inquiryForm.getInquirable();
@@ -221,10 +215,7 @@ public class KualiInquiryAction extends KualiAction {
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
-            LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
-            request.setAttribute("backLocation", request.getParameter("returnLocation"));
-            return mapping.findForward("inquiryError");
+        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
         }
         
         populateSections(mapping, request, inquiryForm, bo);
@@ -250,10 +241,7 @@ public class KualiInquiryAction extends KualiAction {
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
-            LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
-            request.setAttribute("backLocation", request.getParameter("returnLocation"));
-            return mapping.findForward("inquiryError");
+        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
         }
         
         populateSections(mapping, request, inquiryForm, bo);
@@ -275,10 +263,7 @@ public class KualiInquiryAction extends KualiAction {
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         if (bo == null) {
-            LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
-            request.setAttribute("backLocation", request.getParameter("returnLocation"));
-            return mapping.findForward("inquiryError");
+        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
         }
         
         populateSections(mapping, request, inquiryForm, bo);
@@ -294,10 +279,7 @@ public class KualiInquiryAction extends KualiAction {
     	if (inquiryForm.isCanExport()) {
     		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
     		if (bo == null) {
-    			LOG.error("No records found in inquiry action.");
-    			GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
-    			request.setAttribute("backLocation", request.getParameter("returnLocation"));
-    			return mapping.findForward("inquiryError");
+            	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
     		}        
     		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
     		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
@@ -333,7 +315,7 @@ public class KualiInquiryAction extends KualiAction {
         BusinessObject bo = kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
-            GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+            GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
         }
         return bo;
     }

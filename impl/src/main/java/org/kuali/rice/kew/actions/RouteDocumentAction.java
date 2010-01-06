@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,12 +29,13 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kew.engine.node.Process;
 
 
 /**
  * Action that puts the document in routing.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RouteDocumentAction extends ActionTakenEvent {
@@ -71,6 +72,11 @@ public class RouteDocumentAction extends ActionTakenEvent {
         return "";
     }
 
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
+    }
+    
     /**
      * Record the routing action. To route a document, it must be in the proper state. Previous requests and actions have no bearing on the outcome of this action, unless the
      * @throws org.kuali.rice.kew.exception.InvalidActionTakenException
@@ -113,6 +119,13 @@ public class RouteDocumentAction extends ActionTakenEvent {
             try {
                 String oldStatus = getRouteHeader().getDocRouteStatus();
                 getRouteHeader().markDocumentEnroute();
+                
+                if (((Process)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
+                    getRouteHeader().markDocumentApproved();
+                    getRouteHeader().markDocumentProcessed();
+                    getRouteHeader().markDocumentFinalized();
+                }
+
                 getRouteHeader().setRoutedByUserWorkflowId(getPrincipal().getPrincipalId());
 
                 String newStatus = getRouteHeader().getDocRouteStatus();

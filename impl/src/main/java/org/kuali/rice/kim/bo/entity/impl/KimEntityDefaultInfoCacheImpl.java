@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation
+ * Copyright 2008-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,11 +44,11 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 /**
  * Used to store a cache of person information to be used if the user's information disappears from KIM. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity
-@Table(name="KRIM_PRSN_CACHE_T")
+@Table(name="KRIM_ENTITY_CACHE_T")
 public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
@@ -106,10 +106,10 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 				entityTypeCode = entity.getEntityTypes().get(0).getEntityTypeCode();
 			}
 			if ( entity.getDefaultName() != null ) {
-				firstName = entity.getDefaultName().getFirstName();
-				middleName = entity.getDefaultName().getMiddleName();
-				lastName = entity.getDefaultName().getLastName();
-				name = entity.getDefaultName().getFormattedName();
+				firstName = entity.getDefaultName().getFirstNameUnmasked();
+				middleName = entity.getDefaultName().getMiddleNameUnmasked();
+				lastName = entity.getDefaultName().getLastNameUnmasked();
+				name = entity.getDefaultName().getFormattedNameUnmasked();
 			}
 			if ( entity.getDefaultAffiliation() != null ) {
 				campusCode = entity.getDefaultAffiliation().getCampusCode();

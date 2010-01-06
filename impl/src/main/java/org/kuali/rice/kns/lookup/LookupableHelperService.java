@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
 public interface LookupableHelperService extends Serializable{
@@ -202,6 +203,13 @@ public interface LookupableHelperService extends Serializable{
     public boolean allowsMaintenanceNewOrCopyAction();
 
     /**
+     * Determines if underlying lookup bo has associated document that allows new or copy maintenance actions.
+     *
+     * @return true if bo has doc that allows new or copy actions
+     */
+    public boolean allowsNewOrCopyAction(String documentTypeName);
+
+    /**
      * Returns a list of Row objects to be used to generate the search query screen
      *
      * Generally, setBusinessObjectClass needs to be called with a non-null value for proper operation
@@ -298,4 +306,21 @@ public interface LookupableHelperService extends Serializable{
      * @return String displayed as title for the lookup
      */
     public String getTitle();
+    
+    /**
+     * 
+     * performs custom actions.  return true to reperform search
+     * 
+     * @param ignoreErrors
+     * @return boolean to reperform search
+     */
+    public boolean performCustomAction(boolean ignoreErrors);
+    
+    /**
+     * get an extra field
+     * @return
+     */
+    public Field getExtraField();
+    
+    public void applyFieldAuthorizationsFromNestedLookups(Field field);
 }

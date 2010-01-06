@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
@@ -33,50 +33,42 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPermissionRule {
 
-	private static final String ERROR_PATH = "document.permission.permissionId";
+	public static final String ERROR_PATH = "document.permission.permissionId";
 	
 	public boolean processAddPermission(AddPermissionEvent addPermissionEvent) {
 		KimDocumentRolePermission newPermission = addPermissionEvent.getPermission();
 		if(newPermission==null || StringUtils.isEmpty(newPermission.getPermissionId())){
-			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
+			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
 			return false;
 		}
 
-		KimPermissionImpl kimPermissionImpl = newPermission.getKimPermission();
-		if(kimPermissionImpl==null){
-			GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
+		KimPermissionInfo kimPermissionInfo = newPermission.getKimPermission();
+		if(kimPermissionInfo==null){
+			GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
 			return false;
 		}
 	    boolean rulePassed = true;
 		IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addPermissionEvent.getDocument();
-		Map<String,String> permissionDetails = new HashMap<String,String>();
-		permissionDetails.put(KimAttributes.NAMESPACE_CODE, kimPermissionImpl.getNamespaceCode());
-		permissionDetails.put(KimAttributes.PERMISSION_NAME, kimPermissionImpl.getTemplate().getName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, 
-				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.GRANT_PERMISSION, 
-				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
-				permissionDetails, null)) {
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
-            		new String[] {kimPermissionImpl.getNamespaceCode(), kimPermissionImpl.getTemplate().getName()});
-            return false;
+		if(!hasPermissionToGrantPermission(kimPermissionInfo, document)){
+	        GlobalVariables.getMessageMap().putError(KimDocumentPermissionRule.ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_PERMISSION, 
+	        		new String[] {kimPermissionInfo.getNamespaceCode(), kimPermissionInfo.getTemplate().getName()});
+	        return false;
 		}
 
 		if (newPermission == null || StringUtils.isBlank(newPermission.getPermissionId())) {
             rulePassed = false;
-            GlobalVariables.getErrorMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
+            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Permission"});
         } else {
 		    int i = 0;
         	for (KimDocumentRolePermission permission: document.getPermissions()) {
 		    	if (permission.getPermissionId().equals(newPermission.getPermissionId())) {
 		            rulePassed = false;
-		            GlobalVariables.getErrorMap().putError("document.permissions["+i+"].permissionId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Permission"});
+		            GlobalVariables.getMessageMap().putError("document.permissions["+i+"].permissionId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Permission"});
 		    	}
 		    	i++;
 		    }
@@ -84,4 +76,19 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 		return rulePassed;
 	} 
 
+	public boolean hasPermissionToGrantPermission(KimPermissionInfo kimPermissionInfo , IdentityManagementRoleDocument document){
+		Map<String,String> permissionDetails = new HashMap<String,String>();
+		permissionDetails.put(KimAttributes.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
+		permissionDetails.put(KimAttributes.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());
+		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+				document, 
+				KimConstants.NAMESPACE_CODE, 
+				KimConstants.PermissionTemplateNames.GRANT_PERMISSION, 
+				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
+				permissionDetails, null)) {
+	        return false;
+		}
+		return true;
+	}
+	
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,15 +24,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRIM_PND_ROLE_RSP_T")
 public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 	
+	private static final long serialVersionUID = -4465768714850961538L;
 	@Id
 	@Column(name="ROLE_RSP_ID")
 	protected String roleResponsibilityId;
@@ -81,6 +84,12 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 	 * @return the kimResponsibility
 	 */
 	public KimResponsibilityImpl getKimResponsibility() {
+		if ( kimResponsibility == null && responsibilityId != null ) {
+			//TODO: this needs to be changed to use the KimResponsibilityInfo object
+			// but the changes are involved in the UiDocumentService based on the copyProperties method used
+			// to move the data to/from the document/real objects
+			kimResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getResponsibilityId());
+		}
 		return this.kimResponsibility;
 	}
 

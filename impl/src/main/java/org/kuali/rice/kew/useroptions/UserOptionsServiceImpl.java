@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Map.Entry;
 
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -67,7 +69,30 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     public void save(UserOptions userOptions) {
         this.getUserOptionsDAO().save(userOptions);
     }
-
+    
+    /**
+     * This overridden method saves an option for each optionsMap entry, all for the given principalId
+     * 
+     * @see org.kuali.rice.kew.useroptions.UserOptionsService#save(java.lang.String, java.util.Map)
+     */
+    public void save(String principalId, Map<String,String> optionsMap) {
+    	// create a collection of UserOptions and save it
+    	if (optionsMap != null && optionsMap.size() > 0) {
+    		List<UserOptions> toSave = new ArrayList<UserOptions>();
+    		for (Entry<String, String> entry : optionsMap.entrySet()) {
+    			UserOptions option = findByOptionId(entry.getKey(), principalId);
+    			if (option == null) {
+    				option = new UserOptions();
+    				option.setWorkflowId(principalId);
+    			}
+    			option.setOptionId(entry.getKey());
+    			option.setOptionVal(entry.getValue());
+    			toSave.add(option);
+    		}
+			getUserOptionsDAO().save(toSave);
+    	}
+    }
+    
     public void deleteUserOptions(UserOptions userOptions) {
         this.getUserOptionsDAO().deleteUserOptions(userOptions);
     }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Copyright 2006-2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -50,22 +52,22 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
 
     /**
      * Uses Lookup Service to provide a basic search.
-     * 
+     *
      * @param fieldValues - Map containing prop name keys and search values
      *
      * @return List found business objects
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#getSearchResults(java.util.Map)
      */
-    public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues) {        
+    public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues) {
         return getSearchResultsHelper(LookupUtils.forceUppercase(getBusinessObjectClass(), fieldValues), false);
     }
-    
+
 
     /**
      * Uses Lookup Service to provide a basic unbounded search.
-     * 
+     *
      * @param fieldValues - Map containing prop name keys and search values
-     * 
+     *
      * @return List found business objects
      * @see org.kuali.rice.kns.lookup.LookupableHelperService#getSearchResultsUnbounded(java.util.Map)
      */
@@ -74,7 +76,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     }
 
     // TODO: Fix? - this does not handle nested properties within the EBO.
-    
+
     /**
      * Check whether the given property represents a property within an EBO starting
      * with the sampleBo object given.  This is used to determine if a criteria needs
@@ -101,9 +103,9 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
 
     /**
      * Get the name of the property which represents the ExternalizableBusinessObject for the given property.
-     * 
+     *
      * This method can not handle nested properties within the EBO.
-     * 
+     *
      * Returns null if the property is not a nested property or is part of an add line.
      */
     protected String getExternalBusinessObjectProperty(Object sampleBo, String propertyName) {
@@ -112,7 +114,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     	}
         return null;
     }
-    
+
     /**
      * Checks whether any of the fieldValues being passed refer to a property within an ExternalizableBusinessObject.
      */
@@ -139,7 +141,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     	try {
 	    	Object sampleBo = boClass.newInstance();
 	    	for ( String key : fieldValues.keySet() ) {
-	    		if ( !isExternalBusinessObjectProperty( sampleBo, key )) {	    			
+	    		if ( !isExternalBusinessObjectProperty( sampleBo, key )) {
 	    			eboFieldValues.put( key, fieldValues.get( key ) );
 	    		}
 	    	}
@@ -165,7 +167,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
 
     /**
      * Get the complete list of all properties referenced in the fieldValues that are ExternalizableBusinessObjects.
-     * 
+     *
      * This is a list of the EBO object references themselves, not of the properties within them.
      */
     protected List<String> getExternalizableBusinessObjectProperties(Class boClass, Map<String,String> fieldValues ) {
@@ -186,7 +188,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     /**
      * Given an property on the main BO class, return the defined type of the ExternalizableBusinessObject.  This will be used
      * by other code to determine the correct module service to call for the lookup.
-     * 
+     *
      * @param boClass
      * @param propertyName
      * @return
@@ -200,18 +202,18 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         }
         return null;
     }
-    
+
     /**
-     * 
+     *
      * This method does the actual search, with the parameters specified, and returns the result.
-     * 
+     *
      * NOTE that it will not do any upper-casing based on the DD forceUppercase. That is handled through an external call to
      * LookupUtils.forceUppercase().
-     * 
+     *
      * @param fieldValues A Map of the fieldNames and fieldValues to be searched on.
      * @param unbounded Whether the results should be bounded or not to a certain max size.
      * @return A List of search results.
-     * 
+     *
      */
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
         // remove hidden fields
@@ -225,11 +227,22 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         List searchResults;
     	Map<String,String> nonBlankFieldValues = new HashMap<String, String>();
     	for (String fieldName : fieldValues.keySet()) {
-    		if (StringUtils.isNotBlank(fieldValues.get(fieldName)) ) {
-    			nonBlankFieldValues.put(fieldName, fieldValues.get(fieldName));
+    		String fieldValue = fieldValues.get(fieldName);
+    		if (StringUtils.isNotBlank(fieldValue) ) {
+    			if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+    				String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+    				try {
+    					fieldValue = getEncryptionService().decrypt(encryptedValue);
+    				}
+    				catch (GeneralSecurityException e) {
+            			LOG.error("Error decrypting value for business object " + getBusinessObjectService() + " attribute " + fieldName, e);
+            			throw new RuntimeException("Error decrypting value for business object " + getBusinessObjectService() + " attribute " + fieldName, e);
+            		}
+    			}
+    			nonBlankFieldValues.put(fieldName, fieldValue);
     		}
     	}
-        
+
         // If this class is an EBO, just call the module service to get the results
         if ( ExternalizableBusinessObject.class.isAssignableFrom( getBusinessObjectClass() ) ) {
         	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
@@ -270,7 +283,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         		List eboResults = eboModuleService.getExternalizableBusinessObjectsListForLookup( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues, unbounded);
         		// get the mapping/relationship between the EBO object and it's parent object
         		// use that to adjust the fieldValues
-        		
+
         		// get the parent property type
         		Class eboParentClass;
         		String eboParentPropertyName;
@@ -334,7 +347,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         } else {
             searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), nonBlankFieldValues, unbounded);
         }
-        
+
         // sort list if default sort column given
         List defaultSortColumns = getDefaultSortColumns();
         if (defaultSortColumns.size() > 0) {
@@ -355,9 +368,9 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
 
     /**
      * Returns a comma delimited list of primary key field labels, to be used on the UI to tell the user which fields were used to search
-     * 
+     *
      * These labels are generated from the DD definitions for the lookup fields
-     * 
+     *
      * @return a comma separated list of field attribute names.  If no fields found, returns "N/A"
      * @see LookupableHelperService#isSearchUsingOnlyPrimaryKeyValues()
      * @see LookupableHelperService#getPrimaryKeyFieldLabels()
@@ -365,8 +378,8 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     @Override
     public String getPrimaryKeyFieldLabels() {
         StringBuilder buf = new StringBuilder();
-        List primaryKeyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
-        Iterator pkIter = primaryKeyFieldNames.iterator();
+        List<String> primaryKeyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        Iterator<String> pkIter = primaryKeyFieldNames.iterator();
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();
             buf.append(getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), pkFieldName));
@@ -376,7 +389,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         }
         return buf.length() == 0 ? KNSConstants.NOT_AVAILABLE_STRING : buf.toString();
     }
-    
-    
+
+
 }
 

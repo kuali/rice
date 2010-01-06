@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -57,7 +57,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * Default implementation of the {@link ActionRequestService}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestServiceImpl implements ActionRequestService {
     private static final Logger LOG = Logger.getLogger(ActionRequestServiceImpl.class);
@@ -68,16 +68,23 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return getActionRequestDAO().getActionRequestByActionRequestId(actionRequestId);
     }
 
-    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId) {
+    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame) {
+    	return getActionsRequested(principalId, routeHeader.getActionRequests(), completeAndApproveTheSame);
+    }
+    
+    /**
+     * Returns a Map of actions that are requested for the given principalId in the given list of action requests.
+     */
+    protected AttributeSet getActionsRequested(String principalId, List<ActionRequestValue> actionRequests, boolean completeAndApproveTheSame) {
     	AttributeSet actionsRequested = new AttributeSet();
         actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
         actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "false");
         actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
     	String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
-        for (ActionRequestValue actionRequest : routeHeader.getActionRequests()) {
+        for (ActionRequestValue actionRequest : actionRequests) {
             if (actionRequest.isRecipientRoutedRequest(principalId) && actionRequest.isActive()) {
-                int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested);
+                int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested, completeAndApproveTheSame);
                 if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
                     actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "true");
                 } else if (actionRequest.isAcknowledgeRequest() && actionRequestComparison >= 0) {
@@ -89,9 +96,15 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
                     actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
                     topActionRequested = actionRequest.getActionRequested();
-                    if (actionRequest.isCompleteRequst()) {
-                        actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "true");
-                    }
+                } else if (actionRequest.isCompleteRequst() && actionRequestComparison >= 0) {
+                	actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "true");
+                	actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "false");
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
+                	if (completeAndApproveTheSame) {
+                		actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+                	}
+                    topActionRequested = actionRequest.getActionRequested();
                 }
             }
         }
@@ -268,7 +281,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     private void processResponsibilityId(ActionRequestValue actionRequest) {
-    	//if (actionRequest.getResolveResponsibility()) {
+    	if (actionRequest.getResolveResponsibility()) {
 	        Long responsibilityId = actionRequest.getResponsibilityId();
 	        try {
 	            RouteModule routeModule = KEWServiceLocator.getRouteModuleService().findRouteModule(actionRequest);
@@ -295,7 +308,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 	            LOG.error("Exception thrown when trying to resolve responsibility id " + responsibilityId, e);
 	            throw new RuntimeException(e);
 	        }
-    	//}
+    	}
     }
 
     private boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,
@@ -314,7 +327,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (futureRequestStateMngr.isReceiveFutureRequests()) {
             return false;
         }
-        if (!actionRequestToActivate.getIgnorePrevAction() || futureRequestStateMngr.isDoNotReceiveFutureRequests()) {
+        if (!actionRequestToActivate.getForceAction() || futureRequestStateMngr.isDoNotReceiveFutureRequests()) {
             ActionTakenValue previousActionTaken = null;
             if (!activationContext.isSimulation()) {
                 previousActionTaken = getActionTakenService().getPreviousAction(actionRequestToActivate);
@@ -340,7 +353,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             }
         }
         if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Ignoring previous for action request " + actionRequestToActivate.getActionRequestId());
+        	LOG.debug("Forcing action for action request " + actionRequestToActivate.getActionRequestId());
         }
         return false;
     }
@@ -447,38 +460,62 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         return actionRequest;
     }
+    
+    /**
+     * Returns all pending requests for a given routing entity
+     * @param routeHeaderId the id of the document header being routed
+     * @return a List of all pending ActionRequestValues for the document
+     */
+    public List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId) {
+    	ActionRequestDAO arDAO = getActionRequestDAO();
+        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
+        return (List<ActionRequestValue>)pendingArs;
+    }
 
     public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
         ActionRequestDAO arDAO = getActionRequestDAO();
-        Collection pendingArs = arDAO.findAllPendingByDocId(routeHeaderId);
+        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
         return findAllValidRequests(principalId, pendingArs, requestCode);
     }
 
     public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode) {
         List matchedArs = new ArrayList();
-        List<String> arGroups = null;
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue ar = (ActionRequestValue) iter.next();
-            if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode) > 0) {
+        List<String> arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+        return filterActionRequestsByCode((List<ActionRequestValue>)actionRequests, principalId, arGroups, requestCode);
+    }
+    
+    /**
+	 * Filters action requests based on if they occur after the given requestCode, and if they relate to 
+	 * the given principal
+	 * @param actionRequests the List of ActionRequestValues to filter
+	 * @param principalId the id of the principal to find active requests for
+	 * @param principalGroupIds List of group ids that the principal belongs to
+	 * @param requestCode the request code for all ActionRequestValues to be after
+	 * @return the filtered List of ActionRequestValues
+	 */
+	public List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String principalId, List<String> principalGroupIds, String requestCode) {
+		List<ActionRequestValue> filteredActionRequests = new ArrayList<ActionRequestValue>();
+		
+		List<String> arGroups = null;
+        for (ActionRequestValue ar : actionRequests) {
+            if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode, true) > 0) {
                 continue;
             }
             if (ar.isUserRequest() && principalId.equals(ar.getPrincipalId())) {
-                matchedArs.add(ar);
-            } else if (ar.isGroupRequest()) {
-            	if (arGroups == null) {
-            		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
-            	}
-            	for (String groupId : arGroups) {
+            	filteredActionRequests.add(ar);
+            } else if (ar.isGroupRequest() && principalGroupIds != null && !principalGroupIds.isEmpty()) {
+            	for (String groupId : principalGroupIds) {
             		if (groupId.equals(ar.getGroupId())) {
-            			matchedArs.add(ar);
+            			filteredActionRequests.add(ar);
             		}
             	}
             }
         }
-        return matchedArs;
-    }
+		
+		return filteredActionRequests;
+	}
 
-    public void updateActionRequestsForResponsibilityChange(Set responsibilityIds) {
+    public void updateActionRequestsForResponsibilityChange(Set<Long> responsibilityIds) {
     	PerformanceLogger performanceLogger = null;
     	if ( LOG.isInfoEnabled() ) {
     		performanceLogger = new PerformanceLogger();
@@ -623,7 +660,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List requests = new ArrayList();
         for (Iterator iter = getActionRequestDAO().findAllPendingByDocId(routeHeaderId).iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode) > 0) {
+            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0) {
                 continue;
             }
             if (actionRequest.getRouteLevel().intValue() == routeLevel.intValue()) {
@@ -637,7 +674,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List requests = new ArrayList();
         for (Iterator iter = getActionRequestDAO().findAllPendingByDocId(routeHeaderId).iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode) > 0) {
+            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0) {
                 continue;
             }
             if (actionRequest.getNodeInstance() != null && actionRequest.getNodeInstance().getName().equals(nodeName)) {
@@ -714,7 +751,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             ActionRequestValue delegatorRequest = findDelegatorRequest(actionRequest);
             if (delegatorRequest != null) {
-                if (ActionRequestValue.compareActionCode(delegatorRequest.getActionRequested(), requestCode) >= 0) {
+                if (ActionRequestValue.compareActionCode(delegatorRequest.getActionRequested(), requestCode, true) >= 0) {
                     delegator = delegatorRequest.getRecipient();
                     requestCode = delegatorRequest.getActionRequested();
                 }

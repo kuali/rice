@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.kns.document;
 
-import org.kuali.test.KNSTestBase;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+@Ignore
 @KNSWithTestSpringContext
-public class DocumentAuthorizerBaseTest extends KNSTestBase {
+public class DocumentAuthorizerBaseTest extends KNSTestCase {
 	// TODO rewrite this test
 //    private static final Logger LOG = Logger.getLogger(DocumentAuthorizerBaseTest.class);
 //
@@ -64,10 +67,12 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //    //
 //    // E false * * false
 //    //
-//    //@Test
-//    /* This test can no longer use mock objects because the isSupervisor() method is no longer on the Person object.
-//     * To check for supervisor status you know must to through the group service and check membership in the supervisor group.
-//    public void testCanSuperviseAsInitiatorA() {
+
+    /* This test can no longer use mock objects because the isSupervisor() method is no longer on the Person object.
+     * To check for supervisor status you know must to through the group service and check membership in the supervisor group.
+     */
+	@Test
+    public void testCanSuperviseAsInitiatorA() {
 //
 //        DocumentActionFlags flags;
 //        Document document;
@@ -92,8 +97,8 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //        flags = documentAuthorizer.getDocumentActionFlags(document, getSuperUser());
 //        assertTrue(flags.getCanSupervise());
 //
-//    }
-//    */
+    }
+
 //
 //    private void verifyEditModeExists(Map editMode, String editModeToTest, String expectedValue) {
 //        assertNotNull("Edit mode map should have a valid value for " + editModeToTest, editMode.get(editModeToTest));
@@ -118,8 +123,8 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //     *
 //     * @throws Exception
 //     */
-//    @Test
-//    public void testEstablishLocks_DefaultDocumentAuthorizerBase() throws Exception {
+    @Test
+    public void testEstablishLocks_DefaultDocumentAuthorizerBase() throws Exception {
 //        PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
 //
 //        // test no lock creation needed
@@ -212,7 +217,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //        verifyEditModeExists(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY, DocumentAuthorizerBase.EDIT_MODE_DEFAULT_TRUE_VALUE);
 //        verifyEditModeExists(newEditMode, AuthorizationConstants.EditMode.VIEW_ONLY, testString);
 //
-//    }
+    }
 //
 //    /**
 //     * This method tests the Pessimistic locking mechanism when custom lock descriptors are being used by the document in the
@@ -220,8 +225,8 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //     *
 //     * @throws Exception
 //     */
-//    @Test
-//    public void testEstablishLocks_CustomDocumentAuthorizerBase() throws Exception {
+    @Test
+    public void testEstablishLocks_CustomDocumentAuthorizerBase() throws Exception {
 //        GlobalVariables.setUserSession(new UserSession("quickstart"));
 //        PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
 //        DocumentAuthorizer documentAuthorizer = new TestDocumentAuthorizerBase();
@@ -512,10 +517,10 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //        verifyEditModeDoesNotExist(newEditMode, AuthorizationConstants.EditMode.FULL_ENTRY);
 //        verifyEditModeExists(newEditMode, AuthorizationConstants.EditMode.VIEW_ONLY, DocumentAuthorizerBase.EDIT_MODE_DEFAULT_TRUE_VALUE);
 //        verifyEditModeExists(newEditMode, AuthorizationConstants.EditMode.UNVIEWABLE, testString);
-//    }
+    }
 //
-//    @Test
-//    public void testHasPreRouteEditAuthorization() throws Exception {
+    @Test
+    public void testHasPreRouteEditAuthorization() throws Exception {
 //    	//TODO: the test for preRouteEditAuthorization should be removed
 //        GlobalVariables.setUserSession(new UserSession("quickstart"));
 //        PessimisticLockTestDocumentAuthorizer lockDocumentAuthorizer = new PessimisticLockTestDocumentAuthorizer();
@@ -555,10 +560,10 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //        document.addPessimisticLock(KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), authorizerUser));
 //        assertTrue(authorizerUser + " should have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
 //        //assertTrue(authorizerUser + " should have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
-//    }
+    }
 //
-//    @Test
-//    public void testGetDocumentActionFlagsUsingPessimisticLocking() throws Exception {
+    @Test
+    public void testGetDocumentActionFlagsUsingPessimisticLocking() throws Exception {
 //        GlobalVariables.setUserSession(new UserSession("quickstart"));
 //        String editModeTrueValue = "TRUE";
 //        String editModeFalseValue = "FALSE";
@@ -571,7 +576,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //        Map editMode = new HashMap();
 //        lockDocumentAuthorizer.setEditMode(MapUtils.putAll(editMode, new Map.Entry[]{new DefaultMapEntry(AuthorizationConstants.EditMode.VIEW_ONLY,"TRUE")}));
 //        DocumentFormPlaceholder formDummy = implementDocumentAuthorizerMethods(lockDocumentAuthorizer, document, new MockPerson(GlobalVariables.getUserSession().getPerson()));
-//    }
+    }
 //
 //    /**
 //     * This is a stand-in object for a {@link KualiDocumentFormBase} object
@@ -691,7 +696,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestBase {
 //		public void appSpecificRouteDocumentToGroup(String actionRequested,
 //				String routeTypeName, String annotation,
 //				GroupIdDTO groupId, String responsibilityDesc,
-//				boolean ignorePreviousActions) throws WorkflowException {
+//				boolean forceAction) throws WorkflowException {
 //			// TODO sp20369 - THIS METHOD NEEDS JAVADOCS
 //
 //		}

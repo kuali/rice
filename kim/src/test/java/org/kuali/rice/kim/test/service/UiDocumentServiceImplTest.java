@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,25 +20,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.config.spring.ConfigFactoryBean;
-import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
@@ -53,84 +48,41 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
-import org.kuali.rice.kim.service.impl.UiDocumentServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
+import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KualiDecimal;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
-import org.kuali.rice.test.web.HtmlUnitUtil;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class UiDocumentServiceImplTest extends RiceTestCase {
+public class UiDocumentServiceImplTest extends KIMTestCase {
 
-	private UiDocumentServiceImpl uiDocumentService;
+	private UiDocumentService uiDocumentService;
 
-	private String contextName = "/knstest";
-
-	private String relativeWebappRoot = "/../web/src/main/webapp";
-
-	private String testConfigFilename = "classpath:META-INF/kim-test-config.xml";
-
-	@Override
-	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> lifecycles = super.getSuiteLifecycles();
-		lifecycles.add(new Lifecycle() {
-			boolean started = false;
-
-			public boolean isStarted() {
-				return this.started;
-			}
-
-			public void start() throws Exception {
-				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
-				ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = testConfigFilename;
-				//new SQLDataLoaderLifecycle(sqlFilename, sqlDelimiter).start();
-				new JettyServerLifecycle(HtmlUnitUtil.getPort(), contextName, relativeWebappRoot).start();
-				//new KEWXmlDataLoaderLifecycle(xmlFilename).start();
-				System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
-			}
-
-		});
-		return lifecycles;
-	}
-
-	@Override
-	protected String getModuleName() {
-		return "kim";
-	}
-
-	@Override
-	protected List<Lifecycle> getDefaultSuiteLifecycles() {
-		List<Lifecycle> lifecycles = getInitialLifecycles();
-		return lifecycles;
-	}
-
-	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		uiDocumentService = (UiDocumentServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimUiDocumentService"));
+		uiDocumentService = KIMServiceLocator.getUiDocumentService();
 	}
-
-	@After
-	public void tearDown() throws Exception {}
 
 	@Test
 	public void testSaveToEntity() {
+	    Person adminPerson = KIMServiceLocator.getPersonService().getPersonByPrincipalName("admin");
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
+		
+		try {
+            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
+        } catch (WorkflowException e) {
+            e.printStackTrace();
+        }
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl(personDoc.getEntityId());
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
         KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType.getAddresses().get(0));
@@ -156,9 +108,11 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	
 	@Test
 	public void testLoadToPersonDocument() {
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getIdentityService()).getEntityImpl("ent123");
+		
+		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl("entity123eId");
+		assertNotNull(entity);
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
-		uiDocumentService.loadEntityToPersonDoc(personDoc, "ent123");
+		uiDocumentService.loadEntityToPersonDoc(personDoc, "entity123pId");
         KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType.getAddresses().get(0));
@@ -174,6 +128,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 	
 	// test principal membership
 	@Test
+	@Ignore
 	public void testSetAttributeEntry() {
 		PersonDocumentRole personDocRole = initPersonDocRole();
         KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(personDocRole.getKimRoleType().getKimTypeServiceName());
@@ -210,7 +165,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		List<KimTypeAttributeImpl> attributeDefinitions = new ArrayList<KimTypeAttributeImpl>();
 		Map pkMap = new HashMap();
 		pkMap.put("kimTypeAttributeId", "kimAttr3");
-		KimTypeAttributeImpl attr1 = (KimTypeAttributeImpl)uiDocumentService.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeImpl attr1 = (KimTypeAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
 
 //		attr1.setKimAttributeId("kimAttrDefn2");
 //		attr1.setSortCode("a");
@@ -223,11 +178,11 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 //		attr1.setKimTypeAttributeId("kimAttr4");
 		
 		pkMap.put("kimTypeAttributeId", "kimAttr4");
-		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl)uiDocumentService.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
 
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);
-		docRole.setKimRoleType(kimType);
+		docRole.setKimRoleType(kimType.toInfo());
 		
 		return docRole;
 	}
@@ -250,7 +205,6 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 		personDoc.setEmails(initEmails());	
 		return personDoc;
 	}
-	
 	
 	private List<PersonDocumentName> initNames() {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
@@ -284,7 +238,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 				docEmpInfo.setEmployeeId("12345");
 				docEmpInfo.setEntityAffiliationId(docAffiliation.getEntityAffiliationId());
 				docEmpInfo.setEntityEmploymentId("empId123");
-				docEmpInfo.setEmploymentRecordId("emprec1");
+				docEmpInfo.setEmploymentRecordId("1");
 				docEmpInfo.setBaseSalaryAmount(new KualiDecimal(8000));
 				docEmpInfo.setPrimaryDepartmentCode("BL-CHEM");
 				docEmpInfo.setEmployeeStatusCode("A");
@@ -384,7 +338,7 @@ public class UiDocumentServiceImplTest extends RiceTestCase {
 
 	private void assertEmailTrue(PersonDocumentEmail docEmail, KimEntityEmailImpl entityEmail) {
 		assertEquals(docEmail.getEntityEmailId(), entityEmail.getEntityEmailId());
-		assertEquals(docEmail.getEmailAddress(), entityEmail.getEmailAddress());
+		assertEquals(docEmail.getEmailAddress(), entityEmail.getEmailAddressUnmasked());
 		assertEquals(docEmail.getEmailTypeCode(), entityEmail.getEmailTypeCode());
 	}
 

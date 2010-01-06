@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -44,8 +44,8 @@ public class ExceptionRoutingTest extends KEWTestCase {
         loadXmlFile("RouteManagerConfig.xml");
     }
 
-    protected void setUpTransaction() throws Exception {
-		super.setUpTransaction();
+    protected void setUpAfterDataLoad() throws Exception {
+		super.setUpAfterDataLoad();
 		// reset these static constants, otherwise they will cause problems between test runs
 		ExceptionRoutingTestPostProcessor.THROW_DO_ACTION_TAKEN_EXCEPTION = false;
 		ExceptionRoutingTestPostProcessor.THROW_ROUTE_DELETE_ROUTE_HEADER_EXCEPTION = false;
@@ -70,7 +70,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         assertEquals("Should be a single exception request", 1, actionRequests.length);
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
             assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
@@ -142,7 +142,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
             if (actionRequest.isCompleteRequest()) {
-            	KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
+            	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
                 assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
                 assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
                 assertNull("For exception routing, node instance should have a null id.", actionRequest.getNodeInstanceId());

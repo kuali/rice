@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ package org.kuali.rice.ksb.cache;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 
@@ -29,7 +30,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 /**
  * Default implementation of the {@link RiceCacheAdministrator}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 
@@ -41,6 +42,7 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 	private boolean forceRegistryRefresh;
 	private String serviceName;
 	protected RemotedServiceRegistry remotedServiceRegistry;
+	private static final Logger LOG = Logger.getLogger(RiceCacheAdministratorImpl.class);
 	
 	/**
 	 * @return the remotedServiceRegistry
@@ -71,11 +73,19 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 	}
 
 	public void putInCache(String key, Object content, String[] groups) {
-		getCacheAdministrator().putInCache(key, content, groups);
+	    try {
+	        getCacheAdministrator().putInCache(key, content, groups);
+	    } catch (IllegalStateException e) {
+	        LOG.warn("Failed to insert object into cache with key: " + key);
+	    }
 	}
 
 	public void putInCache(String key, Object content) {
-		getCacheAdministrator().putInCache(key, content);
+	    try {
+	        getCacheAdministrator().putInCache(key, content);
+	    } catch (IllegalStateException e) {
+            LOG.warn("Failed to insert object into cache with key: " + key);
+        }
 	}
 
 

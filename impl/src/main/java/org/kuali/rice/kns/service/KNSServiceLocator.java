@@ -1,10 +1,10 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -23,13 +23,13 @@ import java.util.Set;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
-import org.kuali.rice.kns.dbplatform.KualiDBPlatform;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
@@ -38,6 +38,7 @@ import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
+import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -124,6 +125,12 @@ public class KNSServiceLocator<T extends Object> {
 
     public static final EncryptionService getEncryptionService() {
 	return (EncryptionService) getService(ENCRYPTION_SERVICE);
+    }
+    
+    public static final String POST_DATA_LOAD_ENCRYPTION_SERVICE = "postDataLoadEncryptionService";
+    
+    public static final PostDataLoadEncryptionService getPostDataLoadEncryptionService() {
+    	return (PostDataLoadEncryptionService) getService(POST_DATA_LOAD_ENCRYPTION_SERVICE);
     }
     
 	public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "knsExceptionIncidentService";
@@ -215,6 +222,18 @@ public class KNSServiceLocator<T extends Object> {
     public static KualiConfigurationService getKualiConfigurationService() {
 	return (KualiConfigurationService) getService(KUALI_CONFIGURATION_SERVICE);
     }
+    
+    public static final String PARAMETER_SERVICE = "parameterService";
+    
+    public static ParameterService getParameterService() {
+    	return (ParameterService) getService(PARAMETER_SERVICE);
+    }
+    
+    public static final String PARAMETER_SERVER_SERVICE = "parameterServerService";
+    
+    public static ParameterServerService getParameterServerService() {
+    	return (ParameterServerService) getService(PARAMETER_SERVER_SERVICE);
+    }
 
     public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
 
@@ -282,6 +301,12 @@ public class KNSServiceLocator<T extends Object> {
 	return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
     }
 
+    public static final String NAMESPACE_SERVICE = "namespaceService";
+
+    public static NamespaceService getNamespaceService() {
+	return (NamespaceService) getService(NAMESPACE_SERVICE);
+    }
+    
     // special ones for Inquirable and Lookupable
     public static final String KUALI_INQUIRABLE = "kualiInquirable";
 
@@ -431,8 +456,8 @@ public class KNSServiceLocator<T extends Object> {
 
    public static final String DB_PLATFORM = "dbPlatform";
     
-    public static KualiDBPlatform getKualiDbPlatform() {
-        return (KualiDBPlatform) getService(DB_PLATFORM);
+    public static DatabasePlatform getDatabasePlatform() {
+        return (DatabasePlatform) getService(DB_PLATFORM);
     }
     
     public static final String MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE = "maintenanceDocumentAuthorizationService";
@@ -446,4 +471,23 @@ public class KNSServiceLocator<T extends Object> {
     public static DocumentHelperService getDocumentHelperService() {
         return (DocumentHelperService) getService(DOCUMENT_HELPER_SERVICE);
     }
+    
+    public static final String RICE_APPLICATION_CONFIGURATION_SERVICE = "riceApplicationConfigurationService";
+    
+    public static RiceApplicationConfigurationService getRiceApplicationConfigurationService() {
+    	return (RiceApplicationConfigurationService) getService(RICE_APPLICATION_CONFIGURATION_SERVICE);
+    }
+
+    public static final String RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE = "riceApplicationConfigurationMediationService";
+    
+    public static RiceApplicationConfigurationMediationService getRiceApplicationConfigurationMediationService() {
+    	return (RiceApplicationConfigurationMediationService) getService(RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE);
+    }
+    
+    public static final String WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE = "workflowAttributesPropertyResolutionService";
+    
+    public static WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+    	return (WorkflowAttributePropertyResolutionService) getService(WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE);
+    }
+    
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.ojb.SuffixableQueryByCriteria;
 import org.kuali.rice.core.util.RiceConstants;
 import org.springframework.dao.DataAccessException;
@@ -39,7 +39,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * class was adapted from the Kuali Nervous System
  * (org.kuali.rice.kns.dao.impl.GenericDaoOjb).
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements GenericDao {
     private static final Logger LOG = Logger.getLogger(GenericDaoOjb.class);
@@ -230,9 +230,9 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
             SuffixableQueryByCriteria q = new SuffixableQueryByCriteria(clazz, criteria);
             // XXX: hax
             Config config = ConfigContext.getCurrentContextConfig();
-            Platform platform = null;
+            DatabasePlatform platform = null;
 			try {
-				platform = (Platform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();
+				platform = (DatabasePlatform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();
 			} catch (Exception e) {
 				throw new RuntimeException(e.getMessage(), e);
 			}

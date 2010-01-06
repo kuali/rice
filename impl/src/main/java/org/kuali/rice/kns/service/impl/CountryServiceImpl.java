@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 The Kuali Foundation.
+ * Copyright 2008-2009 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,13 +22,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class CountryServiceImpl implements CountryService {
     private static Logger LOG = Logger.getLogger(CountryServiceImpl.class);
@@ -40,7 +39,7 @@ public class CountryServiceImpl implements CountryService {
      */
     public Country getByPrimaryId(String postalCountryCode) {
         if (StringUtils.isBlank(postalCountryCode)) {
-            LOG.info("The postalCountryCode cannot be empty String.");
+            LOG.debug("The postalCountryCode cannot be empty String.");
             return null;
         }
 
@@ -50,10 +49,7 @@ public class CountryServiceImpl implements CountryService {
         return kualiModuleService.getResponsibleModuleService(Country.class).getExternalizableBusinessObject(Country.class, postalCountryMap);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.CountryService#getByPrimaryIdIfNecessary(org.kuali.rice.kns.bo.BusinessObject, java.lang.String, org.kuali.kfs.sys.businessobject.Country)
-     */
-    public Country getByPrimaryIdIfNecessary(BusinessObject businessObject, String postalCountryCode, Country existingCountry) {
+    public Country getByPrimaryIdIfNecessary(String postalCountryCode, Country existingCountry) {
         if (existingCountry != null) {
             if (StringUtils.equals(postalCountryCode, existingCountry.getPostalCountryCode())) {
                 return existingCountry;
@@ -67,7 +63,7 @@ public class CountryServiceImpl implements CountryService {
      * @see org.kuali.kfs.sys.service.CountryService#getDefaultCountry()
      */
     public Country getDefaultCountry() {
-        String postalCountryCode = KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE,
+        String postalCountryCode = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE,
 	        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
         return this.getByPrimaryId(postalCountryCode);
     }

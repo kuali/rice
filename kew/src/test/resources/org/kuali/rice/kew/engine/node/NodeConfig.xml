@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
@@ -7,8 +22,8 @@
 			<label>SeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
 			<active>true</active>
 			<policies>
 				<policy>
@@ -26,21 +41,21 @@
 			</routePaths>
 			<routeNodes>
 				<start name="AdHoc">
-					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+					<exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
 					<activationType>P</activationType>
 				</start>
 				<requests name="WorkflowDocument">
-					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+					<exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 				<requests name="Acknowledge1">
-					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+					<exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Ack1Template</ruleTemplate>
 				</requests>
 				<requests name="Acknowledge2">
-					<exceptionWorkgroupName>KR-WKFLW:TestWorkgroup</exceptionWorkgroupName>
+					<exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
 					<activationType>P</activationType>
 					<ruleTemplate>Ack2Template</ruleTemplate>
 				</requests>
@@ -52,9 +67,9 @@
 			<label>ParallelDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<active>true</active>
 			<policies>
 			</policies>
@@ -153,7 +168,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Sequential Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -166,7 +181,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -179,7 +194,7 @@
 			<documentType>SeqDocType</documentType>
 			<ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Sequential Node Ack Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -192,7 +207,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -205,7 +220,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Parallel Node Ack Rule 1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -218,7 +233,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>Parallel Node Test Rule 2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -231,7 +246,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>Parallel Node Test Rule 3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -244,7 +259,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 			<description>Parallel Node Test Rule 4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jitrue</user>
@@ -257,7 +272,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocument5Template</ruleTemplate>
 			<description>Parallel Node Test Rule 5</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>shenl</user>
@@ -270,7 +285,7 @@
 			<documentType>ParallelDocType</documentType>
 			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>Parallel Node Test Rule Final</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>xqi</user>

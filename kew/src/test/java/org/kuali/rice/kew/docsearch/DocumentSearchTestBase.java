@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.kuali.rice.kew.docsearch;
+
+import java.util.Arrays;
 
 import org.junit.Ignore;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -29,7 +31,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * This is a base class used for document search unit test classes to consolidate some helper methods
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Ignore("This class is a helper class only with no specific tests within")
@@ -55,6 +57,10 @@ public class DocumentSearchTestBase extends KEWTestCase {
     protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
         return createSearchAttributeCriteriaComponent(key, value, null, docType);
     }
+    
+    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,DocumentType docType) {
+        return createSearchAttributeCriteriaComponent(key, values, null, docType);
+    }
 
     protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
         String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
@@ -64,10 +70,24 @@ public class DocumentSearchTestBase extends KEWTestCase {
         if (field != null) {
             sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
             sacc.setRangeSearch(field.isMemberOfRange());
-//            sacc.setAllowWildcards(field.isAllowingWildcards());
-//            sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
-//            sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
-//            sacc.setCaseSensitive(field.isCaseSensitive());
+            sacc.setCaseSensitive(!field.isUpperCase());
+            sacc.setSearchInclusive(field.isInclusive());
+            sacc.setSearchable(field.isIndexedForSearch());
+            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+        }
+        return sacc;
+    }
+    
+    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,Boolean isLowerBoundValue,DocumentType docType) {
+        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+        String savedKey = key;
+        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
+        sacc.setValues(Arrays.asList(values));
+        Field field = getFieldByFormKey(docType, formKey);
+        if (field != null) {
+            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+            sacc.setRangeSearch(field.isMemberOfRange());
+            sacc.setCaseSensitive(!field.isUpperCase());
             sacc.setSearchInclusive(field.isInclusive());
             sacc.setSearchable(field.isIndexedForSearch());
             sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));

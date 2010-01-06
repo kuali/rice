@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,8 +43,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.xml.sax.SAXException;
 
@@ -54,7 +54,7 @@ import org.xml.sax.SAXException;
  *
  * @see RuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleXmlParser implements XmlConstants {
 
@@ -65,9 +65,9 @@ public class RuleXmlParser implements XmlConstants {
      */
     private static final int DEFAULT_RULE_PRIORITY = 1;
     /**
-     * Value of Ignore Previous flag if omitted; default to false, we will NOT ignore previous approvals
+     * Value of Force Action flag if omitted; default to false, we will NOT force action for approvals
      */
-    private static final boolean DEFAULT_IGNORE_PREVIOUS = false;
+    private static final boolean DEFAULT_FORCE_ACTION = false;
     /**
      * Default approve policy, if omitted; defaults to FIRST_APPROVE, the request will be satisfied by the first approval
      */
@@ -273,10 +273,10 @@ public class RuleXmlParser implements XmlConstants {
         	ruleExpressionDef.setExpression(expression);
         }
         
-        String ignorePreviousValue = element.getChildText(IGNORE_PREVIOUS, element.getNamespace());
-        Boolean ignorePrevious = Boolean.valueOf(DEFAULT_IGNORE_PREVIOUS);
-        if (!StringUtils.isBlank(ignorePreviousValue)) {
-            ignorePrevious = Boolean.valueOf(ignorePreviousValue);
+        String forceActionValue = element.getChildText(FORCE_ACTION, element.getNamespace());
+        Boolean forceAction = Boolean.valueOf(DEFAULT_FORCE_ACTION);
+        if (!StringUtils.isBlank(forceActionValue)) {
+            forceAction = Boolean.valueOf(forceActionValue);
         }
 
         rule.setDocTypeName(documentType.getName());
@@ -288,7 +288,7 @@ public class RuleXmlParser implements XmlConstants {
             rule.setRuleExpressionDef(ruleExpressionDef);
         }
         rule.setDescription(description);
-        rule.setIgnorePrevious(ignorePrevious);
+        rule.setForceAction(forceAction);
 
         Element responsibilitiesElement = element.getChild(RESPONSIBILITIES, element.getNamespace());
         rule.setResponsibilities(parseResponsibilities(responsibilitiesElement, rule));
@@ -334,7 +334,7 @@ public class RuleXmlParser implements XmlConstants {
     }
 
     private void setDefaultRuleValues(RuleBaseValues rule) throws InvalidXmlException {
-        rule.setIgnorePrevious(Boolean.FALSE);
+        rule.setForceAction(Boolean.FALSE);
         rule.setActivationDate(new Timestamp(System.currentTimeMillis()));
         rule.setActiveInd(Boolean.TRUE);
         rule.setCurrentInd(Boolean.TRUE);
@@ -419,7 +419,7 @@ public class RuleXmlParser implements XmlConstants {
         
         if (!StringUtils.isEmpty(user)) {
         	principalName = user;
-        	LOG.warn("Rule XML is using deprecated element 'user', plese use 'principalName' instead.");
+        	LOG.warn("Rule XML is using deprecated element 'user', please use 'principalName' instead.");
         }
         
         // in code below, we allow core config parameter replacement in responsibilities
@@ -441,7 +441,7 @@ public class RuleXmlParser implements XmlConstants {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(groupId)) {
             groupId = Utilities.substituteConfigParameters(groupId);
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
             if (group == null) {
                 throw new InvalidXmlException("Could not locate group with the given id: " + groupId);
             }
@@ -458,7 +458,7 @@ public class RuleXmlParser implements XmlConstants {
         	}
             groupName = Utilities.substituteConfigParameters(groupName);
             groupNamespace = Utilities.substituteConfigParameters(groupNamespace);
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 throw new InvalidXmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
             }
@@ -482,12 +482,12 @@ public class RuleXmlParser implements XmlConstants {
         	responsibility.setRuleResponsibilityName(Role.constructRoleValue(attributeClassName, roleName));
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
         } else if (!StringUtils.isBlank(workgroup)) {
-        	LOG.warn("Rule XML is using deprecated element 'workgroup', plese use 'groupName' instead.");
+        	LOG.warn("Rule XML is using deprecated element 'workgroup', please use 'groupName' instead.");
             workgroup = Utilities.substituteConfigParameters(workgroup);
             String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
             String workgroupName = Utilities.parseGroupName(workgroup);
 
-            KimGroup workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
+            Group workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
             if (workgroupObject == null) {
                 throw new InvalidXmlException("Could not locate workgroup: " + workgroup);
             }

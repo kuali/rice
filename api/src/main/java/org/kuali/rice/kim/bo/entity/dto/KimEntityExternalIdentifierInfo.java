@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimEntityExternalIdentifier {
 
@@ -32,12 +34,14 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimE
 	 * 
 	 */
 	public KimEntityExternalIdentifierInfo() {
+		super();
 	}
 	
 	/**
 	 * 
 	 */
 	public KimEntityExternalIdentifierInfo( KimEntityExternalIdentifier eid ) {
+		this();
 		if ( eid != null ) {
 			entityExternalIdentifierId = unNullify( eid.getEntityExternalIdentifierId() );
 			externalIdentifierTypeCode = unNullify( eid.getExternalIdentifierTypeCode() );
@@ -48,21 +52,21 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimE
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
 	 */
 	public String getEntityExternalIdentifierId() {
-		return entityExternalIdentifierId;
+		return unNullify(entityExternalIdentifierId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
 	 */
 	public String getExternalId() {
-		return externalId;
+		return unNullify(externalId);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalIdentifierTypeCode()
 	 */
 	public String getExternalIdentifierTypeCode() {
-		return externalIdentifierTypeCode;
+		return unNullify(externalIdentifierTypeCode);
 	}
 
 	public void setExternalId(String externalId) {

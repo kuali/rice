@@ -1,15 +1,30 @@
+<%--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+--%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="docGroupAttributes" value="${DataDictionary.PersonDocumentGroup.attributes}" />
-<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
-<kul:subtab lookedUpCollectionName="group" width="${tableWidth}" subTabTitle="Groups" noShowHideButton="true">      
-   <table cellpadding=0 cellspacing=0 summary="">
+<kul:subtab lookedUpCollectionName="group" width="${tableWidth}" subTabTitle="Groups" noShowHideButton="false">      
+   <table cellpadding="0" cellspacing="0" summary="">
      	<tr>
-    		<th><div align="left">&nbsp</div></th> 
+    		<th><div align="left">&nbsp;</div></th> 
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupId}" noColon="true" /></div></th>
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" /></div></th>
+    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.namespaceCode}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupName}" noColon="true" /></div></th>
+    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeFromDate}" noColon="true" /></div></th>
     		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeToDate}" noColon="true" /></div></th>
            	<c:if test="${not inquiry}">	
@@ -21,16 +36,31 @@
 				<th class="infoline">
 					<c:out value="Add:" />
 				</th>
-                <td align="left" valign="middle" class="infoline" colspan=3>
+                <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
-	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" disabled="true"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.group.impl.KimGroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode" anchor="${tabKey}" />
-						${KualiForm.newGroup.groupName}
+	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" readOnly="${readOnly}"/>
+	                	<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.GroupImpl" fieldConversions="groupId:newGroup.groupId,kimTypeId:newGroup.groupType,groupName:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimGroupType.name" anchor="${tabKey}" />
+						<html:hidden property="newGroup.groupName" />
+						<html:hidden property="newGroup.groupType" />
+						<html:hidden property="newGroup.kimGroupType.name" />
+						<html:hidden property="newGroup.namespaceCode" />				
 					</div>
 				</td>
-				<html:hidden property="newGroup.groupName" />
-				<html:hidden property="newGroup.groupType" />
-				<html:hidden property="newGroup.namespaceCode" />				
+                <td align="left" valign="middle" class="infoline" >
+                	<div align="center">
+	                	<kul:htmlControlAttribute property="newGroup.namespaceCode" attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="true"/>
+					</div>
+				</td>
+                <td align="left" valign="middle" class="infoline" >
+                	<div align="center">
+	                	<kul:htmlControlAttribute property="newGroup.groupName" attributeEntry="${docGroupAttributes.groupName}" readOnly="true"/>
+					</div>
+				</td>
+                <td align="left" valign="middle" class="infoline" >
+                	<div align="center">
+	                	<kul:htmlControlAttribute property="newGroup.kimGroupType.name" attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="${readOnly}"/>
+					</div>
+				</td>
 	            <td align="left" valign="middle">
 	                <div align="center"> <kul:htmlControlAttribute property="newGroup.activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}"  datePicker="true" readOnly="${readOnly}"/>
 					</div>
@@ -57,11 +87,15 @@
 					</div>
 				</td>
                 <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].kimGroupType.name"  attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="true"  />
+                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].namespaceCode"  attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="true"  />
 					</div>
 				</td>
                 <td align="left" valign="middle">
                 	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].groupName"  attributeEntry="${docGroupAttributes.groupName}" readOnly="true"  />
+					</div>
+				</td>
+                <td align="left" valign="middle">
+                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].kimGroupType.name"  attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="true"  />
 					</div>
 				</td>
                 <td align="left" valign="middle">

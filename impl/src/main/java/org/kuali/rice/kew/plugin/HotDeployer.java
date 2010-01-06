@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 /**
  * Checks for plugins added to or removed from the configured plugin directories.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HotDeployer implements Runnable {
 	private static final Logger LOG = Logger.getLogger(HotDeployer.class);
@@ -91,12 +91,6 @@ public class HotDeployer implements Runnable {
 				removedPlugins.add(environment);
 			}
 		}
-//		for (Iterator iterator = registry.getPlugins().iterator(); iterator.hasNext();) {
-//			Plugin plugin = (Plugin) iterator.next();
-//			if (!plugin.getPluginDirectory().exists() || !plugin.getPluginDirectory().isDirectory()) {
-//				removedPlugins.add(plugin);
-//			}
-//		}
 		return removedPlugins;
 	}
 
@@ -113,9 +107,6 @@ public class HotDeployer implements Runnable {
 				for (File pluginZip : pluginDirFiles) {
 					int indexOf = pluginZip.getName().lastIndexOf(".zip");
 					String pluginName = pluginZip.getName().substring(0, indexOf);
-					if (PluginUtils.isInstitutionalPlugin(pluginName)) {
-						continue;
-					}
 					// check to see if this plugin environment has already been loaded
 					List<PluginEnvironment> currentEnvironments = registry.getPluginEnvironments();
 					boolean pluginExists = false;
@@ -140,16 +131,10 @@ public class HotDeployer implements Runnable {
 			}
 		}
 
-		// TODO this currently couldn't handle an institutional plugin being "added", should it be able to?!?
 		ClassLoader parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
 		Config parentConfig = ConfigContext.getCurrentContextConfig();
-		Plugin institutionalPlugin = registry.getInstitutionalPlugin();
-		if (institutionalPlugin != null) {
-			parentClassLoader = institutionalPlugin.getClassLoader();
-			parentConfig = institutionalPlugin.getConfig();
-		}
 		for (File newPluginZipFile : newPluginZipFiles) {
-			PluginLoader loader = new ZipFilePluginLoader(newPluginZipFile, sharedPluginDirectory, parentClassLoader, parentConfig, false);
+			PluginLoader loader = new ZipFilePluginLoader(newPluginZipFile, sharedPluginDirectory, parentClassLoader, parentConfig);
 			PluginEnvironment environment = new PluginEnvironment(loader, registry);
 			addedPlugins.add(environment);
 		}

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,12 +24,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.spring.AutoPopulatingList;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -42,7 +45,7 @@ public class LookupForm extends KualiForm {
 
     private String formKey;
     private String backLocation;
-    private Map fields;
+    private Map<String, String> fields;
     private Map fieldsForLookup;
     private String lookupableImplServiceName;
     private String conversionFields;
@@ -63,8 +66,9 @@ public class LookupForm extends KualiForm {
     private String htmlDataType;
     private String lookupObjectId;
 	private boolean lookupCriteriaEnabled = true;
-    private boolean supplementalActionsEnabled = true;
+    private boolean supplementalActionsEnabled = false;
     private boolean actionUrlsExist = false;
+    private boolean ddExtraButton = false;
     
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -205,6 +209,8 @@ public class LookupForm extends KualiForm {
                 setConversionFields(getParameter(request, "conversionFields"));
             }
             if (getParameter(request, KNSConstants.EXTRA_BUTTON_SOURCE) != null) {
+            	//these are not sourced from the DD/Lookupable
+            	ddExtraButton=false;
                 setExtraButtonSource(getParameter(request, KNSConstants.EXTRA_BUTTON_SOURCE));
             }
             if (getParameter(request, KNSConstants.EXTRA_BUTTON_PARAMS) != null) {
@@ -231,8 +237,8 @@ public class LookupForm extends KualiForm {
 
             // init lookupable with bo class
             localLookupable.setBusinessObjectClass(Class.forName(getBusinessObjectClassName()));
-            Map fieldValues = new HashMap();
-            Map formFields = getFields();
+            Map<String, String> fieldValues = new HashMap<String, String>();
+            Map<String, String> formFields = getFields();
             Class boClass = Class.forName(getBusinessObjectClassName());
 
             for (Iterator iter = localLookupable.getRows().iterator(); iter.hasNext();) {
@@ -256,9 +262,9 @@ public class LookupForm extends KualiForm {
                     	}
                     }
 
-                    // force uppercase if necessary
-                    field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
-                    fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+            		field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
+                	fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+                	localLookupable.applyFieldAuthorizationsFromNestedLookups(field);
                 }
             }
 
@@ -300,12 +306,21 @@ public class LookupForm extends KualiForm {
 
             setFieldConversions(LookupUtils.translateFieldConversions(this.conversionFields));
             localLookupable.setFieldConversions(getFieldConversions());
+            if(StringUtils.isNotEmpty(localLookupable.getExtraButtonSource())) {
+            	setExtraButtonSource(localLookupable.getExtraButtonSource());
+            	//also set the boolean so the jsp can use an action button
+            	ddExtraButton=true;
+            }
+            if(StringUtils.isNotEmpty(localLookupable.getExtraButtonParams())) {
+            	setExtraButtonParams(localLookupable.getExtraButtonParams());
+            }
             setLookupable(localLookupable);
             setFieldsForLookup(fieldValues);
 
             // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
             if (!isShowMaintenanceLinks()) {
-            	if (StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/" + KNSConstants.MAPPING_PORTAL) || StringUtils.contains(backLocation, KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/index.html")) {
+            	if (StringUtils.contains(backLocation, "/"+KNSConstants.PORTAL_ACTION) 
+            			|| StringUtils.contains(backLocation, "/index.html")) {
             		showMaintenanceLinks = true;
             	}
             }
@@ -362,14 +377,14 @@ public class LookupForm extends KualiForm {
     /**
      * @return Returns the fields.
      */
-    public Map getFields() {
+    public Map<String, String> getFields() {
         return fields;
     }
 
     /**
      * @param fields The fields to set.
      */
-    public void setFields(Map fields) {
+    public void setFields(Map<String, String> fields) {
         this.fields = fields;
     }
 
@@ -590,8 +605,8 @@ public class LookupForm extends KualiForm {
      * Sets the showMaintenanceLinks attribute value.
      * @param showMaintenanceLinks The showMaintenanceLinks to set.
      */
-    public void setShowMaintenanceLinks(boolean hideMaintenanceLinks) {
-        this.showMaintenanceLinks = hideMaintenanceLinks;
+    public void setShowMaintenanceLinks(boolean showMaintenanceLinks) {
+        this.showMaintenanceLinks = showMaintenanceLinks;
     }
 
     /**
@@ -654,6 +669,7 @@ public class LookupForm extends KualiForm {
 		this.supplementalActionsEnabled = supplementalActionsEnabled;
 	}
 
+
 	/**
 	 * @param actionUrlsExist the actionUrlsExist to set
 	 */
@@ -666,5 +682,19 @@ public class LookupForm extends KualiForm {
 	 */
 	public boolean isActionUrlsExist() {
 		return actionUrlsExist;
+	}
+
+	/**
+	 * @return the ddExtraButton
+	 */
+	public boolean isDdExtraButton() {
+		return this.ddExtraButton;
+	}
+
+	/**
+	 * @param ddExtraButton the ddExtraButton to set
+	 */
+	public void setDdExtraButton(boolean ddExtraButton) {
+		this.ddExtraButton = ddExtraButton;
 	}
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -95,8 +95,7 @@ public interface DateTimeService {
     public Calendar getCalendar(Date date);
 
     /**
-     * Translates the specified string into a date without a time component, formatted according to "stringDateFormat" that the
-     * service is configured with
+     * Translates the specified string into a date without a time component, see implementation class for formatting details
      * 
      * @param dateString
      * @return the date representation of the specified dateString
@@ -153,7 +152,21 @@ public interface DateTimeService {
      */
     public int dateDiff(Date date1, Date date2, boolean inclusive);
 
+    /**
+     * Returns a String representing a date that is suitable for file names, and is preferably chronologically sortable 
+     * 
+     * @param date
+     * @return
+     */
     public String toDateStringForFilename(Date date);
     
+    /**
+     * Returns a String representing a date/time that is suitable for file names, and is preferably chronologically sortable 
+     * 
+     * @param date
+     * @return
+     */
     public String toDateTimeStringForFilename(Date date);
+    
+    public void initializeDateTimeService();
 }

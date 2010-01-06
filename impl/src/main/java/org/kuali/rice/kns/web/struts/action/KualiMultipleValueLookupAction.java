@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -101,10 +101,25 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
             multipleValueLookupForm.setPrimaryKeyFieldLabels(KNSConstants.EMPTY_STRING);
         }
         
-        request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
+        //request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
+        
+        if ( displayList instanceof CollectionIncomplete ){
+            request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
+        } else {
+            request.setAttribute("reqSearchResultsActualSize", displayList.size() );
+        }
+        
         request.setAttribute("reqSearchResults", resultTable);
         
-        multipleValueLookupForm.setResultsActualSize((int) ((CollectionIncomplete) displayList).getActualSizeIfTruncated().longValue());
+        //multipleValueLookupForm.setResultsActualSize((int) ((CollectionIncomplete) displayList).getActualSizeIfTruncated().longValue());
+        
+        if ( displayList instanceof CollectionIncomplete ){
+        	multipleValueLookupForm.setResultsActualSize((int) ((CollectionIncomplete) displayList).getActualSizeIfTruncated().longValue());    
+        } else {
+        	multipleValueLookupForm.setResultsActualSize(displayList.size()); 
+        }
+        
+        
         multipleValueLookupForm.setResultsLimitedSize(resultTable.size());
 
         if (request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY) != null) {
@@ -319,8 +334,9 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         // we just performed the lookup, so we're on the first page (indexed from 0)
         multipleValueLookupForm.jumpToFirstPage(resultTable.size(), maxRowsPerPage);
         
-        SequenceAccessorService sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        String lookupResultsSequenceNumber = String.valueOf(sequenceAccessorService.getNextAvailableSequenceNumber(KNSConstants.LOOKUP_RESULTS_SEQUENCE));
+        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
+        Long nextSeq = sas.getNextAvailableSequenceNumber(KNSConstants.LOOKUP_RESULTS_SEQUENCE); 
+        String lookupResultsSequenceNumber = nextSeq.toString();
         multipleValueLookupForm.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
         try {
             LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();

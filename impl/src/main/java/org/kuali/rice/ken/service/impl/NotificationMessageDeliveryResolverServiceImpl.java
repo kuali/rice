@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
  * This is the default out-of-the-box implementation that leverages the status flag on a notification (RESOLVED versus UNRESOLVED) to determine whether
  * the notification's message deliveries need to be resolved or not.  This also looks at the start and auto remove
  * dates and times.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJob<Notification> implements NotificationMessageDeliveryResolverService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger

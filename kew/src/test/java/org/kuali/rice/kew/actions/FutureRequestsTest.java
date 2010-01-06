@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * Tests users requesting to see all future requests, not seeing any future requests on documents and the clearing of those
  * statuses on documents.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FutureRequestsTest extends KEWTestCase {
 
@@ -115,7 +115,7 @@ public class FutureRequestsTest extends KEWTestCase {
     }
 
     /**
-     * Tests future requests work with routing and ignore previous rules
+     * Tests future requests work with routing and force action rules
      *
      * @throws Exception
      */
@@ -126,11 +126,11 @@ public class FutureRequestsTest extends KEWTestCase {
         String user1PrincipalId = getPrincipalIdForName("user1");
         String user2PrincipalId = getPrincipalIdForName("user2");
 
-        // Node 1 - user1 approval (ignorePref true)
-        //          user2 approval (ignorePref false)
-        // Node 2 - NonSIT approval (ignorePrev false)
-        //          user1 approval (ignorePref true)
-        // Node 3 - user2 approval (ignorePrev false)
+        // Node 1 - user1 approval (forceAction true)
+        //          user2 approval (forceAction false)
+        // Node 2 - NonSIT approval (forceAction false)
+        //          user1 approval (forceAction true)
+        // Node 3 - user2 approval (forceAction false)
         WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "FutureRequestsDoc");
         document.setDoNotReceiveFutureRequests();
         document.routeDocument("");
@@ -143,7 +143,7 @@ public class FutureRequestsTest extends KEWTestCase {
         document.setReceiveFutureRequests();
         document.approve("");
 
-        // should have another request from second rule that is not ignore previous because
+        // should have another request from second rule that is not force action because
         // of policy
         document = new WorkflowDocument(user2PrincipalId, document.getRouteHeaderId());
         assertTrue(document.isApprovalRequested());

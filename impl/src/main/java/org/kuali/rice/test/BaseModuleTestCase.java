@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,9 +20,9 @@ import org.apache.log4j.Logger;
 /**
  * Base module test case that allows overriding of the test harness spring beans
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BaseModuleTestCase extends RiceTestCase {
+public class BaseModuleTestCase extends RiceInternalSuiteDataTestCase {
     protected final Logger LOG = Logger.getLogger(getClass());
 
     protected final String moduleName;
@@ -42,21 +42,4 @@ public class BaseModuleTestCase extends RiceTestCase {
         return moduleName;
     }
 
-// BELOW REMOVED DUE TO RiceTestCase.getTestHarnessSpringBeansLocation() implementation being a duplicate
-//    /**
-//     * Overrides to allow (enforce) per-module (MODULE)TestHarnessSpringBeans.xml 
-//     * @see org.kuali.rice.test.RiceTestCase#getTestHarnessSpringBeansLocation()
-//     */
-//    @Override
-//    protected String[] getTestHarnessSpringBeansLocation() {
-//        String[] locations = super.getTestHarnessSpringBeansLocation();
-//
-//        String moduleTestHarnessSpringBeansPath = getModuleName().toUpperCase() + "TestHarnessSpringBeans.xml";
-//        Resource resource = new ClassPathResource(moduleTestHarnessSpringBeansPath);
-//        if (resource.exists()) {
-//            locations = (String[]) ArrayUtils.add(locations, "classpath:" + moduleTestHarnessSpringBeansPath);
-//        }
-//        
-//        return locations;
-//    }
 }

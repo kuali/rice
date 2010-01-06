@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Jan 18, 2007
 
 package org.kuali.rice.kew.mail.service.impl;
 
@@ -35,7 +34,7 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * ActionListEmailService implementation whose content is configurable/parameterizable
  * via a pluggable EmailContentService
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CustomizableActionListEmailServiceImpl extends ActionListEmailServiceImpl {
     private static final Logger LOG = Logger.getLogger(CustomizableActionListEmailServiceImpl.class);

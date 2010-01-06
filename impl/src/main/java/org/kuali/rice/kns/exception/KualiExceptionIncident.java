@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import java.util.Map;
  * session user. It is constructed and saved into the HTTP Request for passing to the
  * jsp when an exception occurs. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KualiExceptionIncident {
@@ -86,11 +86,6 @@ public interface KualiExceptionIncident {
      * <p>Value is componentName
      */
      public static final String COMPONENT_NAME="componentName";
-     /**
-     * A custom contextual information obtained from an attribute of GlobalVariables
-     * <p>Value is customContextualInfo
-     */
-     public static final String CUSTOM_CONTEXTUAL_INFO="customContextualInfo";
 
     /**
      * This method return list of {key,value} pairs that each key is the constants
@@ -106,7 +101,6 @@ public interface KualiExceptionIncident {
      * exceptionMessage, Error message from exception
      * displayMessage, Either exception error message or generic exception error message
      * stackTrace, Exception stack trace here
-     * customContextualInfo, ?
      * </code>
      * 
      */

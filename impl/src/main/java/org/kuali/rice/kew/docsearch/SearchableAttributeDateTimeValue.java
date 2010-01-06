@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,6 +39,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
@@ -50,7 +51,7 @@ import org.kuali.rice.kew.util.Utilities;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DOC_HDR_EXT_DT_T")
@@ -134,13 +135,6 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
         return formatAttributeValue(null);
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
-     */
-    public String getSearchableAttributeDisplayValue(Map<String,String> displayParameters) {
-        return formatAttributeValue(displayParameters.get(DISPLAY_FORMAT_PATTERN_MAP_KEY));
-    }
-
     private String formatAttributeValue(String formatPattern) {
         DateFormat df = getDateFormatToUse(formatPattern);
         return df.format(new Date(getSearchableAttributeValue().getTime()));
@@ -192,7 +186,8 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
 	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
 	 */
     public boolean isPassesDefaultValidation(String valueEntered) {
-        return (DocSearchUtils.getEntryFormattedDate(valueEntered) != null);
+    	return new SqlBuilder().isValidDate(valueEntered);
+        //return (DocSearchUtils.getEntryFormattedDate(valueEntered) != null);
     }
 
     /* (non-Javadoc)
@@ -264,10 +259,10 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     public Object copy(boolean preserveKeys) {
         return null;
     }
-    
+
 	@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 }
 

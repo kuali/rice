@@ -1,13 +1,13 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Copyright 2005-2007 The Kuali Foundation
+ *
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,17 +29,17 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.web.KewRoutingKualiForm;
 import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kew.web.WorkflowRoutingForm;
 
 
 /**
  * A Struts ActionForm for the {@link SuperUserAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SuperUserForm extends WorkflowRoutingForm {
-    
+public class SuperUserForm extends KewRoutingKualiForm {
+
     private static final long serialVersionUID = 982228198266403397L;
     private Long routeHeaderId;
     private String docHandlerUrl;
@@ -58,11 +58,14 @@ public class SuperUserForm extends WorkflowRoutingForm {
     private String methodToCall = "";
     private boolean runPostProcessorLogic = true;
     private String[] actionRequestRunPostProcessorCheck;
-    
+
     private String lookupableImplServiceName;
     private String lookupType;
 
     private DocumentRouteHeaderValue routeHeader;
+
+    // KULRICE-3035: Added the ability to store the doc search's "returnLocation" property so that the superuser form can create a proper "cancel" button.
+    private String returnLocation;
     
     public String getMethodToCall() {
         return methodToCall;
@@ -70,7 +73,7 @@ public class SuperUserForm extends WorkflowRoutingForm {
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
     }
-    
+
     public boolean isBlanketApprove() {
         return blanketApprove;
     }
@@ -170,7 +173,7 @@ public class SuperUserForm extends WorkflowRoutingForm {
     public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
     }
-    
+
     public void reset(ActionMapping mapping, HttpServletRequest request){
         this.futureNodeNames = new ArrayList<String>();
     }
@@ -182,25 +185,25 @@ public class SuperUserForm extends WorkflowRoutingForm {
     public void setActionTakenRecipientCode(String actionTakenRecipientCode) {
         this.actionTakenRecipientCode = actionTakenRecipientCode;
     }
-    
+
     public boolean isSUDocument() {
 	if (routeHeader.isStateInitiated() || routeHeader.isStateSaved()) {
             return false;
         }
         return true;
     }
-    
+
     public boolean isStateAllowsAction() {
         if ( routeHeader.isApproved() || routeHeader.isProcessed() || routeHeader.isDisaproved() ) {
             return false;
         }
         return true;
     }
-    
+
     public DocumentType getDocumentType() {
         return getRouteHeader().getDocumentType();
     }
-    
+
     public Set getPreviousNodes() throws Exception {
     	String[] nodeNames = new WorkflowInfo().getPreviousRouteNodeNames(routeHeader.getRouteHeaderId());
         Set previousNodes = new HashSet();
@@ -210,7 +213,7 @@ public class SuperUserForm extends WorkflowRoutingForm {
 		}
         return previousNodes;
     }
-    
+
     public String getDestNodeName() {
         return destNodeName;
     }
@@ -263,4 +266,10 @@ public class SuperUserForm extends WorkflowRoutingForm {
         return Arrays.asList(getActionRequestRunPostProcessorCheck());
     }
 
+    public String getReturnLocation() {
+    	return returnLocation;
+    }
+    public void setReturnLocation(String returnLocation) {
+    	this.returnLocation = returnLocation;
+    }
 }

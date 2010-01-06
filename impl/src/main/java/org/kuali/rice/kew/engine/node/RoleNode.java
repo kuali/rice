@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@ package org.kuali.rice.kew.engine.node;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.ClassDumper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -49,7 +49,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Essentially extends RequestsNode and provides a custom RouteModule
  * implementation.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class RoleNode extends RequestsNode {
@@ -122,7 +122,7 @@ public class RoleNode extends RequestsNode {
 		searchCriteria.put("active", "Y");
 		DocumentType docType = document.getDocumentType();
 		while ( docType != null ) {
-			searchCriteria.put("detailCriteria", getDetailCriteriaString( document.getDocumentType().getName(), node.getRouteNodeName() ) );
+			searchCriteria.put("detailCriteria", getDetailCriteriaString( docType.getName(), node.getRouteNodeName() ) );
 			try {
 				List<? extends KimResponsibilityInfo> responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
 				// once we find a responsibility, stop, since this overrides any parent 
@@ -173,9 +173,10 @@ public class RoleNode extends RequestsNode {
 	 * @throws ResourceUnavailableException
 	 * @throws WorkflowException
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document,
 			RouteNodeInstance nodeInstance) throws WorkflowException {
-		MDC.put( "docID", document.getRouteHeaderId() );
+		MDC.put( "docId", document.getRouteHeaderId() );
 		PerformanceLogger performanceLogger = new PerformanceLogger( document.getRouteHeaderId() );
 		List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
 		List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
@@ -208,24 +209,52 @@ public class RoleNode extends RequestsNode {
 		// activate each request individually, we need
 		// to collection all action items and then notify after all have been
 		// generated
-		if ( !context.isSimulation() ) {
-			KEWServiceLocator.getNotificationService().notify( generatedActionItems );
-		}
-		performanceLogger.log( "Time to activate requests." );
+        notify(context, generatedActionItems, nodeInstance);
+
+        performanceLogger.log( "Time to activate requests." );
 		return requestActivated;
 	}
+	
+    protected static class RoleRequestSorter implements Comparator<ActionRequestValue> {
+        public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
+        	int result = 0;
+        	// compare descriptions (only if both not null)
+        	if ( ar1.getResponsibilityDesc() != null && ar2.getResponsibilityDesc() != null ) {
+        		result = ar1.getResponsibilityDesc().compareTo( ar2.getResponsibilityDesc() );
+        	}
+            if ( result != 0 ) return result;
+        	// compare priority
+            result = ar1.getPriority().compareTo(ar2.getPriority());
+            if ( result != 0 ) return result;
+            // compare action request type
+            result = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested(), true);
+            if ( result != 0 ) return result;
+            // compare action request ID
+            if ( (ar1.getActionRequestId() != null) && (ar2.getActionRequestId() != null) ) {
+                result = ar1.getActionRequestId().compareTo(ar2.getActionRequestId());
+            } else {
+                // if even one action request id is null at this point return then the two are equal
+                result = 0;
+            }
+            return result;
+        }
+    }
+    protected static final Comparator<ActionRequestValue> ROLE_REQUEST_SORTER = new RoleRequestSorter();
 
+	
 	protected boolean activateRequestsCustom(RouteContext context,
 			List<ActionRequestValue> requests, List<ActionItem> generatedActionItems,
 			DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance)
 			throws WorkflowException {
-		// FIXME: won't this undo any ordering from the role type service?
-		Collections.sort( requests, new Utilities.PrioritySorter() );
+		Collections.sort( requests, ROLE_REQUEST_SORTER );
 		String activationType = nodeInstance.getRouteNode().getActivationType();
 		boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals( activationType );
 		boolean requestActivated = false;
 		String groupToActivate = null;
+		Integer priorityToActivate = null;
 		for ( ActionRequestValue request : requests ) {
+			// if a request has already been activated and we are not parallel routing
+			// or in the simulator, break out of the loop and exit
 			if ( requestActivated
 					&& !isParallel
 					&& (!context.isSimulation() || !context.getActivationContext()
@@ -239,21 +268,46 @@ public class RoleNode extends RequestsNode {
 				continue;
 			}
 			if ( request.isApproveOrCompleteRequest() ) {
+				boolean thisRequestActivated = false;
+				// capture the priority and grouping information for this request
+				// We only need this for Approval requests since FYI and ACK requests are non-blocking
+				if ( priorityToActivate == null ) {
+				 	priorityToActivate = request.getPriority();
+				}
 				if ( groupToActivate == null ) {
 					groupToActivate = request.getResponsibilityDesc();
 				}
-				if ( StringUtils.equals( groupToActivate, request.getResponsibilityDesc() ) ) {
+				// check that the given request is found in the current group to activate
+				// check priority and grouping from the request (stored in the responsibility description)
+				if ( StringUtils.equals( groupToActivate, request.getResponsibilityDesc() )
+						&& (
+								(priorityToActivate != null && request.getPriority() != null && priorityToActivate.equals(request.getPriority()))
+							||  (priorityToActivate == null && request.getPriority() == null)
+							)
+						) {
+					// if the request is already active, note that we have an active request
+					// and move on to the next request
 					if ( request.isActive() ) {
-						requestActivated = requestActivated || request.isApproveOrCompleteRequest();
+						requestActivated = true;
 						continue;
 					}
 					logProcessingMessage( request );
 					if ( LOG.isDebugEnabled() ) {
 						LOG.debug( "Activating request: " + request );
 					}
-					requestActivated = activateRequest( context, request, nodeInstance,
-							generatedActionItems )
-							|| requestActivated;
+					// this returns true if any requests were activated as a result of this call
+					thisRequestActivated = activateRequest( context, request, nodeInstance,
+							generatedActionItems );
+					requestActivated |= thisRequestActivated;
+				}
+				// if this request was not activated and no request has been activated thus far
+				// then clear out the grouping and priority filters
+				// as this represents a case where the person with the earlier priority
+				// did not need to approve for this route level due to taking
+				// a prior action
+				if ( !thisRequestActivated && !requestActivated ) {
+					priorityToActivate = null;
+					groupToActivate = null;
 				}
 			} else {
 				logProcessingMessage( request );

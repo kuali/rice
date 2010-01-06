@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,15 +22,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRIM_PND_ROLE_PERM_T")
 public class KimDocumentRolePermission extends KimDocumentBoBase {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name="ROLE_PERM_ID")
 	protected String rolePermissionId;
@@ -39,7 +42,7 @@ public class KimDocumentRolePermission extends KimDocumentBoBase {
 	@Column(name="PERM_ID")
 	protected String permissionId;
 	
-	protected KimPermissionImpl kimPermission;
+	protected KimPermissionInfo kimPermission;
 	
 	public String getPermissionId() {
 		return permissionId;
@@ -81,14 +84,17 @@ public class KimDocumentRolePermission extends KimDocumentBoBase {
 	/**
 	 * @return the kimPermission
 	 */
-	public KimPermissionImpl getKimPermission() {
-		return this.kimPermission;
+	public KimPermissionInfo getKimPermission() {
+		if ( kimPermission == null || !StringUtils.equals( kimPermission.getPermissionId(), permissionId ) ) {
+			kimPermission = KIMServiceLocator.getPermissionService().getPermission(permissionId);
+		}
+		return kimPermission;
 	}
 
 	/**
 	 * @param kimPermission the kimPermission to set
 	 */
-	public void setKimPermission(KimPermissionImpl kimPermission) {
+	public void setKimPermission(KimPermissionInfo kimPermission) {
 		this.kimPermission = kimPermission;
 	}
 
@@ -96,5 +102,5 @@ public class KimDocumentRolePermission extends KimDocumentBoBase {
 	public boolean isActive() {
 		return this.active;
 	}
-
+	
 }

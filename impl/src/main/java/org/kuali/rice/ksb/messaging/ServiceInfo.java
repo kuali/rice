@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,32 +16,39 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
 
-import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.xml.namespace.QName;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.Guid;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.cache.FastByteArrayOutputStream;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
@@ -49,7 +56,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * 
  * @see ServiceDefinition
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRSB_SVC_DEF_T")
@@ -57,6 +64,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 @NamedQueries({
 	@NamedQuery(name="ServiceInfo.FetchAll", query="select s from ServiceInfo s"),
 	@NamedQuery(name="ServiceInfo.FetchAllActive",query="select s from ServiceInfo s where s.alive = true"),
+	@NamedQuery(name="ServiceInfo.FetchActiveByName",query="select s from ServiceInfo s where s.alive = true AND s.serviceName LIKE :serviceName"),
 	@NamedQuery(name="ServiceInfo.FindLocallyPublishedServices",query="select s from ServiceInfo s where s.serverIp = :serverIp AND s.serviceNamespace = :serviceNamespace"),
 	@NamedQuery(name="ServiceInfo.DeleteLocallyPublishedServices",query="delete from ServiceInfo s WHERE s.serverIp = :serverIp AND s.serviceNamespace = :serviceNamespace"),
 	@NamedQuery(name="ServiceInfo.DeleteByEntry",query="delete from ServiceInfo s where s.messageEntryId = :messageEntryId")			
@@ -71,14 +79,13 @@ public class ServiceInfo implements Serializable {
 	private Long messageEntryId;
     @Transient
 	private QName qname;
-	@Column(name="SVC_URL")
+	@Column(name="SVC_URL", length=500)
 	private String endpointUrl;
     @Transient
 	private String endpointAlternateUrl;
-	@Lob
-	@Basic(fetch=FetchType.LAZY)
-	@Column(name="SVC_DEF")
-	private String serializedServiceNamespace;
+    @OneToOne(fetch=FetchType.LAZY,cascade={CascadeType.ALL})
+    @JoinColumn(name="FLT_SVC_DEF_ID")
+    private FlattenedServiceDefinition serializedServiceNamespace;
 	@Column(name="SVC_NM")
 	private String serviceName;
     @Column(name="SVC_ALIVE")
@@ -90,6 +97,8 @@ public class ServiceInfo implements Serializable {
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
+	@Column(name="SVC_DEF_CHKSM", length=30)
+	private String checksum;
 	
 	@Transient
 	private transient ClassLoader serviceClassLoader;
@@ -103,6 +112,17 @@ public class ServiceInfo implements Serializable {
         OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }
 	
+	public ServiceInfo(ServiceDefinition serviceDefinition, String serverIp, String checksum) {
+		this.setServiceDefinition(serviceDefinition);
+		this.setQname(serviceDefinition.getServiceName());
+		this.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
+		this.setServerIp(serverIp);
+		this.setEndpointUrl(serviceDefinition.getServiceEndPoint().toString());
+		this.setServiceName(this.getQname().toString());
+		this.setServiceClassLoader(serviceDefinition.getServiceClassLoader());
+		this.setChecksum((checksum != null) ? checksum : this.objectToChecksum(serviceDefinition));
+	}
+	
 	public ServiceInfo(ServiceDefinition serviceDefinition) {
 		this.setServiceDefinition(serviceDefinition);
 		this.setQname(serviceDefinition.getServiceName());
@@ -111,6 +131,7 @@ public class ServiceInfo implements Serializable {
 		this.setEndpointUrl(serviceDefinition.getServiceEndPoint().toString());
 		this.setServiceName(this.getQname().toString());
 		this.setServiceClassLoader(serviceDefinition.getServiceClassLoader());
+		this.setChecksum(this.objectToChecksum(serviceDefinition));
 	}
 
 	public Long getMessageEntryId() {
@@ -126,11 +147,11 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public ServiceDefinition getServiceDefinition(MessageHelper enMessageHelper) {
-		if (this.serviceDefinition == null && this.serializedServiceNamespace != null) {
+		if (this.serviceDefinition == null && ObjectUtils.isNotNull(this.serializedServiceNamespace)) {
 		    this.serviceDefinition = (ServiceDefinition)
 		    (enMessageHelper==null
-		    		?KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedServiceNamespace)
-		    		:enMessageHelper.deserializeObject(this.serializedServiceNamespace));
+		    		?KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedServiceNamespace.getFlattenedServiceDefinitionData())
+		    		:enMessageHelper.deserializeObject(this.serializedServiceNamespace.getFlattenedServiceDefinitionData()));
 		    this.serviceDefinition.setServiceClassLoader(getServiceClassLoader());
 		}
 		return this.serviceDefinition;
@@ -213,11 +234,11 @@ public class ServiceInfo implements Serializable {
 	public void setAlive(Boolean alive) {
 		this.alive = alive;
 	}
-	public void setSerializedServiceNamespace(String serializedServiceNamespace) {
+	public void setSerializedServiceNamespace(FlattenedServiceDefinition serializedServiceNamespace) {
 		this.serializedServiceNamespace = serializedServiceNamespace;
 	}
 
-	public String getSerializedServiceNamespace() {
+	public FlattenedServiceDefinition getSerializedServiceNamespace() {
 		return this.serializedServiceNamespace;
 	}
 
@@ -232,6 +253,42 @@ public class ServiceInfo implements Serializable {
 	public String toString() {
 	    return ReflectionToStringBuilder.toString(this);
 	}
-	
 
+	public String getChecksum() {
+		return this.checksum;
+	}
+
+	public void setChecksum(String checksum) {
+		this.checksum = checksum;
+	}
+	
+	/**
+	 * Creates a checksum for the given serializable object (usually a ServiceDefinition in this case).
+	 * 
+	 * @param object The object (possibly a ServiceDefinition) to serialize.
+	 * @return A checksum for the object.
+	 */
+	public String objectToChecksum(Serializable object) {
+        FastByteArrayOutputStream bos = new FastByteArrayOutputStream();
+        ObjectOutput out = null;
+        try {
+            out = new ObjectOutputStream(bos);
+            out.writeObject(object);
+        } catch (IOException e) {
+            throw new RiceRuntimeException(e);
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {}
+        }
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            return new String( Base64.encodeBase64( md.digest( bos.getByteArray() ) ), "UTF-8");
+        } catch( GeneralSecurityException ex ) {
+        	throw new RiceRuntimeException(ex);
+        } catch( UnsupportedEncodingException ex ) {
+        	throw new RiceRuntimeException(ex);
+        }
+	}
+	
 }

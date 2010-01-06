@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,7 @@ import org.kuali.rice.core.util.JSTLConstants;
 /**
  * This is a constants file used to describe KEW properties
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KEWPropertyConstants extends JSTLConstants {
@@ -38,6 +38,8 @@ public class KEWPropertyConstants extends JSTLConstants {
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR = "initiator";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED = "dateCreated";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG = "routeLog";
+    public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS = "appDocStatus";
+    
     // Constants used by DocumentTypeLookupableHelperServiceImpl
     public static final String DOCUMENT_TYPE_ID = "documentTypeId";
     public static final String NAME = "name";
@@ -69,14 +71,12 @@ public class KEWPropertyConstants extends JSTLConstants {
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC);
+        DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG);
     }
 
-    // Constants used by DocumentTypeBusinessRules
-    public static final String ERROR_DOCTYPEBUSINESSRULES_NO_DOC_HANDLER_URL = "error.DocumentTypeBusinessRules.noDocumentHandlerUrl";
-    
 	// Name of the section in the xml file.
 	public static final String PERSON_RESP_SECTION = "personResponsibilities";
 	// Name of the section in the xml file.

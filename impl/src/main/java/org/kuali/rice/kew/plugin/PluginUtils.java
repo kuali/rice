@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 /**
  * Various plugin utilities.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class PluginUtils {
 
@@ -57,8 +57,6 @@ public final class PluginUtils {
     // expect any files in process of modification to complete (e.g. copy)
     // NOTE: MUST be LESS than the MAX WAIT otherwise, we will ALWAYS fail to wait
     public static final long DEFAULT_SAFE_TIME = 60000;
-
-    public static final String DEFAULT_INSTITUTIONAL_PLUGIN_NAME = "en";
 
     private static final FilenameFilter JAR_FILES_FILTER = new FilenameFilter() {
         public boolean accept(File dir, String name) {
@@ -91,11 +89,11 @@ public final class PluginUtils {
     }
 
     public static String getLogPrefix(Plugin plugin) {
-    	return getLogPrefix(plugin.getName(), isInstitutionalPlugin(plugin));
+    	return getLogPrefix(plugin.getName());
     }
 
-    public static String getLogPrefix(QName pluginName, boolean institutionalPlugin) {
-    	return "[" + (institutionalPlugin ? "Institutional " : "") + "Plugin: " + pluginName + "]";
+    public static String getLogPrefix(QName pluginName) {
+    	return "[Plugin: " + pluginName + "]";
     }
 
     static File[] findJars(File libDir) {
@@ -117,26 +115,6 @@ public final class PluginUtils {
             }
         }
         return null;
-    }
-
-    public static String getInstitutionalPluginName() {
-    	String pluginName = ConfigContext.getCurrentContextConfig().getProperty(Config.INSTITUTIONAL_PLUGIN_NAME);
-    	if (StringUtils.isEmpty(pluginName)) {
-    		pluginName = DEFAULT_INSTITUTIONAL_PLUGIN_NAME;
-    	}
-    	return pluginName;
-    }
-
-    public static boolean isInstitutionalPlugin(String pluginName) {
-    	return pluginName.equals(getInstitutionalPluginName());
-    }
-
-    public static boolean isInstitutionalPlugin(QName pluginName) {
-    	return isInstitutionalPlugin(pluginName.getLocalPart());
-    }
-
-    public static boolean isInstitutionalPlugin(Plugin plugin) {
-    	return isInstitutionalPlugin(plugin.getName());
     }
 
     public static void validatePluginZipFile(File file) {

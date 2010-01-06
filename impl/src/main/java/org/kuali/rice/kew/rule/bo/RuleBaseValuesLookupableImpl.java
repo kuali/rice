@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 
 /**
  * An implementation of KualiLookupableImpl for RuleBaseValues
  * so that we can override the create url.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RuleBaseValuesLookupableImpl extends KualiLookupableImpl {
@@ -30,7 +31,8 @@ public class RuleBaseValuesLookupableImpl extends KualiLookupableImpl {
 	public String getCreateNewUrl() {
         String url = "";
         if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
-            url = "<a href=\"../kew/Rule.do\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+        	String kewBaseUrl = ConfigContext.getCurrentContextConfig().getKEWBaseURL();
+            url = "<a href=\""+kewBaseUrl+"/Rule.do\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
         return url;
     }

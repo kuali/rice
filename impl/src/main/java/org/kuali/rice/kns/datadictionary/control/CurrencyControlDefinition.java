@@ -1,11 +1,11 @@
 /*
- * Copyright 2006 The Kuali Foundation.
+ * Copyright 2006-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,9 @@ package org.kuali.rice.kns.datadictionary.control;
                         Used Properties: size, formattedMaxLength
  */
 public class CurrencyControlDefinition extends ControlDefinitionBase {
-    /**
+    private static final long serialVersionUID = 1650000676894176080L;
+    
+	/**
      * the maxLength for text that has been formatted. ie if maxLength=5. [12345]. but after going through the formatter the value
      * is [12,345.00] and will no longer fit in a field whos maxLength=5. formattedMaxLength solves this problem.
      */

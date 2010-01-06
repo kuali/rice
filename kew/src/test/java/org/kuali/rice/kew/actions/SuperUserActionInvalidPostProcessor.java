@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -26,6 +27,7 @@ import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
 import org.kuali.rice.kew.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
@@ -36,7 +38,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 /**
  * This is a post processor class used for a Super User Test 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class SuperUserActionInvalidPostProcessor implements PostProcessor {
@@ -106,7 +108,14 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
     }
     
-    private boolean isDocumentPostProcessable(WorkflowDocument doc) throws WorkflowException {
+    /**
+     * @see org.kuali.rice.kew.postprocessor.PostProcessor#getDocumentIdsToLock(org.kuali.rice.kew.postprocessor.DocumentLockingEvent)
+     */
+    public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
+		return null;
+	}
+
+	private boolean isDocumentPostProcessable(WorkflowDocument doc) throws WorkflowException {
     	return isDocumentPostProcessable(doc, new ArrayList<String>());
     }
     

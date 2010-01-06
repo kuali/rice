@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ import org.kuali.rice.kew.util.Utilities;
  * Delegates to template methods to obtain plugin ClassLoader and plugin config file URL,
  * then load the config under the plugin ClassLoader, and constructs a Plugin object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BasePluginLoader implements PluginLoader {
     private static final Logger LOG = Logger.getLogger(BasePluginLoader.class);
@@ -47,7 +47,6 @@ public abstract class BasePluginLoader implements PluginLoader {
     private static final String PLUGIN_CONFIG_PATH = META_INF_PATH + "/workflow.xml";
 
     protected final String simplePluginName;
-    protected final boolean institutionalPlugin;
     protected String logPrefix;
 
     protected final ClassLoader parentClassLoader;
@@ -55,14 +54,13 @@ public abstract class BasePluginLoader implements PluginLoader {
     protected final File sharedPluginDirectory;
     protected String pluginConfigPath = PLUGIN_CONFIG_PATH;
 
-    public BasePluginLoader(String simplePluginName, File sharedPluginDirectory, ClassLoader parentClassLoader, Config parentConfig, boolean institutionalPlugin) {
+    public BasePluginLoader(String simplePluginName, File sharedPluginDirectory, ClassLoader parentClassLoader, Config parentConfig) {
         this.sharedPluginDirectory = sharedPluginDirectory;
         if (parentClassLoader == null) {
             parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
         }
         this.parentClassLoader = parentClassLoader;
         this.parentConfig = parentConfig;
-        this.institutionalPlugin = institutionalPlugin;
         this.simplePluginName = simplePluginName;
         this.logPrefix = simplePluginName;
     }
@@ -126,7 +124,7 @@ public abstract class BasePluginLoader implements PluginLoader {
         classLoader.setConfig(pluginConfig);
         ConfigContext.init(classLoader, pluginConfig);
         configureExtraClasspath(classLoader, pluginConfig);
-        this.logPrefix = PluginUtils.getLogPrefix(qPluginName, institutionalPlugin).toString();
+        this.logPrefix = PluginUtils.getLogPrefix(qPluginName).toString();
         LOG.info("Constructing plugin '" + simplePluginName + "' with classloader: " + classLoader);
         Plugin plugin = new Plugin(qPluginName, pluginConfig, classLoader);
         installResourceLoader(plugin);

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -26,19 +23,23 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.options.MemberTypeValuesFinder;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity
 @Table(name="KRIM_PND_ROLE_MBR_MT")
 public class KimDocumentRoleMember  extends KimDocumentBoBase {
+	private static final long serialVersionUID = -2463865643038170979L;
+
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
 	
@@ -56,7 +57,8 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	protected String memberNamespaceCode;
 
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
-
+	protected String qualifiersToDisplay;
+	
 	@Transient
 	private List<KimDocumentRoleResponsibilityAction> roleRspActions;
 
@@ -133,7 +135,10 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	 * @return the memberName
 	 */
 	public String getMemberName() {
-		return this.memberName;
+		if ( memberName == null ) {
+			populateDerivedValues();
+		}
+		return memberName;
 	}
 
 	/**
@@ -156,7 +161,10 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	 * @return the memberNamespaceCode
 	 */
 	public String getMemberNamespaceCode() {
-		return this.memberNamespaceCode;
+		if ( memberNamespaceCode == null ) {
+			populateDerivedValues();
+		}
+		return memberNamespaceCode;
 	}
 
 	/**
@@ -166,5 +174,46 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 		this.memberNamespaceCode = memberNamespaceCode;
 	}
 
+	protected void populateDerivedValues() {
+    	BusinessObject member = KIMServiceLocator.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
+    	if ( member != null ) {
+	        setMemberName(KIMServiceLocator.getUiDocumentService().getMemberName(getMemberTypeCode(), member));
+	        setMemberNamespaceCode(KIMServiceLocator.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
+    	}
+	}
+	
+	public boolean isRole(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+	}
+	
+	public boolean isGroup(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+	}
+
+	public boolean isPrincipal(){
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+	}
+
+	public AttributeSet getQualifierAsAttributeSet() {
+		AttributeSet m = new AttributeSet();
+		for ( KimDocumentRoleQualifier data : getQualifiers() ) {
+			m.put( data.getKimAttribute().getAttributeName(), data.getAttrVal() );
+		}
+		return m;
+	}
+
+	/**
+	 * @return the qualifiersToDisplay
+	 */
+	public String getQualifiersToDisplay() {
+		return this.qualifiersToDisplay;
+	}
+
+	/**
+	 * @param qualifiersToDisplay the qualifiersToDisplay to set
+	 */
+	public void setQualifiersToDisplay(String qualifiersToDisplay) {
+		this.qualifiersToDisplay = qualifiersToDisplay;
+	}
 
 }

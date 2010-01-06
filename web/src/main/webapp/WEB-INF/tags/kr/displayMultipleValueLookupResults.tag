@@ -1,11 +1,11 @@
 <%--
- Copyright 2007 The Kuali Foundation.
+ Copyright 2007-2008 The Kuali Foundation
  
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
  
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
  
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,6 +40,7 @@
 				<p>
 					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectall.gif" alt="Select all rows" title="Select all rows" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Select All Rows"/>
 					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_unselall.gif" alt="Unselect all rows" title="Unselect all rows" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Unselect All Rows"/>
+					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_retselected.gif" alt="Return selected results" title="Return selected results" class="tinybutton" name="methodToCall.prepareToReturnSelectedResults.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Return selected results"/>						
 				</p>
 			</c:if>
 			<table cellpadding="0" class="datatable-100" cellspacing="0" id="row">
@@ -82,7 +83,7 @@
 												<c:forEach items="${row.columns}" var="column">
 							<td class="infocell" title="${column.propertyValue}">
 								<c:if test="${!empty column.columnAnchor.href}">
-									<a href="<c:out value="${column.columnAnchor.href}"/>" title="${column.columnAnchor.title}" target="blank">
+									<a href="<c:out value="${column.columnAnchor.href}"/>" title="${column.columnAnchor.title}" target="_blank">
 								</c:if>
 								<c:out value="${fn:substring(column.propertyValue, 0, column.maxLength)}"/><c:if test="${column.maxLength gt 0 && fn:length(column.propertyValue) gt column.maxLength}">...</c:if><c:if test="${!empty column.columnAnchor.href}"></a></c:if>
 								&nbsp;
@@ -95,6 +96,7 @@
 				<p>
 					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectall.gif" alt="Select all rows" title="Select all rows" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Select All Rows"/>
 					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_unselall.gif" alt="Unselect all rows" title="Unselect all rows" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Unselect All Rows"/>
+					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_retselected.gif" alt="Return selected results" title="Return selected results" class="tinybutton" name="methodToCall.prepareToReturnSelectedResults.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Return selected results"/>						
 				</p>
 			</c:if>
 			<kul:multipleValueLookupExportBanner/>

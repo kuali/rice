@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@ import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -34,7 +35,7 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
  * Implementations of this Interface are potentially remotable, so this Interface uses 
  * value objects. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PostProcessorRemote {
   
@@ -113,4 +114,18 @@ public interface PostProcessorRemote {
    * @throws java.lang.Exception A general Exception will put the document into Exception routing
    */
   public boolean afterProcess(AfterProcessEventDTO event) throws Exception;
+  
+  /**
+   * Executed prior to document locking in the workflow engine.  This method returns an array of document
+   * ids to lock prior to execution of the document in the workflow engine.  If the engine processing is
+   * going to result in updates to any other documents, they should be locked at the beginning of the engine
+   * processing transaction.  This method facilitates that.
+   * 
+   * <p>Note that, by default, the id of the document that is being processed by the engine is always
+   * locked.  So there is no need to return that document id in the array of document ids to lock.
+   * 
+   * @return an array of document ids to lock prior to execution of the workflow engine
+   */
+  public Long[] getDocumentIdsToLock(DocumentLockingEventDTO event) throws Exception;
+  
 }

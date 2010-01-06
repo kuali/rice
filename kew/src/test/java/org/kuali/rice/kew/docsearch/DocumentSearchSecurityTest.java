@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -35,18 +37,16 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.BasicAuthentication;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.test.SQLDataLoader;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a test class to test the document search security and row filtering
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class DocumentSearchSecurityTest extends KEWTestCase {
@@ -238,7 +238,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // verify that workgroup can see the document
         String workgroupName = "Test_Security_Group";
-        KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, workgroupName);
+        Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, workgroupName);
         assertNotNull("Workgroup '" + workgroupName + "' should be valid", group);
         for (String workgroupUserId : KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getGroupId())) {
             Person workgroupUser = KIMServiceLocator.getPersonService().getPerson(workgroupUserId);
@@ -265,6 +265,8 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     }
 
     @Test public void testFiltering_SearchAttribute() throws Exception {
+    	LOG.info("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+    	
         String searchAttributeName = "UserEmployeeId";
         String searchAttributeFieldName = "employeeId";
         String documentTypeName = "SecurityDoc_SearchAttributeOnly";
@@ -305,6 +307,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
+        RouteContext.clearCurrentRouteContext();
         Person approverUser = loginUser(APPROVER_USER_NETWORK_ID);
         document = new WorkflowDocument(new NetworkIdDTO(approverUser.getPrincipalName()), document.getRouteHeaderId());
         document.clearSearchableContent();

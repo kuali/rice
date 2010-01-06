@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
  * Wrapper on all the Resource loaders.  This is what programmers typically use to get in the resource loading
  * framework.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GlobalResourceLoader {
 
@@ -114,12 +114,13 @@ public class GlobalResourceLoader {
 	 * @throws Exception
 	 */
 	public static void stop() throws Exception {
-		LOG.debug("Destroy called on GlobalResourceLoader");
+		LOG.info("Stopping the GlobalResourceLoader...");
 		if (getResourceLoader() != null) {
 			LOG.info("Destroying GlobalResourceLoader");
 			getResourceLoader().stop();
 			rootResourceLoaders.remove(ClassLoaderUtils.getDefaultClassLoader());
 		}
+		LOG.info("...GlobalResourceLoader successfully stopped.");
 	}
 
 	public static Object getService(QName serviceName) {

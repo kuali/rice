@@ -14,8 +14,8 @@
     </senders>
     <!-- who is the notification going to? -->
     <recipients>
-        <user>TestUser1</user>
-        <user>TestUser2</user>
+        <user>testuser1</user>
+        <user>testuser2</user>
         <group>TestGroup3</group>
     </recipients>
     <!--  fyi or ack -->

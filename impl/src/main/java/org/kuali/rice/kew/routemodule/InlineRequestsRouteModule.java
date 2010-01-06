@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +50,7 @@ import org.kuali.rice.kew.xml.XmlConstants;
 /**
  * A RouteModule that generates requests for responsibilities statically defined
  * in the config block of the node.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InlineRequestsRouteModule extends FlexRMAdapter {
     private static final Logger LOG = Logger.getLogger(InlineRequestsRouteModule.class);
@@ -131,12 +131,12 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
         List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
         RuleXmlParser parser = new RuleXmlParser();
         ActionRequestFactory arf = new ActionRequestFactory(context.getDocument(), currentNode);
-        // this rule is only used to obtain description, ignoreprevious flag, and the rulebasevalues id, which may be null
+        // this rule is only used to obtain description, forceAction flag, and the rulebasevalues id, which may be null
         RuleBaseValues fakeRule = new RuleBaseValues();
         fakeRule.setActiveInd(Boolean.TRUE);
         fakeRule.setCurrentInd(Boolean.TRUE);
         fakeRule.setDescription("a fake rule");
-        fakeRule.setIgnorePrevious(Boolean.TRUE);
+        fakeRule.setForceAction(Boolean.TRUE);
         fakeRule.setRuleBaseValuesId(null);
 
         for (Object o: root.getChildren("responsibility", XmlConstants.RULE_NAMESPACE)) {

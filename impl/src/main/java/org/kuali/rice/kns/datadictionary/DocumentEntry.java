@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,14 +17,14 @@
 package org.kuali.rice.kns.datadictionary;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -48,17 +48,19 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentEntry.class);
 	
     protected Class<? extends Document> documentClass;
+    protected Class<? extends Document> baseDocumentClass;
     protected Class<? extends BusinessRule> businessRulesClass;
     protected Class<? extends PromptBeforeValidation> promptBeforeValidationClass;
     protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
     protected String documentTypeName;
 
-    protected boolean allowsNoteDelete = false;
     protected boolean allowsNoteAttachments = true;
+    protected boolean allowsNoteFYI = false;
     protected Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
     protected boolean displayTopicFieldInNotes = false;
     protected boolean usePessimisticLocking = false;
     protected boolean useWorkflowPessimisticLocking = false;
+    protected boolean encryptDocumentDataInPersistentSessionStorage = false;
 
     protected List<String> webScriptFiles = new ArrayList<String>( 3 );
 
@@ -74,7 +76,8 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     protected boolean sessionDocument = false;
     protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
-
+    protected Class<? extends DocumentSearchGenerator> documentSearchGeneratorClass;
+    
     /**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getJstlKey()
      */
@@ -98,6 +101,19 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return documentClass;
     }
 
+    /**
+    		The optional baseDocumentClass element is the name of the java superclass
+    		associated with the document. This gives the data dictionary the ability
+    		to index by the superclass in addition to the current class.
+     */
+    public void setBaseDocumentClass(Class<? extends Document> baseDocumentClass) {  	
+    	this.baseDocumentClass = baseDocumentClass;
+    }
+
+    public Class<? extends Document> getBaseDocumentClass() {
+    	return baseDocumentClass;
+    }
+    
     /**
             The businessRulesClass element is the full class name of the java
             class which contains the business rules for a document.
@@ -171,6 +187,11 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     public void completeValidation() {
         super.completeValidation();
 
+    	if (baseDocumentClass != null && !baseDocumentClass.isAssignableFrom(documentClass)) {
+    		throw new ClassValidationException("The baseDocumentClass " + baseDocumentClass.getName() +
+    				" is not a superclass of the documentClass " + documentClass.getName());
+    	}
+        
         if (workflowProperties != null && workflowAttributes != null) {
         	throw new DataDictionaryException(documentTypeName + ": workflowProperties and workflowAttributes cannot both be defined for a document");
         }
@@ -180,6 +201,9 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getFullClassName()
      */
     public String getFullClassName() {
+    	if ( getBaseDocumentClass() != null) {
+    		return getBaseDocumentClass().getName();
+    	}
     	if ( getDocumentClass() != null ) {
     		return getDocumentClass().getName();
     	}
@@ -195,24 +219,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 
     public String toString() {
         return "DocumentEntry for documentType " + documentTypeName;
-    }
-
-    /**
-            The allowsNoteDelete element contains a true or false value.
-            If true, then a maintenance screen user is allowed to delete
-            a document note.
-     */
-    public void setAllowsNoteDelete(boolean allowsNoteDelete) {
-        this.allowsNoteDelete = allowsNoteDelete;
-    }
-
-    /**
-     * Accessor method for contained allowsNoteDelete
-     * 
-     * @return allowsNoteDelete
-     */
-    public boolean getAllowsNoteDelete() {
-        return allowsNoteDelete;
     }
 
     /**
@@ -330,7 +336,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-            The allowsNoteAttachements element contains a true or false value.
+            The allowsNoteAttachments element contains a true or false value.
             If true, then a document screen includes notes with attachments. Otherwise,
             only notes is displayed.
      */
@@ -338,6 +344,20 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         this.allowsNoteAttachments = allowsNoteAttachments;
     }
 
+    /**
+     * @return the allowsNoteFYI
+     */
+    public boolean getAllowsNoteFYI() {
+    	return allowsNoteFYI;
+    }
+    
+    /**
+     * This is an indicator for determining whether to render the AdHoc FYI recipient box and Send FYI button.
+     */
+    public void setAllowsNoteFYI(boolean allowsNoteFYI) {
+    	this.allowsNoteFYI = allowsNoteFYI;
+    }
+    
     public WorkflowProperties getWorkflowProperties() {
         return this.workflowProperties;
     }
@@ -387,19 +407,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             whose entries are keyed by attributeName
      */
     public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
-        defaultExistenceCheckMap.clear();
-        for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
-            if (reference == null) {
-                throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
-            }
-    
-            String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
-            if (defaultExistenceCheckMap.containsKey(keyName)) {
-                throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
-            }
-            reference.setBusinessObjectClass(getEntryClass());
-            defaultExistenceCheckMap.put(keyName, reference);
-        }
         this.defaultExistenceChecks = defaultExistenceChecks;
     }
     /**
@@ -458,4 +465,47 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 			Class<? extends DerivedValuesSetter> derivedValuesSetter) {
 		this.derivedValuesSetterClass = derivedValuesSetter;
 	}
+
+	public boolean isEncryptDocumentDataInPersistentSessionStorage() {
+		return this.encryptDocumentDataInPersistentSessionStorage;
+	}
+
+	public void setEncryptDocumentDataInPersistentSessionStorage(
+			boolean encryptDocumentDataInPersistentSessionStorage) {
+		this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
+	}
+
+    public Class<? extends DocumentSearchGenerator> getDocumentSearchGeneratorClass() {
+        return this.documentSearchGeneratorClass;
+    }
+
+    public void setDocumentSearchGeneratorClass(
+            Class<? extends DocumentSearchGenerator> documentSearchGeneratorClass) {
+        this.documentSearchGeneratorClass = documentSearchGeneratorClass;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+    	super.afterPropertiesSet();
+    	if ( defaultExistenceChecks != null) {
+            defaultExistenceCheckMap.clear();
+            for ( ReferenceDefinition reference : defaultExistenceChecks  ) {
+                if (reference == null) {
+                    throw new IllegalArgumentException("invalid (null) defaultExistenceCheck");
+                }
+        
+                String keyName = reference.isCollectionReference()? (reference.getCollection()+"."+reference.getAttributeName()):reference.getAttributeName();
+                if (defaultExistenceCheckMap.containsKey(keyName)) {
+                    throw new DuplicateEntryException("duplicate defaultExistenceCheck entry for attribute '" + keyName + "'");
+                }
+                reference.setBusinessObjectClass(getEntryClass());
+                defaultExistenceCheckMap.put(keyName, reference);
+            }
+    	}
+    }
 }

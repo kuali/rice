@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,13 +17,13 @@ package org.kuali.rice.kew.role;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -35,6 +35,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -44,9 +45,10 @@ import org.kuali.rice.kim.service.ResponsibilityService;
  * The RoleRouteModule is responsible for interfacing with the KIM
  * Role system to provide Role-based routing to KEW. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RoleRouteModule implements RouteModule {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleRouteModule.class);
 	
 	protected static final String QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
 	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
@@ -71,11 +73,25 @@ public class RoleRouteModule implements RouteModule {
 		String responsibilityTemplateName = loadResponsibilityTemplateName(context);
 		String namespaceCode = loadNamespace(context);
 		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
+		if (LOG.isDebugEnabled()) {
+			logQualifierCheck(namespaceCode, responsibilityTemplateName, responsibilityDetails, qualifiers);
+		}
 		if ( qualifiers != null ) {
 			for (AttributeSet qualifier : qualifiers) {
+				if ( qualifier.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
+					responsibilityDetails.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, qualifier.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER));
+				} else {
+					responsibilityDetails.remove( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
+				}
 				List<ResponsibilityActionInfo> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Found " + responsibilities.size() + " responsibilities from ResponsibilityService");
+				}
 				// split the responsibility list defining characteristics (per the ResponsibilitySet.matches() method)
 				List<ResponsibilitySet> responsibilitySets = partitionResponsibilities(responsibilities);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Found " + responsibilitySets.size() + " responsibility sets from ResponsibilityActionInfo list");
+				}
 				for (ResponsibilitySet responsibilitySet : responsibilitySets) {
 					String approvePolicy = responsibilitySet.getApprovePolicy();
 					// if all must approve, add the responsibilities individually so that the each get their own approval graph
@@ -84,16 +100,56 @@ public class RoleRouteModule implements RouteModule {
 							arFactory.addRoleResponsibilityRequest(Collections.singletonList(responsibility), approvePolicy);
 						}
 					} else {
+						// first-approve policy, pass as groups to the ActionRequestFactory so that a single approval per set will clear the action request
 						arFactory.addRoleResponsibilityRequest(responsibilitySet.getResponsibilities(), approvePolicy);
 					}
 				}
 			}		
 		}
 		actionRequests = new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
-		for (ActionRequestValue arValue : actionRequests) {
-			arValue.setResolveResponsibility(false);
-		}
+		disableResolveResponsibility(actionRequests);
 		return actionRequests;
+	}
+	
+    protected void logQualifierCheck(String namespaceCode, String responsibilityName, AttributeSet responsibilityDetails, List<AttributeSet> qualifiers ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(  '\n' );
+		sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
+		sb.append( "             Details:\n" );
+		if ( responsibilityDetails != null ) {
+			sb.append( responsibilityDetails.formattedDump( 25 ) );
+		} else {
+			sb.append( "                         [null]\n" );
+		}
+		sb.append( "             Qualifiers:\n" );
+		for (AttributeSet qualification : qualifiers) {
+			if ( qualification != null ) {
+				sb.append( qualification.formattedDump( 25 ) );
+			} else {
+				sb.append( "                         [null]\n" );
+			}
+		}
+		if (LOG.isTraceEnabled()) { 
+			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+		} else {
+			LOG.debug(sb.toString());
+		}
+    }
+
+    /**
+	 * Walks the ActionRequest graph and disables responsibility resolution on those ActionRequests.
+	 * Because of the fact that it's not possible to tell if an ActionRequest was generated by
+	 * KIM once it's been saved in the database, we want to disable responsibilityId
+	 * resolution on the RouteModule because we will end up geting a reference to FlexRM and
+	 * a call to resolveResponsibilityId will fail.
+	 * 
+	 * @param actionRequests
+	 */
+	protected void disableResolveResponsibility(List<ActionRequestValue> actionRequests) {
+		for (ActionRequestValue actionRequest : actionRequests) {
+			actionRequest.setResolveResponsibility(false);
+			disableResolveResponsibility(actionRequest.getChildrenRequests());
+		}
 	}
 
 	protected QualifierResolver loadQualifierResolver(RouteContext context) {
@@ -120,6 +176,9 @@ public class RoleRouteModule implements RouteModule {
 		}
 		if (resolver == null) {
 			resolver = new NullQualifierResolver();
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Resolver class being returned: " + resolver.getClass().getName());
 		}
 		return resolver;
 	}
@@ -191,21 +250,24 @@ public class RoleRouteModule implements RouteModule {
 		private String actionRequestCode;
 		private String approvePolicy;
 		private Integer priorityNumber;
-		private String actionGroupingCode;
+		private String parallelRoutingGroupingCode;
+		private String roleResponsibilityActionId;
 		private List<ResponsibilityActionInfo> responsibilities = new ArrayList<ResponsibilityActionInfo>();
 
 		public ResponsibilitySet(ResponsibilityActionInfo responsibility) {
 			this.actionRequestCode = responsibility.getActionTypeCode();
 			this.approvePolicy = responsibility.getActionPolicyCode();
 			this.priorityNumber = responsibility.getPriorityNumber();
-			this.actionGroupingCode = responsibility.getActionGroupingCode();
+			this.parallelRoutingGroupingCode = responsibility.getParallelRoutingGroupingCode();
+			this.roleResponsibilityActionId = responsibility.getRoleResponsibilityActionId();
 		}
 		
 		public boolean matches(ResponsibilityActionInfo responsibility) {
 			return responsibility.getActionTypeCode().equals(actionRequestCode) &&
 				responsibility.getActionPolicyCode().equals(approvePolicy) && 
 				responsibility.getPriorityNumber().equals( priorityNumber ) &&
-				responsibility.getActionGroupingCode().equals( actionGroupingCode );
+				responsibility.getParallelRoutingGroupingCode().equals( parallelRoutingGroupingCode ) &&
+				responsibility.getRoleResponsibilityActionId().equals( roleResponsibilityActionId );
 		}
 
 		public String getActionRequestCode() {
@@ -224,8 +286,12 @@ public class RoleRouteModule implements RouteModule {
 			return this.responsibilities;
 		}
 
-		public String getActionGroupingCode() {
-			return this.actionGroupingCode;
+		public String getParallelRoutingGroupingCode() {
+			return this.parallelRoutingGroupingCode;
+		}
+
+		public String getRoleResponsibilityActionId() {
+			return this.roleResponsibilityActionId;
 		}		
 		
 	}

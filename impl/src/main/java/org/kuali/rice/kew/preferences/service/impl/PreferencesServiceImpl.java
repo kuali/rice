@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,8 @@ package org.kuali.rice.kew.preferences.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -33,7 +35,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * An implementation of the {@link PreferencesService}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PreferencesServiceImpl implements PreferencesService {
 
@@ -58,6 +60,7 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String COLUMN_DELEGATOR_KEY = "DELEGATOR_COL_SHOW_NEW";
     private static final String COLUMN_DATE_CREATE_KEY = "DATE_CREATED_COL_SHOW_NEW";
     private static final String COLUMN_DOCUMENT_STATUS_KEY = "DOCUMENT_STATUS_COL_SHOW_NEW";
+    private static final String COLUMN_APP_DOC_STATUS_KEY = "APP_DOC_STATUS_COL_SHOW_NEW";
     private static final String COLUMN_WORKGROUP_REQUEST_KEY = "WORKGROUP_REQUEST_COL_SHOW_NEW";
     private static final String COLUMN_CLEAR_FYI_KEY = "CLEAR_FYI_COL_SHOW_NEW";
     private static final String ACTION_LIST_SIZE_KEY = "ACTION_LIST_SIZE_NEW";
@@ -67,113 +70,143 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String DEFAULT_COLOR = "white";
     private static final String DEFAULT_ACTION_LIST_SIZE = "10";
     private static final String DEFAULT_REFRESH_RATE = "15";
-    private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.preferencesservice.refreshRate.wholenum";
-    private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.preferencesservice.pagesize.wholenum";
+    private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.refreshRate";
+    private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.pageSize";
     private static final String DELEGATOR_FILTER_KEY = "DELEGATOR_FILTER";
+    private static final String PRIMARY_DELEGATE_FILTER_KEY = "PRIMARY_DELEGATE_FILTER";
     public static final String USE_OUT_BOX = "USE_OUT_BOX";
     private static final String COLUMN_LAST_APPROVED_DATE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
     public static final String COLUMN_CURRENT_NODE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
 
 
     public Preferences getPreferences(String principalId) {
+        if ( LOG.isDebugEnabled() ) {
         LOG.debug("start preferences fetch user " + principalId);
+        }
+        Collection<UserOptions> options = getUserOptionService().findByWorkflowUser(principalId);
+        Map<String,UserOptions> optionMap = new HashMap<String, UserOptions>();
+        for ( UserOptions option : options ) {
+        	optionMap.put(option.getOptionId(), option);
+        }
         Preferences preferences = new Preferences();
-        preferences.setColorApproved(getOption(APPROVED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorCanceled(getOption(CANCELLED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorDissapproveCancel(getOption(DISSAPPROVED_CANCELLED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorDissaproved(getOption(DISAPPROVED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorEnroute(getOption(ENROUTE_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorException(getOption(EXCEPTION_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorFinal(getOption(FINAL_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorInitiated(getOption(INITIATED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorProccessed(getOption(PROCESSED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setColorSaved(getOption(SAVED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
-        preferences.setEmailNotification(getOption(EMAIL_REMINDER_KEY, KEWConstants.EMAIL_RMNDR_IMMEDIATE, principalId, preferences).getOptionVal());
-        preferences.setNotifyPrimaryDelegation(getOption(EMAIL_NOTIFY_PRIMARY_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setNotifySecondaryDelegation(getOption(EMAIL_NOTIFY_SECONDARY_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
-        preferences.setOpenNewWindow(getOption(OPEN_NEW_WINDOW_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setPageSize(getOption(ACTION_LIST_SIZE_KEY, DEFAULT_ACTION_LIST_SIZE, principalId, preferences).getOptionVal());
-        preferences.setRefreshRate(getOption(REFRESH_RATE_KEY, DEFAULT_REFRESH_RATE, principalId, preferences).getOptionVal());
-        preferences.setShowActionRequested(getOption(COLUMN_ACTION_REQ_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowDateCreated(getOption(COLUMN_DATE_CREATE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowDocType(getOption(COLUMN_DOC_TYPE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowDocumentStatus(getOption(COLUMN_DOCUMENT_STATUS_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowInitiator(getOption(COLUMN_INITIATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowDelegator(getOption(COLUMN_DELEGATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowDocTitle(getOption(COLUMN_TITLE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowWorkgroupRequest(getOption(COLUMN_WORKGROUP_REQUEST_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowClearFyi(getOption(COLUMN_CLEAR_FYI_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
-        preferences.setDelegatorFilter(getOption(DELEGATOR_FILTER_KEY, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, principalId, preferences).getOptionVal());
-        preferences.setShowDateApproved(getOption(COLUMN_LAST_APPROVED_DATE_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
-        preferences.setShowCurrentNode(getOption(COLUMN_CURRENT_NODE_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
+        preferences.setColorApproved(getOption(optionMap, APPROVED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorCanceled(getOption(optionMap, CANCELLED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorDissapproveCancel(getOption(optionMap, DISSAPPROVED_CANCELLED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorDissaproved(getOption(optionMap, DISAPPROVED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorEnroute(getOption(optionMap, ENROUTE_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorException(getOption(optionMap, EXCEPTION_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorFinal(getOption(optionMap, FINAL_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorInitiated(getOption(optionMap, INITIATED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorProccessed(getOption(optionMap, PROCESSED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setColorSaved(getOption(optionMap, SAVED_DOC_COLOR, DEFAULT_COLOR, principalId, preferences).getOptionVal());
+        preferences.setEmailNotification(getOption(optionMap, EMAIL_REMINDER_KEY, KEWConstants.EMAIL_RMNDR_IMMEDIATE, principalId, preferences).getOptionVal());
+        preferences.setNotifyPrimaryDelegation(getOption(optionMap, EMAIL_NOTIFY_PRIMARY_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setNotifySecondaryDelegation(getOption(optionMap, EMAIL_NOTIFY_SECONDARY_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
+        preferences.setOpenNewWindow(getOption(optionMap, OPEN_NEW_WINDOW_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setPageSize(getOption(optionMap, ACTION_LIST_SIZE_KEY, DEFAULT_ACTION_LIST_SIZE, principalId, preferences).getOptionVal());
+        preferences.setRefreshRate(getOption(optionMap, REFRESH_RATE_KEY, DEFAULT_REFRESH_RATE, principalId, preferences).getOptionVal());
+        preferences.setShowActionRequested(getOption(optionMap, COLUMN_ACTION_REQ_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowDateCreated(getOption(optionMap, COLUMN_DATE_CREATE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowDocType(getOption(optionMap, COLUMN_DOC_TYPE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowDocumentStatus(getOption(optionMap, COLUMN_DOCUMENT_STATUS_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowAppDocStatus(getOption(optionMap, COLUMN_APP_DOC_STATUS_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowInitiator(getOption(optionMap, COLUMN_INITIATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowDelegator(getOption(optionMap, COLUMN_DELEGATOR_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowDocTitle(getOption(optionMap, COLUMN_TITLE_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowWorkgroupRequest(getOption(optionMap, COLUMN_WORKGROUP_REQUEST_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowClearFyi(getOption(optionMap, COLUMN_CLEAR_FYI_KEY, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+        preferences.setDelegatorFilter(getOption(optionMap, DELEGATOR_FILTER_KEY, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, principalId, preferences).getOptionVal());
+        preferences.setPrimaryDelegateFilter(getOption(optionMap, PRIMARY_DELEGATE_FILTER_KEY, KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, principalId, preferences).getOptionVal());
+        preferences.setShowDateApproved(getOption(optionMap, COLUMN_LAST_APPROVED_DATE_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
+        preferences.setShowCurrentNode(getOption(optionMap, COLUMN_CURRENT_NODE_KEY, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
 
         if (ConfigContext.getCurrentContextConfig().getOutBoxDefaultPreferenceOn()) {
-            preferences.setUseOutbox(getOption(USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
+            preferences.setUseOutbox(getOption(optionMap,USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL, principalId, preferences).getOptionVal());
         } else {
-            preferences.setUseOutbox(getOption(USE_OUT_BOX, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
+            preferences.setUseOutbox(getOption(optionMap,USE_OUT_BOX, KEWConstants.PREFERENCES_NO_VAL, principalId, preferences).getOptionVal());
         }
 
+        if ( LOG.isDebugEnabled() ) {
         LOG.debug("end preferences fetch user " + principalId);
+        }
         return preferences;
     }
 
     /* @see https://test.kuali.org/jira/browse/KULRICE-1726 */
     //private static ConcurrencyDetector detector = new ConcurrencyDetector("Concurrency in PreferencesServiceImpl", false);
 
-    private UserOptions getOption(String optionKey, String defaultValue, String principalId, Preferences preferences) {
+    private UserOptions getOption(Map<String,UserOptions> optionsMap, String optionKey, String defaultValue, String principalId, Preferences preferences) {
+    	if ( LOG.isDebugEnabled() ) {
         LOG.debug("start fetch option " + optionKey + " user " + principalId);
-        UserOptionsService optionSrv = getUserOptionService();
-        UserOptions option =  optionSrv.findByOptionId(optionKey, principalId);
+    	}
+        UserOptions option = optionsMap.get(optionKey);
         if (option == null) {
+        	if ( LOG.isDebugEnabled() ) {
             LOG.debug("User option '" + optionKey + "' on user " + principalId + " has no stored value.  Preferences will require save.");
+        	}
             option = new UserOptions();
             option.setWorkflowId(principalId);
             option.setOptionId(optionKey);
             option.setOptionVal(defaultValue);
+            optionsMap.put(optionKey, option); // just in case referenced a second time
+            if ( optionKey.equals(USE_OUT_BOX) && !ConfigContext.getCurrentContextConfig().getOutBoxOn() ) {
+            	// don't mark as needing save
+            } else {
             preferences.setRequiresSave(true);
         }
-        LOG.debug("end fetch option " + optionKey + " user " + principalId);
+        }
+        if ( LOG.isDebugEnabled() ) {
+        LOG.debug("End fetch option " + optionKey + " user " + principalId);
+        }
         return option;
     }
 
     public void savePreferences(String principalId, Preferences preferences) {
     	// NOTE: this previously displayed the principalName.  Now it's just the id
+    	if ( LOG.isDebugEnabled() ) {
         LOG.debug("saving preferences user " + principalId);
+    	}
 
         validate(preferences);
-        UserOptionsService optionSrv = getUserOptionService();
-        optionSrv.save(principalId, DISAPPROVED_DOC_COLOR, preferences.getColorDissaproved());
-        optionSrv.save(principalId, DISSAPPROVED_CANCELLED_DOC_COLOR, preferences.getColorDissapproveCancel());
-        optionSrv.save(principalId, APPROVED_DOC_COLOR, preferences.getColorApproved());
-        optionSrv.save(principalId, CANCELLED_DOC_COLOR, preferences.getColorCanceled());
-        optionSrv.save(principalId, SAVED_DOC_COLOR, preferences.getColorSaved());
-        optionSrv.save(principalId, ENROUTE_DOC_COLOR, preferences.getColorEnroute());
-        optionSrv.save(principalId, PROCESSED_DOC_COLOR, preferences.getColorProccessed());
-        optionSrv.save(principalId, INITIATED_DOC_COLOR, preferences.getColorInitiated());
-        optionSrv.save(principalId, FINAL_DOC_COLOR, preferences.getColorFinal());
-        optionSrv.save(principalId, EXCEPTION_DOC_COLOR, preferences.getColorException());
-        optionSrv.save(principalId, REFRESH_RATE_KEY, preferences.getRefreshRate().trim());
-        optionSrv.save(principalId, OPEN_NEW_WINDOW_KEY, preferences.getOpenNewWindow());
-        optionSrv.save(principalId, COLUMN_DOC_TYPE_KEY, preferences.getShowDocType());
-        optionSrv.save(principalId, COLUMN_TITLE_KEY, preferences.getShowDocTitle());
-        optionSrv.save(principalId, COLUMN_ACTION_REQ_KEY, preferences.getShowActionRequested());
-        optionSrv.save(principalId, COLUMN_INITIATOR_KEY, preferences.getShowInitiator());
-        optionSrv.save(principalId, COLUMN_DELEGATOR_KEY, preferences.getShowDelegator());
-        optionSrv.save(principalId, COLUMN_DATE_CREATE_KEY, preferences.getShowDateCreated());
-        optionSrv.save(principalId, COLUMN_DOCUMENT_STATUS_KEY, preferences.getShowDocumentStatus());
-        optionSrv.save(principalId, COLUMN_WORKGROUP_REQUEST_KEY, preferences.getShowWorkgroupRequest());
-        optionSrv.save(principalId, COLUMN_CLEAR_FYI_KEY, preferences.getShowClearFyi());
-        optionSrv.save(principalId, ACTION_LIST_SIZE_KEY, preferences.getPageSize().trim());
-        optionSrv.save(principalId, EMAIL_REMINDER_KEY, preferences.getEmailNotification());
-        optionSrv.save(principalId, EMAIL_NOTIFY_PRIMARY_KEY, preferences.getNotifyPrimaryDelegation());
-        optionSrv.save(principalId, EMAIL_NOTIFY_SECONDARY_KEY, preferences.getNotifySecondaryDelegation());
-        optionSrv.save(principalId, DELEGATOR_FILTER_KEY, preferences.getDelegatorFilter());
-        optionSrv.save(principalId, COLUMN_LAST_APPROVED_DATE_KEY, preferences.getShowDateApproved());
-        optionSrv.save(principalId, COLUMN_CURRENT_NODE_KEY, preferences.getShowCurrentNode());
+        Map<String,String> optionsMap = new HashMap<String,String>(50);
+        
+        optionsMap.put(DISSAPPROVED_CANCELLED_DOC_COLOR, preferences.getColorDissapproveCancel());
+        optionsMap.put(DISAPPROVED_DOC_COLOR, preferences.getColorDissaproved());
+        optionsMap.put(APPROVED_DOC_COLOR, preferences.getColorApproved());
+        optionsMap.put(CANCELLED_DOC_COLOR, preferences.getColorCanceled());
+        optionsMap.put(SAVED_DOC_COLOR, preferences.getColorSaved());
+        optionsMap.put(ENROUTE_DOC_COLOR, preferences.getColorEnroute());
+        optionsMap.put(PROCESSED_DOC_COLOR, preferences.getColorProccessed());
+        optionsMap.put(INITIATED_DOC_COLOR, preferences.getColorInitiated());
+        optionsMap.put(FINAL_DOC_COLOR, preferences.getColorFinal());
+        optionsMap.put(EXCEPTION_DOC_COLOR, preferences.getColorException());
+        optionsMap.put(REFRESH_RATE_KEY, preferences.getRefreshRate().trim());
+        optionsMap.put(OPEN_NEW_WINDOW_KEY, preferences.getOpenNewWindow());
+        optionsMap.put(COLUMN_DOC_TYPE_KEY, preferences.getShowDocType());
+        optionsMap.put(COLUMN_TITLE_KEY, preferences.getShowDocTitle());
+        optionsMap.put(COLUMN_ACTION_REQ_KEY, preferences.getShowActionRequested());
+        optionsMap.put(COLUMN_INITIATOR_KEY, preferences.getShowInitiator());
+        optionsMap.put(COLUMN_DELEGATOR_KEY, preferences.getShowDelegator());
+        optionsMap.put(COLUMN_DATE_CREATE_KEY, preferences.getShowDateCreated());
+        optionsMap.put(COLUMN_DOCUMENT_STATUS_KEY, preferences.getShowDocumentStatus());
+        optionsMap.put(COLUMN_APP_DOC_STATUS_KEY, preferences.getShowAppDocStatus());
+        optionsMap.put(COLUMN_WORKGROUP_REQUEST_KEY, preferences.getShowWorkgroupRequest());
+        optionsMap.put(COLUMN_CLEAR_FYI_KEY, preferences.getShowClearFyi());
+        optionsMap.put(ACTION_LIST_SIZE_KEY, preferences.getPageSize().trim());
+        optionsMap.put(EMAIL_REMINDER_KEY, preferences.getEmailNotification());
+        optionsMap.put(EMAIL_NOTIFY_PRIMARY_KEY, preferences.getNotifyPrimaryDelegation());
+        optionsMap.put(EMAIL_NOTIFY_SECONDARY_KEY, preferences.getNotifySecondaryDelegation());
+        optionsMap.put(DELEGATOR_FILTER_KEY, preferences.getDelegatorFilter());
+        optionsMap.put(PRIMARY_DELEGATE_FILTER_KEY, preferences.getPrimaryDelegateFilter());
+        optionsMap.put(COLUMN_LAST_APPROVED_DATE_KEY, preferences.getShowDateApproved());
+        optionsMap.put(COLUMN_CURRENT_NODE_KEY, preferences.getShowCurrentNode());
         if (ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
-            optionSrv.save(principalId, USE_OUT_BOX, preferences.getUseOutbox());
+            optionsMap.put(USE_OUT_BOX, preferences.getUseOutbox());
         }
+        getUserOptionService().save(principalId, optionsMap);
+        if ( LOG.isDebugEnabled() ) {
         LOG.debug("saved preferences user " + principalId);
+    }
     }
 
     private void validate(Preferences preferences) {

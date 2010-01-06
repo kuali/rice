@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  * 
  * @see RuleTemplate
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
 
@@ -96,7 +96,7 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
             if (defaultRuleValues.getToDate() != null) {
             	renderer.renderDateElement(defaultsElement, TO_DATE, defaultRuleValues.getToDate());
             }
-            renderer.renderBooleanElement(defaultsElement, IGNORE_PREVIOUS, defaultRuleValues.getIgnorePrevious(), false);
+            renderer.renderBooleanElement(defaultsElement, FORCE_ACTION, defaultRuleValues.getForceAction(), false);
             renderer.renderBooleanElement(defaultsElement, ACTIVE, defaultRuleValues.getActiveInd(), true);
             if (defaultDelegationValues == null) {
                 RuleTemplateOption defaultActionOption = ruleTemplate.getDefaultActionRequestValue();
@@ -104,16 +104,26 @@ public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
                 RuleTemplateOption supportsApprove = ruleTemplate.getApprove();
                 RuleTemplateOption supportsAck = ruleTemplate.getAcknowledge();
                 RuleTemplateOption supportsFYI = ruleTemplate.getFyi();
-                String defaultActionValue = (defaultActionOption == null ? KEWConstants.ACTION_REQUEST_APPROVE_REQ : defaultActionOption.getValue());
-                String supportsCompleteValue = (supportsComplete == null ? Boolean.TRUE.toString() : supportsComplete.getValue());
-                String supportsApproveValue = (supportsApprove == null ? Boolean.TRUE.toString() : supportsApprove.getValue());
-                String supportsAckValue = (supportsAck == null ? Boolean.TRUE.toString() : supportsAck.getValue());
-                String supportsFYIValue = (supportsFYI == null ? Boolean.TRUE.toString() : supportsFYI.getValue());
-                renderer.renderTextElement(defaultsElement, DEFAULT_ACTION_REQUESTED, defaultActionValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_COMPLETE, supportsCompleteValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_APPROVE, supportsApproveValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_ACKNOWLEDGE, supportsAckValue);
-                renderer.renderTextElement(defaultsElement, SUPPORTS_FYI, supportsFYIValue);
+                if (defaultActionOption != null) {
+                	String defaultActionValue = (defaultActionOption == null ? null : defaultActionOption.getValue());
+                	renderer.renderTextElement(defaultsElement, DEFAULT_ACTION_REQUESTED, defaultActionValue);
+                }
+                if (supportsComplete != null) {
+                	String supportsCompleteValue = supportsComplete.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_COMPLETE, supportsCompleteValue);
+                }
+                if (supportsApprove != null) {
+                	String supportsApproveValue = supportsApprove.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_APPROVE, supportsApproveValue);
+                }
+                if (supportsAck != null) {
+                	String supportsAckValue = supportsAck.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_ACKNOWLEDGE, supportsAckValue);
+                }
+                if (supportsFYI != null) {
+                	String supportsFYIValue = supportsFYI.getValue();
+                	renderer.renderTextElement(defaultsElement, SUPPORTS_FYI, supportsFYIValue);
+                }
             }
         }
     }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,11 +28,12 @@ import org.kuali.rice.kew.web.KeyValueSort;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentSearchResult {
-
-    // following much match documentation for XML result processor attribute
+public class DocumentSearchResult implements Serializable {
+    private static final long serialVersionUID = -1255359695353320685L;
+    
+	// following much match documentation for XML result processor attribute
     /**
      *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID} INSTEAD
      */

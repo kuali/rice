@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,14 +32,18 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class AdHocRouteTest extends KEWTestCase {
 
 	private static final String ADHOC_DOC = "AdhocRouteTest";
+	private static final String ADHOC_NO_NODE_DOC = "AdHocNoNodeTest";
 	private Long docId;
 
     protected void loadTestData() throws Exception {
@@ -121,7 +125,7 @@ public class AdHocRouteTest extends KEWTestCase {
         assertTrue("rkirkend should have an approval request on the document", doc.isApprovalRequested());
         TestUtilities.assertAtNode(doc, ADHOC_NODE);
 
-        // now try it with ignore previous=false
+        // now try it with force action=false
         doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADHOC_DOC);
         docId = doc.getRouteHeaderId();
         doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, ADHOC_NODE, "annotation1", getPrincipalIdForName("rkirkend"), "", false);
@@ -314,7 +318,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	assertEquals("annotation incorrect", "annotation1", request.getAnnotation());
     	assertEquals("action requested code incorrect", request.getActionRequested(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
     	assertEquals("responsibility desc incorrect", request.getResponsibilityDesc(), "respDesc");
-    	assertEquals("wrong ignore previous", request.getIgnorePrevAction(), Boolean.FALSE);
+    	assertEquals("wrong force action", request.getForceAction(), Boolean.FALSE);
 
     }
 
@@ -391,7 +395,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("user1"), ADHOC_DOC);
     	docId = doc.getRouteHeaderId();
 
-		// do an appspecific route to jitrue and NonSIT (w/ ignore previous =
+		// do an appspecific route to jitrue and NonSIT (w/ force action =
 		// false), should end up at the current node
 
     	doc.adHocRouteDocumentToPrincipal("A", "", getPrincipalIdForName("jitrue"), "", false);
@@ -495,11 +499,11 @@ public class AdHocRouteTest extends KEWTestCase {
 	public void testAdHocWithRequestLabel_ToGroup() throws Exception {
 		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), ADHOC_DOC);
 		String label = "MY GROUP LABEL";
-		KimGroup workflowAdmin = KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
+		Group workflowAdmin = KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", "WorkflowAdmin");
 		doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, null, "", workflowAdmin.getGroupId(), "", true, label);
 		
 		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(doc.getRouteHeaderId());
-		assertEquals("Shoudl have 1 request.", 1, actionRequests.size());
+		assertEquals("Should have 1 request.", 1, actionRequests.size());
 		ActionRequestValue actionRequest = actionRequests.get(0);
 		assertEquals("Should be an approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
 		assertEquals("Invalid request label", label, actionRequest.getRequestLabel());
@@ -515,6 +519,31 @@ public class AdHocRouteTest extends KEWTestCase {
 			assertEquals("ActionItem should have same label", label, actionItem.getRequestLabel());
 		}
 	}
+	
+	   @Test
+	    public void testAdHocWithNoNodes() throws Exception {
+	        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), ADHOC_NO_NODE_DOC);
+	        String label = "MY PRINCIPAL LABEL";
+	        //DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
+	        
+	        doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, null, "", getPrincipalIdForName("ewestfal"), "", true, label);
+	        
+	        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(doc.getRouteHeaderId());
+	        assertEquals("Should have 1 request.", 1, actionRequests.size());
+	        ActionRequestValue actionRequest = actionRequests.get(0);
+	        assertEquals("Should be a FYI request", KEWConstants.ACTION_REQUEST_FYI_REQ, actionRequest.getActionRequested());
+	        assertEquals("Invalid request label", label, actionRequest.getRequestLabel());
+	        assertEquals("Request should be initialized", KEWConstants.ACTION_REQUEST_INITIALIZED, actionRequest.getStatus());
+	        
+	        // now route the document, it should activate the request and create an action item
+	        doc.routeDocument("");
+	        
+	        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getRouteHeaderId());
+	        assertEquals("Should have 0 action item.", 0, actionItems.size());
+	        //ActionItem actionItem = actionItems.iterator().next();
+	        //assertEquals("ActionItem should be constructed from request.", actionRequest.getActionRequestId(), actionItem.getActionRequestId());
+	        //assertEquals("ActionItem should have same label", label, actionItem.getRequestLabel());
+	    }
 
 	
     private WorkflowDocument getDocument(String netid) throws WorkflowException {

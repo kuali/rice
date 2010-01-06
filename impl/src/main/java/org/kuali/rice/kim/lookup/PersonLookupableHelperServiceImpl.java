@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,24 +19,30 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperServiceImpl {
+public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServiceImpl {
 	
 	private static final long serialVersionUID = 1971744785776844579L;
 	
@@ -49,42 +55,36 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 		return super.getSearchResults(fieldValues);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean allowsMaintenanceNewOrCopyAction() {
-		// TODO : to let it rendering 'create new' and 'edit'/'copy' button
-		return true;
-	}
-
-	@Override
-	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
-    	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-    	    AnchorHtmlData htmlData = getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames);
-    	    String href = htmlData.getHref();
-    	    int idx1 = href.indexOf("&principalId=");
-    	    int idx2 = href.indexOf("&", idx1+1);
-    	    if (idx2 < 0) {
-    	    	idx2 = href.length();
-    	    }    	    
-    	    htmlData.setHref("../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument"+href.substring(idx1, idx2));
-    	    htmlDataList.add(htmlData);
-        	//htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
-        
-        return htmlDataList;
+	public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
+        List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
+		if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME)){
+			String href = "";
+			Properties parameters = new Properties();
+	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
+	        parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((PersonImpl)bo).getPrincipalId());
+	        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters);
+	
+	        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
+	        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
+	
+	    	anchorHtmlDataList.add(anchorHtmlData);
+		}
+    	return anchorHtmlDataList;
 	}
 
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
-		// TODO shyu - THIS METHOD NEEDS JAVADOCS
 		HtmlData inqUrl = super.getInquiryUrl(bo, propertyName);
-	    String href = ((AnchorHtmlData)inqUrl).getHref();
-	    if (StringUtils.isNotBlank(href)) {
-		    int idx1 = href.indexOf("&principalId=");
-		    int idx2 = href.indexOf("&", idx1+1);
-		    if (idx2 < 0) {
-		    	idx2 = href.length();
-		    }
-		    ((AnchorHtmlData)inqUrl).setHref("../kim/identityManagementPersonDocument.do?command=initiate&docTypeName=IdentityManagementPersonDocument"+href.substring(idx1, idx2));
-	    }
+		Properties parameters = new Properties();
+        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
+        parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((Person)bo).getPrincipalId());
+        String href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION, parameters);
+	    ((AnchorHtmlData)inqUrl).setHref(href);
 	    return inqUrl;
 	}
 	
@@ -103,34 +103,64 @@ public class PersonLookupableHelperServiceImpl  extends KualiLookupableHelperSer
 		String namespaceCode = null;
 		while ( i.hasNext() ) {
 			Row row = i.next();
-			Field field = row.getField(0);
-			String propertyName = field.getPropertyName();
-			if ( propertyName.equals("lookupRoleName") ) {
-				Object val = getParameters().get( propertyName );
-				String propVal = null;
-				if ( val != null ) {
-					propVal = (val instanceof String)?(String)val:((String[])val)[0];
-				}
-				if ( StringUtils.isBlank( propVal ) ) {
+			int numFieldsRemoved = 0;
+			boolean rowIsBlank = true;
+			// Since multi-column lookups can be specified on Rice lookups, all the fields in each row must be iterated over as well,
+			// just in case the person lookup ever gets configured to have multiple columns per row.
+			for (Iterator<Field> fieldIter = row.getFields().iterator(); fieldIter.hasNext();) {
+			    Field field = fieldIter.next();
+			    String propertyName = field.getPropertyName();
+			    if ( propertyName.equals("lookupRoleName") ) {
+				    Object val = getParameters().get( propertyName );
+				    String propVal = null;
+				    if ( val != null ) {
+					    propVal = (val instanceof String)?(String)val:((String[])val)[0];
+				    }
+				    if ( StringUtils.isBlank( propVal ) ) {
+					    fieldIter.remove();
+					    numFieldsRemoved++;
+				    } else {
+					    field.setReadOnly(true);
+					    field.setDefaultValue( propVal );
+					    roleName = propVal;
+					    rowIsBlank = false;
+				    }
+			    } else if ( propertyName.equals("lookupRoleNamespaceCode") ) {
+				    Object val = getParameters().get( propertyName );
+				    String propVal = null;
+				    if ( val != null ) {
+					    propVal = (val instanceof String)?(String)val:((String[])val)[0];
+				    }
+				    if ( StringUtils.isBlank( propVal ) ) {
+					    fieldIter.remove();
+					    numFieldsRemoved++;
+				    } else {
+					    field.setReadOnly(true);
+					    field.setDefaultValue( propVal );
+					    namespaceCode = propVal;
+					    rowIsBlank = false;
+				    }				
+			    } else if (!Field.BLANK_SPACE.equals(field.getFieldType())) {
+			    	rowIsBlank = false;
+			    }
+			}
+			// Check if any fields were removed from the row.
+			if (numFieldsRemoved > 0) {
+				// If fields were removed, check whether or not the remainder of the row is empty or only has blank space fields.
+				if (rowIsBlank) {
+					// If so, then remove the row entirely.
 					i.remove();
 				} else {
-					field.setReadOnly(true);
-					field.setDefaultValue( propVal );
-					roleName = propVal;
+					// Otherwise, add one blank space for each field that was removed, using a technique similar to FieldUtils.createBlankSpace.
+					// It is safe to just add blank spaces as needed, since the two removable fields are the last of the visible ones in the list.
+					while (numFieldsRemoved > 0) {
+						Field blankSpace = new Field();
+						blankSpace.setFieldType(Field.BLANK_SPACE);
+						blankSpace.setPropertyName(Field.BLANK_SPACE);
+						row.getFields().add(blankSpace);
+						numFieldsRemoved--;
+					}
 				}
-			} else if ( propertyName.equals("lookupRoleNamespaceCode") ) {
-				Object val = getParameters().get( propertyName );
-				String propVal = null;
-				if ( val != null ) {
-					propVal = (val instanceof String)?(String)val:((String[])val)[0];
-				}
-				if ( StringUtils.isBlank( propVal ) ) {
-					i.remove();
-				} else {
-					field.setReadOnly(true);
-					field.setDefaultValue( propVal );
-					namespaceCode = propVal;
-				}				
 			}
 		}
 		if ( roleName != null && namespaceCode != null ) {

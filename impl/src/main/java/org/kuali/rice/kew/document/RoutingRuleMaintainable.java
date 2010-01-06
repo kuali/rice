@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,16 +37,13 @@ import org.kuali.rice.kns.web.ui.Section;
  * This class is the maintainable implementation for Routing Rules 
  * in KEW (represented by the {@link RuleBaseValues} business object). 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 
 	private static final long serialVersionUID = -5920808902137192662L;
     
-	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
-	private static final String ID_SEPARATOR = ":";
-
 	/**
 	 * Override the getSections method on this maintainable so that the Section Containing the various Rule Attributes
 	 * can be dynamically generated based on the RuleTemplate which is selected.

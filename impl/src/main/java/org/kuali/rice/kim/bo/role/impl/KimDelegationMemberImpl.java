@@ -1,11 +1,11 @@
 /*
  * Copyright 2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -30,14 +30,14 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.KimDelegationMember;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity
@@ -45,18 +45,20 @@ import org.kuali.rice.kns.util.TypedArrayList;
 public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements KimDelegationMember {
 
 	private static final long serialVersionUID = 6278392972043721961L;
-	
+
 	@Id
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
 	@Column(name="DLGN_ID")
-	protected String delegationId;	
-	
+	protected String delegationId;
+	@Column(name="ROLE_MBR_ID")
+	protected String roleMemberId;
+
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="TARGET_PRIMARY_KEY", insertable=false, updatable=false )
+	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="DLGN_MBR_ID", insertable=false, updatable=false )
 	protected List<KimDelegationMemberAttributeDataImpl> attributes = new TypedArrayList(KimDelegationMemberAttributeDataImpl.class);
-	
-	protected String delegationTypeCode;
+
+
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -77,14 +79,14 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 		return (activeFromDate == null || activeFromDate.getTime() < now) && (activeToDate == null || activeToDate.getTime() > now);
 	}
 
-	public void setActiveFromDate(Timestamp from) {
+	public void setActiveFromDate(Date from) {
 		this.activeFromDate = from;
 	}
 
-	public void setActiveToDate(Timestamp to) {
+	public void setActiveToDate(Date to) {
 		this.activeToDate = to;
 	}
-	
+
 	public String getDelegationMemberId() {
 		return this.delegationMemberId;
 	}
@@ -108,13 +110,13 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	public void setAttributes(List<KimDelegationMemberAttributeDataImpl> attributes) {
 		this.attributes = attributes;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.bo.role.KimDelegationGroup#getQualifier()
 	 */
 	public AttributeSet getQualifier() {
 		AttributeSet attribs = new AttributeSet();
-		
+
 		if ( attributes == null ) {
 			return attribs;
 		}
@@ -123,19 +125,31 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 		}
 		return attribs;
 	}
-	
+
 	/**
-	 * @return the delegationTypeCode
+	 * @return the roleMemberId
 	 */
-	public String getDelegationTypeCode() {
-		return this.delegationTypeCode;
+	public String getRoleMemberId() {
+		return this.roleMemberId;
 	}
 
 	/**
-	 * @param delegationTypeCode the delegationTypeCode to set
+	 * @param roleMemberId the roleMemberId to set
 	 */
-	public void setDelegationTypeCode(String delegationTypeCode) {
-		this.delegationTypeCode = delegationTypeCode;
+	public void setRoleMemberId(String roleMemberId) {
+		this.roleMemberId = roleMemberId;
 	}
 
+	public DelegateMemberCompleteInfo toSimpleInfo(){
+		DelegateMemberCompleteInfo delegateMemberCompleteInfo = new DelegateMemberCompleteInfo();
+		delegateMemberCompleteInfo.setDelegationMemberId(delegationMemberId);
+		delegateMemberCompleteInfo.setActiveFromDate(activeFromDate);
+		delegateMemberCompleteInfo.setActiveToDate(activeToDate);
+		delegateMemberCompleteInfo.setDelegationId(delegationId);
+		delegateMemberCompleteInfo.setMemberId(memberId);
+		delegateMemberCompleteInfo.setMemberTypeCode(memberTypeCode);
+		delegateMemberCompleteInfo.setQualifier(getQualifier());
+		delegateMemberCompleteInfo.setRoleMemberId(roleMemberId);
+		return delegateMemberCompleteInfo;
+	}
 }

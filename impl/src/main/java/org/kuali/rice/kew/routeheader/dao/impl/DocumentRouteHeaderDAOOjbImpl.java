@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceDebugUtils;
@@ -49,10 +49,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
-import org.springmodules.orm.ojb.OjbOperationException;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
 
 public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentRouteHeaderDAO {
 
@@ -73,14 +71,16 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             LOG.debug( RiceDebugUtils.getTruncatedStackTrace(false).toString() );
         }
         try {
-            this.getPersistenceBrokerTemplate().store(routeHeader);
+            getPersistenceBrokerTemplate().store(routeHeader);
             routeHeader.getDocumentContent().setRouteHeaderId(routeHeader.getRouteHeaderId());
-            this.getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
-        } catch ( OjbOperationException ex ) {
+            getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
+        } catch ( RuntimeException ex ) {
             if ( ex.getCause() instanceof OptimisticLockException ) {
                 LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject() );
                 throw ex;
             }
+            LOG.error( "Unable to save document header or content. Route Header: " + routeHeader, ex );
+            throw ex;
         }
     }
 
@@ -90,10 +90,17 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return (DocumentRouteHeaderValueContent)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentRouteHeaderValueContent.class, crit));
     }
 
-    public void clearRouteHeaderSearchValues(DocumentRouteHeaderValue routeHeader) {
+    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeader.getRouteHeaderId());
-        this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(SearchableAttributeValue.class, crit));
+        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        QueryByCriteria query = new QueryByCriteria(SearchableAttributeValue.class, crit);
+        query.addOrderByAscending("searchableAttributeValueId");
+        Collection<SearchableAttributeValue> results = this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
+        if (!results.isEmpty()) {
+            for (SearchableAttributeValue srchAttrVal: results) {
+                this.getPersistenceBrokerTemplate().delete(srchAttrVal);
+            }
+        }
     }
 
     public void lockRouteHeader(final Long routeHeaderId, final boolean wait) {
@@ -168,8 +175,8 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         });
     }
 
-    protected Platform getPlatform() {
-    	return (Platform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+    protected DatabasePlatform getPlatform() {
+    	return (DatabasePlatform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
     public Collection findPendingByResponsibilityIds(Set responsibilityIds) {
@@ -292,5 +299,74 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	}
     	return status;
     }
+    
+    public String getAppDocId(Long documentId) {
+ 	 	Criteria crit = new Criteria();
+ 	 	crit.addEqualTo("routeHeaderId", documentId);
+ 	 	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
+ 	 	query.setAttributes(new String[] { "appDocId" });
+ 	 	String appDocId = null;
+ 	 	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+ 	 	while (iter.hasNext()) {
+ 	 		Object[] row = (Object[]) iter.next();
+ 	 		appDocId = (String)row[0];
+ 	 	}
+ 	 	return appDocId;
+ 	 }
+    
+    public void save(SearchableAttributeValue searchableAttributeValue) {
+    	getPersistenceBrokerTemplate().store(searchableAttributeValue);
+    }
+
+	public Collection findByDocTypeAndAppId(String documentTypeName,
+			String appId) {
+        Collection routeHeaderIds = new ArrayList();
+
+        PersistenceBroker broker = null;
+        Connection conn = null;
+        ResultSet rs = null;
+        try {
+            broker = getPersistenceBroker(false);
+            conn = broker.serviceConnectionManager().getConnection();
+
+            String query = 
+            	 	"SELECT DISTINCT " +
+            		"    (docHdr.doc_hdr_id) " +
+            		"FROM " +
+            		"    KREW_DOC_HDR_T docHdr, " +
+            		"    KREW_DOC_TYP_T docTyp " +
+            		"WHERE " +
+            		"    docHdr.APP_DOC_ID     = ? " +
+            		"    AND docHdr.DOC_TYP_ID = docTyp.DOC_TYP_ID " +
+            		"    AND docTyp.DOC_TYP_NM = ?";
+            
+            LOG.debug("Query to find documents by app id: " + query);
+            
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, appId);
+            stmt.setString(2, documentTypeName);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                routeHeaderIds.add(new Long(rs.getLong(1)));
+            }
+            rs.close();
+        } catch (SQLException sqle) {
+            LOG.error("SQLException: " + sqle.getMessage(), sqle);
+            throw new WorkflowRuntimeException(sqle);
+        } catch (LookupException le) {
+            LOG.error("LookupException: " + le.getMessage(), le);
+            throw new WorkflowRuntimeException(le);
+        } finally {
+            try {
+                if (broker != null) {
+                    OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());
+                }
+            } catch (Exception e) {
+                LOG.error("Failed closing connection: " + e.getMessage(), e);
+            }
+        }
+        return routeHeaderIds;
+	}
 
 }

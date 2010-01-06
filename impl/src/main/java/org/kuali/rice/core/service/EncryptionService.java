@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,7 @@ import java.security.GeneralSecurityException;
 /**
  * This is a service interface to consolidate Kuali encryption operation 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface EncryptionService {
@@ -39,6 +39,15 @@ public interface EncryptionService {
     public String encrypt(Object valueToHide) throws GeneralSecurityException;
 
     /**
+     * Encrypts a value
+     *
+     * @param valueToHide - original value
+     * @return encrypted value
+     * @throws GeneralSecurityException
+     */
+    public byte[] encryptBytes(byte[] valueToHide) throws GeneralSecurityException;
+    
+    /**
      * Decrypts a value
      *
      * @param ciphertext - encrypted value
@@ -46,6 +55,15 @@ public interface EncryptionService {
      * @throws GeneralSecurityException
      */
     public String decrypt(String ciphertext) throws GeneralSecurityException;
+
+    /**
+     * Decrypts a value
+     *
+     * @param ciphertext - encrypted value
+     * @return decrypted value
+     * @throws GeneralSecurityException
+     */
+    public byte[] decryptBytes(byte[] ciphertext) throws GeneralSecurityException;
 
     /**
      * Returns true if encryption is enabled within KEW, false otherwise.

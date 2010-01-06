@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,21 +23,44 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  * A lifecycle for testing with database transactional rollback.
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TransactionalLifecycle implements Lifecycle {
+	
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(TransactionalLifecycle.class);
+	
     /**
      * Name of the transaction manager to pull from the GlobalResourceLoader.
      * This will most likely be a Spring bean name.
      */
-    public static final String TRANSACTION_MANAGER = "transactionManager";
+    public static final String DEFAULT_TRANSACTION_MANAGER_NAME = "transactionManager";
 
+    private String transactionManagerName;
+    private PlatformTransactionManager transactionManager;
+
+    public TransactionalLifecycle(String transactionManagerName) {
+    	this.transactionManagerName = transactionManagerName;
+    }
+    
+    public TransactionalLifecycle() {
+    	this(DEFAULT_TRANSACTION_MANAGER_NAME);
+    }
+    
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+    	this.transactionManager = transactionManager;
+    }
+    
     /**
-     * Pulls a transaction manager out of the GlobalResourceLoader
+     * Returns the PlatformTransactionManager configured on this lifecycle.
+     * If none defined, pulls the transaction manager out of the GlobalResourceLoader
      * @return the transaction manager in the GlobalResourceLoader
      */
-    private static PlatformTransactionManager getTransactionManager() {
-        return (PlatformTransactionManager) GlobalResourceLoader.getService(TRANSACTION_MANAGER);
+    private PlatformTransactionManager getTransactionManager() {
+    	if (transactionManager == null) {
+    		transactionManager = (PlatformTransactionManager) GlobalResourceLoader.getService(transactionManagerName);
+    	}
+    	return transactionManager;
     }
 
     private boolean started;
@@ -48,6 +71,7 @@ public class TransactionalLifecycle implements Lifecycle {
     }
 
     public void start() throws Exception {
+    	LOG.info("Starting a transaction from TransactionalLifecycle...");
         DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
         defaultTransactionDefinition.setTimeout(3600);
         TRANSACTION_STATUS = getTransactionManager().getTransaction(defaultTransactionDefinition);
@@ -55,7 +79,9 @@ public class TransactionalLifecycle implements Lifecycle {
     }
 
     public void stop() throws Exception {
+    	LOG.info("...rolling back transaction from TransactionalLifecycle.");
         getTransactionManager().rollback(TRANSACTION_STATUS);
         started = false;
     }
+
 }

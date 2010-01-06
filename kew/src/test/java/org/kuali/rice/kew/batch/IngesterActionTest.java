@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Jun 12, 2006
 
 package org.kuali.rice.kew.batch;
 
@@ -40,13 +39,15 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.test.web.MockFormFile;
 import org.kuali.rice.kew.test.web.WorkflowServletRequest;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.UserLoginFilter;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 
 /**
  * Tests workflow Struts IngesterAction
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IngesterActionTest extends KEWTestCase {
 
@@ -127,14 +128,21 @@ public class IngesterActionTest extends KEWTestCase {
         mapping.addForwardConfig(new ActionForward("view", "/nowhere", false));
         WorkflowServletRequest request = new WorkflowServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
-        request.setUser("quickstart");
+        request.setUser("admin");
         // add the user to the session
         new UserLoginFilter().doFilter(request, response, new FilterChain() {
             public void doFilter(ServletRequest req, ServletResponse res) {
             }
         });
         request.setMethod("post");
-        action.execute(mapping, form, request, response);
+        try {
+        	UserSession userSession = (UserSession)request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
+        	assertNotNull("UserSession should have been established.", userSession);
+        	UserSession.setAuthenticatedUser(userSession);
+        	action.execute(mapping, form, request, response);
+        } finally {
+        	UserSession.setAuthenticatedUser(null);
+        }
 
         // test result
         List messages = (List) request.getAttribute("messages");

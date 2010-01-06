@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -69,24 +69,12 @@ public abstract class KSBTestCase extends RiceTestCase {
     }
 
     @Override
-    protected String getDerbySQLFileLocation() {
-        return "classpath:db/derby/bus.sql";
-    }
-
-    @Override
     protected String getModuleName() {
         return "ksb";
     }
-
-    @Override
-    protected List<String> getTablesToClear() {
-        List<String> tables = new ArrayList<String>();
-        tables.add("KRSB_MSG_QUE_T");
-        tables.add("KRSB_MSG_PYLD_T");
-        tables.add("KRSB_BAM_T");
-        tables.add("KRSB_BAM_PARM_T");
-        tables.add("KRSB_SVC_DEF_T");
-        return tables;
+    
+    protected List<String> getPerTestTablesNotToClear() {
+        return new ArrayList<String>();
     }
 
     @Override

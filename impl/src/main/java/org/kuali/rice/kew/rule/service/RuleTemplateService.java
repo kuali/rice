@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,14 +30,13 @@ import org.kuali.rice.kew.xml.export.XmlExporter;
  * A service providing data access for {@link RuleTemplate}s and 
  * {@link RuleTemplateAttribute}s.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleTemplateService extends XmlLoader, XmlExporter {
 
     public void save(RuleTemplate ruleTemplate);
     public void save(RuleTemplateAttribute ruleTemplateAttribute);
-    public void save(RuleBaseValues ruleBaseValues);
-    public void save(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues);
+    public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues);
     public RuleTemplate findByRuleTemplateId(Long ruleTemplateId);
     public List findAll();
     public List findByRuleTemplate(RuleTemplate ruleTemplate);

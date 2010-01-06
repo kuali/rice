@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,16 +16,16 @@
  */
 package org.kuali.rice.kew.web.backdoor;
 
-import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * A Struts ActionForm for the {@link BackdoorAction}.
  *
  * @see BackdoorAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BackdoorForm extends ActionForm {
+public class BackdoorForm extends KualiForm {
 
 	private static final long serialVersionUID = -2720178686804392055L;
 
@@ -70,12 +70,14 @@ public class BackdoorForm extends ActionForm {
     public void setLinkTarget(String linkTarget) {
         this.linkTarget = linkTarget;
     }
+    /*
     public String getTargetName() {
         return targetName;
     }
     public void setTargetName(String targetName) {
         this.targetName = targetName;
     }
+    */
     public String getGraphic(){
     	return this.graphic;
     }

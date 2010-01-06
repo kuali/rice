@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,9 +19,9 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 
 /**
  * A simple helper service in KEW for interacting with the KIM identity
@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  * the purpose of assisting with the piece-by-piece migration of
  * KEW to use the KIM services.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface IdentityHelperService {
 
@@ -75,14 +75,14 @@ public interface IdentityHelperService {
 	public KimPrincipal getPrincipal(UserId userId);
 
 	/**
-	 * Returns the KimGroup for the given groupId.  Throws an exception
+	 * Returns the Group for the given groupId.  Throws an exception
 	 * if the groupId cannot be resolved to a group.
 	 */
-	public KimGroup getGroup(String groupId);
+	public Group getGroup(String groupId);
 
-	public KimGroup getGroup(GroupId groupId);
+	public Group getGroup(GroupId groupId);
 
-	public KimGroup getGroupByName(String namespaceCode, String name);
+	public Group getGroupByName(String namespaceCode, String name);
 
 	public Recipient getPrincipalRecipient(String principalId);
 

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,90 +16,11 @@
  */
 package org.kuali.rice.core.database.platform;
 
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import javax.persistence.EntityManager;
-
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.accesslayer.LookupException;
-import org.apache.ojb.broker.query.Criteria;
-
-public class MySQLPlatform extends ANSISqlPlatform {
-
-    public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
-        return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE";
-    }
-
-    public void applyLimit(Integer limit, Criteria criteria) {
-        if (limit != null) {
-            criteria.addSql(" 1 LIMIT 0," + limit.intValue()); // 1 has to be there because the criteria is ANDed
-        }
-    }
-    
-    public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
-  		PreparedStatement statement = null;
-  		ResultSet resultSet = null;
-  		try {
-  			Connection connection = persistenceBroker.serviceConnectionManager().getConnection();
-  			statement = connection.prepareStatement("INSERT INTO " + sequenceName + " VALUES (NULL);");
-  			statement.executeUpdate();
-  			statement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
-  			resultSet = statement.executeQuery();
-
-  			if (!resultSet.next()) {
-  				throw new RuntimeException("Error retrieving next option id for action list from sequence.");
-  			}
-  			return new Long(resultSet.getLong(1));
-  		} catch (SQLException e) {
-  			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
-  		} catch (LookupException e) {
-  			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
-  		} finally {
-  			if (statement != null) {
-  				try {
-  					statement.close();
-  				} catch (SQLException e) {
-  				}
-  			}
-  			if (resultSet != null) {
-  				try {
-  					resultSet.close();
-  				} catch (SQLException e) {
-  				}
-  			}
-  		}
-  	}
-    
-    public Long getNextValSQL(String sequenceName, EntityManager entityManager) {
-        entityManager.createNativeQuery("INSERT INTO " + sequenceName + " VALUES (NULL);").executeUpdate();
-        return new Long(((BigInteger) entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult()).longValue());           
-    }
-
-    public boolean isSITCacheSupported() {
-    	return false;
-    }
-
-    public String toString() {
-        return "[MySQLPlatform]";
-    }
-    
-    public String getSelectForUpdateSuffix(long waitMillis) {
-        return "for update";
-    }
-    
-    public String getDateFormatString(String dateFormatString) {
-        String newString = "";
-        if ("yyyy-mm-dd".equalsIgnoreCase(dateFormatString)) {
-            newString = "'%Y-%m-%d'";
-        }
-        else if ("DD/MM/YYYY HH12:MI:SS PM".equalsIgnoreCase(dateFormatString)) {
-            newString = "'%d/%m/%Y %r'";
-        }
-        return newString;
-    }
-
-}
+/**
+ * Use {@link MySQLDatabasePlatform} instead.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+@Deprecated
+public class MySQLPlatform extends MySQLDatabasePlatform {}

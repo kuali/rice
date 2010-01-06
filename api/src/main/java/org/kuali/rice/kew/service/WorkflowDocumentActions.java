@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,14 +26,14 @@ import org.kuali.rice.kew.exception.WorkflowException;
 /**
  * A remotable service which provides an API for actions on documents.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface WorkflowDocumentActions {
 
     public RouteHeaderDTO acknowledgeDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO approveDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
-    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException;
-    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String targetPrincipalId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException;
+    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeader, String actionRequested, String nodeName, String annotation, String groupId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException;
     public RouteHeaderDTO cancelDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
     public RouteHeaderDTO clearFYIDocument(String principalId, RouteHeaderDTO routeHeader) throws WorkflowException;
     public RouteHeaderDTO completeDocument(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
@@ -51,6 +51,8 @@ public interface WorkflowDocumentActions {
     public RouteHeaderDTO superUserCancel(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
 
     public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException;
+    
+    public RouteHeaderDTO placeInExceptionRouting(String principalId, RouteHeaderDTO routeHeader, String annotation) throws WorkflowException;
 
     // Deprecated as of 2.1 //
 

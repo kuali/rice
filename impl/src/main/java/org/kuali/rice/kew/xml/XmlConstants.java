@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@ import org.jdom.Namespace;
 /**
  * Constants for various XML namespaces, elements and attributes for the various parsers.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlConstants {
 
@@ -71,12 +71,17 @@ public interface XmlConstants {
     public static final String SERVICE_NAMESPACE = "serviceNamespace";
     public static final String POST_PROCESSOR_NAME = "postProcessorName";
     public static final String SUPER_USER_WORKGROUP_NAME = "superUserWorkgroupName";
+    public static final String SUPER_USER_GROUP_NAME = "superUserGroupName";
     public static final String BLANKET_APPROVE_WORKGROUP_NAME = "blanketApproveWorkgroupName";
+    public static final String BLANKET_APPROVE_GROUP_NAME = "blanketApproveGroupName";
     public static final String BLANKET_APPROVE_POLICY = "blanketApprovePolicy";
     public static final String REPORTING_WORKGROUP_NAME = "reportingWorkgroupName";
+    public static final String REPORTING_GROUP_NAME = "reportingGroupName";
     public static final String DEFAULT_EXCEPTION_WORKGROUP_NAME = "defaultExceptionWorkgroupName";
+    public static final String DEFAULT_EXCEPTION_GROUP_NAME = "defaultExceptionGroupName";
     public static final String DOC_HANDLER = "docHandler";
     public static final String HELP_DEFINITION_URL = "helpDefinitionURL";
+    public static final String DOC_SEARCH_HELP_URL = "docSearchHelpURL";
     public static final String NOTIFICATION_FROM_ADDRESS = "notificationFromAddress";
     public static final String CUSTOM_EMAIL_STYLESHEET = "emailStylesheet";
     public static final String POLICIES = "policies";
@@ -90,11 +95,15 @@ public interface XmlConstants {
     public static final String ROUTE_NODES = "routeNodes";
     public static final String BRANCH = "branch";
     public static final String EXCEPTION_WORKGROUP_NAME = "exceptionWorkgroupName";
+    public static final String EXCEPTION_WORKGROUP = "exceptionWorkgroup";
+    public static final String EXCEPTION_GROUP_NAME = "exceptionGroupName";
     public static final String ACTIVATION_TYPE = "activationType";
     public static final String FINAL_APPROVAL = "finalApproval";
     public static final String MANDATORY_ROUTE = "mandatoryRoute";
     public static final String ROUTE_MODULE = "routeModule";
     public static final String NEXT_NODE = "nextNode";
+    public static final String APP_DOC_STATUSES = "validApplicationStatuses";
+    public static final String STATUS = "status";
 
     // rules
     public static final String RULES = "rules";
@@ -102,7 +111,7 @@ public interface XmlConstants {
     public static final String EXPRESSION = "expression";
     public static final String FROM_DATE = "fromDate";
     public static final String TO_DATE = "toDate";
-    public static final String IGNORE_PREVIOUS = "ignorePrevious";
+    public static final String FORCE_ACTION = "forceAction";
     public static final String RESPONSIBILITIES = "responsibilities";
     public static final String RESPONSIBILITY = "responsibility";
     public static final String RESPONSIBILITY_ID = "responsibilityId";
@@ -124,7 +133,6 @@ public interface XmlConstants {
     public static final String PARENT_RESPONSIBILITY = "parentResponsibility";
     public static final String PARENT_RULE_NAME = "parentRuleName";
 
-    // workgroups, most of the elements are not known to the core and are dictated by the institutional plugin
     public static final String GROUPS = "groups";
     public static final String GROUP = "group";
     public static final String ID = "id";
@@ -140,10 +148,6 @@ public interface XmlConstants {
     public static final String GROUP_ID = "groupId";
     public static final String GROUP_NAME = "groupName";
 
-    // workgroup types
-    public static final String WORKGROUP_TYPES = "workgroupTypes";
-    public static final String WORKGROUP_TYPE = "workgroupType";
-
     // rule templates
     public static final String RULE_TEMPLATES = "ruleTemplates";
     public static final String RULE_TEMPLATE = "ruleTemplate";
@@ -153,7 +157,6 @@ public interface XmlConstants {
     public static final String ATTRIBUTES = "attributes";
     public static final String ATTRIBUTE = "attribute";
     public static final String RULE_DEFAULTS = "ruleDefaults";
-    public static final String RULE_INSTRUCTIONS = "ruleInstructions";
     public static final String DEFAULT_ACTION_REQUESTED = "defaultActionRequested";
     public static final String SUPPORTS_COMPLETE = "supportsComplete";
     public static final String SUPPORTS_APPROVE = "supportsApprove";
@@ -166,6 +169,10 @@ public interface XmlConstants {
     public static final String CLASS_NAME = "className";
     public static final String ROUTING_CONFIG = "routingConfig";
     public static final String SEARCHING_CONFIG = "searchingConfig";
+	public static final String SEARCH_RESULT_CONFIG = "searchResultConfig";
+    public static final String RESOLVER_CONFIG = "resolverConfig";
+    public static final String IS_MEMBER_OF_WORKGROUP = "isMemberOfWorkgroup";
+    public static final String IS_MEMBER_OF_GROUP = "isMemberOfGroup";
 
     // help
     public static final String HELP_ENTRIES = "helpEntries";

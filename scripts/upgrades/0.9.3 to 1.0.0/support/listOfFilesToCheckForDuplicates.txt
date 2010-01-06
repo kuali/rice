@@ -1,0 +1,12 @@
+KEWSpringBeans.xml
+KNSSpringBeans.xml
+KENSpringBeans.xml
+CommonSpringBeans.xml
+KCBSpringBeans.xml
+KEWJPASpringBeans.xml
+KEWOJBSpringBeans.xml
+KIMImplementationSpringBeans.xml
+KIMInterfaceSpringBeans.xml
+KSBSpringBeans.xml
+KSBJPASpringBeans.xml
+KSBOJBSpringBeans.xml

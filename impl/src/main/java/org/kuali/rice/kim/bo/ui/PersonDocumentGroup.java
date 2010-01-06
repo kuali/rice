@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,24 +15,29 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Entity
 @Table(name="KRIM_PND_GRP_PRNCPL_MT")
 public class PersonDocumentGroup extends KimDocumentBoBase {
+	private static final long serialVersionUID = -1551337026170706411L;
 	@Id
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
@@ -47,13 +52,27 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	protected String namespaceCode;
 
 	protected String principalId;
-	protected KimTypeImpl kimGroupType;
+	@Transient
+	protected transient KimTypeInfo kimGroupType = new KimTypeInfo();
 	protected String kimTypeId;
 	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
+	protected Date activeFromDate;
 	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
+	protected Date activeToDate;
 
+	/**
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected LinkedHashMap toStringMapper() {
+		LinkedHashMap m = super.toStringMapper();
+		m.put( "groupMemberId", groupMemberId );
+		m.put( "groupId", groupId );
+		m.put( "principalId", principalId );
+		return m;
+	}
+	
 	public String getGroupId() {
 		return this.groupId;
 	}
@@ -70,12 +89,11 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 		this.groupName = groupName;
 	}
 
-	public KimTypeImpl getKimGroupType() {
-		return this.kimGroupType;
-	}
-
-	public void setKimGroupType(KimTypeImpl kimGroupType) {
-		this.kimGroupType = kimGroupType;
+	public KimTypeInfo getKimGroupType() {
+		if ( kimGroupType == null || !StringUtils.equals( kimGroupType.getKimTypeId(), kimTypeId ) ) {
+			kimGroupType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		}
+		return kimGroupType;
 	}
 
 	public String getKimTypeId() {
@@ -118,20 +136,28 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 		this.namespaceCode = namespaceCode;
 	}
 
-	public Timestamp getActiveFromDate() {
+	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	public void setActiveFromDate(Timestamp activeFromDate) {
+	public void setActiveFromDate(Date activeFromDate) {
 		this.activeFromDate = activeFromDate;
 	}
 
-	public Timestamp getActiveToDate() {
+	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 
-	public void setActiveToDate(Timestamp activeToDate) {
+	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;
+	}
+	/**
+	 * Returns active if the current time is between the from and to dates.  Null dates are 
+	 * considered to indicate an open range.
+	 */
+	public boolean isActive() {
+		long now = System.currentTimeMillis();		
+		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
 }

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+<!--
+	<bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
+-->
+
+	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/kim-test-config.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="config" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+      <property name="defaultTimeout" value="${transaction.timeout}"/>
+    </bean>
+
+	<bean id="dataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+		<property name="transactionManager" ref="jotm" />
+		<property name="driverClassName" value="${datasource.driver.name}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="maxSize" value="${datasource.pool.maxSize}" />
+		<property name="minSize" value="${datasource.pool.minSize}" />
+		<property name="maxWait" value="${datasource.pool.maxWait}" />
+		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+	</bean>
+
+    <bean id="kimNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxActive" value="${datasource.pool.maxActive}"/>
+        <property name="minIdle" value="${datasource.minIdle}" />
+        <property name="initialSize" value="${datasource.initialSize}"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
+    </bean>
+
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+		<property name="serviceNamespace" value="KIM" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="nonTransactionalDataSource" ref="kimNonTransactionalDataSource" />
+		<property name="transactionManager" ref="jotm" />
+		<property name="userTransaction" ref="jotm" />
+		<property name="rootConfig" ref="config" />
+		<property name="ksbConfigurer">
+			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+				<property name="serviceServletUrl" value="${serviceServletUrl}" />
+			</bean>
+        </property>
+		<property name="knsConfigurer">
+			<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+        </property>
+		<property name="kimConfigurer">
+			<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
+		</property>
+		<property name="kewConfigurer">
+            <bean class="org.kuali.rice.kew.config.KEWConfigurer"/>
+        </property>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
+		<property name="userTransaction">
+			<ref local="jotm" />
+		</property>
+		<property name="transactionManager">
+			<ref local="jotm" />
+		</property>
+	</bean>	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+	</bean>
+</beans>

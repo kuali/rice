@@ -40,7 +40,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
  * called and the result cached for future use.
  * end Kuali Foundation modification
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 2004.10.07
  */
 public class MethodCacheInterceptor implements MethodInterceptor, InitializingBean {
@@ -281,13 +281,15 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
      * @param cacheKey - key for method signature and parameters - see buildCacheKey
      */
     public void removeCacheKey(String cacheKey) {
-      if (!containsCacheKey(cacheKey)) {
-          return;
-      }
+    	if (!containsCacheKey(cacheKey)) {
+    		return;
+      	}
       
-      LOG.debug("removing method cache for key: " + cacheKey);
-      cache.cancelUpdate(cacheKey);
-      cache.flushEntry(cacheKey);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("removing method cache for key: " + cacheKey);
+		}
+		cache.cancelUpdate(cacheKey);
+		cache.flushEntry(cacheKey);
     }
     
     // Kuali Foundation modification: removed getCacheKey(String, String, Object[])

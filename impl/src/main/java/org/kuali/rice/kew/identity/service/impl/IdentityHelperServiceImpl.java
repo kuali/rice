@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,14 +34,14 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityHelperServiceImpl implements IdentityHelperService {
@@ -65,7 +65,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 
 	public String getIdForGroupName(String namespace, String groupName) {
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
 		if (group == null) {
 			throw new RiceRuntimeException("Given namespace of '" + namespace + "' and name of '" + groupName + "' was invalid.  Failed to lookup a corresponding group ID.");
 		}
@@ -94,8 +94,8 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		return principal;
 	}
 
-	public KimGroup getGroupByName(String namespaceCode, String name) {
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, name);
+	public Group getGroupByName(String namespaceCode, String name) {
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, name);
 		if (group == null) {
 			throw new RiceRuntimeException("Could not locate a group with the given namspace of '" + namespaceCode + "' and group name of '" + name + "'");
 		}
@@ -127,15 +127,15 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 
-	public KimGroup getGroup(String groupId) {
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+	public Group getGroup(String groupId) {
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		if (group == null) {
 			throw new RiceRuntimeException("Could not locate a group with the given groupId of " + groupId);
 		}
 		return group;
 	}
 
-	public KimGroup getGroup(GroupId groupId) {
+	public Group getGroup(GroupId groupId) {
 		if (groupId == null || groupId.isEmpty()) {
 			return null;
 		} else if (groupId instanceof WorkflowGroupId) {
@@ -152,7 +152,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		} else if (groupId instanceof WorkflowGroupId) {
 			return ((WorkflowGroupId)groupId).getGroupId().toString();
 		} else if (groupId instanceof GroupNameId) {
-			KimGroup group = getGroup(groupId);
+			Group group = getGroup(groupId);
 			return group.getGroupId();
 		}
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
@@ -194,7 +194,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public Recipient getGroupRecipient(String groupId) {
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
 		return new KimGroupRecipient(group);
 	}
 	

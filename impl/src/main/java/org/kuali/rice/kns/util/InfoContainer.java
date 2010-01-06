@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,11 +21,11 @@ import java.util.Set;
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class InfoContainer extends MessageContainer {
-	public InfoContainer(ErrorMap errorMap) {
+	public InfoContainer(MessageMap errorMap) {
 		super(errorMap);
 	}
 	
@@ -34,7 +34,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	public int getMessageCount() {
-		return getErrorMap().getInfoCount();
+		return getMessageMap().getInfoCount();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	public List<String> getMessagePropertyList() {
-		return getErrorMap().getPropertiesWithInfo();
+		return getMessageMap().getPropertiesWithInfo();
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	protected Set<String> getMessagePropertyNames() {
-		return getErrorMap().getAllPropertiesWithInfo();
+		return getMessageMap().getAllPropertiesWithInfo();
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class InfoContainer extends MessageContainer {
 	 */
 	@Override
 	protected List getMessagesForProperty(String propertyName) {
-		return getErrorMap().getInfoMessagesForProperty(propertyName);
+		return getMessageMap().getInfoMessagesForProperty(propertyName);
 	}
 
 }

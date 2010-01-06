@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,32 +20,28 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  *
  */
 @Entity
-@Table(name="KRIM_PND_DLGN_MT")
+@Table(name="KRIM_PND_DLGN_T")
 public class RoleDocumentDelegation extends KimDocumentBoBase {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name="DLGN_ID")
 	protected String delegationId;
-	
+
 	@Column(name="ROLE_ID")
 	protected String roleId;
 
@@ -56,18 +52,14 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 	protected String delegationTypeCode;
 
 	private List<RoleDocumentDelegationMember> members = new TypedArrayList(RoleDocumentDelegationMember.class);
-	
+
 	private RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
-	
+
 	protected List<KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
-	
-	@ManyToOne(targetEntity=KimTypeImpl.class,fetch=FetchType.LAZY)
-	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
-	protected KimTypeImpl kimType; 
-	
+
 	/**
 	 * This overridden method ...
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@SuppressWarnings("unchecked")
@@ -94,14 +86,6 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 
 	public void setKimTypeId(String typeId) {
 		this.kimTypeId = typeId;
-	}
-
-	public KimTypeImpl getKimType() {
-		return this.kimType;
-	}
-
-	public void setKimType(KimTypeImpl kimType) {
-		this.kimType = kimType;
 	}
 
 	public String getDelegationTypeCode() {

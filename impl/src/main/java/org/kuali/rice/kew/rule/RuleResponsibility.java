@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -36,8 +37,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -47,7 +48,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * identify the appropriate responsibile parties to generate
  * {@link ActionRequestValue}s to.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_RSP_T")
@@ -88,7 +89,7 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
     	return null;
     }
 
-    public KimGroup getGroup() {
+    public Group getGroup() {
         if (isUsingGroup()) {
         	return KIMServiceLocator.getIdentityManagementService().getGroup(ruleResponsibilityName);
         }
@@ -184,24 +185,24 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
         RuleResponsibility ruleResponsibilityClone = new RuleResponsibility();
         ruleResponsibilityClone.setApprovePolicy(getApprovePolicy());
         if (actionRequestedCd != null) {
-            ruleResponsibilityClone.setActionRequestedCd(new String(actionRequestedCd));
+            ruleResponsibilityClone.setActionRequestedCd(actionRequestedCd);
         }
         if (ruleResponsibilityKey != null && preserveKeys) {
-            ruleResponsibilityClone.setRuleResponsibilityKey(new Long(ruleResponsibilityKey.longValue()));
+            ruleResponsibilityClone.setRuleResponsibilityKey(ruleResponsibilityKey);
         }
 
         if (responsibilityId != null) {
-            ruleResponsibilityClone.setResponsibilityId(new Long(responsibilityId.longValue()));
+            ruleResponsibilityClone.setResponsibilityId(responsibilityId);
         }
 
         if (ruleResponsibilityName != null) {
-            ruleResponsibilityClone.setRuleResponsibilityName(new String(ruleResponsibilityName));
+            ruleResponsibilityClone.setRuleResponsibilityName(ruleResponsibilityName);
         }
         if (ruleResponsibilityType != null) {
-            ruleResponsibilityClone.setRuleResponsibilityType(new String(ruleResponsibilityType));
+            ruleResponsibilityClone.setRuleResponsibilityType(ruleResponsibilityType);
         }
         if (priority != null) {
-            ruleResponsibilityClone.setPriority(new Integer(priority.intValue()));
+            ruleResponsibilityClone.setPriority(priority);
         }
 //        if (delegationRules != null) {
 //            for (Iterator iter = delegationRules.iterator(); iter.hasNext();) {
@@ -286,6 +287,20 @@ public class RuleResponsibility extends KewPersistableBusinessObjectBase {
                Utilities.equals(priority, pred.getPriority()) &&
                Utilities.equals(approvePolicy, pred.getApprovePolicy());
     }
+    
+    /**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+		.append(this.actionRequestedCd)
+		.append(this.approvePolicy)
+		.append(this.priority)
+		.append(this.ruleResponsibilityName).toHashCode();
+	}
+    
+    
 
     @Override
 	protected LinkedHashMap toStringMapper() {

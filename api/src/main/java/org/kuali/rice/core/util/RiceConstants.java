@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,13 +21,13 @@ import java.text.SimpleDateFormat;
 /**
  * This is a class to hold constant values that will be used across multiple modules of Rice
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RiceConstants {
+public class RiceConstants extends JSTLConstants {
 
     private static final long serialVersionUID = 3625085403351858951L;
 
-	public static final String DB_PLATFORM = "enDbPlatform";
+	public static final String DB_PLATFORM = "dbPlatform";
 
     public static final String RICE_JPA_ENABLED = "rice.jpa.enabled";
     public static final String JPA_ENABLED_SUFFIX = ".jpa.enabled";
@@ -50,7 +50,6 @@ public class RiceConstants {
 	public static final String SERVER_DATASOURCE_OBJ = "serverDatasource";
 	public static final String TRANSACTION_MANAGER_OBJ = "transactionManager";
 	public static final String USER_TRANSACTION_OBJ = "userTransaction";
-	public static final String DEFAULT_NOTE_CLASS = "default.note.class";
 	public static final String M_BEANS = "mBeans";
 	public static final String ALT_SPRING_FILE = "config.spring.file";
 	public static final String ALT_OJB_FILE	= "config.obj.file";
@@ -85,4 +84,6 @@ public class RiceConstants {
     }
 
 	public static final long NO_WAIT = 0;
+
+	public static final String RICE_JAXWS_TARGET_NAMESPACE_BASE = "http://rice.kuali.org/wsdl";
 }

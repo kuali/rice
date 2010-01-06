@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Copyright 2005-2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,14 +18,18 @@ package org.kuali.rice.kns.service.impl;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.kuali.rice.kns.service.DateTimeService;
-import org.springframework.transaction.annotation.Transactional;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the service implementation for a DateTime structure. This is
@@ -33,24 +37,93 @@ import org.springframework.transaction.annotation.Transactional;
  */
 //@Transactional
 public class DateTimeServiceImpl implements DateTimeService {
-	private String[] sqlDateFormats;
+	protected String[] stringToDateFormats;
+	protected String[] stringToTimestampFormats;
+	protected String dateToStringFormatForUserInterface;
+	protected String timestampToStringFormatForUserInterface;
+	protected String dateToStringFormatForFileName;
+	protected String timestampToStringFormatForFileName;
 
-	private String stringDateFormat;
+	public synchronized void initializeDateTimeService() {
+		ParameterService parameterService = KNSServiceLocator.getParameterService();
+		if (stringToDateFormats == null) {
+			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE,
+					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.STRING_TO_DATE_FORMATS);
 
-	private String stringDateTimeFormat;
+			stringToDateFormats = new String[dateFormatParams.size()];
 
+			for (int i = 0; i < dateFormatParams.size(); i++) {
+				String dateFormatParam = dateFormatParams.get(i);
+				if (StringUtils.isBlank(dateFormatParam)) {
+					throw new IllegalArgumentException("KR-NS/All/STRING_TO_DATE_FORMATS parameter contains a blank semi-colon delimited substring");
+				}
+				else {
+					// try to create a new SimpleDateFormat to try to detect illegal patterns
+					new SimpleDateFormat(dateFormatParam);
+					stringToDateFormats[i] = dateFormatParam;
+				}
+			}
+		}
+
+		if (stringToTimestampFormats == null) {
+			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE,
+					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.STRING_TO_TIMESTAMP_FORMATS);
+
+			stringToTimestampFormats = new String[dateFormatParams.size()];
+
+			for (int i = 0; i < dateFormatParams.size(); i++) {
+				String dateFormatParam = dateFormatParams.get(i);
+				if (StringUtils.isBlank(dateFormatParam)) {
+					throw new IllegalArgumentException("KR-NS/All/STRING_TO_TIMESTAMP_FORMATS parameter contains a blank semi-colon delimited substring");
+				}
+				else {
+					// try to create a new SimpleDateFormat to try to detect illegal patterns
+					new SimpleDateFormat(dateFormatParam);
+					stringToTimestampFormats[i] = dateFormatParam;
+				}
+			}
+		}
+
+		if (dateToStringFormatForUserInterface == null) {
+			dateToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
+					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(dateToStringFormatForUserInterface);
+		}
+
+		if (timestampToStringFormatForUserInterface == null) {
+			timestampToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
+					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(timestampToStringFormatForUserInterface);
+		}
+
+		if (dateToStringFormatForFileName == null) {
+			dateToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
+					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(dateToStringFormatForFileName);
+		}
+
+		if (timestampToStringFormatForFileName == null) {
+			timestampToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
+					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(timestampToStringFormatForFileName);
+		}
+	}
 	/**
 	 * @see org.kuali.rice.kns.service.DateTimeService#toDateString(java.util.Date)
 	 */
 	public String toDateString(Date date) {
-		return toString(date, stringDateFormat);
+		return toString(date, dateToStringFormatForUserInterface);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.service.DateTimeService#toDateTimeString(java.util.Date)
 	 */
 	public String toDateTimeString(Date date) {
-		return toString(date, stringDateTimeFormat);
+		return toString(date, timestampToStringFormatForUserInterface);
 	}
 
 	/**
@@ -116,17 +189,22 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
+	 * Formats strings into dates using the format string in the KR-NS/All/STRING_TO_DATE_FORMATS parameter
+	 *
 	 * @see org.kuali.rice.kns.service.DateTimeService#convertToDate(java.lang.String)
 	 */
 	public Date convertToDate(String dateString) throws ParseException {
-		return parse(dateString, stringDateFormat);
+		return parseAgainstFormatArray(dateString, stringToDateFormats);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.service.DateTimeService#convertToDateTime(java.lang.String)
 	 */
 	public Date convertToDateTime(String dateTimeString) throws ParseException {
-		return parse(dateTimeString, stringDateTimeFormat);
+		if (StringUtils.isBlank(dateTimeString)) {
+			throw new IllegalArgumentException("invalid (blank) date/time string");
+		}
+		return parseAgainstFormatArray(dateTimeString, stringToTimestampFormats);
 	}
 
 	/**
@@ -135,8 +213,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 	public java.sql.Timestamp convertToSqlTimestamp(String timeString)
 			throws ParseException {
 		if (!StringUtils.isBlank(timeString)) {
-			return new java.sql.Timestamp(parse(timeString, stringDateTimeFormat)
-                    .getTime());
+			return new java.sql.Timestamp(convertToDateTime(timeString).getTime());
 		}
         return null;
 	}
@@ -149,27 +226,26 @@ public class DateTimeServiceImpl implements DateTimeService {
 		if (StringUtils.isBlank(dateString)) {
 			throw new IllegalArgumentException("invalid (blank) timeString");
 		}
+		Date date = parseAgainstFormatArray(dateString, stringToDateFormats);
+		return new java.sql.Date(date.getTime());
+	}
+
+	protected Date parseAgainstFormatArray(String dateString, String[] formats) throws ParseException {
 		dateString = dateString.trim();
-		java.sql.Date date = null;
-		StringBuffer exceptionMessage = new StringBuffer("Date string '")
+		StringBuffer exceptionMessage = new StringBuffer("Date or date/time string '")
 				.append(dateString)
-				.append(
-						"' could not be converted using any of the accepted formats: ");
-		for (String dateFormatString : sqlDateFormats) {
+				.append("' could not be converted using any of the accepted formats: ");
+		for (String dateFormatString : formats) {
 			try {
-				return new java.sql.Date(parse(dateString, dateFormatString)
-						.getTime());
+				return parse(dateString, dateFormatString);
 			} catch (ParseException e) {
 				exceptionMessage.append(dateFormatString).append(
 						" (error offset=").append(e.getErrorOffset()).append(
 						"),");
 			}
 		}
-		if (date == null) {
-			throw new ParseException(exceptionMessage.toString().substring(0,
-					exceptionMessage.length() - 1), 0);
-		}
-		return date;
+		throw new ParseException(exceptionMessage.toString().substring(0,
+				exceptionMessage.length() - 1), 0);
 	}
 
 	/**
@@ -212,57 +288,46 @@ public class DateTimeServiceImpl implements DateTimeService {
 		return dateDiff;
 	}
 
-	private Date parse(String dateString, String pattern) throws ParseException {
+	protected Date parse(String dateString, String pattern) throws ParseException {
 		if (!StringUtils.isBlank(dateString)) {
 			DateFormat dateFormat = new SimpleDateFormat(pattern);
 			dateFormat.setLenient(false);
-			return dateFormat.parse(dateString);
+			ParsePosition parsePosition = new ParsePosition(0);
+			Date testDate = dateFormat.parse(dateString, parsePosition);
+
+			// Ensure that the entire date String can be parsed by the current format.
+			if (testDate == null) {
+				throw new ParseException("The date that you provided is invalid.",parsePosition.getErrorIndex());
+			} else if (parsePosition.getIndex() != dateString.length()) {
+				throw new ParseException("The date that you provided is invalid.",parsePosition.getIndex());
+			}
+
+			// Ensure that the date's year lies between 1000 and 9999, to help prevent database-related date errors.
+			Calendar testCalendar = Calendar.getInstance();
+			testCalendar.setLenient(false);
+			testCalendar.setTime(testDate);
+			if (testCalendar.get(Calendar.YEAR) < 1000 || testCalendar.get(Calendar.YEAR) > 9999) {
+				throw new ParseException("The date that you provided is not between the years 1000 and 9999.",-1);
+			}
+			
+			return testDate;
 		}
 		return null;
 	}
 
 	/**
-	 * @param sqlDateFormats
-	 *            the sqlDateFormats to set
-	 */
-	public void setSqlDateFormats(
-			String[] sqlDateFormats) {
-		this.sqlDateFormats = sqlDateFormats;
-	}
-
-	/**
-	 * @param stringDateFormat
-	 *            the stringDateFormat to set
-	 */
-	public void setStringDateFormat(String stringDateFormat) {
-		this.stringDateFormat = stringDateFormat;
-	}
-
-	/**
-	 * @param stringDateTimeFormat
-	 *            the stringDateTimeFormat to set
-	 */
-	public void setStringDateTimeFormat(String stringDateTimeFormat) {
-		this.stringDateTimeFormat = stringDateTimeFormat;
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.service.DateTimeService#toDateStringForFilename(java.util.Date)
 	 */
 	public String toDateStringForFilename(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(dateToStringFormatForFileName);
 		return dateFormat.format(date);
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.service.DateTimeService#toDateTimeStringForFilename(java.util.Date)
 	 */
 	public String toDateTimeStringForFilename(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HH-mm-ss-S");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(timestampToStringFormatForFileName);
 		return dateFormat.format(date);
 	}
 }

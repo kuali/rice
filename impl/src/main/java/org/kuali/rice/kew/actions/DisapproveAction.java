@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,10 +35,9 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -46,7 +45,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * Disapproves a document. This deactivates all requests on the document and sends
  * acknowlegde requests to anybody who had already completed or approved the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DisapproveAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DisapproveAction.class);
@@ -73,14 +72,15 @@ public class DisapproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+    	return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) {
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be disapproved";
         }
-        if (!isActionCompatibleRequest(actionRequests)) {
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the DISAPPROVE or DENY action";
         }
         return "";
@@ -175,7 +175,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
         if( !StringUtils.isBlank(groupName))
         {
-            KimGroup systemUserWorkgroup = KIMServiceLocator.getIdentityManagementService().
+            Group systemUserWorkgroup = KIMServiceLocator.getIdentityManagementService().
                 getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
 
             List<String> principalIds = KIMServiceLocator.

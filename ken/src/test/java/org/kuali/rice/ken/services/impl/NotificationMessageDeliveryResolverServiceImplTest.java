@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -43,7 +43,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 
 /**
  * Tests NotificationMessageDeliveryResolverServiceImpl
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 // Make sure KCB has some deliverers configured for the test users, so message deliveries get created and the messages aren't removed
@@ -51,16 +51,16 @@ import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 		@UnitTestData(
 				order = { UnitTestData.Type.SQL_STATEMENTS },
 				sqlStatements = {
-						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (1, 'TestUser6', 'KEW', 'mock', 0)"),
-						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (2, 'TestUser1', 'KEW', 'mock', 0)"),
-						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (3, 'TestUser2', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (1, 'testuser6', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (2, 'testuser1', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (3, 'testuser2', 'KEW', 'mock', 0)"),
 						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (4, 'quickstart', 'KEW', 'mock', 0)"),
-						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (5, 'TestUser5', 'KEW', 'mock', 0)"),
-						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (6, 'TestUser4', 'KEW', 'mock', 0)")
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (5, 'testuser5', 'KEW', 'mock', 0)"),
+						@UnitTestSql("insert into KREN_RECIP_DELIV_T (RECIP_DELIV_ID, RECIP_ID, CHNL, NM, VER_NBR) values (6, 'testuser4', 'KEW', 'mock', 0)")
 				}
 		)
 )
-public class NotificationMessageDeliveryResolverServiceImplTest extends NotificationTestCaseBase {
+public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestCase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data
     private static final int EXPECTED_SUCCESSES = 6;
@@ -112,7 +112,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends Notifica
     /**
      * Test resolution of notifications
      * This test resolves UNRESOLVED notification ids #3 and #4 in the test data.  An artificial exception is generated for notification #3.
-     * For notification #4, the recipients are defined to be the Rice Team and TestUser1.  This results in 8 recipient resolutions, two of which
+     * For notification #4, the recipients are defined to be the Rice Team and testuser1.  This results in 8 recipient resolutions, two of which
      * are Email deliveries for jaf30 and ag266.
      * If you change the test data this test should be updated to reflect the expected results.
      */

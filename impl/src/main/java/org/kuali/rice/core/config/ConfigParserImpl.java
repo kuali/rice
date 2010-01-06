@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  * in the order in which they are encountered.  This class relies on Spring for resource
  * loading and Apache Commons Lang for variable replacement.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigParserImpl implements ConfigParser {
     // keep the same random
@@ -63,7 +63,7 @@ public class ConfigParserImpl implements ConfigParser {
     /**
      * A StrLookup implementation that delegates to System properties if the key is not
      * found in the supplied map.
-     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static class SystemPropertiesDelegatingStrLookup extends StrLookup {
         private final Map map;

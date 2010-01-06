@@ -1,13 +1,13 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
- * 
- * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Copyright 2005-2007 The Kuali Foundation
+ *
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.opensource.org/licenses/ecl1.php
- * 
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,15 +20,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.struts.action.ActionForm;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * Struts form that accepts uploaded files (in the form of <code>FormFile</code>s)
  * @see org.kuali.rice.kew.batch.web.IngesterAction
  * @see org.apache.struts.upload.FormFile
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IngesterForm extends ActionForm {
+public class IngesterForm extends KualiForm {
 
 	private static final long serialVersionUID = -2847217233600977960L;
 	// this is sort of weak but the alternative is to linearly

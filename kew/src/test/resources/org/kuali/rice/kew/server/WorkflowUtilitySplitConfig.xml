@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
 			<name>UserInRouteLog_Split</name>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>none</docHandler>
 			<routePaths>
 				<routePath>
@@ -52,7 +67,7 @@
             		<ruleName>AfterSplitRule</ruleName>
 				</requests>
 				<split name="Split">
-				  <type>org.kuali.rice.kew.server.WorkflowUtilityTest$TestSplitNode</type>
+				  <type>org.kuali.rice.kew.server.TestSplitNode</type>
 				</split>
 				<join name="Join"/>
 			</routeNodes>
@@ -63,7 +78,7 @@
 		    <name>BeforeSplitRule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>BeforeSplitRule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>ewestfal</principalName>
@@ -75,7 +90,7 @@
 		    <name>SplitLeft1Rule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>SplitLeft1Rule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>rkirkend</principalName>
@@ -87,7 +102,7 @@
 		    <name>SplitLeft2Rule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>SplitLeft2Rule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>bmcgough</principalName>
@@ -99,7 +114,7 @@
 		    <name>SplitRight1Rule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>SplitRight1Rule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>jhopf</principalName>
@@ -111,7 +126,7 @@
 		    <name>AfterSplitRule</name>
 			<documentType>UserInRouteLog_Split</documentType>
 			<description>AfterSplitRule</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>natjohns</principalName>

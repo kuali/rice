@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,9 +30,9 @@ import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -44,7 +44,7 @@ import org.kuali.rice.kim.service.PersonService;
  * <p>The current authenticated UserSession is stored in a ThreadLocal and can be
  * accessed using UserSession.getAuthenticatedUser().
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserSession implements Serializable {
 
@@ -68,11 +68,11 @@ public class UserSession implements Serializable {
 
     private KimPrincipal actualPrincipal;
     private Person actualPerson;
-    private Map<String, KimGroup> actualPrincipalGroups = new HashMap<String, KimGroup>();
+    private Map<String, Group> actualPrincipalGroups = new HashMap<String, Group>();
 
     private KimPrincipal backdoorPrincipal;
     private Person backdoorPerson;
-    private Map<String, KimGroup> backdoorPrincipalGroups = new HashMap<String, KimGroup>();
+    private Map<String, Group> backdoorPrincipalGroups = new HashMap<String, Group>();
 
     private KimPrincipal helpDeskActionListPrincipal;
     private Person helpDeskActionListPerson;
@@ -98,8 +98,8 @@ public class UserSession implements Serializable {
 			throw new RuntimeException( "Unable to create person object from the given principal ID: " + actualPrincipal.getPrincipalId() );
 		}
 		establishPreferencesForPrincipal(actualPrincipal);
-		List<? extends KimGroup> groups = getIdentityService().getGroupsForPrincipal(actualPrincipal.getPrincipalId());
-		for (KimGroup group : groups) {
+		List<? extends Group> groups = getIdentityService().getGroupsForPrincipal(actualPrincipal.getPrincipalId());
+		for (Group group : groups) {
 			actualPrincipalGroups.put(group.getGroupId(), group);
 		}
         this.nextObjectKey = 0;
@@ -228,8 +228,8 @@ public class UserSession implements Serializable {
         		return false;
         	}
         	this.backdoorPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
-        	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(backdoorPrincipal.getPrincipalId());
-    		for (KimGroup group : groups) {
+        	List<? extends Group> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(backdoorPrincipal.getPrincipalId());
+    		for (Group group : groups) {
     			backdoorPrincipalGroups.put(group.getGroupId(), group);
     		}
         	establishPreferencesForPrincipal(backdoorPrincipal);
@@ -264,13 +264,18 @@ public class UserSession implements Serializable {
         this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         if (this.preferences.isRequiresSave()) {
             LOG.info("Detected that user preferences require saving.");
-            KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
+            try {
+            	KEWServiceLocator.getPreferencesService().savePreferences(principal.getPrincipalId(), this.preferences);
+            } catch (Exception e) {
+            	LOG.warn("Failed to save preferences for user!  Likely user tried to log in from more than one browser at the same time.  Reloading preferences.");
+            }
             this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         }
     }
 
     protected boolean isProductionEnvironment() {
-    	return KEWConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(ConfigContext.getCurrentContextConfig().getEnvironment());
+    	return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
+    			ConfigContext.getCurrentContextConfig().getEnvironment());
     }
 
     public String addObject(Object object) {
@@ -292,7 +297,7 @@ public class UserSession implements Serializable {
     }
 
     public String getEmailAddress() {
-    	return getPerson().getEmailAddress();
+    	return getPerson().getEmailAddressUnmasked();
     }
 
     public int getNextObjectKey() {
@@ -311,7 +316,7 @@ public class UserSession implements Serializable {
         this.objectMap = objectMap;
     }
     public String getDisplayName() {
-    	return UserUtils.getDisplayableName(this, getPrincipal());
+        return getPersonService().getPerson(getPrincipalId()).getNameUnmasked();
     }
 
     /**
@@ -328,7 +333,7 @@ public class UserSession implements Serializable {
 
     public void removeAuthentication(Authentication authentication) {
     	getAuthentications().remove(authentication);
-    }
+    } 
 
     public boolean hasRole(String role) {
     	for (Iterator iterator = getAuthentications().iterator(); iterator.hasNext();) {
@@ -340,7 +345,7 @@ public class UserSession implements Serializable {
     	return false;
     }
 
-    public Map<String, KimGroup> getGroups() {
+    public Map<String, Group> getGroups() {
     	if (getBackdoorPrincipal() != null) {
     		return backdoorPrincipalGroups;
     	}
@@ -348,7 +353,7 @@ public class UserSession implements Serializable {
 	}
 
 	public boolean isMemberOfGroupWithName(String namespace, String groupName) {
-		for (KimGroup group : getGroups().values()) {
+		for (Group group : getGroups().values()) {
 			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getGroupName())) {
 				return true;
 			}

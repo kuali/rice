@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,8 +33,9 @@ import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
                at most one supportAttribute for each relationship should be defined as identifier="true"
  */
 public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
-
-    protected boolean identifier;
+    private static final long serialVersionUID = -1719022365280776405L;
+    
+	protected boolean identifier;
     
     public SupportAttributeDefinition() {}
 

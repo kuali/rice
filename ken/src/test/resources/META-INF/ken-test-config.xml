@@ -14,7 +14,7 @@
     <param name="use.kewXmlmlDataLoaderLifecycle">true</param>
     <param name="use.sqlDataLoaderLifecycle">true</param>
 
-    <param name="workflow.url">http://localhost:9912/${app.context.name}/en</param>
+    <param name="workflow.url">http://localhost:9912/${app.context.name}/kew</param>
     <param name="application.url">http://localhost:9912/${app.context.name}</param>
     <param name="serviceServletUrl">http://localhost:9912/${app.context.name}/remoting/</param>
 

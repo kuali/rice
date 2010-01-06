@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * <p>When loaded, Preferences could be in a state where they require being saved to the database.
  * If this is the case then {{@link #requiresSave} will evaluate to true.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Preferences implements Serializable {
 
@@ -41,7 +41,8 @@ public class Preferences implements Serializable {
     private String showActionRequested;
     private String showDateCreated;
     private String showDocumentStatus;
-    private String showDocType;
+    private String showAppDocStatus;
+	private String showDocType;
     private String showInitiator;
     private String showDocTitle;
     private String showWorkgroupRequest;
@@ -63,6 +64,7 @@ public class Preferences implements Serializable {
     private String useOutbox;
     private String showDateApproved;
     private String showCurrentNode;
+    private String primaryDelegateFilter;
  
     /**
      * @return Returns the colorApproved.
@@ -299,6 +301,19 @@ public class Preferences implements Serializable {
         this.showDocumentStatus = showDocumentStatus;
     }
     /**
+     * @return Returns the showAppDocumentStatus.
+     */
+    public String getShowAppDocStatus() {
+		return this.showAppDocStatus;
+	}
+    /**
+     * @param showAppDocStatus The showAppDocStatus to set.
+     */
+	public void setShowAppDocStatus(String showAppDocStatus) {
+		this.showAppDocStatus = showAppDocStatus;
+	}
+
+    /**
      * @return Returns the showInitiator.
      */
     public String getShowInitiator() {
@@ -399,5 +414,17 @@ public class Preferences implements Serializable {
 	 */
 	public void setShowCurrentNode(String currentNode) {
 		this.showCurrentNode = currentNode;
+	}
+	/**
+	 * @return the primaryDelegateFilter
+	 */
+	public String getPrimaryDelegateFilter() {
+		return this.primaryDelegateFilter;
+	}
+	/**
+	 * @param primaryDelegateFilter the primaryDelegateFilter to set
+	 */
+	public void setPrimaryDelegateFilter(String primaryDelegateFilter) {
+		this.primaryDelegateFilter = primaryDelegateFilter;
 	}
 }

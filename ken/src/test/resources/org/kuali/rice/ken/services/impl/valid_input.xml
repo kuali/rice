@@ -14,7 +14,7 @@
     <!-- who is the notification going to? -->
     <recipients>
         <group>KUALI:RiceTeam</group>
-        <user>TestUser2</user>
+        <user>testuser2</user>
     </recipients><!--  fyi or acknowledge -->
     <deliveryType>fyi</deliveryType><!-- optional date and time that a notification should be sent -->
     <!-- use this for scheduling a single future notification to happen -->

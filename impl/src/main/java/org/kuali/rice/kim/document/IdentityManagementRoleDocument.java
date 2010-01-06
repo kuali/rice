@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -34,23 +36,27 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementRoleDocument extends IdentityManagementTypeAttributeTransactionalDocument {
 
+	private static final long serialVersionUID = 1L;
 	// principal data
 	protected String roleId;
 	protected String roleTypeId;
 	protected String roleTypeName;
 	protected String roleNamespace = "";
 	protected String roleName = "";
+	protected String roleDescription = "";
+
 	protected boolean active = true;
 
 	protected boolean editing;
@@ -102,6 +108,20 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	}
 
 	/**
+	 * @return the roleDescription
+	 */
+	public String getRoleDescription() {
+		return this.roleDescription;
+	}
+
+	/**
+	 * @param roleDescription the roleDescription to set
+	 */
+	public void setRoleDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
+	}
+
+	/**
 	 * @return the roleNamespace
 	 */
 	public String getRoleNamespace() {
@@ -133,6 +153,16 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 * @return the roleTypeName
 	 */
 	public String getRoleTypeName() {
+		if ( roleTypeName == null ) {
+			if ( kimType != null ) {
+				roleTypeName = kimType.getName();
+			} else if ( roleTypeId != null ) {
+				setKimType( KIMServiceLocator.getTypeInfoService().getKimType(roleTypeId) );
+		        if ( kimType != null ) {
+		        	roleTypeName = kimType.getName();
+		        }
+			}
+		}
 		return this.roleTypeName;
 	}
 
@@ -194,6 +224,18 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		return this.members;
 	}
 	/**
+	 * @return the members
+	 */
+	public KimDocumentRoleMember getMember(String roleMemberId) {
+		if(StringUtils.isEmpty(roleMemberId)) return null;
+		for(KimDocumentRoleMember roleMember: getMembers()){
+			if(roleMemberId.equals(roleMember.getRoleMemberId()))
+				return roleMember;
+		}
+		return null;
+	}
+
+	/**
 	 * @param members the members to set
 	 */
 	public void setMembers(List<KimDocumentRoleMember> members) {
@@ -222,6 +264,12 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	 * @param members the members to set
 	 */
 	public void addMember(KimDocumentRoleMember member) {
+		SequenceAccessorService sas = getSequenceAccessorService();
+		Long nextSeq = sas.getNextAvailableSequenceNumber(
+				KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, 
+				KimDocumentRoleMember.class);
+		String roleMemberId = nextSeq.toString();
+		member.setRoleMemberId(roleMemberId);
 		setupMemberRspActions(member);
        	getMembers().add(member);
 	}
@@ -232,11 +280,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public KimDocumentRoleMember getBlankMember() {
 		KimDocumentRoleMember member = new KimDocumentRoleMember();
 		KimDocumentRoleQualifier qualifier;
-		for(String key : getDefinitions().keySet()) {
-        	qualifier = new KimDocumentRoleQualifier();
-        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-        	member.getQualifiers().add(qualifier);
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+	        	qualifier = new KimDocumentRoleQualifier();
+	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+	        	member.getQualifiers().add(qualifier);
+	        }
+		}
        	setupMemberRspActions(member);
        	return member;
 	}
@@ -247,11 +297,13 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public RoleDocumentDelegationMember getBlankDelegationMember() {
 		RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 		RoleDocumentDelegationMemberQualifier qualifier;
-		for(String key : getDefinitions().keySet()) {
-			qualifier = new RoleDocumentDelegationMemberQualifier();
-			setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
-        	member.getQualifiers().add(qualifier);
-        }
+		if(getDefinitions()!=null){
+			for(String key : getDefinitions().keySet()) {
+				qualifier = new RoleDocumentDelegationMemberQualifier();
+				setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
+	        	member.getQualifiers().add(qualifier);
+	        }
+		}
        	return member;
 	}
 
@@ -259,7 +311,11 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	member.getRoleRspActions().clear();
         for (KimDocumentRoleResponsibility roleResp: getResponsibilities()) {
         	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
-        		member.getRoleRspActions().add(getNewRespAction(roleResp));
+        		KimDocumentRoleResponsibilityAction action = new KimDocumentRoleResponsibilityAction();
+        		action.setRoleResponsibilityId("*");
+        		action.setRoleMemberId(member.getRoleMemberId());
+        		member.getRoleRspActions().add(action);
+        		break;
         	}        	
         }
     }
@@ -270,19 +326,24 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	}
     }
     
-    public void updateMembers(KimDocumentRoleResponsibility newResponsibility, IdentityManagementRoleDocumentForm roleDocumentForm){
-    	for(KimDocumentRoleMember member: roleDocumentForm.getRoleDocument().getMembers()){
-    		roleDocumentForm.getRoleDocument().setupMemberRspActions(newResponsibility, member);
+    public void updateMembers(KimDocumentRoleResponsibility newResponsibility){
+    	for(KimDocumentRoleMember member: getMembers()){
+    		setupMemberRspActions(newResponsibility, member);
     	}
     }
     
     public void setupMemberRspActions(KimDocumentRoleResponsibility roleResp, KimDocumentRoleMember member) {
-    	if (getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
-    		member.getRoleRspActions().add(getNewRespAction(roleResp));
+    	if ((member.getRoleRspActions()==null || member.getRoleRspActions().size()<1) && getResponsibilityService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
+    		KimDocumentRoleResponsibilityAction action = new KimDocumentRoleResponsibilityAction();
+    		action.setRoleResponsibilityId("*");
+    		action.setRoleMemberId(member.getRoleMemberId());
+    		if(member.getRoleRspActions()==null)
+    			member.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());
+    		member.getRoleRspActions().add(action);
     	}        	
     }
     
-    private void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {
+    protected void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		qualifier.setKimAttrDefnId(((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId());
     		//qualifier.refreshReferenceObject("kimAttribute");
@@ -293,29 +354,45 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	}
     }
     
-	/**
-	 * @see org.kuali.rice.kns.document.DocumentBase#handleRouteStatusChange()
-	 */
-	@Override
-	public void handleRouteStatusChange() {
-		super.handleRouteStatusChange();
-		if (getDocumentHeader().getWorkflowDocument().stateIsFinal()) {
+    /**
+     * @see org.kuali.rice.kns.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     */
+    @Override
+	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
+		super.doRouteStatusChange(statusChangeEvent);
+		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
 			KIMServiceLocator.getUiDocumentService().saveRole(this);
 		}
 	}
 
+	public void initializeDocumentForNewRole() {
+		if(StringUtils.isBlank(this.roleId)){
+			SequenceAccessorService sas = getSequenceAccessorService();
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					KimConstants.SequenceNames.KRIM_ROLE_ID_S, this.getClass());
+			this.roleId = nextSeq.toString();
+		}
+		if(StringUtils.isBlank(this.roleTypeId)) {
+			this.roleTypeId = "1";
+		}
+	}
+	
 	public String getRoleId(){
 		if(StringUtils.isBlank(this.roleId)){
-			this.roleId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S").toString();
+			initializeDocumentForNewRole();
 		}
 		return roleId;
 	}
 	
 	@Override
 	public void prepareForSave(){
+		SequenceAccessorService sas = getSequenceAccessorService();
+		
 		String roleId;
 		if(StringUtils.isBlank(getRoleId())){
-			roleId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S").toString();
+			Long nextSeq = sas.getNextAvailableSequenceNumber(
+					KimConstants.SequenceNames.KRIM_ROLE_ID_S, this.getClass()); 
+			roleId = nextSeq.toString();
 			setRoleId(roleId);
 		} else
 			roleId = getRoleId();
@@ -325,7 +402,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			for(KimDocumentRolePermission permission: getPermissions()){
 				permission.setRoleId(roleId);
 				if(StringUtils.isBlank(permission.getRolePermissionId())){
-					rolePermissionId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_PERM_ID_S").toString();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, 
+							KimDocumentRolePermission.class);
+					rolePermissionId = nextSeq.toString();
 					permission.setRolePermissionId(rolePermissionId);
 				}
 			}
@@ -334,13 +414,19 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			String roleResponsibilityId;
 			for(KimDocumentRoleResponsibility responsibility: getResponsibilities()){
 				if(StringUtils.isBlank(responsibility.getRoleResponsibilityId())){
-					roleResponsibilityId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ID_S").toString();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							KimConstants.SequenceNames.KRIM_ROLE_RSP_ID_S, 
+							KimDocumentRoleResponsibility.class);
+					roleResponsibilityId = nextSeq.toString();
 					responsibility.setRoleResponsibilityId(roleResponsibilityId);
 				}
 				responsibility.setRoleId(roleId);
 				if(!getResponsibilityService().areActionsAtAssignmentLevelById(responsibility.getResponsibilityId())){
 					if(StringUtils.isBlank(responsibility.getRoleRspActions().get(0).getRoleResponsibilityActionId())){
-						String roleResponsibilityActionId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S").toString();
+						Long nextSeq = sas.getNextAvailableSequenceNumber(
+								KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S,
+								KimDocumentRoleResponsibilityAction.class);
+						String roleResponsibilityActionId = nextSeq.toString();
 						responsibility.getRoleRspActions().get(0).setRoleResponsibilityActionId(roleResponsibilityActionId);
 					}
 					responsibility.getRoleRspActions().get(0).setRoleMemberId("*");
@@ -354,7 +440,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			for(KimDocumentRoleMember member: getMembers()){
 				member.setRoleId(roleId);
 				if(StringUtils.isBlank(member.getRoleMemberId())){
-					roleMemberId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S").toString();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S,
+							KimDocumentRoleMember.class);
+					roleMemberId = nextSeq.toString();
 					member.setRoleMemberId(roleMemberId);
 				}
 				for(KimDocumentRoleQualifier qualifier: member.getQualifiers()){
@@ -362,14 +451,20 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 				}
 				for(KimDocumentRoleResponsibilityAction roleRespAction: member.getRoleRspActions()){
 					if(StringUtils.isBlank(roleRespAction.getRoleResponsibilityActionId())){
-						roleResponsibilityActionId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_RSP_ACTN_ID_S").toString();
+						Long nextSeq = sas.getNextAvailableSequenceNumber(
+								KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S,
+								KimDocumentRoleResponsibilityAction.class);
+						roleResponsibilityActionId = nextSeq.toString();
 						roleRespAction.setRoleResponsibilityActionId(roleResponsibilityActionId);
 					}
 					roleRespAction.setRoleMemberId(member.getRoleMemberId());
 					roleRespAction.setDocumentNumber(getDocumentNumber());
-					for(KimDocumentRoleResponsibility responsibility: getResponsibilities()){
-						if(roleRespAction.getKimResponsibility().getResponsibilityId().equals(responsibility.getResponsibilityId()))
-							roleRespAction.setRoleResponsibilityId(responsibility.getRoleResponsibilityId());
+					if ( !StringUtils.equals( roleRespAction.getRoleResponsibilityId(), "*" ) ) {
+						for(KimDocumentRoleResponsibility responsibility: getResponsibilities()){
+							if( StringUtils.equals( roleRespAction.getKimResponsibility().getResponsibilityId(), responsibility.getResponsibilityId() ) ) {
+								roleRespAction.setRoleResponsibilityId(responsibility.getRoleResponsibilityId());
+							}
+						}
 					}
 				}
 			}
@@ -390,51 +485,6 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 				delegation.setRoleId(roleId);
 			}
 		}
-	}
-
-	private void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
-		RoleDocumentDelegation delegation;
-		if(KEWConstants.DELEGATION_PRIMARY.equals(delegationMember.getDelegationTypeCode())){
-			delegation = getPrimaryDelegation();
-		} else{
-			delegation = getSecondaryDelegation();
-		}
-		delegationMember.setDelegationId(delegation.getDelegationId());
-		delegation.getMembers().add(delegationMember);
-	}
-
-	private RoleDocumentDelegation getPrimaryDelegation(){
-		RoleDocumentDelegation primaryDelegation = null;
-		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationPrimary())
-				primaryDelegation = delegation;
-		}
-		if(primaryDelegation==null){
-			primaryDelegation = new RoleDocumentDelegation();
-			primaryDelegation.setDelegationId(getDelegationId());
-			primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
-			getDelegations().add(primaryDelegation);
-		}
-		return primaryDelegation;
-	}
-
-	private String getDelegationId(){
-		return getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_ID_S").toString();
-	}
-	
-	private RoleDocumentDelegation getSecondaryDelegation(){
-		RoleDocumentDelegation secondaryDelegation = null;
-		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationSecondary())
-				secondaryDelegation = delegation;
-		}
-		if(secondaryDelegation==null){
-			secondaryDelegation = new RoleDocumentDelegation();
-			secondaryDelegation.setDelegationId(getDelegationId());
-			secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
-			getDelegations().add(secondaryDelegation);
-		}
-		return secondaryDelegation;
 	}
 	
     public ResponsibilityService getResponsibilityService() {
@@ -471,13 +521,12 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public void setDelegations(List<RoleDocumentDelegation> delegations) {
 		this.delegations = delegations;
 	}
-
-	public String getWorkflowDocumentTypeName(){
-		String workflowDocumentTypeName = getKimTypeService(kimType).getWorkflowDocumentTypeName();
-		if(StringUtils.isBlank(workflowDocumentTypeName)){
-			workflowDocumentTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
+	
+	public void setKimType(KimTypeInfo kimType) {
+		super.setKimType(kimType);
+		if (kimType != null){
+			setRoleTypeId(kimType.getKimTypeId());
+			setRoleTypeName(kimType.getName());
 		}
-		return workflowDocumentTypeName;
 	}
-
 }

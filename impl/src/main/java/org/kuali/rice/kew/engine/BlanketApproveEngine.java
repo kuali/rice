@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ import org.kuali.rice.kew.util.Utilities;
 /**
  * A WorkflowEngine implementation which orchestrates the document through the blanket approval process.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BlanketApproveEngine extends StandardWorkflowEngine {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveEngine.class);
@@ -96,7 +96,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         if (documentId == null) {
             throw new IllegalArgumentException("Cannot process a null document id.");
         }
-        MDC.put("docID", documentId);
+        MDC.put("docId", documentId);
         RouteContext context = RouteContext.getCurrentRouteContext();
         try {
             KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
@@ -128,6 +128,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             if (config.isSendNotifications()) {
                 notifyContext = new NotificationContext(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getPrincipal(), config.getCause().getActionTaken());
             }
+            lockAdditionalDocuments(document);
             try {
                 List processingQueue = new LinkedList();
                 for (Iterator iterator = nodeInstancesToProcess.iterator(); iterator.hasNext();) {
@@ -175,7 +176,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             }
         } finally {
         	RouteContext.clearCurrentRouteContext();
-            MDC.remove("docID");
+            MDC.remove("docId");
         }
     }
 

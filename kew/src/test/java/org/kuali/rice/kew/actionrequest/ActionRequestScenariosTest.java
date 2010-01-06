@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,22 +20,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
  * This test exercises various Action Request graph scenarios and tests them for correctness.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestScenariosTest extends KEWTestCase {
 
@@ -49,13 +45,6 @@ public class ActionRequestScenariosTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testInlineRequestsRouteModule() throws Exception {
-        /*WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType");
-        try {
-            document.routeDocument("");
-            fail("Bad route succeeded");
-        } catch (WorkflowException we) {
-            // should throw exception as no approvals were generated
-        }*/
 
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("arh14"), "InlineRequestsDocumentType");
         document.setApplicationContent("<blah><step>step1</step></blah>");
@@ -153,31 +142,31 @@ public class ActionRequestScenariosTest extends KEWTestCase {
     }
 
     /**
-	 * Test that ignore previous works properly in the face of delegations.
+	 * Test that force action works properly in the face of delegations.
 	 * Tests the resolution of KULWF-642.
 	 *
 	 * @throws Exception
 	 */
-	@Test public void testIgnorePreviousWithDelegation() throws Exception {
+	@Test public void testForceActionWithDelegation() throws Exception {
 		// at first, we'll route the document so that the bug is not exposed and verify the action request graph
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testIgnorePreviousWithDelegation");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testForceActionWithDelegation");
 		document.routeDocument("");
 		TestUtilities.assertAtNode(document, "Node1");
 		List rootRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
 		assertEquals("Should be 1 root request.", 1, rootRequests.size());
 		ActionRequestValue ewestfalRequest = (ActionRequestValue)rootRequests.get(0);
-		assertTrue("Request to ewestfal should be ignore previous of true", ewestfalRequest.getIgnorePrevAction().booleanValue());
+		assertTrue("Request to ewestfal should be force action of true", ewestfalRequest.getForceAction().booleanValue());
 		assertEquals("Should have 1 child request.", 1, ewestfalRequest.getChildrenRequests().size());
 		ActionRequestValue rkirkendRequest = (ActionRequestValue)ewestfalRequest.getChildrenRequests().get(0);
-		assertFalse("Request to rkirkend should be ignore previous of false", rkirkendRequest.getIgnorePrevAction().booleanValue());
+		assertFalse("Request to rkirkend should be force action of false", rkirkendRequest.getForceAction().booleanValue());
 
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), "testIgnorePreviousWithDelegation");
+		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), "testForceActionWithDelegation");
 
 		// After we route the document it should be at the first node in the document where "ewestfal"
-		// is the primary approver with ignore previous = true and "rkirkend" is the primary
-		// delegate with ignore previous = false.  In the KULWF-642 bug, the document would have
+		// is the primary approver with force action = true and "rkirkend" is the primary
+		// delegate with force action = false.  In the KULWF-642 bug, the document would have
 		// progressed past the first node in an auto-approve scenario even though ewestfal's rule
-		// is ignore previous = true;
+		// is force action = true;
 		document.routeDocument("");
 
 		// we should be at the first node in the document
@@ -296,15 +285,17 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	}
 
 	// see: https://test.kuali.org/jira/browse/KULRICE-2001
-	@Test public void testUnresolvableRoleAttributeRecipients() throws WorkflowException {
+	@Test public void testUnresolvableRoleAttributeRecipients() throws Exception {
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "UnresolvableRoleRecipsDocType");
-        document.routeDocument("");
-
-        // this doc has a rule with a role that produces an invalid recipient id
-        // this should not generate a bogus request that can never actually be fulfilled
-        List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
-        assertEquals(0, actionRequests.size());
-
+        try {
+        	document.routeDocument("");
+        } catch (Exception e) {
+            // this doc has a rule with a role that produces an invalid recipient id
+            // should receive an error when it attempts to route to the invalid recipient and trigger exception routing on the document
+        	TestUtilities.getExceptionThreader().join();
+        	document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
+            assertTrue("Document should be in exception routing", document.stateIsException());
+        }
 	}
 
 	private String getPrincipalIdFromPrincipalName(String principalName) {

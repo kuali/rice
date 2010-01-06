@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,7 +53,7 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.util.TypedArrayList;
 import org.kuali.rice.kns.web.ui.Field;
@@ -63,7 +63,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * A model bean for a Rule within the KEW rules engine.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_T")
@@ -101,8 +101,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	private Boolean currentInd;
     @Column(name="RULE_VER_NBR")
 	private Integer versionNbr;
-    @Column(name="IGNR_PRVS")
-	private Boolean ignorePrevious;
+    @Column(name="FRC_ACTN")
+	private Boolean forceAction;
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.RuleResponsibility.class, mappedBy="ruleBaseValues")
@@ -438,8 +438,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         if (routeHeaderId != null) {
             ruleBaseValuesClone.setRouteHeaderId(new Long(routeHeaderId.longValue()));
         }
-        if (ignorePrevious != null) {
-            ruleBaseValuesClone.setIgnorePrevious(new Boolean(ignorePrevious.booleanValue()));
+        if (forceAction != null) {
+            ruleBaseValuesClone.setForceAction(new Boolean(forceAction.booleanValue()));
         }
         if (activeInd != null) {
             ruleBaseValuesClone.setActiveInd(new Boolean(activeInd.booleanValue()));
@@ -515,12 +515,12 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         return null;
     }
 
-    public Boolean getIgnorePrevious() {
-        return ignorePrevious;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
-    public void setIgnorePrevious(Boolean ignorePrevious) {
-        this.ignorePrevious = ignorePrevious;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     public boolean isActive(Date date) {
@@ -691,7 +691,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         mapper.put("docTypeName", docTypeName);
         mapper.put("routeHeaderId", routeHeaderId);
         mapper.put("delegateRule", delegateRule);
-        mapper.put("ignorePrevious", ignorePrevious);
+        mapper.put("forceAction", forceAction);
         mapper.put("activeInd", activeInd);
         mapper.put("currentInd", currentInd);
         mapper.put("versionNbr", versionNbr);
@@ -726,8 +726,8 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
         this.personReviewer = personReviewer;
     }
 
-    public KimGroupImpl getKimGroupImpl() {
-        return new KimGroupImpl();
+    public GroupImpl getKimGroupImpl() {
+        return new GroupImpl();
     }
 
     public PersonImpl getPersonImpl() {

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,7 +54,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * embedded workflow programmatically but mostly this is a base class by which
  * to hang specific configuration behavior off of through subclassing
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class KSBConfigurer extends ModuleConfigurer {
@@ -99,6 +99,7 @@ public class KSBConfigurer extends ModuleConfigurer {
         super();
         setModuleName( "KSB" );
         setHasWebInterface(true);
+        VALID_RUN_MODES.remove(EMBEDDED_RUN_MODE);
         VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
     }
 	
@@ -199,7 +200,7 @@ public class KSBConfigurer extends ModuleConfigurer {
     @Override
     public void onEvent(RiceConfigEvent event) throws Exception {
         if (event instanceof AfterStartEvent) {
-            LOG.info("Refreshing Service Regsitry to export services to the bus.");
+            LOG.info("Refreshing Service Registry to export services to the bus.");
             KSBServiceLocator.getServiceDeployer().refresh();
         }
     }

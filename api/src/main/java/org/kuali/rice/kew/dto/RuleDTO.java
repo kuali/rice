@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +29,7 @@ public class RuleDTO implements java.io.Serializable {
     private String docTypeName;
     private String fromDate;
     private String toDate;
-    private Boolean ignorePrevious;
+    private Boolean forceAction;
     private RuleResponsibilityDTO[] ruleResponsibilities;
     private RuleExtensionDTO[] ruleExtensions;
     private String ruleTemplateName;
@@ -68,12 +68,12 @@ public class RuleDTO implements java.io.Serializable {
         this.fromDate = fromDate;
     }
 
-    public Boolean getIgnorePrevious() {
-        return ignorePrevious;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
-    public void setIgnorePrevious(Boolean ignorePrevious) {
-        this.ignorePrevious = ignorePrevious;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     public RuleExtensionDTO[] getRuleExtensions() {

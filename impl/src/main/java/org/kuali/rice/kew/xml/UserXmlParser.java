@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
 
 /**
@@ -47,7 +48,7 @@ import org.xml.sax.SAXException;
  * the ability to import "users" from XML in KEW.  KIM does not provide XML
  * import capabilities in the initial implementation so this class provides that.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class UserXmlParser implements XmlConstants {
@@ -92,6 +93,7 @@ public class UserXmlParser implements XmlConstants {
     }
     
     protected KimEntityImpl constructEntity(Element userElement) {
+        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
     	
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
@@ -101,7 +103,8 @@ public class UserXmlParser implements XmlConstants {
         	entityTypeCode = "PERSON";
         }
     	
-        Long entityId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S");
+        Long entityId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_ID_S", 
+        		KimEntityEmploymentInformationImpl.class);
         
         // if they define an empl id, let's set that up
         KimEntityEmploymentInformationImpl emplInfo = null;
@@ -131,12 +134,14 @@ public class UserXmlParser implements XmlConstants {
 		entityType.setActive(true);
 		
 		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
-			Long entityNameId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_NM_ID_S");
+			Long entityNameId = sas.getNextAvailableSequenceNumber(
+					"KRIM_ENTITY_NM_ID_S", KimEntityNameImpl.class);
 			KimEntityNameImpl name = new KimEntityNameImpl();
 			name.setActive(true);
 			name.setEntityNameId("" + entityNameId);
 			name.setEntityId(entity.getEntityId());
-			name.setNameTypeCode("PREFERRED");
+			// must be in krim_ent_nm_typ_t.ent_nm_typ_cd
+			name.setNameTypeCode("PRFR");
 			name.setFirstName(firstName);
 			name.setMiddleName("");
 			name.setLastName(lastName);
@@ -149,12 +154,14 @@ public class UserXmlParser implements XmlConstants {
 		
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
 		if (!StringUtils.isBlank(emailAddress)) {
-			Long emailId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ENTITY_EMAIL_ID_S");
+			Long emailId = sas.getNextAvailableSequenceNumber(
+					"KRIM_ENTITY_EMAIL_ID_S", KimEntityEmailImpl.class);
 			KimEntityEmailImpl email = new KimEntityEmailImpl();
 			email.setActive(true);
 			email.setEntityEmailId("" + emailId);
 			email.setEntityTypeCode("PERSON");
-			email.setEmailTypeCode("CAMPUS");
+			// must be in krim_email_typ_t.email_typ_cd:
+			email.setEmailTypeCode("WRK");
 			email.setEmailAddress(emailAddress);
 			email.setDefault(true);
 			email.setEntityId(entity.getEntityId());

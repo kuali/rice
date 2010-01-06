@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * document at the actions responsibility or below. The action is recorded. Any requests
  * related to this user are deactivated.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CompleteAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CompleteAction.class);
@@ -72,14 +72,15 @@ public class CompleteAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) {
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be completed";
         }
-        if (!isActionCompatibleRequest(actionRequests)) {
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the COMPLETE action";
         }
         return "";

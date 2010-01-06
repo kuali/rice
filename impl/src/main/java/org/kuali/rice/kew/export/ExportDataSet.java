@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,18 +27,18 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 
 /**
  * A set of data to be exported to a KEW XML file.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExportDataSet {
 
     private List<DocumentType> documentTypes = new ArrayList<DocumentType>();
-    private List<KimGroup> groups = new ArrayList<KimGroup>();
+    private List<Group> groups = new ArrayList<Group>();
     private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
     private List<RuleTemplate> ruleTemplates = new ArrayList<RuleTemplate>();
     private List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
@@ -68,10 +68,10 @@ public class ExportDataSet {
 	public List<EDocLiteAssociation> getEdocLites() {
 		return edocLites;
 	}
-	public List<KimGroup> getGroups() {
+	public List<Group> getGroups() {
 		return this.groups;
 	}
-	public void setGroups(List<KimGroup> groups) {
+	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
 	public List<RuleDelegation> getRuleDelegations() {

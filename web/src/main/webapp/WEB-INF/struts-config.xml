@@ -6,6 +6,7 @@
   
     <form-beans>
     	<!-- Begin required KNS forms -->
+        <form-bean name="BackdoorForm" type="org.kuali.rice.kew.web.backdoor.BackdoorForm" />
         <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
     	<!-- End required KNS forms -->
 	    <form-bean name="TravelDocumentForm2" type="edu.sampleu.travel.web.form.TravelDocumentForm2" />
@@ -19,10 +20,10 @@
 
     <global-forwards>
        	<!-- Begin required KNS forwards -->
-        <forward name="save" path="/index.html" redirect="true" />
-        <forward name="cancel" path="/index.html" redirect="true" />
-        <forward name="close" path="/index.html" redirect="true" />
-        <forward name="portal" path="/index.html" redirect="true" />
+        <forward name="save" path="/portal.jsp" redirect="true" />
+        <forward name="cancel" path="/portal.jsp" redirect="true" />
+        <forward name="close" path="/portal.jsp" redirect="true" />
+        <forward name="portal" path="/portal.jsp" redirect="true" />
         <forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp"/>
         <forward name="updateTextArea" path="/kr/WEB-INF/jsp/TextArea.jsp" />
         <forward name="exceptionIncidentHandler" path="/kualiExceptionIncidentReport.do" />
@@ -37,12 +38,23 @@
             <forward name="basic" path="/kr/kualiExceptionIncidentReport.do" />
         </action>        
 		<!-- End Rice Pass-through Actions -->
-       	<!-- Begin required KNS mappings -->       
+       	<!-- Begin required KNS mappings -->
         <action path="/portal" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
         </action>
+
+        <action path="/backdoorlogin" name="BackdoorForm" scope="request" parameter="methodToCall"
+        input="/WEB-INF/jsp/backdoor/index.jsp" type="org.kuali.rice.kew.web.backdoor.BackdoorAction">
+            <forward name="basic" path="/portal.jsp" />
+            <forward name="viewPortal" path="/portal.jsp" />
+        </action>
+
         <action path="/index" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
             <forward name="basic" path="/portal.jsp" />
+        </action>
+        <!-- KULRICE-2903: An action mapping to "/updateTextArea" is needed here when Javascript is enabled. -->
+        <action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
+            <forward name="basic" path="/kr/WEB-INF/jsp/TextArea.jsp" />
         </action>
        	<!-- End required KNS mappings -->
 		<action path="/travelDocument2" name="TravelDocumentForm2" input="/WEB-INF/jsp/travelDocument2.jsp" type="edu.sampleu.travel.web.action.TravelDocumentAction2"

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,6 +50,7 @@ import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
+import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.service.DocumentSerializerService;
@@ -284,21 +285,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * This is the default implementation which checks for a different workflow statuses, and updates the Kuali status accordingly.
-     *
-     * @see org.kuali.rice.kns.document.Document#handleRouteStatusChange()
-     */
-    public void handleRouteStatusChange() {
-        // do nothing
-    }
-
-    /**
      * The the default implementation for RouteLevelChange does nothing, but is meant to provide a hook for documents to implement
      * for other needs.
      *
-     * @see org.kuali.rice.kns.document.Document#handleRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kns.document.Document#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
      */
-    public void handleRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) {
+    public void doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) {
         // do nothing
     }
     
@@ -349,8 +341,19 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void beforeWorkflowEngineProcess() {
     // do nothing
     }
+    
+    
 
     /**
+     * The default implementation returns no additional ids for the workflow engine to lock prior to processing.
+     * 
+     * @see org.kuali.rice.kns.document.Document#getWorkflowEngineDocumentIdsToLock()
+     */
+    public List<Long> getWorkflowEngineDocumentIdsToLock() {
+		return null;
+	}
+
+	/**
      * @see org.kuali.rice.kns.document.Copyable#toCopy()
      */
     public void toCopy() throws WorkflowException, IllegalStateException {
@@ -440,7 +443,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiator = new DocumentInitiator();
         String initiatorPrincipalId = getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
-        Person initiatorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalId);
+        Person initiatorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
         initiator.setPerson(initiatorUser);
         transInfo.setDocumentInitiator(initiator);
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
@@ -560,7 +563,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     public void validateBusinessRules(KualiDocumentEvent event) {
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().isEmpty()) {
             logErrors();
             throw new ValidationException("errors occured before business rule");
         }
@@ -577,7 +580,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             // needed here
             throw new ValidationException("business rule evaluation failed");
         }
-        else if (!GlobalVariables.getErrorMap().isEmpty()) {
+        else if (!GlobalVariables.getMessageMap().isEmpty()) {
             logErrors();
             throw new ValidationException("Unreported errors occured during business rule evaluation (rule developer needs to put meaningful error messages into global ErrorMap)");
         }
@@ -589,31 +592,33 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * This method logs errors.
      */
     protected void logErrors() {
-        if (!GlobalVariables.getErrorMap().isEmpty()) {
-
-            for (Iterator i = GlobalVariables.getErrorMap().entrySet().iterator(); i.hasNext();) {
-                Map.Entry e = (Map.Entry) i.next();
-
-                StringBuffer logMessage = new StringBuffer();
-                logMessage.append("[" + e.getKey() + "] ");
-                boolean first = true;
-
-                TypedArrayList errorList = (TypedArrayList) e.getValue();
-                for (Iterator j = errorList.iterator(); j.hasNext();) {
-                    ErrorMessage em = (ErrorMessage) j.next();
-
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        logMessage.append(";");
-                    }
-                    logMessage.append(em);
-                }
-
-                LOG.error(logMessage);
-            }
-        }
+    	if ( LOG.isInfoEnabled() ) {
+	        if (!GlobalVariables.getMessageMap().isEmpty()) {
+	
+	            for (Iterator i = GlobalVariables.getMessageMap().entrySet().iterator(); i.hasNext();) {
+	                Map.Entry e = (Map.Entry) i.next();
+	
+	                StringBuffer logMessage = new StringBuffer();
+	                logMessage.append("[" + e.getKey() + "] ");
+	                boolean first = true;
+	
+	                TypedArrayList errorList = (TypedArrayList) e.getValue();
+	                for (Iterator j = errorList.iterator(); j.hasNext();) {
+	                    ErrorMessage em = (ErrorMessage) j.next();
+	
+	                    if (first) {
+	                        first = false;
+	                    }
+	                    else {
+	                        logMessage.append(";");
+	                    }
+	                    logMessage.append(em);
+	                }
+	
+	                LOG.info(logMessage);
+	            }
+	        }
+    	}
     }
 
     /**
@@ -625,7 +630,11 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         return new ArrayList();
     }
 
-    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws Exception {
+    /**
+     * @see org.kuali.rice.kns.document.Document#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     */
+    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
+        // do nothing
     }
 
     /**
@@ -690,4 +699,24 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         return methodToCalls;
     }
 
+    /**
+     * This default implementation simply returns false to indicate that custom lock descriptors are not supported by DocumentBase. If custom lock
+     * descriptors are needed, the appropriate subclasses should override this method.
+     * 
+     * @see org.kuali.rice.kns.document.Document#useCustomLockDescriptors()
+     */
+    public boolean useCustomLockDescriptors() {
+    	return false;
+    }
+
+    /**
+     * This default implementation just throws a PessimisticLockingException. Subclasses of DocumentBase that need support for custom lock descriptors
+     * should override this method.
+     * 
+     * @see org.kuali.rice.kns.document.Document#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+     */
+    public String getCustomLockDescriptor(Person user) {
+    	throw new PessimisticLockingException("Document " + getDocumentNumber() +
+    			" is using pessimistic locking with custom lock descriptors, but the document class has not overriden the getCustomLockDescriptor method");
+    }
 }

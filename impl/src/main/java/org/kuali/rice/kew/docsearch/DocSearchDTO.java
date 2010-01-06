@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.RowStyleable;
@@ -29,13 +33,12 @@ import org.kuali.rice.kew.web.RowStyleable;
 /**
  * Bean that representing a row displayed in a document search.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocSearchDTO implements Serializable, RowStyleable {
 
 	private static final long serialVersionUID = 7850758046316186962L;
-	private static String UNKNOWN_ROUTING_STATUS = "UNKNOWN";
-    private static final String URL_SUFFIX = "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=";
+	private static final String URL_SUFFIX = "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=";
 
 	private Long routeHeaderId;
 	private String docRouteStatusCode;
@@ -54,6 +57,7 @@ public class DocSearchDTO implements Serializable, RowStyleable {
 	private String docTypeHandlerUrl;
 	private String rowStyleClass;
 	private String superUserSearch;
+	private String appDocStatus;
 
 	private List<KeyValueSort> searchableAttributes = new ArrayList<KeyValueSort>();
 
@@ -178,16 +182,24 @@ public class DocSearchDTO implements Serializable, RowStyleable {
 		this.initiatorLastName = initiatorLastName;
 	}
 
+	public String getAppDocStatus() {
+		return this.appDocStatus;
+	}
+
+	public void setAppDocStatus(String appDocStatus) {
+		this.appDocStatus = appDocStatus;
+	}
+
     public String getDocRouteStatusCodeDesc() {
         if (this.docRouteStatusCode == null || org.kuali.rice.kew.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode) == null || "".equalsIgnoreCase(org.kuali.rice.kew.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode))) {
-            return UNKNOWN_ROUTING_STATUS;
+            return KEWConstants.UNKNOWN_STATUS;
         } else {
             return org.kuali.rice.kew.util.CodeTranslator.getRouteStatusLabel(docRouteStatusCode);
         }
     }
 
     public String getDocHandlerUrl() {
-        if ("".equals(getDocTypeHandlerUrl())) {
+        if (StringUtils.isBlank(getDocTypeHandlerUrl())) {
             return "";
         } else {
             if (isUsingSuperUserSearch()) {

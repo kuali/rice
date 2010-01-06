@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,25 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Jun 16, 2006
 
 package org.kuali.rice.kew.xml;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
+import org.springframework.test.AssertThrows;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
     private List testDoc(String docName, Class expectedException) throws Exception {
@@ -52,6 +58,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
             }
         }
     }
+
 
     /**
      * This method tests that the new document type with overwrite mode set to true will insert a 
@@ -302,9 +309,10 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadOverwriteModeDocumentType() throws Exception {
-        List documentTypes = testDoc("RoutePathAdjustment1", null);
-        assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
-        DocumentType docType1 = (DocumentType) documentTypes.get(0);
+        String docTypeName = "LoadRoutePathOnlyAdjustsDocument";
+        testDoc("RoutePathAdjustment1", null);
+        DocumentType docType1 = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
+        assertNotNull("Document type should exist", docType1);
         assertEquals("The blanket approve workgroup name is incorrect", "TestWorkgroup", docType1.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType1.getBlanketApproveWorkgroup().getNamespaceCode());
         assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType1.getSuperUserWorkgroup().getGroupName());
@@ -313,9 +321,9 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         assertEquals("Incorrect document route node count", 1, routeNodes.size());
         assertEquals("Expected Route Node Name is incorrect", "First", ((RouteNode)routeNodes.get(0)).getRouteNodeName());
 
-        documentTypes = testDoc("RoutePathAdjustment2", null);
-        assertEquals("Incorrect parsed document type count", 1, documentTypes.size());
-        DocumentType docType2 = (DocumentType) documentTypes.get(0);
+        testDoc("RoutePathAdjustment2", null);
+        DocumentType docType2 = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
+        assertNotNull("Document type should exist", docType1);
         assertEquals("The blanket approve workgroup name is incorrect", "WorkflowAdmin", docType2.getBlanketApproveWorkgroup().getGroupName());
         assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType2.getBlanketApproveWorkgroup().getNamespaceCode());
         assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType2.getSuperUserWorkgroup().getGroupName());
@@ -376,4 +384,45 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	assertEquals("There should be 10 document types.", 10, docTypeList.size());
     }
 
+    @Test public void testLoadDocWithAppDocStatus() throws Exception {
+    	loadXmlFile("TestKEWAppDocStatus.xml");    	
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestAppDocStatusDoc2");
+        
+        // verify DocumentStatusPolicy = "APP"
+        assertFalse("DocumentStatusPolicy should not be set to KEW, or BOTH", documentType.isKEWStatusInUse());
+        assertTrue("DocumentStatusPolicy should be set to APP", documentType.isAppDocStatusInUse());
+        
+        // verify Valid Statuses defined
+        assertTrue("6 Valid Application Statuses should be defined", documentType.getValidApplicationStatuses().size() == 6);
+        Iterator<ApplicationDocumentStatus> iter = documentType.getValidApplicationStatuses().iterator();
+        while (iter.hasNext()){
+        	ApplicationDocumentStatus myStatus = iter.next();
+        	String myStatusName = myStatus.getStatusName();
+        	assertTrue("Valid Status value is incorrect: " + myStatusName,
+        			("Approval In Progress".equalsIgnoreCase(myStatusName) ||
+        			"Submitted".equalsIgnoreCase(myStatusName) ||
+        			"Pending".equalsIgnoreCase(myStatusName) ||
+        			"Completed".equalsIgnoreCase(myStatusName) ||
+        			"Approved".equalsIgnoreCase(myStatusName) ||
+        			"Rejected".equalsIgnoreCase(myStatusName) ));
+        }
+        
+        //verify next_doc_status in RouteNode
+        List procs = documentType.getProcesses();
+        org.kuali.rice.kew.engine.node.Process myProc = (org.kuali.rice.kew.engine.node.Process) procs.get(0);
+        RouteNode myNode = myProc.getInitialRouteNode();
+        String nextDocStatus = myNode.getNextDocStatus();
+        assertTrue("RouteNode nextDocStatus is Invalid", "Approval in Progress".equalsIgnoreCase(nextDocStatus));
+    }
+
+    @Test public void testLoadDocWithInvalidDocumentStatusPolicy() throws Exception {
+        testDoc("DocumentStatusPolicyInvalidStringValue", InvalidXmlException.class);
+    }
+    
+    @Test public void testLoadDocWithBlankDocumentStatusPolicyStringValue() throws Exception {
+        testDoc("DocumentStatusPolicyMissingStringValue", InvalidXmlException.class);
+    }
+    
+
+    
 }

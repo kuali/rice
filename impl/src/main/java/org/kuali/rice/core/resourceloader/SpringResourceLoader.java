@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.config.ConfigurationException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,12 +30,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * Starts and stops the {@link ConfigurableApplicationContext}.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SpringResourceLoader extends BaseResourceLoader {
 
 	private static final Logger LOG = Logger.getLogger(SpringResourceLoader.class);
 
+	private SpringResourceLoader parentSpringResourceLoader;
+	
+	private ApplicationContext parentContext;
 	private ConfigurableApplicationContext context;
 
 	private final String[] fileLocs;
@@ -63,7 +67,13 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	public void start() throws Exception {
 		if(!isStarted()){
 			LOG.info("Creating Spring context " + StringUtils.join(this.fileLocs, ","));
-			this.context = new ClassPathXmlApplicationContext(this.fileLocs);
+			if (parentSpringResourceLoader != null && parentContext != null) {
+				throw new ConfigurationException("Both a parentSpringResourceLoader and parentContext were defined.  Only one can be defined!");
+			}
+			if (parentSpringResourceLoader != null) {
+				parentContext = parentSpringResourceLoader.getContext();
+			}
+			this.context = new ClassPathXmlApplicationContext(this.fileLocs, parentContext);
 			super.start();
 		}
 	}
@@ -78,5 +88,16 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	public ConfigurableApplicationContext getContext() {
 		return this.context;
 	}
+	
+	public void setParentContext(ApplicationContext parentContext) {
+		this.parentContext = parentContext;
+	}
+
+	public void setParentSpringResourceLoader(
+			SpringResourceLoader parentSpringResourceLoader) {
+		this.parentSpringResourceLoader = parentSpringResourceLoader;
+	}
+	
+	
 
 }

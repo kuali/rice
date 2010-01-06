@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import org.kuali.rice.kew.util.Utilities;
 
 /**
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SearchAttributeCriteriaComponent implements Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeCriteriaComponent.class);
@@ -36,9 +36,6 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     private String value;
     private List<String> values;
     private String lookupableFieldType;
-    private boolean allowWildcards = true;
-    private boolean autoWildcardBeginning = false;
-    private boolean autoWildcardEnd = false;
     private boolean caseSensitive = false;
     private boolean searchInclusive = true;  // not just for ranges... used by single date searches
     private SearchableAttributeValue searchableAttributeValue;
@@ -47,6 +44,7 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     
     // range properties
     private boolean rangeSearch = false;
+    private boolean allowInlineRange = false;
     // this is the field that is saved to the database
     private String savedKey;
 
@@ -139,48 +137,6 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     public void setSearchable(boolean searchable) {
         this.searchable = searchable;
     }
-
-    /**
-	 * @return the allowWildcards
-	 */
-	public boolean isAllowWildcards() {
-		return allowWildcards;
-	}
-
-	/**
-	 * @param allowWildcards the allowWildcards to set
-	 */
-	public void setAllowWildcards(boolean allowWildcards) {
-		this.allowWildcards = allowWildcards;
-	}
-
-	/**
-	 * @return the autoWildcardBeginning
-	 */
-	public boolean isAutoWildcardBeginning() {
-		return autoWildcardBeginning;
-	}
-
-	/**
-	 * @param autoWildcardBeginning the autoWildcardBeginning to set
-	 */
-	public void setAutoWildcardBeginning(boolean autoWildcardBeginning) {
-		this.autoWildcardBeginning = autoWildcardBeginning;
-	}
-
-	/**
-	 * @return the autoWildcardEnd
-	 */
-	public boolean isAutoWildcardEnd() {
-		return autoWildcardEnd;
-	}
-
-	/**
-	 * @param autoWildcardEnd the autoWildcardEnd to set
-	 */
-	public void setAutoWildcardEnd(boolean autoWildcardEnd) {
-		this.autoWildcardEnd = autoWildcardEnd;
-	}
 
 	/**
 	 * @return the caseSensitive
@@ -308,5 +264,19 @@ public class SearchAttributeCriteriaComponent implements Serializable {
     public void setLookupableFieldType(String lookupableFieldType) {
         this.lookupableFieldType = lookupableFieldType;
     }
+
+	/**
+	 * @return the allowInlineRange
+	 */
+	public boolean isAllowInlineRange() {
+		return this.allowInlineRange;
+	}
+
+	/**
+	 * @param allowInlineRange the allowInlineRange to set
+	 */
+	public void setAllowInlineRange(boolean allowInlineRange) {
+		this.allowInlineRange = allowInlineRange;
+	}
 
 }

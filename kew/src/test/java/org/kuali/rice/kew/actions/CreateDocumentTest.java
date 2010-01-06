@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ package org.kuali.rice.kew.actions;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
@@ -34,7 +35,7 @@ public class CreateDocumentTest extends KEWTestCase {
 	 * Tests the attempt to create a document from a non-existent document type.
 	 */
 	@Test public void testCreateNonExistentDocumentType() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "flim-flam-flooey");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
 		try {
 			document.getRouteHeaderId();
 			fail("A workflow exception should have been thrown.");
@@ -48,12 +49,12 @@ public class CreateDocumentTest extends KEWTestCase {
 	 */
 	@Test public void testCreateNonRoutableDocumentType() throws Exception {
 		// the BlanketApproveTest is a parent document type that has no routing path defined.  Attempts to
-		// create documents of this type should throw a WorkflowException
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "BlanketApproveTest");
+		// create documents of this type should return an error
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
 		try {
 			document.getRouteHeaderId();
 			fail("A workflow exception should have been thrown.");
-		} catch (WorkflowException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}
@@ -64,12 +65,17 @@ public class CreateDocumentTest extends KEWTestCase {
     @Test public void testCreateInactiveDocumentType() throws Exception {
         // the CreatedDocumentInactive document type is inactive and should not be able to 
         // be initiated for a new document
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "CreatedDocumentInactive");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
         try {
             document.getRouteHeaderId();
             fail("A workflow exception should have been thrown.");
         } catch (WorkflowException e) {
             e.printStackTrace();
         }
+    }
+    
+    protected String getPrincipalIdForName(String principalName) {
+        return KEWServiceLocator.getIdentityHelperService()
+                .getIdForPrincipalName(principalName);
     }
 }

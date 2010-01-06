@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -79,6 +80,7 @@ public class Field implements java.io.Serializable {
     	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES = new HashSet<String>();
     	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(HIDDEN);
     	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(TEXT);
+    	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(CURRENCY);
     	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(DROPDOWN);
     	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(RADIO);
     	SEARCH_RESULT_DISPLAYABLE_FIELD_TYPES.add(DROPDOWN_REFRESH);
@@ -95,8 +97,7 @@ public class Field implements java.io.Serializable {
     private String mainFieldLabel;  // the fieldLabel holds things like "From" and "Ending" and this field holds things like "Total Amount"
     private Boolean rangeFieldInclusive;
     private boolean memberOfRange = false;
-    //FIXME: can this go away?  only seems to be used on column
-    private Map<String, String> displayParameters;
+    private boolean allowInlineRange = false;
 
     //FIXME: these next two are iffy, need to reevaluate whether really used by doc search
     // below boolean used by criteria processor to hide field without removing classic 'field type' variable
@@ -112,6 +113,9 @@ public class Field implements java.io.Serializable {
     //used by multibox/select etc
     private String[] propertyValues;
     
+    //extra field to skip blank option value (for route node)
+    private boolean skipBlankValidValue = false;
+    
     //#END DOC SEARCH RELATED
     
     private String fieldType;
@@ -123,6 +127,7 @@ public class Field implements java.io.Serializable {
 
     private List<KeyLabelPair> fieldValidValues;
     private String quickFinderClassNameImpl;
+    private String baseLookupUrl;
 
     private boolean clear;
     private boolean dateField;
@@ -148,8 +153,10 @@ public class Field implements java.io.Serializable {
     private String fieldHelpName;
     private String script;
     private String universalIdAttributeName;
+    private String universalIdValue;
     private String userIdAttributeName;
     private String personNameAttributeName;
+    private String personNameValue;
     private String defaultValue = KNSConstants.EMPTY_STRING;
     private boolean keyField;
     private String displayEditMode;
@@ -1506,6 +1513,12 @@ public class Field implements java.io.Serializable {
         this.fieldDataType = fieldDataType;
     }
     
+    /**
+     * 
+     * Use fieldType=Field.HIDDEN instead
+     * @deprecated
+     * @return
+     */
     public boolean isHidden() {
         return this.hidden;
     }
@@ -1514,6 +1527,12 @@ public class Field implements java.io.Serializable {
         return this.isColumnVisible;
     }
 
+    /**
+     * 
+     * Use fieldType=Field.HIDDEN instead
+     * @deprecated
+     * @param hidden
+     */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
@@ -1530,13 +1549,59 @@ public class Field implements java.io.Serializable {
         this.propertyValues = propertyValues;
     }
     
-    public Map<String, String> getDisplayParameters() {
-        return this.displayParameters;
-    }
+	/**
+	 * @return the skipBlankValidValue
+	 */
+	public boolean isSkipBlankValidValue() {
+		return this.skipBlankValidValue;
+	}
 
-    public void setDisplayParameters(Map<String, String> displayParameters) {
-        this.displayParameters = displayParameters;
-    }
-    
+	/**
+	 * @param skipBlankValidValue the skipBlankValidValue to set
+	 */
+	public void setSkipBlankValidValue(boolean skipBlankValidValue) {
+		this.skipBlankValidValue = skipBlankValidValue;
+	}
+
+	/**
+	 * @return the allowInlineRange
+	 */
+	public boolean isAllowInlineRange() {
+		return this.allowInlineRange;
+	}
+
+	/**
+	 * @param allowInlineRange the allowInlineRange to set
+	 */
+	public void setAllowInlineRange(boolean allowInlineRange) {
+		this.allowInlineRange = allowInlineRange;
+	}
+
+	public String getUniversalIdValue() {
+		return this.universalIdValue;
+	}
+
+	public void setUniversalIdValue(String universalIdValue) {
+		this.universalIdValue = universalIdValue;
+	}
+
+	public String getPersonNameValue() {
+		return this.personNameValue;
+	}
+
+	public void setPersonNameValue(String personNameValue) {
+		this.personNameValue = personNameValue;
+	}
+
+	public String getBaseLookupUrl() {
+		return this.baseLookupUrl;
+	}
+
+	public void setBaseLookupUrl(String baseLookupURL) {
+		this.baseLookupUrl = baseLookupURL;
+	}
+
+	
+	
     //#END DOC SEARCH RELATED
 }

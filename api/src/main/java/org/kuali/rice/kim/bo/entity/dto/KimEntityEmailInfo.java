@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
+
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityEmail {
 
@@ -28,70 +30,117 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	protected String entityTypeCode = "";
 	protected String emailTypeCode = "";
 	protected String emailAddress = "";
-
+	protected String emailAddressUnmasked = "";
+	
+	protected boolean suppressEmail = false;
 	
 	/**
 	 * 
 	 */
 	public KimEntityEmailInfo() {
+		super();
+		active = true;
 	}
 	
 	/**
 	 * 
 	 */
 	public KimEntityEmailInfo( KimEntityEmail email ) {
+		this();
 		if ( email != null ) {
-			entityEmailId = unNullify( email.getEntityEmailId() );
-			entityTypeCode = unNullify( email.getEntityTypeCode() );
-			emailTypeCode = unNullify( email.getEmailTypeCode() );
-			emailAddress = unNullify( email.getEmailAddress() );
-			dflt = email.isDefault();
-			active = email.isActive();
+			this.entityEmailId = unNullify( email.getEntityEmailId() );
+			this.entityTypeCode = unNullify( email.getEntityTypeCode() );
+			this.emailTypeCode = unNullify( email.getEmailTypeCode() );
+			this.emailAddress = unNullify( email.getEmailAddress() );
+			this.emailAddressUnmasked = unNullify( email.getEmailAddressUnmasked() );
+			this.dflt = email.isDefault();
+			this.active = email.isActive();
+			this.suppressEmail = email.isSuppressEmail();
 		}
 	}
-	
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
-	 */
-	public String getEmailAddress() {
-		return emailAddress;
-	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailTypeCode()
-	 */
-	public String getEmailTypeCode() {
-		return emailTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityEmailId()
+	 * @return the entityEmailId
 	 */
 	public String getEntityEmailId() {
-		return entityEmailId;
+		return unNullify(this.entityEmailId);
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	/**
+	 * @param entityEmailId the entityEmailId to set
+	 */
+	public void setEntityEmailId(String entityEmailId) {
+		this.entityEmailId = entityEmailId;
 	}
 
+	/**
+	 * @return the entityTypeCode
+	 */
+	public String getEntityTypeCode() {
+		return unNullify(this.entityTypeCode);
+	}
+
+	/**
+	 * @param entityTypeCode the entityTypeCode to set
+	 */
+	public void setEntityTypeCode(String entityTypeCode) {
+		this.entityTypeCode = entityTypeCode;
+	}
+
+	/**
+	 * @return the emailTypeCode
+	 */
+	public String getEmailTypeCode() {
+		return unNullify(this.emailTypeCode);
+	}
+
+	/**
+	 * @param emailTypeCode the emailTypeCode to set
+	 */
 	public void setEmailTypeCode(String emailTypeCode) {
 		this.emailTypeCode = emailTypeCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
+	 * @return the emailAddress
 	 */
-	public String getEntityTypeCode() {
-		return entityTypeCode;
+	public String getEmailAddress() {
+		return unNullify(this.emailAddress);
 	}
 
-	public void setEntityTypeCode(String entityTypeCode) {
-		this.entityTypeCode = entityTypeCode;
+	/**
+	 * @param emailAddress the emailAddress to set
+	 */
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
-	public void setEntityEmailId(String entityEmailId) {
-		this.entityEmailId = entityEmailId;
+	/**
+	 * @return the emailAddressUnmasked
+	 */
+	public String getEmailAddressUnmasked() {
+		return unNullify(this.emailAddressUnmasked);
 	}
 
+	/**
+	 * @param emailAddressUnmasked the emailAddressUnmasked to set
+	 */
+	public void setEmailAddressUnmasked(String emailAddressUnmasked) {
+		this.emailAddressUnmasked = emailAddressUnmasked;
+	}
+
+	/**
+	 * @return the suppressEmail
+	 */
+	public boolean isSuppressEmail() {
+		return this.suppressEmail;
+	}
+
+	/**
+	 * @param suppressEmail the suppressEmail to set
+	 */
+	public void setSuppressEmail(boolean suppressEmail) {
+		this.suppressEmail = suppressEmail;
+	}
+	
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,14 +28,14 @@ import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.database.platform.Platform;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 /**
  * A utility for common ORM related functions.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class OrmUtils {
 
@@ -74,7 +74,7 @@ public class OrmUtils {
 	private static Long getNextAutoIncValue(Sequence sequence, EntityManager manager) {
 		Long value = -1L;
 		try {
-			Platform platform = (Platform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+			DatabasePlatform platform = (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
 			value = platform.getNextValSQL(sequence.name(), manager);
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
@@ -83,7 +83,9 @@ public class OrmUtils {
 	}
 	
     public static void reattach(Object attached, Object detached) {
-        LOG.debug("Reattaching entity: " + detached.getClass().getName());
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Reattaching entity: " + detached.getClass().getName());
+    	}
     	// Don't want to get parent fields if overridden in children since we are walking the tree from child to parent
     	Set<String> cachedFields = new HashSet<String>(); 
     	Class attachedClass = attached.getClass();
@@ -126,7 +128,9 @@ public class OrmUtils {
     				LOG.error(e.getMessage(), e);
     			}
     		}
-    		cache.put(clazz.getName(), new Boolean(clazz.isAnnotationPresent(Entity.class) || clazz.isAnnotationPresent(MappedSuperclass.class)));
+    		synchronized (cache) {
+        		cache.put(clazz.getName(), new Boolean(clazz.isAnnotationPresent(Entity.class) || clazz.isAnnotationPresent(MappedSuperclass.class)));
+			}
     	}
     	return cache.get(clazz.getName()).booleanValue();
     }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,9 +17,11 @@ package org.kuali.rice.ksb.security.admin;
 
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.Security;
 
 import javax.xml.namespace.QName;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.test.KSBTestCase;
@@ -27,7 +29,7 @@ import org.kuali.rice.ksb.test.KSBTestCase;
 /**
  * This is a test class used to test the KSB java security operation using certificates and keystores 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class JavaSecurityManagementServiceTest extends KSBTestCase {
@@ -40,11 +42,16 @@ public class JavaSecurityManagementServiceTest extends KSBTestCase {
         return (MockJavaSecurityManagementService)GlobalResourceLoader.getService(serviceName);
     }
 
-    @Test
+    @Test 
     public void testCertificatesExistInKeyStores() throws Exception {
         MockJavaSecurityManagementService securityService = getMockJavaSecurityManagementService();
         String moduleKeyStoreAlias = securityService.getModuleKeyStoreAlias();
         
+        //test that Bouncy Castle provider is present and add it if it's not
+        if( Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null)
+        {
+        	Security.addProvider(new BouncyCastleProvider());
+        }
         
         // generate the client keystore file
         KeyStore clientKeyStore = securityService.generateClientKeystore(TEST_CLIENT_ALIAS, TEST_CLIENT_PASSWORD);

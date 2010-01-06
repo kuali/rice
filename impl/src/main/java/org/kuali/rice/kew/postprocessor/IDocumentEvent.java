@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Base event interface for events emitted from the workflow engine
  * and hooked by the {@link PostProcessor}
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface IDocumentEvent extends Serializable {
   public static final String ROUTE_LEVEL_CHANGE = "rt_lvl_change";
@@ -31,6 +31,7 @@ public interface IDocumentEvent extends Serializable {
   public static final String ACTION_TAKEN = "action_taken";
   public static final String BEFORE_PROCESS = "before_process";
   public static final String AFTER_PROCESS = "after_process";
+  public static final String LOCK_DOCUMENTS = "lock_documents";
 
   /**
    * @return the code of this document event 

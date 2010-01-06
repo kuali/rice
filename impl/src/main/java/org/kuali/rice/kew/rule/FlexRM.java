@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,7 +63,7 @@ import org.kuali.rice.kew.util.Utilities;
  * @see RuleTemplate
  * @see RuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FlexRM {
 
@@ -140,6 +140,9 @@ public class FlexRM {
 		try {
 			ruleSelector = ((Class<RuleSelector>) ruleSelectorClass).newInstance();
 		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException)e;
+			}
 			throw new WorkflowException("Error instantiating rule selector implementation '" + ruleSelectorClass + "'", e);
 		}
 
@@ -224,11 +227,11 @@ public class FlexRM {
 		}
 		RuleResponsibility resp = getRuleService().findRuleResponsibility(responsibilityId);
 		ResponsibleParty responsibleParty = new ResponsibleParty();
-		if (resp.isUsingRole()) {
+		if (resp!=null && resp.isUsingRole()) {
 			responsibleParty.setRoleName(resp.getResolvedRoleName());
-		} else if (resp.isUsingWorkflowUser()) {
+		} else if (resp!=null && resp.isUsingWorkflowUser()) {
 			responsibleParty.setPrincipalId(resp.getRuleResponsibilityName());
-		} else if (resp.isUsingGroup()) {
+		} else if (resp!=null && resp.isUsingGroup()) {
 			responsibleParty.setGroupId(resp.getRuleResponsibilityName());
 		} else {
 			throw new RiceRuntimeException("Failed to resolve responsibility from responsibility ID " + responsibilityId + ".  Responsibility was an invalid type: " + resp);
@@ -303,7 +306,7 @@ public class FlexRM {
 			RoleRecipient recipient = new RoleRecipient(roleName, qualifiedRoleName, resolvedRole);
 			if (parentRequest == null) {
 				ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(), resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule
-						.getIgnorePrevious(), rule.getDescription(), rule.getRuleBaseValuesId());
+						.getForceAction(), rule.getDescription(), rule.getRuleBaseValuesId());
 // Old, pre 1.0 delegate code, commenting out for now
 //
 //				if (resp.isDelegating()) {
@@ -331,7 +334,7 @@ public class FlexRM {
 				}
 				
 			} else {
-				arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.getIgnorePrevious(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
+				arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.getForceAction(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
 			}
 		}
 			}
@@ -390,7 +393,7 @@ public class FlexRM {
 					recipient,
 					rule.getDescription(),
 					resp.getResponsibilityId(),
-					rule.getIgnorePrevious(),
+					rule.getForceAction(),
 					resp.getApprovePolicy(),
 					rule.getRuleBaseValuesId());
 
@@ -414,7 +417,7 @@ public class FlexRM {
 			}
 			
 		} else {
-			arFactory.addDelegationRequest(parentRequest, recipient, resp.getResponsibilityId(), rule.getIgnorePrevious(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
+			arFactory.addDelegationRequest(parentRequest, recipient, resp.getResponsibilityId(), rule.getForceAction(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
 		}
 	}
 

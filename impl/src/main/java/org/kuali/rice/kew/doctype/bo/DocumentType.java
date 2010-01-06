@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,6 +54,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
@@ -74,10 +75,12 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
 
@@ -86,7 +89,7 @@ import org.kuali.rice.kns.web.format.FormatException;
  * can construct {@link ObjectDefinition} objects correctly to account for ServiceNamespace inheritance.
  * Can also navigate parent hierarchy when getting data/components.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")
@@ -127,6 +130,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Column(name="HELP_DEF_URL")
     private String unresolvedHelpDefinitionUrl;
 
+    @Column(name="DOC_SEARCH_HELP_URL")
+    private String unresolvedDocSearchHelpUrl;
+    
     @Column(name="DOC_HDLR_URL")
     private String unresolvedDocHandlerUrl;
     @Column(name="POST_PRCSR")
@@ -152,20 +158,29 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Transient
     private String actionsUrl;
     @Transient
-    private boolean descendHierarchy;
-    @Transient
     private Boolean applyRetroactively = Boolean.FALSE;
 
     /* The default exception workgroup to apply to nodes that lack an exception workgroup definition.
      * Used at parse-time only; not stored in db.
      */
     @Transient
-    private KimGroup defaultExceptionWorkgroup;
+    private Group defaultExceptionWorkgroup;
 
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="documentType")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="documentTypeId")
     @Fetch(value=FetchMode.SUBSELECT)
     private Collection<DocumentTypePolicy> policies;
-    @Transient
+    
+    /* This property contains the list of valid ApplicationDocumentStatus values, 
+     * if defined, for the document type.  If these status values are defined, only these
+     * values may be assigned as the status.  If not valid values are defined, the status may
+     * be set to any value by the client.
+     */
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
+    		mappedBy="documentType")
+    @Fetch(value=FetchMode.SUBSELECT)
+    private List<ApplicationDocumentStatus> validApplicationStatuses;
+    
+	@Transient
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
@@ -283,6 +298,66 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     	return getPolicyByName(DocumentTypePolicyEnum.NOTIFY_ON_SAVE.getName(), Boolean.FALSE);
     }
 
+    /**
+     * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type. 
+     */
+    public DocumentTypePolicy getDocumentStatusPolicy() {
+    	return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
+    }
+    
+    /**
+     * 
+     * This method returns a boolean denoting whether the KEW Route Status is to be displayed.
+     * The KEW Route Status is updated by the workflow engine regardless of whether it is to be displayed or not.
+     * 
+     * @return  true  - if the status is to be displayed  (Policy is set to either use KEW (default) or both)
+     *          false - if the KEW Route Status is not to be displayed 
+     */
+    public Boolean isKEWStatusInUse() {
+    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
+    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+    		return (policyValue == null || "".equals(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equalsIgnoreCase(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    	} else {
+    		return Boolean.TRUE;
+    	}
+    }
+    
+    /**
+     * 
+     * This method returns a boolean denoting whether the Application Document Status is to be used for this document type.
+     * 
+     * @return true  - if the status is to be displayed  (Policy is set to either use the application document status or both)
+     *         false - if only the KEW Route Status is to be displayed (default)
+     */
+    public Boolean isAppDocStatusInUse() {
+    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
+    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+    		return (KEWConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equalsIgnoreCase(policyValue) 
+    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    	} else {
+    		return Boolean.FALSE;
+    	}
+    }
+
+    /**
+     * 
+     * This method returns a boolean denoting if both the KEW Route Status and the Application Document Status
+     * are to be used in displays.
+     * 
+     * @return  true  - if both the KEW Route Status and Application Document Status are to be displayed.
+     *          false - if only one status is to be displayed. 
+     */
+    public Boolean areBothStatusesInUse() {
+    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
+    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+    		return (KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+    	} else {
+    		return Boolean.FALSE;
+    	}
+    }
+    
     public String getUseWorkflowSuperUserDocHandlerUrlValue() {
         if (getUseWorkflowSuperUserDocHandlerUrl() != null) {
             return getUseWorkflowSuperUserDocHandlerUrl().getPolicyDisplayValue();
@@ -354,7 +429,12 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 			SearchableAttribute searchableAttribute = null;
 			if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-				searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+				try {
+				    searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+				} catch (Exception e) {
+				    LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
+				    searchableAttribute = null;
+				}
 			} else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
 				searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
@@ -414,6 +494,15 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     public void setPolicies(Collection<DocumentTypePolicy> policies) {
         this.policies = policies;
     }
+
+    public List<ApplicationDocumentStatus> getValidApplicationStatuses() {
+		return this.validApplicationStatuses;
+	}
+
+	public void setValidApplicationStatuses(
+			List<ApplicationDocumentStatus> validApplicationStatuses) {
+		this.validApplicationStatuses = validApplicationStatuses;
+	}
 
     public String getDocumentTypeSecurityXml() {
       return documentTypeSecurityXml;
@@ -573,7 +662,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     	if (StringUtils.isBlank(docHandlerUrl)) {
     		return "";
     	}
-    	return Utilities.substituteConfigParameters(docHandlerUrl);
+    	return Utilities.substituteConfigParameters(getServiceNamespace(), docHandlerUrl);
     }
 
     /**
@@ -603,18 +692,40 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
      * potential variables that may be in use
      */
     public String getHelpDefinitionUrl() {
-        return resolveHelpDefinitionUrl(getUnresolvedHelpDefinitionUrl());
+        return resolveHelpUrl(getUnresolvedHelpDefinitionUrl());
     }
 
     /**
-     * If the help definition URL has variables in it that need to be replaced, this will look up the values
+     * If a help URL has variables in it that need to be replaced, this will look up the values
      * for those variables and replace them.
      */
-    protected String resolveHelpDefinitionUrl(String helpDefinitionUrl) {
+    protected String resolveHelpUrl(String helpDefinitionUrl) {
         if (StringUtils.isBlank(helpDefinitionUrl)) {
             return "";
         }
         return Utilities.substituteConfigParameters(helpDefinitionUrl);
+    }
+    
+    /**
+     * @return the unresolvedDocSearchHelpUrl
+     */
+    public String getUnresolvedDocSearchHelpUrl() {
+        return this.unresolvedDocSearchHelpUrl;
+    }
+    
+    /**
+     * @param unresolvedDocSearchHelpUrl the unresolvedDocSearchHelpUrl to set
+     */
+    public void setUnresolvedDocSearchHelpUrl(String unresolvedDocSearchHelpUrl) {
+        this.unresolvedDocSearchHelpUrl = unresolvedDocSearchHelpUrl;
+    }
+    
+    /**
+     * This method gets the doc search help url from this object and resolves any 
+     * potential variables that may be in use
+     */
+    public String getDocSearchHelpUrl() {
+        return resolveHelpUrl(getUnresolvedDocSearchHelpUrl());
     }
 
     public java.lang.String getLabel() {
@@ -635,6 +746,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 
     public PostProcessor getPostProcessor() {
         String pname = getPostProcessorName();
+
+        if (StringUtils.equals(pname, KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE)) { 
+            return new DefaultPostProcessor();    
+        }
         if (StringUtils.isBlank(pname)) {
             if (getParentDocType() != null) {
                 return getParentDocType().getPostProcessor();
@@ -645,6 +760,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 
         ObjectDefinition objDef = getObjectDefinition(pname);
         Object postProcessor = GlobalResourceLoader.getObject(objDef);
+        
         if (postProcessor == null) {
             throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
         }
@@ -779,26 +895,53 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return policy;
     }
 
+    private DocumentTypePolicy getPolicyByName(String policyName, String defaultValue) {
+
+        Iterator policyIter = getPolicies().iterator();
+        while (policyIter.hasNext()) {
+            DocumentTypePolicy policy = (DocumentTypePolicy) policyIter.next();
+            if (policyName.equals(policy.getPolicyName())) {
+                policy.setInheritedFlag(Boolean.FALSE);
+                return policy;
+            }
+        }
+
+        if (getParentDocType() != null) {
+            DocumentTypePolicy policy = getParentDocType().getPolicyByName(policyName, defaultValue);
+            policy.setInheritedFlag(Boolean.TRUE);
+            if (policy.getPolicyValue() == null) {
+                policy.setPolicyValue(Boolean.TRUE);
+            }
+            return policy;
+        }
+        DocumentTypePolicy policy = new DocumentTypePolicy();
+        policy.setPolicyName(policyName);
+        policy.setInheritedFlag(Boolean.FALSE);
+        policy.setPolicyValue(Boolean.TRUE);
+        policy.setPolicyStringValue(defaultValue);
+        return policy;
+    }
+    
     private DocumentTypeService getDocumentTypeService() {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
 
-    public KimGroup getSuperUserWorkgroup() {
-        KimGroup superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
+    public Group getSuperUserWorkgroup() {
+        Group superUserWorkgroup = getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup == null && getParentDocType() != null) {
             return getParentDocType().getSuperUserWorkgroup();
         }
         return superUserWorkgroup;
     }
 
-    public KimGroup getSuperUserWorkgroupNoInheritence() {
+    public Group getSuperUserWorkgroupNoInheritence() {
         if (workgroupId == null) {
             return null;
         }
         return getIdentityManagementService().getGroup(this.workgroupId);
     }
 
-    public void setSuperUserWorkgroupNoInheritence(KimGroup suWorkgroup) {
+    public void setSuperUserWorkgroupNoInheritence(Group suWorkgroup) {
         this.workgroupId = null;
         if (ObjectUtils.isNotNull(suWorkgroup)) {
             this.workgroupId = suWorkgroup.getGroupId();
@@ -819,11 +962,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         return getDocumentTypeService().findById(previousVersionId);
     }
 
-    public KimGroup getBlanketApproveWorkgroup() {
+    public Group getBlanketApproveWorkgroup() {
         return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
     }
 
-    public void setBlanketApproveWorkgroup(KimGroup blanketApproveWorkgroup) {
+    public void setBlanketApproveWorkgroup(Group blanketApproveWorkgroup) {
         this.blanketApproveWorkgroupId = null;
         if (ObjectUtils.isNotNull(blanketApproveWorkgroup)) {
             this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getGroupId();
@@ -838,7 +981,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 		this.blanketApprovePolicy = blanketApprovePolicy;
 	}
 
-    public KimGroup getBlanketApproveWorkgroupWithInheritance() {
+    public Group getBlanketApproveWorkgroupWithInheritance() {
     	if (getParentDocType() != null && this.blanketApproveWorkgroupId == null) {
     		return getParentDocType().getBlanketApproveWorkgroupWithInheritance();
     	}
@@ -889,43 +1032,69 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         this.reportingWorkgroupId = reportingWorkgroupId;
     }
 
-    public KimGroup getReportingWorkgroup() {
+    public Group getReportingWorkgroup() {
         return getIdentityManagementService().getGroup(this.reportingWorkgroupId);
     }
 
-    public void setReportingWorkgroup(KimGroup reportingWorkgroup) {
+    public void setReportingWorkgroup(Group reportingWorkgroup) {
         this.reportingWorkgroupId = null;
         if (ObjectUtils.isNotNull(reportingWorkgroup)) {
             this.reportingWorkgroupId = reportingWorkgroup.getGroupId();
         }
     }
 
-    public KimGroup getDefaultExceptionWorkgroup() {
+    public Group getDefaultExceptionWorkgroup() {
         return defaultExceptionWorkgroup;
     }
 
-    public void setDefaultExceptionWorkgroup(KimGroup defaultExceptionWorkgroup) {
+    public void setDefaultExceptionWorkgroup(Group defaultExceptionWorkgroup) {
         this.defaultExceptionWorkgroup = defaultExceptionWorkgroup;
     }
 
+    
     public DocumentSearchGenerator getDocumentSearchGenerator() {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
-    	if (objDef == null) {
-    		if (getParentDocType() != null) {
-    			return getParentDocType().getDocumentSearchGenerator();
-    		} else {
-                DocumentSearchGenerator generator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
-    	    	generator.setSearchableAttributes(getSearchableAttributes());
-    	    	return generator;
-    		}
-    	}
-        Object searchGenerator = GlobalResourceLoader.getObject(objDef);
-        if (searchGenerator == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
+        DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getName());
+        Class<? extends DocumentSearchGenerator> docSearchGeneratorClass = null;
+        if (documentEntry != null) {
+            docSearchGeneratorClass = documentEntry.getDocumentSearchGeneratorClass();
         }
-        DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
-        docSearchGenerator.setSearchableAttributes(getSearchableAttributes());
-        return docSearchGenerator;
+        
+        if (docSearchGeneratorClass == null) {
+            ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
+        	if (objDef == null) {
+        		if (getParentDocType() != null) {
+        			return getParentDocType().getDocumentSearchGenerator();
+        		} else {
+                    DocumentSearchGenerator generator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
+        	    	return generator;
+        		}
+        	}
+        	Object searchGenerator = null;
+        	try {
+        	    searchGenerator = GlobalResourceLoader.getObject(objDef);
+        	} catch (Exception e) {
+        	    LOG.warn("Unable to connect to load searchGenerator for " + this.getName()+ ".  Using StandardDocumentSearchGenerator as default.");
+        	    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
+        	}
+
+            if (searchGenerator == null) {
+                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
+            }
+            DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
+            return docSearchGenerator;
+        } else {
+            try {
+                DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)docSearchGeneratorClass.newInstance();
+                return docSearchGenerator;
+            } catch (InstantiationException e) {
+                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator defined in data dictionary " );
+            } catch (IllegalAccessException e) {
+                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator defined in data dictionary " );
+            }
+        }
+        
+        
+        
     }
 
     public DocumentSearchCriteriaProcessor getDocumentSearchCriteriaProcessor() {
@@ -1018,9 +1187,13 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     public CustomNoteAttribute getCustomNoteAttribute() throws ResourceUnavailableException {
     	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.NOTE_ATTRIBUTE_TYPE);
     	if (objDef == null) {
-    		String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
-    		if (defaultNoteClass == null){
-    			return null;
+    		String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
+    		if (defaultNoteClass == null) {
+    		    // attempt to use deprecated parameter
+    		    defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
+    		    if (ObjectUtils.isNull(defaultNoteClass)) {
+    		        return null;
+    		    }
     		}
     		objDef = new ObjectDefinition(defaultNoteClass);
     	}
@@ -1260,7 +1433,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
 
     public boolean isSuperUser(String principalId) {
-    	KimGroup workgroup = getSuperUserWorkgroup();
+    	Group workgroup = getSuperUserWorkgroup();
 		if (workgroup == null) {
 			return false;
 		}
@@ -1285,6 +1458,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
                           + ", routeHeaderId=" + routeHeaderId
                           + ", unresolvedDocHandlerUrl=" + unresolvedDocHandlerUrl
                           + ", unresolvedHelpDefinitionUrl=" + unresolvedHelpDefinitionUrl
+                          + ", unresolvedDocSearchHelpUrl=" + unresolvedDocSearchHelpUrl
                           + ", postProcessorName=" + postProcessorName
                           + ", workgroupId=" + workgroupId
                           + ", blanketApproveWorkgroupId=" + blanketApproveWorkgroupId
@@ -1419,20 +1593,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 		this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
 	}
 
-	/**
-	 * @return the descendHierarchy
-	 */
-	public boolean isDescendHierarchy() {
-		return this.descendHierarchy;
-	}
-
-	/**
-	 * @param descendHierarchy the descendHierarchy to set
-	 */
-	public void setDescendHierarchy(boolean descendHierarchy) {
-		this.descendHierarchy = descendHierarchy;
-	}
-
     /**
      * @return the applyRetroactively
      */
@@ -1479,6 +1639,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
-		active = new Boolean(active);
+		this.active = Boolean.valueOf(active);
 	}
 }

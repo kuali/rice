@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -30,12 +28,13 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @MappedSuperclass
 public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements Inactivateable {
-    @Column(name="FDOC_NBR")
+    private static final long serialVersionUID = 9042706897191231670L;
+	@Column(name="FDOC_NBR")
     protected String documentNumber;
 	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
@@ -46,15 +45,14 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 
 	
 	@Column(name="ACTV_FRM_DT")
-	protected Timestamp activeFromDate;
+	protected Date activeFromDate;
 	@Column(name="ACTV_TO_DT")
-	protected Timestamp activeToDate;
+	protected Date activeToDate;
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap m = new LinkedHashMap();
@@ -87,21 +85,32 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 		this.edit = edit;
 	}
 
-	public Timestamp getActiveFromDate() {
+	/**
+	 * @return the activeFromDate
+	 */
+	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	public void setActiveFromDate(Timestamp activeFromDate) {
+	/**
+	 * @param activeFromDate the activeFromDate to set
+	 */
+	public void setActiveFromDate(Date activeFromDate) {
 		this.activeFromDate = activeFromDate;
 	}
 
-	public Timestamp getActiveToDate() {
+	/**
+	 * @return the activeToDate
+	 */
+	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 
-	public void setActiveToDate(Timestamp activeToDate) {
+	/**
+	 * @param activeToDate the activeToDate to set
+	 */
+	public void setActiveToDate(Date activeToDate) {
 		this.activeToDate = activeToDate;
 	}
-
 
 }

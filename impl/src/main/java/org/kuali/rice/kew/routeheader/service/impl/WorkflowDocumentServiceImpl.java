@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.AcknowledgeAction;
@@ -52,6 +53,7 @@ import org.kuali.rice.kew.actions.SuperUserReturnToPreviousNodeAction;
 import org.kuali.rice.kew.actions.TakeWorkgroupAuthority;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -59,7 +61,9 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
+import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -68,7 +72,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  * this class mainly interacts with ActionEvent 'action' classes and non-vo objects.
  *
@@ -124,21 +128,30 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		action.performAction();
 		return finish(routeHeader);
 	}
+	
+	public DocumentRouteHeaderValue placeInExceptionRouting(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException {
+ 	 	try {
+ 	 		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(annotation, null, routeHeader.getRouteHeaderId());
+ 	 	} catch (Exception e) {
+ 	 		throw new RiceRuntimeException("Failed to place the document into exception routing!", e);
+ 	 	}
+ 	 	return finish(routeHeader);
+ 	 }
 
 	public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String targetPrincipalId,
-			String responsibilityDesc, Boolean ignorePrevious, String requestLabel) throws WorkflowException {
+			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		KimPrincipal principal = loadPrincipal(principalId);
 		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getPrincipalRecipient(targetPrincipalId);
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious, requestLabel);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);
 	}
 
 	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String groupId,
-			String responsibilityDesc, Boolean ignorePrevious, String requestLabel) throws WorkflowException {
+			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		KimPrincipal principal = loadPrincipal(principalId);
 		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getGroupRecipient(groupId);
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, ignorePrevious, requestLabel);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);
 	}
@@ -216,13 +229,13 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
 		}
 		if (routeHeader.getDocRouteLevel() == null) {
-			routeHeader.setDocRouteLevel(new Integer(KEWConstants.ADHOC_ROUTE_LEVEL));
+			routeHeader.setDocRouteLevel(Integer.valueOf(KEWConstants.ADHOC_ROUTE_LEVEL));
 		}
 		if (routeHeader.getCreateDate() == null) {
 			routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
 		}
 		if (routeHeader.getDocVersion() == null) {
-			routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
+			routeHeader.setDocVersion(Integer.valueOf(KEWConstants.CURRENT_DOCUMENT_VERSION));
 		}
 		if (routeHeader.getDocContent() == null) {
 			routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
@@ -242,15 +255,21 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public DocumentRouteHeaderValue returnDocumentToPreviousRouteLevel(String principalId, DocumentRouteHeaderValue routeHeader, Integer destRouteLevel, String annotation)
-			throws InvalidActionTakenException {
-		RouteNode node = (destRouteLevel == null ? null : CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), destRouteLevel));
-		if (node == null && destRouteLevel != null) {
-			throw new InvalidActionTakenException("Could not locate node for route level " + destRouteLevel);
+	        throws InvalidActionTakenException {
+		DocumentRouteHeaderValue result = null;
+		
+		if (destRouteLevel != null) {
+			RouteNode node = CompatUtils.getNodeForLevel(routeHeader.getDocumentType(), destRouteLevel);
+			if (node == null) {
+				throw new InvalidActionTakenException("Could not locate node for route level " + destRouteLevel);
+			}
+
+			KimPrincipal principal = loadPrincipal(principalId);
+			ReturnToPreviousNodeAction action = new ReturnToPreviousNodeAction(routeHeader, principal, annotation, node.getRouteNodeName(), true);
+			action.performAction();
+			result = finish(routeHeader);
 		}
-		KimPrincipal principal = loadPrincipal(principalId);
-		ReturnToPreviousNodeAction action = new ReturnToPreviousNodeAction(routeHeader, principal, annotation, node.getRouteNodeName(), true);
-		action.performAction();
-		return finish(routeHeader);
+		return result;
 	}
 
 	public DocumentRouteHeaderValue returnDocumentToPreviousNode(String principalId, DocumentRouteHeaderValue routeHeader, String destinationNodeName, String annotation)
@@ -272,7 +291,26 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	public DocumentRouteHeaderValue saveRoutingData(String principalId, DocumentRouteHeaderValue routeHeader) {
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
-		if (routeHeader.getDocumentType().hasSearchableAttributes()) {
+		
+		// save routing data should invoke the post processor doActionTaken for SAVE
+ 	 	ActionTakenValue val = new ActionTakenValue();
+ 	 	val.setActionTaken(KEWConstants.ACTION_TAKEN_SAVED_CD);
+ 	 	val.setRouteHeaderId(routeHeader.getRouteHeaderId());
+ 	 	val.setRouteHeader(routeHeader);
+ 	 	PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
+ 	 	try {
+ 	 		postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), val));
+ 	 	} catch (Exception e) {
+ 	 		if (e instanceof RuntimeException) {
+ 	 			throw (RuntimeException)e;
+ 	 		}
+ 	 		throw new WorkflowRuntimeException(e);
+ 	 	}
+
+ 	 	RouteContext routeContext = RouteContext.getCurrentRouteContext();
+ 	 	if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
+ 	 		routeContext.requestSearchIndexingForContext();
+ 	 		
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
 			searchableAttService.indexDocument(routeHeader.getRouteHeaderId());
 		}
@@ -288,7 +326,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	public void deleteDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
 		if (routeHeader.getRouteHeaderId() == null) {
-			LOG.info("Null Document id passed.");
+			LOG.debug("Null Document id passed.");
 			throw new WorkflowException("Document id must not be null.");
 		}
 		KEWServiceLocator.getRouteHeaderService().deleteRouteHeader(routeHeader);
@@ -381,7 +419,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		KimPrincipal principal = loadPrincipal(principalId);
 		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, principal, annotation, runPostProcessor, nodeName);
 		action.recordAction();
-		// action.queueDocument();
 
 		return finish(routeHeader);
 	}

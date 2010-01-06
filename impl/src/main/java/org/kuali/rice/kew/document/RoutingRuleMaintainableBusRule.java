@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
@@ -44,7 +45,7 @@ import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase {
@@ -154,7 +155,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         	isValid &= false;
         }
         if(ruleBaseValues.getName() != null){
-        	if(ruleExists(ruleBaseValues.getName())){
+        	if(ruleExists(ruleBaseValues)){
         		this.putFieldError("name", "routetemplate.ruleservice.name.unique");
             	isValid &= false;
         	}
@@ -170,8 +171,8 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
             }
         }
 
-		if (ruleBaseValues.getIgnorePrevious() == null) {
-			this.putFieldError("ignorePrevious", "routetemplate.ruleservice.ignoreprevious.required");
+		if (ruleBaseValues.getForceAction() == null) {
+			this.putFieldError("forceAction", "routetemplate.ruleservice.forceAction.required");
 			isValid &= false;
         }
 
@@ -202,13 +203,18 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         return isValid;
 	}
 
-	protected boolean ruleExists(String ruleName){
+	protected boolean ruleExists(RuleBaseValues rule){
 		boolean bRet = false;
 
-		RuleBaseValues tmp = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
+		RuleBaseValues tmp = KEWServiceLocator.getRuleService().getRuleByName(rule.getName());
 
-		if(tmp != null)
-			bRet = true;
+		if(tmp != null) {
+		    if ((rule.getPreviousVersionId() == null) 
+		         || (rule.getPreviousVersionId() != null
+		            && !rule.getPreviousVersionId().equals(tmp.getRuleBaseValuesId()))) {
+			    bRet = true;
+		    }
+		}
 
 		return bRet;
 	}

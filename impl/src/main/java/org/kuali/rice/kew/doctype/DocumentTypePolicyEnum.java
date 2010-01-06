@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * DocumentType policy enum type.
  * Encapsulates  policies of the document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class DocumentTypePolicyEnum {
 
@@ -53,7 +53,7 @@ public final class DocumentTypePolicyEnum {
      * determines whether a document will go processed without any approval requests.  If
      * a document has this policy set to false and doesn't generate and approval requests the document will
      * be put in exception routing, which is the exception workgroup associated with the last route node or the
-     * workgroup defined in the 'defaultExceptionWorkgroupName'.  This policy if not defined in this or a parent
+     * workgroup defined in the 'defaultExceptionGroupName'.  This policy if not defined in this or a parent
      * document type defaults to true
      */
     public static final DocumentTypePolicyEnum DEFAULT_APPROVE = new DocumentTypePolicyEnum(KEWConstants.DEFAULT_APPROVE_POLICY);
@@ -82,6 +82,12 @@ public final class DocumentTypePolicyEnum {
     public static final DocumentTypePolicyEnum SUPPORTS_QUICK_INITIATE = new DocumentTypePolicyEnum(KEWConstants.SUPPORTS_QUICK_INITIATE_POLICY);
 
     public static final DocumentTypePolicyEnum NOTIFY_ON_SAVE = new DocumentTypePolicyEnum(KEWConstants.NOTIFY_ON_SAVE_POLICY);
+    
+    /**
+     * The Document Status Policy determines whether the KEW Route Status or the Application Document Status (or both) 
+     * are to be used for a specific document type.
+     */
+    public static final DocumentTypePolicyEnum DOCUMENT_STATUS_POLICY = new DocumentTypePolicyEnum(KEWConstants.DOCUMENT_STATUS_POLICY);
 
     private final String name;
 
@@ -125,6 +131,8 @@ public final class DocumentTypePolicyEnum {
         	return NOTIFY_ON_SAVE;
         } else if (USE_KEW_SUPERUSER_DOCHANDLER.name.equalsIgnoreCase(name)) {
             return USE_KEW_SUPERUSER_DOCHANDLER;
+        } else if (DOCUMENT_STATUS_POLICY.name.equalsIgnoreCase(name)) {
+        	return DOCUMENT_STATUS_POLICY;
         } else {
             throw new IllegalArgumentException("Invalid Document type policy: '" + name + "'");
         }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,29 +19,27 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PermissionImpl extends KimPermissionImpl {
 
 	private static final long serialVersionUID = 1L;
 	
-	List<KimRoleImpl> assignedToRoles = new TypedArrayList(KimRoleImpl.class);
+	List<RoleImpl> assignedToRoles = new TypedArrayList(RoleImpl.class);
 	
 	protected String assignedToRoleNamespaceForLookup;
 	protected String assignedToRoleNameForLookup;
-	protected KimRoleImpl assignedToRole;
+	protected RoleImpl assignedToRole;
 	protected String assignedToPrincipalNameForLookup;
 	protected Person assignedToPrincipal;
 	protected String assignedToGroupNamespaceForLookup;
 	protected String assignedToGroupNameForLookup;
-	protected KimGroupImpl assignedToGroup;
+	protected GroupImpl assignedToGroup;
 	protected String attributeName;
 	protected String attributeValue;
 	protected String detailCriteria;
@@ -51,14 +49,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	 */
 	public String getAssignedToRolesToDisplay() {
 		StringBuffer assignedToRolesToDisplay = new StringBuffer();
-		for(KimRoleImpl roleImpl: assignedToRoles){
+		for(RoleImpl roleImpl: assignedToRoles){
 			assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleImpl));
 		}
 		return StringUtils.chomp( assignedToRolesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
 	}
 
-	public String getRoleDetailsToDisplay(KimRoleImpl roleImpl){
-		return roleImpl.getNamespaceCode()+" "+roleImpl.getRoleName()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
+	public String getRoleDetailsToDisplay(RoleImpl roleImpl){
+		return roleImpl.getNamespaceCode().trim()+" "+roleImpl.getRoleName().trim()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
 	}
 	
 	/**
@@ -151,28 +149,28 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToRoles
 	 */
-	public List<KimRoleImpl> getAssignedToRoles() {
+	public List<RoleImpl> getAssignedToRoles() {
 		return this.assignedToRoles;
 	}
 
 	/**
 	 * @param assignedToRoles the assignedToRoles to set
 	 */
-	public void setAssignedToRoles(List<KimRoleImpl> assignedToRoles) {
+	public void setAssignedToRoles(List<RoleImpl> assignedToRoles) {
 		this.assignedToRoles = assignedToRoles;
 	}
 
 	/**
 	 * @return the assignedToGroup
 	 */
-	public KimGroupImpl getAssignedToGroup() {
+	public GroupImpl getAssignedToGroup() {
 		return this.assignedToGroup;
 	}
 
 	/**
 	 * @param assignedToGroup the assignedToGroup to set
 	 */
-	public void setAssignedToGroup(KimGroupImpl assignedToGroup) {
+	public void setAssignedToGroup(GroupImpl assignedToGroup) {
 		this.assignedToGroup = assignedToGroup;
 	}
 
@@ -193,14 +191,14 @@ public class PermissionImpl extends KimPermissionImpl {
 	/**
 	 * @return the assignedToRole
 	 */
-	public KimRoleImpl getAssignedToRole() {
+	public RoleImpl getAssignedToRole() {
 		return this.assignedToRole;
 	}
 
 	/**
 	 * @param assignedToRole the assignedToRole to set
 	 */
-	public void setAssignedToRole(KimRoleImpl assignedToRole) {
+	public void setAssignedToRole(RoleImpl assignedToRole) {
 		this.assignedToRole = assignedToRole;
 	}
 

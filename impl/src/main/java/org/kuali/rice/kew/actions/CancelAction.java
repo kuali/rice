@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,7 +34,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Cancels a document at the request of a client app.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CancelAction extends ActionTakenEvent {
 
@@ -53,15 +53,16 @@ public class CancelAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) {
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
         // FYI delyea:  This is new validation check... was not being checked previously
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be cancelled";
         }
-        if (!isActionCompatibleRequest(actionRequests)) {
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible with the Cancel Action";
         }
     	// check state before checking kim

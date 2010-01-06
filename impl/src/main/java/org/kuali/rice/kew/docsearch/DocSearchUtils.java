@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +50,7 @@ import org.kuali.rice.kns.web.ui.Row;
 /**
  * Various static utility methods for helping with Searcha.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocSearchUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocSearchUtils.class);
@@ -70,6 +70,7 @@ public class DocSearchUtils {
     private static final String DATE_REGEX_WHOLENUM_LARGE = "^\\d{8}$"; // matches MMddyyyy
     private static final String DATE_REGEX_WHOLENUM_LARGE_SPLIT = "(\\d{2})(\\d{2})(\\d{4})";
 
+    private static final String TIME_REGEX = "([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])";
 	private static final Map REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION = new HashMap();
 	static {
 //		REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.put(DATE_REGEX_PASS, DATE_REGEX_PASS_SPLIT);
@@ -129,18 +130,6 @@ public class DocSearchUtils {
         return dc.getYear() + "/" + dc.getMonth() + "/" + dc.getDate();
     }
 
-    // TODO Version 2.4 - Remove this and update DocSearchGenerator to use Platform
-    public static String getDateSQL(String date, String time) {
-        // SQL 92 date literal syntax:
-        // http://www.stanford.edu/dept/itss/docs/oracle/9i/java.920/a96654/ref.htm#1005145
-        String d = date.replace('/', '-');
-        if (time == null) {
-            return "{d '" + d + "'}";
-        } else {
-            return "{ts '" + d + " " + time + "'}";
-        }
-    }
-
     /**
      * A method to format any variety of date strings into a common format
      *
@@ -149,6 +138,11 @@ public class DocSearchUtils {
      * @return A string representing a date in the format MM/dd/yyyy or null if date is invalid
      */
     public static String getEntryFormattedDate(String date) {
+        Pattern p = Pattern.compile(TIME_REGEX);
+        Matcher util = p.matcher(date);
+        if (util.find() == true) {
+            date = StringUtils.substringBeforeLast(date, " ");
+        }
         DateComponent dc = formatDateToDateComponent(date, DOCUMENT_SEARCH_DATE_VALIDATION_REGEX_EXPRESSIONS);
         if (dc == null) {
             return null;
@@ -287,6 +281,11 @@ public class DocSearchUtils {
     }
 
     public static Timestamp convertStringDateToTimestamp(String dateWithoutTime) {
+        Pattern p = Pattern.compile(TIME_REGEX);
+        Matcher util = p.matcher(dateWithoutTime);
+        if (util.find() == true) {
+            dateWithoutTime = StringUtils.substringBeforeLast(dateWithoutTime, " ");
+        }
         DateComponent formattedDate = formatDateToDateComponent(dateWithoutTime, Arrays.asList(REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.keySet().toArray()));
         if (formattedDate == null) {
             return null;
@@ -336,13 +335,10 @@ public class DocSearchUtils {
         List<SearchAttributeCriteriaComponent> searchableAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
         Map criteriaComponentsByKey = new HashMap();
 
-        if (!Utilities.isEmpty(documentTypeName)) {
-            DocumentType docType = getDocumentType(documentTypeName);
-            if (docType == null) {
-                String errorMsg = "Cannot find document type for given name '" + documentTypeName + "'";
-                LOG.error("buildSearchableAttributesFromString() " + errorMsg);
-                throw new RuntimeException(errorMsg);
-            }
+        DocumentType docType = getDocumentType(documentTypeName);
+
+        if (docType != null) {
+
             for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
             	//KFSMI-1466 - DocumentSearchContext
                 for (Row row : searchableAttribute.getSearchingRows(
@@ -355,6 +351,7 @@ public class DocSearchUtils {
                             sacc.setRangeSearch(dsField.isMemberOfRange());
                             sacc.setSearchInclusive(dsField.isInclusive());
                             sacc.setSearchable(dsField.isIndexedForSearch());
+                            sacc.setLookupableFieldType(dsField.getFieldType());
                             sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(dsField.getFieldType()));
                             criteriaComponentsByKey.put(dsField.getPropertyName(), sacc);
                         } else {

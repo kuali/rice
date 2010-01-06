@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -96,25 +96,25 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
         return DTOConverter.convertRouteHeader(routeHeader, principalId);
     }
 
-    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientPrincipalId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException {
+    public RouteHeaderDTO adHocRouteDocumentToPrincipal(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientPrincipalId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(actionRequested, "actionRequested");
         //incomingParamCheck(routeMethodName, "routeMethodName");
         incomingParamCheck(recipientPrincipalId, "recipientPrincipalId");
-        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientPrincipalId=" + recipientPrincipalId + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation + ", requestLabel="+requestLabel+"]");
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(principalId, routeHeader, actionRequested, nodeName, annotation, recipientPrincipalId, responsibilityDesc, new Boolean(ignorePrevActions), requestLabel);
+        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientPrincipalId=" + recipientPrincipalId + ", forceAction=" + forceAction + ", annotation="+annotation + ", requestLabel="+requestLabel+"]");
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(principalId, routeHeader, actionRequested, nodeName, annotation, recipientPrincipalId, responsibilityDesc, new Boolean(forceAction), requestLabel);
         return DTOConverter.convertRouteHeader(routeHeader, principalId);
     }
 
-    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientGroupId, String responsibilityDesc, boolean ignorePrevActions, String requestLabel) throws WorkflowException {
+    public RouteHeaderDTO adHocRouteDocumentToGroup(String principalId, RouteHeaderDTO routeHeaderVO, String actionRequested, String nodeName, String annotation, String recipientGroupId, String responsibilityDesc, boolean forceAction, String requestLabel) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(actionRequested, "actionRequested");
         //incomingParamCheck(routeMethodName, "routeMethodName");
         incomingParamCheck(recipientGroupId, "recipientGroupId");
-        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientGroupId=" + recipientGroupId + ", ignorePrevious=" + ignorePrevActions + ", annotation="+annotation+"]");
-        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToGroup(principalId, routeHeader, actionRequested, nodeName, annotation, recipientGroupId, responsibilityDesc, new Boolean(ignorePrevActions), requestLabel);
+        LOG.debug("AdHoc Route [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", actionRequest=" + actionRequested + ", nodeName=" + nodeName + ", recipientGroupId=" + recipientGroupId + ", forceAction=" + forceAction + ", annotation="+annotation+"]");
+        routeHeader = KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToGroup(principalId, routeHeader, actionRequested, nodeName, annotation, recipientGroupId, responsibilityDesc, new Boolean(forceAction), requestLabel);
         return DTOConverter.convertRouteHeader(routeHeader, principalId);
     }
 
@@ -297,6 +297,14 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
     public RouteHeaderDTO superUserCancel(String principalId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
     	return superUserCancel(principalId, routeHeaderVO, annotation, true);
     }
+    
+    public RouteHeaderDTO placeInExceptionRouting(String principalId, RouteHeaderDTO routeHeaderVO, String annotation) throws WorkflowException {
+ 	 	DocumentRouteHeaderValue routeHeader = init(routeHeaderVO);
+ 	 	incomingParamCheck(principalId, "principalId");
+ 	 	LOG.debug("placeInExceptionRouting [principalId=" + principalId + ", docId=" + routeHeaderVO.getRouteHeaderId() + ", annotation=" + annotation + "]");
+ 	 	routeHeader = KEWServiceLocator.getWorkflowDocumentService().placeInExceptionRouting(principalId, routeHeader, annotation);
+ 	 	return DTOConverter.convertRouteHeader(routeHeader, principalId);
+ 	 }
 
 	public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException {
 		incomingParamCheck(documentContent, "documentContent");

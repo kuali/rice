@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.mail.EmailBody;
@@ -36,7 +35,7 @@ import org.kuali.rice.kew.mail.EmailTo;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.mail.service.EmailService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 
@@ -44,9 +43,9 @@ import org.kuali.rice.kim.bo.Person;
 /**
  * Struts action which handles the Feedback screen.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FeedbackAction extends WorkflowAction {
+public class FeedbackAction extends KewKualiAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FeedbackAction.class);
 
@@ -161,9 +160,8 @@ public class FeedbackAction extends WorkflowAction {
     	return buffer.toString();
     }
 
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        return null;
+    private static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
     }
-
 }
 

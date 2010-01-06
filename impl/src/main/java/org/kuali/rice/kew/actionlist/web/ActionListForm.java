@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2009 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -25,6 +25,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -38,7 +39,7 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 /**
  * Struts form for action ActionListAction
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListForm extends KualiForm {
 
@@ -56,12 +57,14 @@ public class ActionListForm extends KualiForm {
     private Map defaultActions = new HashMap();
     private String delegationId;
     private List delegators;
-    private String primaryDelegateId;
-    private List primaryDelegates;
     private Boolean hasCustomActions;
     private Boolean routeLogPopup;
     private Boolean documentPopup;
+    private List<WebFriendlyRecipient> primaryDelegates;
+    private String primaryDelegateId;
 
+    private Boolean hasDisplayParameters;
+    
     // "sticky" parameters for paginated action list
     private Integer currentPage;
     private String currentSort;
@@ -76,7 +79,7 @@ public class ActionListForm extends KualiForm {
     private String cssFile = "kuali.css";
     private String logoAlign = "left";
     private String viewOutbox;
-    private Long[] outboxItems;
+    private String[] outboxItems;
     private boolean outBoxEmpty;
     private Boolean showOutbox;
     private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
@@ -104,22 +107,6 @@ public class ActionListForm extends KualiForm {
     public void setDelegator(String delegator) {
 	this.delegator = delegator;
     }
-
-    public String getPrimaryDelegateId() {
-		return this.primaryDelegateId;
-	}
-
-	public void setPrimaryDelegateId(String primaryDelegateId) {
-		this.primaryDelegateId = primaryDelegateId;
-	}
-
-	public List getPrimaryDelegates() {
-		return this.primaryDelegates;
-	}
-
-	public void setPrimaryDelegates(List primaryDelegates) {
-		this.primaryDelegates = primaryDelegates;
-	}
 
 	public String getDocType() {
 	return docType;
@@ -291,11 +278,11 @@ public class ActionListForm extends KualiForm {
 	this.viewOutbox = viewOutbox;
     }
 
-    public Long[] getOutboxItems() {
+    public String[] getOutboxItems() {
 	return outboxItems;
     }
 
-    public void setOutboxItems(Long[] outboxItems) {
+    public void setOutboxItems(String[] outboxItems) {
 	this.outboxItems = outboxItems;
     }
 
@@ -322,11 +309,13 @@ public class ActionListForm extends KualiForm {
 	public void setHeaderButtons(List<ExtraButton> headerButtons) {
 		this.headerButtons = headerButtons;
 	}
+	
 	public String getMenuBar(){
-		  String url = "";
-		  Properties parameters = new Properties();
-		  url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
-          url = "<a href=\"" + url + "\"><img src=\"../kr/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+		String url = "";
+		Properties parameters = new Properties();
+		url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+		String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
+		url = "<a href=\"" + url + "\"><img src=\""+krBaseUrl+"/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 		return url;
 	}
 
@@ -359,9 +348,9 @@ public class ActionListForm extends KualiForm {
         //if (documentPopupInd) {
         //    documentPopup = "true";
         //}
-        setRouteLogPopup(new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND)));
-        setDocumentPopup(new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND)));
-        request.setAttribute("noRefresh", new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
+        setRouteLogPopup(Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND)));
+        setDocumentPopup(Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND)));
+        request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
 		super.populate(request);
 	}
 
@@ -381,7 +370,28 @@ public class ActionListForm extends KualiForm {
         this.documentPopup = documentPopup;
     }
 
+	public Boolean getHasDisplayParameters() {
+		return this.hasDisplayParameters;
+	}
 
+	public void setHasDisplayParameters(Boolean hasDisplayParameters) {
+		this.hasDisplayParameters = hasDisplayParameters;
+	}
 
+	public List<WebFriendlyRecipient> getPrimaryDelegates() {
+		return this.primaryDelegates;
+	}
 
+	public void setPrimaryDelegates(List<WebFriendlyRecipient> primaryDelegates) {
+		this.primaryDelegates = primaryDelegates;
+	}
+
+	public String getPrimaryDelegateId() {
+		return this.primaryDelegateId;
+	}
+
+	public void setPrimaryDelegateId(String primaryDelegateId) {
+		this.primaryDelegateId = primaryDelegateId;
+	}
+	
 }

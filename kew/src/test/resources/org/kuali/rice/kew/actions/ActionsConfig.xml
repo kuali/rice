@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 		<ruleAttribute>
@@ -81,9 +96,9 @@
 			<description>SuperUserActionInvalidPostProcessor</description>
 			<label>SuperUserActionInvalidPostProcessor</label>
 			<postProcessorName>org.kuali.rice.kew.actions.SuperUserActionInvalidPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -122,9 +137,9 @@
 			<description>BlanketApproveTest</description>
 			<label>BlanketApproveTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<policies>
@@ -140,9 +155,9 @@
 			<description>CreatedDocumentInactive document</description>
 			<label>CreatedDocumentInactive</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>false</active>
 			<routePaths>
@@ -162,9 +177,9 @@
 			<description>BlanketApprovePolicyTest document</description>
 			<label>BlanketApprovePolicyTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<policies>
@@ -192,16 +207,16 @@
 					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 				</requests>
 			</routeNodes>
-		</documentType>
+		</documentType>    
 		<documentType>
 			<name>BlanketApproveSequentialTest</name>
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApproveSequentialTest</description>
 			<label>BlanketApproveSequentialTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -241,9 +256,9 @@
 			<description>BlanketApproveParallelTest</description>
 			<label>BlanketApproveParallelTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -318,9 +333,9 @@
 			<description>SuperUserApproveActionRequestFyiTest</description>
 			<label>SuperUserApproveActionRequestFyiTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -339,9 +354,9 @@
 			<description>SuperUserApproveActionRequestApproveTest</description>
 			<label>SuperUserApproveActionRequestApproveTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -365,9 +380,9 @@
 			<description>NotificationTest</description>
 			<label>NotificationTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -416,9 +431,9 @@
 			<description>NotificationTest</description>
 			<label>NotificationTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<policies>
@@ -434,9 +449,9 @@
 			<description>BlanketApproveMandatoryNodeTest</description>
 			<label>BlanketApproveMandatoryNodeTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -479,9 +494,9 @@
 			<description>SaveActionEventTest</description>
 			<label>SaveActionEventTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<policies>
@@ -511,9 +526,9 @@
 			<description>SaveActionEventTest With No Initiator Only Save Required</description>
 			<label>SaveActionEventTestNonInitiator</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<policies>
@@ -549,9 +564,9 @@
 			<description>TakeWorkgroupAuthority Action Test</description>
 			<label>TakeWorkgroupAuthorityDoc</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<policies>
@@ -584,9 +599,9 @@
 			<description>Move Sequential Test</description>
 			<label>Move Sequential Test</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -626,9 +641,9 @@
 			<description>Move In Process Test</description>
 			<label>Move In Process Test</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -672,9 +687,9 @@
 			<description>AdhocRouteTest</description>
 			<label>AdhocRouteTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -701,9 +716,9 @@
 			<description>PreApprovalTest</description>
 			<label>PreApprovalTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -732,9 +747,9 @@
 			<description>VariablesTest</description>
 			<label>VariablesTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -811,9 +826,9 @@
 			<description>InitiatorRoleApprovalTest</description>
 			<label>InitiatorRoleApprovalTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -842,9 +857,9 @@
 			<description>BlanketApproveThroughRoleAndWorkgroupTest</description>
 			<label>BlanketApproveThroughRoleAndWorkgroupTest</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:NonSIT</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">NonSIT</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -882,9 +897,9 @@
 			<description>SUApproveDocument</description>
 			<label>SUApproveDocument</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:NonSIT</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">NonSIT</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<routePaths>
@@ -921,9 +936,9 @@
 			<description>SUApproveDocumentNotifications</description>
 			<label>SUApproveDocumentNotifications</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
-			<blanketApproveWorkgroupName>KR-WKFLW:NonSIT</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">NonSIT</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
 			<active>true</active>
 			<policies>
@@ -935,13 +950,133 @@
 		</documentType>
 
 		<!-- end  super user approve exception case document type -->
+
+        <documentType>
+            <name>RouteLogActionTest</name>
+            <description>RouteLogActionTest</description>
+            <label>RouteLogActionTest</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+            <docHandler>_blank</docHandler>
+            <active>true</active>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" nextNode="WorkflowDocument" />
+                    <requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+                    <requests name="WorkflowDocument2" nextNode="Acknowledge" />
+                    <requests name="Acknowledge"/>
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>P</activationType>
+                </start>
+                <requests name="WorkflowDocument">
+                    <activationType>P</activationType>
+                    <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+                </requests>
+                <requests name="WorkflowDocument2">
+                    <activationType>P</activationType>
+                    <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+                </requests>
+                <requests name="Acknowledge">
+                    <activationType>P</activationType>
+                    <ruleTemplate>Ack1Template</ruleTemplate>
+                </requests>
+            </routeNodes>
+        </documentType>
+        <documentType>
+            <name>RouteLogActionTestTrivial</name>
+            <description>RouteLogActionTestTrivial</description>
+            <label>RouteLogActionTestTrivial</label>
+            <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+            <docHandler>_blank</docHandler>
+            <active>true</active>
+            <routePaths>
+                <routePath>
+                    <start name="AdHoc" />
+                </routePath>
+            </routePaths>
+            <routeNodes>
+                <start name="AdHoc">
+                    <activationType>S</activationType>
+                </start>
+            </routeNodes>
+        </documentType>
+    	<documentType>
+      		<name>AdHocNoNodeTest</name>
+      		<description>AdHocNoNodeTest</description>
+      		<label>AdHocNoNodeTest</label>
+      		<postProcessorName />
+      		<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+      		<docHandler>_blank</docHandler>
+      		<active>true</active>
+      		<routePaths />
+    	</documentType> 
+    	        
+    	<!-- Test Return to Previous with split -->
+        <documentType>
+			<name>ReturnToPreviousWithSplitTest</name>
+			<parent>BlanketApproveTest</parent>
+			<description>ReturnToPreviousWithSplitTest</description>
+			<label>ReturnToPreviousWithSplitTest</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>_blank</docHandler>
+			<active>true</active>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="WorkflowDocument" />
+					<requests name="WorkflowDocument" nextNode="Banana" />
+					<split name="Banana" nextNode="NoOp2">
+						<branch name="There">
+							<requests name="WorkflowDocument2" nextNode="Join"/>
+						</branch>
+						<branch name="Here">
+							<simple name="NoOp" nextNode="Join"/>
+						</branch>
+						<join name="Join"/>
+					</split>
+					<simple name="NoOp2" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="WorkflowDocument">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+				<requests name="WorkflowDocument2">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+				</requests>
+				<split name="Banana">
+					<type>org.kuali.rice.kew.actions.ReturnToPreviousTestSplit</type>
+				</split>
+				<simple name="NoOp">
+					<type>org.kuali.rice.kew.engine.node.NoOpNode</type>
+				</simple>
+				<simple name="NoOp2">
+					<type>org.kuali.rice.kew.engine.node.NoOpNode</type>
+				</simple>
+				<join name="Join"/>
+			</routeNodes>
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>
@@ -954,7 +1089,7 @@
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template and SuperUserActionInvalidPostProcessor Rule 2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -967,7 +1102,7 @@
 			<documentType>SuperUserApproveActionRequestApproveTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -980,7 +1115,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 3</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -993,7 +1128,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate Rule 2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -1006,7 +1141,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>WorkflowDocument2Template Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>pmckown</user>
@@ -1019,7 +1154,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>WorkflowDocument3Template Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jitrue</user>
@@ -1032,7 +1167,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocument4Template</ruleTemplate>
 			<description>WorkflowDocument4Template Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jthomas</user>
@@ -1045,7 +1180,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>WorkflowDocumentFinalTemplate</ruleTemplate>
 			<description>WorkflowDocumentFinalTemplate Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>xqi</user>
@@ -1058,7 +1193,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>Ack1Template</ruleTemplate>
 			<description>Ack1Template Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>temay</user>
@@ -1071,7 +1206,7 @@
 			<documentType>BlanketApproveTest</documentType>
 			<ruleTemplate>Ack2Template</ruleTemplate>
 			<description>Ack2Template Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -1085,7 +1220,7 @@
 			<documentType>NotificationTest</documentType>
 			<ruleTemplate>NotifyFirstTemplate</ruleTemplate>
 			<description>Notify First Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>jhopf</user>
@@ -1104,7 +1239,7 @@
 			<documentType>NotificationTest</documentType>
 			<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
 			<description>Notify Left Branch Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -1120,7 +1255,7 @@
 			<description>Notify Right Branch Rule 1</description>
 			<fromDate>05/30/2002</fromDate>
 			<toDate>05/30/2209</toDate>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!Notify</role>
@@ -1136,7 +1271,7 @@
 			<description>Notify Final Rule 1</description>
 			<fromDate>05/30/2002</fromDate>
 			<toDate>05/30/2209</toDate>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>xqi</user>
@@ -1160,7 +1295,7 @@
 			<documentType>SaveActionEventTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate SaveAction Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>bmcgough</user>
@@ -1173,7 +1308,7 @@
 			<documentType>SaveActionEventTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>WorkflowDocumentTemplate SaveAction Rule 2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>rkirkend</user>
@@ -1188,10 +1323,10 @@
 			<documentType>TakeWorkgroupAuthorityDoc</documentType>
 			<ruleTemplate>WorkgroupByDocument</ruleTemplate>
 			<description>TakeWorkgroupAuthorityDoc route to TestWorkgroup</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
-					<workgroup>KR-WKFLW:TestWorkgroup</workgroup>
+					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -1203,7 +1338,7 @@
 			<documentType>AdhocRouteTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required AdhocRouteTest</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>
@@ -1219,7 +1354,7 @@
 			<documentType>PreApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>
@@ -1232,7 +1367,7 @@
 			<documentType>PreApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -1245,7 +1380,7 @@
 			<documentType>PreApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -1258,7 +1393,7 @@
 			<documentType>PreApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required PreApprovalTest4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user3</user>
@@ -1274,7 +1409,7 @@
 			<documentType>VariablesTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user1</user>
@@ -1287,7 +1422,7 @@
 			<documentType>VariablesTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -1300,7 +1435,7 @@
 			<documentType>VariablesTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -1313,7 +1448,7 @@
 			<documentType>VariablesTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required VariablesTest4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user3</user>
@@ -1328,7 +1463,7 @@
 			<documentType>InitiatorRoleApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR</role>
@@ -1341,7 +1476,7 @@
 			<documentType>InitiatorRoleApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>ewestfal</user>
@@ -1354,7 +1489,7 @@
 			<documentType>InitiatorRoleApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -1367,7 +1502,7 @@
 			<documentType>InitiatorRoleApprovalTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>required InitiatorRoleApprovalTest4</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user3</user>
@@ -1383,7 +1518,7 @@
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
 			<ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
 			<description>BA Notification Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!Notify</role>
@@ -1397,7 +1532,7 @@
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
 			<ruleTemplate>BANotificationRoleTemplate</ruleTemplate>
 			<description>BA Notification Rule 2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
 					<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!Notify2</role>
@@ -1411,10 +1546,10 @@
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>BA Notification Workgroup Rule 1</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
-					<workgroup>KR-WKFLW:WorkflowAdmin</workgroup>
+					<groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -1424,10 +1559,10 @@
 			<documentType>BlanketApproveThroughRoleAndWorkgroupTest</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
 			<description>BA Notification Workgroup Rule 2</description>
-			<ignorePrevious>true</ignorePrevious>
+			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
-					<workgroup>KR-WKFLW:NonSIT</workgroup>
+					<groupName namespace="KR-WKFLW">NonSIT</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -1439,7 +1574,7 @@
 			<documentType>SUApproveDocument</documentType>
 			<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
 			<description>SUApproveDocument rule</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>user2</user>
@@ -1452,7 +1587,7 @@
 			<documentType>SUApproveDocument</documentType>
 			<ruleTemplate>WorkflowDocument3Template</ruleTemplate>
 			<description>SUApproveDocument rule WorkflowDocument3Template</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<user>quickstart</user>
@@ -1462,6 +1597,46 @@
 			</responsibilities>
 		</rule>
 		<!-- end su approve exception case rules -->
+    
+        <rule>
+            <documentType>RouteLogActionTest</documentType>
+            <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+            <description>RLAT WorkflowDocumentTemplate Rule 1</description>
+            <forceAction>true</forceAction>
+            <responsibilities>
+                <responsibility>
+                    <user>ewestfal</user>
+                    <actionRequested>C</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>RouteLogActionTest</documentType>
+            <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+            <description>RLAT WorkflowDocumentTemplate Rule 2</description>
+            <forceAction>true</forceAction>
+            <responsibilities>
+                <responsibility>
+                    <user>user2</user>
+                    <actionRequested>C</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
+        <rule>
+            <documentType>RouteLogActionTest</documentType>
+            <ruleTemplate>Ack1Template</ruleTemplate>
+            <description>RLAT Ack1Template Rule 1</description>
+            <forceAction>true</forceAction>
+            <responsibilities>
+                <responsibility>
+                    <user>user3</user>
+                    <actionRequested>K</actionRequested>
+                    <priority>1</priority>
+                </responsibility>
+            </responsibilities>
+        </rule>
 	</rules>
 
 	<ruleDelegations xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
@@ -1475,13 +1650,13 @@
 				<documentType>NotificationTest</documentType>
 				<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
 				<description>Notify left Branch Prim Del</description>
-				<ignorePrevious>false</ignorePrevious>
+				<forceAction>false</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>temay</user>
 					</responsibility>
 					<responsibility>
-						<workgroup>KR-WKFLW:NonSIT</workgroup>
+						<groupName namespace="KR-WKFLW">NonSIT</groupName>
 					</responsibility>
 				</responsibilities>
 			</rule>
@@ -1497,7 +1672,7 @@
 				<documentType>NotificationTest</documentType>
 				<ruleTemplate>NotifyLeftBranchTemplate</ruleTemplate>
 				<description>Notify Left Branch Sec Del</description>
-				<ignorePrevious>true</ignorePrevious>
+				<forceAction>true</forceAction>
 				<responsibilities>
 					<responsibility>
 						<user>pmckown</user>
@@ -1516,7 +1691,7 @@
 				<documentType>NotificationTest</documentType>
 				<ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
 				<description>Notify Right Delegation</description>
-				<ignorePrevious>true</ignorePrevious>
+				<forceAction>true</forceAction>
 				<responsibilities>
 					<responsibility>
 						<role>org.kuali.rice.kew.actions.BANotificationRoleAttribute!NotifyDelegate</role>

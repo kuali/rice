@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +46,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 
 /**
@@ -54,12 +54,12 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  *
  * @see DocumentType
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
-    
+
     private XmlRenderer renderer = new XmlRenderer(DOCUMENT_TYPE_NAMESPACE);
 
     public Element export(ExportDataSet dataSet) {
@@ -91,25 +91,29 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
             renderer.renderTextElement(docTypeElement, SERVICE_NAMESPACE, documentType.getActualServiceNamespace());
         }
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
-        KimGroup superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
+        Group superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, SUPER_USER_WORKGROUP_NAME, superUserWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + superUserWorkgroup.getGroupName().trim());
+        	Element superUserGroupElement = renderer.renderTextElement(docTypeElement, SUPER_USER_GROUP_NAME, superUserWorkgroup.getGroupName().trim());
+        	superUserGroupElement.setAttribute(NAMESPACE, superUserWorkgroup.getNamespaceCode().trim());
         }
-        KimGroup blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
+        Group blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
         if (blanketWorkgroup != null){
-        	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_WORKGROUP_NAME, blanketWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + blanketWorkgroup.getGroupName().trim());
+        	Element blanketGroupElement = renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_GROUP_NAME, blanketWorkgroup.getGroupName().trim());
+        	blanketGroupElement.setAttribute(NAMESPACE, blanketWorkgroup.getNamespaceCode().trim());
         }
         if (documentType.getBlanketApprovePolicy() != null){
         	renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_POLICY, documentType.getBlanketApprovePolicy());
         }
-        KimGroup reportingWorkgroup = documentType.getReportingWorkgroup();
+        Group reportingWorkgroup = documentType.getReportingWorkgroup();
         if (reportingWorkgroup != null) {
-            renderer.renderTextElement(docTypeElement, REPORTING_WORKGROUP_NAME, reportingWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + reportingWorkgroup.getGroupName().trim());
+        	Element reportingGroupElement = renderer.renderTextElement(docTypeElement, REPORTING_GROUP_NAME, reportingWorkgroup.getGroupName().trim());
+        	reportingGroupElement.setAttribute(NAMESPACE, reportingWorkgroup.getNamespaceCode().trim());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
-        	KimGroup exceptionWorkgroup = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
+        	Group exceptionWorkgroup = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
         	if (exceptionWorkgroup != null) {
-        		renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_WORKGROUP_NAME, exceptionWorkgroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + exceptionWorkgroup.getGroupName().trim());
+        		Element exceptionGroupElement = renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_GROUP_NAME, exceptionWorkgroup.getGroupName().trim());
+        		exceptionGroupElement.setAttribute(NAMESPACE, exceptionWorkgroup.getNamespaceCode().trim());
         	}
         }
         if (StringUtils.isNotBlank(documentType.getUnresolvedDocHandlerUrl())) {
@@ -117,6 +121,9 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         }
         if (!StringUtils.isBlank(documentType.getUnresolvedHelpDefinitionUrl())) {
             renderer.renderTextElement(docTypeElement, HELP_DEFINITION_URL, documentType.getUnresolvedHelpDefinitionUrl());
+        }
+        if (!StringUtils.isBlank(documentType.getUnresolvedDocSearchHelpUrl())) {
+            renderer.renderTextElement(docTypeElement, DOC_SEARCH_HELP_URL, documentType.getUnresolvedDocSearchHelpUrl());
         }
         if (!StringUtils.isBlank(documentType.getActualNotificationFromAddress())) {
         	renderer.renderTextElement(docTypeElement, NOTIFICATION_FROM_ADDRESS, documentType.getActualNotificationFromAddress());
@@ -128,7 +135,15 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
       	if (!StringUtils.isBlank(documentType.getRoutingVersion())) {
       		renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
       	}
-        exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
+      	Process process = null;
+      	if (documentType.getProcesses().size() > 0) {
+      	    process = (Process)documentType.getProcesses().get(0);
+      	}
+      	if (process != null && process.getInitialRouteNode() != null) {
+      	    exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
+      	} else {
+      	    renderer.renderElement(docTypeElement, ROUTE_PATHS);
+      	}
     }
 
     private void exportPolicies(Element parent, Collection policies) {
@@ -211,11 +226,22 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
     }
 
     private void exportProcess(Element parent, Process process) {
-        exportNodeGraph(parent, process.getInitialRouteNode(), null);
+    	exportNodeGraph(parent, process.getInitialRouteNode(), null);
     }
 
     private void exportNodeGraph(Element parent, RouteNode node, SplitJoinContext splitJoinContext) {
-        NodeType nodeType = getNodeTypeForNode(node);
+        NodeType nodeType = null;
+
+        String contentFragment = node.getContentFragment();
+        // some of the older versions of rice do not have content fragments
+        if(contentFragment == null || "".equals(contentFragment)){
+        	nodeType = getNodeTypeForNode(node);
+        }else{
+        	// I'm not sure if this should be the default implementation because
+        	// it uses a string comparison instead of a classpath check.
+        	nodeType = this.getNodeTypeForNodeFromFragment(node);
+        }
+
         if (nodeType.isAssignableFrom(NodeType.SPLIT)) {
             exportSplitNode(parent, node, nodeType, splitJoinContext);
         } else if (nodeType.isAssignableFrom(NodeType.JOIN)) {
@@ -301,7 +327,7 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
     }
 
     /**
-     * Exists for backward compatability for nodes which don't have a content fragment.
+     * Exists for backward compatibility for nodes which don't have a content fragment.
      */
     private void exportRouteNodeOld(Element parent, RouteNode node, boolean hasDefaultExceptionWorkgroup) {
         NodeType nodeType = getNodeTypeForNode(node);
@@ -309,7 +335,8 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         renderer.renderAttribute(nodeElement, NAME, node.getRouteNodeName());
         if (!hasDefaultExceptionWorkgroup) {
         	if (!StringUtils.isBlank(node.getExceptionWorkgroupName())) {
-        		renderer.renderTextElement(nodeElement, EXCEPTION_WORKGROUP_NAME, node.getExceptionWorkgroupName());
+        		Element exceptionGroupElement = renderer.renderTextElement(nodeElement, EXCEPTION_GROUP_NAME, node.getExceptionWorkgroupName());
+        		exceptionGroupElement.setAttribute(NAMESPACE, node.getExceptionWorkgroup().getNamespaceCode());
         	}
         }
         if (supportsActivationType(nodeType) && !StringUtils.isBlank(node.getActivationType())) {
@@ -345,11 +372,44 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
     private NodeType getNodeTypeForNode(RouteNode node) {
         NodeType nodeType = null;
         String errorMessage = "Could not determine proper XML element for the given node type: " + node.getNodeType();
+
         try {
             nodeType = NodeType.fromClassName(node.getNodeType());
         } catch (ResourceUnavailableException e) {
             throw new WorkflowRuntimeException(errorMessage, e);
         }
+        if (nodeType == null) {
+            throw new WorkflowRuntimeException(errorMessage);
+        }
+        return nodeType;
+    }
+
+    /**
+     *
+     * This method will find the base node type via the content fragment of the node.
+     * Basically, it reads the node type, start, split, join, etc and then assigns
+     * the base type to it.  This is necessary because there are cases where the
+     * passed in nodeType will no be in the classpath. It should, in theory do
+     * the same thing as getNodeTypeForNode.
+     *
+     * @param node
+     * @return
+     */
+    private NodeType getNodeTypeForNodeFromFragment(RouteNode node) {
+        NodeType nodeType = null;
+        String contentFragment = node.getContentFragment();
+        String errorMessage = "Could not determine proper XML element for the given node type: " + node.getNodeType();
+
+        for (Iterator<NodeType> iterator = NodeType.getTypeList().iterator(); iterator.hasNext();) {
+        	NodeType nType = iterator.next();
+        	// checks for something like <start
+        	// or <split
+        	// we may want to switch this out for something a little more robust.
+        	if(contentFragment.startsWith("<" + nType.getName())){
+           		nodeType = nType;
+           	}
+        }
+
         if (nodeType == null) {
             throw new WorkflowRuntimeException(errorMessage);
         }

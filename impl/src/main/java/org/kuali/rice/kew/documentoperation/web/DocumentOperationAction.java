@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -72,15 +72,15 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
 /**
  * Struts Action for doing editing of workflow documents.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentOperationAction extends KewKualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentOperationAction.class);
@@ -92,54 +92,68 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward getDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		Long docId=new Long(docForm.getRouteHeaderId().trim());
-		//to clear Document Field first;
-        docForm.resetOps();
-		DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(docId);
-		List routeNodeInstances=getRouteNodeService().findRouteNodeInstances(docId);
-		Map branches1=new HashMap();
-		List branches=new ArrayList();
-
-		if (routeHeader == null) {
-			throw new WorkflowServiceErrorException("Document Not Found", new WorkflowServiceErrorImpl("Document Not Found", "docoperation.routeheaderid.invalid"));
+		Long docId = null;
+		
+		// check if we have a plausible docId first
+		if (StringUtils.isEmpty(docForm.getRouteHeaderId())) {
+			GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_REQUIRED, "Document ID");
 		} else {
-			materializeDocument(routeHeader);
-			docForm.setRouteHeader(routeHeader);
-			setRouteHeaderTimestampsToString(docForm);
-			docForm.setRouteHeaderOp(KEWConstants.NOOP);
-			docForm.setRouteHeaderId(docForm.getRouteHeaderId().trim());
-			String initials="";
-			for(Iterator lInitials=routeHeader.getInitialRouteNodeInstances().iterator();lInitials.hasNext();){
-				Long initial=((RouteNodeInstance)lInitials.next()).getRouteNodeInstanceId();
-				LOG.debug(initial);
-				initials=initials+initial+", ";
+			try {
+				docId = Long.valueOf(docForm.getRouteHeaderId().trim());
+			} catch (NumberFormatException nfe) {
+				GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_NUMERIC, "Document ID");
 			}
-			if(initials.trim().length()>1){
-				initials=initials.substring(0,initials.lastIndexOf(","));
-			}
-			docForm.setInitialNodeInstances(initials);
-			request.getSession().setAttribute("routeNodeInstances",routeNodeInstances);
-			docForm.setRouteNodeInstances(routeNodeInstances);
-			if(routeNodeInstances!=null){
-				Iterator routeNodeInstanceIter=routeNodeInstances.iterator();
-			    while(routeNodeInstanceIter.hasNext()){
-				   RouteNodeInstance routeNodeInstance=(RouteNodeInstance) routeNodeInstanceIter.next();
-				   Branch branch=routeNodeInstance.getBranch();
-				   if (! branches1.containsKey(branch.getName())){
-					   branches1.put(branch.getName(),branch);
-					   branches.add(branch);
-					   LOG.debug(branch.getName()+"; "+branch.getBranchState());
-				   }
-				}
-			    if(branches.size()<1){
-			    	branches=null;
-			    }
-			}
-			branches1.clear();
-			request.getSession().setAttribute("branches",branches);
-			docForm.setBranches(branches);
-
 		}
+
+		if (docId != null) {
+			//to clear Document Field first;
+			docForm.resetOps();
+			DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(docId);
+			List routeNodeInstances=getRouteNodeService().findRouteNodeInstances(docId);
+			Map branches1=new HashMap();
+			List branches=new ArrayList();
+
+			if (routeHeader == null) {
+				GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_EXISTENCE, "document");
+			} else {
+				materializeDocument(routeHeader);
+				docForm.setRouteHeader(routeHeader);
+				setRouteHeaderTimestampsToString(docForm);
+				docForm.setRouteHeaderOp(KEWConstants.NOOP);
+				docForm.setRouteHeaderId(docForm.getRouteHeaderId().trim());
+				String initials="";
+				for(Iterator lInitials=routeHeader.getInitialRouteNodeInstances().iterator();lInitials.hasNext();){
+					Long initial=((RouteNodeInstance)lInitials.next()).getRouteNodeInstanceId();
+					LOG.debug(initial);
+					initials=initials+initial+", ";
+				}
+				if(initials.trim().length()>1){
+					initials=initials.substring(0,initials.lastIndexOf(","));
+				}
+				docForm.setInitialNodeInstances(initials);
+				request.getSession().setAttribute("routeNodeInstances",routeNodeInstances);
+				docForm.setRouteNodeInstances(routeNodeInstances);
+				if(routeNodeInstances!=null){
+					Iterator routeNodeInstanceIter=routeNodeInstances.iterator();
+					while(routeNodeInstanceIter.hasNext()){
+						RouteNodeInstance routeNodeInstance=(RouteNodeInstance) routeNodeInstanceIter.next();
+						Branch branch=routeNodeInstance.getBranch();
+						if (! branches1.containsKey(branch.getName())){
+							branches1.put(branch.getName(),branch);
+							branches.add(branch);
+							LOG.debug(branch.getName()+"; "+branch.getBranchState());
+						}
+					}
+					if(branches.size()<1){
+						branches=null;
+					}
+				}
+				branches1.clear();
+				request.getSession().setAttribute("branches",branches);
+				docForm.setBranches(branches);
+			}
+		}
+			
 		return mapping.findForward("basic");
 	}
 
@@ -187,13 +201,15 @@ public class DocumentOperationAction extends KewKualiAction {
 			DocumentRouteHeaderValue dHeader=docForm.getRouteHeader();
 			String initials=docForm.getInitialNodeInstances();
 			List lInitials=new ArrayList();
-			StringTokenizer tokenInitials=new StringTokenizer(initials,",");
-			while (tokenInitials.hasMoreTokens()) {
-		         Long instanceId=Long.valueOf(tokenInitials.nextToken().trim());
-		         LOG.debug(instanceId);
-		         RouteNodeInstance instance=getRouteNodeService().findRouteNodeInstanceById(instanceId);
-		         lInitials.add(instance);
-		     }
+			if (StringUtils.isNotEmpty(initials)){ 
+    			StringTokenizer tokenInitials=new StringTokenizer(initials,",");
+    			while (tokenInitials.hasMoreTokens()) {
+    		         Long instanceId=Long.valueOf(tokenInitials.nextToken().trim());
+    		         LOG.debug(instanceId);
+    		         RouteNodeInstance instance=getRouteNodeService().findRouteNodeInstanceById(instanceId);
+    		         lInitials.add(instance);
+    		    }
+			}
 			dHeader.setInitialRouteNodeInstances(lInitials);
 			getRouteHeaderService().validateRouteHeader(docForm.getRouteHeader());
 			getRouteHeaderService().saveRouteHeader(docForm.getRouteHeader());
@@ -292,9 +308,9 @@ public class DocumentOperationAction extends KewKualiAction {
 		}
 
 		List routeNodeInstances=(List)(request.getSession().getAttribute("routeNodeInstances"));
-		String ids=docForm.getNodeStatesDelete().trim();
+		String ids = (docForm.getNodeStatesDelete() != null) ? docForm.getNodeStatesDelete().trim() : null;
 		List statesToBeDeleted=new ArrayList();
-		if(ids!=null||!ids.equals("")){
+		if(ids!=null && !ids.equals("")){
 		    StringTokenizer idSets=new StringTokenizer(ids);
 		    while (idSets.hasMoreTokens()) {
 		    	String id=idSets.nextToken().trim();
@@ -387,9 +403,9 @@ public class DocumentOperationAction extends KewKualiAction {
 
 
 		List branches=(List)(request.getSession().getAttribute("branches"));
-		String branchStateIds=docForm.getBranchStatesDelete().trim();
+		String branchStateIds = (docForm.getBranchStatesDelete() != null) ? docForm.getBranchStatesDelete().trim() : null;
 		List branchStatesToBeDeleted=new ArrayList();
-		if(branchStateIds!=null||!branchStateIds.equals("")){
+		if(branchStateIds!=null && !branchStateIds.equals("")){
 		    StringTokenizer idSets=new StringTokenizer(branchStateIds);
 		    while (idSets.hasMoreTokens()) {
 		    	String id=idSets.nextToken().trim();
@@ -743,7 +759,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				}
 			}
 			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
-			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames);
+			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames, true);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);

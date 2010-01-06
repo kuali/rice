@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -29,10 +29,10 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Tests integration with KEW
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
-public class KEWIntegrationTest extends NotificationTestCaseBase {
+public class KEWIntegrationTest extends KENTestCase {
 
 	@Test
     public void testKEWServicesAreAccessible() throws Exception {

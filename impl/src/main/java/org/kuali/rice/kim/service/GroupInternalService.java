@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,22 +17,24 @@ package org.kuali.rice.kim.service;
 
 import java.util.List;
 
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 
 /**
- * This is a description of what this class does 
+ * Provides internal notification services for the GroupServiceImpl.  It
+ * specifically allows GroupServiceImpl to notify interested parties that
+ * a group's membership has changed.  
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface GroupInternalService {
 	/**
-	 * Save the KimGroupImpl, being careful to reset the action document
+	 * Save the GroupImpl, being careful to reset the action document
 	 * assignments based on any membership changes.
 	 * 
 	 * @param group
 	 */
-    public void saveWorkgroup(KimGroupImpl group);
+    public void saveWorkgroup(GroupImpl group);
 	
     /**
      * Updates KEW for workgroup members according to membership differences between the

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -54,6 +54,9 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @see org.kuali.dao.DocumentDao#save(null)
      */
     public void save(Document document) throws DataAccessException {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug( "About to store document: " + document, new Throwable() );
+    	}
         Document retrievedDocument = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
         KNSServiceLocator.getOjbCollectionHelper().processCollections(this, document, retrievedDocument);
         this.getPersistenceBrokerTemplate().store(document);
@@ -131,7 +134,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
 
         //populate group namespace and names on adHocRoutWorkgroups
         for (AdHocRouteWorkgroup adHocRouteWorkgroup : adHocRouteWorkgroups) {
-            KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
             adHocRouteWorkgroup.setRecipientName(group.getGroupName());
             adHocRouteWorkgroup.setRecipientNamespaceCode(group.getNamespaceCode());
         }

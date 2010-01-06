@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * Model bean representing a policy of a document type.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @IdClass(org.kuali.rice.kew.doctype.DocumentTypePolicyId.class)
 @Entity
@@ -52,6 +52,8 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 	private String policyName;
     @Column(name="PLCY_NM")
 	private Boolean policyValue;
+    @Column(name="PLCY_VAL")
+    private String policyStringValue;
     @Transient
     private Boolean inheritedFlag;
 
@@ -131,6 +133,14 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
         this.policyValue = policyValue;
     }
 
+    public String getPolicyStringValue() {
+        return policyStringValue;
+    }
+
+    public void setPolicyStringValue(String policyStringValue) {
+        this.policyStringValue = policyStringValue;
+    }
+
     public Object copy(boolean preserveKeys) {
         DocumentTypePolicy clone = new DocumentTypePolicy();
 
@@ -143,6 +153,10 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 
         if(policyValue != null){
             clone.setPolicyValue(new Boolean(policyValue.booleanValue()));
+        }
+        
+        if(policyStringValue != null){
+            clone.setPolicyStringValue(new String(policyStringValue));
         }
 
         return clone;
@@ -165,6 +179,7 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
         m.put("documentTypeId", this.documentTypeId);
         m.put("policyName", this.policyName);
         m.put("policyValue", this.policyValue);
+        m.put("policyStringValue", this.policyStringValue);
         return m;
     }
 }

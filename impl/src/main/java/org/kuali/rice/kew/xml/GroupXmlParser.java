@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -31,12 +30,12 @@ import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -49,8 +48,8 @@ import org.xml.sax.SAXException;
  *
  * @see KimGroups
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com) *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org) *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GroupXmlParser implements XmlConstants {
@@ -83,7 +82,8 @@ public class GroupXmlParser implements XmlConstants {
      * @return a list of parsed and saved, current, groups;
      * @throws InvalidXmlException
      */
-    public List<GroupInfo> parseGroups(Element element) throws InvalidXmlException {
+    @SuppressWarnings("unchecked")
+	public List<GroupInfo> parseGroups(Element element) throws InvalidXmlException {
         List<GroupInfo> groupInfos = new ArrayList<GroupInfo>();
         for (Element groupsElement: (List<Element>) element.getChildren(GROUPS, GROUP_NAMESPACE)) {
 
@@ -107,7 +107,7 @@ public class GroupXmlParser implements XmlConstants {
                     String key = newGroupInfo.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroupInfo.getGroupName().trim();
                     addGroupMembers(newGroupInfo, key);
                 } catch (Exception e) {
-                    throw new RuntimeException("Error creating group.", e);
+                    throw new RuntimeException("Error creating group with name '" + groupInfo.getGroupName() + "'", e);
                 }
             } else {
             	if ( LOG.isInfoEnabled() ) {
@@ -131,7 +131,8 @@ public class GroupXmlParser implements XmlConstants {
         return groupInfos;
     }
 
-    private GroupInfo parseGroup(Element element) throws InvalidXmlException {
+    @SuppressWarnings("unchecked")
+	private GroupInfo parseGroup(Element element) throws InvalidXmlException {
         GroupInfo groupInfo = new GroupInfo();
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
@@ -159,20 +160,20 @@ public class GroupXmlParser implements XmlConstants {
 
         // Type element and children (namespace and name)
         String typeId = null;
-        List<KimTypeAttributeImpl> kimTypeAttributes = new ArrayList<KimTypeAttributeImpl>();
+        List<KimTypeAttributeInfo> kimTypeAttributes = new ArrayList<KimTypeAttributeInfo>();
         if (element.getChild(TYPE, GROUP_NAMESPACE) != null) {
             Element typeElement = element.getChild(TYPE, GROUP_NAMESPACE);
             String typeNamespace = typeElement.getChildText(NAMESPACE, GROUP_NAMESPACE);
             String typeName = typeElement.getChildText(NAME, GROUP_NAMESPACE);
-            KimTypeImpl kimTypeImpl = KIMServiceLocator.getTypeInternalService().getKimTypeByName(typeNamespace, typeName);
-            if (kimTypeImpl != null) {
-            	typeId = kimTypeImpl.getKimTypeId();
-                kimTypeAttributes = kimTypeImpl.getAttributeDefinitions();
+            KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimTypeByName(typeNamespace, typeName);
+            if (kimTypeInfo != null) {
+            	typeId = kimTypeInfo.getKimTypeId();
+                kimTypeAttributes = kimTypeInfo.getAttributeDefinitions();
             } else  {
                 throw new InvalidXmlException("Invalid type name and namespace specified.");
             }
         } else { //set to default type
-            KimTypeImpl kimTypeDefault = KIMServiceLocator.getTypeInternalService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+            KimTypeInfo kimTypeDefault = KIMServiceLocator.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
             if (kimTypeDefault != null) {
             	typeId = kimTypeDefault.getKimTypeId();
                 kimTypeAttributes = kimTypeDefault.getAttributeDefinitions();
@@ -193,8 +194,8 @@ public class GroupXmlParser implements XmlConstants {
 
         //Get list of attribute keys
         List<String> validAttributeKeys = new ArrayList<String>();
-        for (KimTypeAttributeImpl attribute : kimTypeAttributes) {
-            validAttributeKeys.add(attribute.getKimAttribute().getAttributeName());
+        for (KimTypeAttributeInfo attribute : kimTypeAttributes) {
+            validAttributeKeys.add(attribute.getAttributeName());
         }
         //Group attributes
         if (element.getChild(ATTRIBUTES, GROUP_NAMESPACE) != null) {
@@ -288,7 +289,7 @@ public class GroupXmlParser implements XmlConstants {
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {
-                KimGroup group = identityManagementService.getGroup(groupId);
+                Group group = identityManagementService.getGroup(groupId);
                 if (group != null) {
                     identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
                 } else {
@@ -299,7 +300,7 @@ public class GroupXmlParser implements XmlConstants {
         List<String> groupNames = memberGroupNames.get(key);
         if (groupNames != null) {
             for (String groupName : groupNames) {
-                KimGroup group = identityManagementService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+                Group group = identityManagementService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
                 if (group != null) {
                 	identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
                 } else {

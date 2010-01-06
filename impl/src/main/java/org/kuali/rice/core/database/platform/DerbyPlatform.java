@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,36 +16,11 @@
  */
 package org.kuali.rice.core.database.platform;
 
-import javax.persistence.EntityManager;
-
-import org.apache.ojb.broker.PersistenceBroker;
 
 /**
- * Platform implementation that generates Mckoi-compliant SQL
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * Use {@link DerbyDatabasePlatform} instead.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DerbyPlatform extends ANSISqlPlatform {
-
-    public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
-        return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=?";
-    }
-
-    private static long nextVal = 1000;
-    
-    public Long getNextValSQL(String sequenceName,	PersistenceBroker persistenceBroker) {
-		return nextVal++;
-	}
-
-    public String toString() {
-        return "[Derby]";
-    }
-
-    public Long getNextValSQL(String sequenceName, EntityManager entityManger) {
-        return nextVal++;
-    }
-    
-    public String getSelectForUpdateSuffix(long waitMillis) {
-    	throw new UnsupportedOperationException("Implement me!");
-    }
-
-}
+@Deprecated
+public class DerbyPlatform extends DerbyDatabasePlatform {}

@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,9 +28,11 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.security.HttpClientHeaderDigitalSigner;
 import org.kuali.rice.ksb.security.SignatureVerifyingInputStream;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
+import org.kuali.rice.ksb.security.service.DigitalSignatureService;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
@@ -40,7 +42,7 @@ import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
  * At HttpInvokerRequestExecutor which is capable of digitally signing and verifying messages.  It's capabilities
  * to execute the signing and verification can be turned on or off via an application constant.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KSBHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExecutor {
 	
@@ -104,12 +106,12 @@ public class KSBHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 	                // get the Signature for verification based on the alias that was sent to us
 			        byte[] encodedCertificate = Base64.decodeBase64(certificateHeader.getValue().getBytes("UTF-8"));
 		            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-	                signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(encodedCertificate)));
+	                signature = getDigitalSignatureService().getSignatureForVerification(cf.generateCertificate(new ByteArrayInputStream(encodedCertificate)));
 			    } else if (foundValidKeystoreAlias) {
 	                // get the Signature for verification based on the alias that was sent to us
 			        String keystoreAlias = keyStoreAliasHeader.getValue();
 			        errorQualifier = "Error with given alias " + keystoreAlias;
-	                signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForVerification(keystoreAlias);
+	                signature = getDigitalSignatureService().getSignatureForVerification(keystoreAlias);
 			    }
 			    
 				// wrap the InputStream in an input stream that will verify the signature
@@ -135,8 +137,8 @@ public class KSBHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 	 * Signs the request by adding headers to the PostMethod.
 	 */
 	protected void signRequest(PostMethod postMethod, ByteArrayOutputStream baos) throws Exception {
-		Signature signature = KSBServiceLocator.getDigitalSignatureService().getSignatureForSigning();
-		HttpClientHeaderDigitalSigner signer = new HttpClientHeaderDigitalSigner(signature, postMethod, KSBServiceLocator.getJavaSecurityManagementService().getModuleKeyStoreAlias());
+		Signature signature = getDigitalSignatureService().getSignatureForSigning();
+		HttpClientHeaderDigitalSigner signer = new HttpClientHeaderDigitalSigner(signature, postMethod, getJavaSecurityManagementService().getModuleKeyStoreAlias());
 		signer.getSignature().update(baos.toByteArray());
 		signer.sign();
 	}
@@ -151,5 +153,14 @@ public class KSBHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 
 	public void setSecure(Boolean secure) {
 		this.secure = secure;
-	}	
+	}
+	
+	protected DigitalSignatureService getDigitalSignatureService() {
+		return (DigitalSignatureService)GlobalResourceLoader.getService(KSBConstants.ServiceNames.DIGITAL_SIGNATURE_SERVICE);
+	}
+	
+	protected JavaSecurityManagementService getJavaSecurityManagementService() {
+		return (JavaSecurityManagementService)GlobalResourceLoader.getService(KSBConstants.ServiceNames.JAVA_SECURITY_MANAGEMENT_SERVICE);
+	}
+	
 }

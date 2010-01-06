@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.kuali.rice.core.jpa.metadata.CollectionDescriptor;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
@@ -29,7 +32,7 @@ import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class PersistenceDaoJpa implements PersistenceDao {
-
+    
 	/**
 	 * @see org.kuali.rice.kns.dao.PersistenceDao#clearCache()
 	 */

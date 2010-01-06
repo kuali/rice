@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,10 +17,11 @@
 package org.kuali.rice.kew.routelog.web;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,11 +64,12 @@ import org.kuali.rice.kew.web.session.UserSession;
 /**
  * A Struts Action used to display the routelog.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteLogAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteLogAction.class);
+    private static Comparator<ActionRequestValue> ROUTE_LOG_ACTION_REQUEST_SORTER = new Utilities.RouteLogActionRequestSorter();
     
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -89,7 +91,10 @@ public class RouteLogAction extends KewKualiAction {
         }
 
         for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
-            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), new Utilities.RouteLogActionRequestSorter());
+            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), ROUTE_LOG_ACTION_REQUEST_SORTER);
+            // FIXME: For some reason, this is causing the action requests to appear twice under
+            // the  actions taken section
+            actionTaken.setActionRequests( switchActionRequestPositionsIfPrimaryDelegatesPresent( actionTaken.getActionRequests() ) );
         }
 
         populateRouteLogFormActionRequests(rlForm, routeHeader);
@@ -100,7 +105,7 @@ public class RouteLogAction extends KewKualiAction {
             try {
                 populateRouteLogFutureRequests(rlForm, routeHeader);
             } catch (Exception e) {
-                String errorMsg = "Found Error while getting Future Action Requests:  " + e.getMessage();
+                String errorMsg = "Unable to determine Future Action Requests";
                 LOG.info(errorMsg,e);
                 rlForm.setShowFutureError(errorMsg);
             }
@@ -110,12 +115,12 @@ public class RouteLogAction extends KewKualiAction {
     }
 
     @SuppressWarnings("unchecked")
-    public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
-        List rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
-        Collections.sort(rootRequests, new Utilities.RouteLogActionRequestSorter());
+	public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
+        List<ActionRequestValue> rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
+        Collections.sort(rootRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
+        rootRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(rootRequests);
         int arCount = 0;
-        for (Iterator iterator = rootRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+        for ( ActionRequestValue actionRequest : rootRequests ) {
             if (actionRequest.isPending()) {
                 arCount++;
 
@@ -130,11 +135,44 @@ public class RouteLogAction extends KewKualiAction {
         rlForm.setPendingActionRequestCount(arCount);
     }
 
+    @SuppressWarnings("unchecked")
+	private ActionRequestValue switchActionRequestPositionIfPrimaryDelegatePresent( ActionRequestValue actionRequest ) {
+    	List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
+    	if ( primaryDelegateRequests.isEmpty() ) {
+    		return actionRequest;
+    	}
+    	ActionRequestValue primaryDelegateRequest = primaryDelegateRequests.get(0);
+		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
+		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
+		primaryDelegateRequest.getChildrenRequests().remove(primaryDelegateRequest);
+		primaryDelegateRequest.setParentActionRequest(actionRequest.getParentActionRequest());
+		actionRequest.setChildrenRequests( new ArrayList<ActionRequestValue>(0) );
+		actionRequest.setParentActionRequest(primaryDelegateRequest);
+		return primaryDelegateRequest;
+    }
+
+    private List<ActionRequestValue> switchActionRequestPositionsIfPrimaryDelegatesPresent( Collection<ActionRequestValue> actionRequests ) {
+    	List<ActionRequestValue> results = new ArrayList<ActionRequestValue>( actionRequests.size() );
+    	for ( ActionRequestValue actionRequest : actionRequests ) {
+			results.add( switchActionRequestPositionIfPrimaryDelegatePresent(actionRequest) );
+    	}
+    	return results;
+    }
+    
+    /**
+     * executes a simulation of the future routing, and sets the futureRootRequests and futureActionRequestCount
+     * properties on the provided RouteLogForm.
+     * 
+     * @param rlForm the RouteLogForm --used in a write-only fashion.
+     * @param document the DocumentRouteHeaderValue for the document whose future routing is being simulated.
+     * @throws Exception
+     */
     public void populateRouteLogFutureRequests(RouteLogForm rlForm, DocumentRouteHeaderValue document) throws Exception {
 
         ReportCriteriaDTO reportCriteria = new ReportCriteriaDTO(document.getRouteHeaderId());
         String serviceNamespace = document.getDocumentType().getServiceNamespace();
-        WorkflowUtility workflowUtility = (WorkflowUtility)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
+        WorkflowUtility workflowUtility = 
+        	(WorkflowUtility)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
 
         // gather the IDs for action requests that predate the simulation
 		Set<Long> preexistingActionRequestIds = getActionRequestIds(document);
@@ -146,8 +184,8 @@ public class RouteLogAction extends KewKualiAction {
         List<ActionRequestValue> futureActionRequests = 
         	reconstituteActionRequestValues(documentDetail, preexistingActionRequestIds);
 
-        Collections.sort(futureActionRequests, new Utilities.RouteLogActionRequestSorter());
-    
+        Collections.sort(futureActionRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
+        futureActionRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(futureActionRequests);
         int pendingActionRequestCount = 0;
         for (ActionRequestValue actionRequest: futureActionRequests) {
             if (actionRequest.isPending()) {
@@ -169,13 +207,16 @@ public class RouteLogAction extends KewKualiAction {
 	 * This utility method returns a Set of LongS containing the IDs for the ActionRequestValueS associated with 
 	 * this DocumentRouteHeaderValue. 
 	 */
+	@SuppressWarnings("unchecked")
 	private Set<Long> getActionRequestIds(DocumentRouteHeaderValue document) {
 		Set<Long> actionRequestIds = new HashSet<Long>();
-		if (document.getActionRequests() != null) { 
-			for (ActionRequestValue actionRequest : document.getActionRequests()) {
-				if (actionRequest.getActionRequestId() != null) {
-					actionRequestIds.add(actionRequest.getActionRequestId());
-				}
+
+		List<ActionRequestValue> actionRequests = 
+			KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+		
+		if (actionRequests != null) for (ActionRequestValue actionRequest : actionRequests) {
+			if (actionRequest.getActionRequestId() != null) {
+				actionRequestIds.add(actionRequest.getActionRequestId());
 			}
 		}
 		return actionRequestIds;
@@ -224,7 +265,7 @@ public class RouteLogAction extends KewKualiAction {
      * Creates dummy RouteNodeInstances based on imported data from RouteNodeInstanceDTOs.
      * It is then able to vend those RouteNodeInstanceS back by their IDs.
      * 
-     * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+     * @author Kuali Rice Team (rice.collab@kuali.org)
      *
      */
     private static class RouteNodeInstanceFabricator implements RouteNodeInstanceLoader {

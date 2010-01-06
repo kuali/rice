@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ import org.kuali.rice.core.util.RiceUtilities;
  * 
  * @see HierarchicalConfigParser
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseConfig implements Config {
 
@@ -182,14 +182,14 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "oracle.jdbc.driver.OracleDriver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.OraclePlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.OracleDatabasePlatform");
 	        }	        
         } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("MySQL")) {
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mysql.jdbc.Driver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MySQLPlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MySQLDatabasePlatform");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
 	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");
@@ -202,7 +202,7 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "org.apache.derby.jdbc.EmbeddedDriver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.DerbyPlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.DerbyDatabasePlatform");
 	        }
 	        /* TODO: Implement these for Derby
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
@@ -217,7 +217,7 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mckoi.JDBCDriver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MckoiPlatform");
+	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MckoiDatabasePlatform");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
 	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.PlatformMckoiImpl");
@@ -311,10 +311,6 @@ public abstract class BaseConfig implements Config {
         return getProperty(EMAIL_SECURITY_PATH);
     }
 
-    public String getBaseUrl() {
-        return getProperty(BASE_URL);
-    }
-
     public String getEnvironment() {
         return getProperty(ENVIRONMENT);
     }
@@ -327,8 +323,14 @@ public abstract class BaseConfig implements Config {
         return getProperty(SERVICE_NAMESPACE);
     }
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String getDefaultNoteClass() {
         return getProperty(DEFAULT_NOTE_CLASS);
+    }
+
+    public String getDefaultKewNoteClass() {
+        return getProperty(DEFAULT_KEW_NOTE_CLASS);
     }
 
     public String getEmbeddedPluginLocation() {
@@ -382,41 +384,77 @@ public abstract class BaseConfig implements Config {
     public String getDocumentLockTimeout() {
         return getProperty(Config.DOCUMENT_LOCK_TIMEOUT);
     }
-
-    public Boolean getRunningEmbeddedServerMode() {
-        return new Boolean(getProperty(RUNNING_SERVER_IN_EMBEDDED));
+    
+    public String getPortalShowSampleApp() {
+    	return getProperty(Config.PORTAL_SHOW_SAMPLE_APP);
     }
-
+    
     public Boolean getEmailReminderLifecycleEnabled() {
-        return new Boolean(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
+        return Boolean.valueOf(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
     }
 
     public Boolean getXmlPipelineLifeCycleEnabled() {
-        return new Boolean(getProperty(ENABLE_XML_PIPELINE_LIFECYCLE));
+        return Boolean.valueOf(getProperty(ENABLE_XML_PIPELINE_LIFECYCLE));
     }
 
     public Boolean getDevMode() {
-        return new Boolean(getProperty(DEV_MODE));
+        return Boolean.valueOf(getProperty(DEV_MODE));
     }
 
+    public Boolean getBatchMode() {
+ 	 	return new Boolean(getProperty(BATCH_MODE));
+ 	}
+    
     public Boolean getStoreAndForward() {
-        return new Boolean(getProperty(Config.STORE_AND_FORWARD));
+        return Boolean.valueOf(getProperty(Config.STORE_AND_FORWARD));
     }
 
     public Boolean getOutBoxOn() {
         if (getProperty(Config.OUT_BOX_MODE) == null) {
             return true;
         } 
-        return new Boolean(getProperty(Config.OUT_BOX_MODE));
+        return Boolean.valueOf(getProperty(Config.OUT_BOX_MODE));
     }
 
     public Boolean getOutBoxDefaultPreferenceOn() {
         if (getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON) == null) {
             return true;
         }
-        return new Boolean(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
+        return Boolean.valueOf(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
     }
     
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKEWBaseURL()
+     */
+    public String getKEWBaseURL() {
+    	return getProperty(Config.KEW_URL);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKIMBaseURL()
+     */
+    public String getKIMBaseURL() {
+    	return getProperty(Config.KIM_URL);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKRBaseURL()
+     */
+    public String getKRBaseURL() {
+    	return getProperty(Config.KR_URL);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.kuali.rice.core.config.Config#getKENBaseURL()
+     */
+    public String getKENBaseURL() {
+    	return getProperty(Config.KEN_URL);
+    }
+
     public String toString() {
         return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();
     }

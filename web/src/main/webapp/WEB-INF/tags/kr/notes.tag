@@ -1,11 +1,11 @@
 <%--
- Copyright 2005-2007 The Kuali Foundation.
+ Copyright 2005-2007 The Kuali Foundation
  
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
  
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
  
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,13 +19,9 @@
 <%-- <%@ attribute name="propPrefix" required="false" %> --%>
 <%@ attribute name="noteType" required="false" type="java.lang.Enum" %>
 <%@ attribute name="displayTopicFieldInNotes" required="false" %>
-<%@ attribute name="allowsNoteDelete" required="false" %>
-<%@ attribute name="allowsNoteAttachments" required="false" %>
 <%@ attribute name="attachmentTypesValuesFinderClass" required="false" %>
 <%@ attribute name="transparentBackground" required="false" %>
 <%@ attribute name="defaultOpen" required="false" %>
-<%@ attribute name="allowsNoteFYI" required="false"
- description="Indicator for determing whether to render the ad hoc fyi recipient box and send fyi button" %>
 
 <c:set var="noteColSpan" value="6" />
 
@@ -35,9 +31,10 @@
   <c:set var="notesBo" value="${KualiForm.document.documentHeader.boNotes}" />
 </c:if>
 
-<c:set var="documentTypeName" value="${KualiForm.document.class.name}" />
+<c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 <c:set var="allowsNoteAttachments" value="${documentEntry.allowsNoteAttachments}" />
+<c:set var="allowsNoteFYI" value="${documentEntry.allowsNoteFYI}" />
 <c:set var="tabTitle" value="Notes and Attachments" />
 <c:if test="${allowsNoteAttachments eq false}">
   <c:set var="tabTitle" value="Notes" />
@@ -57,7 +54,7 @@
   <c:set var="noteColSpan" value="${noteColSpan + 1}" />
 </c:if>
 
-<kul:tab tabTitle="${tabTitle}" defaultOpen="${!empty notesBo or (not empty defaultOpen and defaultOpen)}" tabErrorKey="${Constants.DOCUMENT_NOTES_ERRORS}" tabItemCount="${fn:length(notesBo)}" transparentBackground="${transparentBackground}" >
+<kul:tab tabTitle="${tabTitle}" defaultOpen="${!empty notesBo or (not empty defaultOpen and defaultOpen)}" tabErrorKey="${Constants.DOCUMENT_NOTES_ERRORS},attachmentFile" tabItemCount="${fn:length(notesBo)}" transparentBackground="${transparentBackground}" >
     <c:set var="notesAttributes" value="${DataDictionary.Note.attributes}" />
     <div class="tab-container" align=center id="G4">
     <p align=left><jsp:doBody/>
@@ -121,18 +118,9 @@
 			   </c:if>   
 
   <c:forEach var="note" items="${notesBo}" varStatus="status">
-	<%-- Check if a note with an attachment file or not. If yes, get the attachmentTypeCode. If not, set attachmentTypeCode to noteWithoutAttachmentIndicator.
-         The indicator is used by DocumentTypeAndAttachmentTypePermissionTypeService (fix for JIRA: KFSMI-2849)  --%>
-	<c:choose>
-		<c:when test="${(!empty note.attachment)}">
-			<c:set var="attachmentTypeCode" value ="${note.attachment.attachmentTypeCode}" />
-		</c:when>
-		<c:otherwise>
-			<c:set var="attachmentTypeCode" value="${Constants.NOTE_WITHOUT_ATTACHMENT_INDICATOR}" />
-		</c:otherwise>
-	</c:choose>
+
 	<c:set var="authorUniversalIdentifier" value = "${note.authorUniversalIdentifier}" />
-	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
+	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, null)}" >
       <tr>
             <kul:htmlAttributeHeaderCell literalLabel="${status.index + 1}" scope="row"/>
             <td class="datacell center">
@@ -160,7 +148,12 @@
                                   <td class="datacell center">
                                     
                                     <c:if test="${allowsNoteAttachments eq true}">
-                                      <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                      <c:if test="${(!empty note.attachment)}">
+										<c:set var="attachmentTypeCode" value ="${note.attachment.attachmentTypeCode}" />
+									  </c:if>
+                                      <c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
+                                        <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                      </c:if>
                                       <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].attachment.attachmentFileName"/>
                                       &nbsp;
                                       &nbsp;
@@ -192,7 +185,7 @@
 
                             <c:if test="${allowsNoteFYI}" >
                               <td class="infoline">
-                                <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]}">
+                                <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}">
                              <kul:user userIdFieldName="${propPrefix}boNote[${status.index}].adHocRouteRecipient.id" 
                               userId="${note.adHocRouteRecipient.id}" 
                               universalIdFieldName=""
@@ -204,17 +197,17 @@
                               fieldConversions="principalName:${propPrefix}boNote[${status.index}].adHocRouteRecipient.id,name:${propPrefix}boNote[${status.index}].adHocRouteRecipient.name" 
                               lookupParameters="${propPrefix}boNote[${status.index}].adHocRouteRecipient.id:principalName" />
                             </c:if>
-                            <c:if test="${empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]}">
+                            <c:if test="${empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}">
                               &nbsp;
                             </c:if>
                              </td>
                            </c:if>
                            
                         <td class="datacell center"><div align="center">
-                          <c:if test="${allowsNoteDelete && kfunc:canDeleteNoteAttachment(KualiForm.document, attachmentTypeCode, authorUniversalIdentifier)}">
+                          <c:if test="${kfunc:canDeleteNoteAttachment(KualiForm.document, attachmentTypeCode, authorUniversalIdentifier)}">
                             <html:image property="methodToCall.deleteBONote.line${status.index}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif" title="Delete a Note" alt="Delete a Note" styleClass="tinybutton"/>
                           </c:if> &nbsp;
-                          <c:if test="${allowsNoteFYI && !empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_AD_HOC_ROUTE]}" >
+                          <c:if test="${allowsNoteFYI && !empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}" >
                               <html:image property="methodToCall.sendNoteWorkflowNotification.line${status.index}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-send.gif" title="Send FYI" alt="Send FYI" styleClass="tinybutton"/>
                           </c:if>  
                         </div></td>

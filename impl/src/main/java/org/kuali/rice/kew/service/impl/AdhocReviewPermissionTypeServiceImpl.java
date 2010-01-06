@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,10 +28,15 @@ import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
  * This is a description of what this class does - jonathan don't forget to fill
  * this in.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
+	
+	{
+		requiredAttributes.add( KimAttributes.ACTION_REQUEST_CD );
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.kim.bo.types.dto.AttributeSet,
 	 *      java.util.List)
@@ -46,8 +51,9 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 		}
 		// loop over the permissions, checking the non-document-related ones
 		for (KimPermissionInfo kpi : permissionsList) {
-			if (StringUtils.equals(kpi.getDetails().get(
-					KimAttributes.ACTION_REQUEST_CD), requestedDetails
+			if (!kpi.getDetails().containsKey(KimAttributes.ACTION_REQUEST_CD)
+			  || StringUtils.equals(kpi.getDetails().
+				 get(KimAttributes.ACTION_REQUEST_CD), requestedDetails
 					.get(KimAttributes.ACTION_REQUEST_CD))) {
 				matchingPermissions.add(kpi);
 			}

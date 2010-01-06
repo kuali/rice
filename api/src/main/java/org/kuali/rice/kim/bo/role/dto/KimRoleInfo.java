@@ -1,11 +1,11 @@
 /*
  * Copyright 2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,18 +17,18 @@ package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.role.KimRole;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.kuali.rice.kim.bo.Role;
 
 
 /**
  * Simple Role data designed in DTO form for consumption by web services. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimRoleInfo implements KimRole, Serializable {
+public class KimRoleInfo implements Role, Serializable {
 
 	protected String roleId;
 	protected String roleName;
@@ -86,4 +86,12 @@ public class KimRoleInfo implements KimRole, Serializable {
 				.toString();
 	}
 	
+    public void refresh(){
+    	
+    }
+   
+    public void prepareForWorkflow(){
+    	
+    }
+
 }

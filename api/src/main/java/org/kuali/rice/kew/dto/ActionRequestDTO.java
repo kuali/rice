@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * A transport object representing an ActionRequestValue.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestDTO implements Serializable {
 
@@ -53,10 +53,9 @@ public class ActionRequestDTO implements Serializable {
     private Integer routeLevel;
     private Integer docVersion;
     private String roleName;
-    private Boolean ignorePrevAction;
+    private Boolean forceAction;
     private String principalId;
     private String delegationType;
-    private ActionRequestDTO parentActionRequest;
     private Long parentActionRequestId;
     private String qualifiedRoleName;
     private String qualifiedRoleNameLabel;
@@ -64,6 +63,7 @@ public class ActionRequestDTO implements Serializable {
     private ActionTakenDTO actionTaken;
     private String nodeName;
     private Long nodeInstanceId;
+    private String requestLabel;
 
     public ActionRequestDTO() {}
 
@@ -195,8 +195,8 @@ public class ActionRequestDTO implements Serializable {
         this.approvePolicy = approvePolicy;
     }
 
-    public Boolean getIgnorePrevAction() {
-        return ignorePrevAction;
+    public Boolean getForceAction() {
+        return forceAction;
     }
 
     public boolean isNotificationRequest() {
@@ -207,12 +207,12 @@ public class ActionRequestDTO implements Serializable {
         return APPROVE_REQ.equals(actionRequested) || COMPLETE_REQ.equals(actionRequested);
     }
 
-    public Boolean isIgnorePrevAction() {
-        return ignorePrevAction;
+    public Boolean isForceAction() {
+        return forceAction;
     }
 
-    public void setIgnorePrevAction(Boolean ignorePrevAction) {
-        this.ignorePrevAction = ignorePrevAction;
+    public void setForceAction(Boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     public boolean isAcknowledgeRequest() {
@@ -278,12 +278,6 @@ public class ActionRequestDTO implements Serializable {
         this.delegationType = delegationType;
     }
 
-    public ActionRequestDTO getParentActionRequest() {
-        return parentActionRequest;
-    }
-    public void setParentActionRequest(ActionRequestDTO parentActionRequest) {
-        this.parentActionRequest = parentActionRequest;
-    }
     public Long getParentActionRequestId() {
         return parentActionRequestId;
     }
@@ -352,16 +346,6 @@ public class ActionRequestDTO implements Serializable {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-	
-    public boolean isDelegateRequest() {
-        if (getParentActionRequest() != null) {
-            if (getParentActionRequest().isRoleRequest()) {
-                return getParentActionRequest().isDelegateRequest();
-            }
-            return true;
-        }
-        return false;
-    }
 
     public boolean isAdHocRequest() {
     	return KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
@@ -378,5 +362,13 @@ public class ActionRequestDTO implements Serializable {
     public boolean isRouteModuleRequest() {
     	return getResponsibilityId().longValue() > 0;
     }
+
+	public String getRequestLabel() {
+		return this.requestLabel;
+	}
+
+	public void setRequestLabel(String requestLabel) {
+		this.requestLabel = requestLabel;
+	}
 
 }

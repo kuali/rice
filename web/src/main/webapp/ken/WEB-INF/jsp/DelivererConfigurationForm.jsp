@@ -1,3 +1,18 @@
+<%--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+--%>
 <%@ include file="Include.jsp"%>
 
 <html>
@@ -8,25 +23,6 @@
 </head>
 <body>
 
-<%@ include file="Header.jsp"%>
-
-<div id="pagebody">
-<table width="100%" border="0" align="center" cellpadding="3"
-	cellspacing="0" summary="">
-	<tr>
-		<td colspan="2">
-		
-		<%@ include file="LogoutForm.jsp"%>
-
-		</td>
-	</tr>
-	<tr>
-	
-		<!-- Include the Menu -->
-		<%@ include file="Menu.jsp" %>
-
-		<!-- Include the top half of the Work Area -->
-		<%@ include file="WorkAreaTop.jsp" %>
         <div style="padding: 5px">
             <div class="title">Configure Delivery Types</div>
 			<p>Enter the appropriate information for each delivery type
@@ -90,20 +86,14 @@
                      <td class="thnormal" colspan="3" align="center">
                      <input type="image" src="images/buttonsmall_save.gif" value="save" alt="Save" name="save"/>
                      <img src="images/transparent_002.gif" height="1" width="1">
-                     <a href="HomePage.form" ><img src="images/buttonsmall_cancel.gif" alt="Cancel" border="0" /></a>
+                     <a href="${ConfigProperties.application.url}/portal.do">
+                       <img src="${ConfigProperties.ken.url}/images/buttonsmall_cancel.gif" alt="Cancel" border="0" />
+                     </a>
                      </td>
                      </tr>
 			</table>
             </form> 								
 		</div>
-		<!-- Include the bottom half of the Work Area -->
-		<%@ include file="WorkAreaBottom.jsp" %>
-	
-	</tr>
-</table>
-</div>
-
-<%@ include file="Footer.jsp"%>
 
 </body>
 </html>

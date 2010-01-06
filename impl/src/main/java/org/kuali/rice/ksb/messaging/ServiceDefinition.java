@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ import org.springframework.util.Assert;
 /**
  * The definition of a service on the service bus.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ServiceDefinition implements Serializable {
 
@@ -45,7 +45,7 @@ public abstract class ServiceDefinition implements Serializable {
 	
 	private static final long serialVersionUID = 43631161206712702L;
 	
-	private Object service;
+	private transient Object service;
 	private String localServiceName;
 	private String serviceNameSpaceURI;
 	private transient QName serviceName;

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
@@ -40,22 +39,23 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.ErrorMap;
-import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRuleBase implements AddGroupMemberRule {
 
-	private AddGroupMemberRule addGroupMemberRule;
-	private BusinessObjectService businessObjectService;
-	private Class<? extends GroupDocumentMemberRule> addGroupMemberRuleClass = GroupDocumentMemberRule.class;
+	protected AddGroupMemberRule addGroupMemberRule;
+	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
+	
+	protected BusinessObjectService businessObjectService;
+	protected Class<? extends GroupDocumentMemberRule> addGroupMemberRuleClass = GroupDocumentMemberRule.class;
 
-	private IdentityService identityService; 
+	protected IdentityService identityService; 
 	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
@@ -72,18 +72,18 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         IdentityManagementGroupDocument groupDoc = (IdentityManagementGroupDocument)document;
 
         boolean valid = true;
-        GlobalVariables.getErrorMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validAssignGroup(groupDoc);
         valid &= validDuplicateGroupName(groupDoc);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateGroupQualifier(groupDoc.getQualifiers(), groupDoc.getKimType());
         valid &= validGroupMemberActiveDates(groupDoc.getMembers());
-        GlobalVariables.getErrorMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
     }
     
-	private boolean validAssignGroup(IdentityManagementGroupDocument document){
+	protected boolean validAssignGroup(IdentityManagementGroupDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
@@ -92,7 +92,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
-	    		GlobalVariables.getErrorMap().putError("document.groupName", 
+	    		GlobalVariables.getMessageMap().putError("document.groupName", 
 	    				RiceKeyConstants.ERROR_ASSIGN_GROUP, 
 	    				new String[] {document.getGroupNamespace(), document.getGroupName()});
 	            rulePassed = false;
@@ -101,17 +101,18 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 		return rulePassed;
 	}
 
-    private boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
+    @SuppressWarnings("unchecked")
+	protected boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
     	criteria.put("groupName", groupDoc.getGroupName());
     	criteria.put("namespaceCode", groupDoc.getGroupNamespace());
-    	List<KimGroupImpl> groupImpls = (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
+    	List<GroupImpl> groupImpls = (List<GroupImpl>)getBusinessObjectService().findMatching(GroupImpl.class, criteria);
     	boolean rulePassed = true;
     	if(groupImpls!=null && groupImpls.size()>0){
     		if(groupImpls.size()==1 && groupImpls.get(0).getGroupId().equals(groupDoc.getGroupId()))
     			rulePassed = true;
     		else{
-	    		GlobalVariables.getErrorMap().putError("document.groupName", 
+	    		GlobalVariables.getMessageMap().putError("document.groupName", 
 	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Group Name"});
 	    		rulePassed = false;
     		}
@@ -119,7 +120,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     	return rulePassed;
     }
     
-    private boolean validGroupMemberActiveDates(List<GroupDocumentMember> groupMembers) {
+    protected boolean validGroupMemberActiveDates(List<GroupDocumentMember> groupMembers) {
     	boolean valid = true;
 		int i = 0;
     	for(GroupDocumentMember groupMember: groupMembers) {
@@ -129,54 +130,31 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     	return valid;
     }
 
-    private boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimTypeImpl kimType){
+    protected boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimTypeInfo kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
-		int memberCounter = 0;
-		int attributeCounter = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-		KimAttributeImpl attribute;
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
-        for(GroupDocumentQualifier groupQualifier: groupQualifiers) {
-        	attributeSetToValidate = new AttributeSet();
-        	attribute = groupQualifier.getKimAttribute();
-        	if(attribute==null){
-        		Map<String, String> criteria = new HashMap<String, String>();
-        		criteria.put("kimAttributeId", groupQualifier.getKimAttributeId());
-        		attribute = (KimAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-        	}
-        	attributeSetToValidate.put(attribute.getAttributeName(), groupQualifier.getAttributeValue());
-	        errorsTemp = kimTypeService.validateAttributes(attributeSetToValidate);
-	        updateGlobalVariablesErrorKeys(
-	        		"document.qualifiers["+attributeCounter+"]", 
-	        		attributeSetToValidate, errorsTemp);
-	        validationErrors.putAll(errorsTemp);
-        	attributeCounter++;
-        }
-    	return validationErrors.isEmpty();
-    }
-
-    private void updateGlobalVariablesErrorKeys(String errorPath, AttributeSet attributes, AttributeSet validationErrors){
-    	List<ErrorMessage> attributeErrors;
-    	String errorKey;
-    	for(String attributeName: attributes.keySet()){
-    		errorKey = GlobalVariables.getErrorMap().getKeyPath(attributeName, true);
-    		attributeErrors = (List<ErrorMessage>)GlobalVariables.getErrorMap().get(errorKey);
-    		if(attributeErrors!=null){
-    			for(ErrorMessage errorMessage: attributeErrors){
-    				GlobalVariables.getErrorMap().putErrorWithoutFullErrorPath(errorPath+".attrVal", errorMessage.getErrorKey(), errorMessage.getMessageParameters());
-    			}
-				GlobalVariables.getErrorMap().remove(errorKey);
-    		}
+        GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
+		errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
+		validationErrors.putAll( attributeValidationHelper.convertErrors("",attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers),errorsTemp) );
+		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+		
+    	if (validationErrors.isEmpty()) {
+    		return true;
+    	} else {
+    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    		return false;
     	}
     }
     
-	private boolean validateActiveDate(String errorPath, Timestamp activeFromDate, Timestamp activeToDate) {
+	protected boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
-	        ErrorMap errorMap = GlobalVariables.getErrorMap();
+	        MessageMap errorMap = GlobalVariables.getMessageMap();
             errorMap.putError(errorPath, RiceKeyConstants.ERROR_ACTIVE_TO_DATE_BEFORE_FROM_DATE);
             valid = false;
 			

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,21 +16,30 @@
  */
 package org.kuali.rice.kew.xml.export;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.web.WebRuleUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kew.rule.RuleDelegation;
 
 
 /**
@@ -38,14 +47,14 @@ import org.kuali.rice.kim.bo.group.KimGroup;
  *
  * @see RuleBaseValues
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleXmlExporter implements XmlExporter, XmlConstants {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
     private XmlRenderer renderer;
-
+    
     public RuleXmlExporter(Namespace namespace) {
     	this.renderer = new XmlRenderer(namespace);
     }
@@ -55,12 +64,12 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
             Element rootElement = renderer.renderElement(null, RULES);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, RULE_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
             for (Iterator iterator = dataSet.getRules().iterator(); iterator.hasNext();) {
-                RuleBaseValues rule = (RuleBaseValues) iterator.next();
-                if (!rule.getDelegateRule().booleanValue()) {
-                    exportRule(rootElement, rule);
-                } else {
-                    LOG.info("Not exporting a top-level delegate rule that was in the result set: " + rule.getRuleBaseValuesId());
-                }
+            	RuleBaseValues rule = (RuleBaseValues) iterator.next();
+            	exportRule(rootElement, rule);
+            	//turn below on if need export delegates in rule exportation
+//            	if(rule.getDelegateRule().booleanValue()){	
+//            		exportRuleDelegations(rootElement, rule);
+//            	}
             }
             return rootElement;
         }
@@ -68,7 +77,7 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
     }
 
     public void exportRule(Element parent, RuleBaseValues rule) {
-        Element ruleElement = renderer.renderElement(parent, RULE);
+    	Element ruleElement = renderer.renderElement(parent, RULE);
         if (rule.getName() != null) {
             renderer.renderTextElement(ruleElement, NAME, rule.getName());
         }
@@ -89,10 +98,33 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
                 expressionElement.setAttribute("type", rule.getRuleExpressionDef().getType());
             }
         }
-        renderer.renderBooleanElement(ruleElement, IGNORE_PREVIOUS, rule.getIgnorePrevious(), false);
-        exportRuleExtensions(ruleElement, rule.getRuleExtensions());
-        exportResponsibilities(ruleElement, rule.getResponsibilities());
-
+        renderer.renderBooleanElement(ruleElement, FORCE_ACTION, rule.getForceAction(), false);
+        
+        if (CollectionUtils.isEmpty(rule.getRuleExtensions()) && 
+        		/* field values is not empty */
+        		!(rule.getFieldValues() == null || rule.getFieldValues().size() == 0)) {
+        	// the rule is in the wrong state (as far as we are concerned).
+        	// translate it
+        	WebRuleUtils.translateResponsibilitiesForSave(rule);
+        	WebRuleUtils.translateFieldValuesForSave(rule);
+        	
+        	// do our exports
+    		exportRuleExtensions(ruleElement, rule.getRuleExtensions());
+        	
+        	// translate it back
+        	WebRuleUtils.populateRuleMaintenanceFields(rule);
+        } else { 
+        	exportRuleExtensions(ruleElement, rule.getRuleExtensions());
+        }
+        
+        // put responsibilities in a single collection 
+        Set<RuleResponsibility> responsibilities = new HashSet<RuleResponsibility>();
+        responsibilities.addAll(rule.getResponsibilities());
+        responsibilities.addAll(rule.getPersonResponsibilities());
+        responsibilities.addAll(rule.getGroupResponsibilities());
+        responsibilities.addAll(rule.getRoleResponsibilities());
+        
+        exportResponsibilities(ruleElement, responsibilities);
     }
 
     private void exportRuleExtensions(Element parent, List ruleExtensions) {
@@ -121,17 +153,16 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
         }
     }
 
-    private void exportResponsibilities(Element parent, List responsibilities) {
-        if (!responsibilities.isEmpty()) {
+    private void exportResponsibilities(Element parent, Collection<? extends RuleResponsibility> responsibilities) {
+        if (responsibilities != null && !responsibilities.isEmpty()) {
             Element responsibilitiesElement = renderer.renderElement(parent, RESPONSIBILITIES);
-            for (Iterator iterator = responsibilities.iterator(); iterator.hasNext();) {
-                RuleResponsibility ruleResponsibility = (RuleResponsibility) iterator.next();
+            for (RuleResponsibility ruleResponsibility : responsibilities) {
                 Element respElement = renderer.renderElement(responsibilitiesElement, RESPONSIBILITY);
                 renderer.renderTextElement(respElement, RESPONSIBILITY_ID, "" + ruleResponsibility.getResponsibilityId());
                 if (ruleResponsibility.isUsingWorkflowUser()) {
 				    renderer.renderTextElement(respElement, PRINCIPAL_NAME, ruleResponsibility.getPrincipal().getPrincipalName());
 				} else if (ruleResponsibility.isUsingGroup()) {
-					KimGroup group = ruleResponsibility.getGroup();
+					Group group = ruleResponsibility.getGroup();
 				    Element groupElement = renderer.renderTextElement(respElement, GROUP_NAME, group.getGroupName());
 				    groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());
 				} else if (ruleResponsibility.isUsingRole()) {
@@ -145,6 +176,41 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
                 	renderer.renderTextElement(respElement, PRIORITY, ruleResponsibility.getPriority().toString());
                 }
             }
+        }
+    }
+    
+    //below are for exporting rule delegations in rule exportation
+    private void exportRuleDelegations(Element rootElement, RuleBaseValues rule){
+		List<RuleDelegation> ruleDelegationDefaults = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(rule.getRuleBaseValuesId());
+		for(RuleDelegation dele : ruleDelegationDefaults){
+			System.out.println("*******delegates********\t"  +  dele.getRuleDelegationId()) ;
+			exportRuleDelegation(rootElement, dele);	
+		}
+    }
+    
+    private void exportRuleDelegation(Element parent, RuleDelegation ruleDelegation) {
+    	Element ruleDelegationElement = renderer.renderElement(parent, RULE_DELEGATION);
+    	exportRuleDelegationParentResponsibility(ruleDelegationElement, ruleDelegation);
+    	renderer.renderTextElement(ruleDelegationElement, DELEGATION_TYPE, ruleDelegation.getDelegationType());
+    	exportRule(ruleDelegationElement, ruleDelegation.getDelegationRuleBaseValues());
+    }
+    
+    private void exportRuleDelegationParentResponsibility(Element parent, RuleDelegation delegation) {
+        Element parentResponsibilityElement = renderer.renderElement(parent, PARENT_RESPONSIBILITY);
+        RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
+        renderer.renderTextElement(parentResponsibilityElement, PARENT_RULE_NAME, ruleResponsibility.getRuleBaseValues().getName());
+        if (ruleResponsibility.isUsingWorkflowUser()) {
+        	KimPrincipal principal = ruleResponsibility.getPrincipal();
+        	renderer.renderTextElement(parentResponsibilityElement, PRINCIPAL_NAME, principal.getPrincipalName());
+        } else if (ruleResponsibility.isUsingGroup()) {
+        	Group group = ruleResponsibility.getGroup();
+        	Element groupElement = renderer.renderElement(parentResponsibilityElement, GROUP_NAME);
+        	groupElement.setText(group.getGroupName());
+        	groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());
+        } else if (ruleResponsibility.isUsingRole()) {
+        	renderer.renderTextElement(parentResponsibilityElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
+        } else {
+        	throw new RiceRuntimeException("Encountered a rule responsibility when exporting with an invalid type of '" + ruleResponsibility.getRuleResponsibilityType());
         }
     }
 

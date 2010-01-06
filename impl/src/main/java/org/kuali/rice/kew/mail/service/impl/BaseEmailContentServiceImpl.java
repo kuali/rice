@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Created on Mar 21, 2007
 
 package org.kuali.rice.kew.mail.service.impl;
 
@@ -38,10 +37,10 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * Base EmailContentService implementation with a default email from address that can be
  * configured via Spring property injection
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BaseEmailContentServiceImpl implements EmailContentService {
-    protected String defaultEmailFromAddress = "workflow@indiana.edu";
+    protected String defaultEmailFromAddress = "admin@localhost";
     protected String deploymentEnvironment;
 
     public void setDefaultEmailFromAddress(String defaultEmailFromAddress) {
@@ -90,10 +89,10 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     }
 
     protected String getActionListUrl() {
-        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT) + "/" + "ActionList.do";
+        return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY) + "/" + "ActionList.do";
     }
 
     protected String getPreferencesUrl() {
-        return ConfigContext.getCurrentContextConfig().getBaseUrl() + Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.APPLICATION_CONTEXT) + "/" + "Preferences.do";
+        return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.WORKFLOW_URL_KEY) + "/" + "Preferences.do";
     }
 }

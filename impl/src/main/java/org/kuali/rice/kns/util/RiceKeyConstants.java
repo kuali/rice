@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,6 +53,7 @@ public class RiceKeyConstants {
     public static final String ERROR_INACTIVE_ADHOC_PERSON_ID = "error.adhoc.inactive.person";
     public static final String ERROR_INVALID_ADHOC_WORKGROUP_ID = "error.adhoc.invalid.workgroup";
     public static final String ERROR_MISSING_ADHOC_WORKGROUP_ID = "error.adhoc.missing.workgroup";
+    public static final String MESSAGE_ADHOC_ANNOTATION = "message.adhoc.annotation";
 
     public static final String ERROR_SECURE_FIELD = "error.secureField";
     public static final String ERROR_SEND_NOTE_NOTIFICATION_RECIPIENT = "error.send.note.notification.recipient";
@@ -77,9 +78,11 @@ public class RiceKeyConstants {
 
     // Document-specific errors
     public static final String ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED = "error.document.annotation.maxLength.exceeded";
-    public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";    public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
+    public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";
+    public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
     public static final String ERROR_UPLOADFILE_NULL = "error.uploadFile.null";
     public static final String ERROR_UPLOADFILE_EMPTY = "error.uploadFile.empty";
+    public static final String ERROR_UPLOADFILE_SIZE = "error.uploadFile.size";
     public static final String ERROR_UNIMPLEMENTED = "error.unimplemented";
     public static final String ERROR_OPTIMISTIC_LOCK = "error.document.optimisticLockException";
 
@@ -92,7 +95,8 @@ public class RiceKeyConstants {
     public static final String ERROR_DOCUMENT_AUTHORIZATION_RESTRICTED_FIELD_CHANGED = "error.document.maintenance.authorization.restrictedFieldChanged";
     public static final String ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS = "error.document.maintenance.partiallyFilledOutReferenceForeignKeys";
     public static final String ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR = "error.document.maintenance.formattingError";
-    public static final String ERROR_DOCUMENT_INVALID_VALUE = "error.document.invalid.value";
+    public static final String ERROR_DOCUMENT_INVALID_VALUE_ALLOWED_VALUES_PARAMETER = "error.document.invalid.value.allowedValuesParameter";
+    public static final String ERROR_DOCUMENT_INVALID_VALUE_DENIED_VALUES_PARAMETER = "error.document.invalid.value.deniedValuesParameter";
 
     // Person errors
     public static final String ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID = "error.document.PersonMaintenance.UniqueEmplId";
@@ -108,6 +112,9 @@ public class RiceKeyConstants {
     public static final String ERROR_ZERO_OR_NEGATIVE_AMOUNT = "error.zeroOrNegativeAmount";
     public static final String ERROR_NEGATIVE_AMOUNT = "error.negativeAmount";
     public static final String ERROR_NOT_AMONG = "error.invalidNotAmong";
+    
+    public static final String WARNING_MAINTENANCE_LOCKED = "warning.maintenance.locked";
+    public static final String ERROR_VERSION_MISMATCH = "error.version.mismatch";
 
     public static final String MESSAGE_RELOADED = "message.document.reloaded";
     public static final String MESSAGE_ROUTE_SUCCESSFUL = "message.route.successful";
@@ -122,6 +129,10 @@ public class RiceKeyConstants {
     public static final String MESSAGE_REVERT_UNNECESSARY = "message.revert.unnecessary";
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
 
+    public static final String MESSAGE_DELETE="message.delete";
+    public static final String MESSAGE_DELETED="mesage.deleted";
+    
+    
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
 
     public static final String ERROR_MISSING = "error.missing";
@@ -155,10 +166,22 @@ public class RiceKeyConstants {
     public static final String ERROR_ROLE_QUALIFIER_REQUIRED = "error.role.qualifier.required";
     public static final String MESSAGE_SEND_AD_HOC_REQUESTS_SUCCESSFUL = "message.sendAdHocRequests.successful";
     public static final String ERROR_ONE_ITEM_REQUIRED = "error.one.item.required";
+    public static final String ERROR_ONE_ACTIVE_ITEM_REQUIRED = "error.one.active.item.required";
     public static final String ERROR_MEMBERID_MEMBERTYPE_MISMATCH = "error.memberid.membertype.mismatch";
     public static final String ERROR_PRIORITY_NUMBER_RANGE = "error.prioritynumber.range";
-    
+    public static final String ERROR_CANT_ADD_DERIVED_ROLE = "error.cant.add.derived.role";
+    public static final String ERROR_INVALID_ROLE = "error.invalid.role";
+    public static final String ERROR_REQUIRED_CONDITIONALLY = "error.required.conditionally";
+    public static final String ERROR_CANT_BE_MODIFIED = "error.unmodifiable.attribute";
+    public static final String ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION = "error.delegation.notassociatedwith.rolemember";
+    public static final String ERROR_DELEGATION_TO_AMOUNT_GREATER = "error.delegation.toamount.greater";
+    public static final String ERROR_DELEGATION_FROM_AMOUNT_LESSER = "error.delegation.fromamount.lesser";
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
+    
+    public static final String ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA = "error.document.fieldContainsPossibleSensitiveData";
+    
+    public static final String ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD = "error.wildcards.and.operators.not.allowed.on.field";
+    public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
 }
 

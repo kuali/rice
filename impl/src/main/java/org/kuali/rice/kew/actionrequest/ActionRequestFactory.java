@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,9 +19,12 @@ package org.kuali.rice.kew.actionrequest;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -39,9 +42,11 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
-import org.kuali.rice.kim.bo.role.KimRole;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -55,7 +60,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 /**
  * A factory to aid in creating the ever-so-gnarly ActionRequestValue object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestFactory {
 
@@ -88,23 +93,23 @@ public class ActionRequestFactory {
 	 * @param actionRequested
 	 * @param recipient
 	 * @param description
-	 * @param ignorePrevious
+	 * @param forceAction
 	 *
 	 * @return ActionRequestValue
 	 */
-	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean ignorePrevious, String annotation) {
-		return createActionRequest(actionRequested, new Integer(0), recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, ignorePrevious, annotation);
+	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean forceAction, String annotation) {
+		return createActionRequest(actionRequested, new Integer(0), recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
 	}
 
-	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String annotation) {
-    	return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, null, null, annotation);
+	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String annotation) {
+    	return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, forceAction, null, null, annotation);
     }
 
-	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation) {
-		return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, null, null, annotation, null);
+	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String approvePolicy, Long ruleId, String annotation) {
+		return createActionRequest(actionRequested, priority, recipient, description, responsibilityId, forceAction, approvePolicy, ruleId, annotation, null);
 	}
 
-	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId, String annotation, String requestLabel) {
+	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String approvePolicy, Long ruleId, String annotation, String requestLabel) {
 		ActionRequestValue actionRequest = new ActionRequestValue();
         actionRequest.setActionRequested(actionRequested);
         actionRequest.setDocVersion(document.getDocVersion());
@@ -116,7 +121,7 @@ public class ActionRequestFactory {
     	actionRequest.setResponsibilityId(responsibilityId);
     	actionRequest.setResponsibilityDesc(description);
     	actionRequest.setApprovePolicy(approvePolicy);
-    	actionRequest.setIgnorePrevAction(ignorePrevious);
+    	actionRequest.setForceAction(forceAction);
     	actionRequest.setRuleBaseValuesId(ruleId);
     	actionRequest.setAnnotation(annotation);
     	actionRequest.setRequestLabel(requestLabel);
@@ -149,13 +154,13 @@ public class ActionRequestFactory {
 		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
 		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
-        KimGroup notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+        Group notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
 
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
             List requests, KimPrincipal principal, Recipient delegator, String notificationRequestCode,
-            String actionTakenCode, KimGroup notifyExclusionWorkgroup)
+            String actionTakenCode, Group notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
@@ -179,7 +184,7 @@ public class ActionRequestFactory {
         return notificationRequests;
     }
 
-    private boolean isRecipientInGroup(KimGroup group, Recipient recipient)
+    private boolean isRecipientInGroup(Group group, Recipient recipient)
     {
         boolean isMember = false;
 
@@ -217,8 +222,8 @@ public class ActionRequestFactory {
     	}
         actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
         actionRequest.setCurrentIndicator(Boolean.TRUE);
-        if (actionRequest.getIgnorePrevAction() == null) {
-        	actionRequest.setIgnorePrevAction(Boolean.FALSE);
+        if (actionRequest.getForceAction() == null) {
+        	actionRequest.setForceAction(Boolean.FALSE);
         }
         if (routeNode != null) {
         	actionRequest.setNodeInstance(routeNode);
@@ -277,13 +282,13 @@ public class ActionRequestFactory {
      * @param approvePolicy
      * @param priority
      * @param responsibilityId
-     * @param ignorePrevious
+     * @param forceAction
      * @param description
      * @return the created root role request
      */
-    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean ignorePrevious, String description, Long ruleId) {
+    public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean forceAction, String description, Long ruleId) {
 
-    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
+    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	if (role != null && role.getResolvedQualifiedRole() != null && role.getResolvedQualifiedRole().getRecipients() != null) {
     	    int legitimateTargets = 0;
     	for (Iterator iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext();) {
@@ -301,7 +306,7 @@ public class ActionRequestFactory {
 			}
 			if (role.getTarget() != null) {
                 legitimateTargets++;
-                ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, ignorePrevious, null, ruleId, null);
+                ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, null, ruleId, null);
                 request.setParentActionRequest(requestGraph);
                 requestGraph.getChildrenRequests().add(request);
 			}
@@ -327,12 +332,14 @@ public class ActionRequestFactory {
     	// it's assumed the that all in the list have the same action type code, priority number, etc.
     	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
     	Integer priority = responsibilities.get(0).getPriorityNumber();
-    	boolean ignorePrevious = responsibilities.get(0).isIgnorePrevious();
+    	boolean forceAction = responsibilities.get(0).isForceAction();
     	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
 
     	// Creation of a parent graph entry for ????
     	ActionRequestValue requestGraph = null;
     	StringBuffer parentAnnotation = null;
+    	// set to allow for suppression of duplicate annotations on the parent action request
+    	Set<String> uniqueChildAnnotations = null;
     	if ( responsibilities.size() > 1 ) {
 	    	requestGraph = createActionRequest(
 	    	        actionTypeCode, 
@@ -340,12 +347,13 @@ public class ActionRequestFactory {
 	    	        roleRecipient, 
 	    	        "", // description 
 	    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
-	    	        ignorePrevious, 
+	    	        forceAction, 
 	    	        approvePolicy, 
 	    	        null, // ruleId
 	    	        null );// annotation
 	    	requestGraphs.add(requestGraph);
-	    	parentAnnotation = new StringBuffer(); 
+	    	parentAnnotation = new StringBuffer();
+	    	uniqueChildAnnotations = new HashSet<String>( responsibilities.size() );
     	}
     	StringBuffer annotation = new StringBuffer();
     	for (ResponsibilityActionInfo responsibility : responsibilities) {
@@ -359,8 +367,6 @@ public class ActionRequestFactory {
     		AttributeSet qualifier = responsibility.getQualifier();
     		if ( qualifier != null ) {
 	    		for ( String key : qualifier.keySet() ) {	    		    
-//	        		annotation.append( '\n' );
-//	        		annotation.append( key ).append( '=' ).append( qualifier.get(key) );
 	        		annotation.append( qualifier.get( key ) ).append( ' ' );
 	    		}
     		}
@@ -371,29 +377,36 @@ public class ActionRequestFactory {
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo:" + responsibility);
 			}
+			String annotationStr = annotation.toString();
 			ActionRequestValue request = createActionRequest(
 			        responsibility.getActionTypeCode(), 
 			        responsibility.getPriorityNumber(), 
 			        roleRecipient, 
-			        responsibility.getActionGroupingCode(), // description
+			        responsibility.getParallelRoutingGroupingCode(), // description
 			        new Long(responsibility.getResponsibilityId()), 
-			        responsibility.isIgnorePrevious(), 
-			        approvePolicy, 
+			        responsibility.isForceAction(), 
+			        // If not nested in a parent action request, ensure that the request
+			        // is first approve so delegations of this request do not require 
+			        // ALL_APPROVE as well
+			        (responsibilities.size() == 1)?KEWConstants.APPROVE_POLICY_FIRST_APPROVE:approvePolicy, 
 			        null, // ruleId
-			        annotation.toString());
+			        annotationStr);
 			// if there is only a single request, don't create the nesting structure
 			if ( responsibilities.size() > 1 ) {
 				request.setParentActionRequest(requestGraph);
-				generateRoleResponsibilityDelegationRequests(responsibility, request);
 				requestGraph.getChildrenRequests().add(request);
-				parentAnnotation.append( annotation ).append( " -- " );
+				generateRoleResponsibilityDelegationRequests(responsibility, request);
+				if ( !uniqueChildAnnotations.contains(annotationStr) ) {
+					parentAnnotation.append( annotationStr ).append( " -- " );
+					uniqueChildAnnotations.add(annotationStr);
+				}
 			} else {
 				requestGraphs.add(request);
 				generateRoleResponsibilityDelegationRequests(responsibility, request);
 			}
 	    }
     	if ( responsibilities.size() > 1 ) {
-	    	requestGraph.setAnnotation( parentAnnotation.toString() );
+	    	requestGraph.setAnnotation( StringUtils.chomp( parentAnnotation.toString(), " -- " ) );
     	}
     }
 
@@ -401,8 +414,8 @@ public class ActionRequestFactory {
     	List<DelegateInfo> delegates = responsibility.getDelegates();
     	for (DelegateInfo delegate : delegates) {
     		Recipient recipient = null;
-    		boolean isPrincipal = delegate.getMemberTypeCode().equals(KimRole.PRINCIPAL_MEMBER_TYPE);
-            boolean isGroup = delegate.getMemberTypeCode().equals(KimRole.GROUP_MEMBER_TYPE);
+    		boolean isPrincipal = delegate.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
+            boolean isGroup = delegate.getMemberTypeCode().equals(Role.GROUP_MEMBER_TYPE);
     		if (isPrincipal) {
     			recipient = new KimPrincipalRecipient(delegate.getMemberId());
     		} else if (isGroup) {
@@ -410,23 +423,40 @@ public class ActionRequestFactory {
     		} else {
     			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getMemberTypeCode() + "'");
     		}
-    		String responsibilityDescription = generateRoleResponsibilityDelegateDescription(delegate, isPrincipal, isGroup);
-    		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getIgnorePrevAction(), delegate.getDelegationTypeCode(), responsibilityDescription, null);
+    		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
+    		addDelegationRequest(parentRequest, recipient, new Long(delegate.getDelegationId()), parentRequest.getForceAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
     	}
     }
 
-    private String generateRoleResponsibilityDelegateDescription(DelegateInfo delegate, boolean isPrincipal, boolean isGroup) {
-    	String responsibilityDescription = "Delegation generated from delegation id " + delegate.getDelegationId() + " for ";
+    private String generateRoleResponsibilityDelegateAnnotation(DelegateInfo delegate, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
+    	StringBuffer annotation = new StringBuffer( "Delegation of: " );
+    	annotation.append( parentRequest.getAnnotation() );
+    	annotation.append( " to " );
     	if (isPrincipal) {
-    		responsibilityDescription += "principal ";
+    		annotation.append( "principal " );
+    		KimPrincipalInfo principal = getIdentityManagementService().getPrincipal( delegate.getMemberId() );
+    		if ( principal != null ) {
+    			annotation.append( principal.getPrincipalName() );
+    		} else {
+    			annotation.append( delegate.getMemberId() );
+    		}
     	} else if (isGroup) {
-    		responsibilityDescription += "group ";
+    		annotation.append( "group " );
+    		GroupInfo group = getIdentityManagementService().getGroup( delegate.getMemberId() );
+    		if ( group != null ) {
+    			annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getGroupName() );
+    		} else {
+    			annotation.append( delegate.getMemberId() );
+    		}
+    	} else {
+    		annotation.append( "?????? '" );
+			annotation.append( delegate.getMemberId() );
+    		annotation.append( "'" );
     	}
-    	responsibilityDescription += "'" + delegate.getMemberId() + "'";
-    	return responsibilityDescription;
+    	return annotation.toString();
     }
 
-    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
+    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, Long responsibilityId, Boolean forceAction, String delegationType, String description, Long ruleId) {
     	Recipient parentRecipient = parentRequest.getRecipient();
     	if (parentRecipient instanceof RoleRecipient) {
     		throw new WorkflowRuntimeException("Cannot delegate on Role Request.  It must be a request to a person or workgroup, although that request may be in a role");
@@ -434,7 +464,7 @@ public class ActionRequestFactory {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}
-    	ActionRequestValue delegationRoleRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
+    	ActionRequestValue delegationRoleRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	delegationRoleRequest.setDelegationType(delegationType);
     	int count = 0;
     	for (Iterator iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext(); count++) {
@@ -450,7 +480,7 @@ public class ActionRequestFactory {
 			} else {
 				throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
 			}
-			ActionRequestValue request = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, ignorePrevious, null, ruleId, null);
+			ActionRequestValue request = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, forceAction, null, ruleId, null);
 			request.setDelegationType(delegationType);
 			//end repeat
 			request.setParentActionRequest(delegationRoleRequest);
@@ -466,21 +496,22 @@ public class ActionRequestFactory {
     	return delegationRoleRequest;
     }
 
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean ignorePrevious, String delegationType, String description, Long ruleId) {
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, Long responsibilityId, Boolean forceAction, String delegationType, String annotation, Long ruleId) {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}
-    	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, description, responsibilityId, ignorePrevious, null, ruleId, null);
+    	ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, forceAction, null, ruleId, annotation);
     	delegationRequest.setDelegationType(delegationType);
-    	parentRequest.getChildrenRequests().add(delegationRequest);
-    	delegationRequest.setParentActionRequest(parentRequest);
+    	
+        parentRequest.getChildrenRequests().add(delegationRequest); 
+        delegationRequest.setParentActionRequest(parentRequest);
 
     	return delegationRequest;
     }
 
     //could probably base behavior off of recipient type
-    public ActionRequestValue addRootActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean ignorePrevious, String approvePolicy, Long ruleId) {
-    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, recipient, description, responsibilityId, ignorePrevious, approvePolicy, ruleId, null);
+    public ActionRequestValue addRootActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String approvePolicy, Long ruleId) {
+    	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, recipient, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	requestGraphs.add(requestGraph);
     	return requestGraph;
     }
@@ -533,6 +564,9 @@ public class ActionRequestFactory {
     	}
     	if (request.getRuleBaseValuesId() != null) {
     		notification += " Rule Id " + request.getRuleBaseValuesId();
+    	}
+    	if (request.getAnnotation() != null && request.getAnnotation().length()!=0){
+    		notification += " " + request.getAnnotation();
     	}
     	return notification;
 	}

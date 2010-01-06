@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,17 +16,17 @@
 package org.kuali.rice.ken.dao;
 
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.ken.test.NotificationTestCaseBase;
+import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
 /**
  * Convenience test case implementation that just stores the BusinessObjectDao bean
  * in a protected member field for ease of use
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK)
-public abstract class BusinessObjectDaoTestCaseBase extends NotificationTestCaseBase {
+public abstract class BusinessObjectDaoTestCaseBase extends KENTestCase {
     protected GenericDao businessObjectDao;
 
     /**

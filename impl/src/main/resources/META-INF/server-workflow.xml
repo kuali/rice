@@ -8,20 +8,16 @@
 -->
 <config>
     <param name="plugin.registry.enabled">true</param>
-    <param name="embedded.server">true</param>
     <param name="xml.pipeline.lifecycle.enabled">true</param>
     <param name="email.reminder.lifecycle.enabled">true</param>
 	<param name="environment">dev</param>
 	<param name="service.namespace">KEW</param>
 
 	<!-- default note attribute to use when none is given -->
-	<param name="default.note.class">DefaultNoteAttribute</param>
+    <param name="default.kew.note.class">DefaultNoteAttribute</param>
 
 	<!-- default edl config location -->
 	<param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
-
-	<!-- shared class loader in workflow war - don't change -->
-	<param name="en.plugin.dir">${workflow.base}WEB-INF/plugins</param>
 
 	<!-- Default configurations for workgroups and users -->
 	<param name="http.port">8080</param>

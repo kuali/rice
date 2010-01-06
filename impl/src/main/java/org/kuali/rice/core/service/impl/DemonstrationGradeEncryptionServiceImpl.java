@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,7 +34,7 @@ import org.kuali.rice.core.service.EncryptionService;
 /**
  * Implementation of encryption service for demonstration. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DemonstrationGradeEncryptionServiceImpl implements EncryptionService, Demonstration {
     public final static String ALGORITHM = "DES/ECB/PKCS5Padding";
@@ -104,6 +104,41 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
         }
     }
 
+    public byte[] encryptBytes(byte[] valueToHide) throws GeneralSecurityException {
+        if (valueToHide == null) {
+            return new byte[0];
+        }
+
+        // Initialize the cipher for encryption
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, desKey);
+
+        // Our cleartext
+        byte[] cleartext = valueToHide;
+
+        // Encrypt the cleartext
+        byte[] ciphertext = cipher.doFinal(cleartext);
+
+        return ciphertext;
+    }
+
+    public byte[] decryptBytes(byte[] ciphertext) throws GeneralSecurityException {
+        if (ciphertext == null) {
+            return new byte[0];
+        }
+
+        // Initialize the same cipher for decryption
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, desKey);
+
+        // un-Base64 encode the encrypted data
+        byte[] encryptedData = ciphertext;
+
+        // Decrypt the ciphertext
+        byte[] cleartext1 = cipher.doFinal(encryptedData);
+        return cleartext1;
+    }
+    
     /**
      * 
      * This method generates keys. This method is implementation specific and should not be present in any general purpose interface

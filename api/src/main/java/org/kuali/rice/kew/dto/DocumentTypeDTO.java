@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Transport object for document type.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeDTO implements Serializable {
     static final long serialVersionUID = 5266872451859573823L;
@@ -35,6 +35,7 @@ public class DocumentTypeDTO implements Serializable {
     private String docTypeHandlerUrl;
     // this value is the resolved and potentially inherited value
     private String helpDefinitionUrl;
+    private String docSearchHelpUrl;
     private Long docTypeId;
     private String docTypeLabel;
     private String name;
@@ -165,6 +166,20 @@ public class DocumentTypeDTO implements Serializable {
 
     public void setHelpDefinitionUrl(String helpDefinitionUrl) {
         this.helpDefinitionUrl = helpDefinitionUrl;
+    }
+    
+    /**
+     * @return the docSearchHelpUrl
+     */
+    public String getDocSearchHelpUrl() {
+        return this.docSearchHelpUrl;
+    }
+    
+    /**
+     * @param docSearchHelpUrl the docSearchHelpUrl to set
+     */
+    public void setDocSearchHelpUrl(String docSearchHelpUrl) {
+        this.docSearchHelpUrl = docSearchHelpUrl;
     }
 
     public String getDocTypeLabel() {

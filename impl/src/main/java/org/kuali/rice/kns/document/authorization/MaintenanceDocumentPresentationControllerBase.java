@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation.
+ * Copyright 2007-2008 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +18,12 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 /**
  * Base class for all MaintenanceDocumentPresentationControllers.
@@ -31,12 +31,12 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 public class MaintenanceDocumentPresentationControllerBase extends
 		DocumentPresentationControllerBase implements
 		MaintenanceDocumentPresentationController {
-	private static Log LOG = LogFactory
-			.getLog(MaintenanceDocumentPresentationControllerBase.class);
+//	private static final Logger LOG = Logger
+//			.getLogger(MaintenanceDocumentPresentationControllerBase.class);
 
-	private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
-	public final boolean canCreate(Class boClass) {
+	public boolean canCreate(Class boClass) {
 		return getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						boClass));
@@ -68,5 +68,23 @@ public class MaintenanceDocumentPresentationControllerBase extends
 					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase#canSave(org.kuali.rice.kns.document.Document)
+	 */
+	@Override
+    protected boolean canSave(Document document){
+    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+    	return (!workflowDocument.stateIsEnroute() && super.canSave(document));
+    } 
+	
+	/**
+	 * @see org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase#canBlanketApprove(org.kuali.rice.kns.document.Document)
+	 */
+	@Override
+	protected boolean canBlanketApprove(Document document) {
+    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+    	return (!workflowDocument.stateIsEnroute() && super.canBlanketApprove(document));
 	}
 }

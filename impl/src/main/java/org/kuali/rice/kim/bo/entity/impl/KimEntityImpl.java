@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,13 +29,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
  * this in.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 @SuppressWarnings("unchecked")
@@ -85,6 +86,18 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityCitizenshipImpl> citizenships = new TypedArrayList(KimEntityCitizenshipImpl.class);
 
+	@OneToMany(targetEntity = KimEntityEthnicityImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	protected List<KimEntityEthnicityImpl> ethnicities = new TypedArrayList(KimEntityEthnicityImpl.class);
+
+	@OneToMany(targetEntity = KimEntityResidencyImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	protected List<KimEntityResidencyImpl> residencies = new TypedArrayList(KimEntityResidencyImpl.class);
+
+	@OneToMany(targetEntity = KimEntityVisaImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	protected List<KimEntityVisaImpl> visas = new TypedArrayList(KimEntityVisaImpl.class);
+
 	/**
 	 * @return the entityId
 	 */
@@ -116,11 +129,8 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
 	 */
-	@SuppressWarnings("unchecked")
 	protected LinkedHashMap toStringMapper() {
 		LinkedHashMap lhm = new LinkedHashMap();
 		lhm.put("entityId", entityId);
@@ -146,6 +156,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @return the privacyPreferences
 	 */
 	public KimEntityPrivacyPreferencesImpl getPrivacyPreferences() {
+	    if (ObjectUtils.isNull(this.privacyPreferences)) {
+	        return null;
+	    }
 		return this.privacyPreferences;
 	}
 
@@ -161,6 +174,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @return the bioDemographics
 	 */
 	public KimEntityBioDemographicsImpl getBioDemographics() {
+	    if (ObjectUtils.isNull(this.bioDemographics)) {
+            return null;
+        }
 		return this.bioDemographics;
 	}
 
@@ -290,10 +306,64 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 		this.citizenships = citizenships;
 	}
 
+	/**
+	 * @return the ethnicities
+	 */
+	public List<KimEntityEthnicityImpl> getEthnicities() {
+		return this.ethnicities;
+	}
+
+	/**
+	 * @param ethnicities the ethnicities to set
+	 */
+	public void setEthnicities(List<KimEntityEthnicityImpl> ethnicities) {
+		this.ethnicities = ethnicities;
+	}
+
+	/**
+	 * @return the residencies
+	 */
+	public List<KimEntityResidencyImpl> getResidencies() {
+		return this.residencies;
+	}
+
+	/**
+	 * @param residencies the residencies to set
+	 */
+	public void setResidencies(List<KimEntityResidencyImpl> residencies) {
+		this.residencies = residencies;
+	}
+
+	/**
+	 * @return the visas
+	 */
+	public List<KimEntityVisaImpl> getVisas() {
+		return this.visas;
+	}
+
+	/**
+	 * @param visas the visas to set
+	 */
+	public void setVisas(List<KimEntityVisaImpl> visas) {
+		this.visas = visas;
+	}
+
 	public void setPrincipals(List<KimPrincipalImpl> principals) {
 		this.principals = principals;
 	}
 	
-	
+	/** This possibly fixes an issue with afterLookup not following references and calling afterLookup?
+	@Override
+	public void afterLookup(PersistenceBroker persistenceBroker)
+			throws PersistenceBrokerException {
+		// afterLookup is not called recursively on all referenced objects, external entities can be encrypted coming out of the db, so let's resolve this by manaully walking down
+		super.afterLookup(persistenceBroker);
+		if (getExternalIdentifiers() != null) {
+			for (KimEntityExternalIdentifierImpl extId : getExternalIdentifiers()) {
+				extId.afterLookup(persistenceBroker);
+			}
+		}
+	}	
+	*/
 	
 }

@@ -1,10 +1,10 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License"); you may not use this file except in
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.MDC;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
@@ -34,6 +35,7 @@ import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.util.RequestUtils;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -41,18 +43,19 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.ErrorContainer;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.ExceptionUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.InfoContainer;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WarningContainer;
 import org.kuali.rice.kns.util.WebUtils;
@@ -72,6 +75,14 @@ import org.springmodules.orm.ojb.OjbOperationException;
  */
 public class KualiRequestProcessor extends RequestProcessor {
 
+	private static final String MDC_USER_ALREADY_SET = "userAlreadySet";
+
+	private static final String MDC_USER = "user";
+
+	private static final String MDC_DOC_ID = "docId";
+	
+	private static final String PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID_PARAMETER_NAME = "actionEditablePropertiesGuid";
+
 	private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
 
 	protected SessionDocumentService sessionDocumentService;
@@ -86,38 +97,60 @@ public class KualiRequestProcessor extends RequestProcessor {
 			LOG.info(new StringBuffer("Started processing request: '").append(request.getRequestURI()).append("' w/ query string: '").append(request.getQueryString()).append("'"));
 		}
 
-		try {
+		try { 
 			super.process(request, response);
+		} catch (FileUploadLimitExceededException e) {
+			ActionForward actionForward = processException(request, response, e, e.getActionForm(), e.getActionMapping());
+			processForwardConfig(request, response, actionForward);
 		} finally {
 			GlobalVariables.setKualiForm(null);
 		}
 
-		ActionForm form = WebUtils.getKualiForm(request);
-		String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
-		if (form!=null && KualiDocumentFormBase.class.isAssignableFrom(form.getClass()) 
-				&& !KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller)) {
-			KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
-			Document document = docForm.getDocument();
-			String docFormKey = docForm.getFormKey();
-
-			UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-
-			if (WebUtils.isDocumentSession(document, docForm)) {
-				getSessionDocumentService().setDocumentForm(docForm, userSession);
+		try {
+			ActionForm form = WebUtils.getKualiForm(request);
+			
+			if (form != null && form instanceof KualiDocumentFormBase) {
+				String docId = ((KualiDocumentFormBase) form).getDocId();
+				if (docId != null) { MDC.put(MDC_DOC_ID, docId); }
 			}
 
-			Boolean exitingDocument = (Boolean) request.getAttribute(KNSConstants.EXITING_DOCUMENT);
+			String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
+			if (form!=null && KualiDocumentFormBase.class.isAssignableFrom(form.getClass()) 
+					&& !KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller)) {
+				KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
+				Document document = docForm.getDocument();
+				String docFormKey = docForm.getFormKey();
 
-			if (exitingDocument != null && exitingDocument.booleanValue()) {
-				// remove KualiDocumentFormBase object from session and
-				// table.
-				getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession);
+				UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
+
+				if (WebUtils.isDocumentSession(document, docForm)) {
+					getSessionDocumentService().setDocumentForm(docForm, userSession, request.getRemoteAddr());
+				}
+
+				Boolean exitingDocument = (Boolean) request.getAttribute(KNSConstants.EXITING_DOCUMENT);
+
+				if (exitingDocument != null && exitingDocument.booleanValue()) {
+					// remove KualiDocumentFormBase object from session and
+					// table.
+					getSessionDocumentService().purgeDocumentForm(docForm.getDocument().getDocumentNumber(), docFormKey, userSession, request.getRemoteAddr());
+				}
+			}
+
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info(new StringBuffer("Finished processing request: '").append(request.getRequestURI()).append("' w/ query string: '").append(request.getQueryString()).append("'"));
+			}
+
+		} finally {
+			// MDC docId key is set above, and also during super.process() in the call to processActionForm
+			MDC.remove(MDC_DOC_ID);
+			// MDC user key is set above, although it may have already been set.
+			if (MDC.get(MDC_USER_ALREADY_SET) == null) {
+				MDC.remove(MDC_USER);
+			} else {
+				MDC.remove(MDC_USER_ALREADY_SET);
 			}
 		}
 
-		if ( LOG.isInfoEnabled() ) {
-			LOG.info(new StringBuffer("Finished processing request: '").append(request.getRequestURI()).append("' w/ query string: '").append(request.getQueryString()).append("'"));
-		}
 	}
 
 	/**
@@ -126,7 +159,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * requests, also populating the GlobalVariables class with our UserSession
 	 * for convenience to the non web layer based classes and implementations
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
 		UserSession userSession = null;
@@ -174,15 +206,49 @@ public class KualiRequestProcessor extends RequestProcessor {
 		} else {
 			userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 		}
-		if (request.getParameter(KNSConstants.BACKDOOR_PARAMETER) != null && request.getParameter(KNSConstants.BACKDOOR_PARAMETER).trim().length() > 0) {
-			userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-			userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
-		}
-
+		
 		request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
 		GlobalVariables.setUserSession(userSession);
 		GlobalVariables.clear();
+		if ( StringUtils.isNotBlank( request.getParameter(KNSConstants.BACKDOOR_PARAMETER) ) ) {
+			if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
+				if ( KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
+	    			userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
+	    			org.kuali.rice.kew.web.session.UserSession.getAuthenticatedUser().establishBackdoorWithPrincipalName(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
+				}
+			}
+		}
+		
+		if (MDC.get(MDC_USER) != null) {
+			// abuse the MDC to prevent removing user prematurely if it was set elsewhere (e.g. UserLoginFilter)
+			MDC.put(MDC_USER_ALREADY_SET, Boolean.TRUE); 
+		} else {
+			MDC.put(MDC_USER, userSession.getPrincipalId());
+		}
+		
 		return true;
+	}
+
+	/**
+	 * This method gets the document number from the request.  The request should have been processed already 
+	 * before this is called if it is multipart.  
+	 * 
+	 * @param request
+	 * @return the document number, or null if one can't be found in the request.
+	 */
+	private String getDocumentNumber(HttpServletRequest request) {
+		String documentNumber = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
+
+		// from lookup pages.
+		if (documentNumber == null) {
+			documentNumber = request.getParameter(KNSConstants.DOC_NUM);
+		}
+		
+		if (documentNumber == null) {
+			documentNumber = request.getParameter("routeHeaderId");
+		}
+		
+		return documentNumber;
 	}
 
 	/**
@@ -217,7 +283,9 @@ public class KualiRequestProcessor extends RequestProcessor {
 			super.processPopulate(request, response, form, mapping);
 			return;
 		}
-		((PojoForm)form).switchEditablePropertyInformationToPreviousRequestInformation();
+		
+		final String previousRequestGuid = request.getParameter(KualiRequestProcessor.PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID_PARAMETER_NAME);
+
 		((PojoForm)form).clearEditablePropertyInformation();
 		((PojoForm)form).registerStrutsActionMappingScope(mapping.getScope());
 		
@@ -229,6 +297,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		form.setServlet(this.servlet);
 		form.reset(mapping, request);
 
+		((PojoForm)form).setPopulateEditablePropertiesGuid(previousRequestGuid);
 		// call populate on ActionForm
 		((PojoForm) form).populate(request);
 		request.setAttribute("UnconvertedValues", ((PojoForm) form).getUnconvertedValues().keySet());
@@ -243,7 +312,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	protected boolean processValidate(HttpServletRequest request, HttpServletResponse response, ActionForm form, ActionMapping mapping) throws IOException, ServletException, InvalidCancelException {
 
 		// skip form validate if we had errors from populate
-		if (GlobalVariables.getErrorMap().isEmpty()) {
+		if (GlobalVariables.getMessageMap().hasNoErrors()) {
 			if (form == null) {
 				return (true);
 			}
@@ -265,7 +334,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 
 		publishMessages(request);
-		if (!GlobalVariables.getErrorMap().isEmpty()) {
+		if (!GlobalVariables.getMessageMap().hasNoErrors()) {
 			// Special handling for multipart request
 			if (form.getMultipartRequestHandler() != null) {
 				if (LOG.isDebugEnabled()) {
@@ -308,6 +377,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	@Override
 	protected ActionForm processActionForm(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) {
+		
+		String documentNumber = getDocumentNumber(request);
+		if (documentNumber != null) { MDC.put(MDC_DOC_ID, documentNumber); }
+		
 		UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 
 		String docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
@@ -316,14 +389,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 //		String searchListRequestKey = request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY);
 		String documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
 
-		String documentNumber = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
-
-		// from lookup pages.
-		if (documentNumber == null) {
-			documentNumber = request.getParameter(KNSConstants.DOC_NUM);
-		}
-
-		if (mapping.getPath().startsWith(KNSConstants.REFRESH_MAPPING_PREFIX) || KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) || KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
+		if (mapping.getPath().startsWith(KNSConstants.REFRESH_MAPPING_PREFIX) || KNSConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) ||
+				KNSConstants.QUESTION_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.TEXT_AREA_REFRESH.equalsIgnoreCase(refreshCaller) || KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
 			ActionForm form = null;
 			// check for search result storage and clear
 			GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_LIST_KEY_PREFIX);
@@ -335,7 +402,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				LOG.debug("getDecomentForm KualiDocumentFormBase from session");
 				form = (ActionForm) userSession.retrieveObject(docFormKey);
 			} else {
-				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession);
+				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
 			}
 			request.setAttribute(mapping.getAttribute(), form);
 			if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
@@ -349,7 +416,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data"))) {
 				// this method parses the multipart request and adds new
 				// non-file parameters into the request
-				WebUtils.getMultipartParameters(request, null, form);
+				WebUtils.getMultipartParameters(request, null, form, mapping);
 			}
 			// The form can be null if the document is not a session document
 			if (form != null) {
@@ -384,24 +451,24 @@ public class KualiRequestProcessor extends RequestProcessor {
 		// request, but we need to parse it now
 		// to determine the doc form key value.
 		if (("POST".equalsIgnoreCase(method) && contentType != null && contentType.startsWith("multipart/form-data"))) {
-			WebUtils.getMultipartParameters(request, null, form);
+			WebUtils.getMultipartParameters(request, null, form, mapping);
 			docFormKey = request.getParameter(KNSConstants.DOC_FORM_KEY);
 			documentWebScope = request.getParameter(KNSConstants.DOCUMENT_WEB_SCOPE);
 
-			documentNumber = request.getParameter(KNSConstants.DOCUMENT_DOCUMENT_NUMBER);
-			if (documentNumber == null) {
-				documentNumber = request.getParameter(KNSConstants.DOC_NUM);
-			}
+			documentNumber = getDocumentNumber(request);
 
 			if (KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope) ||
 					(form instanceof KualiDocumentFormBase && WebUtils.isDocumentSession(((KualiDocumentFormBase) form).getDocument(), (KualiDocumentFormBase) form))) {
 
-				if (userSession.retrieveObject(docFormKey) != null) {
-					LOG.debug("getDecomentForm KualiDocumentFormBase from session");
-					form = (ActionForm) userSession.retrieveObject(docFormKey);
+				Object userSessionObject = userSession.retrieveObject(docFormKey);
+				if ( userSessionObject != null &&  userSessionObject instanceof ActionForm ) {
+					LOG.debug("getDocumentForm KualiDocumentFormBase from session");
+					form = (ActionForm) userSessionObject;
 				} else {
-
-					form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession);
+					ActionForm tempForm = (ActionForm)getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
+					if ( tempForm != null ) {
+						form = tempForm;
+					}
 				}
 
 				request.setAttribute(mapping.getAttribute(), form);
@@ -466,6 +533,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 			saveMessages(request);
 			saveAuditErrors(request);
 			
+			if (form instanceof PojoForm) {
+				final String guid = GlobalVariables.getUserSession().getEditablePropertiesHistoryHolder().addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
+				((PojoForm)form).setActionEditablePropertiesGuid(guid);
+			}
+			
 			return forward;
 
 		} catch (Exception e) {
@@ -474,9 +546,9 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 			if (e instanceof ValidationException) {
 				// add a generic error message if there are none
-				if (GlobalVariables.getErrorMap().isEmpty()) {
+				if (GlobalVariables.getMessageMap().hasNoErrors()) {
 
-					GlobalVariables.getErrorMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
+					GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
 				}
 
 				// display error messages and return to originating page
@@ -549,8 +621,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * messages then stores in the request.
 	 */
 	private void publishMessages(HttpServletRequest request) {
-		ErrorMap errorMap = GlobalVariables.getErrorMap();
-		if (!errorMap.isEmpty()) {
+		MessageMap errorMap = GlobalVariables.getMessageMap();
+		if (!errorMap.hasNoErrors()) {
 			ErrorContainer errorContainer = new ErrorContainer(errorMap);
 
 			request.setAttribute("ErrorContainer", errorContainer);

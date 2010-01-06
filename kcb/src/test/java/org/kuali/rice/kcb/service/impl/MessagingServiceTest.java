@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * Tests MessagingService 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 /*
 @PerTestUnitTestData({
@@ -56,12 +56,12 @@ public class MessagingServiceTest extends KCBTestCase {
     public void setUp() throws Exception {
         super.setUp();
     
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "mock", new String[] { "Test Channel #1" });
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "sms", new String[] { "Test Channel #1" });
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "broken", new String[] { "Test Channel #1" }); // this one throws exceptions
-        services.getRecipientPreferenceService().saveRecipientDelivererConfig("TestUser5", "bogus", new String[] { "Test Channel #1" }); // this one doesn't exist
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "mock", new String[] { "Test Channel #1" });
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "sms", new String[] { "Test Channel #1" });
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "broken", new String[] { "Test Channel #1" }); // this one throws exceptions
+        services.getRecipientPreferenceService().saveRecipientDelivererConfig("testuser5", "bogus", new String[] { "Test Channel #1" }); // this one doesn't exist
         
-        assertEquals(4, services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size());
+        assertEquals(4, services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("testuser5", "Test Channel #1").size());
     }
 
     protected long deliver() throws Exception {
@@ -70,7 +70,7 @@ public class MessagingServiceTest extends KCBTestCase {
         message.setChannel("Test Channel #1");
         message.setContentType("test content type 1");
         message.setDeliveryType("test delivery type 1");
-        message.setRecipient("TestUser5");
+        message.setRecipient("testuser5");
         message.setTitle("test title 1");
         message.setOriginId("origin id");
 
@@ -82,7 +82,7 @@ public class MessagingServiceTest extends KCBTestCase {
 
         Collection<MessageDelivery> deliveries = services.getMessageDeliveryService().getAllMessageDeliveries();
         assertNotNull(deliveries);
-        int delivCount = services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("TestUser5", "Test Channel #1").size();
+        int delivCount = services.getRecipientPreferenceService().getDeliverersForRecipientAndChannel("testuser5", "Test Channel #1").size();
         assertEquals(delivCount, deliveries.size());
         assertTrue(deliveries.size() > 0);
         int failed = 0;
@@ -209,7 +209,7 @@ public class MessagingServiceTest extends KCBTestCase {
         KSBServiceLocator.getScheduler().addGlobalJobListener(new JobListenerSupport() {
             @Override
             public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-                log.debug("Job was executed: " + context);
+                log.info("Job was executed: " + context);
                 if (MessageProcessingJob.NAME.equals(context.getJobDetail().getName())) {
                     signal.countDown();
                 }
@@ -222,7 +222,7 @@ public class MessagingServiceTest extends KCBTestCase {
 
     protected void waitForNextJobCompletion() throws InterruptedException {
         log.info("Waiting for job to complete...");
-        signal.await(45, TimeUnit.SECONDS); // time limit so as not to hang tests if something goes wrong
+        signal.await(100, TimeUnit.SECONDS); // time limit so as not to hang tests if something goes wrong
         signal = new CountDownLatch(1);
         log.info("Job completed...");
     }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +50,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 /**
  * OJB implementation of the {@link ActionListDAO}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionListDAO {
 
@@ -219,7 +219,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                groupCrit.addIn("delegatorGroupId", KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId));
+                List<String> delegatorGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
+                	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
+                }
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
@@ -236,7 +239,10 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                groupCrit.addIn("delegatorGroupId", KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId));
+                List<String> delegatorGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
+                	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
+                }
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
                 crit.addAndCriteria(orCrit);
@@ -247,13 +253,14 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 addedDelegationCriteria = true;
                 filterOn = true;
             }
-        } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
-                || StringUtils.isNotBlank(filter.getDelegatorId())) {
+        }
+        if (!addedDelegationCriteria && ( (StringUtils.isNotBlank(filter.getDelegationType()) && KEWConstants.DELEGATION_SECONDARY.equals(filter.getDelegationType()))
+                || StringUtils.isNotBlank(filter.getDelegatorId()) )) {
             // using a secondary delegation
             crit.addEqualTo("principalId", principalId);
             if (StringUtils.isBlank(filter.getDelegatorId())) {
                 filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-                // if isExcludeDelegationType() we want to show the default aciton list which is set up later in this method
+                // if isExcludeDelegationType() we want to show the default action list which is set up later in this method
                 if (!filter.isExcludeDelegationType()) {
                     crit.addEqualTo("delegationType", KEWConstants.DELEGATION_SECONDARY);
                     addToFilterDescription(filteredByItems, "Secondary Delegator Id");
@@ -650,7 +657,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(java.lang.String, java.util.List)
      */
-    public void removeOutboxItems(String principalId, List<Long> outboxItems) {
+    public void removeOutboxItems(String principalId, List<String> outboxItems) {
         Criteria crit = new Criteria();
         crit.addIn("actionItemId", outboxItems);
         getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@ package org.kuali.rice.kns.maintenance;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,11 +31,13 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
@@ -42,6 +45,8 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
+import org.kuali.rice.kns.exception.PessimisticLockingException;
+import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -51,6 +56,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -59,9 +65,9 @@ import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
 
@@ -77,7 +83,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     protected PersistableBusinessObject businessObject;
     protected Class boClass;
     protected String maintenanceAction;
-   
     
     protected Map<String,PersistableBusinessObject> newCollectionLines = new HashMap<String,PersistableBusinessObject>();
     protected Map<String, Boolean> inactiveRecordDisplay = new HashMap<String, Boolean>();
@@ -94,6 +99,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     private static org.kuali.rice.kim.service.PersonService personService;
     private static BusinessObjectMetaDataService businessObjectMetaDataService;
     private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    private static MaintenanceDocumentService maintenanceDocumentService;
     
     /**
      * Default empty constructor
@@ -180,19 +186,21 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.kns.maintenance.Maintainable#populateBusinessObject(java.util.Map)
+     * @see org.kuali.rice.kns.maintenance.Maintainable#populateBusinessObject(java.util.Map, org.kuali.rice.kns.document.MaintenanceDocument, String)
      */
     @SuppressWarnings("unchecked")
-	public Map populateBusinessObject(Map fieldValues, MaintenanceDocument maintenanceDocument) {
-        fieldValues = decryptEncryptedData(fieldValues, maintenanceDocument);
+	public Map populateBusinessObject(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall) {
+        fieldValues = decryptEncryptedData(fieldValues, maintenanceDocument, methodToCall);
         Map newFieldValues = null;
         newFieldValues = getPersonService().resolvePrincipalNamesToPrincipalIds(getBusinessObject(), fieldValues);
    
         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), newFieldValues);
+        performForceUpperCase(newFieldValues);
         //getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
         return cachedValues;
     }
-
+    
+ 
 
     /**
      * Special hidden parameters are set on the maintenance jsp starting with a prefix that tells us which fields have been
@@ -202,15 +210,15 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @param fieldValues - possibly with encrypted values
      * @return Map fieldValues - with no encrypted values
      */
-    private Map decryptEncryptedData(Map fieldValues, MaintenanceDocument maintenanceDocument) {
+    private Map<String, String> decryptEncryptedData(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall) {
     	try {
     		MaintenanceDocumentRestrictions auths = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
-	        for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
-                String fieldName = (String) iter.next();
+	        for (Iterator<String> iter = fieldValues.keySet().iterator(); iter.hasNext();) {
+                String fieldName = iter.next();
                 String fieldValue = (String) fieldValues.get(fieldName);
 
                 if (fieldValue != null &&!"".equals(fieldValue) && fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)){
-                	if(shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths)){
+                	if(shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths, methodToCall)){
 	                    String encryptedValue = fieldValue;
 	
 	                    // take off the postfix
@@ -220,10 +228,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	                    fieldValues.put(fieldName, decryptedValue);
                 	} else
                 		throw new RuntimeException(
-                			"The field value for field name "+fieldName+" should not be encrypted. Value received: "+fieldValue);
-            	} else if(fieldValue != null &&!"".equals(fieldValue)  && shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths))
+                			"The field value for field name "+fieldName+" should not be encrypted.");
+            	} else if(fieldValue != null &&!"".equals(fieldValue)  && shouldFieldBeEncrypted(maintenanceDocument, fieldName, auths, methodToCall))
             		throw new RuntimeException(
-            			"The field value for field name "+fieldName+" should be encrypted. Value received: "+fieldValue);
+            			"The field value for field name "+fieldName+" should be encrypted.");
 	        	} 
 	        }
         catch (GeneralSecurityException e) {
@@ -233,26 +241,32 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         return fieldValues;
     }
 
-    private boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName, MaintenanceDocumentRestrictions auths){
-    	// If the user does not have appropriate permissions, a non-blank displayEditMode implies that this field should be encrypted
-    	// If the logged in user has the permission to view or edit this field, 
-    	// editMap will have an entry corresponding to displayEditMode, in which case, the field value received will not be encrypted
-    	// The corresponding value in editMap actually does not matter;
-    	// just the presence of the displayEditMode inside that map is enough.
-    	// Note: this "if" stmt is same as "${field.secure && empty KualiForm.editingMode[field.displayEditMode]}" of rowDisplay.jsp
-    	if(auths!=null && auths.hasRestriction(fieldName)){
-    		FieldRestriction fieldAuth = auths.getFieldRestriction(fieldName);
-    		return fieldAuth.isShouldBeEncrypted();
+    /**
+     * Determines whether the field in a request should be encrypted.  This base implementation does not work for properties of collection elements.
+     * 
+     * This base implementation will only return true if the maintenance document is being refreshed after a lookup (i.e. methodToCall is "refresh") and 
+     * the data dictionary-based attribute security definition has any restriction defined, whether the user would be authorized to view the field.  This
+     * assumes that only fields returned from a lookup should be encrypted in a request.  If the user otherwise has no permissions to view/edit the field,
+     * then a request parameter will not be sent back to the server for population.
+     * 
+     * @param maintenanceDocument
+     * @param fieldName
+     * @param auths
+     * @param methodToCall
+     * @return
+     */
+    protected boolean shouldFieldBeEncrypted(MaintenanceDocument maintenanceDocument, String fieldName, MaintenanceDocumentRestrictions auths, String methodToCall){
+    	if ("refresh".equals(methodToCall) && fieldName != null) {
+	    	fieldName = fieldName.replaceAll("\\[[0-9]*+\\]", "");
+	    	fieldName = fieldName.replaceAll("^add\\.", "");
+	    	Map<String, AttributeSecurity> fieldNameToAttributeSecurityMap = MaintenanceUtils.retrievePropertyPathToAttributeSecurityMappings(getDocumentTypeName());
+	    	AttributeSecurity attributeSecurity = fieldNameToAttributeSecurityMap.get(fieldName);
+	    	return attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI();
     	}
+    	else {
     	return false;
+       	}
     }
-    
-    /*private String getDisplayEditMode(Document maintenanceDocument, String fieldName){
-    	String docTypeName = maintenanceDocument.getDocumentHeader().getWorkflowDocument().getDocumentType();
-    	MaintainableFieldDefinition fieldDefinition =
-    		KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintainableField(docTypeName, fieldName);
-    	return fieldDefinition==null?null:fieldDefinition.getDisplayEditMode();
-	}*/
     
     /**
      * Calls method to get all the core sections for the business object defined in the data dictionary. Then determines if the bo
@@ -706,46 +720,37 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @see org.kuali.rice.kns.maintenance.Maintainable#setGenerateBlankRequiredValues()
      */
     public void setGenerateBlankRequiredValues(String docTypeName) {
-    	
-    	 List<Section> sections = new ArrayList<Section>();
-    	 Map defaultValues = new HashMap();
-         
-         List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
-
          try {
-             // iterate through section definitions
-             for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {
-                 
-                 MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
-                 Collection maintItems = maintSectionDef.getMaintainableItems();
-                 for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
-                     MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
-
+             List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+        	 Map<String,String> defaultValues = new HashMap<String,String>();
+             
+        	 for ( MaintainableSectionDefinition maintSectionDef : sectionDefinitions ) {
+        		 for ( MaintainableItemDefinition item : maintSectionDef.getMaintainableItems() ) {
                      if (item instanceof MaintainableFieldDefinition) {
                          MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) item;
-                         if (maintainableFieldDefinition.isRequired() && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
-                        	
-                        	 if (ObjectUtils.getPropertyValue(this.getBusinessObject(), item.getName()) == null) {
-                        		 Class defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
+                         if (maintainableFieldDefinition.isRequired() 
+                        		 && maintainableFieldDefinition.isUnconditionallyReadOnly() ) {
+                        	 Object currPropVal = ObjectUtils.getPropertyValue(this.getBusinessObject(), item.getName()); 
+                        	 if ( currPropVal == null
+                        			|| (currPropVal instanceof String && StringUtils.isBlank( (String)currPropVal ) ) 
+                        	 		) {
+                        		 Class<? extends ValueFinder> defaultValueFinderClass = maintainableFieldDefinition.getDefaultValueFinderClass();
                         		 if (defaultValueFinderClass != null) {
-                        			 String defaultValue = ((ValueFinder) defaultValueFinderClass.newInstance()).getValue();
+                        			 String defaultValue = defaultValueFinderClass.newInstance().getValue();
                                	  	 if (defaultValue != null) {
                                	  		 defaultValues.put(item.getName(), defaultValue);
                                	  	 }    
                                  }
-                                 
                         	 }
                          }
                      }
                  }   
              }
-             Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
+             FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), defaultValues);
          } catch(Exception e){
         	 LOG.error("Unable to set blank required value " + e.getMessage(), e);
         	 throw new RuntimeException("Unable to set blank required value" + e.getMessage(), e);
          }
-
-       
     }
 
 
@@ -852,11 +857,13 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * 
      * @see org.kuali.rice.kns.maintenance.Maintainable#populateNewCollectionLines(java.util.Map)
      */
-    public Map populateNewCollectionLines( Map fieldValues ) {
+    public Map<String, String> populateNewCollectionLines( Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall ) {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "populateNewCollectionLines: " + fieldValues );
         }
-        Map cachedValues = new HashMap();
+        fieldValues = decryptEncryptedData(fieldValues, maintenanceDocument, methodToCall);
+        
+        Map<String, String> cachedValues = new HashMap<String, String>();
         
         // loop over all collections with an enabled add line
         List<MaintainableCollectionDefinition> collections = 
@@ -869,11 +876,11 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 LOG.debug( "checking for collection: " + collName );
             }
             // build a map for that collection
-            Map<String,Object> collectionValues = new HashMap<String,Object>();
-            Map<String,Object> subCollectionValues = new HashMap<String,Object>();
+            Map<String, String> collectionValues = new HashMap<String, String>();
+            Map<String, String> subCollectionValues = new HashMap<String,String>();
             // loop over the collection, extracting entries with a matching prefix
-            for ( Object entry : fieldValues.entrySet() ) {
-                String key = (String)((Map.Entry)entry).getKey(); 
+            for ( Map.Entry<String, String> entry : fieldValues.entrySet() ) {
+                String key = entry.getKey(); 
                 if ( key.startsWith( collName ) ) {
                     String subStrKey = key.substring( collName.length() + 1 );
                     //check for subcoll w/ '[', set collName to propername and put in correct name for collection values (i.e. strip '*[x].')
@@ -882,9 +889,9 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                         //collName = StringUtils.substringBeforeLast(key,"[");
                         
                         //need the whole thing if subcollection
-                        subCollectionValues.put( key, ((Map.Entry)entry).getValue() );
+                        subCollectionValues.put( key, entry.getValue() );
                     } else {
-                        collectionValues.put( subStrKey, ((Map.Entry)entry).getValue() );
+                        collectionValues.put( subStrKey, entry.getValue() );
                     }
                 }
             }
@@ -893,8 +900,8 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 LOG.debug( "values for collection: " + collectionValues );
             }
             cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + collName + "." ) );
-            GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
-            GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + collName );
+            performFieldForceUpperCase(getNewCollectionLine( collName ), collectionValues);
+            
             cachedValues.putAll( populateNewSubCollectionLines( coll, subCollectionValues ) );
         }
         
@@ -944,9 +951,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "values for sub collection: " + collectionValues );
                 }
-                GlobalVariables.getErrorMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                GlobalVariables.getMessageMap().addToErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
                 cachedValues.putAll( FieldUtils.populateBusinessObjectFromMap( getNewCollectionLine( parent+"."+collName ), collectionValues, KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName + "." ) );
-                GlobalVariables.getErrorMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
+                performFieldForceUpperCase(getNewCollectionLine( parent+"."+collName ), collectionValues);
+                GlobalVariables.getMessageMap().removeFromErrorPath( KNSConstants.MAINTENANCE_ADD_PREFIX + parent + "." + collName );
             }
             
             cachedValues.putAll( populateNewSubCollectionLines( coll, fieldValues ) );
@@ -954,6 +962,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         
         return cachedValues;
     }
+    
 
     public Collection<String> getAffectedReferencesFromLookup(BusinessObject baseBO, String attributeName, String collectionPrefix) {
         PersistenceStructureService pss = getPersistenceStructureService();
@@ -1133,7 +1142,11 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         }
     }
 
-	public void handleRouteStatusChange(DocumentHeader documentHeader) {
+	public void doRouteStatusChange(DocumentHeader documentHeader) {
+	}
+
+	public List<Long> getWorkflowEngineDocumentIdsToLock() {
+		return null;
 	}
 
 	public static PersistenceStructureService getPersistenceStructureService() {
@@ -1197,6 +1210,13 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
     	}
     	return businessObjectAuthorizationService;
+    }
+    
+    public static MaintenanceDocumentService getMaintenanceDocumentService() {
+    	if (maintenanceDocumentService == null) {
+    		maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+    	}
+    	return maintenanceDocumentService;
     }
     
 	/**
@@ -1263,5 +1283,187 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		}
 	}
 	
+	private void performForceUpperCase(Map fieldValues) {
+	    	List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+	        for (MaintainableSectionDefinition sectionDefinition : sections) {
+	        	for (MaintainableItemDefinition itemDefinition :  sectionDefinition.getMaintainableItems()) {
+	        		if (itemDefinition instanceof MaintainableFieldDefinition) {
+	        			performFieldForceUpperCase("", businessObject, (MaintainableFieldDefinition) itemDefinition, fieldValues);
+	                }
+	                else if (itemDefinition instanceof MaintainableCollectionDefinition) {
+	                	performCollectionForceUpperCase("", businessObject,(MaintainableCollectionDefinition) itemDefinition, fieldValues);
+	   
+	                }
+	            }
+	        }
+	  }
+	    
+	  private void performFieldForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableFieldDefinition fieldDefinition, Map fieldValues) {
+	    	MessageMap errorMap = GlobalVariables.getMessageMap();
+	    	String fieldName = fieldDefinition.getName();
+	    	String mapKey = fieldNamePrefix + fieldName; 
+	    	if(fieldValues != null && fieldValues.get(mapKey) != null){
+	    	  if (PropertyUtils.isWriteable(bo, fieldName) && ObjectUtils.getNestedValue(bo, fieldName) != null ) {
+	    		
+	            try {
+	        		Class type = ObjectUtils.easyGetPropertyType(bo, fieldName);
+	            	//convert to upperCase based on data dictionary
+	            	Class businessObjectClass = bo.getClass();
+	                boolean upperCase = false;
+	                try {
+	                	upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, fieldName);
+	                }
+	                catch (UnknownBusinessClassAttributeException t) {
+	                	boolean catchme = true;
+	                    // throw t;
+	                }
+	                        	
+	                Object fieldValue = ObjectUtils.getNestedValue(bo, fieldName);
+	                        	
+	                if(upperCase && fieldValue instanceof String){
+	                	fieldValue = ((String) fieldValue).toUpperCase(); 
+	                }
+	                ObjectUtils.setObjectProperty(bo, fieldName, type, fieldValue);
+	           }catch (FormatException e){
+	        	   errorMap.putError(fieldName, e.getErrorKey(), e.getErrorArgs());
+	           }catch (IllegalAccessException e) {
+	               LOG.error("unable to populate business object" + e.getMessage());
+	               throw new RuntimeException(e.getMessage(), e);
+	           }
+	           catch (InvocationTargetException e) {
+	               LOG.error("unable to populate business object" + e.getMessage());
+	               throw new RuntimeException(e.getMessage(), e);
+	           }
+	           catch (NoSuchMethodException e) {
+	               LOG.error("unable to populate business object" + e.getMessage());
+	               throw new RuntimeException(e.getMessage(), e);
+	           }
+	    	}
+	      }
+	  }
+
+	  private void performCollectionForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableCollectionDefinition collectionDefinition, Map fieldValues) {
+	    	String collectionName = fieldNamePrefix + collectionDefinition.getName();
+	    	Collection<BusinessObject> collection = (Collection<BusinessObject>)ObjectUtils.getPropertyValue(bo, collectionDefinition.getName());
+	    	if (collection != null) {
+	    		int i = 0;
+	    		// even though it's technically a Collection, we're going to index it like a list
+	    		for (BusinessObject collectionItem : collection) {
+	    			String collectionItemNamePrefix = collectionName + "[" + i + "].";
+	    			//String collectionItemNamePrefix = "";
+	    		    for (MaintainableFieldDefinition fieldDefinition : collectionDefinition.getMaintainableFields()) {
+	    		    	performFieldForceUpperCase(collectionItemNamePrefix, collectionItem, fieldDefinition, fieldValues);
+	    		    }
+	    		    for (MaintainableCollectionDefinition subCollectionDefinition : collectionDefinition.getMaintainableCollections()) {                
+	    		    	performCollectionForceUpperCase(collectionItemNamePrefix, collectionItem, subCollectionDefinition, fieldValues);
+	    		    }
+	    		    i++;
+	    		}
+	        }
+	  }
+	  
+	  private void performFieldForceUpperCase(BusinessObject bo, Map fieldValues) {
+	      MessageMap errorMap = GlobalVariables.getMessageMap();
+
+	      try {
+	    	  for (Iterator iter = fieldValues.keySet().iterator(); iter.hasNext();) {
+	    		  String propertyName = (String) iter.next();
+
+	              if (PropertyUtils.isWriteable(bo, propertyName) && fieldValues.get(propertyName) != null ) {
+	                    // if the field propertyName is a valid property on the bo class
+	                    Class type = ObjectUtils.easyGetPropertyType(bo, propertyName);
+	                    try {
+	                    	//Keep the convert to upperCase logic here. It will be used in populateNewCollectionLines, populateNewSubCollectionLines
+	                    	//convert to upperCase based on data dictionary
+	                    	Class businessObjectClass = bo.getClass();
+	                    	boolean upperCase = false;
+	                         try {
+	                        	 upperCase = getDataDictionaryService().getAttributeForceUppercase(businessObjectClass, propertyName);
+	                         }
+	                         catch (UnknownBusinessClassAttributeException t) {
+	                             boolean catchme = true;
+	                             // throw t;
+	                         }
+	                    	
+	                    	Object fieldValue = fieldValues.get(propertyName);
+	                    	
+	                    	if(upperCase && fieldValue instanceof String){
+	                    		fieldValue = ((String) fieldValue).toUpperCase(); 
+	                    	}
+	                        ObjectUtils.setObjectProperty(bo, propertyName, type, fieldValue);
+	                    }
+	                    catch (FormatException e) {
+	                        errorMap.putError(propertyName, e.getErrorKey(), e.getErrorArgs());
+	                    }
+	                }
+	            }
+	        }
+	        catch (IllegalAccessException e) {
+	            LOG.error("unable to populate business object" + e.getMessage());
+	            throw new RuntimeException(e.getMessage(), e);
+	        }
+	        catch (InvocationTargetException e) {
+	            LOG.error("unable to populate business object" + e.getMessage());
+	            throw new RuntimeException(e.getMessage(), e);
+	        }
+	        catch (NoSuchMethodException e) {
+	            LOG.error("unable to populate business object" + e.getMessage());
+	            throw new RuntimeException(e.getMessage(), e);
+	        }
+
+	  }
+
+
+	/**
+	 * By default a maintainable is not external 
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#isExternalBusinessObject()
+	 */
+	public boolean isExternalBusinessObject(){
+		return false;
+	}
 	
+	/**
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#getExternalBusinessObject()
+	 */
+	public void prepareBusinessObject(BusinessObject businessObject){
+		//Do nothing by default
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#getLockingDocumentId()
+	 */
+	public String getLockingDocumentId() {
+		return getMaintenanceDocumentService().getLockingDocumentId(this, documentNumber);
+	}
+	
+		/**
+     * This default implementation simply returns false to indicate that custom lock descriptors are not supported by KualiMaintainableImpl.
+     * If custom lock descriptors are needed, the appropriate subclasses should override this method.
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#useCustomLockDescriptors()
+	 */
+	public boolean useCustomLockDescriptors() {
+		return false;
+	}
+
+	/**
+     * This default implementation just throws a PessimisticLockingException. Subclasses of KualiMaintainableImpl that need support for
+     * custom lock descriptors should override this method.
+	 * 
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+	 */
+	public String getCustomLockDescriptor(Person user) {
+    	throw new PessimisticLockingException("The Maintainable for document " + documentNumber +
+    			" is using pessimistic locking with custom lock descriptors, but the Maintainable has not overriden the getCustomLockDescriptor method");
+    }
+	
+	//3070
+	public void deleteBusinessObject(){
+		if(businessObject == null)
+			return;
+		
+		KNSServiceLocator.getBusinessObjectService().delete(businessObject);
+		businessObject = null;	
+	}
 }

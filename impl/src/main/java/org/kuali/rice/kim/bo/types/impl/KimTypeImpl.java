@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,19 +30,22 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KRIM_TYP_T")
 @NamedQueries({
   @NamedQuery(name="KimTypeImpl.FindByKimTypeId", query="select kt from KimTypeImpl kt where kt.kimTypeId = :kimTypeId"),
-  @NamedQuery(name="KimTypeImpl.FindByeKimTypeName", query="select kt from KimTypeImpl kt where kt.name = :name and kt.namespaceCode = :namespaceCode")
+  @NamedQuery(name="KimTypeImpl.FindByKimTypeName", query="select kt from KimTypeImpl kt where kt.name = :name and kt.namespaceCode = :namespaceCode")
 })
 public class KimTypeImpl extends PersistableBusinessObjectBase {
 
+	private static final long serialVersionUID = 7752050088434254168L;
 	@Id
 	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
@@ -131,4 +134,45 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 		this.kimTypeId = kimTypeId;
 	}
 
+	public KimTypeInfo toInfo() {
+		KimTypeInfo info = new KimTypeInfo();
+		info.setKimTypeId( kimTypeId );
+		info.setName( name );
+		info.setKimTypeServiceName(kimTypeServiceName);
+		info.setNamespaceCode(namespaceCode);
+		List<KimTypeAttributeInfo> attribs = new ArrayList<KimTypeAttributeInfo>(); 
+		info.setAttributeDefinitions( attribs );
+		for ( KimTypeAttributeImpl attribImpl : getAttributeDefinitions() ) {
+			attribs.add( makeAttributeInfo(attribImpl) );
+		}		
+		return info;
+	}
+
+	protected KimTypeAttributeInfo makeAttributeInfo( KimTypeAttributeImpl attribImpl ) {
+		KimTypeAttributeInfo attrib = new KimTypeAttributeInfo();
+		attrib.setAttributeName( attribImpl.getKimAttribute().getAttributeName() );
+		attrib.setSortCode( attribImpl.getSortCode() );
+		attrib.setComponentName( attribImpl.getKimAttribute().getComponentName() );
+		attrib.setNamespaceCode( attribImpl.getKimAttribute().getNamespaceCode() );
+		attrib.setAttributeLabel( attribImpl.getKimAttribute().getAttributeLabel() );
+		attrib.setKimAttributeId( attribImpl.getKimAttributeId() );
+		return attrib;
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.bo.KimType#getAttributeDefinition(java.lang.String)
+	 */
+	public KimTypeAttributeInfo getAttributeDefinition(String kimAttributeId) {
+		if ( kimAttributeId == null ) {
+			return null;
+		}
+		for ( KimTypeAttributeImpl def : getAttributeDefinitions() ) {
+			if ( def.kimAttributeId.equals( kimAttributeId ) ) {
+				return makeAttributeInfo(def);
+			}
+		}
+		return null;
+	}
 }

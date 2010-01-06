@@ -27,7 +27,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * begin Kuali Foundation modification
  * This class is used to format boolean values.
  * end Kuali Foundation modification
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BooleanFormatter extends Formatter {
     // begin Kuali Foundation modification

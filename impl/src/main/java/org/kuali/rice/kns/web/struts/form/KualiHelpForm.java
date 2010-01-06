@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,6 +40,8 @@ public class KualiHelpForm extends KualiForm {
     private String helpParameterDetailType;
     private String helpParameterName;
     private String pageName;
+    private String lookupBusinessObjectClassName;
+    private String searchDocumentTypeName;
 
     /**
      * @return Returns the attributeName.
@@ -253,11 +255,39 @@ public class KualiHelpForm extends KualiForm {
         this.pageName = pageName;
     }
 
-	public String getHelpParameterDetailType() {
-		return this.helpParameterDetailType;
-	}
+    public String getHelpParameterDetailType() {
+        return this.helpParameterDetailType;
+    }
 
-	public void setHelpParameterDetailType(String helpParameterDetailType) {
-		this.helpParameterDetailType = helpParameterDetailType;
-	}
+    public void setHelpParameterDetailType(String helpParameterDetailType) {
+        this.helpParameterDetailType = helpParameterDetailType;
+    }
+
+    /**
+     * @return the lookupBusinessObjectClassName
+     */
+    public String getLookupBusinessObjectClassName() {
+        return this.lookupBusinessObjectClassName;
+    }
+
+    /**
+     * @param lookupBusinessObjectClassName the lookupBusinessObjectClassName to set
+     */
+    public void setLookupBusinessObjectClassName(String lookupBusinessObjectClassName) {
+        this.lookupBusinessObjectClassName = lookupBusinessObjectClassName;
+    }
+
+    /**
+     * @param searchDocumentTypeName the searchDocumentTypeName to set
+     */
+    public void setSearchDocumentTypeName(String searchDocumentTypeName) {
+        this.searchDocumentTypeName = searchDocumentTypeName;
+    }
+
+    /**
+     * @return the searchDocumentTypeName
+     */
+    public String getSearchDocumentTypeName() {
+        return this.searchDocumentTypeName;
+    }
 }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,17 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.kns.web.ui.ExtraButton;
 
 
 /**
  * The Struts ActionForm used with {@link RouteLogAction} to display the routelog.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RouteLogForm extends KualiForm {
 
@@ -154,7 +153,8 @@ public class RouteLogForm extends KualiForm {
 			parameters.put("backUrl", getReturnUrlLocation());
 		}
         String url = UrlFactory.parameterizeUrl("RouteLog.do", parameters);
-        url = "<div class=\"lookupcreatenew\" title=\"Refresh\"><a href=\"" + url + "\"><img src=\"../kr/images/tinybutton-refresh.gif\" alt=\"refresh\"></a></div>";
+        String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
+        url = "<div class=\"lookupcreatenew\" title=\"Refresh\"><a href=\"" + url + "\"><img src=\""+krBaseUrl+"/images/tinybutton-refresh.gif\" alt=\"refresh\"></a></div>";
         return url;
 	}
 }

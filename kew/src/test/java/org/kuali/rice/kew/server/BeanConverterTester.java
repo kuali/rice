@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -179,7 +179,7 @@ public class BeanConverterTester extends KEWTestCase {
     @Test public void testConvertActionItem() throws Exception {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
-        KimGroup testWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
+        Group testWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
         String testWorkgroupId = testWorkgroup.getGroupId();
         assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).size() > 0);
         String workflowId = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).get(0);

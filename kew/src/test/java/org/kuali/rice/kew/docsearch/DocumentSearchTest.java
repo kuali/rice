@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ public class DocumentSearchTest extends KEWTestCase {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-    protected void setUpTransaction() throws Exception {
+    protected void setUpAfterDataLoad() throws Exception {
         docSearchService = (DocumentSearchService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
     }
 
@@ -114,9 +114,7 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     /**
-     * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Document search fails when users are missing
-     * Tests that we can safely search on docs by initiator workflow id when the initiator no longer exists in the identity management system
-     * This test searches by initiator criteria.
+     * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Tests that we get an error if we try and search on an initiator that doesn't exist in the IDM system
      * @throws Exception
      */
     @Test public void testDocSearch_SearchOnMissingInitiator() throws Exception {
@@ -140,10 +138,11 @@ public class DocumentSearchTest extends KEWTestCase {
         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setInitiator("bogus user");
+
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertNotNull(result);
-        assertNotNull(result.getSearchResults());
-        assertEquals("Search returned invalid number of documents", 1, result.getSearchResults().size());
+        int size = result.getSearchResults().size();
+        assertTrue("Searching by an invalid initiator should return nothing", size == 0);
+
     }
 
     @Test public void testDocSearch_RouteNodeName() throws Exception {
@@ -326,4 +325,116 @@ public class DocumentSearchTest extends KEWTestCase {
 	}
     }
 
+    /**
+     * Tests the usage of wildcards on the regular document search attributes.
+     * @throws Exception
+     */
+    @Test public void testDocSearch_WildcardsOnRegularAttributes() throws Exception {
+    	// TODO: Add some wildcard testing for the document type attribute once wildcards are usable with it.
+
+    	// Route some test documents.
+    	String docTypeName = "SearchDocType";
+    	String[] principalNames = {"bmcgough", "quickstart", "rkirkend"};
+    	String[] titles = {"The New Doc", "Document Number 2", "Some New Document"};
+    	String[] docIds = new String[titles.length];
+    	String[] appDocIds = {"6543", "5432", "4321"};
+    	String[] approverNames = {null, "jhopf", null};
+    	for (int i = 0; i < titles.length; i++) {
+        	WorkflowDocument workflowDocument = new WorkflowDocument(
+        			KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalNames[i]).getPrincipalId(), docTypeName);
+        	workflowDocument.setTitle(titles[i]);
+        	workflowDocument.setAppDocId(appDocIds[i]);
+        	workflowDocument.routeDocument("routing this document.");
+        	docIds[i] = workflowDocument.getRouteHeaderId().toString();
+        	if (approverNames[i] != null) {
+        		workflowDocument.setPrincipalId(KIMServiceLocator.getPersonService().getPersonByPrincipalName(approverNames[i]).getPrincipalId());
+        		workflowDocument.approve("approving this document.");
+        	}
+    	}
+        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough").getPrincipalId();
+        DocSearchCriteriaDTO criteria = null;
+        List<DocumentSearchResult> searchResults = null;
+        DocumentSearchResultComponents result = null;
+
+        // Test the wildcards on the initiator attribute.
+        String[] searchStrings = {"!quickstart", "!rkirkend!bmcgough", "!quickstart&&!rkirkend", "!admin", "user1", "quickstart|bmcgough",
+        		"admin|rkirkend", ">bmcgough", ">=rkirkend", "<bmcgough", "<=quickstart", ">bmcgough&&<=rkirkend", "<rkirkend&&!bmcgough",
+        		"?mc?oug?", "*t", "*i?k*", "*", "!quick*", "!b???????!?kirk???", "!*g*&&!*k*", ">bmc?ough", "<=quick*", "quickstart..rkirkend"};
+        int[] expectedResults = {2, 1, 1, 3, 0, 2, 1, 2, 1, 0, 2, 2, 1, 1, 1, 2, 3, 2, 1, 0, 2, 1, 2/*1*/};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setInitiator(searchStrings[i]);
+        	result = docSearchService.getList(principalId, criteria);
+        	searchResults = result.getSearchResults();
+        	assertEquals("Initiator search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], searchResults.size());
+        }
+
+        // Test the wildcards on the approver attribute.
+        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
+        expectedResults = new int[] {1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setApprover(searchStrings[i]);
+        	result = docSearchService.getList(principalId, criteria);
+        	searchResults = result.getSearchResults();
+        	assertEquals("Approver search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], searchResults.size());
+        }
+
+        // Test the wildcards on the document/notification ID attribute. The string wildcards should get ignored, since the doc ID is not a string.
+        searchStrings = new String[] {"!"+docIds[0], docIds[1]+"|"+docIds[2], "<="+docIds[1], ">="+docIds[2], "<"+docIds[0]+"&&>"+docIds[2],
+        		">"+docIds[1], "<"+docIds[2]+"&&!"+docIds[0], docIds[0]+".."+docIds[2], "?"+docIds[1]+"*", "?9*7"};
+        expectedResults = new int[] {1, 2, 2, 1, 0, 1, 1, 3/*2*/, 1, 0};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setRouteHeaderId(searchStrings[i]);
+        	result = docSearchService.getList(principalId, criteria);
+        	searchResults = result.getSearchResults();
+        	assertEquals("Doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], searchResults.size());
+        }
+
+        // Test the wildcards on the application document/notification ID attribute. The string wildcards should work, since the app doc ID is a string.
+        searchStrings = new String[] {"6543", "5432|4321", ">4321", "<=5432", ">=6543", "<3210", "!3210", "!5432", "!4321!5432", ">4321&&!6543",
+        		"*5?3*", "*", "?3?1", "!*43*", "!???2", ">43*1", "<=5432&&!?32?", "5432..6543"};
+        expectedResults = new int[] {1, 2, 2, 2, 1, 0, 3, 2, 1, 1, 2, 3, 1, 0, 2, 3, 1, 2/*1*/};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setAppDocId(searchStrings[i]);
+        	result = docSearchService.getList(principalId, criteria);
+        	searchResults = result.getSearchResults();
+        	if(expectedResults[i] !=  searchResults.size()){        		
+        		assertEquals("App doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], searchResults.size());
+        	}
+        }
+
+        // Test the wildcards on the viewer attribute.
+        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
+        expectedResults = new int[] {3, 0, 0, 3, 0, 3, 3, 3, 0, 0, 3};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setViewer(searchStrings[i]);
+        	result = docSearchService.getList(principalId, criteria);
+        	searchResults = result.getSearchResults();
+        	if(expectedResults[i] !=  searchResults.size()){        		
+        		assertEquals("Viewer search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], searchResults.size());
+        	}
+        }
+
+        // Test the wildcards on the title attribute.
+        searchStrings = new String[] {"Some New Document", "Document Number 2|The New Doc", "!The New Doc", "!Some New Document!Document Number 2",
+        		"!The New Doc&&!Some New Document", ">Document Number 2", "<=Some New Document", ">=The New Doc&&<Some New Document", ">A New Doc",
+        		"<Some New Document|The New Doc", ">=Document Number 2&&!Some New Document", "*Docu??nt*", "*New*", "The ??? Doc", "*Doc*", "*Number*",
+        		"Some New Document..The New Doc", "Document..The", "*New*&&!*Some*", "!The ??? Doc|!*New*"};
+        expectedResults = new int[] {1, 2, 2, 1, 1, 2, 2, 0, 3, 2, 2, 2, 2, 1, 3, 1, 2/*1*/, 2, 1, 2};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setDocTitle(searchStrings[i]);
+        	result = docSearchService.getList(principalId, criteria);
+        	searchResults = result.getSearchResults();
+        	if(expectedResults[i] !=  searchResults.size()){
+        		assertEquals("Doc title search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], searchResults.size());
+        	}
+        }
+
+
+    }
 }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,12 +35,13 @@ import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 /**
  * A PluginRegistry implementation which loads plugins from the file system on the server.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ServerPluginRegistry extends BasePluginRegistry {
 
@@ -48,8 +49,6 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 
 	private List<String> pluginDirectories = new ArrayList<String>();
 	private File sharedPluginDirectory;
-	//consider removing this from here and using the super class to get it.
-	private Plugin institutionalPlugin;
 	private Reloader reloader;
 	private HotDeployer hotDeployer;
 
@@ -63,7 +62,8 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 	}
 
 	public void start() throws Exception {
-		scheduledExecutor = Executors.newScheduledThreadPool(2);
+		LOG.info("Starting server Plugin Registry...");
+		scheduledExecutor = Executors.newScheduledThreadPool(2, new KEWThreadFactory());
 		sharedPluginDirectory = loadSharedPlugin();
 		reloader = new Reloader();
 		hotDeployer = new HotDeployer(PluginUtils.getPluginRegistry(), sharedPluginDirectory, pluginDirectories);
@@ -72,21 +72,22 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 		this.reloaderFuture = scheduledExecutor.scheduleWithFixedDelay(reloader, 5, 5, TimeUnit.SECONDS);
 		this.hotDeployerFuture = scheduledExecutor.scheduleWithFixedDelay(hotDeployer, 5, 5, TimeUnit.SECONDS);
 		super.start();
+		LOG.info("...server Plugin Registry successfully started.");
 	}
 
 	public void stop() throws Exception {
+		LOG.info("Stopping server Plugin Registry...");
 		stopReloader();
 		stopHotDeployer();
 		reloader = null;
 		hotDeployer = null;
 
-		// cleanup reference to institutional plugin
-		institutionalPlugin = null;
 		if (scheduledExecutor != null) {
 			scheduledExecutor.shutdownNow();
 			scheduledExecutor = null;
 		}
 		super.stop();
+		LOG.info("...server Plugin Registry successfully stopped.");
 	}
 
 	protected void stopReloader() {
@@ -108,7 +109,7 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 	}
 
 	protected void loadPlugins(File sharedPluginDirectory) {
-        Map<String, File> pluginLocations = new TreeMap<String, File>(new PluginNameComparator(PluginUtils.getInstitutionalPluginName()));
+        Map<String, File> pluginLocations = new TreeMap<String, File>(new PluginNameComparator());
 		PluginZipFileFilter pluginFilter = new PluginZipFileFilter();
         //PluginDirectoryFilter pluginFilter = new PluginDirectoryFilter(sharedPluginDirectory);
         Set<File> visitedFiles = new HashSet<File>();
@@ -138,39 +139,23 @@ public class ServerPluginRegistry extends BasePluginRegistry {
         }
         for (String pluginName : pluginLocations.keySet()) {
         	File pluginZipFile = pluginLocations.get(pluginName);
-        	// now execute the loading of the plugins
-        	boolean isInstitutionalPlugin = PluginUtils.isInstitutionalPlugin(pluginName);
         	try {
-        		LOG.info("Loading "+(isInstitutionalPlugin ? "Institutional " : "")+"plugin '" + pluginName + "'");
+        		LOG.info("Loading plugin '" + pluginName + "'");
         		ClassLoader parentClassLoader = ClassLoaderUtils.getDefaultClassLoader();
         		Config parentConfig = ConfigContext.getCurrentContextConfig();
-        		if (institutionalPlugin != null) {
-        			parentClassLoader = institutionalPlugin.getClassLoader();
-        			parentConfig = institutionalPlugin.getConfig();
-        		}
         		ZipFilePluginLoader loader = new ZipFilePluginLoader(pluginZipFile,
         				sharedPluginDirectory,
         				parentClassLoader,
-        				parentConfig,
-        				isInstitutionalPlugin);
+        				parentConfig);
         		PluginEnvironment environment = new PluginEnvironment(loader, this);
         		try {
         		    environment.load();
         		} finally {
         		    // regardless of whether the plugin loads or not, let's add it to the environment
         		    addPluginEnvironment(environment);
-        		}
-        		// TODO consider moving this inside either the loader or the environment?  Because this will need to be able
-        		// to be reset if the institutional plugin is "hot deployed"
-        		if (isInstitutionalPlugin) {
-        			setInstitutionalPlugin(environment.getPlugin());
-        		}
-        		
+        		}        		
         	} catch (Exception e) {
         		LOG.error("Failed to read workflow plugin '"+pluginName+"'", e);
-        		if (isInstitutionalPlugin) {
-        			throw new PluginException("Failed to load the institutional plugin with name '" + pluginName +"'.", e);
-        		}
         	}
         }
     }
@@ -200,20 +185,23 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 		this.sharedPluginDirectory = sharedPluginDirectory;
 	}
 
-	public Plugin getInstitutionalPlugin() {
-		return institutionalPlugin;
-	}
-
-	public void setInstitutionalPlugin(Plugin institutionalPlugin) {
-		this.institutionalPlugin = institutionalPlugin;
-	}
-
 	protected HotDeployer getHotDeployer() {
 		return hotDeployer;
 	}
 
 	protected Reloader getReloader() {
 		return reloader;
+	}
+	
+	private static class KEWThreadFactory implements ThreadFactory {
+		
+		private ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
+		
+		public Thread newThread(Runnable runnable) {
+			Thread thread = defaultThreadFactory.newThread(runnable);
+			thread.setName("ServerPluginRegistry-" + thread.getName());
+			return thread;
+	    }
 	}
 
 }

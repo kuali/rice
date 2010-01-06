@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
-  <!--
-  <workgroups xmlns="ns:workflow/Workgroup"
-              xsi:schemaLocation="ns:workflow/Workgroup resource:Workgroup">
-    <workgroup>
-      <workgroupName>Group1</workgroupName>
-      <description>fake group 1 for testing xml</description>
-      <activeInd>true</activeInd>
-      <workgroupType>W</workgroupType>
-      <workgroupCurInd>true</workgroupCurInd>
 
-      <members>
-        <authenticationId>rkirkend</authenticationId>
-      </members>
-    </workgroup>
-  </workgroups>
-  -->
   <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
 
     <ruleAttribute>
@@ -136,9 +136,9 @@
       <description>Create a New Graduate Course</description>
       <label>New Course Request</label>
       <postProcessorName>org.kuali.rice.kew.edoclite.EDocLitePostProcessor</postProcessorName>
-      <superUserWorkgroupName>KR-WKFLW:WorkflowAdmin</superUserWorkgroupName>
-      <blanketApproveWorkgroupName>KR-WKFLW:WorkflowAdmin</blanketApproveWorkgroupName>
-      <defaultExceptionWorkgroupName>KR-WKFLW:WorkflowAdmin</defaultExceptionWorkgroupName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
       <docHandler>http://localhost:8080/en-dev/EDocLite</docHandler>
       <active>true</active>
       <policies>
@@ -181,7 +181,7 @@
       <documentType>NewCourseRequest</documentType>
       <ruleTemplate>UniversityGraduateSchoolOfficeRouting</ruleTemplate>
       <description>GradSchoolRouting doc routing rule</description>
-      <ignorePrevious>false</ignorePrevious>
+      <forceAction>false</forceAction>
       <!--
       <ruleExtensions>
         <ruleExtension>
@@ -202,7 +202,7 @@
       -->
       <responsibilities>
         <responsibility>
-          <workgroup>Group1</workgroup>
+          <groupName namespace="">Group1</groupName>
           <actionRequested>A</actionRequested>
           <priority>1</priority>
         </responsibility>

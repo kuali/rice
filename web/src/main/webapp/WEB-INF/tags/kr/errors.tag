@@ -1,11 +1,11 @@
 <%--
- Copyright 2005-2006 The Kuali Foundation.
+ Copyright 2005-2008 The Kuali Foundation
  
- Licensed under the Educational Community License, Version 1.0 (the "License");
+ Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
  
- http://www.opensource.org/licenses/ecl1.php
+ http://www.opensource.org/licenses/ecl2.php
  
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@
 </c:if>
 
 <c:if test="${!empty ErrorPropertyList}">
-    <div class="error">
+    <div>
       <c:set var="errorTitleRendered" value="false"/>  
       
         <c:choose>
@@ -54,7 +54,8 @@
                  
                   <%-- render title if this is the first error --%>
                   <c:if test="${!errorTitleRendered}">
-                    <strong>${errorTitle}</strong>
+                    <img src="${ConfigProperties.kr.externalizable.images.url}errormark.gif" alt="error" />
+					<strong>${errorTitle}</strong>
                     <c:set var="errorTitleRendered" value="true"/>
                   </c:if>
                   
@@ -86,7 +87,9 @@
                         <%-- include error path in a comment so a developer can fix it --%>
                         <!-- remaining error path = "${key}" -->
                         <html:errors property="${key}"/>
-                        <c:set target="${KualiForm.displayedErrors}" property="${key}" value="true"/>
+                        <c:if test="${KualiForm != null}">
+                      		<c:set target="${KualiForm.displayedErrors}" property="${key}" value="true"/>
+                    	</c:if> 
                     </c:if>
                 </c:forEach>
             </c:when>
@@ -121,6 +124,7 @@
                  
                   <%-- render title if this is the first warning --%>
                   <c:if test="${!warningTitleRendered}">
+					 <img src="${ConfigProperties.kr.externalizable.images.url}warning.png" alt="warning" />
                     <strong>${warningTitle}</strong>
                     <c:set var="warningTitleRendered" value="true"/>
                   </c:if>
@@ -188,7 +192,7 @@
                  
                   <%-- render title if this is the first info --%>
                   <c:if test="${!infoTitleRendered}">
-                    <strong>${infoTitle}</strong>
+                     <img src="${ConfigProperties.kr.externalizable.images.url}info.png" alt="info" /><strong>${infoTitle}</strong>
                     <c:set var="infoTitleRendered" value="true"/>
                   </c:if>
                   

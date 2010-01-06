@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,13 +20,10 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -48,9 +45,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -60,7 +57,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * objects for performance reasons.  These should be preserved and their related objects should not be added to the OJB
  * mapping as we do not want them loaded for each ActionItem object.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 
@@ -230,6 +227,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
     
     
+    /**
+     * @deprecated as of Rice 1.0.1 (KULRICE-1652), Use {@link #getRouteHeaderId()} instead. 
+     */
+    @Deprecated
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="DOC_HDR_ID")
     public DocumentRouteHeaderValue getRouteHeader() {
@@ -272,13 +273,13 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
 
     
-    private KimGroup getGroup(String groupId) {
+    private Group getGroup(String groupId) {
     	if( groupId ==null )	return null;
     	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
 
     @Transient
-    public KimGroup getGroup(){
+    public Group getGroup(){
     	return getGroup(groupId.toString());
     }
 
@@ -313,11 +314,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     
     @Transient
     public String getActionRequestLabel() {
-        String sRet = CodeTranslator.getActionRequestLabel(getActionRequestCd());
-        if(KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequestCd()) && getRequestLabel() != null){
-            sRet = getRequestLabel();
-        }
-        return sRet;
+    	if (StringUtils.isNotBlank(getRequestLabel())) {
+    		return getRequestLabel();
+    	}
+    	return CodeTranslator.getActionRequestLabel(getActionRequestCd());
     }
 
     @Transient
@@ -354,6 +354,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         this.docName = docName;
     }
 
+    /**
+     * @deprecated as of Rice 1.0.1 (KULRICE-1652), Use {@link #setRouteHeaderId(Long)} instead. 
+     */
+    @Deprecated
     public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
         this.routeHeader = routeHeader;
     }

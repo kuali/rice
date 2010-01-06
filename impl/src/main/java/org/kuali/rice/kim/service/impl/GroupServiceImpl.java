@@ -1,36 +1,66 @@
+/*
+ * Copyright 2007-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebService;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
-import org.kuali.rice.kim.bo.group.impl.KimGroupImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
+import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
+@WebService(endpointInterface = KIMWebServiceConstants.GroupService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.GroupService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.GroupService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
-	protected BusinessObjectService businessObjectService;
+	private BusinessObjectService businessObjectService;
+	private LookupService lookupService;
 
 	/**
      * @see org.kuali.rice.kim.service.GroupService#getGroupInfo(java.lang.String)
      */
     public GroupInfo getGroupInfo(String groupId) {
-        KimGroupImpl group = getGroupImpl(groupId);
+        GroupImpl group = getGroupImpl(groupId);
         return toGroupInfo(group);
     }
 
@@ -44,12 +74,12 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
     /**
      * @see org.kuali.rice.kim.service.GroupService#getGroupInfos(java.util.List)
      */
-    public Map<String, GroupInfo> getGroupInfos(List<String> groupIds) {
+    public Map<String, GroupInfo> getGroupInfos(Collection<String> groupIds) {
         Map<String, GroupInfo> result = new HashMap<String, GroupInfo>();
 
         // hopefully there is an efficient orm way to do this
         for (String s : groupIds) {
-            KimGroupImpl group = getGroupImpl(s);
+            GroupImpl group = getGroupImpl(s);
             if (group != null) {
                 result.put(s, toGroupInfo(group));
             }
@@ -58,25 +88,24 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return result;
     }
 
-	protected KimGroupImpl getGroupImpl(String groupId) {
+	protected GroupImpl getGroupImpl(String groupId) {
 		if ( groupId == null ) {
 			return null;
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("groupId", groupId);
-		return (KimGroupImpl) getBusinessObjectService().findByPrimaryKey(KimGroupImpl.class, criteria);
+		criteria.put(KIMPropertyConstants.Group.GROUP_ID, groupId);
+		return (GroupImpl) getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected KimGroupImpl getGroupByName(String namespaceCode, String groupName) {
+	protected GroupImpl getGroupByName(String namespaceCode, String groupName) {
 		if ( namespaceCode == null || groupName == null ) {
 			return null;
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("namespaceCode", namespaceCode);
-		criteria.put("groupName", groupName);
-		//criteria.put("active", "Y");
-		Collection<KimGroupImpl> groups = getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
+		criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
+		criteria.put(KimConstants.UniqueKeyConstants.GROUP_NAME, groupName);
+		Collection<GroupImpl> groups = getBusinessObjectService().findMatching(GroupImpl.class, criteria);
 		if ( groups.size() > 0 ) {
 			return groups.iterator().next();
 		}
@@ -96,9 +125,8 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      * @see org.kuali.rice.kim.service.GroupService#getGroupIdsForPrincipalByNamespace(java.lang.String, java.lang.String)
      */
     public List<String> getGroupIdsForPrincipalByNamespace(String principalId, String namespaceCode) {
-     // TODO - THIS can be optimized
-
         List<String> result = new ArrayList<String>();
+
         if (principalId != null) {
             List<GroupInfo> groupList = getGroupsForPrincipalByNamespace(principalId, namespaceCode);
 
@@ -117,9 +145,9 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         List<String> result = new ArrayList<String>();
 
         if (principalId != null) {
-            List<KimGroupImpl> groupList = getDirectGroupsForPrincipal(principalId);
+        	Collection<GroupInfo> groupList = getDirectGroupsForPrincipal(principalId);
 
-            for (KimGroupImpl g : groupList) {
+            for (GroupInfo g : groupList) {
                 result.add(g.getGroupId());
             }
         }
@@ -137,63 +165,75 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	/**
 	 * @see org.kuali.rice.kim.service.GroupService#getGroupsForPrincipalByNamespace(java.lang.String, java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<GroupInfo> getGroupsForPrincipalByNamespace(String principalId, String namespaceCode) {
-		List<KimGroupImpl> directGroups = getDirectGroupsForPrincipal( principalId, namespaceCode );
+		Collection<GroupInfo> directGroups = getDirectGroupsForPrincipal( principalId, namespaceCode );
 		Set<GroupInfo> groups = new HashSet<GroupInfo>();
-		for ( KimGroupImpl group : directGroups ) {
-			groups.add( toGroupInfo( group ) );
-			for ( KimGroupImpl parentGroup : getParentGroups( group.getGroupId() ) ) {
-				groups.add( toGroupInfo( parentGroup ) );
-			}
+		for ( GroupInfo group : directGroups ) {
+			groups.add( group );
+			groups.addAll( getParentGroups( group.getGroupId() ) );
 		}
 		return new ArrayList<GroupInfo>( groups );
 	}
 
-	protected List<KimGroupImpl> getDirectGroupsForPrincipal( String principalId ) {
+	protected Collection<GroupInfo> getDirectGroupsForPrincipal( String principalId ) {
 		return getDirectGroupsForPrincipal( principalId, null );
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<KimGroupImpl> getDirectGroupsForPrincipal( String principalId, String namespaceCode ) {
+	protected Collection<GroupInfo> getDirectGroupsForPrincipal( String principalId, String namespaceCode ) {
 		if ( principalId == null ) {
-			return new ArrayList<KimGroupImpl>(0);
+			return Collections.emptyList();
 		}
-		Map<String,String> criteria = new HashMap<String,String>( 3 );
-		criteria.put("members.memberId", principalId);
-		criteria.put("members.memberTypeCode", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
-		//criteria.put("active", "Y");
-		if ( StringUtils.isNotEmpty( namespaceCode ) ) {
-			criteria.put("namespaceCode", namespaceCode);
+		Map<String,Object> criteria = new HashMap<String,Object>();
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+		Collection<GroupMemberImpl> groupMembers = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+		Set<String> groupIds = new HashSet<String>( groupMembers.size() );
+		// only return the active members
+		for ( GroupMemberImpl gm : groupMembers ) {
+			if ( gm.isActive() ) {
+				groupIds.add( gm.getGroupId() );
+			}
 		}
-		return (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
+		// pull all the group information for the matching members
+		Map<String,GroupInfo> groups = getGroupInfos(groupIds);
+		List<GroupInfo> result = new ArrayList<GroupInfo>( groups.size() );
+		// filter by namespace if necessary
+		for ( GroupInfo gi : groups.values() ) {
+			if ( gi.isActive() ) {
+				if ( StringUtils.isBlank( namespaceCode ) || StringUtils.equals(namespaceCode, gi.getNamespaceCode() ) ) {
+					result.add(gi);
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.service.GroupService#getMemberGroups(java.lang.String)
 	 */
-	protected List<KimGroupImpl> getMemberGroups(String groupId) {
+	protected List<GroupImpl> getMemberGroups(String groupId) {
 		if ( groupId == null ) {
-			return new ArrayList<KimGroupImpl>(0);
+			return Collections.emptyList();
 		}
-		Set<KimGroupImpl> groups = new HashSet<KimGroupImpl>();
+		Set<GroupImpl> groups = new HashSet<GroupImpl>();
 
-		KimGroupImpl group = getGroupImpl(groupId);
+		GroupImpl group = getGroupImpl(groupId);
 		getMemberGroupsInternal(group, groups);
 
-		return new ArrayList<KimGroupImpl>(groups);
+		return new ArrayList<GroupImpl>(groups);
 	}
 
-	protected void getMemberGroupsInternal( KimGroupImpl group, Set<KimGroupImpl> groups ) {
+	protected void getMemberGroupsInternal( GroupImpl group, Set<GroupImpl> groups ) {
 		if ( group == null ) {
 			return;
 		}
 		List<String> memberGroupIds = group.getMemberGroupIds();
 
 		for (String groupId : memberGroupIds) {
-			KimGroupImpl memberGroup = getGroupImpl(groupId);
-			// if we've already seen that role, don't recurse into it
-			if ( !groups.contains( memberGroup ) ) {
+			GroupImpl memberGroup = getGroupImpl(groupId);
+			// if we've already seen that group, don't recurse into it
+			if ( memberGroup.isActive() && !groups.contains( memberGroup ) ) {
 				groups.add(memberGroup);
 				getMemberGroupsInternal(memberGroup,groups);
 			}
@@ -205,19 +245,22 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      * @see org.kuali.rice.kim.service.GroupService#lookupGroupIds(java.util.Map)
      */
     public List<String> lookupGroupIds(Map<String, String> searchCriteria) {
-        List<KimGroupImpl> groupList = lookupGroups(searchCriteria);
+        List<? extends Group> groupList = this.lookupGroups(searchCriteria);
         List<String> result = new ArrayList<String>();
 
-        for (KimGroupImpl group : groupList) {
+        for (Group group : groupList) {
             result.add(group.getGroupId());
         }
 
         return result;
     }
 
-	@SuppressWarnings("unchecked")
-	protected List<KimGroupImpl> lookupGroups(Map<String, String> searchCriteria) {
-		return (List<KimGroupImpl>) getBusinessObjectService().findMatching(KimGroupImpl.class, searchCriteria);
+    /**
+	 * @see org.kuali.rice.kim.service.GroupService#lookupGroups(java.util.Map)
+	 */
+    @SuppressWarnings("unchecked")
+	public List<? extends Group> lookupGroups(Map<String, String> searchCriteria) {
+		return this.toGroupInfo((List<GroupImpl>)this.getLookupService().findCollectionBySearchHelper(GroupImpl.class, searchCriteria, true));
 	}
 
 	/**
@@ -225,11 +268,11 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	 */
 	public List<String> getDirectMemberPrincipalIds(String groupId) {
 		if ( groupId == null ) {
-			return new ArrayList<String>(0);
+			return Collections.emptyList();
 		}
-		KimGroupImpl group = getGroupImpl(groupId);
+		GroupImpl group = getGroupImpl(groupId);
 		if ( group == null ) {
-			return new ArrayList<String>(0);
+			return Collections.emptyList();
 		}
 
 		return group.getMemberPrincipalIds();
@@ -240,13 +283,13 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	 */
 	public List<String> getMemberPrincipalIds(String groupId) {
 		if ( groupId == null ) {
-			return new ArrayList<String>(0);
+			return Collections.emptyList();
 		}
 		Set<String> ids = new HashSet<String>();
 
-		KimGroupImpl group = getGroupImpl(groupId);
+		GroupImpl group = getGroupImpl(groupId);
 		if ( group == null ) {
-			return new ArrayList<String>(0);
+			return Collections.emptyList();
 		}
 
 		ids.addAll( group.getMemberPrincipalIds() );
@@ -268,7 +311,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 		}
 		// we could call the getMemberPrincipalIds method, but this will be more efficient
 		// when group traversal is not needed
-		KimGroupImpl group = getGroupImpl(groupId);
+		GroupImpl group = getGroupImpl(groupId);
 		if ( group == null || !group.isActive() ) {
 			return false;
 		}
@@ -306,7 +349,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
 	protected boolean isGroupMemberOfGroupInternal(String groupMemberId, String groupId) {
 
-	    KimGroupImpl group = getGroupImpl(groupId);
+	    GroupImpl group = getGroupImpl(groupId);
 	    if( !group.isActive() ) {
 	        return false;
 	    }
@@ -324,32 +367,40 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<KimGroupImpl> getDirectParentGroups(String groupId) {
+	protected Map<String,GroupInfo> getDirectParentGroups(String groupId) {
 		if ( groupId == null ) {
-			return new ArrayList<KimGroupImpl>(0);
+			return Collections.emptyMap();
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("members.memberId", groupId);
-		criteria.put("members.memberTypeCode", KimGroupMemberTypes.GROUP_MEMBER_TYPE);
-		criteria.put("active", "Y");
-		return (List<KimGroupImpl>)getBusinessObjectService().findMatching(KimGroupImpl.class, criteria);
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, groupId);
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+
+		List<GroupMemberImpl> groupMembers = (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+		Set<String> matchingGroupIds = new HashSet<String>();
+		// filter to active groups
+		for ( GroupMemberImpl gm : groupMembers ) {
+			if ( gm.isActive() ) {
+				matchingGroupIds.add(gm.getGroupId());
+			}
+		}
+		return getGroupInfos(matchingGroupIds);
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.service.GroupService#getParentGroups(java.lang.String)
 	 */
-	protected List<KimGroupImpl> getParentGroups(String groupId) {
+	protected List<GroupInfo> getParentGroups(String groupId) {
 		if ( groupId == null ) {
-			return new ArrayList<KimGroupImpl>(0);
+			return Collections.emptyList();
 		}
-		Set<KimGroupImpl> groups = new HashSet<KimGroupImpl>();
+		Set<GroupInfo> groups = new HashSet<GroupInfo>();
 		getParentGroupsInternal( groupId, groups );
-		return new ArrayList<KimGroupImpl>( groups );
+		return new ArrayList<GroupInfo>( groups );
 	}
 
-	protected void getParentGroupsInternal( String groupId, Set<KimGroupImpl> groups ) {
-		List<KimGroupImpl> parentGroups = getDirectParentGroups( groupId );
-		for ( KimGroupImpl group : parentGroups ) {
+	protected void getParentGroupsInternal( String groupId, Set<GroupInfo> groups ) {
+		Map<String,GroupInfo> parentGroups = getDirectParentGroups( groupId );
+		for ( GroupInfo group : parentGroups.values() ) {
 			if ( !groups.contains( group ) ) {
 				groups.add( group );
 				getParentGroupsInternal( group.getGroupId(), groups );
@@ -366,11 +417,8 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         List<String> result = new ArrayList<String>();
         if (groupId != null) {
-            List<KimGroupImpl> groupList = getDirectParentGroups(groupId);
-
-            for (KimGroupImpl group : groupList) {
-                result.add(group.getGroupId());
-            }
+            Map<String,GroupInfo> groupList = getDirectParentGroups(groupId);
+            result.addAll(groupList.keySet());
         }
 
         return result;
@@ -382,9 +430,9 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	public List<String> getParentGroupIds(String groupId) {
         List<String> result = new ArrayList<String>();
         if (groupId != null) {
-            List<KimGroupImpl> groupList = getParentGroups(groupId);
+            List<GroupInfo> groupList = getParentGroups(groupId);
 
-            for (KimGroupImpl group : groupList) {
+            for (GroupInfo group : groupList) {
                 result.add(group.getGroupId());
             }
         }
@@ -396,12 +444,14 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	/**
 	 * @see org.kuali.rice.kim.service.GroupService#getDirectMemberGroupIds(java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<String> getDirectMemberGroupIds(String groupId) {
 		if ( groupId == null ) {
-			return new ArrayList<String>(0);
+			return Collections.emptyList();
 		}
-		KimGroupImpl group = getGroupImpl( groupId );
+		GroupImpl group = getGroupImpl( groupId );
+		if ( group == null ) {
+			return Collections.emptyList();
+		}
 		return group.getMemberGroupIds();
 	}
 
@@ -410,9 +460,9 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	 */
 	public boolean isGroupActive( String groupId ) {
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("groupId", groupId);
-		criteria.put("active", "Y");
-		return getBusinessObjectService().countMatching(KimGroupImpl.class, criteria) > 0;
+		criteria.put(KIMPropertyConstants.Group.GROUP_ID, groupId);
+		criteria.put(KNSPropertyConstants.ACTIVE, "Y");
+		return getBusinessObjectService().countMatching(GroupImpl.class, criteria) > 0;
 	}
 
 	/**
@@ -420,11 +470,11 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	 */
 	public List<String> getMemberGroupIds(String groupId) {
 		if ( groupId == null ) {
-			return new ArrayList<String>(0);
+			return Collections.emptyList();
 		}
-		List<KimGroupImpl> groups = getMemberGroups( groupId );
+		List<GroupImpl> groups = getMemberGroups( groupId );
 		ArrayList<String> groupIds = new ArrayList<String>( groups.size() );
-		for ( KimGroupImpl group : groups ) {
+		for ( GroupImpl group : groups ) {
 			if ( group.isActive() ) {
 				groupIds.add( group.getGroupId() );
 			}
@@ -435,19 +485,26 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	/**
 	 * @see org.kuali.rice.kim.service.GroupService#isDirectMemberOfGroup(java.lang.String, java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean isDirectMemberOfGroup(String principalId, String groupId) {
 		if ( principalId == null || groupId == null ) {
 			return false;
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("members.memberId", principalId);
-		criteria.put("members.memberTypeCode", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
-		criteria.put("groupId", groupId);
-		criteria.put("active", "Y");
-		return getBusinessObjectService().countMatching(KimGroupImpl.class, criteria) != 0;
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+		criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
+
+		Collection<GroupMemberImpl> groupMembers = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+		for ( GroupMemberImpl gm : groupMembers ) {
+			if ( gm.isActive() ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	public BusinessObjectService getBusinessObjectService() {
+	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
 			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
@@ -458,14 +515,14 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	 * @see org.kuali.rice.kim.service.GroupService#getGroupAttributes(java.lang.String)
 	 */
     @SuppressWarnings("unchecked")
-	public Map<String, String> getGroupAttributes(String groupId) {
+	public AttributeSet getGroupAttributes(String groupId) {
 		if ( groupId == null ) {
-			return new HashMap<String, String>(0);
+			return new AttributeSet(0);
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put("groupId", groupId);
+		criteria.put(KIMPropertyConstants.Group.GROUP_ID, groupId);
 		List<GroupAttributeDataImpl> groupAttributes = (List<GroupAttributeDataImpl>)getBusinessObjectService().findMatching(GroupAttributeDataImpl.class, criteria);
-		Map<String, String> attributes = new HashMap<String, String>( groupAttributes.size() );
+		AttributeSet attributes = new AttributeSet( groupAttributes.size() );
 		for ( GroupAttributeDataImpl attr : groupAttributes ) {
 			attributes.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
 		}
@@ -473,7 +530,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 	}
 
     public GroupInfo createGroup(GroupInfo groupInfo) {
-        KimGroupImpl group = new KimGroupImpl();
+        GroupImpl group = new GroupImpl();
 
         copyInfoToGroup(groupInfo, group);
 
@@ -488,7 +545,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return getGroupInfo(newGroupInfo.getGroupId());
     }
 
-	protected void saveGroup(KimGroupImpl group) {
+	protected void saveGroup(GroupImpl group) {
 		if ( group == null ) {
 			return;
 		}
@@ -512,7 +569,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
     public GroupInfo updateGroup(String groupId, GroupInfo groupInfo) {
         // TODO sgibson - can this be used to change id?
-        KimGroupImpl group = getGroupImpl(groupId);
+        GroupImpl group = getGroupImpl(groupId);
 
         if (group == null) {
             throw new IllegalArgumentException("Group not found for update.");
@@ -522,10 +579,12 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
 
         //delete old group attributes
         Map<String,String> criteria = new HashMap<String,String>();
-        criteria.put("targetPrimaryKey", group.getGroupId());
+        criteria.put(KIMPropertyConstants.Group.GROUP_ID, group.getGroupId());
         getBusinessObjectService().deleteMatching(GroupAttributeDataImpl.class, criteria);
 
+
         saveGroup(group);
+        getIdentityManagementNotificationService().groupUpdated();
 
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
@@ -545,9 +604,9 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         groupMember.setMemberTypeCode( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );
         groupMember.setMemberId(principalId);
 
-        this.getBusinessObjectService().save(groupMember);
+        getBusinessObjectService().save(groupMember);
         KIMServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
-
+        getIdentityManagementNotificationService().groupUpdated();
         return true;
     }
 
@@ -556,17 +615,17 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      */
     @SuppressWarnings("unchecked")
     public boolean removePrincipalFromGroup(String principalId, String groupId) {
-        Map<String,String> criteria = new HashMap<String,String>();
-        criteria.put("groupId", groupId);
-        criteria.put("memberId", principalId);
-        criteria.put("memberTypeCode", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+        Map<String,String> criteria = new HashMap<String,String>(3);
+        criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
+        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
         Collection<GroupMemberImpl> groupMemberList = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
 
         if(groupMemberList.size() == 1) {
         	GroupMemberImpl member = groupMemberList.iterator().next();
             getBusinessObjectService().delete(member);
             KIMServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
-
+            getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
 
@@ -591,6 +650,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         groupMember.setMemberId(childId);
 
         getBusinessObjectService().save(groupMember);
+        getIdentityManagementNotificationService().groupUpdated();
 
         return true;
     }
@@ -598,17 +658,15 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
     /**
      * @see org.kuali.rice.kim.service.GroupService#removeGroupFromGroup(java.lang.String, java.lang.String)
      */
-    @SuppressWarnings("unchecked")
     public boolean removeGroupFromGroup(String childId, String parentId) {
         Map<String,String> criteria = new HashMap<String,String>(3);
-        criteria.put("groupId", parentId);
-        criteria.put("memberId", childId);
-        criteria.put("memberTypeCode", KimGroupMemberTypes.GROUP_MEMBER_TYPE);
-        Collection<GroupMemberImpl> groupGroupList = getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+        criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, parentId);
+        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, childId);
+        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 
-        if(groupGroupList.size() == 1) {
-            getBusinessObjectService().delete(groupGroupList.iterator().next());
-
+        if(getBusinessObjectService().countMatching(GroupMemberImpl.class, criteria) == 1) {
+            getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
+            getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
 
@@ -621,13 +679,14 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
      * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
      */
     public void removeAllGroupMembers(String groupId) {
-    	// TODO jonathan - THIS METHOD NEEDS JAVADOCS
+    	// TODO tbradfor - Call updateForUserRemovedFromGroup for each
         Map<String,String> criteria = new HashMap<String,String>(1);
-        criteria.put("groupId", groupId);
+        criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
         getBusinessObjectService().deleteMatching(GroupMemberImpl.class, criteria);
+        getIdentityManagementNotificationService().groupUpdated();
     }
 
-    protected GroupInfo toGroupInfo(KimGroupImpl kimGroup) {
+    protected GroupInfo toGroupInfo(GroupImpl kimGroup) {
         GroupInfo info = null;
 
         if (kimGroup != null) {
@@ -646,7 +705,21 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return info;
     }
 
-    protected KimGroupImpl copyInfoToGroup(GroupInfo info, KimGroupImpl group) {
+    protected List<GroupInfo> toGroupInfo(List<GroupImpl> kimGroups){
+    	List<GroupInfo> lRet = null;
+
+    	if(kimGroups != null){
+    		lRet = new ArrayList<GroupInfo>();
+
+    		for(GroupImpl gi: kimGroups){
+    			lRet.add(this.toGroupInfo(gi));
+    		}
+    	}
+
+    	return lRet;
+    }
+
+    protected GroupImpl copyInfoToGroup(GroupInfo info, GroupImpl group) {
         group.setActive(info.isActive());
         group.setGroupDescription(info.getGroupDescription());
         group.setGroupId(info.getGroupId());
@@ -657,9 +730,10 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return group;
     }
 
-    @SuppressWarnings("unchecked")
     protected List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
         List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
+
+        // TODO: fix this to use the KimTypeInfoService to get the attribute information rather than selecting from the database
 
         for(String key : infoMap.keySet()) {
             Map<String,String> criteria = new HashMap<String,String>();
@@ -673,7 +747,7 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
             GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
             groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
             groupAttr.setAttributeValue(infoMap.get(key));
-            groupAttr.setTargetPrimaryKey(groupId);
+            groupAttr.setGroupId(groupId);
             groupAttr.setKimTypeId(kimTypeId);
 
             attrList.add(groupAttr);
@@ -683,25 +757,32 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
     }
 
     public Collection<GroupMembershipInfo> getGroupMembers( List<String> groupIds ) {
+		if ( groupIds == null ) {
+			return Collections.emptyList();
+		}
     	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
     	for (String groupId : groupIds) {
-    		for (GroupMemberImpl groupMember : getGroupMembers(groupId)) {
-    			if (groupMember != null) {
-    				groupMembers.add(toGroupMemberInfo(groupMember));
-    			}
-    		}
+    		groupMembers.addAll( getGroupMembersOfGroup(groupId) );
     	}
     	return groupMembers;
     }
 
 
-	protected List<GroupMemberImpl> getGroupMembers( String groupId) {
+	@SuppressWarnings("unchecked")
+	public Collection<GroupMembershipInfo> getGroupMembersOfGroup( String groupId ) {
 		if ( groupId == null ) {
-			return new ArrayList<GroupMemberImpl>(0);
+			return Collections.emptyList();
 		}
-		Map<String,String> criteria = new HashMap<String,String>( 3 );
-		criteria.put("groupId", groupId);
-		return (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+		Map<String,String> criteria = new HashMap<String,String>( 1 );
+		criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
+    	List<GroupMemberImpl> groupMemberImpls = (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+    	List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>( groupMemberImpls.size() );
+		for (GroupMemberImpl groupMember : groupMemberImpls) {
+			if (groupMember != null && groupMember.isActive()) {
+				groupMembers.add(toGroupMemberInfo(groupMember));
+			}
+		}
+		return groupMembers;
 	}
 
     protected GroupMembershipInfo toGroupMemberInfo(GroupMemberImpl kimGroupMember) {
@@ -715,4 +796,17 @@ public class GroupServiceImpl implements GroupService, GroupUpdateService {
         return groupMemberinfo;
     }
 
+    protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
+        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+    }
+
+    /**
+	 * @return the lookupService
+	 */
+    protected LookupService getLookupService() {
+		if(lookupService == null) {
+			lookupService = KNSServiceLocator.getLookupService();
+		}
+		return lookupService;
+	}
 }

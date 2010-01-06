@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,16 +25,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.KimGroup;
+import org.kuali.rice.kim.bo.Group;
 
 /**
  * This is a description of what this class does - sgibson don't forget to fill this in.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     
@@ -80,7 +81,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return ((Long)query.getSingleResult()) > 0;
     }
 
-    public List findActivatedByGroup(KimGroup group) {
+    public List findActivatedByGroup(Group group) {
         
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindActivatedByGroup");
         query.setParameter("groupId", group.getGroupId());
@@ -220,6 +221,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     }
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
+        if ( actionRequest.getAnnotation() != null && actionRequest.getAnnotation().length() > 2000 ) {
+        	actionRequest.setAnnotation( StringUtils.abbreviate(actionRequest.getAnnotation(), 2000) );
+        }
     	if(actionRequest.getActionRequestId() == null) {
         	loadDefaultValues(actionRequest);
         	entityManager.persist(actionRequest);
@@ -232,8 +236,8 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         checkNull(actionRequest.getResponsibilityId(), "responsibility ID");
         checkNull(actionRequest.getRouteLevel(), "route level");
         checkNull(actionRequest.getDocVersion(), "doc version");
-        if (actionRequest.getIgnorePrevAction() == null) {
-            actionRequest.setIgnorePrevAction(Boolean.FALSE);
+        if (actionRequest.getForceAction() == null) {
+            actionRequest.setForceAction(Boolean.FALSE);
         }
         if (actionRequest.getStatus() == null) {
             actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,17 +46,17 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 
 
 /**
- * Some utilities which are utilized by the {@link Rule2Action}.
+ * Some utilities which are utilized by the {@link RuleAction}.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class WebRuleUtils {
 
@@ -264,26 +264,28 @@ public class WebRuleUtils {
 	public static List<Row> getRuleTemplateRows(RuleBaseValues rule) {
 		List<Row> rows = new ArrayList<Row>();
 		RuleTemplate ruleTemplate = rule.getRuleTemplate();
-		// refetch rule template from service becaues after persistence in KNS, it comes back without any rule template attributes
-		ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
-		if (ruleTemplate != null) {
+		// refetch rule template from service because after persistence in KNS, it comes back without any rule template attributes
+		if (ruleTemplate != null){
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
+			if (ruleTemplate != null) {
 
-			List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
-			Collections.sort(ruleTemplateAttributes);
-			
-			for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
-				if (!ruleTemplateAttribute.isWorkflowAttribute()) {
-					continue;
+				List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
+				Collections.sort(ruleTemplateAttributes);
+
+				for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
+						continue;
+					}
+					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
+					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+					}
+
+					List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule);
+					rows.addAll(attributeRows);
+
 				}
-				WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-					((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
-				}
-				
-				List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule);
-				rows.addAll(attributeRows);
-				
 			}
 		}
 		return rows;
@@ -359,7 +361,7 @@ public class WebRuleUtils {
 			if (ruleResponsibility.getResponsibilityId() == null) {
 				ruleResponsibility.setResponsibilityId(KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId());
 			}
-			KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
+			Group group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
 			ruleResponsibility.setRuleResponsibilityName(group.getGroupId());
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
 			ruleResponsibility.setApprovePolicy(KEWConstants.APPROVE_POLICY_FIRST_APPROVE);
@@ -500,7 +502,7 @@ public class WebRuleUtils {
 			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)) {
 				GroupRuleResponsibility groupResponsibility = new GroupRuleResponsibility();
 				copyResponsibility(responsibility, groupResponsibility);
-				KimGroup group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
+				Group group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
 				groupResponsibility.setNamespaceCode(group.getNamespaceCode());
 				groupResponsibility.setName(group.getGroupName());
 				rule.getGroupResponsibilities().add(groupResponsibility);

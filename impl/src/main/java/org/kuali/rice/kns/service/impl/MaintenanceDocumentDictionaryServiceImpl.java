@@ -1,11 +1,11 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -383,8 +383,8 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsCopy(MaintenanceDocument)
      */
     public Boolean getAllowsCopy(MaintenanceDocument document) {
-        Boolean allowsCopy = null;
-        if (document != null) {
+        Boolean allowsCopy = Boolean.FALSE;
+        if (document != null && document.getNewMaintainableObject() != null) {
             MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(document.getNewMaintainableObject().getBoClass());
             if (entry != null) {
                 allowsCopy = Boolean.valueOf(entry.getAllowsCopy());
@@ -398,7 +398,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsNewOrCopy(java.lang.String)
      */
     public Boolean getAllowsNewOrCopy(String docTypeName) {
-        Boolean allowsNewOrCopy = null;
+        Boolean allowsNewOrCopy = Boolean.FALSE;
 
         if (docTypeName != null) {
             MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(docTypeName);
@@ -565,7 +565,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                 if (obj == null || StringUtils.isBlank(obj.toString())) {
                     String attributeLabel = dataDictionaryService.getAttributeLabel(businessObject.getClass(), fieldName);
                     String shortLabel = dataDictionaryService.getAttributeShortLabel(businessObject.getClass(), fieldName);
-                    GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
+                    GlobalVariables.getMessageMap().putError(fieldName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel + " (" + shortLabel + ")" );
                 } else if ( fieldName.endsWith(".principalName") ) {
                     // special handling to catch when the principalName is not really a valid user
                     // pull the Person object and test the entity ID.  If that's null, then this
@@ -577,7 +577,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                     if ( StringUtils.isNotBlank(personProperty) ) {
                         if ( StringUtils.isBlank( (String)ObjectUtils.getNestedValue(businessObject, personProperty+".entityId") ) ) {
                             String attributeLabel = dataDictionaryService.getAttributeLabel(businessObject.getClass(), fieldName);
-                            GlobalVariables.getErrorMap().putError(fieldName, RiceKeyConstants.ERROR_EXISTENCE, attributeLabel );
+                            GlobalVariables.getMessageMap().putError(fieldName, RiceKeyConstants.ERROR_EXISTENCE, attributeLabel );
                         }
                     }
                 }
@@ -644,20 +644,20 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      */
     private void validateMaintainableCollectionsAddLineRequiredFields(MaintenanceDocument document, PersistableBusinessObject businessObject, String collectionName, MaintainableCollectionDefinition maintainableCollectionDefinition, int depth) {
         if ( depth == 0 ) {
-            GlobalVariables.getErrorMap().addToErrorPath("add");
+            GlobalVariables.getMessageMap().addToErrorPath("add");
         }
         // validate required fields on fields withing collection definition
         PersistableBusinessObject element = document.getNewMaintainableObject().getNewCollectionLine( collectionName );
-        GlobalVariables.getErrorMap().addToErrorPath(collectionName);
+        GlobalVariables.getMessageMap().addToErrorPath(collectionName);
         for (MaintainableFieldDefinition maintainableFieldDefinition : maintainableCollectionDefinition.getMaintainableFields()) {
             final String fieldName = maintainableFieldDefinition.getName();
             validateMaintainableFieldRequiredFields(maintainableFieldDefinition, element, fieldName);
             
         }
 
-        GlobalVariables.getErrorMap().removeFromErrorPath(collectionName);
+        GlobalVariables.getMessageMap().removeFromErrorPath(collectionName);
         if ( depth == 0 ) {
-            GlobalVariables.getErrorMap().removeFromErrorPath("add");
+            GlobalVariables.getMessageMap().removeFromErrorPath("add");
         }
     }
 
@@ -678,20 +678,20 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                 final String fieldName = maintainableFieldDefinition.getName();
                 for (PersistableBusinessObject element : collection) {
                     String parentName = collectionName + "[" + (pos++) + "]";
-                    GlobalVariables.getErrorMap().addToErrorPath(parentName);
+                    GlobalVariables.getMessageMap().addToErrorPath(parentName);
                     validateMaintainableFieldRequiredFields(maintainableFieldDefinition, element, fieldName);
-                    GlobalVariables.getErrorMap().removeFromErrorPath(parentName);
+                    GlobalVariables.getMessageMap().removeFromErrorPath(parentName);
                 }
             }
 
             // recursivley validate required fields on subcollections
-            GlobalVariables.getErrorMap().addToErrorPath(collectionName);
+            GlobalVariables.getMessageMap().addToErrorPath(collectionName);
             for (MaintainableCollectionDefinition nestedMaintainableCollectionDefinition : maintainableCollectionDefinition.getMaintainableCollections()) {
                 for (PersistableBusinessObject element : collection) {
                     validateMaintainableCollectionsRequiredFields(element, nestedMaintainableCollectionDefinition);
                 }
             }
-            GlobalVariables.getErrorMap().removeFromErrorPath(collectionName);
+            GlobalVariables.getMessageMap().removeFromErrorPath(collectionName);
         }
     }
     
@@ -740,23 +740,68 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                 for (PersistableBusinessObject element : collection) {
                     String pathToElement = collectionName + "[" + (pos++) + "]";
                     if (ObjectUtils.countObjectsWithIdentitcalKey(collection, element) > 1) {
-                        GlobalVariables.getErrorMap().addToErrorPath(pathToElement);
-                        GlobalVariables.getErrorMap().putError(propertyName, RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, new String[] { label, shortLabel });
-                        GlobalVariables.getErrorMap().removeFromErrorPath(pathToElement);
+                        GlobalVariables.getMessageMap().addToErrorPath(pathToElement);
+                        GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, new String[] { label, shortLabel });
+                        GlobalVariables.getMessageMap().removeFromErrorPath(pathToElement);
                     }
                 }
 
                 // recursivley check for duplicate entries on subcollections
-                GlobalVariables.getErrorMap().addToErrorPath(collectionName);
+                GlobalVariables.getMessageMap().addToErrorPath(collectionName);
                 for (MaintainableCollectionDefinition nestedMaintainableCollectionDefinition : maintainableCollectionDefinition.getMaintainableCollections()) {
                     for (PersistableBusinessObject element : collection) {
                         validateMaintainableCollectionsForDuplicateEntries(element, nestedMaintainableCollectionDefinition);
                     }
                 }
-                GlobalVariables.getErrorMap().removeFromErrorPath(collectionName);
+                GlobalVariables.getMessageMap().removeFromErrorPath(collectionName);
 
             }
         }
     }
+       
+	/**
+	 * for issue KULRice 3072
+	 * 
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getgetPreserveLockingKeysOnCopy(java.lang.Class)
+	 */
+	public boolean getPreserveLockingKeysOnCopy(Class businessObjectClass) {
+
+		boolean preserveLockingKeysOnCopy = false;
+
+		MaintenanceDocumentEntry docEntry = getMaintenanceDocumentEntry(businessObjectClass);
+		
+		if (docEntry != null) {
+			preserveLockingKeysOnCopy = docEntry.getPreserveLockingKeysOnCopy();
+		}
+		
+		return preserveLockingKeysOnCopy;
+	}
+
+	/**
+	 * for isue KULRice 3070
+	 * 
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsRecordDeletion(java.lang.Class)
+	 */
+	public Boolean getAllowsRecordDeletion(Class businessObjectClass) {
+		
+		Boolean allowsRecordDeletion = Boolean.FALSE;
+
+		MaintenanceDocumentEntry docEntry = getMaintenanceDocumentEntry(businessObjectClass);
+		
+		if (docEntry != null) {
+			allowsRecordDeletion = Boolean.valueOf(docEntry.getAllowsRecordDeletion());
+		}
+		
+		return allowsRecordDeletion;
+	}
+
+	/**
+	 *  for issue KULRice3070, see if need delete button
+	 * 
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsRecordDeletion(org.kuali.rice.kns.document.MaintenanceDocument)
+	 */
+	public Boolean getAllowsRecordDeletion(MaintenanceDocument document) {
+        return document != null ? this.getAllowsRecordDeletion(document.getNewMaintainableObject().getBoClass()) : Boolean.FALSE;
+	}
 
 }

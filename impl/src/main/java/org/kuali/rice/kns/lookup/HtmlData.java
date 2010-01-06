@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,10 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.DateFormatter;
@@ -37,7 +35,7 @@ import org.kuali.rice.kns.web.format.DateFormatter;
 /**
  * This class holds details of html data for an action url.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public abstract class HtmlData implements Serializable {
@@ -229,10 +227,11 @@ public abstract class HtmlData implements Serializable {
 	 * 
 	 * This class is an extension of HtmlData. It represents an anchor tag.
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 * 
 	 */
 	public static class AnchorHtmlData extends HtmlData {
+		public static final String TARGET_BLANK = "_blank";
 		protected String href = "";
 		protected String target = "";
 
@@ -320,7 +319,7 @@ public abstract class HtmlData implements Serializable {
 	 * 
 	 * This class is an extension of HtmlData. It represents an input tag.
 	 * 
-	 * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 * 
 	 */
 	public static class InputHtmlData extends HtmlData {

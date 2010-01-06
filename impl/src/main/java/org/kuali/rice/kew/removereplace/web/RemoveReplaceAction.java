@@ -1,11 +1,11 @@
 /*
  * Copyright 2007 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,20 +42,20 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.WorkflowAction;
+import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.KimGroup;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
  * Struts Action for the Remove/Replace User Document.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RemoveReplaceAction extends WorkflowAction {
+public class RemoveReplaceAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RemoveReplaceAction.class);
 
@@ -68,7 +68,24 @@ public class RemoveReplaceAction extends WorkflowAction {
     private static final String FAILED_DOCUMENT_LOAD_MSG = "removereplace.failedDocumentLoad";
 
     @Override
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        // TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+        initForm(request, form);
+        return super.execute(mapping, form, request, response);
+    }
+
+    @Override
+    public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
+        form.getShowHide().getChild(0).setShow(true);
+        form.getShowHide().getChild(1).setShow(true);
+        return super.start(mapping, actionForm, request, response);
+    }
+
+    public ActionMessages initForm(HttpServletRequest request, ActionForm actionForm) throws Exception {
 	ActionMessages messages = new ActionMessages();
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
 	form.setActionRequestCodes(CodeTranslator.arLabels);
@@ -110,24 +127,11 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    }
 	}
 
-	// TODO with KIM, no longer possible to get all group types
-
-	//form.setWorkgroupTypes(KEWServiceLocator.getWorkgroupTypeService().findAllActive());
-        //form.getWorkgroupTypes().add(0, RemoveReplaceForm.createDefaultWorkgroupType());
-	return messages;
+        return messages;
     }
 
     private WorkflowDocument createDocument() throws WorkflowException {
 	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getPrincipalId()), KEWConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
-    }
-
-    @Override
-    public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
-	    HttpServletResponse response) throws Exception {
-	RemoveReplaceForm form = (RemoveReplaceForm) actionForm;
-        form.getShowHide().getChild(0).setShow(true);
-        form.getShowHide().getChild(1).setShow(true);
-	return mapping.findForward("basic");
     }
 
     public ActionForward selectOperation(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -198,10 +202,10 @@ public class RemoveReplaceAction extends WorkflowAction {
         form.getShowHide().getChild(1).setShow(!form.getWorkgroups().isEmpty());
     }
 
-    protected List<? extends KimGroup> loadWorkgroups(RemoveReplaceDocument document) {
-	List<KimGroup> workgroups = new ArrayList<KimGroup>();
+    protected List<? extends Group> loadWorkgroups(RemoveReplaceDocument document) {
+	List<Group> workgroups = new ArrayList<Group>();
 	for (WorkgroupTarget workgroupTarget : document.getWorkgroupTargets()) {
-		KimGroup group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
+		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupTarget.getWorkgroupId());
 	    if (group == null) {
 	    	throw new WorkflowRuntimeException("Failed to locate group with id " + workgroupTarget.getWorkgroupId());
 	    }
@@ -307,12 +311,7 @@ public class RemoveReplaceAction extends WorkflowAction {
 	    // this condition should already be satisfied but throw an error if it's not
 	    throw new RuntimeException("Please enter a valid user id before choosing workgroups.");
 	}
-//	Workgroup template = KEWServiceLocator.getWorkgroupService().getBlankWorkgroup();
-//	template.setActiveInd(Boolean.TRUE);
-//	if (!StringUtils.isBlank(form.getWorkgroupType())) {
-//	    template.setWorkgroupType(form.getWorkgroupType());
-//	}
-	List<? extends KimGroup> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getPrincipalId());
+	List<? extends Group> groups = KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(form.getUser().getPrincipalId());
 	form.getWorkgroups().clear();
 	form.getWorkgroups().addAll(loadRemoveReplaceWorkgroups(form, groups));
 	return mapping.findForward("basic");
@@ -321,10 +320,10 @@ public class RemoveReplaceAction extends WorkflowAction {
     /**
      * Constructs a list of RemoveReplaceWorkgroup objects from the given list of Workgroups.
      */
-    protected List<RemoveReplaceWorkgroup> loadRemoveReplaceWorkgroups(RemoveReplaceForm form, List<? extends KimGroup> groups) {
+    protected List<RemoveReplaceWorkgroup> loadRemoveReplaceWorkgroups(RemoveReplaceForm form, List<? extends Group> groups) {
 	List<RemoveReplaceWorkgroup> removeReplaceWorkgroups = new ArrayList<RemoveReplaceWorkgroup>();
 	Set<String> selectedWorkgroupIds = getSelectedWorkgroupIds(form);
-	for (KimGroup group : groups) {
+	for (Group group : groups) {
 	    RemoveReplaceWorkgroup removeReplaceWorkgroup = new RemoveReplaceWorkgroup();
 	    removeReplaceWorkgroup.setId(group.getGroupId());
 	    removeReplaceWorkgroup.setName(group.getGroupName());
@@ -487,6 +486,11 @@ public class RemoveReplaceAction extends WorkflowAction {
         }
         saveMessages(request, messages);
     }
+
+    private static UserSession getUserSession(HttpServletRequest request) {
+        return UserSession.getAuthenticatedUser();
+    }
+
 
 
 }

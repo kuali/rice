@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,11 +19,13 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
+import org.kuali.rice.kcb.util.KCBConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -32,7 +34,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 /**
  * NotificationService implementation that delegates to KCB
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBNotificationService extends DefaultNotificationService {
     @Override
@@ -47,7 +49,7 @@ public class KCBNotificationService extends DefaultNotificationService {
 
 
         // send it off to KCB if available
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(KCBConstants.SERVICE_NAMESPACE, KCBServiceNames.KCB_MESSAGING));
         if (ms == null) {
         	LOG.info("Could not locate KCB MessagingService.  Message will not be forwarded to the KCB.");
         	return;
@@ -59,7 +61,9 @@ public class KCBNotificationService extends DefaultNotificationService {
         mvo.setDeliveryType(actionItem.getActionRequestCd());
         mvo.setProducer("kew@localhost");
         mvo.setTitle(actionItem.getDocLabel() + " - " + actionItem.getDocName() + " - " + actionItem.getDocTitle());
-        mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getRouteHeaderId());
+        if (StringUtils.isNotBlank(actionItem.getDocHandlerURL())) {
+        	mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getRouteHeaderId());
+        }
         mvo.setOriginId(String.valueOf(actionItem.getActionItemId()));
         try {
             // just assume it's a user at this point...
@@ -78,7 +82,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         if (!enableKENNotification) {
         	return;
         }
-        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), KCBServiceNames.KCB_MESSAGING));
+        MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(KCBConstants.SERVICE_NAMESPACE, KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
         	LOG.debug("Removing KCB messages for action item: " + actionItem.getActionItemId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getPerson());

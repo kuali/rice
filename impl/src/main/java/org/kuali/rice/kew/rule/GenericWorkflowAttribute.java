@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2006 The Kuali Foundation.
+ * Copyright 2005-2008 The Kuali Foundation
  * 
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,7 +52,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
  * This implementation does not (yet!) implement a generic internal map of properties, so it is up to subclasses
  * to expose specific named getters/setters to set data on an attribute of this ancestry.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute {
     protected final Logger log = Logger.getLogger(getClass());
@@ -158,11 +158,15 @@ public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute
         log.info("getRuleExtensionValues");
         List<RuleExtensionValue> exts = new ArrayList<RuleExtensionValue>();
         Map<String, String> props = getProperties();
-        for (Map.Entry<String, String> entry: props.entrySet()) {
-            RuleExtensionValue ruleVal = new RuleExtensionValue();
-            ruleVal.setKey(entry.getKey());
-            ruleVal.setValue(entry.getValue());
-            exts.add(ruleVal);
+        if (props != null) {
+            for (Map.Entry<String, String> entry: props.entrySet()) {
+                if (entry.getValue() != null) {
+                    RuleExtensionValue ruleVal = new RuleExtensionValue();
+                    ruleVal.setKey(entry.getKey());
+                    ruleVal.setValue(entry.getValue());
+                    exts.add(ruleVal);
+                }
+            }
         }
         return exts;
     }

@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation.
+ * Copyright 2005-2007 The Kuali Foundation
  *
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -303,7 +303,7 @@ public class RuleXmlParserTest extends KEWTestCase {
 
     @Test public void testParameterReplacement() throws IOException, InvalidXmlException {
         ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user3");
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "KR-WKFLW:WorkflowAdmin");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "WorkflowAdmin");
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         RuleBaseValues rule = rules.get(0);
@@ -317,7 +317,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         }
 
         ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user1");
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "KR-WKFLW:TestWorkgroup");
+        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "TestWorkgroup");
         rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         rule = rules.get(0);
@@ -387,7 +387,10 @@ public class RuleXmlParserTest extends KEWTestCase {
 
     @Test public void testInvalidTemplatelessNamedRule() {
         testNamedRule();
-        loadXmlFile("InvalidTemplatelessNamedRule.xml");
+        try {
+        	loadXmlFile("InvalidTemplatelessNamedRule.xml");
+        	fail("Rule should have failed to load because it attempts to define extensions on a templateless rule.");
+        } catch (Exception e) {}
     }
     
     @Test public void testRulesWithDifferentResponsibilityTypes() throws Exception {
@@ -397,17 +400,17 @@ public class RuleXmlParserTest extends KEWTestCase {
     	RuleBaseValues rule = ruleService.getRuleByName("RespTypeTest1");
     	assertNotNull(rule);
     	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a principal id of 1001", "1001", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a principal id of user1", "user1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest2");
     	assertNotNull(rule);
     	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a principal id of 1001", "1001", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a principal id of user1", "user1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest3");
     	assertNotNull(rule);
     	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a group id of 1", "1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a group id of 3001", "3001", rule.getResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest4");
     	assertNotNull(rule);

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  * This class is used by the {@link DataLoaderAnnotationTest} and {@link DataLoaderAnnotationOverrideTest} classes to verify parent class annotation usage
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @PerSuiteUnitTestData({
@@ -59,11 +59,6 @@ public abstract class AnnotationTestParent extends RiceTestCase {
     @Override
     protected String getModuleName() {
         return "impl";
-    }
-
-    @Override
-    protected String getDerbySQLFileLocation() {
-        return "classpath:org/kuali/rice/database/derby/testharness.sql";
     }
 
     protected void verifyCount(String valueToVerify, int count) throws SQLException {

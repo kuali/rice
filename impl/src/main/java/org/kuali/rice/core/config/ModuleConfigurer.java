@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,13 +23,14 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
+import org.kuali.rice.core.config.event.RiceConfigEventListener;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.springframework.beans.factory.InitializingBean;
 
-public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean {
+public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, RiceConfigEventListener {
     /**
      * Protected logger for use by subclasses
      */
@@ -109,6 +110,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
             testMode = true;
         }		
 		configureWebConfiguration(config);
+		configureRunMode(config);
 		return config;
 	}
 
@@ -132,6 +134,14 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
 			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
 		}
+	}
+	
+	/**
+	 * Creates a configuration parameter for the run mode by appending the module name (in lower case) plus ".mode"
+	 */
+	protected void configureRunMode(Config config) {
+		String propertyName = getModuleName().toLowerCase() + ".mode";
+		config.getProperties().setProperty(propertyName, getRunMode());
 	}
 	
 	/**

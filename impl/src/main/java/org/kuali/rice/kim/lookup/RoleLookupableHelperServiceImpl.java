@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.lookup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -23,23 +24,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.role.impl.KimRoleImpl;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimRoleDao;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -47,17 +50,17 @@ import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.KeyLabelPair;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
+public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceImpl {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleLookupableHelperServiceImpl.class);
 
@@ -72,28 +75,38 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 	
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
-    	KimRoleImpl roleImpl = (KimRoleImpl) bo;
+    	RoleImpl roleImpl = (RoleImpl) bo;
         List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
-    	anchorHtmlDataList.add(getEditRoleUrl(roleImpl));	
+    	if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME)){
+    		anchorHtmlDataList.add(getEditRoleUrl(roleImpl));
+    	}
     	return anchorHtmlDataList;
     }
     
-    protected HtmlData getEditRoleUrl(KimRoleImpl roleImpl) {
+    protected HtmlData getEditRoleUrl(RoleImpl roleImpl) {
     	String href = "";
-    	if(!KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
-	        Properties parameters = new Properties();
-	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
-	        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
-	        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
-    	}        
+
+        Properties parameters = new Properties();
+        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
+        parameters.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleImpl.getRoleId());
+        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
+        
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
-        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_ACTION);
-        anchorHtmlData.setTarget("blank");
+        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
         return anchorHtmlData;
     }
 
+    protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
+    	RoleImpl roleImpl = (RoleImpl) businessObject;
+    	HtmlData anchorHtmlData = super.getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys, businessObjectRestrictions);
+    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+    		((AnchorHtmlData)anchorHtmlData).setHref("");
+    	}
+    	return anchorHtmlData;
+    }
+    
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 //    	String principalName = fieldValues.get("principalName");
@@ -105,20 +118,19 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
         		break;
         	}
         }
-  //  	List<KimRoleImpl> roles = roleDao.getRoles(fieldValues, kimTypeId);
-        List<KimRoleImpl> baseLookup = (List<KimRoleImpl>)super.getSearchResults(fieldValues);
+  //  	List<RoleImpl> roles = roleDao.getRoles(fieldValues, kimTypeId);
+        List<RoleImpl> baseLookup = (List<RoleImpl>)super.getSearchResults(fieldValues);
 
         return baseLookup;
     }
 
-	@SuppressWarnings("unchecked")
 	private List<KeyLabelPair> getRoleTypeOptions() {
 		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
 		options.add(new KeyLabelPair("", ""));
 
-		List<KimTypeImpl> kimGroupTypes = (List<KimTypeImpl>)getBusinessObjectService().findAll(KimTypeImpl.class);
+		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocator.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all roles in the system
-        for (KimTypeImpl kimType : kimGroupTypes) {
+        for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasRoleTypeService(kimType)) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
                 options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
@@ -141,45 +153,45 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 										
-					Map<String,Object> pkMap = new HashMap<String,Object>();
-					pkMap.put("kimTypeId", field.getPropertyValue());
-					KimTypeImpl kimType = (KimTypeImpl)getBusinessObjectService().findByPrimaryKey(KimTypeImpl.class, pkMap);
+					KimTypeInfo kimType = getTypeInfoService().getKimType(field.getPropertyValue() );
 					// TODO what if servicename is null.  also check other places that have similar issue
 					// use default_service ?
 			        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
 			        if ( kimTypeService != null ) {
 				        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 				        setAttrDefinitions(definitions);
-			            for ( AttributeDefinition definition : definitions.values()) {
-					        List<Field> fields = new ArrayList<Field>();
-							Field typeField = new Field();
-							//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
-	//						String attrDefnId = definition.getId();
-							String attrDefnId = getAttrDefnId(definition);
-							// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
-							typeField.setFieldLabel(definition.getLabel());
-							// with suffix  in case name is the same as bo property 
-							typeField.setPropertyName(definition.getName()+"."+attrDefnId);
-							if (definition.getControl().isSelect()) {
-						        try {
-						            KeyValuesFinder finder = (KeyValuesFinder) definition.getControl().getValuesFinderClass().newInstance();
-							        typeField.setFieldValidValues(finder.getKeyValues());
-							        typeField.setFieldType(Field.DROPDOWN);
-						        }
-						        catch (InstantiationException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-						        catch (IllegalAccessException e) {
-						            throw new RuntimeException(e.getMessage());
-						        }
-							} else {
-								typeField.setMaxLength(definition.getMaxLength());
-								typeField.setSize(definition.getControl().getSize());
-								typeField.setFieldType(Field.TEXT);
-							}
-							fields.add(typeField);
-							returnRows.add(new Row(fields));
-			            }
+				        if(definitions!=null){
+				            for ( AttributeDefinition definition : definitions.values()) {
+						        List<Field> fields = new ArrayList<Field>();
+								Field typeField = new Field();
+								//String attrDefnId = mapEntry.getKey().substring(mapEntry.getKey().indexOf("."), mapEntry.getKey().length());
+		//						String attrDefnId = definition.getId();
+								String attrDefnId = getAttrDefnId(definition);
+								// if it is DD, then attrDefn.getLabel() is null; has to get from DDAttrdefn
+								typeField.setFieldLabel(definition.getLabel());
+								// with suffix  in case name is the same as bo property 
+								typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+								if (definition.getControl().isSelect()) {
+							        try {
+							            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
+								        typeField.setFieldValidValues(finder.getKeyValues());
+								        typeField.setFieldType(Field.DROPDOWN);
+							        }
+							        catch (InstantiationException e) {
+							            throw new RuntimeException(e.getMessage());
+							        }
+							        catch (IllegalAccessException e) {
+							            throw new RuntimeException(e.getMessage());
+							        }
+								} else {
+									typeField.setMaxLength(definition.getMaxLength());
+									typeField.setSize(definition.getControl().getSize());
+									typeField.setFieldType(Field.TEXT);
+								}
+								fields.add(typeField);
+								returnRows.add(new Row(fields));
+				            }
+				        }
 		            }
 				} else {
 					return getAttrRows();
@@ -247,42 +259,33 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 			List<Row> rows = super.getRows();
 			List<Row> returnRows = new ArrayList<Row>();
 			for (Row row : rows) {
-				Field field = (Field) row.getFields().get(0);
-				if (field.getPropertyName().equals("kimTypeId")) {
-					List<Field> fields = new ArrayList<Field>();
-					Field typeField = new Field();
-					typeField.setFieldLabel("Type");
-					typeField.setPropertyName("kimTypeId");
-					typeField.setFieldValidValues(getRoleTypeOptions());
-					typeField.setFieldType(Field.DROPDOWN_REFRESH);
-					typeField.setMaxLength(100);
-					typeField.setSize(40);
-					fields.add(typeField);
-					// fields.add(new Field("Type", "", Field.DROPDOWN_REFRESH,
-					// false, "kimTypeId", "", getGroupTypeOptions(), null));
-					returnRows.add(new Row(fields));
-
-				} else {
-					returnRows.add(row);
+				for (int i = row.getFields().size() - 1; i >= 0; i--) {
+					Field field = (Field) row.getFields().get(i);
+					if (field.getPropertyName().equals("kimTypeId")) {
+						Field typeField = new Field();
+						typeField.setFieldLabel("Type");
+						typeField.setPropertyName("kimTypeId");
+						typeField.setFieldValidValues(getRoleTypeOptions());
+						typeField.setFieldType(Field.DROPDOWN);
+						typeField.setMaxLength(100);
+						typeField.setSize(40);
+						// row.getFields().set(i, new Field("Type", "", Field.DROPDOWN_REFRESH,
+						// false, "kimTypeId", "", getGroupTypeOptions(), null));
+						row.getFields().set(i, typeField);
+					}
 				}
+				returnRows.add(row);
 			}
 			setRoleRows(returnRows);
-			setAttrRows(setupAttributeRows());
-		} else {			 
-			attributeRows = setupAttributeRows();
-			if (attributeRows.isEmpty()) {
-				setAttrRows(attributeRows);				
-			} else if (CollectionUtils.isEmpty(getAttrRows())) {
-				setAttrRows(attributeRows);				
-			}
+			//setAttrRows(setupAttributeRows());
 		}
 		if (getAttrRows().isEmpty()) {
-			setAttrDefinitions(new AttributeDefinitionMap());
+			//setAttrDefinitions(new AttributeDefinitionMap());
 			return getRoleRows();
 		} else {
 			List<Row> fullRows = new ArrayList<Row>();
 			fullRows.addAll(getRoleRows());
-			fullRows.addAll(getAttrRows());
+			//fullRows.addAll(getAttrRows());
 			return fullRows;
 		}
 		
@@ -325,42 +328,39 @@ public class RoleLookupableHelperServiceImpl extends KualiLookupableHelperServic
 
 	}
 	
+	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=";
 	/**
 	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		AnchorHtmlData inquiryHtmlData = (AnchorHtmlData)super.getInquiryUrl(bo, propertyName);
-	    inquiryHtmlData.setHref(getCustomRoleInquiryHref(getBackLocation(), inquiryHtmlData.getHref()));
+		if(inquiryHtmlData!=null && StringUtils.isNotBlank(inquiryHtmlData.getHref()) && inquiryHtmlData.getHref().contains(ROLE_ID_URL_KEY))
+			inquiryHtmlData.setHref(getCustomRoleInquiryHref(getBackLocation(), inquiryHtmlData.getHref()));
 		return inquiryHtmlData;
 	}
 
-	static String getCustomRoleInquiryHref(String href){
+	public static String getCustomRoleInquiryHref(String href){
 		return getCustomRoleInquiryHref("", href);
 	}
 	
 	static String getCustomRoleInquiryHref(String backLocation, String href){
         Properties parameters = new Properties();
         String hrefPart = "";
-    	String docTypeName = "";
     	String docTypeAction = "";
     	if(StringUtils.isBlank(backLocation) || backLocation.contains(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION)
     			|| !backLocation.contains(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION)){
-    		docTypeName = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME;
-    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
+    		docTypeAction = KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
     	} else{
-    		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
-		if (StringUtils.isNotBlank(href) && href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=")!=-1) {
+		if (StringUtils.isNotBlank(href) && href.indexOf(ROLE_ID_URL_KEY)!=-1) {
 			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {
 		    	idx2 = href.length();
 		    }
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
-	        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
-	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
 		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters)+hrefPart;

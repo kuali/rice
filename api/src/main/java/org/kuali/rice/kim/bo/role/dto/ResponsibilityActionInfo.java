@@ -1,11 +1,11 @@
 /*
  * Copyright 2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ResponsibilityActionInfo implements ResponsibilityAction, Serializable {
@@ -43,8 +43,9 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	protected String roleId;
 	protected String actionTypeCode;
 	protected String actionPolicyCode;
-	protected String actionGroupingCode = "";
-	protected boolean ignorePrevious;
+	protected String roleResponsibilityActionId;
+	protected String parallelRoutingGroupingCode = "";
+	protected boolean forceAction;
 	protected Integer priorityNumber;
 	protected AttributeSet qualifier;
 	protected List<DelegateInfo> delegates = new ArrayList<DelegateInfo>();
@@ -171,17 +172,17 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	}
 
 	/**
-	 * @return the ignorePrevious
+	 * @return the forceAction
 	 */
-	public boolean isIgnorePrevious() {
-		return this.ignorePrevious;
+	public boolean isForceAction() {
+		return this.forceAction;
 	}
 
 	/**
-	 * @param ignorePrevious the ignorePrevious to set
+	 * @param forceAction the forceAction to set
 	 */
-	public void setIgnorePrevious(boolean ignorePrevious) {
-		this.ignorePrevious = ignorePrevious;
+	public void setForceAction(boolean forceAction) {
+		this.forceAction = forceAction;
 	}
 
 	/**
@@ -204,7 +205,7 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	        + "roleId = " + this.roleId + TAB
 	        + "actionTypeCode = " + this.actionTypeCode + TAB
 	        + "actionPolicyCode = " + this.actionPolicyCode + TAB
-	        + "ignorePrevious = " + this.ignorePrevious + TAB
+	        + "forceAction = " + this.forceAction + TAB
 	        + "priorityNumber = " + this.priorityNumber + TAB
 	        + "qualifier = " + this.qualifier + TAB
 	        + "delegates = " + this.delegates + TAB
@@ -213,12 +214,20 @@ public class ResponsibilityActionInfo implements ResponsibilityAction, Serializa
 	    return retValue;
 	}
 
-	public String getActionGroupingCode() {
-		return this.actionGroupingCode;
+	public String getParallelRoutingGroupingCode() {
+		return this.parallelRoutingGroupingCode;
 	}
 
-	public void setActionGroupingCode(String actionGroupingCode) {
-		this.actionGroupingCode = actionGroupingCode;
+	public void setParallelRoutingGroupingCode(String actionGroupingCode) {
+		this.parallelRoutingGroupingCode = actionGroupingCode;
+	}
+
+	public String getRoleResponsibilityActionId() {
+		return this.roleResponsibilityActionId;
+	}
+
+	public void setRoleResponsibilityActionId(String roleResponsibilityActionId) {
+		this.roleResponsibilityActionId = roleResponsibilityActionId;
 	}
 	
 	

@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
       <group>
@@ -47,6 +62,64 @@
           </groupName>
         </members>
       </group>
+      <group>
+		<id>AIWG-Admin</id>
+		<name>AIWG-Admin</name>
+		<namespace>KR-WKFLW</namespace>
+		<description>AIWG-Admin</description>
+		<members>
+			<principalName>ewestfal</principalName>
+			<principalName>rkirkend</principalName>
+			<principalName>jhopf</principalName>
+			<principalName>bmcgough</principalName>
+			<principalName>shenl</principalName>
+			<principalName>quickstart</principalName>
+		</members>
+	  </group>
+	  <group>
+		    <id>AIWG-Test</id>
+			<name>AIWG-Test</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>AIWG-Test</description>
+			<members>
+				<principalName>ewestfal</principalName>
+				<principalName>rkirkend</principalName>
+				<principalName>jhopf</principalName>
+				<principalName>bmcgough</principalName>
+				<principalName>temay</principalName>
+				<principalName>xqi</principalName>
+				<principalName>natjohns</principalName>
+				<principalName>pmckown</principalName>
+				<principalName>jthomas</principalName>
+				<principalName>jitrue</principalName>
+			</members>
+		</group>
+		<group>
+			<id>AIWG-Nested2</id>
+			<name>AIWG-Nested2</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>AIWG-Nested2</description>
+			<members>
+				<principalName>user1</principalName>
+				<principalName>user2</principalName>
+				<principalName>user3</principalName>
+				<principalName>dewey</principalName>
+			</members>
+		</group>
+		<group>
+			<id>AIWG-Nested1</id>
+			<name>AIWG-Nested1</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>AIWG-Nested1</description>
+			<members>
+				<principalName>ewestfal</principalName>
+				<principalName>rkirkend</principalName>
+				<groupName>
+					<name>AIWG-Nested2</name>
+					<namespace>KR-WKFLW</namespace>
+				</groupName>
+			</members>
+		</group>
     </groups>
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -68,10 +141,10 @@
 			<description>TestDocumentType</description>
 			<label>TestDocumentType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">AIWG-Test</superUserGroupName>
 			<docHandler>_blank</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">AIWG-Test</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">AIWG-Test</defaultExceptionGroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -117,10 +190,10 @@
 			<name>BAOrphanedRequestDocumentType</name>
 			<label>Document Type used to test that Blanket Approval is not orphaning Action Requests</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-			<superUserWorkgroupName>KR-WKFLW:TestWorkgroup</superUserWorkgroupName>
+			<superUserGroupName namespace="KR-WKFLW">AIWG-Test</superUserGroupName>
 			<docHandler>none</docHandler>
-			<blanketApproveWorkgroupName>KR-WKFLW:TestWorkgroup</blanketApproveWorkgroupName>
-			<defaultExceptionWorkgroupName>KR-WKFLW:TestWorkgroup</defaultExceptionWorkgroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">AIWG-Test</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">AIWG-Test</defaultExceptionGroupName>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>
@@ -159,10 +232,10 @@
 			<documentType>ActionItemDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
+					<groupName namespace="KR-WKFLW">AIWG-Test</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -172,10 +245,10 @@
 			<documentType>ActionItemDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
+					<groupName namespace="KR-WKFLW">AIWG-Admin</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -187,7 +260,7 @@
 			<documentType>BAOrphanedRequestDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
 			<description>RuleTemplate1</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>rkirkend</principalName>
@@ -200,7 +273,7 @@
 			<documentType>BAOrphanedRequestDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
 			<description>RuleTemplate2</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
 					<principalName>user1</principalName>
@@ -213,10 +286,10 @@
 			<documentType>BAOrphanedRequestDocumentType</documentType>
 			<ruleTemplate>RuleTemplate3</ruleTemplate>
 			<description>RuleTemplate3</description>
-			<ignorePrevious>false</ignorePrevious>
+			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<groupName namespace="KR-WKFLW">TestWorkgroup</groupName>
+					<groupName namespace="KR-WKFLW">AIWG-Test</groupName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

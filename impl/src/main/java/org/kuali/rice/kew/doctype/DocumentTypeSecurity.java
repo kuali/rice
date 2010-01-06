@@ -1,7 +1,23 @@
+/*
+ * Copyright 2008-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kew.doctype;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +37,9 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.kew.xml.XmlConstants;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -29,13 +48,18 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 
-public class DocumentTypeSecurity {
+public class DocumentTypeSecurity implements Serializable {
+
+  private static final long serialVersionUID = -1886779857180381404L;
+
+  private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypeSecurity.class);
+  
   private Boolean active;
 
   private Boolean initiatorOk;
   private Boolean routeLogAuthenticatedOk;
   private List<KeyValue> searchableAttributes = new ArrayList<KeyValue>();
-  private List<String> workgroups = new ArrayList<String>();
+  private List<Group> workgroups = new ArrayList<Group>();
   private List<String> allowedRoles = new ArrayList<String>();
   private List<String> disallowedRoles = new ArrayList<String>();
   private List<SecurityAttribute> securityAttributes = new ArrayList<SecurityAttribute>();
@@ -108,11 +132,38 @@ public class DocumentTypeSecurity {
 
       NodeList workgroupNodes = (NodeList) xpath.evaluate("./workgroup", securityElement, XPathConstants.NODESET);
       if (workgroupNodes != null && workgroupNodes.getLength()>0) {
+    	LOG.warn("Document Type Security XML is using deprecated element 'workgroup', please use 'groupName' instead.");
         for (int i = 0; i < workgroupNodes.getLength(); i++) {
           Node workgroupNode = workgroupNodes.item(i);
           String value = workgroupNode.getTextContent().trim();
           if (!Utilities.isEmpty(value)) {
-            workgroups.add(value);
+        	value = Utilities.substituteConfigParameters(value);
+            String namespaceCode = Utilities.parseGroupNamespaceCode(value);
+            String groupName = Utilities.parseGroupName(value);
+        	Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+        	if (groupObject == null) {
+        		throw new WorkflowException("Could not find group: " + value);
+        	}
+            workgroups.add(groupObject);
+          }
+        }
+      }
+
+      NodeList groupNodes = (NodeList) xpath.evaluate("./groupName", securityElement, XPathConstants.NODESET);
+      if (groupNodes != null && groupNodes.getLength()>0) {
+        for (int i = 0; i < groupNodes.getLength(); i++) {
+          Node groupNode = groupNodes.item(i);
+          if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+        	String groupName = groupNode.getTextContent().trim();
+            if (!Utilities.isEmpty(groupName)) {
+              groupName = Utilities.substituteConfigParameters(groupName).trim();
+              String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
+              Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+                if (groupObject == null) {
+                  throw new WorkflowException("Could not find group with name '" + groupName + "' and namespace '" + namespaceCode + "'");
+                }
+              workgroups.add(groupObject);
+            }
           }
         }
       }
@@ -172,7 +223,7 @@ public class DocumentTypeSecurity {
       throw new WorkflowRuntimeException(err);
     }
   }
-  
+
   public List<SecurityAttribute> getSecurityAttributes() {
     return this.securityAttributes;
   }
@@ -219,11 +270,11 @@ public class DocumentTypeSecurity {
 	this.searchableAttributes = searchableAttributes;
   }
 
-  public List<String> getWorkgroups() {
+  public List<Group> getWorkgroups() {
 	return workgroups;
   }
 
-  public void setWorkgroups(List<String> workgroups) {
+  public void setWorkgroups(List<Group> workgroups) {
 	this.workgroups = workgroups;
   }
 
@@ -243,5 +294,4 @@ public class DocumentTypeSecurity {
       return false;
     }
   }
-
 }

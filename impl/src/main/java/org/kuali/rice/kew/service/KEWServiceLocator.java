@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kew.service;
 
 import javax.persistence.EntityManagerFactory;
@@ -22,6 +37,7 @@ import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.documentlink.service.DocumentLinkService;
 import org.kuali.rice.kew.edl.extract.ExtractService;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.edl.service.StyleService;
@@ -61,7 +77,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * application context (when it was SpringServiceLocator) but those responsibilities have been
  * moved to the SpringLoader.
  *
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public final class KEWServiceLocator {
@@ -153,6 +169,8 @@ public final class KEWServiceLocator {
 	public static final String CACHE_ADMINISTRATOR = "enCacheAdministrator";
 
 	public static final String SCHEDULER = "enScheduler";
+	
+	public static final String DOCUMENT_LINK_SERVICE = "enDocumentLinkService";
 
 	/**
 	 * Polls for xml files on disk
@@ -421,6 +439,10 @@ public final class KEWServiceLocator {
 
     public static IdentityHelperService getIdentityHelperService() {
     	return (IdentityHelperService) getBean(IDENTITY_HELPER_SERVICE);
+    }
+    
+    public static DocumentLinkService getDocumentLinkService(){
+    	return (DocumentLinkService) getBean(DOCUMENT_LINK_SERVICE);
     }
     
     /**

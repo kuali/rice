@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation.
+ * Copyright 2006-2007 The Kuali Foundation
  * 
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.RiceNamespace;
+import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -132,9 +132,9 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
      * @see org.kuali.core.service.KualiModuleService#getNamespaceName(java.lang.String)
      */
     public String getNamespaceName(final String namespaceCode){
-    	RiceNamespace parameterNamespace = (RiceNamespace) 
+    	Namespace parameterNamespace = (Namespace) 
 			KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
-					RiceNamespace.class, new HashMap() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
+					Namespace.class, new HashMap() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }
     

@@ -1,11 +1,11 @@
 <!--
-	Copyright 2006-2007 The Kuali Foundation.
+	Copyright 2006-2007 The Kuali Foundation
 
-	Licensed under the Educational Community License, Version 1.0 (the "License");
+	Licensed under the Educational Community License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
 
-	http://www.opensource.org/licenses/ecl1.php
+	http://www.opensource.org/licenses/ecl2.php
 
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,7 +71,8 @@
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.kns.document.MaintenanceLock" table="KRNS_MAINT_LOCK_T">
-		<field-descriptor name="lockingRepresentation" column="MAINT_LOCK_REP_TXT" jdbc-type="VARCHAR" primarykey="true" index="true" />
+	    <field-descriptor name="lockId" column="MAINT_LOCK_ID" jdbc-type="VARCHAR" primarykey="true" index="true" autoincrement="true" sequence-name="KRNS_MAINT_LOCK_S"/>
+		<field-descriptor name="lockingRepresentation" column="MAINT_LOCK_REP_TXT" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" index="true" />
@@ -144,7 +145,7 @@
 	</class-descriptor>
 
 
-	<class-descriptor class="org.kuali.rice.kns.bo.RiceNamespace" table="KRNS_NMSPC_T">
+	<class-descriptor class="org.kuali.rice.kns.bo.Namespace" table="KRNS_NMSPC_T">
 		<field-descriptor name="code" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 
@@ -172,7 +173,7 @@
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 
-		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.RiceNamespace"
+		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.Namespace"
 			auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
 			<foreignkey field-ref="parameterNamespaceCode" />
 		</reference-descriptor>
@@ -186,6 +187,7 @@
 		<field-descriptor name="parameterDescription" column="PARM_DESC_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterConstraintCode" column="CONS_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="parameterApplicationNamespaceCode" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 
@@ -198,7 +200,7 @@
             auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="parameterTypeCode" />
         </reference-descriptor>
-		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.RiceNamespace"
+		<reference-descriptor name="parameterNamespace" class-ref="org.kuali.rice.kns.bo.Namespace"
 			auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
 			<foreignkey field-ref="parameterNamespaceCode" />
 		</reference-descriptor>
@@ -278,8 +280,11 @@
   <class-descriptor class="org.kuali.rice.kns.bo.SessionDocument" table="KRNS_SESN_DOC_T">
 	    <field-descriptor name="sessionId" column="SESN_DOC_ID" jdbc-type="VARCHAR" primarykey="true" />
 	    <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
+	    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true" />
+	    <field-descriptor name="ipAddress" column="IP_ADDR" jdbc-type="VARCHAR" primarykey="true" />
 	    <field-descriptor name="serializedDocumentForm" column="SERIALZD_DOC_FRM" jdbc-type="BLOB" />
 	    <field-descriptor name="lastUpdatedDate" column="LAST_UPDT_DT" jdbc-type="TIMESTAMP" index="true" />
+        <field-descriptor name="encrypted" column="CONTENT_ENCRYPTED_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kns.bo.CountryImpl" table="KR_COUNTRY_T">

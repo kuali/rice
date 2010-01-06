@@ -34,6 +34,7 @@ import org.kuali.rice.ksb.messaging.threadpool.KSBScheduledPool;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.kuali.rice.ksb.security.service.DigitalSignatureService;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -41,20 +42,20 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 public class KSBServiceLocator {
 
-    public static final String OBJECT_REMOTER = "ObjectRemoterService";
-    public static final String SERVICE_REMOVER_SERVICE = "RemoteClassRemoverService";
-    public static final String THREAD_POOL_SERVICE = "enThreadPool";
-    public static final String REMOTED_SERVICE_REGISTRY = "enServiceInvoker";
-    public static final String REPEAT_TOPIC_INVOKING_QUEUE = "enRepeatTopicInvokerQueue";
-    public static final String ENCRYPTION_SERVICE = "enEncryptionService";
-    public static final String DIGITAL_SIGNATURE_SERVICE = "digitalSignatureService";
-    public static final String JAVA_SECURITY_MANAGEMENT_SERVICE = "ksbJavaSecurityManagementService";
-    public static final String CACHE_ADMINISTRATOR_FACTORY = "enKEWCacheAdministratorFactoryService";
-    public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";
-    public static final String SCHEDULED_THREAD_POOL_SERVICE = "enScheduledThreadPool";
-    public static final String BUS_ADMIN_SERVICE = "busAdminService";
-    public static final String MESSAGE_ENTITY_MANAGER_FACTORY = "ksbMessageEntityManagerFactory";
-    public static final String REGISTRY_ENTITY_MANAGER_FACTORY = "ksbRegistryEntityManagerFactory";
+    public static final String OBJECT_REMOTER = KSBConstants.ServiceNames.OBJECT_REMOTER;
+    public static final String SERVICE_REMOVER_SERVICE = KSBConstants.ServiceNames.SERVICE_REMOVER_SERVICE;
+    public static final String THREAD_POOL_SERVICE = KSBConstants.ServiceNames.THREAD_POOL_SERVICE;
+    public static final String REMOTED_SERVICE_REGISTRY = KSBConstants.ServiceNames.REMOTED_SERVICE_REGISTRY;
+    public static final String REPEAT_TOPIC_INVOKING_QUEUE = KSBConstants.ServiceNames.REPEAT_TOPIC_INVOKING_QUEUE;
+    public static final String ENCRYPTION_SERVICE = KSBConstants.ServiceNames.ENCRYPTION_SERVICE;
+    public static final String DIGITAL_SIGNATURE_SERVICE = KSBConstants.ServiceNames.DIGITAL_SIGNATURE_SERVICE;
+    public static final String JAVA_SECURITY_MANAGEMENT_SERVICE = KSBConstants.ServiceNames.JAVA_SECURITY_MANAGEMENT_SERVICE;
+    public static final String CACHE_ADMINISTRATOR_FACTORY = KSBConstants.ServiceNames.CACHE_ADMINISTRATOR_FACTORY;
+    public static final String JTA_TRANSACTION_MANAGER = KSBConstants.ServiceNames.JTA_TRANSACTION_MANAGER;
+    public static final String SCHEDULED_THREAD_POOL_SERVICE = KSBConstants.ServiceNames.SCHEDULED_THREAD_POOL_SERVICE;
+    public static final String BUS_ADMIN_SERVICE = KSBConstants.ServiceNames.BUS_ADMIN_SERVICE;
+    public static final String MESSAGE_ENTITY_MANAGER_FACTORY = KSBConstants.ServiceNames.MESSAGE_ENTITY_MANAGER_FACTORY;
+    public static final String REGISTRY_ENTITY_MANAGER_FACTORY = KSBConstants.ServiceNames.REGISTRY_ENTITY_MANAGER_FACTORY;
 
     public static Object getService(String name) {
         return GlobalResourceLoader.getService(name);

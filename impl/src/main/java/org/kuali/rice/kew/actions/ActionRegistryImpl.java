@@ -23,11 +23,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -128,15 +130,21 @@ public class ActionRegistryImpl implements ActionRegistry {
      */
     public ValidActions getValidActions(KimPrincipal principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException {
         ValidActions validActions = new ValidActions();
-        for (Iterator iter = actionMap.keySet().iterator(); iter.hasNext();) {
-            String actionTakenCode = (String) iter.next();
+        ArrayList<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
+        for ( ActionRequestValue ar : document.getActionRequests() ) {
+        	if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator().booleanValue()) && StringUtils.equals( ar.getStatus(), KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+        		activeRequests.add(ar);
+        	}
+        }
+        for (Iterator<String> iter = actionMap.keySet().iterator(); iter.hasNext();) {
+            String actionTakenCode = iter.next();
             List<DataDefinition> parameters = new ArrayList<DataDefinition>();
             parameters.add(new DataDefinition(document));
             parameters.add(new DataDefinition(principal));
             ActionTakenEvent actionEvent = createAction(actionTakenCode, parameters);
-            if (actionEvent.isActionValid()) {
+            if ( StringUtils.isEmpty( actionEvent.validateActionRules(activeRequests) ) ) {
                 validActions.addActionTakenCode(actionTakenCode);
-}
+            }
         }
         return validActions;
     }

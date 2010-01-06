@@ -818,8 +818,8 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-br</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-br</developerConnection>
+		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br</connection>
+		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://test.kuali.org/fisheye/browse/rice</url>
 	</scm>

@@ -39,6 +39,7 @@
         <ref bean="DocumentType-active"/> <!-- required -->
         <ref bean="DocumentType-unresolvedDocHandlerUrl"/> <!-- required but inheritable from parent -->
         <ref bean="DocumentType-unresolvedHelpDefinitionUrl"/> <!-- option -->
+        <ref bean="DocumentType-unresolvedDocSearchHelpUrl"/> <!-- option -->
         <ref bean="DocumentType-actualNotificationFromAddress"/> <!-- option -->
         <ref bean="DocumentType-applyRetroactively"/> <!-- option -->
               <!-- Policies
@@ -282,6 +283,21 @@
     </property>
   </bean>
   
+  <bean id="DocumentType-unresolvedDocSearchHelpUrl" parent="DocumentType-unresolvedDocSearchHelpUrl-parentBean" />
+
+  <bean id="DocumentType-unresolvedDocSearchHelpUrl-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="unresolvedDocSearchHelpUrl"/>
+    <property name="label" value="Document Search Help URL"/>
+    <property name="shortLabel" value="Search Help URL"/>
+    <property name="maxLength" value="255"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="false"/>
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="50"/>
+    </property>
+  </bean>
+  
   <bean id="DocumentType-postProcessorName" parent="DocumentType-postProcessorName-parentBean"/>
 
   <bean id="DocumentType-postProcessorName-parentBean" abstract="true" parent="AttributeDefinition">
@@ -424,6 +440,7 @@
               <bean parent="FieldDefinition" p:attributeName="description"/>
               <bean parent="FieldDefinition" p:attributeName="displayableUnresolvedDocHandlerUrl"/>
               <bean parent="FieldDefinition" p:attributeName="unresolvedHelpDefinitionUrl"/>
+              <bean parent="FieldDefinition" p:attributeName="unresolvedDocSearchHelpUrl"/>
               <bean parent="FieldDefinition" p:attributeName="displayablePostProcessorName"/>
               <bean parent="FieldDefinition" p:attributeName="displayableNotificationFromAddress"/>
               <bean parent="FieldDefinition" p:attributeName="displayableServiceNamespace"/>    

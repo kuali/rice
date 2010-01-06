@@ -992,9 +992,6 @@
             <description>RouteLogActionTestTrivial</description>
             <label>RouteLogActionTestTrivial</label>
             <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
-            <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
-            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
-            <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
             <docHandler>_blank</docHandler>
             <active>true</active>
             <routePaths>
@@ -1008,7 +1005,71 @@
                 </start>
             </routeNodes>
         </documentType>
-    
+    	<documentType>
+      		<name>AdHocNoNodeTest</name>
+      		<description>AdHocNoNodeTest</description>
+      		<label>AdHocNoNodeTest</label>
+      		<postProcessorName />
+      		<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+            <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+            <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+      		<docHandler>_blank</docHandler>
+      		<active>true</active>
+      		<routePaths />
+    	</documentType> 
+    	        
+    	<!-- Test Return to Previous with split -->
+        <documentType>
+			<name>ReturnToPreviousWithSplitTest</name>
+			<parent>BlanketApproveTest</parent>
+			<description>ReturnToPreviousWithSplitTest</description>
+			<label>ReturnToPreviousWithSplitTest</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>_blank</docHandler>
+			<active>true</active>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="WorkflowDocument" />
+					<requests name="WorkflowDocument" nextNode="Banana" />
+					<split name="Banana" nextNode="NoOp2">
+						<branch name="There">
+							<requests name="WorkflowDocument2" nextNode="Join"/>
+						</branch>
+						<branch name="Here">
+							<simple name="NoOp" nextNode="Join"/>
+						</branch>
+						<join name="Join"/>
+					</split>
+					<simple name="NoOp2" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="WorkflowDocument">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+				</requests>
+				<requests name="WorkflowDocument2">
+					<activationType>P</activationType>
+					<ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+				</requests>
+				<split name="Banana">
+					<type>org.kuali.rice.kew.actions.ReturnToPreviousTestSplit</type>
+				</split>
+				<simple name="NoOp">
+					<type>org.kuali.rice.kew.engine.node.NoOpNode</type>
+				</simple>
+				<simple name="NoOp2">
+					<type>org.kuali.rice.kew.engine.node.NoOpNode</type>
+				</simple>
+				<join name="Join"/>
+			</routeNodes>
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>

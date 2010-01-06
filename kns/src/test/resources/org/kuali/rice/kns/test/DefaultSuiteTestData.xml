@@ -65,10 +65,33 @@
 			</members>
 		</group>
 	</groups>
+	
+	<ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+		<ruleAttribute>
+			<name>TestDataDictionarySearchableAttribute</name>
+			<className>org.kuali.rice.kns.workflow.attribute.DataDictionaryDocumentSearchCustomizer</className>
+			<label>Test Data Dictionary Searchable Attribute</label>
+			<description>DD searchable attribute for testing purposes</description>
+			<type>SearchableAttribute</type>
+		</ruleAttribute>
+	</ruleAttributes>
+	
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">
 			<name>WorkflowDocumentTemplate</name>
 			<description>Workflow Document Template</description>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>SearchAttributeIndexTestRuleTemplateLevel1</name>
+			<description>Search Attribute Index Test Document Template</description>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>SearchAttributeIndexTestRuleTemplateLevel2</name>
+			<description>Search Attribute Index Test Template</description>
+		</ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
+			<name>SearchAttributeIndexTestRuleTemplateLevel3</name>
+			<description>Search Attribute Index Test Template</description>
 		</ruleTemplate>
 	</ruleTemplates>
 
@@ -317,6 +340,73 @@
 				</start>
 			</routeNodes>
 		</documentType>
+		<documentType>
+			<name>AccountWithDDAttributes</name>
+			<parent>RiceDocument</parent>
+			<description>Test document for data dictionary attributes</description>
+			<label>Account With DD Attributes</label>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>none</docHandler>
+			<attributes>
+				<attribute>
+					<name>TestDataDictionarySearchableAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="Initiated" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="Initiated">
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>SearchAttributeIndexTestDocument</name>
+			<parent>RiceDocument</parent>
+			<description>Test document for search attribute indexing</description>
+			<label>Search Attribute Indexing test document</label>
+			<postProcessorName>org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+			<docHandler>none</docHandler>
+			<attributes>
+				<attribute>
+					<name>TestDataDictionarySearchableAttribute</name>
+				</attribute>
+			</attributes>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Level1" />
+					<requests name="Level1" nextNode="Level2" />
+					<requests name="Level2" nextNode="Level3" />
+					<requests name="Level3" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Level1">
+					<activationType>S</activationType>
+					<ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel1</ruleTemplate>
+				</requests>
+				<requests name="Level2">
+					<activationType>S</activationType>
+					<ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel2</ruleTemplate>
+				</requests>
+				<requests name="Level3">
+					<activationType>S</activationType>
+					<ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel3</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
@@ -340,6 +430,45 @@
 			<responsibilities>
 				<responsibility>
 					<groupName namespace="KR-WKFLW">WorkflowAdmin</groupName>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchAttributeIndexTestDocument</documentType>
+			<ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel1</ruleTemplate>
+			<description>SearchAttributeIndexTestRuleTemplateLevel1</description>
+			<forceAction>false</forceAction>
+			<responsibilities>
+				<responsibility>
+					<user>user1</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchAttributeIndexTestDocument</documentType>
+			<ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel2</ruleTemplate>
+			<description>SearchAttributeIndexTestRuleTemplateLevel2</description>
+			<forceAction>false</forceAction>
+			<responsibilities>
+				<responsibility>
+					<user>user2</user>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SearchAttributeIndexTestDocument</documentType>
+			<ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel3</ruleTemplate>
+			<description>SearchAttributeIndexTestRuleTemplateLevel3</description>
+			<forceAction>false</forceAction>
+			<responsibilities>
+				<responsibility>
+					<user>user3</user>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

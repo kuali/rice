@@ -20,22 +20,31 @@ import java.util.Properties;
 
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.properties.KualiPropertiesFactory;
 import org.kuali.rice.kns.util.properties.PropertyHolder;
 import org.kuali.rice.kns.util.spring.Cached;
+import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResources;
+import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory;
 
 @Cached
 public abstract class AbstractStaticConfigurationServiceImpl {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiConfigurationServiceImpl.class);
     private PropertyHolder propertyHolder;
+    
 
     /**
      * Harcoding the configFileName, by request.
      */
     public AbstractStaticConfigurationServiceImpl() {
-        KualiPropertiesFactory propertiesFactory = new KualiPropertiesFactory(KNSConstants.CONFIGURATION_SERVICE_DATA_FILE_NAME);
-        this.propertyHolder = propertiesFactory.getProperties(null);
+        this.propertyHolder = new PropertyHolder();
         this.propertyHolder.getHeldProperties().putAll(ConfigContext.getCurrentContextConfig().getProperties());
+        
+        KualiPropertyMessageResourcesFactory propertyMessageFactory = new KualiPropertyMessageResourcesFactory();
+        
+        // create default KualiPropertyMessageResources
+        KualiPropertyMessageResources messageResources = (KualiPropertyMessageResources)propertyMessageFactory.createResources("");;
+                
+        //Add Kuali Properies to property holder
+        this.propertyHolder.getHeldProperties().putAll(messageResources.getKualiProperties(null));
     }
     
     public boolean isProductionEnvironment() {
@@ -66,12 +75,14 @@ public abstract class AbstractStaticConfigurationServiceImpl {
             throw new IllegalArgumentException("invalid (null) key");
         }
         String property = this.propertyHolder.getProperty(key);
-        if ( property != null 
-                && (property.equalsIgnoreCase( "true" ) 
-                        || property.equalsIgnoreCase( "yes" )
-                        || property.equalsIgnoreCase( "on" )
-                        || property.equalsIgnoreCase( "1" )) ) {
-            return true;
+        if ( property != null ) {
+            property = property.trim();
+            if ((property.equalsIgnoreCase( "true" ) 
+                    || property.equalsIgnoreCase( "yes" )
+                    || property.equalsIgnoreCase( "on" )
+                    || property.equalsIgnoreCase( "1" )) ) {
+                return true;
+            }
         }
         return false;
     }

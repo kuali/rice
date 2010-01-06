@@ -35,6 +35,7 @@ public class DocumentTypeDTO implements Serializable {
     private String docTypeHandlerUrl;
     // this value is the resolved and potentially inherited value
     private String helpDefinitionUrl;
+    private String docSearchHelpUrl;
     private Long docTypeId;
     private String docTypeLabel;
     private String name;
@@ -165,6 +166,20 @@ public class DocumentTypeDTO implements Serializable {
 
     public void setHelpDefinitionUrl(String helpDefinitionUrl) {
         this.helpDefinitionUrl = helpDefinitionUrl;
+    }
+    
+    /**
+     * @return the docSearchHelpUrl
+     */
+    public String getDocSearchHelpUrl() {
+        return this.docSearchHelpUrl;
+    }
+    
+    /**
+     * @param docSearchHelpUrl the docSearchHelpUrl to set
+     */
+    public void setDocSearchHelpUrl(String docSearchHelpUrl) {
+        this.docSearchHelpUrl = docSearchHelpUrl;
     }
 
     public String getDocTypeLabel() {

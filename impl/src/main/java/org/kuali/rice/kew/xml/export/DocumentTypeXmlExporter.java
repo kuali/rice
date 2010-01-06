@@ -122,6 +122,9 @@ public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
         if (!StringUtils.isBlank(documentType.getUnresolvedHelpDefinitionUrl())) {
             renderer.renderTextElement(docTypeElement, HELP_DEFINITION_URL, documentType.getUnresolvedHelpDefinitionUrl());
         }
+        if (!StringUtils.isBlank(documentType.getUnresolvedDocSearchHelpUrl())) {
+            renderer.renderTextElement(docTypeElement, DOC_SEARCH_HELP_URL, documentType.getUnresolvedDocSearchHelpUrl());
+        }
         if (!StringUtils.isBlank(documentType.getActualNotificationFromAddress())) {
         	renderer.renderTextElement(docTypeElement, NOTIFICATION_FROM_ADDRESS, documentType.getActualNotificationFromAddress());
         }

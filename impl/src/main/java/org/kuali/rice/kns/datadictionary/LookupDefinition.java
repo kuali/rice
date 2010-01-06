@@ -73,6 +73,9 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     protected String searchIconOverride;
 
     protected int numOfColumns;
+    
+    protected HelpDefinition helpDefinition;
+    protected String helpUrl;
 
     public LookupDefinition() {}
 
@@ -482,5 +485,33 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 	 */
 	public void setNumOfColumns(int numOfColumns) {
 		this.numOfColumns = numOfColumns;
+	}
+
+	/**
+	 * @return the helpDefinition
+	 */
+	public HelpDefinition getHelpDefinition() {
+		return this.helpDefinition;
+	}
+
+	/**
+	 * @param helpDefinition the helpDefinition to set
+	 */
+	public void setHelpDefinition(HelpDefinition helpDefinition) {
+		this.helpDefinition = helpDefinition;
+	}
+
+	/**
+	 * @return the helpUrl
+	 */
+	public String getHelpUrl() {
+		return this.helpUrl;
+	}
+
+	/**
+	 * @param helpUrl the helpUrl to set
+	 */
+	public void setHelpUrl(String helpUrl) {
+		this.helpUrl = helpUrl;
 	}
 }

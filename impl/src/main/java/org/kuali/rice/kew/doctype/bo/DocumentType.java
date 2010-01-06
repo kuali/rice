@@ -130,6 +130,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Column(name="HELP_DEF_URL")
     private String unresolvedHelpDefinitionUrl;
 
+    @Column(name="DOC_SEARCH_HELP_URL")
+    private String unresolvedDocSearchHelpUrl;
+    
     @Column(name="DOC_HDLR_URL")
     private String unresolvedDocHandlerUrl;
     @Column(name="POST_PRCSR")
@@ -689,18 +692,40 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
      * potential variables that may be in use
      */
     public String getHelpDefinitionUrl() {
-        return resolveHelpDefinitionUrl(getUnresolvedHelpDefinitionUrl());
+        return resolveHelpUrl(getUnresolvedHelpDefinitionUrl());
     }
 
     /**
-     * If the help definition URL has variables in it that need to be replaced, this will look up the values
+     * If a help URL has variables in it that need to be replaced, this will look up the values
      * for those variables and replace them.
      */
-    protected String resolveHelpDefinitionUrl(String helpDefinitionUrl) {
+    protected String resolveHelpUrl(String helpDefinitionUrl) {
         if (StringUtils.isBlank(helpDefinitionUrl)) {
             return "";
         }
         return Utilities.substituteConfigParameters(helpDefinitionUrl);
+    }
+    
+    /**
+     * @return the unresolvedDocSearchHelpUrl
+     */
+    public String getUnresolvedDocSearchHelpUrl() {
+        return this.unresolvedDocSearchHelpUrl;
+    }
+    
+    /**
+     * @param unresolvedDocSearchHelpUrl the unresolvedDocSearchHelpUrl to set
+     */
+    public void setUnresolvedDocSearchHelpUrl(String unresolvedDocSearchHelpUrl) {
+        this.unresolvedDocSearchHelpUrl = unresolvedDocSearchHelpUrl;
+    }
+    
+    /**
+     * This method gets the doc search help url from this object and resolves any 
+     * potential variables that may be in use
+     */
+    public String getDocSearchHelpUrl() {
+        return resolveHelpUrl(getUnresolvedDocSearchHelpUrl());
     }
 
     public java.lang.String getLabel() {
@@ -1433,6 +1458,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
                           + ", routeHeaderId=" + routeHeaderId
                           + ", unresolvedDocHandlerUrl=" + unresolvedDocHandlerUrl
                           + ", unresolvedHelpDefinitionUrl=" + unresolvedHelpDefinitionUrl
+                          + ", unresolvedDocSearchHelpUrl=" + unresolvedDocSearchHelpUrl
                           + ", postProcessorName=" + postProcessorName
                           + ", workgroupId=" + workgroupId
                           + ", blanketApproveWorkgroupId=" + blanketApproveWorkgroupId

@@ -49,6 +49,7 @@ import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
+import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -543,6 +544,15 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( StringUtils.isNotBlank(keyValuesFinderName)) {
 			try {
 				KeyValuesFinder finder = (KeyValuesFinder)Class.forName(keyValuesFinderName).newInstance();
+				if (finder instanceof PersistableBusinessObjectValuesFinder) {
+	                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(ClassLoaderUtils.getClass(definition.getControl().getBusinessObjectClass()));
+	                ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(definition.getControl().getKeyAttribute());
+	                ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(definition.getControl().getLabelAttribute());
+	                if (definition.getControl().getIncludeBlankRow() != null) {
+		                ((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(definition.getControl().getIncludeBlankRow()); 
+	                }
+	                ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(definition.getControl().getIncludeKeyInLabel());
+				}
 				pairs = finder.getKeyValues();
 			} catch ( ClassNotFoundException ex ) {
 				LOG.info( "Unable to find class: " + keyValuesFinderName + " in the current context." );

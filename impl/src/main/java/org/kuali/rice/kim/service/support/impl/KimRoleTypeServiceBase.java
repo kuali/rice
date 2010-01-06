@@ -120,16 +120,6 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	}
 		
 	/**
-	 * No conversion performed.  Simply returns the passed in Map.
-	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#convertQualificationAttributesToRequired(AttributeSet)
-	 */
-	public AttributeSet convertQualificationAttributesToRequired(
-			AttributeSet qualificationAttributes) {
-		return qualificationAttributes;
-	}
-
-	/**
 	 * This base implementation simply returns the passed in AttributeSet.
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#convertQualificationForMemberRoles(String, String, String, String, AttributeSet)
@@ -170,6 +160,16 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		AttributeSet translatedQualification = translateInputAttributeSet(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		return performMatch(translatedQualification, roleQualifier);
+	}
+
+	/**
+	 * Returns true as a default
+	 * 
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 */
+	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
+			String roleName) {
+		return true;
 	}
 
 }

@@ -16,8 +16,8 @@
 package org.kuali.rice.core.jdbc.criteria;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,10 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kns.service.DateTimeService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 
 
@@ -46,6 +49,7 @@ import org.kuali.rice.kns.util.TypeUtils;
  */
 @SuppressWarnings("unchecked")
 public class Criteria {
+	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Criteria.class);
 
 	private Integer searchLimit;
 
@@ -98,34 +102,59 @@ public class Criteria {
 	}
 
 	private String fixValue(Object value, Class propertyType){
+		
+		if (value == null) {
+			return "";
+		}
 
 		if(TypeUtils.isJoinClass(propertyType)){
 			return value.toString();
 		}
 
-		if(TypeUtils.isIntegralClass(propertyType)){
+		if(TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType)){
+			new BigDecimal(value.toString()); // This should throw an exception if the number is invalid.
 			return value.toString();
 		}
 		if(TypeUtils.isTemporalClass(propertyType)){
-
-			Timestamp ts = (Timestamp)value;
-			java.sql.Date dt = new java.sql.Date(ts.getTime());
-			SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
-
-			String sql = DocSearchUtils.getDateSQL(sdfDate.format(dt),sdfTime.format(dt)) ;
-			return sql;
+			try {
+				if (value instanceof String) {
+					final DateTimeService dateTimeService = KNSServiceLocator.getDateTimeService();
+					value = dateTimeService.convertToSqlTimestamp(value.toString());
+				}
+				return getFixedTemporalValue(value);
+			} catch (ParseException pe) {
+				LOG.warn("Could not parse "+value.toString()+" as date");
+				throw new RuntimeException("Could not parse "+value.toString()+" as date", pe);
+			}
 		}
 		if (TypeUtils.isStringClass(propertyType)) {
-			return " '" + value.toString().trim() + "' ";
+			return " '" + getDbPlatform().escapeString(value.toString().trim()) + "' ";
 		}
 		if (TypeUtils.isBooleanClass(propertyType)) {
+			if (value instanceof String) {
+				value = new BooleanFormatter().convertFromPresentationFormat(value.toString());
+			}
 			boolean bVal = ((Boolean)value).booleanValue();
 			if(bVal){return "1";}
 			else { return "0";}
 		}
 
 		return value.toString();
+	}
+	
+	/**
+	 * Prepares a temporally classed value for inclusion in criteria
+	 * @param value the Timestamp value to convert
+	 * @return the fixed SQL version of that value
+	 */
+	private String getFixedTemporalValue(Object value) {
+		Timestamp ts = (Timestamp)value;
+		java.sql.Date dt = new java.sql.Date(ts.getTime());
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+
+		String sql = getDbPlatform().getDateSQL(sdfDate.format(dt),sdfTime.format(dt)) ;
+		return sql;
 	}
 
 
@@ -237,7 +266,7 @@ public class Criteria {
 	public void in(String attribute, List values, Class propertyType) {
 		String in = "";
 		for (Object object : values) {
-			in += "'"+object + "',";
+			in += fixValue(object, propertyType) + ",";
 		}
 		if (!"".equals(in)) {
 			in = in.substring(0, in.length()-1);
@@ -248,7 +277,7 @@ public class Criteria {
 	public void notIn(String attribute, List values, Class propertyType) {
 		String in = "";
 		for (Object object : values) {
-			in += "'"+object + "',";
+			in += fixValue(object, propertyType) + ",";
 		}
 		if (!"".equals(in)) {
 			in = in.substring(in.length()-1);
@@ -481,12 +510,12 @@ public class Criteria {
     	DatabasePlatform platform = getDbPlatform();
     	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + platform.escapeString(columnDbName) + " ");
         if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null && toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-            return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
+            return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
         } else {
             if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null) {
-                return dateSqlString.append(" >= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null)).toString();
+                return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null)).toString();
             } else if (toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-                return dateSqlString.append(" <= " + DocSearchUtils.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
+                return dateSqlString.append(" <= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
             } else {
                 return "";
             }

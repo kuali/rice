@@ -36,10 +36,14 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class AdHocRouteTest extends KEWTestCase {
 
 	private static final String ADHOC_DOC = "AdhocRouteTest";
+	private static final String ADHOC_NO_NODE_DOC = "AdHocNoNodeTest";
 	private Long docId;
 
     protected void loadTestData() throws Exception {
@@ -499,7 +503,7 @@ public class AdHocRouteTest extends KEWTestCase {
 		doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_APPROVE_REQ, null, "", workflowAdmin.getGroupId(), "", true, label);
 		
 		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(doc.getRouteHeaderId());
-		assertEquals("Shoudl have 1 request.", 1, actionRequests.size());
+		assertEquals("Should have 1 request.", 1, actionRequests.size());
 		ActionRequestValue actionRequest = actionRequests.get(0);
 		assertEquals("Should be an approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
 		assertEquals("Invalid request label", label, actionRequest.getRequestLabel());
@@ -515,6 +519,31 @@ public class AdHocRouteTest extends KEWTestCase {
 			assertEquals("ActionItem should have same label", label, actionItem.getRequestLabel());
 		}
 	}
+	
+	   @Test
+	    public void testAdHocWithNoNodes() throws Exception {
+	        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), ADHOC_NO_NODE_DOC);
+	        String label = "MY PRINCIPAL LABEL";
+	        //DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
+	        
+	        doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, null, "", getPrincipalIdForName("ewestfal"), "", true, label);
+	        
+	        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(doc.getRouteHeaderId());
+	        assertEquals("Should have 1 request.", 1, actionRequests.size());
+	        ActionRequestValue actionRequest = actionRequests.get(0);
+	        assertEquals("Should be a FYI request", KEWConstants.ACTION_REQUEST_FYI_REQ, actionRequest.getActionRequested());
+	        assertEquals("Invalid request label", label, actionRequest.getRequestLabel());
+	        assertEquals("Request should be initialized", KEWConstants.ACTION_REQUEST_INITIALIZED, actionRequest.getStatus());
+	        
+	        // now route the document, it should activate the request and create an action item
+	        doc.routeDocument("");
+	        
+	        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getRouteHeaderId());
+	        assertEquals("Should have 0 action item.", 0, actionItems.size());
+	        //ActionItem actionItem = actionItems.iterator().next();
+	        //assertEquals("ActionItem should be constructed from request.", actionRequest.getActionRequestId(), actionItem.getActionRequestId());
+	        //assertEquals("ActionItem should have same label", label, actionItem.getRequestLabel());
+	    }
 
 	
     private WorkflowDocument getDocument(String netid) throws WorkflowException {

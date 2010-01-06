@@ -72,8 +72,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -92,54 +92,68 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward getDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		Long docId=new Long(docForm.getRouteHeaderId().trim());
-		//to clear Document Field first;
-        docForm.resetOps();
-		DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(docId);
-		List routeNodeInstances=getRouteNodeService().findRouteNodeInstances(docId);
-		Map branches1=new HashMap();
-		List branches=new ArrayList();
-
-		if (routeHeader == null) {
-			throw new WorkflowServiceErrorException("Document Not Found", new WorkflowServiceErrorImpl("Document Not Found", "docoperation.routeheaderid.invalid"));
+		Long docId = null;
+		
+		// check if we have a plausible docId first
+		if (StringUtils.isEmpty(docForm.getRouteHeaderId())) {
+			GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_REQUIRED, "Document ID");
 		} else {
-			materializeDocument(routeHeader);
-			docForm.setRouteHeader(routeHeader);
-			setRouteHeaderTimestampsToString(docForm);
-			docForm.setRouteHeaderOp(KEWConstants.NOOP);
-			docForm.setRouteHeaderId(docForm.getRouteHeaderId().trim());
-			String initials="";
-			for(Iterator lInitials=routeHeader.getInitialRouteNodeInstances().iterator();lInitials.hasNext();){
-				Long initial=((RouteNodeInstance)lInitials.next()).getRouteNodeInstanceId();
-				LOG.debug(initial);
-				initials=initials+initial+", ";
+			try {
+				docId = Long.valueOf(docForm.getRouteHeaderId().trim());
+			} catch (NumberFormatException nfe) {
+				GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_NUMERIC, "Document ID");
 			}
-			if(initials.trim().length()>1){
-				initials=initials.substring(0,initials.lastIndexOf(","));
-			}
-			docForm.setInitialNodeInstances(initials);
-			request.getSession().setAttribute("routeNodeInstances",routeNodeInstances);
-			docForm.setRouteNodeInstances(routeNodeInstances);
-			if(routeNodeInstances!=null){
-				Iterator routeNodeInstanceIter=routeNodeInstances.iterator();
-			    while(routeNodeInstanceIter.hasNext()){
-				   RouteNodeInstance routeNodeInstance=(RouteNodeInstance) routeNodeInstanceIter.next();
-				   Branch branch=routeNodeInstance.getBranch();
-				   if (! branches1.containsKey(branch.getName())){
-					   branches1.put(branch.getName(),branch);
-					   branches.add(branch);
-					   LOG.debug(branch.getName()+"; "+branch.getBranchState());
-				   }
-				}
-			    if(branches.size()<1){
-			    	branches=null;
-			    }
-			}
-			branches1.clear();
-			request.getSession().setAttribute("branches",branches);
-			docForm.setBranches(branches);
-
 		}
+
+		if (docId != null) {
+			//to clear Document Field first;
+			docForm.resetOps();
+			DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(docId);
+			List routeNodeInstances=getRouteNodeService().findRouteNodeInstances(docId);
+			Map branches1=new HashMap();
+			List branches=new ArrayList();
+
+			if (routeHeader == null) {
+				GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_EXISTENCE, "document");
+			} else {
+				materializeDocument(routeHeader);
+				docForm.setRouteHeader(routeHeader);
+				setRouteHeaderTimestampsToString(docForm);
+				docForm.setRouteHeaderOp(KEWConstants.NOOP);
+				docForm.setRouteHeaderId(docForm.getRouteHeaderId().trim());
+				String initials="";
+				for(Iterator lInitials=routeHeader.getInitialRouteNodeInstances().iterator();lInitials.hasNext();){
+					Long initial=((RouteNodeInstance)lInitials.next()).getRouteNodeInstanceId();
+					LOG.debug(initial);
+					initials=initials+initial+", ";
+				}
+				if(initials.trim().length()>1){
+					initials=initials.substring(0,initials.lastIndexOf(","));
+				}
+				docForm.setInitialNodeInstances(initials);
+				request.getSession().setAttribute("routeNodeInstances",routeNodeInstances);
+				docForm.setRouteNodeInstances(routeNodeInstances);
+				if(routeNodeInstances!=null){
+					Iterator routeNodeInstanceIter=routeNodeInstances.iterator();
+					while(routeNodeInstanceIter.hasNext()){
+						RouteNodeInstance routeNodeInstance=(RouteNodeInstance) routeNodeInstanceIter.next();
+						Branch branch=routeNodeInstance.getBranch();
+						if (! branches1.containsKey(branch.getName())){
+							branches1.put(branch.getName(),branch);
+							branches.add(branch);
+							LOG.debug(branch.getName()+"; "+branch.getBranchState());
+						}
+					}
+					if(branches.size()<1){
+						branches=null;
+					}
+				}
+				branches1.clear();
+				request.getSession().setAttribute("branches",branches);
+				docForm.setBranches(branches);
+			}
+		}
+			
 		return mapping.findForward("basic");
 	}
 
@@ -745,7 +759,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				}
 			}
 			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
-			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames);
+			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames, true);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);

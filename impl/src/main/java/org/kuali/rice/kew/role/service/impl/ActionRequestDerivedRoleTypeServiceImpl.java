@@ -110,4 +110,16 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 			throw new RuntimeException("Unable to load route header", e);
 		}
 	}
+
+	/**
+	 * Returns false, as action requests change quite often so membership in this role is highly volatile
+	 * 
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
+			String roleName) {
+		return false;
+	}
+	
 }

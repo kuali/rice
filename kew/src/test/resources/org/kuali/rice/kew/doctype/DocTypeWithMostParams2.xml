@@ -28,6 +28,7 @@
 			<defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
 			<docHandler>_nothing</docHandler>
 			<helpDefinitionURL>_nothing</helpDefinitionURL>
+            <docSearchHelpURL>_nothing</docSearchHelpURL>
 			<notificationFromAddress>_nothing</notificationFromAddress>
 			<emailStylesheet>_nothing</emailStylesheet>
 			<serviceNamespace>KEW</serviceNamespace>

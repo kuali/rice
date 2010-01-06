@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.plugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -24,8 +25,6 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderContainer;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * A base class for {@link PluginRegistry} implementations.  Is essentially a ResourceLoader 

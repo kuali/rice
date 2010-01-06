@@ -537,6 +537,28 @@ public class DocumentTypeXmlParser implements XmlConstants {
             }
             documentType.setUnresolvedHelpDefinitionUrl(helpDefUrl);
         }
+        
+        // set the doc search help URL on the document type
+        String docSearchHelpUrl = null;
+        try {
+            docSearchHelpUrl = (String) getXPath().evaluate("./" + DOC_SEARCH_HELP_URL, documentTypeNode, XPathConstants.STRING);
+        } catch (XPathExpressionException xpee) {
+            LOG.error("Error obtaining document type document search help url", xpee);
+            throw xpee;
+        }
+        // if the ingestion has produced a valid value then set it on the document
+        if (StringUtils.isNotBlank(docSearchHelpUrl)) {
+            documentType.setUnresolvedDocSearchHelpUrl(docSearchHelpUrl);
+        }
+        // at this point we know the ingested value is blank
+        else if (!isOverwrite) {
+            // if this is not an overwrite, we need to check the previous document type version for a value to pull forward
+            if ( (ObjectUtils.isNotNull(previousDocumentType)) && (StringUtils.isNotBlank(previousDocumentType.getUnresolvedDocSearchHelpUrl())) ) {
+                // keep the same value from the previous version of the document type from the database
+                docSearchHelpUrl = previousDocumentType.getUnresolvedDocSearchHelpUrl();
+            }
+            documentType.setUnresolvedDocSearchHelpUrl(docSearchHelpUrl);
+        }
 
         // set the service namespace on the document type
         try {

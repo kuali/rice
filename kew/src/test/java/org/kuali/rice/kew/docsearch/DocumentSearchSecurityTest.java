@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -39,8 +41,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a test class to test the document search security and row filtering
@@ -264,6 +265,8 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     }
 
     @Test public void testFiltering_SearchAttribute() throws Exception {
+    	LOG.info("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+    	
         String searchAttributeName = "UserEmployeeId";
         String searchAttributeFieldName = "employeeId";
         String documentTypeName = "SecurityDoc_SearchAttributeOnly";
@@ -304,6 +307,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
+        RouteContext.clearCurrentRouteContext();
         Person approverUser = loginUser(APPROVER_USER_NETWORK_ID);
         document = new WorkflowDocument(new NetworkIdDTO(approverUser.getPrincipalName()), document.getRouteHeaderId());
         document.clearSearchableContent();

@@ -27,7 +27,8 @@
 			<reportingGroupName namespace="KR-WKFLW">TestWorkgroup</reportingGroupName>
 			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<docHandler>_blank</docHandler>
-			<helpDefinitionURL>_blank</helpDefinitionURL>
+            <helpDefinitionURL>_blank</helpDefinitionURL>
+            <docSearchHelpURL>_blank</docSearchHelpURL>
 			<notificationFromAddress>_blank</notificationFromAddress>
 			<emailStylesheet>_blank</emailStylesheet>
 			<serviceNamespace>TestCl1</serviceNamespace>

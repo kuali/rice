@@ -123,7 +123,7 @@ public class KimCommonUtils {
 	public static String getNamespaceCode(Class<? extends Object> clazz) {
 		ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
 		if (moduleService == null) {
-			return "KUALI";
+			return KimConstants.KIM_TYPE_DEFAULT_NAMESPACE;
 		}
 		return moduleService.getModuleConfiguration().getNamespaceCode();
 	}

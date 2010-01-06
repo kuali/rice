@@ -100,7 +100,7 @@ public class DataDictionaryDocumentSearchCustomizer extends StandardDocumentSear
         return searchableAttribute.getSearchStorageValues(documentSearchContext);
     }
 
-    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, String> paramMap, DocumentSearchContext searchContext) {
+    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
         return searchableAttribute.validateUserSearchInputs(paramMap, searchContext);
     }
 

@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -30,13 +31,16 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implements ServiceInfoDAO {
 
     public void addEntry(ServiceInfo entry) {
-	getPersistenceBrokerTemplate().store(entry);
+    	if (ObjectUtils.isNotNull(entry.getSerializedServiceNamespace())) {
+    		getPersistenceBrokerTemplate().store(entry.getSerializedServiceNamespace());
+    	}
+    	getPersistenceBrokerTemplate().store(entry);
     }
 
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> fetchAll() {
-	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
-		new QueryByCriteria(ServiceInfo.class));
+    	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
+    			new QueryByCriteria(ServiceInfo.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -44,7 +48,7 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 		Criteria crit = new Criteria();
 		crit.addEqualTo("alive", Boolean.TRUE);
 		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
-			new QueryByCriteria(ServiceInfo.class, crit));
+				new QueryByCriteria(ServiceInfo.class, crit));
     }
 
     @SuppressWarnings("unchecked")
@@ -53,7 +57,7 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 		crit.addEqualTo("alive", Boolean.TRUE);
 		crit.addLike("serviceName", "{%}"+serviceName);
 		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
-			new QueryByCriteria(ServiceInfo.class, crit));
+				new QueryByCriteria(ServiceInfo.class, crit));
     }
     
     @SuppressWarnings("unchecked")
@@ -62,42 +66,47 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 		crit.addEqualTo("alive", Boolean.TRUE);
 		crit.addEqualTo("serviceName", qname.toString());
 		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
-			new QueryByCriteria(ServiceInfo.class, crit));
+				new QueryByCriteria(ServiceInfo.class, crit));
     }
     
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
-	Criteria crit = new Criteria();
-	crit.addEqualTo("alive", Boolean.TRUE);
-	crit.addEqualTo("serviceNamespace", "{"+serviceNamespace+"}%");	
-	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
-		new QueryByCriteria(ServiceInfo.class, crit));
+    	Criteria crit = new Criteria();
+    	crit.addEqualTo("alive", Boolean.TRUE);
+    	crit.addEqualTo("serviceNamespace", "{"+serviceNamespace+"}%");	
+    	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
+    			new QueryByCriteria(ServiceInfo.class, crit));
     }
     
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
-	Criteria crit = new Criteria();
-	crit.addEqualTo("serverIp", ipNumber);
-	crit.addEqualTo("serviceNamespace", serviceNamespace);
-	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
-		new QueryByCriteria(ServiceInfo.class, crit));
+    	Criteria crit = new Criteria();
+    	crit.addEqualTo("serverIp", ipNumber);
+    	crit.addEqualTo("serviceNamespace", serviceNamespace);
+    	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
+    			new QueryByCriteria(ServiceInfo.class, crit));
     }
 
     public void removeEntry(ServiceInfo entry) {
-	Criteria crit = new Criteria();
-	crit.addEqualTo("messageEntryId", entry.getMessageEntryId());
-	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));
+    	getPersistenceBrokerTemplate().delete(entry);
+    	/*Criteria crit = new Criteria();
+		crit.addEqualTo("messageEntryId", entry.getMessageEntryId());
+		getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));*/
     }
 
     public ServiceInfo findServiceInfo(Long serviceInfoId) {
-	return (ServiceInfo) getPersistenceBrokerTemplate().getObjectById(ServiceInfo.class, serviceInfoId);
+    	return (ServiceInfo) getPersistenceBrokerTemplate().getObjectById(ServiceInfo.class, serviceInfoId);
     }
 
     public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace) {
-	Criteria crit = new Criteria();
-	crit.addEqualTo("serverIp", ipNumber);
-	crit.addEqualTo("serviceNamespace", serviceNamespace);
-	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));
+    	List<ServiceInfo> localServices = findLocallyPublishedServices(ipNumber, serviceNamespace);
+    	for (ServiceInfo serviceInfo : localServices) {
+    		getPersistenceBrokerTemplate().delete(serviceInfo);
+    	}
+    	/*Criteria crit = new Criteria();
+    	crit.addEqualTo("serverIp", ipNumber);
+    	crit.addEqualTo("serviceNamespace", serviceNamespace);
+    	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));*/
     }
 
 }

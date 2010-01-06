@@ -46,8 +46,6 @@ public interface KimRoleDao {
 	
 	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds );
 	
-	Map<String,RoleImpl> getRoleImplMap( Collection<String> roleIds );
-	
 	Map<String,KimDelegationImpl> getDelegationImplMapFromRoleIds(Collection<String> roleIds);
 	
 	List<KimDelegationImpl> getDelegationImplsForRoleIds(Collection<String> roleIds);

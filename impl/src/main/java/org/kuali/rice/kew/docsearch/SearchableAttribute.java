@@ -78,5 +78,5 @@ public interface SearchableAttribute extends Serializable {
      * @return
      */
     public List<WorkflowAttributeValidationError> validateUserSearchInputs(
-    		Map<Object, String> paramMap, DocumentSearchContext searchContext);
+    		Map<Object, Object> paramMap, DocumentSearchContext searchContext);
 }

@@ -225,4 +225,23 @@ public class CurrencyFormatter extends Formatter {
         return formatter;
     }
     // end Kuali Foundation modification
+    
+    // begin Kuali Foundation modification
+    /**
+     * Validates a currency string by passing it into the convertToObject method and determining if conversion succeeded.
+     * 
+     * @param currencyString The string to attempt to format.
+     * @return True if no exceptions occurred when parsing and the conversion returned a non-null value; false otherwise.
+     * @see org.kuali.rice.kns.web.format.CurrencyFormatter#convertToObject(java.lang.String)
+     */
+    public boolean validate(String currencyString) {
+    	Object currencyObject = null;
+    	try {
+    		currencyObject = convertToObject(currencyString);
+    	} catch (Exception e) {
+    		currencyObject = null;
+    	}
+    	return (currencyObject != null);
+    }
+    // end Kuali Foundation modification
 }

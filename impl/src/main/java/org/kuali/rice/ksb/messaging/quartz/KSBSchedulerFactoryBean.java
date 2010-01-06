@@ -41,11 +41,13 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
     private boolean nonTransactionalDataSourceSet = false;
     private boolean nonTransactionalDataSourceNull = true;
     private boolean dataSourceSet = false;
+    private boolean schedulerInjected = false;
     
     @Override
     protected Scheduler createScheduler(SchedulerFactory schedulerFactory, String schedulerName) throws SchedulerException {
         if (ConfigContext.getCurrentContextConfig().getObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY) != null) {
             try {
+	            schedulerInjected = true;
                 Scheduler scheduler = (Scheduler) ConfigContext.getCurrentContextConfig().getObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
                 scheduler.addJobListener(new MessageServiceExecutorJobListener());
                 return scheduler;
@@ -60,7 +62,7 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
     public void afterPropertiesSet() throws Exception {
 
         boolean useQuartzDatabase = new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.USE_QUARTZ_DATABASE));
-        if (useQuartzDatabase) {
+        if (useQuartzDatabase && !schedulerInjected) {
             // require a transaction manager
             if (jtaTransactionManager == null) {
                 throw new ConfigurationException("No jta transaction manager was configured for the KSB Quartz Scheduler");

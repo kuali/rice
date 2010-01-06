@@ -80,7 +80,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	public String getSpringFileLocations(){
 		String springFileLocations;
-		if (KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
+		if (KEWConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
 			springFileLocations = "";
 		} else {
 			springFileLocations = getEmbeddedSpringFileLocation();

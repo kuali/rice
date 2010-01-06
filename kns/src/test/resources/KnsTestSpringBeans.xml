@@ -110,7 +110,5 @@
         	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
 		</property>
 	</bean>
-	
-
 
 </beans>

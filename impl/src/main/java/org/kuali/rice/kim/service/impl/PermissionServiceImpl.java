@@ -29,6 +29,7 @@ import javax.jws.WebService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -59,6 +60,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -68,6 +70,11 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  */
 @WebService(endpointInterface = KIMWebServiceConstants.PermissionService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class PermissionServiceImpl implements PermissionService, PermissionUpdateService {
+	protected static final String PERMISSION_IMPL_CACHE_PREFIX = "PermissionImpl-Template-";
+	protected static final String PERMISSION_IMPL_NAME_CACHE_PREFIX = "PermissionImpl-Name-";
+	protected static final String PERMISSION_IMPL_ID_CACHE_PREFIX = "PermissionImpl-Id-";
+	protected static final String PERMISSION_IMPL_CACHE_GROUP = "PermissionImpl";
+
 	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 	
@@ -77,10 +84,10 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     private KimPermissionTypeService defaultPermissionTypeService;
 	private SequenceAccessorService sequenceAccessorService;
 	private List<KimPermissionTemplateInfo> allTemplates;
+	private RiceCacheAdministrator cacheAdministrator;
 
     private static final long CACHE_MAX_AGE_SECONDS = 60L;
 
-    private Map<String,MaxAgeSoftReference<List<KimPermissionImpl>>> permissionCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<List<KimPermissionImpl>>>() );
     private Map<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap( new HashMap<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>>() );
 
     // Not ThreadLocal or time limited- should not change during the life of the system
@@ -439,60 +446,60 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	return results;
     }
     
-	protected List<KimPermissionImpl> getPermissionsFromCache( String key ) {
-    	List<KimPermissionImpl> permissions = null; 
-    	MaxAgeSoftReference<List<KimPermissionImpl>> cacheRef = permissionCache.get( key );
-    	if ( cacheRef != null ) {
-    		permissions = cacheRef.get();
-    	}
-    	return permissions;
-    }
-
-    protected void addPermissionsToCache( String key, List<KimPermissionImpl> permissions ) {
-    	permissionCache.put( key, new MaxAgeSoftReference<List<KimPermissionImpl>>( CACHE_MAX_AGE_SECONDS, permissions ) );
-    }
-    
-    protected KimPermissionImpl getPermissionImpl(String permissionId) {
+    @SuppressWarnings("unchecked")
+	protected KimPermissionImpl getPermissionImpl(String permissionId) {
     	if ( StringUtils.isBlank( permissionId ) ) {
     		return null;
     	}
-    	List<KimPermissionImpl> permissions = getPermissionsFromCache( permissionId );
+    	String cacheKey = getPermissionImplByIdCacheKey(permissionId);
+    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey);
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
 	    	pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
-	    	permissions = new ArrayList<KimPermissionImpl>( 1 );
-	    	permissions.add( (KimPermissionImpl)getBusinessObjectService().findByPrimaryKey( KimPermissionImpl.class, pk ) );
-	    	addPermissionsToCache( permissionId, permissions );
+	    	permissions = Collections.singletonList( (KimPermissionImpl)getBusinessObjectService().findByPrimaryKey( KimPermissionImpl.class, pk ) );
+	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
     	return permissions.get( 0 );
     }
     
     @SuppressWarnings("unchecked")
 	protected List<KimPermissionImpl> getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
-    	List<KimPermissionImpl> permissions = getPermissionsFromCache( namespaceCode+"-TEMPLATE-"+permissionTemplateName );
+    	String cacheKey = getPermissionImplByTemplateNameCacheKey(namespaceCode, permissionTemplateName);
+    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey);
     	if ( permissions == null ) {    	
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( "template.namespaceCode", namespaceCode );
 	    	pk.put( "template.name", permissionTemplateName );
 			pk.put( KNSPropertyConstants.ACTIVE, "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
-	    	addPermissionsToCache( namespaceCode+"-TEMPLATE-"+permissionTemplateName, permissions );
+	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
     	return permissions;
     }
 
     @SuppressWarnings("unchecked")
 	protected List<KimPermissionImpl> getPermissionImplsByName( String namespaceCode, String permissionName ) {
-    	List<KimPermissionImpl> permissions = getPermissionsFromCache( namespaceCode+"-"+permissionName );
+    	String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName);
+    	List<KimPermissionImpl> permissions = (List<KimPermissionImpl>)getCacheAdministrator().getFromCache(cacheKey);
     	if ( permissions == null ) {
 	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
 	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
 	    	pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
 			pk.put( KNSPropertyConstants.ACTIVE, "Y" );
 	    	permissions = (List<KimPermissionImpl>)getBusinessObjectService().findMatching( KimPermissionImpl.class, pk );
-	    	addPermissionsToCache( namespaceCode+"-"+permissionName, permissions );
+	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
     	}
     	return permissions;
+    }
+
+    protected String getPermissionImplByTemplateNameCacheKey( String namespaceCode, String permissionTemplateName ) {
+    	return PERMISSION_IMPL_CACHE_PREFIX + namespaceCode + "-" + permissionTemplateName;
+    }
+    protected String getPermissionImplByNameCacheKey( String namespaceCode, String permissionName ) {
+    	return PERMISSION_IMPL_NAME_CACHE_PREFIX + namespaceCode + "-" + permissionName;
+    }
+    protected String getPermissionImplByIdCacheKey( String permissionId ) {
+    	return PERMISSION_IMPL_ID_CACHE_PREFIX + permissionId;
     }
     
     // --------------------
@@ -679,12 +686,17 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 	    	}
 	    	getBusinessObjectService().save(perm);
 	    	KIMServiceLocator.getIdentityManagementService().flushPermissionCaches();
+	    	flushPermissionImplCache();
     	} catch ( RuntimeException ex ) {
     		LOG.error( "Exception in savePermission: ", ex );
     		throw ex;
     	}
 	}
 
+    public void flushPermissionImplCache() {
+    	getCacheAdministrator().flushGroup(PERMISSION_IMPL_CACHE_GROUP);
+    }
+	
     protected String getNewAttributeDataId(){
 		SequenceAccessorService sas = getSequenceAccessorService();		
 		Long nextSeq = sas.getNextAvailableSequenceNumber(
@@ -705,6 +717,13 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
+	}
+	
+	protected RiceCacheAdministrator getCacheAdministrator() {
+		if ( cacheAdministrator == null ) {
+			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
+		}
+		return cacheAdministrator;
 	}
 	
 }

@@ -60,8 +60,8 @@
 					<packagingExcludes>**/ojdbc14*.jar, **/mysql*.jar, **/junit*.jar, **/htmlunit*.jar, **/jetty*.jar, **/jasper*.jar, **/jsp*.jar</packagingExcludes>
                     <webResources>
                         <resource>
-                            <!-- this is relative to the pom.xml directory.  Including the extracted help files -->
-                            <directory>target/help</directory>
+                            <!-- Including the extracted help files -->
+                            <directory>${basedir}/target/help</directory>
                         </resource>
                     </webResources>
 				</configuration>

@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**

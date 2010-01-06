@@ -44,14 +44,60 @@ public class MessageMap implements Serializable {
     private Map<String, TypedArrayList> infoMessages = new LinkedHashMap<String, TypedArrayList>();
 
     public MessageMap() {}
-    
+
     public MessageMap(MessageMap messageMap) {
     	this.errorPath = messageMap.errorPath;
     	this.errorMessages = messageMap.errorMessages;
     	this.warningMessages = messageMap.warningMessages;
     	this.infoMessages = messageMap.infoMessages;
     }
-    
+
+
+    public void merge(MessageMap messageMap){
+    	if(messageMap != null){
+    		if(messageMap.hasErrors()){
+    			merge(messageMap.getErrorMessages(), errorMessages);
+    		}
+    		if(messageMap.hasInfo()){
+    			merge(messageMap.getInfoMessages(), infoMessages);
+    		}
+    		if(messageMap.hasWarnings()){
+    			merge(messageMap.getWarningMessages(), warningMessages);
+    		}
+
+    	}
+
+    }
+
+    /**
+     *
+     * This method takes one message map and merges it into another.  Makes sure there are no duplicates.
+     *
+     * @param messagesFrom
+     * @param messagesTo
+     */
+    protected void merge(Map<String, TypedArrayList> messagesFrom, Map<String, TypedArrayList> messagesTo){
+    	for(String key : messagesFrom.keySet()){
+
+    		if(messagesTo.containsKey(key)){
+    			// now we need to merge the messages
+    			TypedArrayList tal = messagesFrom.get(key);
+    			TypedArrayList parentList = messagesTo.get(key);
+
+    			for(Object o :tal){
+
+    				 if ( !parentList.contains( (ErrorMessage)o ) ) {
+    					 parentList.add((ErrorMessage)o);
+    			     }
+    			}
+
+    		}else{
+    			messagesTo.put(key, messagesFrom.get(key));
+    		}
+
+    	}
+
+    }
     /**
      * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
      * error key with any value in the errorPath list. This should be used when you do not want to add the error with the prepend

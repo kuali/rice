@@ -75,14 +75,15 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @return  returns an error message to give system better identifier for problem
      */
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) {
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be acknowledged";
         }
-        if (!isActionCompatibleRequest(actionRequests)) {
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the ACKNOWLEDGE action";
         }
         return "";

@@ -69,9 +69,9 @@ public abstract class ANSISqlDatabasePlatform implements DatabasePlatform
         // http://www.stanford.du/dept/itss/docs/oracle/9i/java.920/a96654/ref.htm#1005145
         String d = date.replace('/', '-');
         if (time == null) {
-            return "{d '" + d + "'}";    
+            return new StringBuilder("{d '").append(d).append("'}").toString();    
         } else {
-            return "{ts '" + d + " " + time + "'}"; 
+            return new StringBuilder("{ts '").append(d).append(" ").append(time).append("'}").toString(); 
         }
     }
     

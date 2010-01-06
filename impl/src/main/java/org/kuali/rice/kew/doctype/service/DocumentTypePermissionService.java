@@ -28,6 +28,8 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentTypePermissionService {
+
+	public static final String DOC_TYPE_PERM_CACHE_GROUP = "DocumentTypePerm";
 	
 	/**
 	 * Determines if the given principal is authorized to receive ad hoc requests

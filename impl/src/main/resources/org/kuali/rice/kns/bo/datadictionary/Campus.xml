@@ -34,6 +34,7 @@
         <ref bean="Campus-campusShortName"/>
         <ref bean="Campus-campusTypeCode"/>
         <ref bean="Campus-versionNumber"/>
+        <ref bean="Campus-active"/>
       </list>
     </property>
   </bean>
@@ -107,6 +108,13 @@
     <property name="label" value="Campus Type Code"/>
     <property name="description" value="The code identifying type of campus."/>
   </bean>
+    
+  <bean id="Campus-active" parent="County-active-parentBean"/>
+
+  <bean id="Campus-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active"/>
+  </bean>
+  
   <bean id="Campus-versionNumber" parent="Campus-versionNumber-parentBean"/>
 
   <bean id="Campus-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
@@ -128,6 +136,7 @@
               <bean parent="FieldDefinition" p:attributeName="campusName"/>
               <bean parent="FieldDefinition" p:attributeName="campusShortName"/>
               <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
+              <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
           <property name="title" value=""/>
@@ -159,6 +168,7 @@
         <bean parent="FieldDefinition" p:attributeName="campusName"/>
         <bean parent="FieldDefinition" p:attributeName="campusShortName"/>
         <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
+        <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
     <property name="resultFields">
@@ -167,6 +177,7 @@
         <bean parent="FieldDefinition" p:attributeName="campusName"/>
         <bean parent="FieldDefinition" p:attributeName="campusShortName"/>
         <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
+        <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
     <property name="title" value="Campus Lookup"/>

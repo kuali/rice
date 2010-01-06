@@ -26,11 +26,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -97,6 +97,7 @@ KualiLookupableHelperServiceImpl {
 	DateTimeService dateTimeService;
 	DocumentLookupCriteriaProcessor processor;
 	boolean savedSearch = false;
+	private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
 
 	/**
 	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.kns.service.DateTimeService)
@@ -149,16 +150,22 @@ KualiLookupableHelperServiceImpl {
     		components = KEWServiceLocator.getDocumentSearchService().getList(GlobalVariables.getUserSession().getPrincipalId(), criteria);
     	} catch (WorkflowServiceErrorException wsee) {
     		for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
-    			GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+				if(workflowServiceError.getMessageMap() != null && workflowServiceError.getMessageMap().hasErrors()){
+					// merge the message maps
+					GlobalVariables.getMessageMap().merge(workflowServiceError.getMessageMap());
+				}else{
+					//TODO: can we add something to this to get it to highlight the right field too?  Maybe in arg1
+					GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+				}
     		};
     	}
-    	
+
     	if(!GlobalVariables.getMessageMap().hasNoErrors()) {
         	throw new ValidationException("error with doc search");
         }
-    	
+
     	// check various warning conditions
-    	
+
     	if (criteria.isOverThreshold() && criteria.getSecurityFilteredRows() > 0) {
     	    GlobalVariables.getMessageMap().putWarning(KNSConstants.GLOBAL_MESSAGES, "docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered", String.valueOf(components.getSearchResults().size()), String.valueOf(criteria.getSecurityFilteredRows()));
     	} else if (criteria.getSecurityFilteredRows() > 0) {
@@ -376,7 +383,12 @@ KualiLookupableHelperServiceImpl {
                 		}
                         col.setMaxLength(100); //for now force this
                 	} else if(StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getkey())) {
-                		anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\"><img "));
+                		Matcher hrefMatcher = HREF_PATTERN.matcher(keyValue.getValue());
+                		String matchedURL = "";
+                		if (hrefMatcher.find()) {
+                			matchedURL = hrefMatcher.group(1);
+                		}
+                		anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+matchedURL);
                 		String target = StringUtils.substringBetween(keyValue.getValue(), "target=\"", "\"");
                         if (target == null) {
                             target = "_self";
@@ -670,7 +682,7 @@ KualiLookupableHelperServiceImpl {
 
 		if(docType == null) {
 		    super.performClear(lookupForm);
-		    
+
 		    // Retrieve the detailed/superuser search statuses.
 	        boolean detailed=false;
 	        if(this.getParameters().containsKey("isAdvancedSearch")) {
@@ -678,14 +690,14 @@ KualiLookupableHelperServiceImpl {
 	        } else if(fixedParameters.containsKey("isAdvancedSearch")) {
 	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("isAdvancedSearch")[0]);
 	        }
-	        
+
 	        boolean superSearch=false;
 	        if(this.getParameters().containsKey(("superUserSearch"))) {
 	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
 	        } else if(fixedParameters.containsKey("superUserSearch")) {
 	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("superUserSearch")[0]);
 	        }
-	        
+
 	        // Repopulate the fields indicating detailed/superuser search status.
 	        int fieldsRepopulated = 0;
 	        List<Row> rows = super.getRows();
@@ -763,17 +775,17 @@ KualiLookupableHelperServiceImpl {
 		}
 
 		StringBuilder suppMenuBar = new StringBuilder();
-		
+
 		// Add the detailed-search-toggling button.
-		suppMenuBar.append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(((").append(detailed ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO").append(
+		suppMenuBar.append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append(detailed ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO").append(
 				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(detailed ? "/images/tinybutton-basicsearch.gif\" alt=\"basic search\" title=\"basic search\" />" : "/images/tinybutton-detailedsearch.gif\" alt=\"detailed search\" title=\"detailed search\" />");
-		
+
 		// Add the superuser-search-toggling button.
-		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(((").append((!detailed && superSearch) ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? "NO" : DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING).append(
+		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append((!detailed && superSearch) ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? "NO" : DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING).append(
 				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(superSearch ? "/images/tinybutton-nonsupusearch.gif\" alt=\"non-superuser search\" title=\"non-superuser search\" />" : "/images/tinybutton-superusersearch.gif\" alt=\"superuser search\" title=\"superuser search\" />");
-		
+
 		// Add the "clear saved searches" button.
-		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall\" value=\"(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
+		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
 
         Properties parameters = new Properties();
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.getBusinessObjectClass().getName());
@@ -891,8 +903,13 @@ KualiLookupableHelperServiceImpl {
         	docSearchService.validateDocumentSearchCriteria(generator, criteria);
 		} catch (WorkflowServiceErrorException wsee) {
 			for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>)wsee.getServiceErrors()) {
-				//TODO: can we add something to this to get it to highlight the right field too?  Maybe in arg1
-				GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+				if(workflowServiceError.getMessageMap() != null && workflowServiceError.getMessageMap().hasErrors()){
+					// merge the message maps
+					GlobalVariables.getMessageMap().merge(workflowServiceError.getMessageMap());
+				}else{
+					//TODO: can we add something to this to get it to highlight the right field too?  Maybe in arg1
+					GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+				}
 			};
 		}
         if(!GlobalVariables.getMessageMap().hasNoErrors()) {
@@ -914,6 +931,24 @@ KualiLookupableHelperServiceImpl {
 
 		// Determine if there are any properties embedded in the methodToCall parameter, and retrieve them if so.
 		String[] methodToCallArray = ((String[])this.getParameters().get(KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
+		if (methodToCallArray == null) {
+    		for (String parameter: new ArrayList<String>(this.getParameters().keySet())) {
+    		    String[] parameterSplit = StringUtils.split(parameter, ".");
+    		    String parameterValue = "";
+    		    if (StringUtils.contains(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.")) {
+    		        if (parameter.trim().endsWith(".x")) {
+    		            parameterValue = StringUtils.substringBetween(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".x");
+    		        } else if (parameter.trim().endsWith(".y")) {
+    		            parameterValue = StringUtils.substringBetween(parameter, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall.", ".y");
+    		        } 
+    		        if (StringUtils.isNotEmpty(parameterValue)) {
+    		            methodToCallArray = new String[]{ parameterValue };
+    	                break;
+    		        }
+    		    }
+    		}
+		}
+		//String[] methodToCallArray = ((String[])this.getParameters().get(KNSConstants.DISPATCH_REQUEST_PARAMETER + ".customLookupableMethodCall"));
 		if (ObjectUtils.isNotNull(methodToCallArray) && methodToCallArray.length > 0) {
 			String methodToCallVal = methodToCallArray[0];
 			if (StringUtils.isNotBlank(methodToCallVal)) {
@@ -945,7 +980,7 @@ KualiLookupableHelperServiceImpl {
 					docSearchService.clearNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
 					resetRows = true;
 				}
-				
+
 				// If any of the above properties were found, reset the rows in a manner similar to KualiLookupAction.refresh, but with
 				// enough modifications to prevent any changed isAdvancedSearch or superUserSearch values from being overridden again.
 				if (resetRows) {
@@ -953,7 +988,7 @@ KualiLookupableHelperServiceImpl {
 					for (Field tempField : getFields(this.getRows())) {
 						values.put(tempField.getPropertyName(), tempField.getPropertyValue());
 					}
-					
+
 			        for (Iterator<Row> iter = this.getRows().iterator(); iter.hasNext();) {
 			        	Row row = iter.next();
 
@@ -1006,7 +1041,7 @@ KualiLookupableHelperServiceImpl {
 			        // Finally, return false to prevent the search from being performed and to skip the other custom processing below.
 			        return false;
 				}
-				
+
 			}
 		} // End of methodToCall parameter retrieval.
 

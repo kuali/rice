@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceDebugUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
@@ -54,6 +55,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -62,6 +64,8 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  *
  */
 public class ResponsibilityServiceImpl implements ResponsibilityService, ResponsibilityUpdateService {
+	protected static final String RESPONSIBILITY_IMPL_CACHE_PREFIX = "ResponsibilityImpl-Template-";
+	protected static final String RESPONSIBILITY_IMPL_CACHE_GROUP = "ResponsibilityImpl";
 	private static final String DEFAULT_RESPONSIBILITY_TYPE_SERVICE = "defaultResponsibilityTypeService";
 	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );
 	private static final Integer DEFAULT_PRIORITY_NUMBER = Integer.valueOf(1);
@@ -71,8 +75,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 	private KimResponsibilityDao responsibilityDao;   
 	private KimResponsibilityTypeService responsibilityTypeService;
 	private SequenceAccessorService sequenceAccessorService;
+	private RiceCacheAdministrator cacheAdministrator;
 
-    // --------------------------
+	// --------------------------
     // Responsibility Methods
     // --------------------------
     
@@ -161,12 +166,22 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 
     @SuppressWarnings("unchecked")
 	protected List<KimResponsibilityImpl> getResponsibilityImplsByTemplateName( String namespaceCode, String responsibilityTemplateName ) {
-    	HashMap<String,Object> pk = new HashMap<String,Object>( 4 );
-    	pk.put( "template."+KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
-    	pk.put( "template."+KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, responsibilityTemplateName );
-		pk.put( "template."+KNSPropertyConstants.ACTIVE, "Y");
-		pk.put( KNSPropertyConstants.ACTIVE, "Y");
-    	return (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
+    	String cacheKey = getResponsibilityImplByTemplateNameCacheKey(namespaceCode, responsibilityTemplateName);
+    	List<KimResponsibilityImpl> result = (List<KimResponsibilityImpl>)getCacheAdministrator().getFromCache(cacheKey);
+    	if ( result == null ) {
+	    	HashMap<String,Object> pk = new HashMap<String,Object>( 4 );
+	    	pk.put( "template."+KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+	    	pk.put( "template."+KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, responsibilityTemplateName );
+			pk.put( "template."+KNSPropertyConstants.ACTIVE, "Y");
+			pk.put( KNSPropertyConstants.ACTIVE, "Y");
+			result = (List<KimResponsibilityImpl>)getBusinessObjectService().findMatching( KimResponsibilityImpl.class, pk );
+	    	getCacheAdministrator().putInCache(cacheKey, result, RESPONSIBILITY_IMPL_CACHE_GROUP);
+    	}
+    	return result;
+    }
+    
+    protected String getResponsibilityImplByTemplateNameCacheKey( String namespaceCode, String responsibilityTemplateName ) {
+    	return RESPONSIBILITY_IMPL_CACHE_PREFIX + namespaceCode + "-" + responsibilityTemplateName;
     }
     
     /**
@@ -470,11 +485,18 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 	    		}
 	    	}
 	    	getBusinessObjectService().save(resp);
+	    	// flush the IdM service caches
 	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
+	    	// flush the local implementation class cache
+	    	flushResponsibilityImplCache();
     	} catch ( RuntimeException ex ) {
     		LOG.error( "Exception in saveResponsibility: ", ex );
     		throw ex;
     	}
+    }
+    
+    public void flushResponsibilityImplCache() {
+    	getCacheAdministrator().flushGroup(RESPONSIBILITY_IMPL_CACHE_GROUP);
     }
 
     protected String getNewAttributeDataId(){
@@ -529,6 +551,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
+	}
+	
+	protected RiceCacheAdministrator getCacheAdministrator() {
+		if ( cacheAdministrator == null ) {
+			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
+		}
+		return cacheAdministrator;
 	}
 	
 }

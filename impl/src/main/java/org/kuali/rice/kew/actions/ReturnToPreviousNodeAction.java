@@ -141,15 +141,16 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+    	return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) {
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             String docStatus = getRouteHeader().getDocRouteStatus();
             return "Document of status '" + docStatus + "' cannot taken action '" + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
         }
-        if (! isActionCompatibleRequest(actionRequests) && ! isSuperUserUsage()) {
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        if (! isActionCompatibleRequest(filteredActionRequests) && ! isSuperUserUsage()) {
             return "No request for the user is compatible with the RETURN TO PREVIOUS NODE action";
         }
         return "";

@@ -139,10 +139,21 @@ public interface DictionaryValidationService {
      * @param entryName - name of the dd entry
      * @param attributeName - name of attribute in the bo class
      * @param attributeValue - current value to validate
-     * @param errorKey - key to place to errors under
+     * @param errorKey - key to place the errors under
      */
     public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String errorKey);
 
+    /**
+     * Validates an attribute of a given class for proper min, max length, syntax, and required. The attribute will be validated
+     * according to the specified data type.
+     * 
+     * @param entryName - name of the dd entry
+     * @param attributeName - name of attribute in the bo class
+     * @param attributeValue - current value to validate 
+     * @param attributeDataType - data type that this attribute should be treated as for validation purposes
+     * @param errorKey - key to place the errors under
+     */
+    public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String attributeDataType, String errorKey);
 
     /**
      * Validates an attribute of a given class for required check.

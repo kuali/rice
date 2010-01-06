@@ -118,4 +118,14 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		return isUserInRouteLog;
 	}
 
+	/**
+	 * Returns false, as the Route Log changes often enough that role membership is highly volatile
+	 * 
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
+			String roleName) {
+		return false;
+	}
 }

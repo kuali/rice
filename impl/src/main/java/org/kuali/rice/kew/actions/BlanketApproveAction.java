@@ -26,9 +26,11 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -86,10 +88,10 @@ public class BlanketApproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
     }
 
-    private String validateActionRules(List<ActionRequestValue> actionRequests) {
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if ( (nodeNames != null) && (!nodeNames.isEmpty()) ) {
             String nodeName = isGivenNodeListValid();
             if (!Utilities.isEmpty(nodeName)) {
@@ -99,7 +101,8 @@ public class BlanketApproveAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be approved";
         }
-        if (!isActionCompatibleRequest(actionRequests)) {
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible with the BlanketApprove Action";
         }
     	// check state before checking kim
@@ -162,9 +165,10 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     protected void queueDeferredWork(ActionTakenValue actionTaken) {
         try {
-
+        	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
+        	
             BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
-            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames);
+            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames, shouldIndex);
 //
 
 //          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(

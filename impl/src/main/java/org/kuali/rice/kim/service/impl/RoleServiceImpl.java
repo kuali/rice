@@ -34,7 +34,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
@@ -80,6 +80,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
@@ -90,6 +91,9 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @WebService(endpointInterface = KIMWebServiceConstants.RoleService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.RoleService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class RoleServiceImpl implements RoleService, RoleUpdateService {
+	protected static final String ROLE_IMPL_CACHE_PREFIX = "RoleImpl-ID-";
+	protected static final String ROLE_IMPL_BY_NAME_CACHE_PREFIX = "RoleImpl-Name-";
+	protected static final String ROLE_IMPL_CACHE_GROUP = "RoleImpl";
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 
@@ -99,73 +103,42 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	private ResponsibilityInternalService responsibilityInternalService;
 	private KimRoleDao roleDao;
 	private LookupService lookupService;
-
-    private static final long CACHE_MAX_AGE_SECONDS = 60L;
-
-    private Map<String,MaxAgeSoftReference<RoleImpl>> roleCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<RoleImpl>>() );
-    private Map<String,MaxAgeSoftReference<List<String>>> impliedRoleCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<List<String>>>() );
-    private Map<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>> roleImplMapCache = Collections.synchronizedMap( new HashMap<Collection<String>,MaxAgeSoftReference<Map<String,RoleImpl>>>() );
+	private RiceCacheAdministrator cacheAdministrator;
 
     private Map<String,KimRoleTypeService> roleTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimRoleTypeService>() );
     private Map<String,KimDelegationTypeService> delegationTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimDelegationTypeService>() );
+    private Map<String,Boolean> applicationRoleTypeCache = Collections.synchronizedMap( new HashMap<String,Boolean>() );
 
     // --------------------
     // Role Data
     // --------------------
 
-	protected RoleImpl getRoleFromCache( String roleId ) {
-    	RoleImpl cachedResult = null;
-    	MaxAgeSoftReference<RoleImpl> cacheRef = roleCache.get( roleId );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
-    	}
-    	return cachedResult;
+    protected String getRoleCacheKey( String roleId ) {
+    	return ROLE_IMPL_CACHE_PREFIX + roleId;
     }
 
-	protected RoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
-    	RoleImpl cachedResult = null;
-    	MaxAgeSoftReference<RoleImpl> cacheRef = roleCache.get( namespaceCode + "-" + roleName );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
+    protected String getRoleByNameCacheKey( String namespaceCode, String roleName ) {
+    	return ROLE_IMPL_BY_NAME_CACHE_PREFIX + namespaceCode + "-" + roleName;
     	}
-    	return cachedResult;
-    }
 
     protected void addRoleImplToCache( RoleImpl role ) {
     	if (role != null) {
-    		synchronized ( roleCache ) {
-	    		roleCache.put( role.getRoleId(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
-	    		roleCache.put( role.getNamespaceCode() + "-" + role.getRoleName(), new MaxAgeSoftReference<RoleImpl>( CACHE_MAX_AGE_SECONDS, role ) );
+	    	getCacheAdministrator().putInCache(getRoleCacheKey(role.getRoleId()), role, ROLE_IMPL_CACHE_GROUP);
+	    	getCacheAdministrator().putInCache(getRoleByNameCacheKey(role.getNamespaceCode(),role.getRoleName()), role, ROLE_IMPL_CACHE_GROUP);
     		}
     	}
+
+    protected RoleImpl getRoleFromCache( String roleId ) {
+    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleCacheKey(roleId));
     }
 
+    protected RoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
+    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleByNameCacheKey(namespaceCode,roleName));
+    }
 
-	protected List<String> getImpliedRoleIdsFromCache( String roleId ) {
-		List<String> cachedResult = null;
-    	MaxAgeSoftReference<List<String>> cacheRef = impliedRoleCache.get( roleId );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
+    public void flushInternalRoleCache() {
+    	getCacheAdministrator().flushGroup(ROLE_IMPL_CACHE_GROUP);
     	}
-    	return cachedResult;
-    }
-
-    protected void addImpliedRoleIdsToCache( String roleId, List<String> roleIds ) {
-    	impliedRoleCache.put( roleId, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
-    }
-
-	protected Map<String,RoleImpl> getRoleImplMapFromCache( Collection<String> roleIds ) {
-		Map<String,RoleImpl> cachedResult = null;
-    	MaxAgeSoftReference<Map<String,RoleImpl>> cacheRef = roleImplMapCache.get( roleIds );
-    	if ( cacheRef != null ) {
-    		cachedResult = cacheRef.get();
-    	}
-    	return cachedResult;
-    }
-
-    protected void addRoleImplMapToCache( Collection<String> roleIds, Map<String,RoleImpl> roleMap ) {
-    	roleImplMapCache.put( roleIds, new MaxAgeSoftReference<Map<String,RoleImpl>>( CACHE_MAX_AGE_SECONDS, roleMap ) );
-    }
 
 	protected RoleImpl getRoleImpl(String roleId) {
 		if ( StringUtils.isBlank( roleId ) ) {
@@ -177,9 +150,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			return cachedResult;
 		}
 		// otherwise, run the query
-		AttributeSet criteria = new AttributeSet();
-		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
-		RoleImpl result = (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
+		RoleImpl result = (RoleImpl)getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, roleId);
 		addRoleImplToCache( result );
 		return result;
 	}
@@ -238,14 +209,25 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	}
 
 	protected Map<String,RoleImpl> getRoleImplMap(Collection<String> roleIds) {
+		Map<String,RoleImpl> result = null;
 		// check for a non-null result in the cache, return it if found
-		Map<String,RoleImpl> cachedResult = getRoleImplMapFromCache( roleIds );
-		if ( cachedResult != null ) {
-			return cachedResult;
+		if ( roleIds.size() == 1 ) {
+			String roleId = roleIds.iterator().next();
+			RoleImpl impl = getRoleImpl(roleId);
+			if ( impl.isActive() ) {
+				result = Collections.singletonMap(roleId, getRoleImpl(roleId));
+			} else {
+				result = Collections.emptyMap();
+			}			
+		} else {
+			result = new HashMap<String,RoleImpl>(roleIds.size());
+			for ( String roleId : roleIds ) {
+				RoleImpl impl = getRoleImpl(roleId);
+				if ( impl.isActive() ) {
+					result.put(roleId, impl);
+				}				
+			}
 		}
-		// otherwise, run the query
-		Map<String,RoleImpl> result = roleDao.getRoleImplMap(roleIds);
-		addRoleImplMapToCache( roleIds, result );
 		return result;
 	}
 
@@ -319,7 +301,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     				// in the roles Map created earlier
     				RoleImpl nestedRole = getRoleImpl(rm.getMemberId());
     				//it is possible that the the roleTypeService is coming from a remote application 
-                    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
     				try {
     				    nestedQualification = roleTypeService.convertQualificationForMemberRoles(role.getNamespaceCode(), role.getRoleName(), nestedRole.getNamespaceCode(), nestedRole.getRoleName(), qualification);
     				} catch (Exception ex) {
@@ -338,7 +320,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		for ( String roleId : roleIdToMembershipMap.keySet() ) {
 			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
 			//it is possible that the the roleTypeService is coming from a remote application 
-            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
     			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
     			for ( RoleMembershipInfo rmi : matchingMembers ) {
@@ -379,7 +361,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		for ( String roleId : roleIdToMembershipMap.keySet() ) {
 			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
 			//it is possible that the the roleTypeService is coming from a remote application 
-            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
     			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
     			for ( RoleMembershipInfo rmi : matchingMembers ) {
@@ -518,7 +500,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		// for evaluation, the service will return those which match
     		for ( String roleId : roleIdToMembershipMap.keySet() ) {
     		    //it is possible that the the roleTypeService is coming from a remote application 
-                // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
         			KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
         			List<RoleMembershipInfo> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification( qualification, roleIdToMembershipMap.get( roleId ) );
@@ -557,10 +539,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	// handle application roles
     	for ( String roleId : allRoleIds ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+			RoleImpl role = roles.get( roleId );
     		// check if an application role
             try {
-        		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-        			RoleImpl role = roles.get( roleId );
+        		if ( isApplicationRoleType(role.getKimTypeId(), roleTypeService) ) {
                     // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
         			List<RoleMembershipInfo> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getRoleName(), qualification);
         			if ( !roleMembers.isEmpty()  ) {
@@ -594,7 +576,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         	    String roleId = matchingRoleIds.iterator().next();
         		KimRoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
         		//it is possible that the the roleTypeService is coming from a remote application 
-                // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
             		if ( kimRoleTypeService != null ) {
             			results = kimRoleTypeService.sortRoleMembers( results );
@@ -617,7 +599,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         		if ( !multipleServices ) {
         		    String roleId = matchingRoleIds.iterator().next();
         		    //it is possible that the the roleTypeService is coming from a remote application 
-                    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                     try {                       
                 		KimRoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
                 		if ( kimRoleTypeService != null ) {
@@ -635,6 +617,24 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	return results;
     }
 
+    protected boolean isApplicationRoleType( String roleTypeId, KimRoleTypeService service ) {
+    	Boolean result = applicationRoleTypeCache.get( roleTypeId );
+    	if ( result == null ) {
+    		if ( service != null ) {
+    			result = service.isApplicationRoleType();
+    		} else {
+    			result = Boolean.FALSE;
+    		}
+    	}
+    	return result;
+    }
+
+    /**
+     * Retrieves the role type service associated with the given role ID
+     * 
+     * @param roleId the role ID to get the role type service for
+     * @return the Role Type Service
+     */
     protected KimRoleTypeService getRoleTypeService( String roleId ) {
         KimRoleTypeService service = roleTypeServiceCache.get( roleId );
     	if ( service == null && !roleTypeServiceCache.containsKey( roleId ) ) {
@@ -939,7 +939,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rr.getRoleId() );
     		if ( roleTypeService != null ) {
     			//it is possible that the the roleTypeService is coming from a remote application 
-    		    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+    		    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
     		    try {
         		    if ( roleTypeService.doesRoleQualifierMatchQualification( qualification, rr.getQualifier() ) ) {
                         RoleImpl memberRole = getRoleImpl( rr.getMemberId() );
@@ -978,13 +978,13 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 
     	// loop over the allRoleIds list
     	for ( String roleId : allRoleIds ) {
+			RoleImpl role = roles.get( roleId );
     		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
     		// check if an application role
     		//it is possible that the the roleTypeService is coming from a remote application 
-            // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
+            // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
-        		if ( roleTypeService != null && roleTypeService.isApplicationRoleType() ) {
-        			RoleImpl role = roles.get( roleId );
+        		if ( isApplicationRoleType(role.getKimTypeId(), roleTypeService)  ) {
         			if ( roleTypeService.hasApplicationRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getRoleName(), qualification) ) {
         				return true;
         			}
@@ -1055,10 +1055,21 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     			}
     			// OK, the member matches the current user, now check the qualifications
 
-    			// NOTE: this compare is slightly different then the member enumeration
+    			// NOTE: this compare is slightly different than the member enumeration
     			// since the requested qualifier is always being used rather than
     			// the role qualifier for the member (which is not available)
-        		if ( roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification( qualification, dmi.getQualifier() ) ) {
+    			
+    	   		//it is possible that the the roleTypeService is coming from a remote application 
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+    			try {
+    				if ( roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification( qualification, dmi.getQualifier() ) ) {
+    					continue; // no match - skip to next record
+    				}
+    			} catch (Exception ex) {
+    				LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
+    				continue;
+    			}
+    			
     				// role service matches this qualifier
         			// now try the delegation service
         			KimDelegationTypeService delegationTypeService = getDelegationTypeService( dmi.getDelegationId());
@@ -1081,7 +1092,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         						continue;
         					}
         					AttributeSet roleQualifier = rm.getQualifier();
-        					if ( !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
+       					//it is possible that the the roleTypeService is coming from a remote application 
+       	                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+       					try {
+       						if (roleTypeService == null || !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
+       							continue;
+       						}
+       					} catch (Exception ex) {
+       						LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
         						continue;
         					}
         				} else {
@@ -1091,11 +1109,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
         			}
         			// all tests passed, return true
         			return true;
-    			} else {
-    				continue; // no match - skip to next record
     			}
     		}
-    	}
     	return false;
     }
 
@@ -1368,12 +1383,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
     	for ( KimTypeInfo typeInfo : types ) {
     		KimRoleTypeService service = getRoleTypeService(typeInfo);
-    		if ( service != null ) {
-    			if ( service.isApplicationRoleType() ) {
+    		if ( isApplicationRoleType(typeInfo.getKimTypeId(), service)) {
     				applicationRoleTypes.add(typeInfo);
     			}
     		}
-    	}
     	Map<String,Object> roleLookupMap = new HashMap<String, Object>(2);
     	roleLookupMap.put( KIMPropertyConstants.Role.ACTIVE, "Y");
     	// loop over application types
@@ -2052,6 +2065,13 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 	}
 	
 	protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimConstants.NAMESPACE_CODE, "IdentityManagementNotificationService"));
+        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+    }
+	
+	protected RiceCacheAdministrator getCacheAdministrator() {
+		if ( cacheAdministrator == null ) {
+			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
+		}
+		return cacheAdministrator;
     }
 }

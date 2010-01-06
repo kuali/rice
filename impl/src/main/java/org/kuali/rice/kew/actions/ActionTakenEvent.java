@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -28,6 +30,7 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
@@ -39,6 +42,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -66,6 +70,8 @@ public abstract class ActionTakenEvent {
 	private final KimPrincipal principal;
 
     private final boolean runPostProcessorLogic;
+    
+    private List<String> groupIdsForPrincipal;
 
 	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
 		this(actionTakenCode, routeHeader, principal, null, true);
@@ -122,7 +128,19 @@ public abstract class ActionTakenEvent {
 	 *
 	 * @return error message string of specific error message
 	 */
-	protected abstract String validateActionRules();
+	public abstract String validateActionRules();
+	public abstract String validateActionRules(List<ActionRequestValue> actionRequests);
+	
+	/**
+	 * Filters action requests based on if they occur after the given requestCode, and if they relate to this
+	 * event's principal
+	 * @param actionRequests the List of ActionRequestValues to filter
+	 * @param requestCode the request code for all ActionRequestValues to be after
+	 * @return the filtered List of ActionRequestValues
+	 */
+	public List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String requestCode) {
+		return getActionRequestService().filterActionRequestsByCode(actionRequests, getPrincipal().getPrincipalId(), getGroupIdsForPrincipal(), requestCode);
+	}
 
 	protected boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {
 		LOG.debug("isActionCompatibleRequest() Default method = returning true");
@@ -143,8 +161,11 @@ public abstract class ActionTakenEvent {
 	protected void updateSearchableAttributesIfPossible() {
 		// queue the document up so that it can be indexed for searching if it
 		// has searchable attributes
-		if (routeHeader.getDocumentType().hasSearchableAttributes()) {
-			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
+		RouteContext routeContext = RouteContext.getCurrentRouteContext();
+		if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
+			routeContext.requestSearchIndexingForContext();
+			
+			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(getRouteHeader());
 			searchableAttService.indexDocument(getRouteHeaderId());
 		}
 	}
@@ -197,7 +218,7 @@ public abstract class ActionTakenEvent {
 		KSBXMLService documentRoutingService = (KSBXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
 		try {
 //			String content = String.valueOf(getRouteHeaderId());
-			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getRouteHeaderId(),isRunPostProcessorLogic());
+			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getRouteHeaderId(),isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
 			String content = element.translate();
 			documentRoutingService.invoke(content);
 		} catch (Exception e) {
@@ -261,4 +282,11 @@ public abstract class ActionTakenEvent {
 	protected boolean isRunPostProcessorLogic() {
         return this.runPostProcessorLogic;
     }
+	
+	protected List<String> getGroupIdsForPrincipal() {
+		if (groupIdsForPrincipal == null) {
+			groupIdsForPrincipal = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
+		}
+		return groupIdsForPrincipal;
+	}
 }

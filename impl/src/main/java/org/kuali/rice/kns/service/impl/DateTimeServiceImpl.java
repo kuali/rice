@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -291,12 +292,24 @@ public class DateTimeServiceImpl implements DateTimeService {
 		if (!StringUtils.isBlank(dateString)) {
 			DateFormat dateFormat = new SimpleDateFormat(pattern);
 			dateFormat.setLenient(false);
-			Date testDate =  dateFormat.parse(dateString);
+			ParsePosition parsePosition = new ParsePosition(0);
+			Date testDate = dateFormat.parse(dateString, parsePosition);
 
-			if (!dateFormat.format(testDate).equals(dateString))
-		    {
-			      throw new ParseException("The date that you provided is invalid.",1);
+			// Ensure that the entire date String can be parsed by the current format.
+			if (testDate == null) {
+				throw new ParseException("The date that you provided is invalid.",parsePosition.getErrorIndex());
+			} else if (parsePosition.getIndex() != dateString.length()) {
+				throw new ParseException("The date that you provided is invalid.",parsePosition.getIndex());
 			}
+
+			// Ensure that the date's year lies between 1000 and 9999, to help prevent database-related date errors.
+			Calendar testCalendar = Calendar.getInstance();
+			testCalendar.setLenient(false);
+			testCalendar.setTime(testDate);
+			if (testCalendar.get(Calendar.YEAR) < 1000 || testCalendar.get(Calendar.YEAR) > 9999) {
+				throw new ParseException("The date that you provided is not between the years 1000 and 9999.",-1);
+			}
+			
 			return testDate;
 		}
 		return null;

@@ -16,11 +16,11 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,9 +47,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.util.KNSConstants;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 
 /**
  *

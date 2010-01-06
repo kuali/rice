@@ -307,7 +307,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 		throw new WorkflowRuntimeException(e);
  	 	}
 
- 	 	if (routeHeader.getDocumentType().hasSearchableAttributes()) {
+ 	 	RouteContext routeContext = RouteContext.getCurrentRouteContext();
+ 	 	if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
+ 	 		routeContext.requestSearchIndexingForContext();
+ 	 		
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
 			searchableAttService.indexDocument(routeHeader.getRouteHeaderId());
 		}
@@ -416,7 +419,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		KimPrincipal principal = loadPrincipal(principalId);
 		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, principal, annotation, runPostProcessor, nodeName);
 		action.recordAction();
-		// action.queueDocument();
 
 		return finish(routeHeader);
 	}

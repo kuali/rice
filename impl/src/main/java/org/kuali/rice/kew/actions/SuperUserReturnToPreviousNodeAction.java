@@ -50,7 +50,7 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
         }
         ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(this.getActionTakenCode(), getRouteHeader(), getPrincipal(), annotation, nodeName, true, isRunPostProcessorLogic());
         returnAction.setSuperUserUsage(true);
-        returnAction.recordAction();
+        returnAction.performAction();
     }
     
     protected void processActionRequests() throws InvalidActionTakenException {

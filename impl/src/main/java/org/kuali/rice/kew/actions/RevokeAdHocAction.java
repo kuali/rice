@@ -55,11 +55,16 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      * @see org.kuali.rice.kew.actions.ActionTakenEvent#isActionCompatibleRequest(java.util.List)
      */
     @Override
-    protected String validateActionRules() {
+    public String validateActionRules() {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Revoke adhoc request is not valid on this document";
         }
         return "";
+    }
+    
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
     }
 
     /**

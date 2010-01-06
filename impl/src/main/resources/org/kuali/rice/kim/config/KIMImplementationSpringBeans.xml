@@ -105,7 +105,12 @@
 
   <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
 
-  <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl" />
+  <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl">
+    <!-- executionIntervalSeconds -->
+    <constructor-arg index="0" value="${kim.identityArchiveServiceImpl.executionIntervalSeconds}"/>
+    <!-- maxWriteQueueSize -->
+    <constructor-arg index="1" value="${kim.identityArchiveServiceImpl.maxWriteQueueSize}"/>
+  </bean>
 
   <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityCurrentAndArchivedServiceImpl">
     <constructor-arg ref="kimIdentityArchiveService" />
@@ -323,6 +328,33 @@
         p:serviceInterface="org.kuali.rice.kim.service.ResponsibilityUpdateService" />
     </property>
     <property name="exportIf" value="kimResponsibilityUpdateServiceSOAP.expose"/>
+  </bean>
+
+  <!--
+    IdentityManagementNotificationService 
+  -->
+
+  <bean id="kimIdentityManagementNotificationService" class="org.kuali.rice.kim.service.impl.IdentityManagementNotificationServiceImpl"/>
+  
+  <bean parent="kimLocalServiceExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker" />
+    <property name="serviceDefinition">
+      <bean parent="kimService" 
+        p:service-ref="kimIdentityManagementNotificationService" 
+        p:localServiceName="kimIdentityManagementNotificationService" />
+    </property>
+  </bean>
+
+  <bean parent="kimLocalServiceExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimJaxWsSoapService"
+        p:service-ref="kimIdentityManagementNotificationService"
+        p:localServiceName="kimIdentityManagementNotificationServiceSOAP"
+        p:serviceInterface="org.kuali.rice.kim.service.IdentityManagementNotificationService"
+        />
+    </property>
+    <property name="exportIf" value="kimIdentityManagementNotificationServiceSOAP.expose"/>
   </bean>
 
   <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />

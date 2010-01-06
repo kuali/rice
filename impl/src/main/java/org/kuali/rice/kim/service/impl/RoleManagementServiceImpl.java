@@ -16,11 +16,15 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.jws.WebParam;
 
@@ -38,10 +42,14 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.RoleUpdateService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.service.support.KimTypeService;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -51,6 +59,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	private static final Logger LOG = Logger.getLogger( RoleManagementServiceImpl.class );
 	
 	private RoleService roleService;
+	private KimTypeInfoService typeInfoService;
 	private RoleUpdateService roleUpdateService;
 	
 	// Max age defined in seconds
@@ -64,6 +73,8 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	protected Map<String,MaxAgeSoftReference<Boolean>> principalHasRoleCache;
 	protected Map<String,MaxAgeSoftReference<Collection<String>>> memberPrincipalIdsCache;
 	
+	protected Map<String, Boolean> shouldCacheRoleCache;
+	
 	public void afterPropertiesSet() throws Exception {
 		roleByIdCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize ) );
 		roleByNameCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<KimRoleInfo>>( roleCacheMaxSize ) );
@@ -71,15 +82,18 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		roleQualifiersForPrincipalCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<List<AttributeSet>>>( roleCacheMaxSize ) );
 		principalHasRoleCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Boolean>>( roleCacheMaxSize ) );
 		memberPrincipalIdsCache = Collections.synchronizedMap( new MaxSizeMap<String,MaxAgeSoftReference<Collection<String>>>( roleCacheMaxSize ) );
+		shouldCacheRoleCache = Collections.synchronizedMap(new HashMap<String, Boolean>());
 	}
 	
 	public void flushRoleCaches() {
+		flushInternalRoleCache();
 		roleByIdCache.clear();
 		roleByNameCache.clear();
 		roleMembersWithDelegationCache.clear();
 		roleQualifiersForPrincipalCache.clear();
 		principalHasRoleCache.clear();
-		memberPrincipalIdsCache.clear();		
+		memberPrincipalIdsCache.clear();
+		shouldCacheRoleCache.clear();
 	}
 	
 	// Caching helper methods
@@ -246,17 +260,37 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	 * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
 	public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
-		StringBuffer cacheKey = new StringBuffer();
-		addIdsToKey( cacheKey, roleIds );
-		cacheKey.append(  '/' );
-		addAttributesToKey( cacheKey, qualification );
-		String key = cacheKey.toString();
-		List<RoleMembershipInfo> members = getRoleMembersWithDelegationCache(key);
+		List<String>[] filteredRoles = filterRoleIdsByCachingAbility(roleIds);
+		List<String> cacheRoles = filteredRoles[0];
+		List<String> noCacheRoles = filteredRoles[1];
+		
+		List<RoleMembershipInfo> members = null;
+		String key = null;
+		
+		if (!cacheRoles.isEmpty()) {
+			StringBuffer cacheKey = new StringBuffer();
+			addIdsToKey( cacheKey, cacheRoles );
+			cacheKey.append(  '/' );
+			addAttributesToKey( cacheKey, qualification );
+			key = cacheKey.toString();
+			members = getRoleMembersWithDelegationCache(key);
+		}
 		if (members != null) {
+			if (!noCacheRoles.isEmpty()) {
+				members.addAll(getRoleService().getRoleMembers(noCacheRoles, qualification));
+			}
 			return members;
 		}
-		members = getRoleService().getRoleMembers(roleIds, qualification);
-		addRoleMembersWithDelegationToCache(key, members);
+		
+		if (!cacheRoles.isEmpty()) {
+			members = getRoleService().getRoleMembers(cacheRoles, qualification);
+			addRoleMembersWithDelegationToCache(key, members);
+		} else {
+			members = new ArrayList<RoleMembershipInfo>();
+		}
+		if (!noCacheRoles.isEmpty()) {
+			members.addAll(getRoleService().getRoleMembers(noCacheRoles, qualification));
+		}
     	return members;
     }
 
@@ -307,17 +341,30 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		if ( LOG.isDebugEnabled() ) {
 			logPrincipalHasRoleCheck(principalId, roleIds, qualification);
 		}
-		StringBuffer cacheKey = new StringBuffer();
-		cacheKey.append( principalId );
-		cacheKey.append( '/' );
-		addIdsToKey( cacheKey, roleIds );
-		cacheKey.append( '/' );
-		addAttributesToKey( cacheKey, qualification );
-		String key = cacheKey.toString();
-		Boolean hasRole = getPrincipalHasRoleCacheCache(key);
+		List<String>[] filteredRoles = filterRoleIdsByCachingAbility(roleIds);
+		List<String> cacheRoles = filteredRoles[0];
+		List<String> noCacheRoles = filteredRoles[1];
+		
+		Boolean hasRole = null;
+		String key = null;
+		if (!cacheRoles.isEmpty()) {
+			StringBuffer cacheKey = new StringBuffer();
+			cacheKey.append( principalId );
+			cacheKey.append( '/' );
+			addIdsToKey( cacheKey, cacheRoles );
+			cacheKey.append( '/' );
+			addAttributesToKey( cacheKey, qualification );
+			key = cacheKey.toString();
+			hasRole = getPrincipalHasRoleCacheCache(key);
+		}
 		if (hasRole == null) {
-			hasRole = getRoleService().principalHasRole(principalId, roleIds, qualification);
-			addPrincipalHasRoleToCache(key, hasRole);
+			if (!cacheRoles.isEmpty()) {
+				hasRole = getRoleService().principalHasRole(principalId, cacheRoles, qualification);
+				addPrincipalHasRoleToCache(key, hasRole);
+			}
+			if ((hasRole == null || !hasRole.booleanValue()) && !noCacheRoles.isEmpty()) {
+				hasRole = getRoleService().principalHasRole(principalId, noCacheRoles, qualification);
+			}
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Result: " + hasRole );
     		}
@@ -327,6 +374,99 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			}
 		}
     	return hasRole;
+	}
+	
+	/**
+	 * Determines if the role with the given id will be cached
+	 * 
+	 * @param roleId the role id of the role to determine caching on
+	 * @return true if the role should be cached, false otherwise
+	 */
+	protected boolean shouldCacheRole(String roleId) {
+		Boolean shouldCacheRoleAnswer = shouldCacheRoleCache.get(roleId);
+		if (shouldCacheRoleAnswer == null) {
+		
+			final KimRoleTypeService roleType = getRoleTypeService(roleId);
+			final KimRoleInfo roleInfo = this.getRole(roleId);
+			if (roleType != null && roleInfo != null) {
+				shouldCacheRoleAnswer = new Boolean(roleType.shouldCacheRoleMembershipResults(roleInfo.getNamespaceCode(), roleInfo.getRoleName()));
+				shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
+			} else {
+				shouldCacheRoleAnswer = Boolean.TRUE; // no type?  that means we get to do the default - cache
+				shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
+			}
+		}
+		return shouldCacheRoleAnswer.booleanValue();
+	}
+	
+	/**
+	 * Splits the given List of role ids into two Lists, one with roles to cache, and one with roles
+	 * not to cache
+	 * 
+	 * @param roleIds the List of role ids to split
+	 * @return an array of two Lists of role ids - the first, roles which can be cached and the second, roles which should not be cached
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<String>[] filterRoleIdsByCachingAbility(List<String> roleIds) {
+		List<String> cacheRoles = new ArrayList<String>();
+		List<String> noCacheRoles = new ArrayList<String>();
+		Set<String> alreadyFilteredRoles = new HashSet<String>();
+		
+		for (String roleId : roleIds) {
+			if (!alreadyFilteredRoles.contains(roleId)) {
+				alreadyFilteredRoles.add(roleId);
+				if (shouldCacheRole(roleId)) {
+					cacheRoles.add(roleId);
+				} else {
+					noCacheRoles.add(roleId);
+				}
+			}
+		}
+		return (List<String>[])new List[] { cacheRoles, noCacheRoles };
+	}
+	
+	/**
+     * Retrieves the role type service associated with the given role ID
+     * 
+     * @param roleId the role ID to get the role type service for
+     * @return the Role Type Service
+     */
+    protected KimRoleTypeService getRoleTypeService( String roleId ) {
+    	KimRoleTypeService service = null;
+    		
+    	final KimRoleInfo roleInfo = getRoleService().getRole(roleId);
+    	if (roleInfo != null) {
+	    	final KimTypeInfo roleType = getTypeInfoService().getKimType(roleInfo.getKimTypeId());
+	    	if ( roleType != null ) {
+	        	service = getRoleTypeService(roleType);
+	    	}
+    	}
+    	return service;
+    }
+
+	/**
+	 * Retrieves a role type from the given type info
+	 * 
+	 * @param typeInfo
+	 * @return
+	 */
+	protected KimRoleTypeService getRoleTypeService( KimTypeInfo typeInfo ) {
+		String serviceName = typeInfo.getKimTypeServiceName();
+		if ( serviceName != null ) {
+			try {
+				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+				if ( service != null && service instanceof KimRoleTypeService) {
+					return (KimRoleTypeService)service;
+				} else {
+					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+				}
+			} catch ( Exception ex ) {
+				LOG.error( "Unable to find role type service with name: " + serviceName );
+				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
+				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -405,6 +545,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 					}
 				}
 			}
+			shouldCacheRoleCache.remove(roleId);
 		}
 	}
 	
@@ -616,6 +757,13 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		return roleService;
 	}
+	
+	public KimTypeInfoService getTypeInfoService() {
+		if (typeInfoService == null) {
+			typeInfoService = KIMServiceLocator.getTypeInfoService();
+		}
+		return typeInfoService;
+	}
 
 	public RoleUpdateService getRoleUpdateService() {
 		try {
@@ -649,4 +797,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		return getRoleService().lookupRoles(searchCriteria);
 	}
 
+	public void flushInternalRoleCache() {
+		getRoleService().flushInternalRoleCache();
+	}
 }

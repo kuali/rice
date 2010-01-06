@@ -16,11 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.config;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 
 
 /**
@@ -38,8 +34,6 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
  */
 public class KSBThinClientConfigurer extends ModuleConfigurer {
 
-	private boolean isStarted = false;
-
 	public KSBThinClientConfigurer() {
         super();
         setModuleName( "KSB" );
@@ -49,25 +43,6 @@ public class KSBThinClientConfigurer extends ModuleConfigurer {
 	@Override
 	public String getSpringFileLocations(){
 		return "classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml";
-	}
-	
-	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
-	    List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-	    //lifecycles.add(KSBResourceLoaderFactory.createThinClientKSBResourceLoader());
-	    return lifecycles;
-	}
-
-	public void stop() throws Exception {
-	    this.isStarted = false;
-	}
-
-	public boolean isStarted() {
-		return this.isStarted;
-	}
-
-	protected void setStarted(boolean isStarted) {
-		this.isStarted = isStarted;
 	}
 
 }

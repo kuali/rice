@@ -23,19 +23,21 @@ import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.kuali.rice.ksb.security.service.DigitalSignatureService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 public class DigitalSignatureServiceImpl implements DigitalSignatureService {
 
 	public Signature getSignatureForSigning() throws IOException, GeneralSecurityException {
 		Signature signature = getSignature();
-		signature.initSign(KSBServiceLocator.getJavaSecurityManagementService().getModulePrivateKey());
+		signature.initSign(getJavaSecurityManagementService().getModulePrivateKey());
 		return signature;
 	}
 
     public Signature getSignatureForVerification(String verificationAlias) throws IOException, GeneralSecurityException {
-        Certificate cert = KSBServiceLocator.getJavaSecurityManagementService().getCertificate(verificationAlias);
+        Certificate cert = getJavaSecurityManagementService().getCertificate(verificationAlias);
         return getSignatureForVerification(cert);
     }
 
@@ -53,7 +55,12 @@ public class DigitalSignatureServiceImpl implements DigitalSignatureService {
     }
     
 	protected Signature getSignature() throws GeneralSecurityException {
-		return Signature.getInstance(KSBServiceLocator.getJavaSecurityManagementService().getModuleSignatureAlgorithm());
+		return Signature.getInstance(getJavaSecurityManagementService().getModuleSignatureAlgorithm());
 	}
+	
+	protected JavaSecurityManagementService getJavaSecurityManagementService() {
+		return (JavaSecurityManagementService)GlobalResourceLoader.getService(KSBConstants.ServiceNames.JAVA_SECURITY_MANAGEMENT_SERVICE);
+	}
+
 
 }

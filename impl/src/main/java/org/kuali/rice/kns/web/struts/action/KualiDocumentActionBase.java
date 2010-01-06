@@ -1404,7 +1404,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // if document is saved, send notification
         if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {
-            KNSServiceLocator.getNoteService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getPerson());
+            getNoteService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getPerson());
 
             // add success message
             GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL);

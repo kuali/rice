@@ -460,6 +460,17 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         return actionRequest;
     }
+    
+    /**
+     * Returns all pending requests for a given routing entity
+     * @param routeHeaderId the id of the document header being routed
+     * @return a List of all pending ActionRequestValues for the document
+     */
+    public List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId) {
+    	ActionRequestDAO arDAO = getActionRequestDAO();
+        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
+        return (List<ActionRequestValue>)pendingArs;
+    }
 
     public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
         ActionRequestDAO arDAO = getActionRequestDAO();
@@ -469,27 +480,40 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode) {
         List matchedArs = new ArrayList();
-        List<String> arGroups = null;
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue ar = (ActionRequestValue) iter.next();
+        List<String> arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+        return filterActionRequestsByCode((List<ActionRequestValue>)actionRequests, principalId, arGroups, requestCode);
+    }
+    
+    /**
+	 * Filters action requests based on if they occur after the given requestCode, and if they relate to 
+	 * the given principal
+	 * @param actionRequests the List of ActionRequestValues to filter
+	 * @param principalId the id of the principal to find active requests for
+	 * @param principalGroupIds List of group ids that the principal belongs to
+	 * @param requestCode the request code for all ActionRequestValues to be after
+	 * @return the filtered List of ActionRequestValues
+	 */
+	public List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String principalId, List<String> principalGroupIds, String requestCode) {
+		List<ActionRequestValue> filteredActionRequests = new ArrayList<ActionRequestValue>();
+		
+		List<String> arGroups = null;
+        for (ActionRequestValue ar : actionRequests) {
             if (ActionRequestValue.compareActionCode(ar.getActionRequested(), requestCode, true) > 0) {
                 continue;
             }
             if (ar.isUserRequest() && principalId.equals(ar.getPrincipalId())) {
-                matchedArs.add(ar);
-            } else if (ar.isGroupRequest()) {
-            	if (arGroups == null) {
-            		arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
-            	}
-            	for (String groupId : arGroups) {
+            	filteredActionRequests.add(ar);
+            } else if (ar.isGroupRequest() && principalGroupIds != null && !principalGroupIds.isEmpty()) {
+            	for (String groupId : principalGroupIds) {
             		if (groupId.equals(ar.getGroupId())) {
-            			matchedArs.add(ar);
+            			filteredActionRequests.add(ar);
             		}
             	}
             }
         }
-        return matchedArs;
-    }
+		
+		return filteredActionRequests;
+	}
 
     public void updateActionRequestsForResponsibilityChange(Set<Long> responsibilityIds) {
     	PerformanceLogger performanceLogger = null;

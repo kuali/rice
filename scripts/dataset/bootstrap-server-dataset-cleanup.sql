@@ -282,6 +282,10 @@ drop sequence trv_fo_id_s
 
 drop table kr_kim_test_bo
 /
+drop table TST_SEARCH_ATTR_INDX_TST_DOC_T
+/
+delete from ACCT_DD_ATTR_DOC
+/
 
 -- Re-enable constraints
 DECLARE 

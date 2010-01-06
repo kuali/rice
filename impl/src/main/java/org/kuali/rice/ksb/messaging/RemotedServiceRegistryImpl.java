@@ -33,6 +33,7 @@ import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
 import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
@@ -52,6 +53,20 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 
 	private Map<QName, ServerSideRemotedServiceHolder> publishedTempServices = Collections.synchronizedMap(new HashMap<QName, ServerSideRemotedServiceHolder>());
 
+	/**
+	 * A Map for encapsulating copies of the ServiceDefinition objects and their checksums, so that it is not necessary to regenerate the checksums
+	 * during every registry refresh, and so that isSame() checks on non-serialized ServiceDefinitions can be performed properly to determine when
+	 * the checksums require recomputation.
+	 */
+	private Map<QName, ServiceInfo> serviceInfoCopies = Collections.synchronizedMap(new HashMap<QName, ServiceInfo>());
+	
+	/**
+	 * A Map for temporarily storing the values located in the serviceInfoCopies Map during a registry refresh.
+	 */
+	private Map<QName, ServiceInfo> serviceInfoCopyHolder = Collections.synchronizedMap(new HashMap<QName, ServiceInfo>());
+	
+	private String serverIp;
+	
 	/**
 	 * lookup QNameS of published services from request URLs
 	 */
@@ -77,12 +92,38 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	private void registerService(ServiceInfo entry, Object serviceImpl) throws Exception {
 		ServerSideRemotedServiceHolder serviceHolder = ServiceExporterFactory.getServiceExporter(entry, serviceLocator).getServiceExporter(serviceImpl);
 		this.publishedServices.put(entry.getQname(), serviceHolder);
+		this.serviceInfoCopies.put(entry.getQname(), this.serviceInfoCopyHolder.get(entry.getQname()));
 		this.publishedServiceNameFinder.put(entry.getEndpointUrl(), entry.getQname());
 	}
 
+	/**
+	 * Constructs a new ServiceInfo object based on the given ServiceDefinition, and also creates/updates another ServiceInfo for encapsulating copies
+	 * of the ServiceDefinition and its checksum. 
+	 * 
+	 * @param serviceDef The ServiceDefinition to encapsulate inside of a ServiceInfo object.
+	 * @return A new ServiceInfo constructed from the provided ServiceDefinition and an associated ServiceInfo copy.
+	 */
+	private ServiceInfo createServiceInfoAndServiceInfoCopy(ServiceDefinition serviceDef) {
+		ServiceInfo copiedInfo = this.serviceInfoCopies.get(serviceDef.getServiceName());
+		
+		if (copiedInfo == null) {
+			// Create a new ServiceInfo copy if one does not exist.
+			copiedInfo = new ServiceInfo();
+			copiedInfo.setServiceDefinition((ServiceDefinition) ObjectUtils.deepCopy(serviceDef));
+			copiedInfo.setChecksum(copiedInfo.objectToChecksum(serviceDef));
+		} else if (!serviceDef.isSame(copiedInfo.getServiceDefinition(serviceLocator.getMessageHelper()))) {
+			// Update the existing ServiceInfo copy if its ServiceDefinition copy fails an isSame() check with the given ServiceDefinition.
+			copiedInfo.setServiceDefinition((ServiceDefinition) ObjectUtils.deepCopy(serviceDef));
+			copiedInfo.setChecksum(copiedInfo.objectToChecksum(serviceDef));
+		}
+		this.serviceInfoCopyHolder.put(serviceDef.getServiceName(), copiedInfo);
+		
+		return new ServiceInfo(serviceDef, this.serverIp, new String(copiedInfo.getChecksum()));
+	}
+	
 	private ServiceInfo getForwardHandlerServiceInfo(ServiceDefinition serviceDef) {
 		ForwardedCallHandler callHandler = new ForwardedCallHandlerImpl();
-
+		
 		ServiceDefinition serviceDefinition = new JavaServiceDefinition();
 		serviceDefinition.setBusSecurity(serviceDef.getBusSecurity());
 		if (serviceDef.getLocalServiceName() == null && serviceDef.getServiceName() != null) {
@@ -99,7 +140,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		serviceDefinition.setService(callHandler);
 		serviceDefinition.validate();
 
-		return new ServiceInfo(serviceDefinition);
+		return createServiceInfoAndServiceInfoCopy(serviceDefinition);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -213,6 +254,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	public synchronized void run() {
 	    	String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
 		LOG.debug("Checking for newly published services on service namespace " + serviceNamespace + " ...");
+		this.serverIp = RiceUtilities.getIpNumber();
 
 		String serviceServletUrl = (String) ConfigContext.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {
@@ -221,19 +263,19 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 
 		// First, we need to get the list of services that we should be publishing
 		
-		List javaServices = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
+		List<?> javaServices = (List<?>) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		// convert the ServiceDefinitions into ServiceInfos for diff comparison
 		List<ServiceInfo> configuredJavaServices = new ArrayList<ServiceInfo>();
-		for (Iterator iter = javaServices.iterator(); iter.hasNext();) {
+		for (Iterator<?> iter = javaServices.iterator(); iter.hasNext();) {
 			ServiceDefinition serviceDef = (ServiceDefinition) iter.next();
-			configuredJavaServices.add(new ServiceInfo(serviceDef));
+			configuredJavaServices.add(createServiceInfoAndServiceInfoCopy(serviceDef));
 			configuredJavaServices.add(getForwardHandlerServiceInfo(serviceDef));
 		}
 
 		List<ServiceInfo> configuredServices = new ArrayList<ServiceInfo>();
 		configuredServices.addAll(configuredJavaServices);
 		List<ServiceInfo> fetchedServices = null;
-
+		
 		// Next, let's find the services that we have already published in the registry
 	 	
 		if (ConfigContext.getCurrentContextConfig().getDevMode() || ConfigContext.getCurrentContextConfig().getBatchMode()) {
@@ -242,7 +284,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			//TODO we are not verifying that this read is not being done in dev mode in a test
 			fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), serviceNamespace);
 		}
-
+		
 		RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
 		diffCalc.setEnMessageHelper(serviceLocator.getMessageHelper());
 		boolean needUpdated = diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
@@ -256,10 +298,12 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 				getServiceInfoService().remove(diffCalc.getServicesNeedRemoved());
 			}
 			this.publishedServices.clear();
+			this.serviceInfoCopies.clear();
 			publishServiceList(diffCalc.getMasterServiceList());
 		} else if (this.publishedServices.isEmpty()) {
 			publishServiceList(configuredServices);
 		}
+		this.serviceInfoCopyHolder.clear();
 		LOG.debug("...Finished checking for remote services.");
 	}
 
@@ -270,6 +314,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			} catch (Exception e) {
 				LOG.error("Encountered error registering service " + serviceInfo.getQname(), e);
 				this.publishedServices.remove(serviceInfo.getQname());
+				this.serviceInfoCopies.remove(serviceInfo.getQname());
 				this.publishedServiceNameFinder.remove(serviceInfo.getEndpointUrl());
 				continue;
 			}
@@ -308,6 +353,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		this.getServiceInfoService().markServicesDead(fetchedServices);
 		this.publishedServices.clear();
 		this.getPublishedTempServices().clear();
+		this.serviceInfoCopies.clear();
 		this.started = false;
 		LOG.info("...Service Registry successfully stopped.");
 	}

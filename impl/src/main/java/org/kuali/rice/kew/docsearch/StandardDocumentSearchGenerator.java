@@ -202,10 +202,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                             searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
                     if(!Utilities.isEmpty(searchableErrors)){
                         for (WorkflowAttributeValidationError error : searchableErrors) {
+	                    	if (error.getMessageMap() != null && error.getMessageMap().hasErrors()) {
+	                    		// In order to pass the map along we've added a member to the WorkflowServiceErrorImpl
+	                    		errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", 
+	                    				error.getMessage(), null, error.getMessageMap()));
+	                    	} else {
                             errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", error.getMessage()));
                         }
                     }
                 }
+	            }
             } catch (Exception e) {
                 LOG.error("error finding searchable attribute in when validating document search criteria.", e);
             }
@@ -862,7 +868,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                             //Enhancement Idea - Could possibly use recursion here (would have to set the lower bound and inclusive variables
                             //append first one here and then set the second one and break
                             timeValueToSearch = lowerTimeBound;
-                            whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
+							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", getDbPlatform().getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
 
                             dateValueToSearch = rangeValues[1];
                             sqlOperand = new StringBuffer("<=");
@@ -875,7 +881,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 }
             }
         }
-        return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), DocSearchUtils.getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim())), timeValueToSearch.trim()), "", ""));
+		return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), getDbPlatform().getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim())), timeValueToSearch.trim()), "", ""));
     }
 
     public StringBuffer constructWhereClauseElement(String clauseStarter,String queryTableColumnName,String operand,String valueToSearch,String valuePrefix,String valueSuffix) {
@@ -1653,6 +1659,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         String searchVal = "";
 
+    	if(fromDate != null && !"".equals(fromDate)) {
+    		try {
+    			KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);
+    		} catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
+    	}
+    	
         if(toDate != null && !"".equals(toDate)){
             try{
                 java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);

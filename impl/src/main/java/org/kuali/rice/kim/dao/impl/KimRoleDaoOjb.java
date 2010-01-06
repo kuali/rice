@@ -85,7 +85,6 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
 	 *      java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<GroupMembershipInfo> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId) {
 	    List<String> groupIdValues = new ArrayList<String>();
 	    List<GroupMembershipInfo> groupPrincipals = new ArrayList<GroupMembershipInfo>();
@@ -117,7 +116,6 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
 	 *      java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<GroupMembershipInfo> getGroupMembers(Collection<String> groupIds) {
 	    List<String> groupIdValues = new ArrayList<String>();
 	    List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
@@ -156,22 +154,6 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		for ( RoleMemberImpl rm : coll ) {
 			if ( rm.isActive() ) {
 				results.add(rm);
-			}
-		}
-		return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	public Map<String,RoleImpl> getRoleImplMap(Collection<String> roleIds) {
-		HashMap<String,RoleImpl> results = new HashMap<String, RoleImpl>();
-		if ( roleIds != null && !roleIds.isEmpty() ) {
-			Criteria c = new Criteria();
-			c.addIn(KIMPropertyConstants.Role.ROLE_ID, roleIds);
-			c.addEqualTo(KIMPropertyConstants.Role.ACTIVE, "Y");
-			Query query = QueryFactory.newQuery(RoleImpl.class, c);
-			Collection<RoleImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-			for ( RoleImpl role : coll ) {
-				results.put( role.getRoleId(), role);
 			}
 		}
 		return results;
@@ -669,7 +651,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     	return keyValues;
     }
 
-    protected List<RoleMemberImpl> getRoleMemberImpls(Map<String, String> fieldValues){
+    @SuppressWarnings("unchecked")
+	protected List<RoleMemberImpl> getRoleMemberImpls(Map<String, String> fieldValues){
 		Criteria queryCriteria = new Criteria();
 		List<String> memberIds = new ArrayList<String>();
 		if(hasExtraRoleMemberCriteria(fieldValues)){
@@ -754,7 +737,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     			StringUtils.isNotEmpty(fieldValues.get(KimConstants.KimUIConstants.MEMBER_NAMESPACE_CODE));
     }
 
-    private List<RoleImpl> getRoleMembersRoles(String memberNamespaceCode, String memberName){
+    @SuppressWarnings("unchecked")
+	private List<RoleImpl> getRoleMembersRoles(String memberNamespaceCode, String memberName){
 		Criteria queryCriteria = new Criteria();
 		addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.NAMESPACE_CODE, memberNamespaceCode);
 		addEqualToCriteria(queryCriteria, KimConstants.UniqueKeyConstants.ROLE_NAME, memberName);

@@ -72,6 +72,11 @@ public class RouteDocumentAction extends ActionTakenEvent {
         return "";
     }
 
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
+    }
+    
     /**
      * Record the routing action. To route a document, it must be in the proper state. Previous requests and actions have no bearing on the outcome of this action, unless the
      * @throws org.kuali.rice.kew.exception.InvalidActionTakenException

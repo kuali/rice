@@ -17,11 +17,14 @@
 package org.kuali.rice.kew.docsearch;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -30,6 +33,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.bo.Person;
@@ -410,13 +414,23 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         					2                       , 1             , 1                       , 0                         , 1                  , 2                   , 2 /*1*/               ,
         					0                       , 1             , 2                       , 1                         , 3                  , 0                   ,
         					2                       , 2});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardString",
+        		new String[][] { {"testString"}, {"anotherStr"}, {"MoreText"}, {"testString", "anotherStr"}, {"testString", "MoreText"}, {"anotherStr", "MoreText"}, {"testString", "anotherStr", "MoreText"}, {"monkey"}, {"monkey", "giraffe"}, {"monkey", "testString"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
 
         // Ensure that wildcards work on searchable long attributes, and ensure the string-specific wildcards are not being utilized.
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
         		new String[]  {"99??", "*2"       , "!33"         , "<9984", ">432", "<=33", ">=432", ">33&&<9984", "<=100000&&>=20", ">9984&&<33", "432..9984",
-        					"9999..1", "<432|>432", ">=9000|<=100", ">-76"},
+        					"9999..1", "<432|>432", ">=9000|<=100", "!", ">-76"},
         			new int[] {-1     , -1          , 1             , 2      , 1     , 1     , 2      , 1           , 3               , 0           , 2 /*1*/    ,
-        					0        , 2          , 2             , 3});
+        					0        , 2          , 2             , -1 , 3});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
+        		new String[][] { {"9984"}, {"33"}, {"432"}, {"9984", "33"}, {"9984", "432"}, {"33", "432"}, {"9984", "33", "432"}, {"7"}, {"7", "4488"}, {"7", "9984"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
 
         // Ensure that wildcards work on searchable float attributes, and ensure the string-specific wildcards are not being utilized.
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardFloat",
@@ -424,6 +438,12 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         					"-50..50"   , "100..10", "<=38.1357|>=38.1357" , ">123.4567|<0.11", "-1.1..38.1357&&<3.3"},
         			new int[] {-1        , 1        , -1                     , 2                , 2                     , 1         , 2          , 2         , 3           , 1                   , 0                       ,
         					2           , 0        , 3                     , 2                , 1});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardFloat",
+        		new String[][] { {"38.1357"}, {"80000.65432"}, {"-0.765"}, {"38.1357", "80000.65432"}, {"38.1357", "-0.765"}, {"80000.65432", "-0.765"}, {"38.1357", "80000.65432", "-0.765"}, {"3.1415928"}, {"3.1415928", "4488.0"}, {"3.1415928", "38.1357"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
+
 
         // Ensure that wildcards work on searchable datetime attributes, and ensure the string-specific wildcards are not being utilized.
         /* 06/24/2009, 07/08/2010, 12/12/2012 */
@@ -434,6 +454,12 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         			new int[] {-1                      , -1                         , -1                      , 2            , 1            , 1             , 2             , 1                          ,
         					0                          , 1                         , 0                       ,
         					1                          , 2                         , -1});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardDatetime",
+        		new String[][] { {"06/24/2009"}, {"07/08/2010"}, {"12/12/2012"}, {"06/24/2009", "07/08/2010"}, {"06/24/2009", "12/12/2012"}, {"07/08/2010", "12/12/2012"}, {"06/24/2009", "07/08/2010", "12/12/2012"}, {"12/20/2012"}, {"12/20/2012", "11/09/2009"}, {"12/20/2012", "12/12/2012"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
+
     }
 
     /**
@@ -472,5 +498,92 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         	}
         	GlobalVariables.clear();
         }
+    }
+    
+    /**
+     * A convenience method for testing multiple value fields on searchable attributes.
+     *
+     * @param docType The document type containing the attributes.
+     * @param principalId The ID of the user performing the search.
+     * @param fieldDefKey The name of the field given by the field definition on the searchable attribute.
+     * @param searchValues The wildcard-filled search strings to test.
+     * @param resultSizes The number of expected documents to be returned by the search; use -1 to indicate that an error should have occurred.
+     * @throws Exception
+     */
+    private void assertSearchableAttributeMultiplesWork(DocumentType docType, String principalId, String fieldDefKey, String[][] searchValues,
+    		int[] resultSizes) throws Exception {
+    	DocSearchCriteriaDTO criteria = null;
+        DocumentSearchResultComponents result = null;
+        List<DocumentSearchResult> searchResults = null;
+        DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
+        for (int i = 0; i < resultSizes.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setDocTypeFullName(docType.getName());
+        	criteria.addSearchableAttribute(this.createSearchAttributeCriteriaComponent(fieldDefKey, searchValues[i], docType));
+        	try {
+        		result = docSearchService.getList(principalId, criteria);
+        		searchResults = result.getSearchResults();
+        		if (resultSizes[i] < 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
+        		}
+        		if(resultSizes[i] != searchResults.size()){
+        			assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], searchResults.size());
+        		}
+        	} catch (Exception ex) {
+        		if (resultSizes[i] >= 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");
+        		}
+        	}
+        	GlobalVariables.clear();
+        }
+    }
+    
+    /**
+     * Per KULRICE-3681, tests that StandardGenericXMLSearchableAttribute throws no cast class exception when it shouldn't
+     */
+    @Test
+    public void testValidateUserSearchInputsNoCast() {
+    	StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
+    	final RuleAttributeService ruleAttributeService = KEWServiceLocator.getRuleAttributeService();
+    	searchableAttribute.setRuleAttribute(ruleAttributeService.findByName("SearchableAttributeVisible"));
+    	
+    	Map<Object, Object> simpleParamMap = new HashMap<Object, Object>();
+    	simpleParamMap.put("givenname", "test");
+    	List errors = new ArrayList();
+    	Exception caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(simpleParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
+    	
+    	Map<Object, Object> listParamMap = new HashMap<Object, Object>();
+    	List<String> multipleValues = new ArrayList<String>();
+    	multipleValues.add("testone");
+    	multipleValues.add("testtwo");
+    	listParamMap.put("givenname", multipleValues);
+    	errors = new ArrayList();
+    	caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(listParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
+    	
+    	Map<Object, Object> badParamMap = new HashMap<Object, Object>();
+    	badParamMap.put("givenname", new Integer(7));
+    	errors = new ArrayList();
+    	caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(badParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNotNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
     }
 }

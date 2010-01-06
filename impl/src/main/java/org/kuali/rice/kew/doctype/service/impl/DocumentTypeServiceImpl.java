@@ -25,6 +25,7 @@ import java.util.List;
 import org.jdom.Element;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
+import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
@@ -33,6 +34,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
@@ -51,9 +53,13 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     public static final String DOCUMENT_TYPE_ID_CACHE_GROUP = "DocumentTypeId";
     public static final String DOCUMENT_TYPE_NAME_CACHE_GROUP = "DocumentTypeName";
+    public static final String DOCUMENT_TYPE_DTO_ID_CACHE_GROUP = "DocumentTypeDTOId";
+    public static final String DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP = "DocumentTypeDTOName";
 
     public static final String DOCUMENT_TYPE_ID_CACHE_PREFIX = DOCUMENT_TYPE_ID_CACHE_GROUP + ":";
     public static final String DOCUMENT_TYPE_NAME_CACHE_PREFIX = DOCUMENT_TYPE_NAME_CACHE_GROUP + ":";
+    public static final String DOCUMENT_TYPE_DTO_ID_CACHE_PREFIX = DOCUMENT_TYPE_DTO_ID_CACHE_GROUP + ":";
+    public static final String DOCUMENT_TYPE_DTO_NAME_CACHE_PREFIX = DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP + ":";
     public static final String CURRENT_ROOTS_IN_CACHE_KEY = "DocumentType:CurrentRootsInCache";
 
 
@@ -162,6 +168,57 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     /**
+     * Fetches the DocumentType from the cache with the given document type name.  If there is no entry in the cache for the given
+     * document type name, null is returned.
+     */
+    protected DocumentTypeDTO fetchDTOFromCacheByName(String documentTypeName) {
+    	return (DocumentTypeDTO)KEWServiceLocator.getCacheAdministrator().getFromCache(getDTONameCacheKey(documentTypeName));
+    }
+
+    /**
+     * Fetches the DocumentType from the cache with the given document type id.  If there is no entry in the cache for the given
+     * document type id, null is returned.
+     */
+    protected DocumentTypeDTO fetchDTOFromCacheById(Long documentTypeId) {
+    	return (DocumentTypeDTO)KEWServiceLocator.getCacheAdministrator().getFromCache(getDTOIdCacheKey(documentTypeId));
+    }
+
+    /**
+     * Returns the cache key for the given document type ID.
+     */
+    protected String getDTOIdCacheKey(Long documentTypeId) {
+    	return DOCUMENT_TYPE_DTO_ID_CACHE_PREFIX + documentTypeId.toString();
+    }
+
+    /**
+     * Returns the cache key for the given document type name.
+     */
+    protected String getDTONameCacheKey(String documentTypeName) {
+    	return DOCUMENT_TYPE_DTO_NAME_CACHE_PREFIX + documentTypeName;
+    }
+
+    /**
+     * Inserts the given DocumentType into the name and id caches.  If the DocumentType is already in the cache,
+     * these entries should  be overwritten.
+     *
+     * <p>If the given DocumentType does not represent the current version of the DocumentType then it
+     * should not be inserted into the name cache.  This is because different versions of DocumentTypes have
+     * different IDs but they all have the same name.  We want only the most recent version of the DocumentType
+     * to be cached by name.
+     */
+    protected void insertDTOIntoCache(DocumentTypeDTO documentType) {
+    	if (documentType == null) {
+    		return;
+    	}
+    	//don't cache by name if this isn't the current version
+    	if ( documentType.getDocTypeCurrentInd().equals(KEWConstants.ACTIVE_CD) ) {
+    		KEWServiceLocator.getCacheAdministrator().putInCache(getDTONameCacheKey(documentType.getName()), documentType, DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP);
+    	}
+
+    	KEWServiceLocator.getCacheAdministrator().putInCache(getDTOIdCacheKey(documentType.getDocTypeId()), documentType, DOCUMENT_TYPE_DTO_ID_CACHE_GROUP);
+    }
+
+    /**
      * Flushes all DocumentTypes from the cache.
      */
     public void flushCache() {
@@ -171,6 +228,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	LOG.info("clearing DocumentType cache because of local update");
     	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_ID_CACHE_GROUP);
     	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_NAME_CACHE_GROUP);
+    	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_DTO_ID_CACHE_GROUP);
+    	KEWServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_DTO_NAME_CACHE_GROUP);
+    	KEWServiceLocator.getCacheAdministrator().flushGroup(DocumentTypePermissionService.DOC_TYPE_PERM_CACHE_GROUP);
     	KEWServiceLocator.getCacheAdministrator().flushEntry(CURRENT_ROOTS_IN_CACHE_KEY);
     }
 
@@ -201,7 +261,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         		    Integer maxVersionNumber = documentTypeDAO.getMaxVersionNumber(documentType.getName());
         			documentType.setVersion((maxVersionNumber != null) ? new Integer(maxVersionNumber.intValue() + 1) : new Integer(0));
         			oldDocumentType.setCurrentInd(Boolean.FALSE);
-        			LOG.info("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
+        			if ( LOG.isInfoEnabled() ) { 
+        				LOG.info("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
+        			}
         			save(oldDocumentType, false);
         		}
     		}
@@ -215,7 +277,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             documentType.setPreviousVersionId(existingDocTypeId);
             documentType.setCurrentInd(Boolean.TRUE);
     		save(documentType, false);
-            LOG.info("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
+    		if ( LOG.isInfoEnabled() ) { 
+    			LOG.info("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
+    		}
     		//attach the children to this new parent.  cloning the children would probably be a better way to go here...
     		if (ObjectUtils.isNotNull(existingDocTypeId)) {
     		    // documentType.getPreviousVersion() should not be null at this point
@@ -224,7 +288,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     				DocumentType child = (DocumentType) iterator.next();
     				child.setDocTypeParentId(documentType.getDocumentTypeId());
     				save(child, false);
-    	            LOG.info("Saved child document type Id " + child.getDocumentTypeId() + " name '" + child.getName() + "' (parent = " + child.getDocTypeParentId() + ", current = " + child.getCurrentInd() + ")");
+    				if ( LOG.isInfoEnabled() ) { 
+    					LOG.info("Saved child document type Id " + child.getDocumentTypeId() + " name '" + child.getName() + "' (parent = " + child.getDocTypeParentId() + ", current = " + child.getCurrentInd() + ")");
+    				}
     			}
     		}
     		// initiate a save of this document type's parent document type, this will force a
@@ -235,7 +301,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		if (documentType.getDocTypeParentId() != null) {
     			DocumentType parent = getDocumentTypeDAO().findByDocId(documentType.getDocTypeParentId());
     			save(parent, false);
-                LOG.info("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
+    			if ( LOG.isInfoEnabled() ) { 
+    				LOG.info("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
+    			}
     		}
 
     		// finally, flush the cache and notify the rule cache of the DocumentType change
@@ -278,13 +346,30 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public DocumentTypeDTO getDocumentTypeVO(Long documentTypeId) {
-        DocumentType docType = findById(documentTypeId);
-        return DTOConverter.convertDocumentType(docType);
+        DocumentTypeDTO dto = fetchDTOFromCacheById(documentTypeId);
+        if ( dto == null ) {
+            DocumentType docType = findById(documentTypeId);
+            if ( docType == null ) {
+            	return null;
+            }
+        	dto = DTOConverter.convertDocumentType(docType);
+        	insertDTOIntoCache(dto);
+        }
+        
+        return dto;
     }
 
     public DocumentTypeDTO getDocumentTypeVO(String documentTypeName) {
-        DocumentType documentType = findByName(documentTypeName);
-        return DTOConverter.convertDocumentType(documentType);
+        DocumentTypeDTO dto = fetchDTOFromCacheByName(documentTypeName);
+        if ( dto == null ) {
+            DocumentType docType = findByName(documentTypeName);
+            if ( docType == null ) {
+            	return null;
+            }
+        	dto = DTOConverter.convertDocumentType(docType);
+        	insertDTOIntoCache(dto);
+        }
+        return dto;
     }
 
     public synchronized List findAllCurrentRootDocuments() {

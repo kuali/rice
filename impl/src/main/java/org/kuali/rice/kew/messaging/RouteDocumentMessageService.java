@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.messaging;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -38,6 +39,10 @@ public class RouteDocumentMessageService implements KSBXMLService {
 			WorkflowEngine engine = KEWServiceLocator.getWorkflowEngine();
 			engine.setRunPostProcessorLogic(newElement.runPostProcessor);
 			engine.process(newElement.routeHeaderId, null);
+			if (newElement.shouldSearchAttributeIndex) {
+				SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(newElement.routeHeaderId));
+				searchableAttService.indexDocument(newElement.routeHeaderId);
+			}
 		} catch (Exception e) {
 			LOG.error(e);
 			throw new WorkflowRuntimeException(e);
@@ -47,6 +52,7 @@ public class RouteDocumentMessageService implements KSBXMLService {
 	public static class RouteMessageXmlElement {
 		public static Long routeHeaderId;
 		public static boolean runPostProcessor = true;
+		public static boolean shouldSearchAttributeIndex = false;
 		public RouteMessageXmlElement(Long routeHeaderId) {
 			this.routeHeaderId = routeHeaderId;
 		}
@@ -54,17 +60,25 @@ public class RouteDocumentMessageService implements KSBXMLService {
 			this(routeHeaderId);
 			this.runPostProcessor = runPostProcessor;
 		}
+		public RouteMessageXmlElement(Long routeHeaderId, boolean runPostProcessor, boolean shouldIndex) {
+			this(routeHeaderId, runPostProcessor);
+			this.shouldSearchAttributeIndex = shouldIndex;
+		}
 		private static final String SPLIT = "::~~::";
 		public static RouteMessageXmlElement construct(String content) {
 			if (content.indexOf(SPLIT) != -1) {
 				String[] values = content.split(SPLIT);
-				return new RouteMessageXmlElement(Long.valueOf(values[0]),Boolean.valueOf(values[1]));
+				if (values.length == 3) {
+					return new RouteMessageXmlElement(Long.valueOf(values[0]), Boolean.valueOf(values[1]), Boolean.valueOf(values[2]));
+				} else {
+					return new RouteMessageXmlElement(Long.valueOf(values[0]),Boolean.valueOf(values[1]));
+				}
 			} else {
 				return new RouteMessageXmlElement(Long.valueOf(content));
 			}
 		}
 		public String translate() {
-			return routeHeaderId + SPLIT + String.valueOf(runPostProcessor);
+			return routeHeaderId + SPLIT + String.valueOf(runPostProcessor) + SPLIT + String.valueOf(shouldSearchAttributeIndex);
 		}
 	}
 

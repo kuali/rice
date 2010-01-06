@@ -8,8 +8,8 @@
     
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 
-	<param name="client1.location">${basedir}/src/test/clients/TestClient1</param>	
-	<param name="client2.location">${basedir}/src/test/clients/TestClient2</param>
+	<param name="client1.location">${basedir}/src/test/clients/TestClient1/</param>	
+	<param name="client2.location">${basedir}/src/test/clients/TestClient2/</param>
 	<param name="ksb.client1.port">9913</param>
 	<param name="ksb.client2.port">9914</param>
 	<param name="ksb.testharness.port">9915</param>

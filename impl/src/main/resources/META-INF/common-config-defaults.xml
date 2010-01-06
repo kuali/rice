@@ -190,6 +190,9 @@
     <param name="kim.cache.person.max.size" override="false">3000</param>
     <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
 
+    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">600</param>
+    <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize" override="false">300</param>
+
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
 
 	<param name="enable.nonproduction.data.unmasking" override="false">false</param>

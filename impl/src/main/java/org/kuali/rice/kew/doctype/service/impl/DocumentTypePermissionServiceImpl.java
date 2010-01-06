@@ -23,6 +23,7 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -39,6 +40,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
 /**
  * Implementation of the DocumentTypePermissionService. 
@@ -48,22 +50,50 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class DocumentTypePermissionServiceImpl implements DocumentTypePermissionService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypePermissionServiceImpl.class);
+	
+	public static final String DOC_TYPE_PERM_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_GROUP + ":";
+	public static final String BLANKET_APPROVE_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "BlanketApprove:";
+	public static final String PRINCIPAL_ADHOC_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "PrincipalAdhoc:";
+	public static final String GROUP_ADHOC_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "GroupAdhoc:";
+	public static final String ADMIN_ROUTING_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "AdminRouting:";
+	public static final String CANCEL_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "Cancel:";
+	
+	private RiceCacheAdministrator cacheAdministrator;
+	private final AttributeSet EMPTY_ROLE_QUALIFIERS = new AttributeSet(0);
+	
+	protected RiceCacheAdministrator getCacheAdministrator() {
+		if ( cacheAdministrator == null ) {
+			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
+		}
+		return cacheAdministrator;
+	}
+	
 	public boolean canBlanketApprove(String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 		
-		if (documentType.isBlanketApproveGroupDefined()) {
-			boolean initiatorAuthorized = true;
-			if (documentType.getInitiatorMustBlanketApprovePolicy().getPolicyValue()) {
-				initiatorAuthorized = executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
+		String cacheKey = buildBlanketApproveCacheKey(principalId, documentType, documentStatus, initiatorPrincipalId);
+		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
+		if ( result == null ) {
+			if (documentType.isBlanketApproveGroupDefined()) {
+				boolean initiatorAuthorized = true;
+				if (documentType.getInitiatorMustBlanketApprovePolicy().getPolicyValue()) {
+					initiatorAuthorized = executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
+				}
+				result = initiatorAuthorized && documentType.isBlanketApprover(principalId);
+			} else {		
+				AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
+				result = getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.BLANKET_APPROVE_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
 			}
-			return initiatorAuthorized && documentType.isBlanketApprover(principalId);
+			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
 		}
-		
-		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.BLANKET_APPROVE_PERMISSION, permissionDetails, new AttributeSet());
+		return result;
+	}
+	
+	protected String buildBlanketApproveCacheKey( String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId ) {
+		return BLANKET_APPROVE_CACHE_PREFIX + documentType.getName() + "/" + documentStatus + "/" + principalId + "/" + initiatorPrincipalId;
 	}
 	
 	public boolean canReceiveAdHocRequest(String principalId, DocumentType documentType, String actionRequestType) {
@@ -71,11 +101,23 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentType(documentType);
 		validateActionRequestType(actionRequestType);
 		
-		AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
-		if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet());
+		String cacheKey = buildPrincipalAdhocCacheKey(principalId, documentType, actionRequestType );
+		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
+		
+		if ( result == null ) {
+			AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
+			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
+				result = getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
+			} else {
+				result = Boolean.TRUE;
+			}
+			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
 		}
-		return true;
+		return result;
+	}
+
+	protected String buildPrincipalAdhocCacheKey( String principalId, DocumentType documentType, String actionRequestType ) {
+		return PRINCIPAL_ADHOC_CACHE_PREFIX + documentType.getName() + "/" + actionRequestType + "/" + principalId;
 	}
 	
 	public boolean canGroupReceiveAdHocRequest(String groupId, DocumentType documentType, String actionRequestType) {
@@ -83,28 +125,53 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentType(documentType);
 		validateActionRequestType(actionRequestType);
 		
-		AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
-		if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
-			List<String> principalIds = getIdentityManagementService().getGroupMemberPrincipalIds(groupId);
-			for (String principalId : principalIds) {
-				if (!getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new AttributeSet())) {
-					return false;
+		String cacheKey = buildGroupAdhocCacheKey(groupId, documentType, actionRequestType );
+		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
+		
+		if ( result == null ) {
+			result = Boolean.TRUE;
+			AttributeSet permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
+			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
+				List<String> principalIds = getIdentityManagementService().getGroupMemberPrincipalIds(groupId);
+				// if any member of the group is not allowed to receive the request, then the group may not receive it
+				for (String principalId : principalIds) {
+					if (!getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS)) {
+						result = Boolean.FALSE;
+						break;
+					}
 				}
 			}
+			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
 		}
-		return true;
+		return result;
+	}
+
+	protected String buildGroupAdhocCacheKey( String groupId, DocumentType documentType, String actionRequestType ) {
+		return GROUP_ADHOC_CACHE_PREFIX + documentType.getName() + "/" + actionRequestType + "/" + groupId;
 	}
 	
 	public boolean canAdministerRouting(String principalId, DocumentType documentType) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
+
+		String cacheKey = buildAdminRoutingCacheKey(principalId, documentType );
+		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
 		
-		if (documentType.isSuperUserGroupDefined()) {
-			return documentType.isSuperUser(principalId);
+		if ( result == null ) {
+			if (documentType.isSuperUserGroupDefined()) {
+				result = documentType.isSuperUser(principalId);
+			} else {			
+				AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
+				result = getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
+			}
+			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
 		}
 		
-		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-		return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new AttributeSet());
+		return result;
+	}
+
+	protected String buildAdminRoutingCacheKey( String principalId, DocumentType documentType ) {
+		return ADMIN_ROUTING_CACHE_PREFIX + documentType.getName() + "/" + principalId;
 	}
 	
 	public boolean canCancel(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
@@ -114,37 +181,51 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 
-		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL)) {
-			List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
-			boolean foundAtLeastOnePermission = false;
-			// loop over permission details, only one of them needs to be authorized
-			for (AttributeSet permissionDetails : permissionDetailList) {
-				if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
-					foundAtLeastOnePermission = true;
-					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, new AttributeSet())) {
-						return true;
+		String cacheKey = buildCancelCacheKey(principalId, documentType, routeNodeNames, documentStatus, initiatorPrincipalId);
+		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
+		
+		if ( result == null ) {
+			if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL)) {
+				List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+				boolean foundAtLeastOnePermission = false;
+				// loop over permission details, only one of them needs to be authorized
+				for (AttributeSet permissionDetails : permissionDetailList) {
+					if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
+						foundAtLeastOnePermission = true;
+						if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS)) {
+							getCacheAdministrator().putInCache(cacheKey, Boolean.TRUE, DOC_TYPE_PERM_CACHE_GROUP);
+							return true;
+						}
 					}
 				}
+				// if we found defined KIM permissions, but not of them have authorized this user, return false
+				if (foundAtLeastOnePermission) {
+					getCacheAdministrator().putInCache(cacheKey, Boolean.FALSE, DOC_TYPE_PERM_CACHE_GROUP);
+					return false;
+				}
 			}
-			// if we found defined KIM permissions, but not of them have authorized this user, return false
-			if (foundAtLeastOnePermission) {
-				return false;
-			}
+			
+			if (documentType.getInitiatorMustCancelPolicy().getPolicyValue()) {
+				result = executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
+			} else {
+				result = Boolean.TRUE;
+			}			
+			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
 		}
-		
-		if (documentType.getInitiatorMustCancelPolicy().getPolicyValue()) {
-			return executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
-		}
-		return true;
+		return result;
 	}
 
+	protected String buildCancelCacheKey( String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId ) {
+		return CANCEL_CACHE_PREFIX + documentType.getName() + "/" + documentStatus + "/" + routeNodeNames + "/" + principalId + "/" + initiatorPrincipalId;
+	}
+	
 	public boolean canInitiate(String principalId, DocumentType documentType) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
 		if (useKimPermission(KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
-			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, new AttributeSet());
+			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
 		}
 		return true;
 	}

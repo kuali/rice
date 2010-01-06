@@ -24,7 +24,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -32,6 +34,7 @@ import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.datadictionary.HelpDefinition;
+import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -53,6 +56,7 @@ public class KualiHelpAction extends KualiAction {
     private static final String VALIDATION_PATTERN_STRING = "ValidationPattern";
     private static final String NO = "No";
     private static final String YES = "Yes";
+    static final String DEFAULT_LOOKUP_HELP_TEXT_RESOURCE_KEY = "lookupHelpText";
     
     private static DataDictionaryService dataDictionaryService;
     private static KualiConfigurationService kualiConfigurationService;
@@ -367,15 +371,78 @@ public class KualiHelpAction extends KualiAction {
         KualiHelpForm helpForm = (KualiHelpForm) form;
 
         String resourceKey = helpForm.getResourceKey();
-        if (StringUtils.isBlank(resourceKey)) {
+        populateHelpFormForResourceText(helpForm, resourceKey);
+
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    /**
+     * Utility method that populates a KualiHelpForm with the description from a given resource key
+     * @param helpForm the KualiHelpForm to populate with help text
+     * @param resourceKey the resource key to use as help text
+     */
+    protected void populateHelpFormForResourceText(KualiHelpForm helpForm, String resourceKey) {
+    	if (StringUtils.isBlank(resourceKey)) {
             throw new RuntimeException("Help resource key not specified.");
         }
 
         helpForm.setHelpLabel("");
         helpForm.setHelpSummary("");
         helpForm.setHelpDescription(getConfigurationService().getPropertyString(resourceKey));
+    }
+    
+    /**
+     * Retrieves help for a lookup
+     */
+    public ActionForward getLookupHelpText(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	KualiHelpForm helpForm = (KualiHelpForm) form;
+    	
+    	final String lookupBusinessObjectClassName = helpForm.getLookupBusinessObjectClassName();
+    	if (!StringUtils.isBlank(lookupBusinessObjectClassName) && 
+    	        // don't do this for doc search
+    	        !DocSearchCriteriaDTO.class.getName().equals(lookupBusinessObjectClassName)) {
+    		final DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
+    		final BusinessObjectEntry entry = dataDictionary.getBusinessObjectEntry(lookupBusinessObjectClassName);
+    		final LookupDefinition lookupDefinition = entry.getLookupDefinition();
+    		
+    		if (lookupDefinition != null) {
+    			if (lookupDefinition.getHelpDefinition() != null && !StringUtils.isBlank(lookupDefinition.getHelpDefinition().getParameterNamespace()) && !StringUtils.isBlank(lookupDefinition.getHelpDefinition().getParameterDetailType()) && !StringUtils.isBlank(lookupDefinition.getHelpDefinition().getParameterName())) {
+    				final String apcHelpUrl = getHelpUrl(lookupDefinition.getHelpDefinition().getParameterNamespace(), lookupDefinition.getHelpDefinition().getParameterDetailType(), lookupDefinition.getHelpDefinition().getParameterName());
+    		        
+    		        if ( !StringUtils.isBlank(apcHelpUrl) ) {
+    		            response.sendRedirect(apcHelpUrl);
+    		            return null;
+    		        }
+    			} else if (!StringUtils.isBlank(lookupDefinition.getHelpUrl())) {
+    				final String apcHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url")+lookupDefinition.getHelpUrl();
+    				response.sendRedirect(apcHelpUrl);
+    				return null;
+    			}
+    		}
+    	}
+    	// handle doc search custom help urls
+    	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
+    	    DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(helpForm.getSearchDocumentTypeName());
+    	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
+    	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
 
+    	        if ( StringUtils.isNotBlank(docSearchHelpUrl) ) {
+    	            response.sendRedirect(docSearchHelpUrl);
+    	            return null;
+    	        }
+    	    }
+    	}
+    	
+    	// still here?  guess we're defaulting...
+    	populateHelpFormForResourceText(helpForm, getDefaultLookupHelpResourceKey());
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    /**
+     * @return the key of the default lookup help resource text
+     */
+    protected String getDefaultLookupHelpResourceKey() {
+    	return KualiHelpAction.DEFAULT_LOOKUP_HELP_TEXT_RESOURCE_KEY;
     }
 
     private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {

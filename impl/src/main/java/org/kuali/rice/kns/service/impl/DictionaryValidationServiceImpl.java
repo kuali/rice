@@ -31,6 +31,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.util.IdentitySet;
 import org.kuali.rice.core.jdbc.SqlBuilder;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -61,6 +62,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
@@ -84,6 +86,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     private TransactionalDocumentDictionaryService transactionalDocumentDictionaryService;
     private PersistenceService persistenceService;
     private KualiConfigurationService configService;
+    private WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
 
     private PersistenceStructureService persistenceStructureService;
     
@@ -332,6 +335,28 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * objectClassName is the docTypeName
      */
     public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
+        // Retrieve the field's data type, or set to the string data type if an exception occurs when retrieving the class or the DD entry.
+        String attributeDataType = null;
+        try {
+        	attributeDataType = getWorkflowAttributePropertyResolutionService().determineFieldDataType((Class<? extends BusinessObject>)Class.forName(
+        			getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(objectClassName).getFullClassName()), attributeName);
+        } catch(ClassNotFoundException e) {
+        	attributeDataType = SearchableAttribute.DATA_TYPE_STRING;
+        } catch (NullPointerException e) {
+        	attributeDataType = SearchableAttribute.DATA_TYPE_STRING;
+        }
+        
+        validateAttributeFormat(objectClassName, attributeName, attributeInValue, attributeDataType, errorKey);
+    }
+
+    /**
+     * The attributeDataType parameter should be one of the data types specified by the SearchableAttribute interface; will
+     * default to DATA_TYPE_STRING if a data type other than the ones from SearchableAttribute is specified.
+     * 
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * objectClassName is the docTypeName
+     */
+	public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
         String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
         boolean checkDateBounds = false; // this is used so we can check date bounds
         Class<?> formatterClass = null;
@@ -342,7 +367,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
          *  This will return a list of searchable attributes. so if the value is
          *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
          */
-        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue);
+
+        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue, attributeDataType);
 
         if(attributeValues == null || attributeValues.isEmpty())
         	return;
@@ -456,7 +482,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey, errorMessageParameters);
     		}
 
-    		if(lVal.compareTo(uVal) > 0){ // check the bounds
+    		if(lVal != null && lVal.compareTo(uVal) > 0){ // check the bounds
     			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
     			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
     			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey + ".range", errorMessageParameters);
@@ -967,4 +993,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         this.persistenceStructureService = persistenceStructureService;
     }
 
+    private WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+    	if (workflowAttributePropertyResolutionService == null) {
+    		workflowAttributePropertyResolutionService = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
+    	}
+    	return workflowAttributePropertyResolutionService;
+    }
 }

@@ -81,6 +81,7 @@ public interface XmlConstants {
     public static final String DEFAULT_EXCEPTION_GROUP_NAME = "defaultExceptionGroupName";
     public static final String DOC_HANDLER = "docHandler";
     public static final String HELP_DEFINITION_URL = "helpDefinitionURL";
+    public static final String DOC_SEARCH_HELP_URL = "docSearchHelpURL";
     public static final String NOTIFICATION_FROM_ADDRESS = "notificationFromAddress";
     public static final String CUSTOM_EMAIL_STYLESHEET = "emailStylesheet";
     public static final String POLICIES = "policies";

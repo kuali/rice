@@ -20,10 +20,8 @@ import java.util.List;
 
 import mocks.MockDocumentRequeuerImpl;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -63,24 +61,11 @@ public class AddRuleDelegationTest extends KEWTestCase {
     	WorkflowDocument wd = new WorkflowDocument(getPrincipalIdForName("ewestfal"), DOCTYPE);
     	wd.routeDocument("");
     	
-    	// create and save a rule delegation 
-    	List rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(RULE_TEMPLATE, DOCTYPE);
-    	assertTrue("assuming there is 1 rule", rules != null && rules.size() == 1);
-    	
-    	RuleBaseValues originalRule = (RuleBaseValues)rules.get(0);
-    	List<RuleResponsibility> responsibilities = originalRule.getResponsibilities();
-    	assertTrue("assuming there is 1 responsibility", responsibilities != null && responsibilities.size() == 1);
-    	
-    	RuleResponsibility originalResp = responsibilities.get(0);
-    	RuleTemplate rt = originalRule.getRuleTemplate();
-    	KimPrincipal principal2 = KEWServiceLocator.getIdentityHelperService().getPrincipal(new NetworkIdDTO(DELEGATE_USER));
-
     	// clear the current set of requeued document ids
 		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
-
-		// save the new rule delegation
-		// this *SHOULD* requeue, but will it?
-		saveNewRuleDelegation(originalRule, rt, originalResp, principal2);
+    	
+    	// create and save a rule delegation 
+		RuleTestUtils.createDelegationToUser(DOCTYPE, RULE_TEMPLATE, DELEGATE_USER);
     	
 		assertTrue("our document should have been requeued!", 
 				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(wd.getRouteHeaderId()));
@@ -94,28 +79,15 @@ public class AddRuleDelegationTest extends KEWTestCase {
 	@Test
 	public void testAddRuleDelegation() throws Exception {
 
-		List<RuleBaseValues> existingRules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(RULE_TEMPLATE, DOCTYPE);
-		assertNotNull(existingRules);
-		assertEquals(1, existingRules.size());
-
-		RuleBaseValues originalRule = existingRules.get(0);
-		assertTrue("Original rule should be current.", originalRule.getCurrentInd());
-
-		List<RuleResponsibility> originalResps = originalRule.getResponsibilities();
-		assertEquals(1, originalResps.size());
-
-		RuleResponsibility originalResp = originalResps.get(0);
-		Long originalRuleResponsibilityKey = originalResp.getRuleResponsibilityKey();
-
-		RuleTemplate rt = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(DELEGATION_TEMPLATE);
-		assertNotNull(rt);
-		assertNotNull(rt.getRuleTemplateId());
-		assertFalse(StringUtils.isEmpty(rt.getName()));
-
+		RuleBaseValues originalRule = RuleTestUtils.getRule(DOCTYPE, RULE_TEMPLATE);
+		
+    	List<RuleResponsibility> originalResps = originalRule.getResponsibilities();
+    	assertTrue("assuming there is 1 responsibility", originalResps != null && originalResps.size() == 1);
+    	
+    	RuleResponsibility originalResp = originalResps.get(0);
+    	
+		RuleTestUtils.createDelegationToUser(DOCTYPE, RULE_TEMPLATE, DELEGATE_USER);
 		KimPrincipal principal2 = KEWServiceLocator.getIdentityHelperService().getPrincipal(new NetworkIdDTO(DELEGATE_USER));
-
-		// save the new rule delegation
-		saveNewRuleDelegation(originalRule, rt, originalResp, principal2);
 
 		// check the original rule, it should be the same (i.e. not be re-versioned as KEW used to do pre 1.0 when a delegate was added)
 		originalRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(originalRule.getRuleBaseValuesId());
@@ -145,7 +117,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		KimPrincipal delegatePrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(DELEGATE_USER2);
 
 		// let's save the new rule delegation
-		saveNewRuleDelegation(originalRule, rt, originalResp, delegatePrincipal);
+		RuleTestUtils.createRuleDelegationToUser(originalRule, originalResp, delegatePrincipal);
 
 		List<RuleDelegation> ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(originalResp.getResponsibilityId());
 		assertEquals("There should be 2 delegation rules", 2, ruleDelegations.size());
@@ -191,32 +163,12 @@ public class AddRuleDelegationTest extends KEWTestCase {
 				// this is our reversioned rule
 				foundReversionedDelegateRule = true;
 				assertEquals("Previous version relationship should be set up now", newRuleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId(), ruleDelegation.getDelegationRuleBaseValues().getPreviousVersionId());
-				assertEquals("Rule Version should have been incremented.", new Long(newRuleDelegation.getVersionNumber().longValue() + 1), ruleDelegation.getVersionNumber());
+				assertEquals("Rule Version should have been incremented.", 
+						Long.valueOf(newRuleDelegation.getVersionNumber().longValue() + 1), 
+						ruleDelegation.getVersionNumber());
 			}
 		}
 		assertTrue("Failed to find the reversioned delegate rule", foundReversionedDelegateRule);
-	}
-
-	private void saveNewRuleDelegation(RuleBaseValues parentRule, RuleTemplate delegationTemplate, RuleResponsibility parentResponsibility, KimPrincipal delegatePrincipal) {
-		RuleDelegation ruleDelegation = new RuleDelegation();
-		ruleDelegation.setResponsibilityId(parentResponsibility.getResponsibilityId());
-		ruleDelegation.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
-		RuleBaseValues rule = new RuleBaseValues();
-		ruleDelegation.setDelegationRuleBaseValues(rule);
-		rule.setDelegateRule(true);
-		rule.setActiveInd(true);
-		rule.setCurrentInd(true);
-		rule.setDocTypeName(parentRule.getDocTypeName());
-		rule.setRuleTemplateId(delegationTemplate.getDelegationTemplateId());
-		rule.setRuleTemplate(delegationTemplate);
-		rule.setDescription("Description of this delegate rule");
-		rule.setForceAction(true);
-		RuleResponsibility delegationResponsibility = new RuleResponsibility();
-		rule.getResponsibilities().add(delegationResponsibility);
-		delegationResponsibility.setRuleBaseValues(rule);
-		delegationResponsibility.setRuleResponsibilityName(delegatePrincipal.getPrincipalId());
-		delegationResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-		KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 	}
 
 	private void saveNewVersion(RuleDelegation ruleDelegation) {

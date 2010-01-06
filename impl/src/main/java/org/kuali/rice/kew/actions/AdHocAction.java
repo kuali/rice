@@ -19,6 +19,7 @@ package org.kuali.rice.kew.actions;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -86,10 +87,15 @@ public class AdHocAction extends ActionTakenEvent {
     @Override
     public String validateActionRules() {
         List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
-        return validateActionRules(targetNodes);
+        return validateActionRulesInternal(targetNodes);
+    }
+    
+    @Override
+    public String validateActionRules(List<ActionRequestValue> actionRequests) {
+    	return validateActionRules();
     }
 
-    private String validateActionRules(List targetNodes) {
+    private String validateActionRulesInternal(List targetNodes) {
     	// recipient will be null when this is invoked from ActionRegistry.getValidActions
     	if (recipient != null) {
     		if (recipient instanceof KimPrincipalRecipient) {
@@ -110,14 +116,40 @@ public class AdHocAction extends ActionTakenEvent {
     }
 
     private String adhocRouteAction(List targetNodes, boolean forValidationOnly) {
-        if (targetNodes.isEmpty()) {
-            return "Could not locate an node instance on the document with the name '" + nodeName + "'";
-        }
+        //if (targetNodes.isEmpty()) {
+        //    return "Could not locate an node instance on the document with the name '" + nodeName + "'";
+        //}
         boolean requestCreated = false;
         for (Iterator iter = targetNodes.iterator(); iter.hasNext();) {
             RouteNodeInstance routeNode = (RouteNodeInstance) iter.next();
             // if the node name is null, then adhoc it to the first available node
             if (nodeName == null || routeNode.getName().equals(nodeName)) {
+                String message = createAdHocRequest(routeNode, forValidationOnly);
+                if (!StringUtils.isEmpty(message)) {
+                    return message;
+                }
+                requestCreated = true;
+                if (nodeName == null) {
+                    break;
+                }
+            }
+        }
+        
+        if (!requestCreated && targetNodes.isEmpty()) {
+            String message = createAdHocRequest(null, forValidationOnly);
+            if (!StringUtils.isEmpty(message)) {
+                return message;
+            }
+            requestCreated = true;
+        }
+        
+        if (!requestCreated) {
+            return "Didn't create request.  The node name " + nodeName + " given is probably invalid ";
+        }
+        return "";
+    }
+    
+    private String createAdHocRequest(RouteNodeInstance routeNode, boolean forValidationOnly) {
                 ActionRequestValue adhocRequest = new ActionRequestValue();
                 if (!forValidationOnly) {
                     ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
@@ -138,15 +170,6 @@ public class AdHocAction extends ActionTakenEvent {
                         KEWServiceLocator.getActionRequestService().saveActionRequest(adhocRequest);
                     }
                 }
-                requestCreated = true;
-                if (nodeName == null) {
-                    break;
-                }
-            }
-        }
-        if (!requestCreated) {
-            return "Didn't create request.  The node name " + nodeName + " given is probably invalid ";
-        }
         return "";
     }
 }

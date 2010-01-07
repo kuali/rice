@@ -107,7 +107,7 @@ public class ServiceInfo implements Serializable {
 	    // default constructor with nothing to do
 	}
 	
-	@PrePersist
+	//@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }

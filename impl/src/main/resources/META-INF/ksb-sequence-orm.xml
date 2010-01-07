@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+    
+    <entity class="org.kuali.rice.ksb.messaging.ServiceInfo" >
+        <attributes>
+            <id name="messageEntryId">
+                <column name="SVC_DEF_ID"/>
+                <generated-value strategy="SEQUENCE" generator="svcDefIdSeq"/>
+                <sequence-generator name="svcDefIdSeq" sequence-name="KRSB_SVC_DEF_S"/>
+            </id>
+        </attributes>
+    </entity>
+    <entity class="org.kuali.rice.ksb.messaging.FlattenedServiceDefinition" >
+        <attributes>
+            <id name="flattenedServiceDefinitionId">
+                <column name="FLT_SVC_DEF_ID"/>
+                <generated-value strategy="SEQUENCE" generator="flatSvcDefIdSeq"/>
+                <sequence-generator name="flatSvcDefIdSeq" sequence-name="KRSB_FLT_SVC_DEF_S"/>
+            </id>
+        </attributes>
+    </entity>
+</entity-mappings>

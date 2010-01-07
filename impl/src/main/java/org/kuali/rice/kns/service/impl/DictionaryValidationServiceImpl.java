@@ -30,12 +30,10 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
@@ -48,7 +46,6 @@ import org.kuali.rice.kns.exception.InfrastructureException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
@@ -186,7 +183,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 		}
 
 		if (!(listObj instanceof List)) {
-		    LOG.error("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
+			}
 		    continue;
 		}
 
@@ -344,11 +343,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * objectClassName is the docTypeName
      */
 	public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
-        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
         boolean checkDateBounds = false; // this is used so we can check date bounds
         Class<?> formatterClass = null;
 
-        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
+        }
+
         
         /*
          *  This will return a list of searchable attributes. so if the value is
@@ -364,12 +365,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	        if (StringUtils.isNotBlank(attributeValue)) {
 	            Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
 	            if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
+	                String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
 	                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
 	                return;
 	            }
 	            Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
 	            if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
-	                LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+	            	if ( LOG.isDebugEnabled() ) {
+	            		LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+	            	}
 
 	            	if (!validationExpression.matcher(attributeValue).matches()) {
 	            		// Retrieving formatter class
@@ -405,7 +409,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         		}
                         		valuesAreValid &= !isError;
                     		} catch (Exception e) {
-                    			LOG.debug(e.getMessage(), e);
+                    			if ( LOG.isDebugEnabled() ) {
+                    				LOG.debug(e.getMessage(), e);
+                    			}
                     			isError =true;
                     			valuesAreValid = false;
                     		}
@@ -428,6 +434,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	            if (exclusiveMin != null) {
 	                try {
 	                    if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
+	                        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
 	                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
 	                        // todo: Formatter for currency?
 	                                new String[] { errorLabel, exclusiveMin.toString() });
@@ -442,6 +449,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	            if (inclusiveMax != null) {
 	                try {
 	                    if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
+	                        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
 	                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
 	                        // todo: Formatter for currency?
 	                                new String[] { errorLabel, inclusiveMax.toString() });
@@ -475,9 +483,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey + ".range", errorMessageParameters);
     		}
         }
-	}
+    }
 
-	/**
+    /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeRequired
      */
     public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey) {

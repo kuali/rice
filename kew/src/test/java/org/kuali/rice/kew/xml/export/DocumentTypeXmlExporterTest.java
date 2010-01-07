@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -35,6 +36,8 @@ import org.kuali.rice.kim.bo.Group;
 
 
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
+    
+    private static final Logger LOG = Logger.getLogger(DocumentTypeXmlExporterTest.class);
 
 	@Test public void testExportDynamicProcessConfig() throws Exception {
     	loadXmlFile("DocTypeExportRuleTemplateConfig.xml");
@@ -52,6 +55,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
             assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
             loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));
             DocumentType newDocType = KEWServiceLocator.getDocumentTypeService().findByName(existingDocType.getName());
+            LOG.info("checking export for " + existingDocType.getName());
             assertDocTypeExport(existingDocType, newDocType);
         }
     }
@@ -113,6 +117,9 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
     }
 
     private void assertRouteNodes(RouteNode oldNode, RouteNode newNode, Set processedNodeIds) {
+        // it's possible that the doc type will have no route nodes
+        if (oldNode == null && newNode == null) return;
+        
         if (processedNodeIds.contains(oldNode.getRouteNodeId())) {
             if (!processedNodeIds.contains(newNode.getRouteNodeId())) {
                 fail("If old node is processed, new node should also be processed.");

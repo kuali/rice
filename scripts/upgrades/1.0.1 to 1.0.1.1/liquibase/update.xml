@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	<include file="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/updates/12-02-2009.xml" />
+	<include file="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/updates/12-04-2009.xml" />
+	<include file="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/updates/12-07-2009.xml" />  
+	<include file="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/updates/12-09-2009.xml" />
+	<include file="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/updates/12-16-2009.xml" />   
+	<include file="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/updates/12-22-2009.xml" /> 
+	<include file="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/updates/01-04-2010.xml" />
+</databaseChangeLog>

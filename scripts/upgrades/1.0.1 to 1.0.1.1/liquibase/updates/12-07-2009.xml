@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+	<changeSet author="$Author$" id="$Rev$">
+		<sql>
+			UPDATE KRNS_PARM_T SET TXT='MM/dd/yyyy;MM/dd/yyyy
+			HH:mm:ss;MM/dd/yy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy
+			HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd
+			HH:mm:ss;yyyy HH:mm:ss' WHERE NMSPC_CD='KR-NS' AND
+			PARM_DTL_TYP_CD='All' AND PARM_NM='STRING_TO_DATE_FORMATS'
+			AND APPL_NMSPC_CD='KUALI';
+		</sql>
+		<sql>
+			UPDATE KRNS_PARM_T SET TXT='MM/dd/yyyy hh:mm
+			a;MM/dd/yyyy;MM/dd/yyyy
+			HH:mm:ss;MM/dd/yy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy
+			HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd
+			HH:mm:ss;yyyy HH:mm:ss' WHERE NMSPC_CD='KR-NS' AND
+			PARM_DTL_TYP_CD='All' AND
+			PARM_NM='STRING_TO_TIMESTAMP_FORMATS' AND
+			APPL_NMSPC_CD='KUALI';
+		</sql>
+		<createTable tableName="ACCT_DD_ATTR_DOC">
+			<column name="DOC_HDR_ID" type="VARCHAR(14)">
+				<constraints primaryKey="true"
+					primaryKeyName="ACCT_DD_ATTR_DOC_PK" nullable="false" />
+			</column>
+			<column name="OBJ_ID" type="VARCHAR(36)" />
+			<column name="VER_NBR" type="BIGINT" />
+			<column name="ACCT_NUM" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="ACCT_OWNR" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="ACCT_BAL" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="ACCT_OPN_DAT" type="DATE">
+				<constraints nullable="false" />
+			</column>
+			<column name="ACCT_STAT" type="VARCHAR(30)" />
+			<column name="ACCT_UPDATE_DT_TM" type="TIMESTAMP" />
+			<column name="ACCT_AWAKE" type="VARCHAR(1)" />
+		</createTable>
+	</changeSet>
+</databaseChangeLog>

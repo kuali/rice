@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+	<changeSet author="$Author$" id="$Rev$">
+		<!-- <dropColumn tableName="krim_attr_defn_t" columnName="appl_url" />  -->
+		<sql>
+			ALTER TABLE KRIM_ENTITY_ETHNIC_T MODIFY ENTITY_ID
+			VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin;
+		</sql>
+		<addForeignKeyConstraint constraintName="KRIM_ENTITY_ETHNIC_TR1"
+			baseTableName="KRIM_ENTITY_ETHNIC_T" baseColumnNames="entity_id"
+			referencedTableName="KRIM_ENTITY_T"
+			referencedColumnNames="entity_id" />
+		<sql>
+			ALTER TABLE KRIM_ENTITY_RESIDENCY_T MODIFY ENTITY_ID
+			VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin;
+		</sql>
+		<addForeignKeyConstraint
+			constraintName="KRIM_ENTITY_RESIDENCY_TR1"
+			baseTableName="KRIM_ENTITY_RESIDENCY_T" baseColumnNames="entity_id"
+			referencedTableName="KRIM_ENTITY_T"
+			referencedColumnNames="entity_id" />
+		<sql>
+			ALTER TABLE KRIM_ENTITY_VISA_T MODIFY ENTITY_ID VARCHAR(40)
+			CHARACTER SET utf8 COLLATE utf8_bin;
+		</sql>
+		<addForeignKeyConstraint constraintName="KRIM_ENTITY_VISA_TR1"
+			baseTableName="KRIM_ENTITY_VISA_T" baseColumnNames="entity_id"
+			referencedTableName="KRIM_ENTITY_T"
+			referencedColumnNames="entity_id" />
+	</changeSet>
+
+</databaseChangeLog>

@@ -125,6 +125,13 @@
         <maven goals="install" options="-DskipTests=true"/>
 	</target>
 
+	<target name="mysql-liquibase-update">
+		<path id="liquibase.class.path" path="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/liquibase-1.9.5.jar" />
+		<path id="mysql.class.path" path="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/mysql-connector-java-5.1.5.jar" />
+		<taskdef name="updateDatabase" classname="liquibase.ant.DatabaseUpdateTask" classpathref="liquibase.class.path" />
+		<updateDatabase changeLogFile="scripts/upgrades/1.0.1 to 1.0.1.1/liquibase/update.xml" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://172.25.27.79:3306/rice093dev" username="rice093dev" password="rice093dev" dropFirst="false" classpathref="mysql.class.path" />
+	</target>
+	
 	<target name="install-rice-jars" depends="init">
 		<echo message="${environment.path.variable}"/>
 		<maven goals="install" options="-e -Dmaven.test.skip=true" />

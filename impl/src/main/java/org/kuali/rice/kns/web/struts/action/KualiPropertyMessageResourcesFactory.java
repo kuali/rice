@@ -40,10 +40,41 @@ public class KualiPropertyMessageResourcesFactory extends PropertyMessageResourc
     @Override
     public MessageResources createResources(String config) {
         if (StringUtils.isBlank(config)) {
-            config = (String)ConfigContext.getCurrentContextConfig().getProperties().get(KNSConstants.MESSAGE_RESOURCES);
-            //config = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.MESSAGE_RESOURCES);
+            final String propertyConfig = (String)ConfigContext.getCurrentContextConfig().getProperties().get(KNSConstants.MESSAGE_RESOURCES);
+            config = removeSpacesAround(propertyConfig);
         }
         return new KualiPropertyMessageResources(this, config, this.returnNull);
+    }
+    
+    /**
+     * Removes the spaces around the elements on a csv list of elements.
+     * <p>
+     * A null input will return a null output.
+     * </p>
+     * 
+     * @param csv a list of elements in csv format e.g. foo, bar, baz
+     * @return a list of elements in csv format without spaces e.g. foo,bar,baz
+     */
+    private String removeSpacesAround(String csv) {
+    	if (csv == null) {
+    		return null;
+    	}
+    	
+    	final StringBuilder result = new StringBuilder();
+		for (final String value : csv.split(",")) {
+			if (!"".equals(value.trim())) {
+				result.append(value.trim());
+				result.append(",");
+			}
+		}
+		
+		//remove trailing comma
+		int i = result.lastIndexOf(",");
+		if (i != -1) {
+			result.deleteCharAt(i);
+		}
+		
+		return result.toString();
     }
     
 }

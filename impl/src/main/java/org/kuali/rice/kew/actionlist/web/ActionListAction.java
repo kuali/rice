@@ -94,7 +94,6 @@ public class ActionListAction extends KualiAction {
 
     // error keys
     private static final String ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY = "actionitem.routeheaderid.invalid";
-    private static final String ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY = "actionitem.doctitlename.empty";
     private static final String ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY = "actionitem.actionrequestcd.invalid";
     private static final String ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY = "actionlist.badCustomActionListItems";
 	private static final String ACTIONLIST_BAD_ACTION_ITEMS_ERRKEY = "actionlist.badActionItems";
@@ -600,10 +599,6 @@ public class ActionListAction extends KualiAction {
     		
     		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
     			GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getActionItemId()+"");
-    		}
-    		if (actionItem.getDocTitle() == null) {
-    			GlobalVariables.getMessageMap().putError(DOCTITLE_PROP, ACTIONITEM_DOCTITLENAME_EMPTY_ERRKEY,actionItem.getActionItemId()+"");
-    			continue;
     		}
      	}
     }

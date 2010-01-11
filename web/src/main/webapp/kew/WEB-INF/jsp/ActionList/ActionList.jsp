@@ -359,7 +359,7 @@
 							title="${workgroupRequestLabel}" sortProperty="group.groupName"
 							class="infocell">
 							<c:choose>
-								<c:when test="${result.groupId != null && result.groupId != 0}">
+								<c:when test="${!empty result.groupId}">
                                     <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.GroupImpl" keyValues="groupId=${result.group.groupId}" render="true">
                                         <c:out value="${result.group.groupName}" />
                                     </kul:inquiry>

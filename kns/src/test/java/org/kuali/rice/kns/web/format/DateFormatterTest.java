@@ -41,7 +41,7 @@ public class DateFormatterTest extends KNSTestCase {
     }
 
     @Test public void testShortYear() throws Exception {
-        assertEquals(kualiParseDate("09/28/0069"), javaParseDate("09/28/0069"));
+        assertEquals(kualiParseDate("09/28/1069"), javaParseDate("09/28/1069"));
     }
 
     @Test public void testAmbiguousYear() throws Exception {

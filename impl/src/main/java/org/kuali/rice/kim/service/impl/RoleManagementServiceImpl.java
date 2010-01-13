@@ -29,6 +29,8 @@ import java.util.Set;
 import javax.jws.WebParam;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
@@ -389,8 +391,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			final KimRoleTypeService roleType = getRoleTypeService(roleId);
 			final KimRoleInfo roleInfo = this.getRole(roleId);
 			if (roleType != null && roleInfo != null) {
-				shouldCacheRoleAnswer = new Boolean(roleType.shouldCacheRoleMembershipResults(roleInfo.getNamespaceCode(), roleInfo.getRoleName()));
-				shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
+			    try {
+			        shouldCacheRoleAnswer = new Boolean(roleType.shouldCacheRoleMembershipResults(roleInfo.getNamespaceCode(), roleInfo.getRoleName()));
+			        shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
+			    } catch (RiceRemoteServiceConnectionException e) {
+			        LOG.warn("Unable to connect to remote service for roleType " + roleInfo.getNamespaceCode() + "-" + roleInfo.getRoleName());
+                    LOG.warn(e.getMessage());
+			        return Boolean.FALSE;
+			    }
 			} else {
 				shouldCacheRoleAnswer = Boolean.TRUE; // no type?  that means we get to do the default - cache
 				shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);

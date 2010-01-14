@@ -22,5 +22,5 @@
 			PARM_NM='STRING_TO_TIMESTAMP_FORMATS' AND
 			APPL_NMSPC_CD='KUALI';
 		</sql> 
-	</changeSet> 
+	</changeSet>  
 </databaseChangeLog> 

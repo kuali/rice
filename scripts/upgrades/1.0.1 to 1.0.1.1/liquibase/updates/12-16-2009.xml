@@ -21,6 +21,6 @@
 			NMSPC_CD='KR-NS' AND PARM_DTL_TYP_CD='All' AND
 			PARM_NM='STRING_TO_TIMESTAMP_FORMATS' AND
 			APPL_NMSPC_CD='KUALI';
-		</sql>
+		</sql> 
 	</changeSet>
 </databaseChangeLog>

@@ -188,11 +188,13 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
      * @throws Exception
      */
     public void setSecretKey(String secretKey) throws Exception {
-        desKey = this.unwrapEncodedKey(secretKey);
-        isEnabled = true;
-        // Create the cipher
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init((Cipher.WRAP_MODE), desKey);
+    	if (!StringUtils.isEmpty(secretKey)) {
+    		desKey = this.unwrapEncodedKey(secretKey);
+    		isEnabled = true;
+    		// Create the cipher
+    		Cipher cipher = Cipher.getInstance(ALGORITHM);
+    		cipher.init((Cipher.WRAP_MODE), desKey);
+    	}
     }
 
     /** Hash the value by converting to a string, running the hash algorithm, and then base64'ng the results.

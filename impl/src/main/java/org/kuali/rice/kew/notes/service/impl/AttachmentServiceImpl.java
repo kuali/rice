@@ -19,6 +19,7 @@ package org.kuali.rice.kew.notes.service.impl;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.logging.Logger;
 
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.AttachmentService;
@@ -43,9 +44,12 @@ public class AttachmentServiceImpl implements AttachmentService {
 		Long uniqueId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
 		String internalFileIndicator = attachment.getFileName().replace('.', '_');
 		String fileName = ATTACHMENT_PREPEND + attachment.getNote().getRouteHeaderId() + "_" + internalFileIndicator + "_" + uniqueId;
-		
 		File file = File.createTempFile(fileName, null, new File(attachmentDir));
-        FileOutputStream streamOut = null;
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("atttachment filename: " + fileName);
+			LOG.debug("attachment directory: " + attachmentDir);
+		}      
+		FileOutputStream streamOut = null;
         BufferedOutputStream bufferedStreamOut = null;
         try {
             streamOut = new FileOutputStream(file);

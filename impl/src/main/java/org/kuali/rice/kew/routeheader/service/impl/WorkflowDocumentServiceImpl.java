@@ -184,7 +184,20 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		KimPrincipal principal = loadPrincipal(principalId);
 		CancelAction action = new CancelAction(routeHeader, principal, annotation);
 		action.recordAction();
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
+	}
+	
+	/**
+	 * Does a search index after a non-post processing action completes
+	 * @param routeHeader the route header of the document just acted upon
+	 */
+	protected void indexForSearchAfterActionIfNecessary(DocumentRouteHeaderValue routeHeader) {
+		RouteContext routeContext = RouteContext.getCurrentRouteContext();
+		if (routeHeader.getDocumentType().hasSearchableAttributes() && routeContext.isSearchIndexingRequestedForContext()) {
+			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
+			searchableAttService.indexDocument(routeHeader.getRouteHeaderId()); 
+		}
 	}
 
 	public DocumentRouteHeaderValue clearFYIDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException {
@@ -251,6 +264,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		KimPrincipal principal = loadPrincipal(principalId);
 		DisapproveAction action = new DisapproveAction(routeHeader, principal, annotation);
 		action.recordAction();
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
 

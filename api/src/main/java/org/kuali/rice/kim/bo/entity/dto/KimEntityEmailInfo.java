@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 
 /**
@@ -26,16 +24,16 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 
 	private static final long serialVersionUID = 1L;
 
-	protected String entityEmailId = "";
-	protected String entityTypeCode = "";
-	protected String emailTypeCode = "";
-	protected String emailAddress = "";
-	protected String emailAddressUnmasked = "";
+	protected String entityEmailId;
+	protected String entityTypeCode;
+	protected String emailTypeCode;
+	protected String emailAddress;
+	protected String emailAddressUnmasked;
 	
 	protected boolean suppressEmail = false;
 	
 	/**
-	 * 
+	 * construct an empty {@link KimEntityEmailInfo}
 	 */
 	public KimEntityEmailInfo() {
 		super();
@@ -43,16 +41,16 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	}
 	
 	/**
-	 * 
+	 * construct a {@link KimEntityEmailInfo} derived from the give {@link KimEntityEmail}
 	 */
 	public KimEntityEmailInfo( KimEntityEmail email ) {
 		this();
 		if ( email != null ) {
-			this.entityEmailId = unNullify( email.getEntityEmailId() );
-			this.entityTypeCode = unNullify( email.getEntityTypeCode() );
-			this.emailTypeCode = unNullify( email.getEmailTypeCode() );
-			this.emailAddress = unNullify( email.getEmailAddress() );
-			this.emailAddressUnmasked = unNullify( email.getEmailAddressUnmasked() );
+			this.entityEmailId = email.getEntityEmailId();
+			this.entityTypeCode = email.getEntityTypeCode();
+			this.emailTypeCode = email.getEmailTypeCode();
+			this.emailAddress = email.getEmailAddress();
+			this.emailAddressUnmasked = email.getEmailAddressUnmasked();
 			this.dflt = email.isDefault();
 			this.active = email.isActive();
 			this.suppressEmail = email.isSuppressEmail();
@@ -60,10 +58,11 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	}
 
 	/**
-	 * @return the entityEmailId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityEmailId()
 	 */
 	public String getEntityEmailId() {
-		return unNullify(this.entityEmailId);
+		return entityEmailId;
 	}
 
 	/**
@@ -74,10 +73,11 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	}
 
 	/**
-	 * @return the entityTypeCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
-		return unNullify(this.entityTypeCode);
+		return entityTypeCode;
 	}
 
 	/**
@@ -88,10 +88,11 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	}
 
 	/**
-	 * @return the emailTypeCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailTypeCode()
 	 */
 	public String getEmailTypeCode() {
-		return unNullify(this.emailTypeCode);
+		return emailTypeCode;
 	}
 
 	/**
@@ -102,10 +103,11 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	}
 
 	/**
-	 * @return the emailAddress
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddress()
 	 */
 	public String getEmailAddress() {
-		return unNullify(this.emailAddress);
+		return emailAddress;
 	}
 
 	/**
@@ -116,10 +118,11 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	}
 
 	/**
-	 * @return the emailAddressUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#getEmailAddressUnmasked()
 	 */
 	public String getEmailAddressUnmasked() {
-		return unNullify(this.emailAddressUnmasked);
+		return emailAddressUnmasked;
 	}
 
 	/**
@@ -130,7 +133,8 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 	}
 
 	/**
-	 * @return the suppressEmail
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmail#isSuppressEmail()
 	 */
 	public boolean isSuppressEmail() {
 		return this.suppressEmail;

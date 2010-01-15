@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 
 /**
@@ -26,10 +24,10 @@ public class KimEntityResidencyInfo extends KimInfoBase implements KimEntityResi
 
 	private static final long serialVersionUID = -3939718576000597749L;
 
-	private String id = "";
-	private String entityId = "";
-	private String determinationMethod = "";
-	private String inStateFlag = "";
+	private String id;
+	private String entityId;
+	private String determinationMethod;
+	private String inStateFlag;
 
 	public KimEntityResidencyInfo() {
 		super();
@@ -38,10 +36,10 @@ public class KimEntityResidencyInfo extends KimInfoBase implements KimEntityResi
 	public KimEntityResidencyInfo(KimEntityResidency kimEntityResidency) {
 		this();
 		if ( kimEntityResidency != null ) {
-			id = unNullify(kimEntityResidency.getId());
-			entityId = unNullify(kimEntityResidency.getEntityId());
-			determinationMethod = unNullify(kimEntityResidency.getDeterminationMethod());
-			inStateFlag = unNullify(kimEntityResidency.getInState());
+			id = kimEntityResidency.getId();
+			entityId = kimEntityResidency.getEntityId();
+			determinationMethod = kimEntityResidency.getDeterminationMethod();
+			inStateFlag = kimEntityResidency.getInState();
 		}
 	}
 
@@ -74,30 +72,34 @@ public class KimEntityResidencyInfo extends KimInfoBase implements KimEntityResi
 	}
 
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getDeterminationMethod()
 	 */
 	public String getDeterminationMethod() {
-		return unNullify( determinationMethod);
+		return determinationMethod;
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getEntityId()
 	 */
 	public String getEntityId() {
-		return unNullify( entityId);
+		return entityId;
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getId()
 	 */
 	public String getId() {
-		return unNullify( id);
+		return id;
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityResidency#getInState()
 	 */
 	public String getInState() {
-		return unNullify( inStateFlag);
+		return inStateFlag;
 	}
 }

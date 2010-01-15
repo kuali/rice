@@ -17,18 +17,47 @@ package org.kuali.rice.kim.bo.entity;
 
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * ethnicity information for a KIM entity 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface KimEntityEthnicity {
 
+    /**
+     * Gets this {@link KimEntityEthnicity}'s id.
+     * @return the id for this {@link KimEntityEthnicity}, or null if none has been assigned.
+     */
 	String getId();
+	
+	/**
+     * Gets this {@link KimEntityEthnicity}'s entity id.
+     * @return the entity id for this {@link KimEntityEthnicity}, or null if none has been assigned.
+     */
 	String getEntityId();
+	
+	/**
+     * Gets this {@link KimEntityEthnicity}'s ethnicity code.
+     * @return the ethnicity code for this {@link KimEntityEthnicity}, or null if none has been assigned.
+     */
 	String getEthnicityCode();
+	
+	/**
+     * Gets this {@link KimEntityEthnicity}'s unmasked ethnicity code.
+     * @return the unmasked ethnicity code for this {@link KimEntityEthnicity}, or null if none has been assigned.
+     */
 	String getEthnicityCodeUnmasked();
+	
+	/**
+     * Gets this {@link KimEntityEthnicity}'s sub-ethnicity code.
+     * @return the sub-ethnicity code for this {@link KimEntityEthnicity}, or null if none has been assigned.
+     */
 	String getSubEthnicityCode();
+	
+	/**
+     * Gets this {@link KimEntityEthnicity}'s unmasked sub-ethnicity code.
+     * @return the unmasked sub-ethnicity code for this {@link KimEntityEthnicity}, or null if none has been assigned.
+     */
     String getSubEthnicityCodeUnmasked();
 
 	boolean isSuppressPersonal();

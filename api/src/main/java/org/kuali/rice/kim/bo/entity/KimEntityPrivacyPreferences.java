@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * privacy preferences for a KIM entity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimEntityPrivacyPreferences extends ExternalizableBusinessObject {
+public interface KimEntityPrivacyPreferences {
 
 	boolean isSuppressName();
 	boolean isSuppressAddress();

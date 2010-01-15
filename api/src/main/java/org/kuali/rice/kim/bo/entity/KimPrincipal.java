@@ -16,12 +16,34 @@
 package org.kuali.rice.kim.bo.entity;
 
 /**
+ * principal for a KIM entity
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KimPrincipal {
+    
+    /**
+     * Gets this {@link KimPrincipal}'s id.
+     * @return the id for this {@link KimPrincipal}, or null if none has been assigned.
+     */
 	String getPrincipalId();
+	
+	/**
+     * Gets this {@link KimPrincipal}'s name.
+     * @return the name for this {@link KimPrincipal}, or null if none has been assigned.
+     */
 	String getPrincipalName();
+	
+	/**
+     * Gets this {@link KimPrincipal}'s password.
+     * @return the password for this {@link KimPrincipal}, or null if none has been assigned.
+     */
 	String getPassword();
+	
+	/**
+     * Gets this {@link KimPrincipal}'s entity id.
+     * @return the entity id for this {@link KimPrincipal}, or null if none has been assigned.
+     */
 	String getEntityId();
+	
 	boolean isActive();
 }

@@ -15,107 +15,170 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * default information for a KIM entity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * 
  */
 public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
-	private static final long serialVersionUID = 7930630152792502380L;
-	protected String entityId;
-	protected KimEntityNameInfo defaultName;
-	protected List<KimPrincipalInfo> principals;
-	protected List<KimEntityEntityTypeDefaultInfo> entityTypes;
-	protected List<KimEntityAffiliationInfo> affiliations;
-	protected KimEntityAffiliationInfo defaultAffiliation;
-	protected KimEntityEmploymentInformationInfo primaryEmployment;
-	protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
-	protected KimEntityPrivacyPreferencesInfo privacyPreferences;
-	
-	public String getEntityId() {
-		return unNullify( this.entityId);
-	}
-	public void setEntityId(String entityId) {
-		this.entityId = entityId;
-	}
-	public KimEntityNameInfo getDefaultName() {
-		return unNullify( this.defaultName, KimEntityNameInfo.class);
-	}
-	public void setDefaultName(KimEntityName defaultName) {
-		this.defaultName = new KimEntityNameInfo(defaultName);
-	}
-	public List<KimEntityEntityTypeDefaultInfo> getEntityTypes() {
-		if (entityTypes == null) {
-			entityTypes = unNullify(entityTypes);
-		}
-		return entityTypes;
-	}
-	public void setEntityTypes(List<KimEntityEntityTypeDefaultInfo> entityTypes) {
-		this.entityTypes = entityTypes;
-	}
-	public List<KimEntityAffiliationInfo> getAffiliations() {
-		if (affiliations == null) {
-			affiliations = unNullify(affiliations);
-		}
-		return affiliations;
-	}
-	public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
-		this.affiliations = affiliations;
-	}
-	public KimEntityAffiliationInfo getDefaultAffiliation() {
-		return unNullify( this.defaultAffiliation, KimEntityAffiliationInfo.class);
-	}
-	public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
-		this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
-	}
-	public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
-		return unNullify( this.primaryEmployment, KimEntityEmploymentInformationInfo.class);
-	}
-	public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
-		this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
-	}
-	public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
-		if (externalIdentifiers == null) {
-			externalIdentifiers = unNullify( externalIdentifiers);
-		}
-		return externalIdentifiers;
-	}
-	public void setExternalIdentifiers(List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
-		this.externalIdentifiers = externalIdentifiers;
-	}
-	public List<KimPrincipalInfo> getPrincipals() {
-		if (principals == null) {
-			principals = unNullify( principals);
-		}
-		return principals;
-	}
-	public void setPrincipals(List<KimPrincipalInfo> principals) {
-		this.principals = principals;
-	}
-	
-	public KimEntityEntityTypeDefaultInfo getEntityType(String entityTypeCode) {
-		for ( KimEntityEntityTypeDefaultInfo entType : unNullify(entityTypes) ) {
-			if ( entType.getEntityTypeCode().equals( entityTypeCode ) ) {
-				return entType;
-			}
-		}
-		return new KimEntityEntityTypeDefaultInfo();
-	}
-    public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
-        return unNullify( this.privacyPreferences, KimEntityPrivacyPreferencesInfo.class);
+    private static final long serialVersionUID = 7930630152792502380L;
+    protected String entityId;
+    protected KimEntityNameInfo defaultName;
+    protected List<KimPrincipalInfo> principals;
+    protected List<KimEntityEntityTypeDefaultInfo> entityTypes;
+    protected List<KimEntityAffiliationInfo> affiliations;
+    protected KimEntityAffiliationInfo defaultAffiliation;
+    protected KimEntityEmploymentInformationInfo primaryEmployment;
+    protected List<KimEntityExternalIdentifierInfo> externalIdentifiers;
+    protected KimEntityPrivacyPreferencesInfo privacyPreferences;
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s entity id.
+     * @return the entity id for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
+     */
+    public String getEntityId() {
+        return this.entityId;
     }
-    public void setPrivacyPreferences(
-            KimEntityPrivacyPreferencesInfo privacyPreferences) {
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s default name.
+     * @return the default name for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
+     */
+    public KimEntityNameInfo getDefaultName() {
+        return defaultName;
+    }
+
+    public void setDefaultName(KimEntityName defaultName) {
+        this.defaultName = new KimEntityNameInfo(defaultName);
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s List of {@link KimEntityEntityTypeDefaultInfo}S.
+     * @return the List of {@link KimEntityEntityTypeDefaultInfo}S for this {@link KimEntityDefaultInfo}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
+    public List<KimEntityEntityTypeDefaultInfo> getEntityTypes() {
+        // If our reference is null, assign and return an empty List
+        return (entityTypes != null) ? entityTypes : (entityTypes = new ArrayList<KimEntityEntityTypeDefaultInfo>());
+    }
+
+    public void setEntityTypes(List<KimEntityEntityTypeDefaultInfo> entityTypes) {
+        this.entityTypes = entityTypes;
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s List of {@link KimEntityAffiliationInfo}S.
+     * @return the List of {@link KimEntityAffiliationInfo}S for this {@link KimEntityDefaultInfo}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
+    public List<KimEntityAffiliationInfo> getAffiliations() {
+        // If our reference is null, assign and return an empty List
+        return (affiliations != null) ? affiliations : (affiliations = new ArrayList<KimEntityAffiliationInfo>());
+    }
+
+    public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
+        this.affiliations = affiliations;
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s affiliation info.
+     * @return the affiliation info for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
+     */
+    public KimEntityAffiliationInfo getDefaultAffiliation() {
+        return defaultAffiliation;
+    }
+
+    public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
+        if (defaultAffiliation != null) {
+            this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
+        }
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s primary employment info.
+     * @return the primary employment info for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
+     */
+    public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
+        return primaryEmployment;
+    }
+
+    public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
+        if (primaryEmployment != null) {
+            this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
+        }
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s List of {@link KimEntityExternalIdentifierInfo}S.
+     * @return the List of {@link KimEntityExternalIdentifierInfo}S for this {@link KimEntityDefaultInfo}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
+    public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
+        // If our reference is null, assign and return an empty List
+        return (externalIdentifiers != null) ? 
+                externalIdentifiers : (externalIdentifiers = new ArrayList<KimEntityExternalIdentifierInfo>());
+    }
+
+    public void setExternalIdentifiers(
+            List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
+        this.externalIdentifiers = externalIdentifiers;
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s List of {@link KimPrincipalInfo}S.
+     * @return the List of {@link KimPrincipalInfo}S for this {@link KimEntityDefaultInfo}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
+    public List<KimPrincipalInfo> getPrincipals() {
+        // If our reference is null, assign and return an empty List
+        return (principals != null) ? principals : (principals = new ArrayList<KimPrincipalInfo>());
+    }
+
+    public void setPrincipals(List<KimPrincipalInfo> principals) {
+        this.principals = principals;
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s {@link KimEntityEntityTypeDefaultInfo} for the given type code.
+     * @return the {@link KimEntityEntityTypeDefaultInfo} for the given type code for this {@link KimEntityDefaultInfo}, 
+     * or null if none has been assigned.
+     */
+    public KimEntityEntityTypeDefaultInfo getEntityType(String entityTypeCode) {
+        KimEntityEntityTypeDefaultInfo result = null;
+        if (entityTypes == null) {
+            entityTypes = new ArrayList<KimEntityEntityTypeDefaultInfo>();
+        }
+        for (KimEntityEntityTypeDefaultInfo entType : entityTypes) {
+            if (entType.getEntityTypeCode().equals(entityTypeCode)) {
+                result = entType;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Gets this {@link KimEntityDefaultInfo}'s privacy preferences.
+     * @return the privacy preferences for this {@link KimEntityDefaultInfo}, or null if none has been assigned.
+     */
+    public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
+        return privacyPreferences;
+    }
+
+    public void setPrivacyPreferences(KimEntityPrivacyPreferencesInfo privacyPreferences) {
         this.privacyPreferences = privacyPreferences;
     }
-	
+
 }

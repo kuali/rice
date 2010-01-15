@@ -19,16 +19,29 @@ import org.kuali.rice.kns.bo.DefaultableInactivateable;
 
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * an affiliation for a KIM entity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimEntityAffiliation extends DefaultableInactivateable {
 
+    /**
+     * Gets this {@link KimEntityAffiliation}'s id.
+     * @return the id for this {@link KimEntityAffiliation}, or null if none has been assigned.
+     */
 	String getEntityAffiliationId();
 
+	/**
+     * Gets this {@link KimEntityAffiliation}'s type code.
+     * @return the type code for this {@link KimEntityAffiliation}, or null if none has been assigned.
+     */
 	String getAffiliationTypeCode();
+	
+	/**
+     * Gets this {@link KimEntityAffiliation}'s campus code.
+     * @return the campus code for this {@link KimEntityAffiliation}, or null if none has been assigned.
+     */
 	String getCampusCode();
 		
 }

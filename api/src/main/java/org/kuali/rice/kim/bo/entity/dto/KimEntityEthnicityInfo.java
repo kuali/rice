@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 
 /**
@@ -26,12 +24,12 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 
 	private static final long serialVersionUID = -5660229079458643653L;
 
-	protected String id = "";
-	protected String entityId = "";
-	protected String ethnicityCode = "";
-	protected String ethnicityCodeUnmasked = "";
-	protected String subEthnicityCode = "";
-	protected String subEthnicityCodeUnmasked = "";
+	protected String id;
+	protected String entityId;
+	protected String ethnicityCode;
+	protected String ethnicityCodeUnmasked;
+	protected String subEthnicityCode;
+	protected String subEthnicityCodeUnmasked;
 	
 	protected boolean suppressPersonal;
 
@@ -42,21 +40,22 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	public KimEntityEthnicityInfo(KimEntityEthnicity kimEntityEthnicity) {
 		this();
 		if ( kimEntityEthnicity != null ) {
-			id = unNullify(kimEntityEthnicity.getId());
-			entityId = unNullify(kimEntityEthnicity.getEntityId());
-			ethnicityCode = unNullify(kimEntityEthnicity.getEthnicityCode());
-			ethnicityCodeUnmasked = unNullify(kimEntityEthnicity.getEthnicityCodeUnmasked());
-			subEthnicityCode = unNullify(kimEntityEthnicity.getSubEthnicityCode());
-			subEthnicityCodeUnmasked = unNullify(kimEntityEthnicity.getSubEthnicityCodeUnmasked());
+			id = kimEntityEthnicity.getId();
+			entityId = kimEntityEthnicity.getEntityId();
+			ethnicityCode = kimEntityEthnicity.getEthnicityCode();
+			ethnicityCodeUnmasked = kimEntityEthnicity.getEthnicityCodeUnmasked();
+			subEthnicityCode = kimEntityEthnicity.getSubEthnicityCode();
+			subEthnicityCodeUnmasked = kimEntityEthnicity.getSubEthnicityCodeUnmasked();
 			suppressPersonal = kimEntityEthnicity.isSuppressPersonal();
 		}
 	}
 
 	/**
-	 * @return the id
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getId()
 	 */
 	public String getId() {
-		return unNullify(this.id);
+		return id;
 	}
 
 	/**
@@ -67,10 +66,11 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	}
 
 	/**
-	 * @return the entityId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getEntityId()
 	 */
 	public String getEntityId() {
-		return unNullify(this.entityId);
+		return entityId;
 	}
 
 	/**
@@ -81,10 +81,11 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	}
 
 	/**
-	 * @return the ethnicityCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getEthnicityCode()
 	 */
 	public String getEthnicityCode() {
-		return unNullify(this.ethnicityCode);
+		return ethnicityCode;
 	}
 
 	/**
@@ -95,10 +96,11 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	}
 
 	/**
-	 * @return the ethnicityCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getEthnicityCodeUnmasked()
 	 */
 	public String getEthnicityCodeUnmasked() {
-		return unNullify(this.ethnicityCodeUnmasked);
+		return ethnicityCodeUnmasked;
 	}
 
 	/**
@@ -109,10 +111,11 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	}
 
 	/**
-	 * @return the subEthnicityCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getSubEthnicityCode()
 	 */
 	public String getSubEthnicityCode() {
-		return unNullify(this.subEthnicityCode);
+		return subEthnicityCode;
 	}
 
 	/**
@@ -123,10 +126,11 @@ public class KimEntityEthnicityInfo extends KimInfoBase implements KimEntityEthn
 	}
 
 	/**
-	 * @return the subEthnicityCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getSubEthnicityCodeUnmasked()
 	 */
 	public String getSubEthnicityCodeUnmasked() {
-		return unNullify(this.subEthnicityCodeUnmasked);
+		return subEthnicityCodeUnmasked;
 	}
 
 	/**

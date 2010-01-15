@@ -16,16 +16,28 @@
 package org.kuali.rice.kim.bo.entity;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * an external identifier for a KIM entity 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KimEntityExternalIdentifier {
 
+    /**
+     * Gets this {@link KimEntityExternalIdentifier}'s id.
+     * @return the id for this {@link KimEntityExternalIdentifier}, or null if none has been assigned.
+     */
 	String getEntityExternalIdentifierId();
 	
+	/**
+     * Gets this {@link KimEntityExternalIdentifier}'s type code.
+     * @return the type code for this {@link KimEntityExternalIdentifier}, or null if none has been assigned.
+     */
 	String getExternalIdentifierTypeCode();
 	
+	/**
+     * Gets this {@link KimEntityExternalIdentifier}'s external id.
+     * @return the external id for this {@link KimEntityExternalIdentifier}, or null if none has been assigned.
+     */
 	String getExternalId();
 }

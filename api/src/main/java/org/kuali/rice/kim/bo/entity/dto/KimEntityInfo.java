@@ -15,420 +15,491 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.getDefaultAndUnNullify;
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.entity.KimEntity;
-import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
-import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
- * This is a data transfer objects containing all information related to a KIM entity.
+ * This is a data transfer object containing all information related to a KIM
+ * entity.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private List<KimEntityAffiliationInfo> affiliations;
-	private KimEntityBioDemographicsInfo bioDemographics;
-	private List<KimEntityCitizenshipInfo> citizenships;
-	private List<KimEntityEmploymentInformationInfo> employmentInformation;
-	private String entityId;
-	private List<KimEntityEntityTypeInfo> entityTypes;
-	private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
-	private List<KimEntityNameInfo> names;
-	private List<KimPrincipalInfo> principals;
-	private KimEntityPrivacyPreferencesInfo privacyPreferences;
-	private List<KimEntityEthnicityInfo> ethnicities;
-	private List<KimEntityResidencyInfo> residencies;
-	private List<KimEntityVisaInfo> visas;
+    private List<KimEntityAffiliationInfo> affiliations;
+    private KimEntityBioDemographicsInfo bioDemographics;
+    private List<KimEntityCitizenshipInfo> citizenships;
+    private List<KimEntityEmploymentInformationInfo> employmentInformation;
+    private String entityId;
+    private List<KimEntityEntityTypeInfo> entityTypes;
+    private List<KimEntityExternalIdentifierInfo> externalIdentifiers;
+    private List<KimEntityNameInfo> names;
+    private List<KimPrincipalInfo> principals;
+    private KimEntityPrivacyPreferencesInfo privacyPreferences;
+    private List<KimEntityEthnicityInfo> ethnicities;
+    private List<KimEntityResidencyInfo> residencies;
+    private List<KimEntityVisaInfo> visas;
 
-	public KimEntityInfo() {
-		super();
-		active = true;
-	}
+    /**
+     * This constructs an empty KimEntityInfo
+     */
+    public KimEntityInfo() {
+        super();
+        active = true;
+    }
 
-	public KimEntityInfo(KimEntity entity) {
-		this();
-		this.setEntityId( entity.getEntityId() );
-		this.setActive( entity.isActive() );
-		ArrayList<KimPrincipalInfo> principalInfo = new ArrayList<KimPrincipalInfo>( entity.getPrincipals().size() );
-		this.setPrincipals( principalInfo );
-		for ( KimPrincipal p : entity.getPrincipals() ) {
-			principalInfo.add( new KimPrincipalInfo( p ) );
-		}
-		KimEntityBioDemographicsInfo bioDemo = null;
-		if ( entity.getBioDemographics() != null ) {
-			bioDemo = new KimEntityBioDemographicsInfo(entity.getBioDemographics());
+    /**
+     * This constructs a KimEntityInfo derived from the {@link KimEntity} passed in.
+     * 
+     * @param entity the {@link KimEntity} that this KimEntityInfo is derived from.  If null, then an empty 
+     * KimEntityInfo will be constructed.
+     */
+    public KimEntityInfo(KimEntity entity) {
+        this();
+
+        if (entity != null) {
+
+            entityId = entity.getEntityId();
+            active = entity.isActive();
+
+            // See comments by utility method deriveCollection for why this is used.  
+            // Essentially, the constructor was too darned long.
+
+            principals = deriveCollection(entity.getPrincipals(), new XForm<KimPrincipal, KimPrincipalInfo>() {
+                public KimPrincipalInfo xform(KimPrincipal source) {
+                    return new KimPrincipalInfo(source);
+                }
+            });
+
+            if (entity.getBioDemographics() != null) {
+                bioDemographics = new KimEntityBioDemographicsInfo(entity.getBioDemographics());
+            }
+
+            if (entity.getPrivacyPreferences() != null) {
+                privacyPreferences = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+            }
+
+            names = deriveCollection(entity.getNames(), new XForm<KimEntityName, KimEntityNameInfo>() {
+                public KimEntityNameInfo xform(KimEntityName source) {
+                    return new KimEntityNameInfo(source);
+                } 
+            });
+
+            entityTypes = deriveCollection(entity.getEntityTypes(), new XForm<KimEntityEntityType, KimEntityEntityTypeInfo>() {
+                public KimEntityEntityTypeInfo xform(KimEntityEntityType source) {
+                    return new KimEntityEntityTypeInfo(source);
+                }
+            });
+
+            affiliations = deriveCollection(entity.getAffiliations(), new XForm<KimEntityAffiliation, KimEntityAffiliationInfo>() {
+                public KimEntityAffiliationInfo xform(KimEntityAffiliation source) {
+                    return new KimEntityAffiliationInfo(source);
+                }
+            });
+
+            employmentInformation = deriveCollection(entity.getEmploymentInformation(), 
+                    new XForm<KimEntityEmploymentInformation, KimEntityEmploymentInformationInfo>() {
+                public KimEntityEmploymentInformationInfo xform(KimEntityEmploymentInformation source) {
+                    return new KimEntityEmploymentInformationInfo(source);
+                }
+            });
+
+            externalIdentifiers = deriveCollection(entity.getExternalIdentifiers(), 
+                    new XForm<KimEntityExternalIdentifier, KimEntityExternalIdentifierInfo>() {
+                public KimEntityExternalIdentifierInfo xform(KimEntityExternalIdentifier source) {
+                    return new KimEntityExternalIdentifierInfo(source); 
+                }
+            });        
+
+            citizenships = deriveCollection(entity.getCitizenships(), new XForm<KimEntityCitizenship, KimEntityCitizenshipInfo>() {
+                public KimEntityCitizenshipInfo xform(KimEntityCitizenship source) {
+                    return new KimEntityCitizenshipInfo(source);
+                }
+            });
+
+            ethnicities = deriveCollection(entity.getEthnicities(), new XForm<KimEntityEthnicity, KimEntityEthnicityInfo>() {
+                public KimEntityEthnicityInfo xform(KimEntityEthnicity source) {
+                    return new KimEntityEthnicityInfo(source);
+                }
+            });
+
+            residencies = deriveCollection(entity.getResidencies(), new XForm<KimEntityResidency, KimEntityResidencyInfo>() {
+                public KimEntityResidencyInfo xform(KimEntityResidency source) {
+                    return new KimEntityResidencyInfo(source);
+                }
+            });
+
+            visas = deriveCollection(entity.getVisas(), new XForm<KimEntityVisa, KimEntityVisaInfo>() {
+                public KimEntityVisaInfo xform(KimEntityVisa source) {
+                    return new KimEntityVisaInfo(source);
+                }
+            });
         }
-		this.setBioDemographics(bioDemo);
-		KimEntityPrivacyPreferencesInfo privacy = null;
-		if ( entity.getPrivacyPreferences() != null ) {
-            privacy = new KimEntityPrivacyPreferencesInfo(entity.getPrivacyPreferences());
+    }
+
+    /** 
+     * {@inheritDoc}
+     * @see KimEntity#getAffiliations()
+     */
+    public List<KimEntityAffiliationInfo> getAffiliations() {
+        // If our reference is null, assign and return an empty List
+        return (affiliations != null) ? affiliations : (affiliations = new ArrayList<KimEntityAffiliationInfo>());
+
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s affiliations.  Note the behavior of {@link #getAffiliations()} if
+     * this is set to null;
+     */
+    public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
+        this.affiliations = affiliations;
+    }
+
+    /** 
+     * {@inheritDoc}
+     * @see KimEntity#getDefaultAffiliation()
+     */
+    public KimEntityAffiliationInfo getDefaultAffiliation() {
+        KimEntityAffiliationInfo result = null;
+        if (affiliations != null)
+            for (KimEntityAffiliationInfo affiliation : affiliations) {
+                if (result == null) {
+                    result = affiliation;
+                }
+                if (affiliation.isDefault()) {
+                    result = affiliation;
+                    break;
+                }
+            }
+        return result;
+    }
+
+    /** 
+     * {@inheritDoc}
+     * @see KimEntity#getBioDemographics()
+     */
+    public KimEntityBioDemographicsInfo getBioDemographics() {
+        return bioDemographics;
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s demographic information.  Note the behavior of 
+     * {@link #getBioDemographics()} if this is set to null;
+     */
+    public void setBioDemographics(KimEntityBioDemographicsInfo bioDemographics) {
+        this.bioDemographics = bioDemographics;
+    }
+
+    /** 
+     * {@inheritDoc}
+     * @see KimEntity#getCitizenships()
+     */
+    public List<KimEntityCitizenshipInfo> getCitizenships() {
+        // If our reference is null, assign and return an empty List
+        return (citizenships != null) ? citizenships : (citizenships = new ArrayList<KimEntityCitizenshipInfo>());
+
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s demographic information.  Note the behavior of 
+     * {@link #getCitizenships()} if this is set to null;
+     */
+    public void setCitizenships(List<KimEntityCitizenshipInfo> citizenships) {
+        this.citizenships = citizenships;
+    }
+
+    /** 
+     * {@inheritDoc}
+     * @see KimEntity#getEmploymentInformation()
+     */
+    public List<KimEntityEmploymentInformationInfo> getEmploymentInformation() {
+        // If our reference is null, assign and return an empty List
+        return (employmentInformation != null) ? employmentInformation
+                : (employmentInformation = new ArrayList<KimEntityEmploymentInformationInfo>());
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s employment information.  Note the behavior of 
+     * {@link #getEmploymentInformation()} if this is set to null;
+     */
+    public void setEmploymentInformation(List<KimEntityEmploymentInformationInfo> employmentInformation) {
+        this.employmentInformation = employmentInformation;
+    }
+
+    /** 
+     * {@inheritDoc}
+     * @see KimEntity#getPrimaryEmployment()
+     */
+    public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
+        KimEntityEmploymentInformationInfo result = null;
+        if (employmentInformation != null)
+            for (KimEntityEmploymentInformationInfo employment : employmentInformation) {
+                if (employment.isPrimary()) {
+                    result = employment;
+                }
+            }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getEntityId()
+     */
+    public String getEntityId() {
+        return entityId;
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s entity id.  Note the behavior of 
+     * {@link #getEntityId()} if this is set to null;
+     */
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getEntityTypes()
+     */
+    public List<KimEntityEntityTypeInfo> getEntityTypes() {
+        // If our reference is null, assign and return an empty List
+        return (entityTypes != null) ? entityTypes : (entityTypes = new ArrayList<KimEntityEntityTypeInfo>());
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s entity types.  Note the behavior of 
+     * {@link #getEntityTypes()} if this is set to null;
+     */
+    public void setEntityTypes(List<KimEntityEntityTypeInfo> entityTypes) {
+        this.entityTypes = entityTypes;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getExternalIdentifiers()
+     */
+    public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
+        // If our reference is null, assign and return an empty List
+        return (externalIdentifiers != null) ? externalIdentifiers
+                : (externalIdentifiers = new ArrayList<KimEntityExternalIdentifierInfo>());
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s external identifiers.  Note the behavior of 
+     * {@link #getExternalIdentifiers()} if this is set to null;
+     */
+    public void setExternalIdentifiers(List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
+        this.externalIdentifiers = externalIdentifiers;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getNames()
+     */
+    public List<KimEntityNameInfo> getNames() {
+        // If our reference is null, assign and return an empty List
+        return (names != null) ? names : (names = new ArrayList<KimEntityNameInfo>());
+    }
+
+    /** 
+     * Setter for this {@link KimEntityInfo}'s names.  Note the behavior of 
+     * {@link #getNames()} if this is set to null;
+     */
+    public void setNames(List<KimEntityNameInfo> names) {
+        this.names = names;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getDefaultName()
+     */
+    public KimEntityNameInfo getDefaultName() {
+        KimEntityNameInfo result = null;
+        for (KimEntityNameInfo name : names) {
+            if (result == null) {
+                result = name;
+            }
+            if (name.isDefault()) {
+                result = name;
+                break;
+            }
         }
-		this.setPrivacyPreferences(privacy);
-		ArrayList<KimEntityNameInfo> nameInfos = new ArrayList<KimEntityNameInfo>( entity.getNames().size() );
-		this.setNames(nameInfos);
-		for ( KimEntityName p : entity.getNames() ) {
-			nameInfos.add( new KimEntityNameInfo( p ) );
-		}
-		ArrayList<KimEntityEntityTypeInfo> entityTypesInfo = new ArrayList<KimEntityEntityTypeInfo>( entity.getEntityTypes().size() );
-		this.setEntityTypes( entityTypesInfo );
-		for ( KimEntityEntityType entityEntityType : entity.getEntityTypes() ) {
-			KimEntityEntityTypeInfo typeInfo = new KimEntityEntityTypeInfo();
-			typeInfo.setEntityTypeCode( entityEntityType.getEntityTypeCode() );
-			ArrayList<KimEntityAddressInfo> addresses = new ArrayList<KimEntityAddressInfo>( entityEntityType.getAddresses().size() );
-			typeInfo.setAddresses(addresses);
-			for (KimEntityAddress kimEntityAddress : entityEntityType.getAddresses()) {
-				addresses.add(new KimEntityAddressInfo(kimEntityAddress));
-			}
-			ArrayList<KimEntityEmailInfo> emailAddresses = new ArrayList<KimEntityEmailInfo>( entityEntityType.getAddresses().size() );
-			typeInfo.setEmailAddresses(emailAddresses);
-			for (KimEntityEmail kimEntityEmailAddress : entityEntityType.getEmailAddresses()) {
-				emailAddresses.add(new KimEntityEmailInfo(kimEntityEmailAddress));
-			}
-			ArrayList<KimEntityPhoneInfo> phoneNumbers = new ArrayList<KimEntityPhoneInfo>( entityEntityType.getPhoneNumbers().size() );
-			typeInfo.setPhoneNumbers(phoneNumbers);
-			for (KimEntityPhone kimEntityPhone : entityEntityType.getPhoneNumbers()) {
-				phoneNumbers.add(new KimEntityPhoneInfo(kimEntityPhone));
-			}
-			entityTypesInfo.add( typeInfo );
-		}
-		ArrayList<KimEntityAffiliationInfo> affInfo = new ArrayList<KimEntityAffiliationInfo>( entity.getAffiliations().size() );
-		this.setAffiliations( affInfo );
-		for ( KimEntityAffiliation aff : entity.getAffiliations() ) {
-			affInfo.add( new KimEntityAffiliationInfo( aff ) );
-		}
-		ArrayList<KimEntityEmploymentInformationInfo> employmentInfos = new ArrayList<KimEntityEmploymentInformationInfo>( entity.getEmploymentInformation().size() );
-		this.setEmploymentInformation( employmentInfos );
-		for ( KimEntityEmploymentInformation emp : entity.getEmploymentInformation() ) {
-			employmentInfos.add( new KimEntityEmploymentInformationInfo( emp ) );
-		}
-		
-		ArrayList<KimEntityExternalIdentifierInfo> idInfo = new ArrayList<KimEntityExternalIdentifierInfo>( entity.getExternalIdentifiers().size() );
-		this.setExternalIdentifiers( idInfo );
-		for ( KimEntityExternalIdentifier id : entity.getExternalIdentifiers() ) {
-			idInfo.add( new KimEntityExternalIdentifierInfo( id ) );
-		}
-		ArrayList<KimEntityCitizenshipInfo> citizenships = new ArrayList<KimEntityCitizenshipInfo>( entity.getCitizenships().size() );
-		this.setCitizenships(citizenships);
-		for ( KimEntityCitizenship citizenship : entity.getCitizenships() ) {
-			citizenships.add( new KimEntityCitizenshipInfo( citizenship ) );
-		}
-		ArrayList<KimEntityEthnicityInfo> ethnicities = new ArrayList<KimEntityEthnicityInfo>( entity.getEthnicities().size() );
-		this.setEthnicities( ethnicities );
-		for ( KimEntityEthnicity ethnicity : entity.getEthnicities() ) {
-			ethnicities.add( new KimEntityEthnicityInfo( ethnicity ) );
-		}
-		ArrayList<KimEntityResidencyInfo> residencies = new ArrayList<KimEntityResidencyInfo>( entity.getResidencies().size() );
-		this.setResidencies(residencies);
-		for ( KimEntityResidency residence : entity.getResidencies() ) {
-			residencies.add( new KimEntityResidencyInfo( residence ) );
-		}
-		ArrayList<KimEntityVisaInfo> visas = new ArrayList<KimEntityVisaInfo>( entity.getVisas().size() );
-		this.setVisas( visas );
-		for ( KimEntityVisa visa : entity.getVisas() ) {
-			visas.add( new KimEntityVisaInfo( visa ) );
-		}
-	}
+        return result;
+    }
 
-	/** {@inheritDoc} */
-    public void refresh(){}
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getPrincipals()
+     */
+    public List<KimPrincipalInfo> getPrincipals() {
+        // If our reference is null, assign and return an empty List
+        return (principals != null) ? principals : (principals = new ArrayList<KimPrincipalInfo>());
+    }
 
-    /** {@inheritDoc} */
-    public void prepareForWorkflow(){}
+    /** 
+     * Setter for this {@link KimEntityInfo}'s principals.  Note the behavior of 
+     * {@link #getPrincipals()} if this is set to null;
+     */
+    public void setPrincipals(List<KimPrincipalInfo> principals) {
+        this.principals = principals;
+    }
 
-	/**
-	 * @return the affiliations
-	 */
-	public List<KimEntityAffiliationInfo> getAffiliations() {
-		if (affiliations == null) {
-			affiliations = unNullify(affiliations);
-		}
-		return affiliations;
-	}
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getPrivacyPreferences()
+     */
+    public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
+        return privacyPreferences;
+    }
 
-	/**
-	 * @param affiliations the affiliations to set
-	 */
-	public void setAffiliations(List<KimEntityAffiliationInfo> affiliations) {
-		this.affiliations = affiliations;
-	}
+    /** 
+     * Setter for this {@link KimEntityInfo}'s privacy preferences.  Note the behavior of 
+     * {@link #getPrivacyPreferences()} if this is set to null;
+     */
+    public void setPrivacyPreferences(KimEntityPrivacyPreferencesInfo privacyPreferences) {
+        this.privacyPreferences = privacyPreferences;
+    }
 
-	/**
-	 * @return the defaultAffiliation
-	 */
-	public KimEntityAffiliationInfo getDefaultAffiliation() {
-		return getDefaultAndUnNullify(this.affiliations, KimEntityAffiliationInfo.class);
-	}
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getEthnicities()
+     */
+    public List<KimEntityEthnicityInfo> getEthnicities() {
+        // If our reference is null, assign and return an empty List
+        return (ethnicities != null) ? ethnicities : (ethnicities = new ArrayList<KimEntityEthnicityInfo>());
+    }
 
-	/**
-	 * @return the bioDemographics
-	 */
-	public KimEntityBioDemographicsInfo getBioDemographics() {
-		return unNullify( this.bioDemographics, KimEntityBioDemographicsInfo.class);
-	}
+    /** 
+     * Setter for this {@link KimEntityInfo}'s ethnicities.  Note the behavior of 
+     * {@link #getEthnicities()} if this is set to null;
+     */
+    public void setEthnicities(List<KimEntityEthnicityInfo> ethnicities) {
+        this.ethnicities = ethnicities;
+    }
 
-	/**
-	 * @param bioDemographics the bioDemographics to set
-	 */
-	public void setBioDemographics(KimEntityBioDemographicsInfo bioDemographics) {
-		this.bioDemographics = bioDemographics;
-	}
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getResidencies()
+     */
+    public List<KimEntityResidencyInfo> getResidencies() {
+        // If our reference is null, assign and return an empty List
+        return (residencies != null) ? residencies : (residencies = new ArrayList<KimEntityResidencyInfo>());
+    }
 
-	/**
-	 * @return the citizenships
-	 */
-	public List<KimEntityCitizenshipInfo> getCitizenships() {
-		if (citizenships == null) {
-			citizenships = unNullify(citizenships);
-		}
-		return citizenships;
-	}
+    /** 
+     * Setter for this {@link KimEntityInfo}'s residencies.  Note the behavior of 
+     * {@link #getResidencies()} if this is set to null;
+     */
+    public void setResidencies(List<KimEntityResidencyInfo> residencies) {
+        this.residencies = residencies;
+    }
 
-	/**
-	 * @param citizenships the citizenships to set
-	 */
-	public void setCitizenships(List<KimEntityCitizenshipInfo> citizenships) {
-		this.citizenships = citizenships;
-	}
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getVisas()
+     */
+    public List<KimEntityVisaInfo> getVisas() {
+        // If our reference is null, assign and return an empty List
+        return (visas != null) ? visas : (visas = new ArrayList<KimEntityVisaInfo>());
+    }
 
-	/**
-	 * @return the employmentInformation
-	 */
-	public List<KimEntityEmploymentInformationInfo> getEmploymentInformation() {
-		if (employmentInformation == null) {
-			employmentInformation = unNullify(employmentInformation);
-		}
-		return employmentInformation;
-	}
+    /** 
+     * Setter for this {@link KimEntityInfo}'s visas.  Note the behavior of 
+     * {@link #getVisas()} if this is set to null;
+     */
+    public void setVisas(List<KimEntityVisaInfo> visas) {
+        this.visas = visas;
+    }
 
-	/**
-	 * @param employmentInformation the employmentInformation to set
-	 */
-	public void setEmploymentInformation(
-			List<KimEntityEmploymentInformationInfo> employmentInformation) {
-		this.employmentInformation = employmentInformation;
-	}
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getEntityExternalIdentifier(String)
+     */
+    public KimEntityExternalIdentifier getEntityExternalIdentifier(String externalIdentifierTypeCode) {
+        KimEntityExternalIdentifier result = null;
 
-	/**
-	 * @return the primaryEmployment
-	 */
-	public KimEntityEmploymentInformationInfo getPrimaryEmployment() {
-		if (employmentInformation == null) {
-			employmentInformation = unNullify(employmentInformation);
-		}
-		for (KimEntityEmploymentInformationInfo employment : employmentInformation) {
-			if (employment.isPrimary()) {
-				return employment;
-			}
-		}
-		
-		return new KimEntityEmploymentInformationInfo();
-	}
+        List<KimEntityExternalIdentifierInfo> externalIdentifiers = getExternalIdentifiers();
+        if (externalIdentifiers != null)
+            for (KimEntityExternalIdentifier eid : externalIdentifiers) {
+                if (eid.getExternalIdentifierTypeCode().equals(externalIdentifierTypeCode)) {
+                    result = eid;
+                }
+            }
+        return result;
+    }
 
-	/**
-	 * @return the entityId
-	 */
-	public String getEntityId() {
-		return unNullify( this.entityId);
-	}
+    /**
+     * {@inheritDoc}
+     * @see KimEntity#getEntityType(String)
+     */
+    public KimEntityEntityType getEntityType(String entityTypeCode) {
+        KimEntityEntityType result = null;
 
-	/**
-	 * @param entityId the entityId to set
-	 */
-	public void setEntityId(String entityId) {
-		this.entityId = entityId;
-	}
+        if (entityTypes != null)
+            for (KimEntityEntityType eType : entityTypes) {
+                if (eType.getEntityTypeCode().equals(entityTypeCode)) {
+                    result = eType;
+                }
+            }
+        return result;
+    }
+    
+    /*
+        // utility method converts this monstrous block:
+        
+        if (entity.getEntityTypes() != null) {
+            entityTypes = new ArrayList<KimEntityEntityTypeInfo>(entity.getEntityTypes().size());
 
-	/**
-	 * @return the entityTypes
-	 */
-	public List<KimEntityEntityTypeInfo> getEntityTypes() {
-		if (entityTypes == null) {
-			entityTypes = unNullify(entityTypes);
-		}
-		return entityTypes;
-	}
-
-	/**
-	 * @param entityTypes the entityTypes to set
-	 */
-	public void setEntityTypes(List<KimEntityEntityTypeInfo> entityTypes) {
-		this.entityTypes = entityTypes;
-	}
-
-	/**
-	 * @return the externalIdentifiers
-	 */
-	public List<KimEntityExternalIdentifierInfo> getExternalIdentifiers() {
-		if (externalIdentifiers == null) {
-			externalIdentifiers =  unNullify(externalIdentifiers);
-		}
-		return externalIdentifiers;
-	}
-
-	/**
-	 * @param externalIdentifiers the externalIdentifiers to set
-	 */
-	public void setExternalIdentifiers(
-			List<KimEntityExternalIdentifierInfo> externalIdentifiers) {
-		this.externalIdentifiers = externalIdentifiers;
-	}
-
-	/**
-	 * @return the names
-	 */
-	public List<KimEntityNameInfo> getNames() {
-		if (names == null) {
-			names = unNullify(names);
-		}
-		return names;
-	}
-
-	/**
-	 * @param names the names to set
-	 */
-	public void setNames(List<KimEntityNameInfo> names) {
-		this.names = names;
-	}
-
-	/**
-	 * @return the defaultName
-	 */
-	public KimEntityNameInfo getDefaultName() {
-		if (names == null) {
-			names = unNullify(names);
-		}
-		for (KimEntityNameInfo name : names) {
-			if (name.isDefault()) { return name; }
-		}
-		return new KimEntityNameInfo();
-	}
-
-	/**
-	 * @return the principals
-	 */
-	public List<KimPrincipalInfo> getPrincipals() {
-		if (principals == null) {
-			principals = unNullify(principals);
-		}
-		return principals;
-	}
-
-	/**
-	 * @param principals the principals to set
-	 */
-	public void setPrincipals(List<KimPrincipalInfo> principals) {
-		this.principals = principals;
-	}
-
-	/**
-	 * @return the privacyPreferences
-	 */
-	public KimEntityPrivacyPreferencesInfo getPrivacyPreferences() {
-		return unNullify( this.privacyPreferences, KimEntityPrivacyPreferencesInfo.class);
-	}
-
-	/**
-	 * @param privacyPreferences the privacyPreferences to set
-	 */
-	public void setPrivacyPreferences(
-			KimEntityPrivacyPreferencesInfo privacyPreferences) {
-		this.privacyPreferences = privacyPreferences;
-	}
-
-	/**
-	 * @return the ethnicities
-	 */
-	public List<KimEntityEthnicityInfo> getEthnicities() {
-		if (ethnicities == null) {
-			ethnicities = unNullify(ethnicities);
-		}
-		return ethnicities;
-	}
-
-	/**
-	 * @param ethnicities the ethnicities to set
-	 */
-	public void setEthnicities(List<KimEntityEthnicityInfo> ethnicities) {
-		this.ethnicities = ethnicities;
-	}
-
-	/**
-	 * @return the residencies
-	 */
-	public List<KimEntityResidencyInfo> getResidencies() {
-		if (residencies == null) {
-			residencies = unNullify( this.residencies);
-		}
-		return residencies;
-	}
-
-	/**
-	 * @param residencies the residencies to set
-	 */
-	public void setResidencies(List<KimEntityResidencyInfo> residencies) {
-		this.residencies = residencies;
-	}
-
-	/**
-	 * @return the visas
-	 */
-	public List<KimEntityVisaInfo> getVisas() {
-		if (visas != null) {
-			visas = unNullify( this.visas);
-		}
-		return visas;
-	}
-
-	/**
-	 * @param visas the visas to set
-	 */
-	public void setVisas(List<KimEntityVisaInfo> visas) {
-		this.visas = visas;
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityExternalIdentifier(java.lang.String)
-	 */
-	public KimEntityExternalIdentifier getEntityExternalIdentifier(String externalIdentifierTypeCode) {
-		for (KimEntityExternalIdentifier eid : unNullify(this.getExternalIdentifiers())) {
-			if (eid.getExternalIdentifierTypeCode().equals(externalIdentifierTypeCode)) {
-				return eid;
-			}
-		}
-		
-		return new KimEntityExternalIdentifierInfo();
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntity#getEntityType(java.lang.String)
-	 */
-	public KimEntityEntityType getEntityType(String entityTypeCode) {
-		for (KimEntityEntityType eType : unNullify(this.getEntityTypes())) {
-			if (eType.getEntityTypeCode().equals(entityTypeCode)) {
-				return eType;
-			}
-		}
-		
-		return new KimEntityEntityTypeInfo();
-	}
+            for (KimEntityEntityType entityEntityType : entity.getEntityTypes()) if (entityEntityType != null) {
+                entityTypes.add(new KimEntityEntityTypeInfo(entityEntityType));
+            }
+        } else {
+            entityTypes = new ArrayList<KimEntityEntityTypeInfo>();
+        }
+        
+        // to this:
+        
+        entityTypes = deriveCollection(entity.getEntityTypes(), new XForm<KimEntityEntityType, KimEntityEntityTypeInfo>() {
+            public KimEntityEntityTypeInfo xform(KimEntityEntityType source) {
+                return new KimEntityEntityTypeInfo(source);
+            }
+        });
+     
+        // Note that generic type C is required because some of the source collections use wildcards
+     */
+    private static <A,B,C> List<B> deriveCollection(List<A> source, XForm<C,B> transformer) {
+        List<B> result = null;
+        if (source != null) {
+            result = new ArrayList<B>(source.size());
+            
+            for (A element : source) if (element != null) {
+                B mutant = transformer.xform((C)element);
+                if (mutant != null) {
+                    result.add(mutant);
+                }
+            }
+        } else {
+            result = new ArrayList();
+        }
+        return result;
+    }
+    
+    private static interface XForm<A,B> {
+        public B xform(A source);
+    }
 
 }

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 
 /**
@@ -26,50 +24,55 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimE
 
 	private static final long serialVersionUID = 1L;
 
-	protected String entityAffiliationId = "";
-	protected String affiliationTypeCode = "";
-	protected String campusCode = "";
+	protected String entityAffiliationId;
+	protected String affiliationTypeCode;
+	protected String campusCode;
 
 	
 	/**
-	 * 
+	 * constructs an empty {@link KimEntityAffiliationInfo}
 	 */
 	public KimEntityAffiliationInfo() {
 		super();
 		active = true;
 	}
+	
 	/**
-	 * 
+	 * constructs a {@link KimEntityAffiliationInfo} derived from the given {@link KimEntityAffiliation} 
 	 */
 	public KimEntityAffiliationInfo( KimEntityAffiliation aff ) {
 		this();
 		if ( aff != null ) {
-			entityAffiliationId = unNullify( aff.getEntityAffiliationId() );
-			affiliationTypeCode = unNullify( aff.getAffiliationTypeCode() );
-			campusCode = unNullify( aff.getCampusCode() );
+			entityAffiliationId = aff.getEntityAffiliationId();
+			affiliationTypeCode = aff.getAffiliationTypeCode();
+			campusCode = aff.getCampusCode();
 			dflt = aff.isDefault();
 			active = aff.isActive();
 		}
 	}
+	
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
 	 */
 	public String getAffiliationTypeCode() {
-		return unNullify(affiliationTypeCode);
+		return affiliationTypeCode;
 	}
 
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getCampusCode()
 	 */
 	public String getCampusCode() {
-		return unNullify(campusCode);
+		return campusCode;
 	}
 
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
-		return unNullify(entityAffiliationId);
+		return entityAffiliationId;
 	}
 
 	public void setAffiliationTypeCode(String affiliationTypeCode) {

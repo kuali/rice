@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import java.io.Serializable;
 
 import org.kuali.rice.kim.bo.entity.KimEntityName;
@@ -28,26 +26,26 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 
 	private static final long serialVersionUID = 1L;
 
-	protected String entityNameId = "";
-	protected String nameTypeCode = "";
-	protected String firstName = "";
-	protected String firstNameUnmasked = "";
-	protected String middleName = "";
-	protected String middleNameUnmasked = "";
-	protected String lastName = "";
-	protected String lastNameUnmasked = "";
-	protected String title = "";
-	protected String titleUnmasked = "";
-	protected String suffix = "";
-	protected String suffixUnmasked = "";
+	protected String entityNameId;
+	protected String nameTypeCode;
+	protected String firstName;
+	protected String firstNameUnmasked;
+	protected String middleName;
+	protected String middleNameUnmasked;
+	protected String lastName;
+	protected String lastNameUnmasked;
+	protected String title;
+	protected String titleUnmasked;
+	protected String suffix;
+	protected String suffixUnmasked;
 	
 	protected boolean suppressName = false;
 	
-	protected String formattedName = "";
-	protected String formattedNameUnmasked = "";
+	protected String formattedName;
+	protected String formattedNameUnmasked;
 
 	/**
-	 * 
+	 * construct an empty {@link KimEntityNameInfo}
 	 */
 	public KimEntityNameInfo() {
 		super();
@@ -55,37 +53,38 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 	
 	/**
-	 * 
+	 * construct a {@link KimEntityNameInfo} derived from the given {@link KimEntityName}
 	 */
 	public KimEntityNameInfo( KimEntityName name ) {
 		this();
 		if ( name != null ) {
-		    this.entityNameId = unNullify(name.getEntityNameId());
-		    this.nameTypeCode = unNullify(name.getNameTypeCode());
-		    this.firstName = unNullify(name.getFirstName());
-		    this.firstNameUnmasked = unNullify(name.getFirstNameUnmasked());
-		    this.middleName = unNullify(name.getMiddleName());
-		    this.middleNameUnmasked = unNullify(name.getMiddleNameUnmasked());
-		    this.lastName = unNullify(name.getLastName());
-		    this.lastNameUnmasked = unNullify(name.getLastNameUnmasked());
-		    this.title = unNullify(name.getTitle());
-		    this.titleUnmasked = unNullify(name.getTitleUnmasked());
-		    this.suffix = unNullify(name.getSuffix());
-		    this.suffixUnmasked = unNullify(name.getSuffixUnmasked());
+		    this.entityNameId = name.getEntityNameId();
+		    this.nameTypeCode = name.getNameTypeCode();
+		    this.firstName = name.getFirstName();
+		    this.firstNameUnmasked = name.getFirstNameUnmasked();
+		    this.middleName = name.getMiddleName();
+		    this.middleNameUnmasked = name.getMiddleNameUnmasked();
+		    this.lastName = name.getLastName();
+		    this.lastNameUnmasked = name.getLastNameUnmasked();
+		    this.title = name.getTitle();
+		    this.titleUnmasked = name.getTitleUnmasked();
+		    this.suffix = name.getSuffix();
+		    this.suffixUnmasked = name.getSuffixUnmasked();
 		    this.active = name.isActive();
 		    this.dflt = name.isDefault();
 		    this.suppressName = name.isSuppressName();
 		    
-		    this.formattedName = unNullify(name.getFormattedName());
-		    this.formattedNameUnmasked = unNullify(name.getFormattedNameUnmasked());
+		    this.formattedName = name.getFormattedName();
+		    this.formattedNameUnmasked = name.getFormattedNameUnmasked();
 		}
 	}
 
 	/**
-	 * @return the entityNameId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getEntityNameId()
 	 */
 	public String getEntityNameId() {
-		return unNullify(this.entityNameId);
+		return entityNameId;
 	}
 
 	/**
@@ -96,10 +95,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the nameTypeCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getNameTypeCode()
 	 */
 	public String getNameTypeCode() {
-		return unNullify(this.nameTypeCode);
+		return nameTypeCode;
 	}
 
 	/**
@@ -110,10 +110,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the firstName
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstName()
 	 */
 	public String getFirstName() {
-		return unNullify(this.firstName);
+		return firstName;
 	}
 
 	/**
@@ -124,10 +125,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the firstNameUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFirstNameUnmasked()
 	 */
 	public String getFirstNameUnmasked() {
-		return unNullify(this.firstNameUnmasked);
+		return firstNameUnmasked;
 	}
 
 	/**
@@ -138,10 +140,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the middleName
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleName()
 	 */
 	public String getMiddleName() {
-		return unNullify(this.middleName);
+		return middleName;
 	}
 
 	/**
@@ -152,10 +155,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the middleNameUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getMiddleNameUnmasked()
 	 */
 	public String getMiddleNameUnmasked() {
-		return unNullify(this.middleNameUnmasked);
+		return middleNameUnmasked;
 	}
 
 	/**
@@ -166,10 +170,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the lastName
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastName()
 	 */
 	public String getLastName() {
-		return unNullify(this.lastName);
+		return lastName;
 	}
 
 	/**
@@ -180,10 +185,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the lastNameUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getLastNameUnmasked()
 	 */
 	public String getLastNameUnmasked() {
-		return unNullify(this.lastNameUnmasked);
+		return lastNameUnmasked;
 	}
 
 	/**
@@ -194,10 +200,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the title
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitle()
 	 */
 	public String getTitle() {
-		return unNullify(this.title);
+		return title;
 	}
 
 	/**
@@ -208,10 +215,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the titleUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getTitleUnmasked()
 	 */
 	public String getTitleUnmasked() {
-		return unNullify(this.titleUnmasked);
+		return titleUnmasked;
 	}
 
 	/**
@@ -222,10 +230,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the suffix
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffix()
 	 */
 	public String getSuffix() {
-		return unNullify(this.suffix);
+		return suffix;
 	}
 
 	/**
@@ -236,10 +245,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the suffixUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getSuffixUnmasked()
 	 */
 	public String getSuffixUnmasked() {
-		return unNullify(this.suffixUnmasked);
+		return suffixUnmasked;
 	}
 
 	/**
@@ -250,7 +260,8 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the suppressName
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#isSuppressName()
 	 */
 	public boolean isSuppressName() {
 		return this.suppressName;
@@ -264,10 +275,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the formattedName
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedName()
 	 */
 	public String getFormattedName() {
-		return unNullify(this.formattedName);
+		return formattedName;
 	}
 
 	/**
@@ -278,10 +290,11 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 	}
 
 	/**
-	 * @return the formattedNameUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityName#getFormattedNameUnmasked()
 	 */
 	public String getFormattedNameUnmasked() {
-		return unNullify(this.formattedNameUnmasked);
+		return formattedNameUnmasked;
 	}
 
 	/**

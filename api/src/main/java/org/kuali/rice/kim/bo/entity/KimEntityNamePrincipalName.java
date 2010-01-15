@@ -22,6 +22,16 @@ package org.kuali.rice.kim.bo.entity;
  *
  */
 public interface KimEntityNamePrincipalName {
+    
+    /**
+     * Gets this {@link KimEntityNamePrincipalName}'s {@link KimEntityName}.
+     * @return the {@link KimEntityName} for this {@link KimEntityNamePrincipalName}, or null if none has been assigned.
+     */
 	public KimEntityName getDefaultEntityName();
+	
+	/**
+     * Gets this {@link KimEntityNamePrincipalName}'s principal name.
+     * @return the principal name for this {@link KimEntityNamePrincipalName}, or null if none has been assigned.
+     */
 	public String getPrincipalName();
 }

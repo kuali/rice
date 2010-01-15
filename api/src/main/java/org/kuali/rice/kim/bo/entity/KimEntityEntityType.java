@@ -21,7 +21,7 @@ import org.kuali.rice.kim.bo.reference.EntityType;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
- * Represents the entity type associated with a particular entity. 
+ * the entity type for a KIM entity. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -31,42 +31,42 @@ public interface KimEntityEntityType extends Inactivateable {
 	String getEntityTypeCode();
 	
 	EntityType getEntityType();
-	
+
 	/**
-	 * Return the list of EntityAddress objects associated with this EntityType.
-	 * 
-	 * The returned list will never be null, the implementation will generate an
-	 * empty list as needed.
-	 */
+     * Gets this {@link KimEntityEntityType}'s List of {@link KimEntityAddress}S.
+     * @return the List of {@link KimEntityAddress}S for this {@link KimEntityEntityType}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimEntityAddress> getAddresses();
 
 	/**
-	 * Return the list of EntityEmail objects associated with this EntityType.
-	 * 
-	 * The returned list will never be null, the implementation will generate an
-	 * empty list as needed.
-	 */
+     * Gets this {@link KimEntityEntityType}'s List of {@link KimEntityEmail}S.
+     * @return the List of {@link KimEntityEmail}S for this {@link KimEntityEntityType}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimEntityEmail> getEmailAddresses();
 	
 	/**
-	 * Return the list of EntityPhone objects associated with this EntityType.
-	 * 
-	 * The returned list will never be null, the implementation will generate an
-	 * empty list as needed.
-	 */
+     * Gets this {@link KimEntityEntityType}'s List of {@link KimEntityPhone}S.
+     * @return the List of {@link KimEntityPhone}S for this {@link KimEntityEntityType}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimEntityPhone> getPhoneNumbers();
 	
-	/** Returns the default address record for the entity.  If no default is defined, then
+	/** 
+	 * Returns the default address record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
 	KimEntityAddress getDefaultAddress();
 
-	/** Returns the default email record for the entity.  If no default is defined, then
+	/**
+	 *  Returns the default email record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
 	KimEntityEmail getDefaultEmailAddress();
 
-	/** Returns the default phone record for the entity.  If no default is defined, then
+	/** 
+	 * Returns the default phone record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
 	KimEntityPhone getDefaultPhoneNumber();

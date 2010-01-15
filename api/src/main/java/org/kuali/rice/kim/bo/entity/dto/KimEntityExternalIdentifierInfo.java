@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 
 /**
@@ -26,9 +24,9 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimE
 
 	private static final long serialVersionUID = 1L;
 
-	protected String entityExternalIdentifierId = "";
-	protected String externalIdentifierTypeCode = "";
-	protected String externalId = "";
+	protected String entityExternalIdentifierId;
+	protected String externalIdentifierTypeCode;
+	protected String externalId;
 	
 	/**
 	 * 
@@ -43,30 +41,34 @@ public class KimEntityExternalIdentifierInfo extends KimInfoBase implements KimE
 	public KimEntityExternalIdentifierInfo( KimEntityExternalIdentifier eid ) {
 		this();
 		if ( eid != null ) {
-			entityExternalIdentifierId = unNullify( eid.getEntityExternalIdentifierId() );
-			externalIdentifierTypeCode = unNullify( eid.getExternalIdentifierTypeCode() );
-			externalId = unNullify( eid.getExternalId() );
+			entityExternalIdentifierId = eid.getEntityExternalIdentifierId();
+			externalIdentifierTypeCode = eid.getExternalIdentifierTypeCode();
+			externalId = eid.getExternalId();
 		}
 	}
+
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
 	 */
 	public String getEntityExternalIdentifierId() {
-		return unNullify(entityExternalIdentifierId);
+		return entityExternalIdentifierId;
 	}
 
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
 	 */
 	public String getExternalId() {
-		return unNullify(externalId);
+		return externalId;
 	}
 
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalIdentifierTypeCode()
 	 */
 	public String getExternalIdentifierTypeCode() {
-		return unNullify(externalIdentifierTypeCode);
+		return externalIdentifierTypeCode;
 	}
 
 	public void setExternalId(String externalId) {

@@ -17,16 +17,40 @@ package org.kuali.rice.kim.bo.entity;
 
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * visa information for a KIM entity 
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface KimEntityVisa {
 
+    /**
+     * Gets this {@link KimEntityVisa}'s id.
+     * @return the id for this {@link KimEntityVisa}, or null if none has been assigned.
+     */
 	String getId();
+	
+	/**
+     * Gets this {@link KimEntityVisa}'s entity id.
+     * @return the entity id for this {@link KimEntityVisa}, or null if none has been assigned.
+     */
 	String getEntityId();
+	
+	/**
+     * Gets this {@link KimEntityVisa}'s viss type key.
+     * @return the viss type key for this {@link KimEntityVisa}, or null if none has been assigned.
+     */
 	String getVisaTypeKey();
+	
+	/**
+     * Gets this {@link KimEntityVisa}'s visa entry.
+     * @return the visa entry for this {@link KimEntityVisa}, or null if none has been assigned.
+     */
 	String getVisaEntry();
+	
+	/**
+     * Gets this {@link KimEntityVisa}'s visa id.
+     * @return the visa id for this {@link KimEntityVisa}, or null if none has been assigned.
+     */
 	String getVisaId();
 }

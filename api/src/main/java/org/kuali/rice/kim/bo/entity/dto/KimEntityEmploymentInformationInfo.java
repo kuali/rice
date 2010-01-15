@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kns.util.KualiDecimal;
 
@@ -27,14 +25,14 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 
 	private static final long serialVersionUID = 1L;
 
-	protected String entityEmploymentId = "";
-	protected String employeeId = "";
-	protected String employmentRecordId = "";
-	protected String entityAffiliationId = "";
-	protected String employeeStatusCode = "";
-	protected String employeeTypeCode = "";
-	protected String primaryDepartmentCode = "";
-	protected KualiDecimal baseSalaryAmount = KualiDecimal.ZERO;
+	protected String entityEmploymentId;
+	protected String employeeId;
+	protected String employmentRecordId;
+	protected String entityAffiliationId;
+	protected String employeeStatusCode;
+	protected String employeeTypeCode;
+	protected String primaryDepartmentCode;
+	protected KualiDecimal baseSalaryAmount;
 	protected boolean primary = true;
 
 	/**
@@ -51,13 +49,13 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	public KimEntityEmploymentInformationInfo( KimEntityEmploymentInformation eei ) {
 		this();
 		if ( eei != null ) {
-			entityEmploymentId = unNullify( eei.getEntityEmploymentId() );
-			employeeId = unNullify( eei.getEmployeeId() );
-			employmentRecordId = unNullify( eei.getEmploymentRecordId() );
-			entityAffiliationId = unNullify( eei.getEntityAffiliationId() );
-			employeeStatusCode = unNullify( eei.getEmployeeStatusCode() );
-			employeeTypeCode = unNullify( eei.getEmployeeTypeCode() );
-			primaryDepartmentCode = unNullify( eei.getPrimaryDepartmentCode() );
+			entityEmploymentId = eei.getEntityEmploymentId();
+			employeeId = eei.getEmployeeId();
+			employmentRecordId = eei.getEmploymentRecordId();
+			entityAffiliationId = eei.getEntityAffiliationId();
+			employeeStatusCode = eei.getEmployeeStatusCode();
+			employeeTypeCode = eei.getEmployeeTypeCode();
+			primaryDepartmentCode = eei.getPrimaryDepartmentCode();
 			baseSalaryAmount = eei.getBaseSalaryAmount();
 			primary = eei.isPrimary();
 			active = eei.isActive();
@@ -65,10 +63,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the entityEmploymentId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityEmploymentId()
 	 */
 	public String getEntityEmploymentId() {
-		return unNullify(this.entityEmploymentId);
+		return entityEmploymentId;
 	}
 
 	/**
@@ -79,10 +78,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the employeeId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeId()
 	 */
 	public String getEmployeeId() {
-		return unNullify(this.employeeId);
+		return employeeId;
 	}
 
 	/**
@@ -93,10 +93,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the employmentRecordId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmploymentRecordId()
 	 */
 	public String getEmploymentRecordId() {
-		return unNullify(this.employmentRecordId);
+		return employmentRecordId;
 	}
 
 	/**
@@ -107,10 +108,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the entityAffiliationId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEntityAffiliationId()
 	 */
 	public String getEntityAffiliationId() {
-		return unNullify(this.entityAffiliationId);
+		return entityAffiliationId;
 	}
 
 	/**
@@ -121,10 +123,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the employeeStatusCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeStatusCode()
 	 */
 	public String getEmployeeStatusCode() {
-		return unNullify(this.employeeStatusCode);
+		return employeeStatusCode;
 	}
 
 	/**
@@ -135,10 +138,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the employeeTypeCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeTypeCode()
 	 */
 	public String getEmployeeTypeCode() {
-		return unNullify(this.employeeTypeCode);
+		return employeeTypeCode;
 	}
 
 	/**
@@ -149,10 +153,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the primaryDepartmentCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getPrimaryDepartmentCode()
 	 */
 	public String getPrimaryDepartmentCode() {
-		return unNullify(this.primaryDepartmentCode);
+		return primaryDepartmentCode;
 	}
 
 	/**
@@ -163,10 +168,11 @@ public class KimEntityEmploymentInformationInfo extends KimInactivatableInfo imp
 	}
 
 	/**
-	 * @return the baseSalaryAmount
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()
 	 */
 	public KualiDecimal getBaseSalaryAmount() {
-		return unNullify( this.baseSalaryAmount );
+		return baseSalaryAmount;
 	}
 
 	/**

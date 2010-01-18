@@ -1056,10 +1056,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		
 		// Retrieve and cache any uncached results. If the initial delegation ID List was null or empty, then also cache a List holding all the results.
 		if (!uncachedDelegationIds.isEmpty()) {
-			List<String> uncachedIdsList = new ArrayList<String>();
-			for (String uncachedDelegationId : uncachedDelegationIds) {
-				if (uncachedDelegationId != null || !idListWasNullOrEmpty) { uncachedIdsList.add(uncachedDelegationId); }
-			}
+			List<String> uncachedIdsList = (idListWasNullOrEmpty) ? new ArrayList<String>() : new ArrayList<String>(uncachedDelegationIds);
 			
 			Map<String,List<KimDelegationMemberImpl>> tempMemberMap = roleDao.getDelegationMembersForDelegationIds(uncachedIdsList);
 			List<KimDelegationMemberImpl> allMembers = new ArrayList<KimDelegationMemberImpl>();

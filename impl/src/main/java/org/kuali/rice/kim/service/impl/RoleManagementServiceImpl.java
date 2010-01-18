@@ -379,7 +379,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			key = cacheKey.toString();
 			hasRole = getPrincipalHasRoleCacheCache(key);
 		}
-		if (hasRole == null) {
+		if (hasRole == null || !hasRole.booleanValue()) {
 			if (!cacheRoles.isEmpty()) {
 				hasRole = getRoleService().principalHasRole(principalId, cacheRoles, qualification);
 				addPrincipalHasRoleToCache(key, hasRole);

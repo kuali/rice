@@ -32,6 +32,9 @@ public interface IdentityManagementNotificationService {
     public void principalUpdated();
     public void groupUpdated();
     public void roleUpdated();
+    public void roleMemberUpdated();
     public void permissionUpdated();
     public void responsibilityUpdated();
+    public void delegationUpdated();
+    public void delegationMemberUpdated();
 }

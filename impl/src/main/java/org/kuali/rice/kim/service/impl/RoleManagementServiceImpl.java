@@ -89,6 +89,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	public void flushRoleCaches() {
 		flushInternalRoleCache();
+		flushInternalRoleMemberCache();
+		flushInternalDelegationCache();
+		flushInternalDelegationMemberCache();
 		roleByIdCache.clear();
 		roleByNameCache.clear();
 		roleMembersWithDelegationCache.clear();
@@ -96,6 +99,23 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		principalHasRoleCache.clear();
 		memberPrincipalIdsCache.clear();
 		shouldCacheRoleCache.clear();
+	}
+	
+	public void flushRoleMemberCaches() {
+		flushInternalRoleMemberCache();
+		roleMembersWithDelegationCache.clear();
+		memberPrincipalIdsCache.clear();
+	}
+	
+	public void flushDelegationCaches() {
+		flushInternalDelegationCache();
+		flushInternalDelegationMemberCache();
+		roleMembersWithDelegationCache.clear();
+	}
+	
+	public void flushDelegationMemberCaches() {
+		flushInternalDelegationMemberCache();
+		roleMembersWithDelegationCache.clear();
 	}
 	
 	// Caching helper methods
@@ -807,5 +827,17 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 
 	public void flushInternalRoleCache() {
 		getRoleService().flushInternalRoleCache();
+	}
+	
+	public void flushInternalRoleMemberCache() {
+		getRoleService().flushInternalRoleMemberCache();
+	}
+	
+	public void flushInternalDelegationCache() {
+		getRoleService().flushInternalDelegationCache();
+	}
+	
+	public void flushInternalDelegationMemberCache() {
+		getRoleService().flushInternalDelegationMemberCache();
 	}
 }

@@ -28,6 +28,21 @@ public interface RoleManagementService extends RoleService, RoleUpdateService {
 	void flushRoleCaches();
 	
 	/**
+	 * Flush all of the role-member-related caches.
+	 */
+	void flushRoleMemberCaches();
+	
+	/**
+	 * Flush all of the delegation-related caches.
+	 */
+	void flushDelegationCaches();
+	
+	/**
+	 * Flush all of the delegation-member-related caches.
+	 */
+	void flushDelegationMemberCaches();
+	
+	/**
 	 * Remove all cache entries for the given roleId and principalId combination.
 	 */
 	void removeCacheEntries( String roleId, String principalId );

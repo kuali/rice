@@ -306,6 +306,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		if(groupIds!=null && !groupIds.isEmpty())
 			groupCheck.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
 		groupCheck.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
+		orSet.addOrCriteria( groupCheck );
 		c.addAndCriteria( orSet );
 		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
 		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);

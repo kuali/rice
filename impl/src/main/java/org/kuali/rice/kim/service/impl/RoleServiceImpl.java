@@ -1865,7 +1865,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     					continue; // no match - skip to next record
     				}
     			} catch (Exception ex) {
-    				LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
+    				LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + dmi.getQualifier(), ex);
     				continue;
     			}
     			
@@ -1894,11 +1894,11 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
        					//it is possible that the the roleTypeService is coming from a remote application 
        	                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
        					try {
-       						if (roleTypeService == null || !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
+       						if (roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
        							continue;
        						}
        					} catch (Exception ex) {
-       						LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
+       	    				LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + roleQualifier, ex);
        	    				continue;
        					}
        				} else {

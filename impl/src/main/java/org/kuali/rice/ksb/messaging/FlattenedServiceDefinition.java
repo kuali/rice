@@ -46,7 +46,7 @@ public class FlattenedServiceDefinition implements Serializable {
 	@Column(name="FLT_SVC_DEF", length=4000)
 	private String flattenedServiceDefinitionData;
 	
-	//@PrePersist
+	@PrePersist
     public void beforeInsert() {
         OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }

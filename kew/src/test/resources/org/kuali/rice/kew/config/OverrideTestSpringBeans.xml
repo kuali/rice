@@ -34,6 +34,5 @@
         <property name="retryAttempts" value="0"/>
       </bean>
     </property>
-    <property name="forceRefresh" value="true"/>
   </bean>
 </beans>

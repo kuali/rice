@@ -20,57 +20,30 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   
-  <persistence-unit name="ksb-identity-unit" transaction-type="JTA">
-    <mapping-file>META-INF/ksb-identity-orm.xml</mapping-file>
+  <persistence-unit name="ksb-unit" transaction-type="JTA">
+    <mapping-file>META-INF/ksb-orm.xml</mapping-file>
+    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
     <class>org.kuali.rice.ksb.messaging.PersistedMessage</class>
     <class>org.kuali.rice.ksb.messaging.PersistedMessagePayload</class>
     <class>org.kuali.rice.ksb.messaging.ServiceInfo</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMParam</class>
-    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
   
-  <persistence-unit name="ksb-sequence-unit" transaction-type="JTA">
-    <mapping-file>META-INF/ksb-sequence-orm.xml</mapping-file>
-    <class>org.kuali.rice.ksb.messaging.PersistedMessage</class>
-    <class>org.kuali.rice.ksb.messaging.PersistedMessagePayload</class>
-    <class>org.kuali.rice.ksb.messaging.ServiceInfo</class>
-    <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
-    <class>org.kuali.rice.ksb.messaging.bam.BAMParam</class>
-    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-  </persistence-unit>
-  
-  <persistence-unit name="ksb-identity-message-unit" transaction-type="JTA">
-    <mapping-file>META-INF/ksb-identity-orm.xml</mapping-file>
+  <persistence-unit name="ksb-message-unit" transaction-type="JTA">
+    <mapping-file>META-INF/ksb-orm.xml</mapping-file>
     <class>org.kuali.rice.ksb.messaging.PersistedMessage</class>
     <class>org.kuali.rice.ksb.messaging.PersistedMessagePayload</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>  
 
-  <persistence-unit name="ksb-identity-registry-unit" transaction-type="JTA">
-    <mapping-file>META-INF/ksb-identity-orm.xml</mapping-file>
+  <persistence-unit name="ksb-registry-unit" transaction-type="JTA">
+    <mapping-file>META-INF/ksb-orm.xml</mapping-file>
+    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
     <class>org.kuali.rice.ksb.messaging.ServiceInfo</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMParam</class>
-    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-  </persistence-unit>
-  
-  <persistence-unit name="ksb-sequence-message-unit" transaction-type="JTA">
-    <mapping-file>META-INF/ksb-sequence-orm.xml</mapping-file>
-    <class>org.kuali.rice.ksb.messaging.PersistedMessage</class>
-    <class>org.kuali.rice.ksb.messaging.PersistedMessagePayload</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
-  </persistence-unit>  
-
-  <persistence-unit name="ksb-sequence-registry-unit" transaction-type="JTA">
-    <mapping-file>META-INF/ksb-sequence-orm.xml</mapping-file>
-    <class>org.kuali.rice.ksb.messaging.ServiceInfo</class>
-    <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
-    <class>org.kuali.rice.ksb.messaging.bam.BAMParam</class>
-    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 

@@ -10,8 +10,9 @@ def repositories = [
     //'../kew/src/main/resources/org/kuali/workflow/ojb/OJB-repository-kew.xml'
     //'../kim/src/main/resources/OJB-repository-kim.xml'
     //'../kns/src/main/resources/OJB-repository-kns.xml',
-    '../ksb/src/main/resources/OJB-repository-ksb.xml'
+    //'../ksb/src/main/resources/OJB-repository-ksb.xml'
     //'../kns/src/test/resources/repository.xml'
+    './impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
 ]
 
 def sourceDirectories = [
@@ -20,13 +21,14 @@ def sourceDirectories = [
     //'../kew/src/main/java/',
     //'../kim/src/main/java/',
     //'../kns/src/main/java/',
-    '../ksb/src/main/java/'
+    //'../ksb/src/main/java/'
     //'../kns/src/test/java/',
     //'../ken-api/src/main/java/', 
     //'../kew-api/src/main/java/'
     //'../kim-api/src/main/java/'
     //'../kns-api/src/main/java/'
     //'../ksb-api/src/main/java/'
+    '/java/projects/rice-1.1.0/impl/src/main/java/'
 ]
 
 def mysql = false

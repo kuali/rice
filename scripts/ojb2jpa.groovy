@@ -32,7 +32,7 @@ def sourceDirectories = [
 ]
 
 def mysql = false
-def persistenceXml = false
+def persistenceXml = true
 def persistenceUnitName = "rice"
 def schemaName = "RICE093DEV"
 def pkClassesOnly = false
@@ -71,11 +71,11 @@ else if (clean) {
 //generate  sounre code for bo in JPA style
 else 
 {
-	generateJPABO{classes, sourceDirectories, dry, verbose
+	generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger,  pkClassesOnly);
 }
 
 
-def generateJPABO{classes, sourceDirectories, dry, verbose){
+def generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger, pkClassesOnly){
 	/*
 	The second pass iterates over all of the class descriptors found above and generates JPA annotations.
 	*/

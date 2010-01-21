@@ -134,11 +134,11 @@ public class MessageMap implements Serializable {
     }
 
     public TypedArrayList putWarningWithoutFullErrorPath(String propertyName, String messageKey, String... messageParameters) {
-        return putMessageInMap(errorMessages, propertyName, messageKey, false, true, messageParameters);
+        return putMessageInMap(warningMessages, propertyName, messageKey, false, true, messageParameters);
     }
 
     public TypedArrayList putInfoWithoutFullErrorPath(String propertyName, String messageKey, String... messageParameters) {
-        return putMessageInMap(errorMessages, propertyName, messageKey, false, true, messageParameters);
+        return putMessageInMap(infoMessages, propertyName, messageKey, false, true, messageParameters);
     }
 
     /**

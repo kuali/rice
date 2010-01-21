@@ -32,7 +32,7 @@ def sourceDirectories = [
 ]
 
 def mysql = false
-def persistenceXml = true
+def persistenceXml = false
 def persistenceUnitName = "rice"
 def schemaName = "RICE093DEV"
 def pkClassesOnly = false
@@ -50,188 +50,32 @@ def classes = [:]
 /*
 The first pass over the OJB XML captures all of the metadata in groovy datastructures.
 */
-repositories.each {
-    repository -> 
-        def xml = new XmlParser().parse(new File(repository))
-        def classDescriptors = xml['class-descriptor']
-        
-        classDescriptors.each { 
-            cd -> 
-                def classDescriptor = new ClassDescriptor()
-                if (!cd.'@table') {
-                    logger.log "Class descriptor for [${cd.'@class'}] does not have a table defined. Please check it." 
-                    return
-                }
-                classDescriptor.tableName = cd.'@table'.toUpperCase()	
-                classDescriptor.className = cd.'@class'
-                
-                def fieldDescriptors = cd['field-descriptor']
-                fieldDescriptors.each {
-                    fd ->
-                        def field = new Field()
-                        field.id = fd.'@id'
-                        field.name = fd.'@name'
-                        field.column = fd.'@column'
-                        field.jdbcType = fd.'@jdbc-type'
-                        field.primarykey = (fd.'@primarykey' == "true")
-                        field.nullable = fd.'@nullable'
-                        field.indexed = fd.'@indexed'
-                        field.autoincrement = (fd.'@autoincrement' == "true")
-                        field.sequenceName = fd.'@sequence-name'
-                        field.locking = fd.'@locking'
-                        field.conversion = fd.'@conversion' 
-                        field.access = fd.'@access'
-                        classDescriptor.fields[field.name] = field
-                        if (field.primarykey) {
-                            classDescriptor.primaryKeys.add(field)
-                        }
-                }
-                
-                def referenceDescriptors = cd['reference-descriptor']
-                referenceDescriptors.each {
-                    rd ->
-                        def referenceDescriptor = new ReferenceDescriptor()
-                        referenceDescriptor.name = rd.'@name'
-                        referenceDescriptor.classRef = rd.'@class-ref'
-                        referenceDescriptor.proxy = rd.'@proxy'
-                        referenceDescriptor.autoRetrieve = rd.'@auto-retrieve'
-                        referenceDescriptor.autoUpdate = rd.'@auto-update'
-                        referenceDescriptor.autoDelete = rd.'@auto-delete'
-        
-                        def foreignKeys = rd['foreignkey']
-                        foreignKeys.each {
-                            fk ->
-                                def key = new Key()
-                                key.fieldRef = fk.'@field-ref'
-                                key.fieldIdRef = fk.'@field-id-ref'
-                                referenceDescriptor.foreignKeys.add(key)
-                        }
-                        
-                        classDescriptor.referenceDescriptors[referenceDescriptor.name] = referenceDescriptor
-                } 
-                
-                def collectionDescriptors = cd['collection-descriptor']
-                collectionDescriptors.each {
-                    colDesc ->
-                        def collectionDescriptor = new CollectionDescriptor()
-                        collectionDescriptor.name = colDesc.'@name'
-                        collectionDescriptor.collectionClass = colDesc.'@collection-class'
-                        collectionDescriptor.elementClassRef = colDesc.'@element-class-ref'
-                        collectionDescriptor.orderBy = colDesc.'@orderBy'
-                        collectionDescriptor.sort = colDesc.'@sort'
-                        collectionDescriptor.indirectionTable = colDesc.'@indirection-table'
-                        collectionDescriptor.proxy = colDesc.'@proxy'
-                        collectionDescriptor.autoRetrieve = colDesc.'@auto-retrieve'
-                        collectionDescriptor.autoUpdate = colDesc.'@auto-update'
-                        collectionDescriptor.autoDelete = colDesc.'@auto-delete'
-                        collectionDescriptor.fkPointingToThisClassColumn = colDesc['fk-pointing-to-this-class'].'@column'
-                        collectionDescriptor.fkPointingToElementClassColumn = colDesc['fk-pointing-to-element-class'].'@column'
-                         
-                        def inverseForeignKeys = colDesc['inverse-foreignkey']
-                        inverseForeignKeys.each {
-                            ifk ->
-                                def key = new Key()
-                                key.fieldRef = ifk.'@field-ref'
-                                key.fieldIdRef = ifk.'@field-id-ref'
-                                collectionDescriptor.inverseForeignKeys.add(key)
-                        }
-                        
-                        classDescriptor.collectionDescriptors[collectionDescriptor.name] = collectionDescriptor
-                }                             
-                classDescriptor.compoundPrimaryKey = (classDescriptor.primaryKeys.size > 1)
-                classes[classDescriptor.className] = classDescriptor
-        } 
+
+loadMetaData(repositories, classes)
+
+//for persistence.xml
+if (persistenceXml) {
+	generatePersistenceXML(classes, persistenceUnitName);
+} 
+
+//for handling sequence in mysql
+else if (mysql) {
+	generateMySQLSequence(classes);
+}
+
+//clean back up
+else if (clean) {
+	cleanBackupFIles(classes, sourceDirectories, backupExtension);
+} 
+
+//generate  sounre code for bo in JPA style
+else 
+{
+	generateJPABO{classes, sourceDirectories, dry, verbose
 }
 
 
-
-if (persistenceXml) {
-   
-    def classesXml = ""
-    classes.values().each {
-        c ->     
-            classesXml += "    <class>${c.className}</class>\n"
-    }
-    
-    println """<?xml version="1.0" encoding="UTF-8"?>
-<persistence 
-    version=\"1.0\" 
-    xmlns=\"http://java.sun.com/xml/ns/persistence\" 
-    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
-    xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd\">
-  
-  <persistence-unit name=\"${persistenceUnitName}\" transaction-type=\"RESOURCE_LOCAL\">
-${classesXml}  </persistence-unit>
-
-</persistence>
-"""
-} else if (mysql) {
-    def orm = ""
-    def sequences = []
-    classes.values().each {
-        c ->     
-            c.fields.values().each {
-                f ->
-                    if (f.autoincrement && !sequences.contains(f.sequenceName)) {
-println """CREATE TABLE ${f.sequenceName} (
-  a INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (a)
-) AUTO_INCREMENT=1000, ENGINE=MyISAM
-/
-"""
-                        sequences.add(f.sequenceName)
-                    }
-                    if (f.autoincrement) {
-                        def name = c.className[c.className.lastIndexOf('.')+1 .. -1]
-orm += """    <entity class=\"${c.className}\" name=\"${name}\">
-        <attributes>
-            <id name=\"${f.name}\">
-                <column name=\"${f.column}\"/>
-                <generated-value strategy=\"IDENTITY\"/>
-            </id>
-        </attributes>
-    </entity>
-"""                        
-                    }
-            }
-    }
-    
-println """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<entity-mappings version=\"1.0\" xmlns=\"http://java.sun.com/xml/ns/persistence/orm\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd\">
-    <persistence-unit-metadata>
-        <persistence-unit-defaults>
-            <schema>${schemaName}</schema>
-        </persistence-unit-defaults>
-    </persistence-unit-metadata>
-${orm}</entity-mappings>
-"""
-} else if (clean) {
-    /*
-    Remove the backup.java files.
-    */
-    classes.values().each {
-        c ->     
-            def backupFile
-            def file
-            sourceDirectories.each {
-                dir -> 
-                    file = dir + c.className.replaceAll("\\.", "/") + ".java" + backupExtension
-                    if (new File(file).exists()) {
-                        backupFile = new File(file)
-                    }
-            }
-            
-            if (!backupFile) {
-                logger.log "${backupFile} does not exist.  Can remove it."
-                return
-            }
-                        
-            if (backupFile.exists()) {
-                backupFile.delete()
-                if (verbose) println "Deleting ${file}"
-            }
-    }
-} else {
+def generateJPABO{classes, sourceDirectories, dry, verbose){
 	/*
 	The second pass iterates over all of the class descriptors found above and generates JPA annotations.
 	*/
@@ -739,5 +583,197 @@ class ClassDescriptor {
     def collectionDescriptors = [:]
 }
 
+def echoMessage(repositories){
+	
+	println("*************starting***************");
+	
+	}
 
+def loadMetaData(repositories, classes){
+	
+	repositories.each {
+		repository -> 
+		def xml = new XmlParser().parse(new File(repository))
+		def classDescriptors = xml['class-descriptor']
+		
+		classDescriptors.each { 
+			cd -> 
+			def classDescriptor = new ClassDescriptor()
+			if (!cd.'@table') {
+				logger.log "Class descriptor for [${cd.'@class'}] does not have a table defined. Please check it." 
+				return
+			}
+			classDescriptor.tableName = cd.'@table'.toUpperCase()	
+			classDescriptor.className = cd.'@class'
+			
+			def fieldDescriptors = cd['field-descriptor']
+			fieldDescriptors.each {
+				fd ->
+				def field = new Field()
+				field.id = fd.'@id'
+				field.name = fd.'@name'
+				field.column = fd.'@column'
+				field.jdbcType = fd.'@jdbc-type'
+				field.primarykey = (fd.'@primarykey' == "true")
+				field.nullable = fd.'@nullable'
+				field.indexed = fd.'@indexed'
+				field.autoincrement = (fd.'@autoincrement' == "true")
+				field.sequenceName = fd.'@sequence-name'
+				field.locking = fd.'@locking'
+				field.conversion = fd.'@conversion' 
+				field.access = fd.'@access'
+				classDescriptor.fields[field.name] = field
+				if (field.primarykey) {
+					classDescriptor.primaryKeys.add(field)
+				}
+			}
+			
+			def referenceDescriptors = cd['reference-descriptor']
+			referenceDescriptors.each {
+				rd ->
+				def referenceDescriptor = new ReferenceDescriptor()
+				referenceDescriptor.name = rd.'@name'
+				referenceDescriptor.classRef = rd.'@class-ref'
+				referenceDescriptor.proxy = rd.'@proxy'
+				referenceDescriptor.autoRetrieve = rd.'@auto-retrieve'
+				referenceDescriptor.autoUpdate = rd.'@auto-update'
+				referenceDescriptor.autoDelete = rd.'@auto-delete'
+				
+				def foreignKeys = rd['foreignkey']
+				foreignKeys.each {
+					fk ->
+					def key = new Key()
+					key.fieldRef = fk.'@field-ref'
+					key.fieldIdRef = fk.'@field-id-ref'
+					referenceDescriptor.foreignKeys.add(key)
+				}
+				
+				classDescriptor.referenceDescriptors[referenceDescriptor.name] = referenceDescriptor
+			} 
+			
+			def collectionDescriptors = cd['collection-descriptor']
+			collectionDescriptors.each {
+				colDesc ->
+				def collectionDescriptor = new CollectionDescriptor()
+				collectionDescriptor.name = colDesc.'@name'
+				collectionDescriptor.collectionClass = colDesc.'@collection-class'
+				collectionDescriptor.elementClassRef = colDesc.'@element-class-ref'
+				collectionDescriptor.orderBy = colDesc.'@orderBy'
+				collectionDescriptor.sort = colDesc.'@sort'
+				collectionDescriptor.indirectionTable = colDesc.'@indirection-table'
+				collectionDescriptor.proxy = colDesc.'@proxy'
+				collectionDescriptor.autoRetrieve = colDesc.'@auto-retrieve'
+				collectionDescriptor.autoUpdate = colDesc.'@auto-update'
+				collectionDescriptor.autoDelete = colDesc.'@auto-delete'
+				collectionDescriptor.fkPointingToThisClassColumn = colDesc['fk-pointing-to-this-class'].'@column'
+				collectionDescriptor.fkPointingToElementClassColumn = colDesc['fk-pointing-to-element-class'].'@column'
+				
+				def inverseForeignKeys = colDesc['inverse-foreignkey']
+				inverseForeignKeys.each {
+					ifk ->
+					def key = new Key()
+					key.fieldRef = ifk.'@field-ref'
+					key.fieldIdRef = ifk.'@field-id-ref'
+					collectionDescriptor.inverseForeignKeys.add(key)
+				}
+				
+				classDescriptor.collectionDescriptors[collectionDescriptor.name] = collectionDescriptor
+			}                             
+			classDescriptor.compoundPrimaryKey = (classDescriptor.primaryKeys.size > 1)
+			classes[classDescriptor.className] = classDescriptor
+		} 
+	}
+}
 
+def generatePersistenceXML(classes, persistenceUnitName) {
+	
+	def classesXml = ""
+	classes.values().each {
+		c ->     
+		classesXml += "    <class>${c.className}</class>\n"
+	}
+	
+	println """<?xml version="1.0" encoding="UTF-8"?>
+<persistence 
+    version=\"1.0\" 
+    xmlns=\"http://java.sun.com/xml/ns/persistence\" 
+    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
+    xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd\">
+  
+  <persistence-unit name=\"${persistenceUnitName}\" transaction-type=\"RESOURCE_LOCAL\">
+${classesXml}  </persistence-unit>
+
+</persistence>
+"""
+}
+
+def generateMySQLSequence(classes){
+	  def orm = ""
+	  def sequences = []
+	  classes.values().each {
+	      c ->     
+	          c.fields.values().each {
+	              f ->
+	                  if (f.autoincrement && !sequences.contains(f.sequenceName)) {
+	println """CREATE TABLE ${f.sequenceName} (
+	a INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (a)
+	) AUTO_INCREMENT=1000, ENGINE=MyISAM
+	/
+	"""
+	                      sequences.add(f.sequenceName)
+	                  }
+	                  if (f.autoincrement) {
+	                      def name = c.className[c.className.lastIndexOf('.')+1 .. -1]
+	orm += """    <entity class=\"${c.className}\" name=\"${name}\">
+	      <attributes>
+	          <id name=\"${f.name}\">
+	              <column name=\"${f.column}\"/>
+	              <generated-value strategy=\"IDENTITY\"/>
+	          </id>
+	      </attributes>
+	  </entity>
+	"""                        
+	                  }
+	          }
+	  }
+	  
+	println """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+	<entity-mappings version=\"1.0\" xmlns=\"http://java.sun.com/xml/ns/persistence/orm\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd\">
+	  <persistence-unit-metadata>
+	      <persistence-unit-defaults>
+	          <schema>${schemaName}</schema>
+	      </persistence-unit-defaults>
+	  </persistence-unit-metadata>
+	${orm}</entity-mappings>
+	"""
+	
+}
+
+def cleanBackupFIles(classes, sourceDirectories, backupExtension){
+	/*
+	 Remove the backup.java files.
+	 */
+	classes.values().each {
+		c ->     
+		def backupFile
+		def file
+		sourceDirectories.each {
+			dir -> 
+			file = dir + c.className.replaceAll("\\.", "/") + ".java" + backupExtension
+			if (new File(file).exists()) {
+				backupFile = new File(file)
+			}
+		}
+		
+		if (!backupFile) {
+			logger.log "${backupFile} does not exist.  Can remove it."
+			return
+		}
+		
+		if (backupFile.exists()) {
+			backupFile.delete()
+			if (verbose) println "Deleting ${file}"
+		}
+	}
+}

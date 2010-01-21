@@ -589,10 +589,14 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 
     
     private MaintainableCollectionDefinition getCollectionDefinition( String docTypeName, String collectionName ) {
-        String currentCollection = StringUtils.substringBefore( collectionName, "." );
-        String nestedCollections = StringUtils.substringAfter( collectionName, "." );
-        // strip off any array indexes
-        currentCollection = StringUtils.substringBefore( collectionName, "[" );
+        String currentCollection = collectionName;
+        String nestedCollections = "";
+    	if (StringUtils.contains(collectionName, "[")) {
+    		// strip off any array indexes
+            currentCollection = StringUtils.substringBefore( collectionName, "[" );
+            nestedCollections = StringUtils.substringAfter( collectionName, "." );
+    	}
+    	
         // loop over all sections to find this collection
         List<MaintainableSectionDefinition> maintainableSectionDefinitions = getMaintainableSections( docTypeName );
         for (MaintainableSectionDefinition maintainableSectionDefinition : maintainableSectionDefinitions) {
@@ -600,30 +604,35 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                 if (maintainableItemDefinition instanceof MaintainableCollectionDefinition && maintainableItemDefinition.getName().equals( currentCollection ) ) {
                     if ( StringUtils.isBlank( nestedCollections ) ) {
                         return (MaintainableCollectionDefinition) maintainableItemDefinition;
-                    } else {
-                        return getCollectionDefinition( (MaintainableCollectionDefinition)maintainableItemDefinition, nestedCollections );
-                    }
+                    } 
+                    
+                    return getCollectionDefinition( (MaintainableCollectionDefinition)maintainableItemDefinition, nestedCollections );
                 }
             }
         }
+        
         return null;
     }
 
     private MaintainableCollectionDefinition getCollectionDefinition( MaintainableCollectionDefinition collectionDef, String collectionName ) {
-        String currentCollection = StringUtils.substringBefore( collectionName, "." );
-        String nestedCollections = StringUtils.substringAfter( collectionName, "." );
-        // strip off any array indexes
-        currentCollection = StringUtils.substringBefore( collectionName, "[" );
+        String currentCollection = collectionName;
+        String nestedCollections = "";
+    	if (StringUtils.contains(collectionName, "[")) {
+    		// strip off any array indexes
+            currentCollection = StringUtils.substringBefore( collectionName, "[" );
+            nestedCollections = StringUtils.substringAfter( collectionName, "." );
+    	}
+        
         // loop over all nested collections
         for (MaintainableCollectionDefinition maintainableCollectionDefinition : collectionDef.getMaintainableCollections()) {
-            if ( maintainableCollectionDefinition.getName().equals( collectionName ) ) {
+            if ( maintainableCollectionDefinition.getName().equals( currentCollection ) ) {
                 if ( StringUtils.isBlank( nestedCollections ) ) {
                     return maintainableCollectionDefinition;
-                } else {
-                    return getCollectionDefinition( maintainableCollectionDefinition, nestedCollections );
-                }
+                } 
+                return getCollectionDefinition( maintainableCollectionDefinition, nestedCollections );
             }
         }
+        
         return null;
     }
     

@@ -366,6 +366,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		SuperUserActionRequestApproveEvent suActionRequestApprove = new SuperUserActionRequestApproveEvent(routeHeader, principal, actionRequestId, annotation, runPostProcessor);
 		suActionRequestApprove.recordAction();
 		// suActionRequestApprove.queueDocument();
+		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
 
@@ -383,6 +385,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		KimPrincipal principal = loadPrincipal(principalId);
 		new SuperUserApproveEvent(routeHeader, principal, annotation, runPostProcessor).recordAction();
+		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
 
@@ -390,6 +394,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		KimPrincipal principal = loadPrincipal(principalId);
 		new SuperUserCancelEvent(routeHeader, principal, annotation, runPostProcessor).recordAction();
+		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
 
@@ -397,6 +403,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		KimPrincipal principal = loadPrincipal(principalId);
 		new SuperUserDisapproveEvent(routeHeader, principal, annotation, runPostProcessor).recordAction();
+		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
 
@@ -404,6 +412,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		KimPrincipal principal = loadPrincipal(principalId);
 		new SuperUserNodeApproveEvent(routeHeader, principal, annotation, runPostProcessor, nodeName).recordAction();
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
 
@@ -433,7 +442,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		KimPrincipal principal = loadPrincipal(principalId);
 		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, principal, annotation, runPostProcessor, nodeName);
 		action.recordAction();
-
+		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
+		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
 

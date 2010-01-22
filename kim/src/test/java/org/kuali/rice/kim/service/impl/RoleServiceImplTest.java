@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.test.service;
+package org.kuali.rice.kim.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

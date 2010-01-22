@@ -8,15 +8,18 @@ def repositories = []
 
 getRespositoryFiles(projHome, ojbMappingPattern, repositories, sourceDirectories)
 
+println 'Found '+repositories.size().toString()+' OJB mapping files:'
+repositories.each {println it}
+println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
+sourceDirectories.each {println it}
 
 def getRespositoryFiles(String projHome, ojbMappingPattern, ArrayList repositories, ArrayList sourceDirectories){
-    repositories = []
-    sourceDirectories = []
+    repositories.clear()
+    sourceDirectories.clear()
 
     // local helpers
-    def cl = { File f -> println f.getName() }
     def addRepository = { File f -> 
-            repositories.add( f );
+            repositories.add( f.getPath() );
             sourceDirectories.add( f.getParent() )
             }
 
@@ -30,10 +33,7 @@ def getRespositoryFiles(String projHome, ojbMappingPattern, ArrayList repositori
         myFile.eachFileMatch(ojbMappingPattern, addRepository)
         }
 
-    println 'Found '+repositories.size().toString()+' OJB mapping files:'
-    repositories.each cl
-
-    println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
-    sourceDirectories.each {println it}
 }
+
+
 

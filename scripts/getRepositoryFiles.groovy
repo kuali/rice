@@ -15,20 +15,25 @@ def getRespositoryFiles(String projHome, ojbMappingPattern, ArrayList repositori
 
     // local helpers
     def cl = { File f -> println f.getName() }
-    def addRepository = { File f -> println f.getName()
+    def addRepository = { File f -> 
             repositories.add( f );
-         }
+            sourceDirectories.add( f.getParent() )
+            }
 
     def dir = new File(projHome)
 
-    println 'directoryName:'+dir.getName()
-    println 'ojbMappingPattern'+ojbMappingPattern
+    println 'directoryName='+dir.getPath()
+    println 'ojbMappingPattern='+ojbMappingPattern
 
     dir.eachFileMatch(ojbMappingPattern, addRepository)
     dir.eachDirRecurse { File myFile ->
         myFile.eachFileMatch(ojbMappingPattern, addRepository)
         }
-        
+
+    println 'Found '+repositories.size().toString()+' OJB mapping files:'
     repositories.each cl
+
+    println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
+    sourceDirectories.each {println it}
 }
 

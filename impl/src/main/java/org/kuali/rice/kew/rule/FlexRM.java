@@ -207,6 +207,7 @@ public class FlexRM {
 
 		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
 		if (rules != null) {
+			LOG.info("Total number of rules selected by RuleSelector for documentType=" + routeHeader.getDocumentType().getName() + " and ruleTemplate=" + ruleTemplateName + ": " + rules.size());
 			for (Rule rule: rules) {
 				RuleExpressionResult result = rule.evaluate(rule, context);
 				if (result.isSuccess() && result.getResponsibilities() != null) {

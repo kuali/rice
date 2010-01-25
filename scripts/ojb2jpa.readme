@@ -1,0 +1,24 @@
+Instructions for running the ojb2jpa.groovy script:
+
+There are a few user configurable properties that effect the behavior of the script.
+
+projHome = 'c:/Rice/projects/play'
+	Set this to the root of the project to be converted.  
+
+	
+ojbMappingPattern = ~/.*OJB.*repository.*xml/
+	This parameter is a regular expression to match against for finding existing OJB repository configuration files.
+	The default example looks for all .xml filename containing with the strings "OJB" and "repository".
+
+schemaName = "RICE110DEV"
+	The database schema name
+
+
+
+
+Running the script:
+
+Assuming groovy is in your path:
+
+>groovy ojb2jpa.groovy
+

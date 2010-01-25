@@ -1,9 +1,10 @@
 import java.util.regex.Matcher
+import java.io.File;
 import java.util.regex.Pattern
 
 
 /* Begin User Configurable Fields */
-
+/**
 def repositories = [
     //'../kcb/src/main/resources/OJB-repository-kcb.xml'
     //'../ken/src/main/resources/OJB-repository-ken.xml' 
@@ -30,6 +31,7 @@ def sourceDirectories = [
     //'../ksb-api/src/main/java/'
     '/java/projects/rice-1.1.0/impl/src/main/java/'
 ]
+**/
 
 def mysql = false
 def persistenceXml = true
@@ -39,13 +41,27 @@ def pkClassesOnly = false
 def clean = false
 def dry = true
 def verbose = true
+def ojbMappingPattern = ~/.*OJB.*repository.*xml/
+def projHome = 'c:/Rice/projects/play'
+
 
 /* End User Configurable Fields */
+def sourceDirectories = []
+def repositories = []
 
 
 def backupExtension = ".backup"
 def logger = new Logger("errors.log")
 def classes = [:]
+
+//   Search for OJB Mapping Files
+getRespositoryFiles(projHome, ojbMappingPattern, repositories, sourceDirectories)
+
+println 'Found '+repositories.size().toString()+' OJB mapping files:'
+repositories.each {println it}
+println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
+sourceDirectories.each {println it}
+
 
 /*
 The first pass over the OJB XML captures all of the metadata in groovy datastructures.
@@ -593,6 +609,7 @@ def loadMetaData(repositories, classes){
 	
 	repositories.each {
 		repository -> 
+		println repository.toString();
 		def xml = new XmlParser().parse(new File(repository))
 		def classDescriptors = xml['class-descriptor']
 		
@@ -777,3 +794,27 @@ def cleanBackupFIles(classes, sourceDirectories, backupExtension){
 		}
 	}
 }
+
+
+def getRespositoryFiles(String projHome, ojbMappingPattern, ArrayList repositories, ArrayList sourceDirectories){
+    repositories.clear()
+    sourceDirectories.clear()
+
+    // local helpers
+    def addRepository = { File f -> 
+            repositories.add( f.getPath() );
+            sourceDirectories.add( f.getParent() )
+            }
+
+    def dir = new File(projHome)
+
+    println 'directoryName='+dir.getPath()
+    println 'ojbMappingPattern='+ojbMappingPattern
+
+    dir.eachFileMatch(ojbMappingPattern, addRepository)
+    dir.eachDirRecurse { File myFile ->
+        myFile.eachFileMatch(ojbMappingPattern, addRepository)
+        }
+
+}
+

@@ -1,3 +1,6 @@
+import java.util.regex.Matcher
+import java.io.File;
+import java.util.regex.Pattern
 
 
 /* Begin User Configurable Fields */
@@ -33,14 +36,18 @@ def sourceDirectories = [
 
 
 def mysql = false
+
 def persistenceXml = true
 def persistenceUnitName = "rice"
+def persistenceXmlFilename = 'persistence.xml'	
+	
 def schemaName = "RICE110DEV"
 def pkClassesOnly = false
 def clean = false
 def dry = false
 def verbose = true
-def scanForConfigFiles = false
+
+def scanForConfigFiles = true
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 
 def projHome = '/java/rice/projects/play/rice-1.1.0'
@@ -102,7 +109,7 @@ if (something.toString().toUpperCase().equals( 'Y'))
 	//for persistence.xml
 	if (persistenceXml) {
 		println 'Generating persistence.xml...'
-    	generatePersistenceXML(classes, persistenceUnitName, projHome+resourceDir);
+    	generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir);
 	} 
 
 	//for handling sequence in mysql
@@ -738,23 +745,33 @@ def loadMetaData(repositories, classes, logger){
 			}                             
 			classDescriptor.compoundPrimaryKey = (classDescriptor.primaryKeys.size > 1)
 			classes[classDescriptor.className] = classDescriptor
-			
-			//if(persistenceXml)
 		} 
 	}
 }
 
-def generatePersistenceXML(classes, persistenceUnitName, resourcePath) {
-	
+def generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, path) {
+    def persistFile
+    def backupFile
+
+    // create backup file if necessary, and start with new file
+    persistFile = new File(path+persistenceXmlFilename);
+    backupFile = new File(path+persistenceXmlFilename+'.backup');
+    if (persistFile.exists()){
+    	if (backupFile.exists()){
+    		backupFile.delete();
+    	}	
+		persistFile.renameTo(backupFile);
+		persistFile.delete();
+    }
+    
+ 	
 	def classesXml = ""
 	classes.values().each {
 		c ->     
 		classesXml += "    <class>${c.className}</class>\n"
 	}
-	
-	//def modul = stripeModuleName();
-	
-	println """<?xml version="1.0" encoding="UTF-8"?>
+
+	def persistXml = """<?xml version="1.0" encoding="UTF-8"?>
 <persistence 
     version=\"1.0\" 
     xmlns=\"http://java.sun.com/xml/ns/persistence\" 
@@ -766,6 +783,11 @@ ${classesXml}  </persistence-unit>
 
 </persistence>
 """
+
+//	println persistXml
+	persistFile << persistXml
+	persistFile << "\n"
+	
 }
 
 def generateMySQLSequence(classes){

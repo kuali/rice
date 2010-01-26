@@ -45,9 +45,10 @@ def dry = false
 def verbose = true
 def scanForConfigFiles = false
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def projHome = 'c:/Rice/projects/play/impl/src'
 
-
+def projHome = 'c:/Rice/projects/play'
+def srcRootDir = '/impl/src/'
+def resourceDir = '/impl/src/main/resources/META-INF/'
 
 /* End User Configurable Fields */
 //def sourceDirectories = []
@@ -62,47 +63,74 @@ def classes = [:]
 //   Search for OJB Mapping Files
 if (scanForConfigFiles){
 	println 'Scanning for files'
-    getRespositoryFiles(projHome, ojbMappingPattern, repositories, sourceDirectories)
+    getRespositoryFiles(projHome+srcRootDir, ojbMappingPattern, repositories, sourceDirectories)
 }
 println 'Found '+repositories.size().toString()+' OJB mapping files:'
 repositories.each {println it}
 println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
 sourceDirectories.each {println it}
-println 'Would you like to continue? (Y/N):'
 
-
-/*
-The first pass over the OJB XML captures all of the metadata in groovy datastructures.
-*/
-
-loadMetaData(repositories, classes, logger)
-println 'First pass completed, metadata captured.'
-
-//for persistence.xml
+// give the user the opportunity to review and abort.
+def actions = 'The script is set to: '
+def something
+if (dry) actions = 'The script will perform a dry run to: '
 if (persistenceXml) {
-	println 'Generating persistence.xml...'
-	generatePersistenceXML(classes, persistenceUnitName);
-} 
-
-//for handling sequence in mysql
-else if (mysql) {
-	println 'Generating MySQL sequence annotations...'
-	generateMySQLSequence(classes);
+	actions+='Generate persistence.xml files.'
+} else if (mysql) {
+	actions+='Generate MySQL sequence annotations.'
+} else if (clean) {
+	actions+='Clean up backup files...'
+} else {
+	actions+='Generate JPA annotated BO files.'
 }
 
-//clean back up
-else if (clean) {
-	println 'Cleaning up backup files...'
-	cleanBackupFIles(classes, sourceDirectories, backupExtension);
-} 
+System.in.withReader { reader ->
+println()
+println actions
+print "Would you like to continue? (Y/N): "
+something = reader.readLine()
+println()
+}
 
-//generate  sounre code for bo in JPA style
-else 
+
+if (something.toString().toUpperCase().equals( 'Y'))
 {
-	println 'Generating Business Object POJOs with JPA Annotations...'
-	generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger,  pkClassesOnly);
-}
+	/*
+	The first pass over the OJB XML captures all of the metadata in groovy datastructures.
+	*/
 
+	loadMetaData(repositories, classes, logger)
+	println 'First pass completed, metadata captured.'
+
+	//for persistence.xml
+	if (persistenceXml) {
+		println 'Generating persistence.xml...'
+    	generatePersistenceXML(classes, persistenceUnitName, projHome+resourceDir);
+	} 
+
+	//for handling sequence in mysql
+	else if (mysql) {
+		println 'Generating MySQL sequence annotations...'
+		generateMySQLSequence(classes);
+	}
+
+	//clean back up
+	else if (clean) {
+		println 'Cleaning up backup files...'
+		cleanBackupFIles(classes, sourceDirectories, backupExtension);
+	} 
+
+	//generate  sounre code for bo in JPA style
+	else 
+	{
+		println 'Generating Business Object POJOs with JPA Annotations...'
+		generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger,  pkClassesOnly);
+	}
+}
+else
+{
+	println 'Aborting script.'
+}
 
 def generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger, pkClassesOnly){
 	/*
@@ -717,7 +745,7 @@ def loadMetaData(repositories, classes, logger){
 	}
 }
 
-def generatePersistenceXML(classes, persistenceUnitName) {
+def generatePersistenceXML(classes, persistenceUnitName, resourcePath) {
 	
 	def classesXml = ""
 	classes.values().each {

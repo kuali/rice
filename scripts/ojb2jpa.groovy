@@ -1,6 +1,3 @@
-import java.util.regex.Matcher
-import java.io.File;
-import java.util.regex.Pattern
 
 
 /* Begin User Configurable Fields */
@@ -14,7 +11,7 @@ def repositories = [
     //'../ksb/src/main/resources/OJB-repository-ksb.xml'
     //'../kns/src/test/resources/repository.xml'
   //  '../impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
-    '/rice/projects/play/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
+    '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
 ]
 
 def sourceDirectories = [
@@ -31,7 +28,7 @@ def sourceDirectories = [
     //'../kns-api/src/main/java/'
     //'../ksb-api/src/main/java/'
     //'/rice/projects/play/impl/src/main/java/'
-    '/rice/projects/play/impl/src/main/java/'
+    '/java/projects/play/rice-1.1.0/impl/src/main/java/'
 ]
 
 
@@ -39,14 +36,14 @@ def mysql = false
 def persistenceXml = false
 def persistenceUnitName = "rice"
 def schemaName = "RICE110DEV"
-def pkClassesOnly = false
+def pkClassesOnly = true
 def clean = false
 def dry = false
 def verbose = true
 def scanForConfigFiles = false
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 
-def projHome = 'c:/Rice/projects/play'
+def projHome = '/java/rice/projects/play/rice-1.1.0'
 def srcRootDir = '/impl/src/'
 def resourceDir = '/impl/src/main/resources/META-INF/'
 
@@ -105,7 +102,7 @@ if (something.toString().toUpperCase().equals( 'Y'))
 	//for persistence.xml
 	if (persistenceXml) {
 		println 'Generating persistence.xml...'
-    	generatePersistenceXML(classes, persistenceUnitName, projHome+resourceDir);
+    	generatePersistenceXML(classes, repositories, projHome+resourceDir);
 	} 
 
 	//for handling sequence in mysql
@@ -741,6 +738,8 @@ def loadMetaData(repositories, classes, logger){
 			}                             
 			classDescriptor.compoundPrimaryKey = (classDescriptor.primaryKeys.size > 1)
 			classes[classDescriptor.className] = classDescriptor
+			
+			//if(persistenceXml)
 		} 
 	}
 }
@@ -752,6 +751,8 @@ def generatePersistenceXML(classes, persistenceUnitName, resourcePath) {
 		c ->     
 		classesXml += "    <class>${c.className}</class>\n"
 	}
+	
+	def modul = stripeModuleName();
 	
 	println """<?xml version="1.0" encoding="UTF-8"?>
 <persistence 
@@ -860,4 +861,11 @@ def getRespositoryFiles(String projHome, ojbMappingPattern, ArrayList repositori
         }
 
 }
+
+def stripeModuleName(String s){
+	
+	String name = s.substring(s.lastIndexOf("-") + 1, s.lastIndexOf("."));
+	
+	System.out.println(name);
+	}
 

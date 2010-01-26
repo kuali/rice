@@ -4,7 +4,7 @@ import java.util.regex.Pattern
 
 
 /* Begin User Configurable Fields */
-/**
+
 def repositories = [
     //'../kcb/src/main/resources/OJB-repository-kcb.xml'
     //'../ken/src/main/resources/OJB-repository-ken.xml' 
@@ -13,7 +13,7 @@ def repositories = [
     //'../kns/src/main/resources/OJB-repository-kns.xml',
     //'../ksb/src/main/resources/OJB-repository-ksb.xml'
     //'../kns/src/test/resources/repository.xml'
-    './impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
+    '../impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
 ]
 
 def sourceDirectories = [
@@ -29,34 +29,39 @@ def sourceDirectories = [
     //'../kim-api/src/main/java/'
     //'../kns-api/src/main/java/'
     //'../ksb-api/src/main/java/'
-    '/java/projects/rice-1.1.0/impl/src/main/java/'
+    '/rice/projects/play/impl/src/main/java/'
 ]
-**/
+
 
 def mysql = false
 def persistenceXml = true
 def persistenceUnitName = "rice"
-def schemaName = "RICE093DEV"
+def schemaName = "RICE110DEV"
 def pkClassesOnly = false
 def clean = false
 def dry = true
 def verbose = true
+def scanForConfigFiles = false
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 def projHome = 'c:/Rice/projects/play'
 
 
+
 /* End User Configurable Fields */
-def sourceDirectories = []
-def repositories = []
+//def sourceDirectories = []
+//def repositories = []
 
 
 def backupExtension = ".backup"
 def logger = new Logger("errors.log")
 def classes = [:]
 
-//   Search for OJB Mapping Files
-getRespositoryFiles(projHome, ojbMappingPattern, repositories, sourceDirectories)
 
+//   Search for OJB Mapping Files
+if (scanForConfigFiles){
+	println 'Scanning for files'
+    getRespositoryFiles(projHome, ojbMappingPattern, repositories, sourceDirectories)
+}
 println 'Found '+repositories.size().toString()+' OJB mapping files:'
 repositories.each {println it}
 println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
@@ -67,7 +72,7 @@ sourceDirectories.each {println it}
 The first pass over the OJB XML captures all of the metadata in groovy datastructures.
 */
 
-loadMetaData(repositories, classes)
+loadMetaData(repositories, classes, logger)
 
 //for persistence.xml
 if (persistenceXml) {
@@ -605,7 +610,7 @@ def echoMessage(repositories){
 	
 	}
 
-def loadMetaData(repositories, classes){
+def loadMetaData(repositories, classes, logger){
 	
 	repositories.each {
 		repository -> 

@@ -2,18 +2,27 @@ Instructions for running the ojb2jpa.groovy script:
 
 There are a few user configurable properties that effect the behavior of the script.
 
-projHome = 'c:/Rice/projects/play'
-	Set this to the root of the project to be converted.  
 
-	
-ojbMappingPattern = ~/.*OJB.*repository.*xml/
-	This parameter is a regular expression to match against for finding existing OJB repository configuration files.
-	The default example looks for all .xml filename containing with the strings "OJB" and "repository".
+schemaName = "RICE110DEV"   /* 	The database schema name */
+persistenceXml = true		/* create persistenceXml files */
+persistenceUnitName = "rice"
 
-schemaName = "RICE110DEV"
-	The database schema name
+pkClassesOnly = false
+clean = false
+dry = true
+verbose = true
 
+The script can scan a project for OJB repostitory files
+Or the files can be manually set.
 
+scanForConfigFiles = false   /* to scan for files set to true */
+ojbMappingPattern = ~/.*OJB.*repository.*xml/   /* regular expression to match OJB mapping files */
+projHome = 'c:/Rice/projects/play'   /* project root from which to search for files */
+
+If specifying the config files, set scanForConfigFiles = false
+and specify the files in 
+repositories[]
+sourceDirectories[]
 
 
 Running the script:

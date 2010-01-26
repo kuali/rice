@@ -2,6 +2,14 @@ Instructions for running the ojb2jpa.groovy script:
 
 There are a few user configurable properties that effect the behavior of the script.
 
+Currently, the script is set to do portions of the conversion with each run.
+It will either:  
+  - generate the persistence.xml files only (if property persistenceXml = true)
+  - generate the primary key classes only (if pkClassesOnly = true)
+  - generate mysql override xml files for sequence generations only (if property mysql = true )  
+  - generate the JPA annotated BO POJO files  (if the above parameters are all set to false)
+Future versions will allow ability to do all at once 
+   
 
 schemaName = "RICE110DEV"   /* 	The database schema name */
 persistenceXml = true		/* create persistenceXml files */
@@ -9,25 +17,23 @@ persistenceUnitName = "rice"
 
 pkClassesOnly = false
 clean = false
-dry = true
+
+dry = true   /* perform a dry run, output to the console, do not actually create the files. */
 verbose = true
 
-The script can scan a project for OJB repostitory files
-Or the files can be manually set.
 
-scanForConfigFiles = false   /* to scan for files set to true */
+The script can scan a project for OJB repostitory files or the files can be manually specified.
+To scan for files, set the following 3 properties:
+scanForConfigFiles = false   /* true: search project for repository files, false: specify repositories and source directories */
 ojbMappingPattern = ~/.*OJB.*repository.*xml/   /* regular expression to match OJB mapping files */
-projHome = 'c:/Rice/projects/play'   /* project root from which to search for files */
+projHome = 'c:/Rice/projects/play'   /* project root from which to search for files (all subdirectories will be searched*/
 
-If specifying the config files, set scanForConfigFiles = false
-and specify the files in 
+To specify the config files, set scanForConfigFiles = false and specify the files in 
 repositories[]
 sourceDirectories[]
 
 
 Running the script:
-
-Assuming groovy is in your path:
-
+(Assuming groovy is in your path:)
 >groovy ojb2jpa.groovy
 

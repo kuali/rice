@@ -33,10 +33,10 @@ def sourceDirectories = [
 
 
 def mysql = false
-def persistenceXml = false
+def persistenceXml = true
 def persistenceUnitName = "rice"
 def schemaName = "RICE110DEV"
-def pkClassesOnly = true
+def pkClassesOnly = false
 def clean = false
 def dry = false
 def verbose = true
@@ -102,7 +102,7 @@ if (something.toString().toUpperCase().equals( 'Y'))
 	//for persistence.xml
 	if (persistenceXml) {
 		println 'Generating persistence.xml...'
-    	generatePersistenceXML(classes, repositories, projHome+resourceDir);
+    	generatePersistenceXML(classes, persistenceUnitName, projHome+resourceDir);
 	} 
 
 	//for handling sequence in mysql
@@ -752,7 +752,7 @@ def generatePersistenceXML(classes, persistenceUnitName, resourcePath) {
 		classesXml += "    <class>${c.className}</class>\n"
 	}
 	
-	def modul = stripeModuleName();
+	//def modul = stripeModuleName();
 	
 	println """<?xml version="1.0" encoding="UTF-8"?>
 <persistence 

@@ -13,7 +13,8 @@ def repositories = [
     //'../kns/src/main/resources/OJB-repository-kns.xml',
     //'../ksb/src/main/resources/OJB-repository-ksb.xml'
     //'../kns/src/test/resources/repository.xml'
-    '../impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
+  //  '../impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
+    '/rice/projects/play/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
 ]
 
 def sourceDirectories = [
@@ -29,21 +30,22 @@ def sourceDirectories = [
     //'../kim-api/src/main/java/'
     //'../kns-api/src/main/java/'
     //'../ksb-api/src/main/java/'
+    //'/rice/projects/play/impl/src/main/java/'
     '/rice/projects/play/impl/src/main/java/'
 ]
 
 
 def mysql = false
-def persistenceXml = true
+def persistenceXml = false
 def persistenceUnitName = "rice"
 def schemaName = "RICE110DEV"
 def pkClassesOnly = false
 def clean = false
-def dry = true
+def dry = false
 def verbose = true
 def scanForConfigFiles = false
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def projHome = 'c:/Rice/projects/play'
+def projHome = 'c:/Rice/projects/play/impl/src'
 
 
 
@@ -66,6 +68,7 @@ println 'Found '+repositories.size().toString()+' OJB mapping files:'
 repositories.each {println it}
 println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
 sourceDirectories.each {println it}
+println 'Would you like to continue? (Y/N):'
 
 
 /*
@@ -73,25 +76,30 @@ The first pass over the OJB XML captures all of the metadata in groovy datastruc
 */
 
 loadMetaData(repositories, classes, logger)
+println 'First pass completed, metadata captured.'
 
 //for persistence.xml
 if (persistenceXml) {
+	println 'Generating persistence.xml...'
 	generatePersistenceXML(classes, persistenceUnitName);
 } 
 
 //for handling sequence in mysql
 else if (mysql) {
+	println 'Generating MySQL sequence annotations...'
 	generateMySQLSequence(classes);
 }
 
 //clean back up
 else if (clean) {
+	println 'Cleaning up backup files...'
 	cleanBackupFIles(classes, sourceDirectories, backupExtension);
 } 
 
 //generate  sounre code for bo in JPA style
 else 
 {
+	println 'Generating Business Object POJOs with JPA Annotations...'
 	generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger,  pkClassesOnly);
 }
 
@@ -102,6 +110,7 @@ def generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, log
 	*/
 	classes.values().each {
 	    c ->     
+	        println 'Class Name: '+c.className.toString()
 	        def javaFile
 	        def backupFile
 	        sourceDirectories.each {
@@ -117,8 +126,9 @@ def generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, log
 	        if (!javaFile) {
 	            logger.log "${javaFile} does not exist.  Can not annotate ${c.className}.  Please check that its source directory is included in this script."
 	            return
+	        } else {
+	        	println 'Creating annotated BO file: ${c.className}.'
 	        }
-	                    
 	        def classAnnotation = ""
 	        def text = javaFile.text
 	        def cpkFieldText = ""
@@ -614,7 +624,7 @@ def loadMetaData(repositories, classes, logger){
 	
 	repositories.each {
 		repository -> 
-		println repository.toString();
+		println 'Parsing repository file: '+repository.toString()
 		def xml = new XmlParser().parse(new File(repository))
 		def classDescriptors = xml['class-descriptor']
 		

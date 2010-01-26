@@ -20,14 +20,18 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -38,19 +42,25 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_BAM_PARM_T")
-@Sequence(name="KRSB_BAM_PARM_S", property="bamParamId")
+//@Sequence(name="KRSB_BAM_PARM_S", property="bamParamId")
 public class BAMParam {
 
 	@Id
+	@GeneratedValue(generator="KRSB_BAM_PARM_S")
+	@GenericGenerator(name="KRSB_BAM_PARM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRSB_BAM_PARM_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="BAM_PARM_ID")
 	private Long bamParamId;
 	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="BAM_ID")
 	private BAMTargetEntry bamTargetEntry;
+	@Lob
 	@Column(name="PARM")
 	private String param;
 	
-	@PrePersist
+	//@PrePersist
     public void beforeInsert(){
 	    OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }

@@ -83,9 +83,11 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     }
 
     public void removeEntry(ServiceInfo entry) {
-    	Query query = entityManager.createNamedQuery("ServiceInfo.DeleteByEntry");
-    	query.setParameter("messageEntryId", entry.getMessageEntryId());
-		query.executeUpdate();
+    	//Query query = entityManager.createNamedQuery("ServiceInfo.DeleteByEntry");
+    	//query.setParameter("messageEntryId", entry.getMessageEntryId());
+		//query.executeUpdate();
+    	//entityManager.remove(entityManager.getReference(ServiceInfo.class, entry.getMessageEntryId()));
+    	entityManager.remove(entityManager.find(ServiceInfo.class, entry.getMessageEntryId()));
     }
 
     public ServiceInfo findServiceInfo(Long serviceInfoId) {
@@ -93,10 +95,14 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     }
 
     public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace) {
-    	Query query = entityManager.createNamedQuery("ServiceInfo.DeleteLocallyPublishedServices");
-    	query.setParameter("serverIp", ipNumber);
-    	query.setParameter("serviceNamespace", serviceNamespace);
-		query.executeUpdate();
+    	//Query query = entityManager.createNamedQuery("ServiceInfo.DeleteLocallyPublishedServices");
+    	//query.setParameter("serverIp", ipNumber);
+    	//query.setParameter("serviceNamespace", serviceNamespace);
+		//query.executeUpdate();
+    	List<ServiceInfo> localServices = findLocallyPublishedServices(ipNumber, serviceNamespace);
+    	for (ServiceInfo localService : localServices) {
+    		entityManager.remove(entityManager.find(ServiceInfo.class, localService.getMessageEntryId()));
+    	}
     }
 
     public EntityManager getEntityManager() {

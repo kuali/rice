@@ -28,12 +28,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -42,9 +43,10 @@ import javax.xml.namespace.QName;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -60,7 +62,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_SVC_DEF_T")
-@Sequence(name="KRSB_SVC_DEF_S", property="messageEntryId")
+//@Sequence(name="KRSB_SVC_DEF_S", property="messageEntryId")
 @NamedQueries({
 	@NamedQuery(name="ServiceInfo.FetchAll", query="select s from ServiceInfo s"),
 	@NamedQuery(name="ServiceInfo.FetchAllActive",query="select s from ServiceInfo s where s.alive = true"),
@@ -75,6 +77,11 @@ public class ServiceInfo implements Serializable {
     @Transient
 	private ServiceDefinition serviceDefinition;
 	@Id
+	@GeneratedValue(generator="KRSB_SVC_DEF_S")
+	@GenericGenerator(name="KRSB_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRSB_SVC_DEF_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="SVC_DEF_ID")  
 	private Long messageEntryId;
     @Transient
@@ -83,7 +90,7 @@ public class ServiceInfo implements Serializable {
 	private String endpointUrl;
     @Transient
 	private String endpointAlternateUrl;
-    @OneToOne(fetch=FetchType.LAZY,cascade={CascadeType.ALL})
+    @OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinColumn(name="FLT_SVC_DEF_ID")
     private FlattenedServiceDefinition serializedServiceNamespace;
 	@Column(name="SVC_NM")
@@ -107,7 +114,7 @@ public class ServiceInfo implements Serializable {
 	    // default constructor with nothing to do
 	}
 	
-	@PrePersist
+	//@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }

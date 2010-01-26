@@ -25,15 +25,20 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -46,12 +51,17 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_BAM_T")
-@Sequence(name="KRSB_BAM_S", property="bamId")
+//@Sequence(name="KRSB_BAM_S", property="bamId")
 public class BAMTargetEntry implements Serializable {
 
 	private static final long serialVersionUID = -8376674801367598316L;
 
 	@Id
+	@GeneratedValue(generator="KRSB_BAM_S")
+	@GenericGenerator(name="KRSB_BAM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRSB_BAM_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="BAM_ID")
 	private Long bamId;
 	@Column(name="SVC_NM")
@@ -81,7 +91,7 @@ public class BAMTargetEntry implements Serializable {
 	@Transient
 	private AsynchronousCallback callback;
 	
-	@PrePersist
+	//@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }

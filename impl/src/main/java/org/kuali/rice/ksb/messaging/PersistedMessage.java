@@ -18,14 +18,19 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -37,7 +42,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_MSG_QUE_T")
-@Sequence(name="KRSB_MSG_QUE_S", property="routeQueueId")
+//@Sequence(name="KRSB_MSG_QUE_S", property="routeQueueId")
 @NamedQueries({
   @NamedQuery(name="PersistedMessage.FindAll", query="select pm from PersistedMessage pm"),
   @NamedQuery(name="PersistedMessage.FindByServiceName", query="select pm from PersistedMessage pm where pm.serviceName = :serviceName and pm.methodName = :methodName"),
@@ -48,6 +53,11 @@ public class PersistedMessage implements Serializable {
 	private static final long serialVersionUID = -7047766894738304195L;
 
 	@Id
+	@GeneratedValue(generator="KRSB_MSG_QUE_S")
+	@GenericGenerator(name="KRSB_MSG_QUE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRSB_MSG_QUE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="MSG_QUE_ID")
 	private Long routeQueueId;
 	@Column(name="PRIO")
@@ -84,7 +94,7 @@ public class PersistedMessage implements Serializable {
         // default constructor
     }
     
-    @PrePersist
+    //@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getMessageEntityManagerFactory().createEntityManager());
     }

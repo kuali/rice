@@ -19,11 +19,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -35,18 +40,23 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 @Entity
 @Table(name="KRSB_FLT_SVC_DEF_T")
-@Sequence(name="KRSB_FLT_SVC_DEF_S", property="flattenedServiceDefinitionId")
+//@Sequence(name="KRSB_FLT_SVC_DEF_S", property="flattenedServiceDefinitionId")
 public class FlattenedServiceDefinition implements Serializable {
 	private static final long serialVersionUID = -4622179363250818637L;
 	
 	@Id
+	@GeneratedValue(generator="KRSB_FLT_SVC_DEF_S")
+	@GenericGenerator(name="KRSB_FLT_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRSB_FLT_SVC_DEF_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="FLT_SVC_DEF_ID")  
 	private Long flattenedServiceDefinitionId;
 	@Lob
 	@Column(name="FLT_SVC_DEF", length=4000)
 	private String flattenedServiceDefinitionData;
 	
-	@PrePersist
+	//@PrePersist
     public void beforeInsert() {
         OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
     }

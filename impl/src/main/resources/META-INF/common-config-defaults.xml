@@ -85,6 +85,11 @@
     <param name="datasource.pool.validationQuery" override="false">select 1 from dual</param>
     -->
 
+	<!-- JPA-related parameters -->
+	<param name="rice.jpa.DatabasePlatform" override="false">org.hibernate.dialect.OracleDialect</param>
+	<param name="rice.jpa.UseSerialization" override="false">false</param>
+	<!-- End JPA-related parameters -->
+
     <param name="transaction.timeout" override="false">30000</param>
     <param name="encryption.key" override="false">7IC64w6ksLU</param>
 
@@ -166,6 +171,16 @@
     <param name="ksb.org.quartz.scheduler.instanceName" override="false">KSBScheduler</param>
     <param name="ksb.org.quartz.jobStore.isClustered" override="false">true</param>
     <param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_</param>
+
+	<!-- KSB-specific JPA parameters -->
+	<param name="rice.ksb.jpa.enabled" override="false">true</param>
+	<param name="rice.ksb.registry.jpa.PersistenceXmlLocation" override="false">META-INF/ksb-persistence.xml</param>
+	<param name="rice.ksb.registry.jpa.PersistenceUnitName" override="false">ksb-registry-unit</param>
+	<param name="rice.ksb.registry.jpa.GenerateDdl" override="false">true</param>
+	<param name="rice.ksb.message.jpa.PersistenceXmlLocation" override="false">META-INF/ksb-persistence.xml</param>
+	<param name="rice.ksb.message.jpa.PersistenceUnitName" override="false">ksb-message-unit</param>
+	<param name="rice.ksb.message.jpa.GenerateDdl" override="false">true</param>
+	<!-- End KSB-specific JPA parameters -->
 
 	<!-- KIM -->
 

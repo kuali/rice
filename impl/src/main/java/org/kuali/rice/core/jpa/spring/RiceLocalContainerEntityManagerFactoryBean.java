@@ -104,7 +104,8 @@ public class RiceLocalContainerEntityManagerFactoryBean extends LocalContainerEn
         jpaProperties.put("hibernate.transaction.flush_before_completion", determineConfigProperty(config, prefix, "JpaProperties.hibernate.transaction.flush_before_completion", "true"));
         jpaProperties.put("hibernate.bytecode.use_reflection_optimizer", determineConfigProperty(config, prefix, "JpaProperties.hibernate.bytecode.use_reflection_optimizer", "false"));
         jpaProperties.put("hibernate.transaction.auto_close_session", determineConfigProperty(config, prefix, "JpaProperties.hibernate.transaction.auto_close_session", "false"));
-		
+        jpaProperties.put("hibernate.hbm2ddl.auto", determineConfigProperty(config, prefix, "JpaProperties.hibernate.hbm2ddl.auto", ""));
+        
         // TODO: Add more vendor specific defaults...
         
         return jpaProperties;

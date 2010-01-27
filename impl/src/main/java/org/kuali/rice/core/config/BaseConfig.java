@@ -185,7 +185,7 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.OracleDatabasePlatform");
 	        }	        
 	        if (StringUtils.isEmpty(p.getProperty("rice.jpa.DatasourcePlatform"))) {
-	        	p.setProperty("rice.jpa.DatasourcePlatform", "org.hibernate.dialect.OracleDialect");
+	        	p.setProperty("rice.jpa.DatasourcePlatform", "org.kuali.rice.core.jpa.dialect.OracleDialect");
 	        }
         } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("MySQL")) {
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
@@ -195,7 +195,7 @@ public abstract class BaseConfig implements Config {
 	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MySQLDatabasePlatform");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty("rice.jpa.DatasourcePlatform"))) {
-	        	p.setProperty("rice.jpa.DatasourcePlatform", "org.hibernate.dialect.MySQL5Dialect");
+	        	p.setProperty("rice.jpa.DatasourcePlatform", "org.kuali.rice.core.jpa.dialect.MySQLDialect");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
 	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");

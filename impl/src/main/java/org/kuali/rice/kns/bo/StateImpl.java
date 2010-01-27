@@ -18,19 +18,38 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 /**
  * 
  */
+@Entity
+@Table(name="KR_STATE_T")
 public class StateImpl extends PersistableBusinessObjectBase implements Inactivateable, State {
 
+	@Id
+	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
+	@Id
+	@Column(name="POSTAL_STATE_CD")
     private String postalStateCode;
+	@Column(name="POSTAL_STATE_NM")
     private String postalStateName;
+	@Type(type="yes_no")
+	@Column(name="ACTV_IND")
     private boolean active;
 
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="POSTAL_CNTRY_CD")
     private Country country;
 
     /**
@@ -147,5 +166,4 @@ public class StateImpl extends PersistableBusinessObjectBase implements Inactiva
     public void setCountry(Country country) {
         this.country = country;
     }
-
 }

@@ -17,15 +17,44 @@ package org.kuali.rice.core.jpa.spring;
 
 import javax.sql.DataSource;
 
+import org.mortbay.log.Log;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 
 public class RicePersistenceUnitPostProcessor implements PersistenceUnitPostProcessor {
+	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RicePersistenceUnitPostProcessor.class);
 
 	private DataSource jtaDataSource;
     
     public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
         mutablePersistenceUnitInfo.setJtaDataSource(getJtaDataSource());
+        addKNSManagedClassNames(mutablePersistenceUnitInfo);
+    }
+    
+    /**
+     * 
+     * Adds all the KNS Managed entities to the persistence unit - which is important, becuase all
+     * persistence units get the KNS entities to manage
+     * 
+     * @param mutablePersistenceUnitInfo
+     */
+    public void addKNSManagedClassNames(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
+    	addManagedClassNames(mutablePersistenceUnitInfo, new KNSPersistableBusinessObjectClassExposer());
+    }
+    
+    /**
+     * Adds the class names listed by exposed by the given exposer into the persistence unit
+     * 
+     * @param mutablePersistenceUnitInfo the persistence unit to add managed JPA entity class names to
+     * @param exposer the exposer for class names to manage
+     */
+    public void addManagedClassNames(MutablePersistenceUnitInfo mutablePersistenceUnitInfo, PersistableBusinessObjectClassExposer exposer) {
+    	for (String exposedClassName : exposer.exposePersistableBusinessObjectClassNames()) {
+    		if (LOG.isDebugEnabled()) {
+    			LOG.debug("JPA will now be managing class: "+exposedClassName);
+    		}
+    		mutablePersistenceUnitInfo.addManagedClassName(exposedClassName);
+    	}
     }
 
     public DataSource getJtaDataSource() {

@@ -17,18 +17,28 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 /**
  *
  */
-
+@Entity
+@Table(name="KR_COUNTRY_T")
 public class CountryImpl extends PersistableBusinessObjectBase implements Inactivateable, Country{
 
+	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
+	@Column(name="POSTAL_CNTRY_NM")
     private String postalCountryName;
+	@Type(type="yes_no")
+	@Column(name="PSTL_CNTRY_RSTRC_IND")
     private boolean postalCountryRestrictedIndicator;
+	@Type(type="yes_no")
+	@Column(name="ACTV_IND")
     private boolean active;
 
     /**

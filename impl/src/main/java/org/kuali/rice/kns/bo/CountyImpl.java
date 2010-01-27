@@ -17,18 +17,44 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
+@Entity
+@Table(name="KR_COUNTY_T")
 public class CountyImpl extends PersistableBusinessObjectBase implements Inactivateable, County {
 
+	@Id
+	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
+	@Id
+	@Column(name="COUNTY_CD")
     private String countyCode;
+	@Id
+	@Column(name="POSTAL_STATE_CD")
     private String stateCode;
+	@Id
+	@Column(name="COUNTY_NM")
     private String countyName;
+	@Type(type="yes_no")
+	@Column(name="ACTV_IND")
     private boolean active;
 
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD"),@JoinColumn(name="POSTAL_STATE_CD")})
     private State state;
+    
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="POSTAL_CNTRY_CD")
     private Country country;
 
     public State getState() {

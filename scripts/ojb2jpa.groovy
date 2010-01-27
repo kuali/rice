@@ -6,8 +6,7 @@ import java.util.regex.Pattern
 /* Begin User Configurable Fields */
 
 /* File Path Properties */
-def projHome = '/java/rice/projects/rice-1.1.0'
-//def projHome = '/rice/projects/play'
+def projHome = '/java/projects/play/rice-1.1.0'
 def srcRootDir = '/impl/src/main/java/'
 def resourceDir = '/impl/src/main/resources/'
 def metainf = 'META-INF/'
@@ -43,18 +42,18 @@ def sourceDirectories = [
 
 /* run option properties */
 def persistenceXml = false
-def mysql = false
+def mysql = true
 def pkClasses = false
 def clean = false
 def dry = false
 def verbose = false
-def createBOs = true
+def createBOs = false
 
 /* persistence detail properties */
 def persistenceUnitName = "rice"
 def persistenceXmlFilename = 'persistence.xml'	
 	
-def scanForConfigFiles = true
+def scanForConfigFiles = false
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 
 def backupExtension = ".backup"
@@ -805,19 +804,24 @@ ${classesXml}  </persistence-unit>
 }
 
 def generateMySQLSequence(classes, schemaName){
-	  def orm = ""
-	  def sequences = []
+	
+	def orm = ""
+	def sequences = []
+	def scriptText = ""
+	def ormText = ""
+
 	  classes.values().each {
 	      c ->     
 	          c.fields.values().each {
 	              f ->
 	                  if (f.autoincrement && !sequences.contains(f.sequenceName)) {
-	println """CREATE TABLE ${f.sequenceName} (
-	a INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY (a)
-	) AUTO_INCREMENT=1000, ENGINE=MyISAM
-	/
-	"""
+	
+	 scriptText += """CREATE TABLE ${f.sequenceName} (
+		a INT NOT NULL AUTO_INCREMENT,
+		PRIMARY KEY (a)
+		) AUTO_INCREMENT=1000, ENGINE=MyISAM
+		/
+		"""
 	                      sequences.add(f.sequenceName)
 	                  }
 	                  if (f.autoincrement) {
@@ -834,7 +838,8 @@ def generateMySQLSequence(classes, schemaName){
 	                  }
 	          }
 	  }
-	  
+	generateFile(GlobalVariables.projHome + GlobalVariables.mysqlScriptFile,   scriptText);
+	
 	println """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 	<entity-mappings version=\"1.0\" xmlns=\"http://java.sun.com/xml/ns/persistence/orm\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd\">
 	  <persistence-unit-metadata>
@@ -844,6 +849,7 @@ def generateMySQLSequence(classes, schemaName){
 	  </persistence-unit-metadata>
 	${orm}</entity-mappings>
 	"""
+	
 	
 }
 
@@ -903,3 +909,43 @@ def stripeModuleName(String s){
 	System.out.println(name);
 	}
 
+def generateFile(path, text){
+	
+	def persistFile = new File(path);
+	def backupFile = new File(path + '.backup');
+	if (persistFile.exists()){
+		if (backupFile.exists()){
+			backupFile.delete();
+		}	
+		persistFile.renameTo(backupFile);
+		persistFile.delete();
+	}
+	
+	persistFile << text
+	persistFile << "\n"
+	
+}
+
+class GlobalVariables{
+	
+	public static pa1="hellow"
+	
+	public static projHome = '/java/projects/play/rice-1.1.0'
+	public static srcRootDir = '/impl/src/'
+	public static resourceDir = '/impl/src/main/resources/META-INF/'	
+	
+	public static mysqlScriptFile = '/scripts/upgrades/mysqlSequenceFix.sql'
+	public static mysqlOrmFile = 'project-orm.xml'	
+	
+	public static persistenceUnitName = "rice"
+	public static persistenceXmlFilename = 'persistence.xml'	
+	
+	public static schemaName = "RICE110DEV"
+
+	public static ojbMappingPattern = ~/.*OJB.*repository.*xml/
+	
+	public static backupExtension = ".backup"
+	public static logger = new Logger("errors.log")
+	public static classes = [:]
+	
+}

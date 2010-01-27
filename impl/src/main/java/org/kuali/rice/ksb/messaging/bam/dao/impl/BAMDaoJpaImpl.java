@@ -36,8 +36,8 @@ public class BAMDaoJpaImpl implements BAMDAO {
     }
 
     public void clearBAMTables() {
-        entityManager.createQuery("delete bte from BAMTargetEntry bte").executeUpdate();
-        entityManager.createQuery("delete bp from BAMParam bp").executeUpdate();        
+        entityManager.createQuery("delete from BAMTargetEntry").executeUpdate();
+        entityManager.createQuery("delete from BAMParam").executeUpdate();        
     }
 
     public List<BAMTargetEntry> getCallsForService(QName serviceName, String methodName) {       

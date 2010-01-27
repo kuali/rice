@@ -80,7 +80,7 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
         }
         
         Query query = entityManager.createNamedQuery("PersistedMessage.FindByServiceName");
-        query.setParameter("serviceName", serviceName);
+        query.setParameter("serviceName", serviceName.toString());
         query.setParameter("methodName", methodName);
         
         return (List<PersistedMessage>) query.getResultList();

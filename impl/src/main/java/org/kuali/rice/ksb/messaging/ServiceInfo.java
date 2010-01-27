@@ -90,8 +90,9 @@ public class ServiceInfo implements Serializable {
 	private String endpointUrl;
     @Transient
 	private String endpointAlternateUrl;
-    @OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-    @JoinColumn(name="FLT_SVC_DEF_ID")
+    @Column(name="FLT_SVC_DEF_ID")
+    private Long flattenedServiceDefinitionId;
+    @Transient
     private FlattenedServiceDefinition serializedServiceNamespace;
 	@Column(name="SVC_NM")
 	private String serviceName;
@@ -154,11 +155,11 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public ServiceDefinition getServiceDefinition(MessageHelper enMessageHelper) {
-		if (this.serviceDefinition == null && ObjectUtils.isNotNull(this.serializedServiceNamespace)) {
+		if (this.serviceDefinition == null) {
 		    this.serviceDefinition = (ServiceDefinition)
-		    (enMessageHelper==null
-		    		?KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedServiceNamespace.getFlattenedServiceDefinitionData())
-		    		:enMessageHelper.deserializeObject(this.serializedServiceNamespace.getFlattenedServiceDefinitionData()));
+		    		(enMessageHelper==null
+		    				?KSBServiceLocator.getMessageHelper().deserializeObject(this.getSerializedServiceNamespace().getFlattenedServiceDefinitionData())
+		    						:enMessageHelper.deserializeObject(this.getSerializedServiceNamespace().getFlattenedServiceDefinitionData()));
 		    this.serviceDefinition.setServiceClassLoader(getServiceClassLoader());
 		}
 		return this.serviceDefinition;
@@ -246,6 +247,9 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public FlattenedServiceDefinition getSerializedServiceNamespace() {
+		if (this.serializedServiceNamespace == null && this.flattenedServiceDefinitionId != null) {
+			this.serializedServiceNamespace = KSBServiceLocator.getIPTableService().getFlattenedServiceDefinition(this.flattenedServiceDefinitionId);
+		}
 		return this.serializedServiceNamespace;
 	}
 
@@ -267,6 +271,14 @@ public class ServiceInfo implements Serializable {
 
 	public void setChecksum(String checksum) {
 		this.checksum = checksum;
+	}
+	
+	public Long getFlattenedServiceDefinitionId() {
+		return this.flattenedServiceDefinitionId;
+	}
+
+	public void setFlattenedServiceDefinitionId(Long flattenedServiceDefinitionId) {
+		this.flattenedServiceDefinitionId = flattenedServiceDefinitionId;
 	}
 	
 	/**
@@ -297,5 +309,4 @@ public class ServiceInfo implements Serializable {
         	throw new RiceRuntimeException(ex);
         }
 	}
-	
 }

@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.ksb.messaging.FlattenedServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -108,5 +109,10 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     	crit.addEqualTo("serviceNamespace", serviceNamespace);
     	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));*/
     }
+
+	public FlattenedServiceDefinition findFlattenedServiceDefinition(Long flattenedServiceDefinitionId) {
+		// Not implemented here because we're removing OJB support for the 1.1 release.
+		return null;
+	}
 
 }

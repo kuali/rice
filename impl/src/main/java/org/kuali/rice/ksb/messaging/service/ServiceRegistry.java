@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.ksb.messaging.FlattenedServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 /**
@@ -44,5 +45,6 @@ public interface ServiceRegistry {
 	//public List<ServiceInfo> findLocallyPublishedServices();
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace);
+	public FlattenedServiceDefinition getFlattenedServiceDefinition(Long flattenedServiceDefinitionId);
 	
 }

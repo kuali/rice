@@ -72,6 +72,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
 
     protected void addStandardTables() {
         tablesNotToClear.add("BIN.*");
+        tablesNotToClear.add(".*_S");
     }
 
     public static final String TEST_TABLE_NAME = "EN_UNITTEST_T";

@@ -41,8 +41,8 @@ def sourceDirectories = [
 ]
 
 /* run option properties */
-def persistenceXml = false
-def mysql = true
+def persistenceXml = true
+def mysql = false
 def pkClasses = false
 def clean = false
 def dry = false
@@ -770,43 +770,28 @@ def loadMetaData(repositories, classes, logger){
 }
 
 def generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, path) {
-    def persistFile
-    def backupFile
 
-    // create backup file if necessary, and start with new file
-    persistFile = new File(path+persistenceXmlFilename);
-    backupFile = new File(path+persistenceXmlFilename+'.backup');
-    if (persistFile.exists()){
-    	if (backupFile.exists()){
-    		backupFile.delete();
-    	}	
-		persistFile.renameTo(backupFile);
-		persistFile.delete();
-    }
-    
- 	
 	def classesXml = ""
 	classes.values().each {
 		c ->     
 		classesXml += "    <class>${c.className}</class>\n"
 	}
-
+	
 	def persistXml = """<?xml version="1.0" encoding="UTF-8"?>
-<persistence 
-    version=\"1.0\" 
-    xmlns=\"http://java.sun.com/xml/ns/persistence\" 
-    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
-    xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd\">
-  
-  <persistence-unit name=\"${persistenceUnitName}\" transaction-type=\"RESOURCE_LOCAL\">
-${classesXml}  </persistence-unit>
-
-</persistence>
-"""
-
-//	println persistXml
-	persistFile << persistXml
-	persistFile << "\n"
+			
+	<persistence 
+	    version=\"1.0\" 
+	    xmlns=\"http://java.sun.com/xml/ns/persistence\" 
+	    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
+	    xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd\">
+	  
+	  <persistence-unit name=\"${persistenceUnitName}\" transaction-type=\"RESOURCE_LOCAL\">
+	${classesXml}  </persistence-unit>
+	
+	</persistence>
+	"""
+	
+	generateFile(path+GlobalVariables.persistenceXmlFilename, persistXml);
 	
 }
 

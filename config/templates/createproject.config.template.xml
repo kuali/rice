@@ -12,6 +12,7 @@
 	<param name="kr.url">http://localhost:8080/${app.context.name}/kr</param>
 	<param name="kew.url">http://localhost:8080/${app.context.name}/kew</param>
 	<param name="kim.url">http://localhost:8080/${app.context.name}/kim</param>
+	<param name="ksb.url">http://localhost:8080/${app.context.name}/ksb</param>	
 	<param name="attachments.pending.directory">${java.io.tmpdir}</param>
 	<param name="attachments.directory">${java.io.tmpdir}</param>
 

@@ -276,6 +276,7 @@ public class ${cpkClassName} implements Serializable {
 	                text = addImport(text, "Column")                    
 	                text = annotate(text, "(private|protected).*(\\b${f.name})(\\s)*;", annotation)
 	        }
+			try{
 	        c.referenceDescriptors.values().each {
 	            rd ->
 	                def annotation = ""
@@ -306,6 +307,12 @@ public class ${cpkClassName} implements Serializable {
 	                if (size > 1) annotation += "})"
 	                text = annotate(text, "(private|protected).*(\\b${rd.name})(\\s)*;", annotation)
 	        }
+				}
+
+		catch(Exception e){
+			
+			println(e.getMessage());
+		}
 	        c.collectionDescriptors.values().each {
 	            cd ->
 	                def annotation = ""

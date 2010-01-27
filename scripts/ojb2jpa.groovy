@@ -5,6 +5,14 @@ import java.util.regex.Pattern
 
 /* Begin User Configurable Fields */
 
+/* File Path Properties */
+def projHome = '/java/rice/projects/rice-1.1.0'
+//def projHome = '/rice/projects/play'
+def srcRootDir = '/impl/src/main/java/'
+def resourceDir = '/impl/src/main/resources/'
+def metainf = 'META-INF/'
+def schemaName = "RICE110DEV"
+
 def repositories = [
     //'../kcb/src/main/resources/OJB-repository-kcb.xml'
     //'../ken/src/main/resources/OJB-repository-ken.xml' 
@@ -18,46 +26,36 @@ def repositories = [
 ]
 
 def sourceDirectories = [
-    //'../kcb/src/main/java/' 
-    //'../ken/src/main/java/' 
-    //'../kew/src/main/java/',
-    //'../kim/src/main/java/',
-    //'../kns/src/main/java/',
-    //'../ksb/src/main/java/'
-    //'../kns/src/test/java/',
+    //'/kcb/src/main/java/', 
+    //'/ken/src/main/java/',
+    //'/kew/src/main/java/',
+    //'/kim/src/main/java/',
+    //'/kns/src/main/java/',
+    //'/ksb/src/main/java/',
+    //'/kns/src/test/java/'
     //'../ken-api/src/main/java/', 
     //'../kew-api/src/main/java/'
     //'../kim-api/src/main/java/'
     //'../kns-api/src/main/java/'
     //'../ksb-api/src/main/java/'
-    //'/rice/projects/play/impl/src/main/java/'
-    '/java/projects/play/rice-1.1.0/impl/src/main/java/'
+    '/impl/src/main/java/'
 ]
 
-
+/* run option properties */
+def persistenceXml = false
 def mysql = false
+def pkClasses = false
+def clean = false
+def dry = false
+def verbose = false
+def createBOs = true
 
-def persistenceXml = true
+/* persistence detail properties */
 def persistenceUnitName = "rice"
 def persistenceXmlFilename = 'persistence.xml'	
 	
-def schemaName = "RICE110DEV"
-def pkClassesOnly = false
-def clean = false
-def dry = false
-def verbose = true
-
 def scanForConfigFiles = true
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-
-def projHome = '/java/rice/projects/play/rice-1.1.0'
-def srcRootDir = '/impl/src/'
-def resourceDir = '/impl/src/main/resources/META-INF/'
-
-/* End User Configurable Fields */
-//def sourceDirectories = []
-//def repositories = []
-
 
 def backupExtension = ".backup"
 def logger = new Logger("errors.log")
@@ -67,11 +65,11 @@ def classes = [:]
 //   Search for OJB Mapping Files
 if (scanForConfigFiles){
 	println 'Scanning for files'
-    getRespositoryFiles(projHome+srcRootDir, ojbMappingPattern, repositories, sourceDirectories)
+    getRespositoryFiles(projHome, resourceDir, ojbMappingPattern, repositories)
 }
 println 'Found '+repositories.size().toString()+' OJB mapping files:'
 repositories.each {println it}
-println 'Found the files in the following '+sourceDirectories.size().toString()+' Source Directories:'
+println 'Convering the following '+sourceDirectories.size().toString()+' Source Directories:'
 sourceDirectories.each {println it}
 
 // give the user the opportunity to review and abort.
@@ -79,13 +77,19 @@ def actions = 'The script is set to: '
 def something
 if (dry) actions = 'The script will perform a dry run to: '
 if (persistenceXml) {
-	actions+='Generate persistence.xml files.'
-} else if (mysql) {
-	actions+='Generate MySQL sequence annotations.'
-} else if (clean) {
-	actions+='Clean up backup files...'
-} else {
-	actions+='Generate JPA annotated BO files.'
+	actions+=' Generate persistence.xml files.'
+}
+if (mysql) {
+	actions+=' Generate MySQL sequence annotations.'
+} 
+if (clean) {
+	actions+=' Clean up backup file.'
+} 
+if (pkClasses){
+	actions+=' Generate Composite Primary Key Classes.'
+}
+if (createBOs){
+	actions+=' Generate JPA annotated BO files.'
 }
 
 System.in.withReader { reader ->
@@ -104,31 +108,42 @@ if (something.toString().toUpperCase().equals( 'Y'))
 	*/
 
 	loadMetaData(repositories, classes, logger)
+	println ''
 	println 'First pass completed, metadata captured.'
 
 	//for persistence.xml
 	if (persistenceXml) {
+		println ''
 		println 'Generating persistence.xml...'
-    	generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir);
+    	generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir+metainf);
 	} 
 
 	//for handling sequence in mysql
-	else if (mysql) {
+	if (mysql) {
+		println ''
 		println 'Generating MySQL sequence annotations...'
-		generateMySQLSequence(classes);
+		generateMySQLSequence(classes, schemaName);
 	}
 
 	//clean back up
-	else if (clean) {
+	if (clean) {
+		println ''
 		println 'Cleaning up backup files...'
-		cleanBackupFIles(classes, sourceDirectories, backupExtension);
+		cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension);
 	} 
 
+	// generate composite primary key classes
+	if (pkClasses){
+		println ''
+		println 'Generating Composite Primary Key Classes...'
+		generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger,  pkClasses);
+	}
 	//generate  sounre code for bo in JPA style
-	else 
+	if (createBOs) 
 	{
+		println ''
 		println 'Generating Business Object POJOs with JPA Annotations...'
-		generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger,  pkClassesOnly);
+		generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger,  false);
 	}
 }
 else
@@ -136,7 +151,7 @@ else
 	println 'Aborting script.'
 }
 
-def generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, logger, pkClassesOnly){
+def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger, pkClassesOnly){
 	/*
 	The second pass iterates over all of the class descriptors found above and generates JPA annotations.
 	*/
@@ -146,21 +161,20 @@ def generateJPABO(classes, sourceDirectories, dry, verbose, backupExtension, log
 	        def javaFile
 	        def backupFile
 	        sourceDirectories.each {
-	            dir -> 
-	                def file = dir + c.className.replaceAll("\\.", "/") + ".java"
+	            dir ->
+	                def file = projHome + dir + c.className.replaceAll("\\.", "/") + ".java"
 	                if (new File(file).exists()) {
 	                    javaFile = new File(file)
 	                    backupFile = new File(file + backupExtension)
-	                    c.cpkFilename = dir + c.className.replaceAll("\\.", "/") + "Id.java"
+	                    c.cpkFilename = projHome + dir + c.className.replaceAll("\\.", "/") + "Id.java"
 	                }
 	        }
 	        
 	        if (!javaFile) {
 	            logger.log "${javaFile} does not exist.  Can not annotate ${c.className}.  Please check that its source directory is included in this script."
 	            return
-	        } else {
-	        	println 'Creating annotated BO file: ${c.className}.'
 	        }
+	        
 	        def classAnnotation = ""
 	        def text = javaFile.text
 	        def cpkFieldText = ""
@@ -790,7 +804,7 @@ ${classesXml}  </persistence-unit>
 	
 }
 
-def generateMySQLSequence(classes){
+def generateMySQLSequence(classes, schemaName){
 	  def orm = ""
 	  def sequences = []
 	  classes.values().each {
@@ -833,7 +847,7 @@ def generateMySQLSequence(classes){
 	
 }
 
-def cleanBackupFIles(classes, sourceDirectories, backupExtension){
+def cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension){
 	/*
 	 Remove the backup.java files.
 	 */
@@ -843,7 +857,7 @@ def cleanBackupFIles(classes, sourceDirectories, backupExtension){
 		def file
 		sourceDirectories.each {
 			dir -> 
-			file = dir + c.className.replaceAll("\\.", "/") + ".java" + backupExtension
+			file = projHome + dir + c.className.replaceAll("\\.", "/") + ".java" + backupExtension
 			if (new File(file).exists()) {
 				backupFile = new File(file)
 			}
@@ -862,17 +876,15 @@ def cleanBackupFIles(classes, sourceDirectories, backupExtension){
 }
 
 
-def getRespositoryFiles(String projHome, ojbMappingPattern, ArrayList repositories, ArrayList sourceDirectories){
+def getRespositoryFiles(String projHome, resourceDir, ojbMappingPattern, ArrayList repositories){
     repositories.clear()
-    sourceDirectories.clear()
 
     // local helpers
     def addRepository = { File f -> 
             repositories.add( f.getPath() );
-            sourceDirectories.add( f.getParent() )
             }
 
-    def dir = new File(projHome)
+    def dir = new File(projHome+resourceDir)
 
     println 'directoryName='+dir.getPath()
     println 'ojbMappingPattern='+ojbMappingPattern

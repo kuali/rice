@@ -179,17 +179,23 @@ public abstract class BaseConfig implements Config {
         }
         if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("Oracle")) {
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
-	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "oracle.jdbc.driver.OracleDriver");
+	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "oracle.jdbc.OracleDriver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
 	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.OracleDatabasePlatform");
 	        }	        
+	        if (StringUtils.isEmpty(p.getProperty("rice.jpa.DatasourcePlatform"))) {
+	        	p.setProperty("rice.jpa.DatasourcePlatform", "org.hibernate.dialect.OracleDialect");
+	        }
         } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("MySQL")) {
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
 	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mysql.jdbc.Driver");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
 	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MySQLDatabasePlatform");
+	        }
+	        if (StringUtils.isEmpty(p.getProperty("rice.jpa.DatasourcePlatform"))) {
+	        	p.setProperty("rice.jpa.DatasourcePlatform", "org.hibernate.dialect.MySQL5Dialect");
 	        }
 	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
 	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");
@@ -323,7 +329,6 @@ public abstract class BaseConfig implements Config {
         return getProperty(SERVICE_NAMESPACE);
     }
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     public String getDefaultNoteClass() {
         return getProperty(DEFAULT_NOTE_CLASS);

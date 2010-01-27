@@ -190,6 +190,10 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         return new ArrayList(coll);
     }
 
+    public <T> Collection<T> findAllOrderBy( Class<T> clazz, String sortField, boolean sortAscending ) {
+    	return (Collection<T>)businessObjectDao.findMatchingOrderBy(clazz, Collections.emptyMap(), sortField, sortAscending );
+    }
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findMatching(java.lang.Class, java.util.Map)
      */

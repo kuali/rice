@@ -111,6 +111,15 @@ public interface BusinessObjectService {
     public Collection findAll(Class clazz);
 
     /**
+     * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
+     * instance. This will only retrieve business objects by class type.
+     * 
+     * @param clazz
+     * @return
+     */
+    public <T> Collection<T> findAllOrderBy( Class<T> clazz, String sortField, boolean sortAscending );
+    
+    /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a
      * new object instance. This will retrieve business objects by class type and also by criteria passed in as key-value pairs,
      * specifically attribute name and its expected value.

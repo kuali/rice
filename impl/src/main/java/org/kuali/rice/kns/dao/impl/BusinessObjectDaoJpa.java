@@ -32,21 +32,18 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.springframework.dao.DataAccessException;
 
 /**
  * This class is the JPA implementation of the BusinessObjectDao interface.
  */
+@SuppressWarnings("unchecked")
 public class BusinessObjectDaoJpa implements BusinessObjectDao {
-	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoJpa.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	private PersistenceStructureService persistenceStructureService;
-
-	private OjbCollectionHelper ojbCollectionHelper;
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)

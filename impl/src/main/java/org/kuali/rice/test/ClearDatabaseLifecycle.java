@@ -204,6 +204,13 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
     }
 
     private boolean shouldTableBeCleared(String tableName) {
+        if (getTablesNotToClear() != null && !getTablesNotToClear().isEmpty()) {
+            for (String tableNotToClear : getTablesNotToClear()) {
+                if (tableName.toUpperCase().matches(tableNotToClear.toUpperCase())) {
+                    return false;
+                }
+            }
+        }
         if (getTablesToClear() != null && !getTablesToClear().isEmpty()) {
             for (String tableToClear : getTablesToClear()) {
                 if (tableName.toUpperCase().matches(tableToClear.toUpperCase())) {
@@ -212,13 +219,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
             }
             return false;
         }
-        if (getTablesNotToClear() != null && !getTablesNotToClear().isEmpty()) {
-            for (String tableNotToClear : getTablesNotToClear()) {
-                if (tableName.toUpperCase().matches(tableNotToClear.toUpperCase())) {
-                    return false;
-                }
-            }
-        }
+        
         return true;
     }
 

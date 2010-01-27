@@ -64,5 +64,22 @@ def backupExtension = ".backup"
 def metainf = 'META-INF/'
 verbose = true
 
-sourceDirectories[]
+/*************  Dependencies *********************/
 
+NOTE:  For the generated composite primary key id classes to compile, you will need the Rice version 1.1 .jar files in your build path.
+This is because the generated classes inherit from CompositePrimaryKeyBase which is a new class beginning in version 1.1
+
+/*****************************************************/
+
+Recently fixed issues:
+- for Composite Primay Key classes modify to extend from CompositePrimaryKeyBase.
+	CompositePrimaryKeyBase implements the equals() and hashCode() methods. These methods use reflection, so it should work for derived classes
+
+Known Issues:
+- modify script to catch exceptions, log, and continue 
+- modify script to prevent duplicate annotations
+- add handling of @TYPE annotations for Booleans.
+- add handling of @TRANSIENT
+- handle when client repository references rice modules (no source code)
+- clean up script to use global vars
+- re-org project to be more modular

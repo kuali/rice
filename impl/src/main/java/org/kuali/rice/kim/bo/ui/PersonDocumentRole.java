@@ -21,9 +21,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -32,7 +40,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.impl.UiDocumentServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -44,24 +51,41 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(org.kuali.rice.kim.bo.ui.PersonDocumentRoleId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_MT")
 public class PersonDocumentRole extends KimDocumentBoBase {
     private static final Logger LOG = Logger.getLogger(PersonDocumentRole.class);
 	private static final long serialVersionUID = 4908044213007222739L;
+	@Id
 	@Column(name="ROLE_ID")
 	protected String roleId;
+	@Column(name="KIM_TYP_ID")
 	protected String kimTypeId;
+	@Column(name="ROLE_NM")
 	protected String roleName;
+	@Transient
 	protected RoleImpl roleImpl;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
+	@Transient
 	protected KimTypeInfo kimRoleType;
+	@Transient
 	protected List<? extends KimAttributes> attributes;
+	@Transient
 	protected transient AttributeDefinitionMap definitions;
+	@Transient
 	protected transient Map<String,Object> attributeEntry;
+	@OneToMany(targetEntity=KimDocumentRoleMember.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumns({
+		@JoinColumn(name="role_id",insertable=false,updatable=false),
+		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
+	})
 	protected List<KimDocumentRoleMember> rolePrncpls;
+	@Transient
     protected KimDocumentRoleMember newRolePrncpl;
+	@OneToMany(targetEntity=RoleResponsibilityImpl.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="role_id",insertable=false,updatable=false)
 	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 
     protected boolean isEditable = true;

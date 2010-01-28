@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -738,7 +740,7 @@ public class ObjectUtils {
         if (object == null) {
             return true;
         }
-
+        
         // only try to materialize the object to see if its null if this is a
         // proxy object
         if (ProxyHelper.isProxy(object) || ProxyHelper.isCollectionProxy(object)) {
@@ -746,6 +748,15 @@ public class ObjectUtils {
                 return true;
             }
         }
+        
+        // JPA does not provide a way to determine if an object is a proxy, instead we invoke
+        // the equals method and catch an EntityNotFoundException
+        try {
+        	object.equals(null);
+        } catch (EntityNotFoundException e) {
+        	return true;
+        }
+
 
         return false;
     }

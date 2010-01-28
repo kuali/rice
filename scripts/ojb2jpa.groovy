@@ -267,10 +267,12 @@ public class ${cpkClassName} extends CompositePrimaryKeyBase implements Serializ
 	                    text = addImport(text, "TemporalType")
 	                }
 	                if (f.conversion?.toString()?.size() > 0){
-	                	if (f.conversion.contains("OjbCharBooleanConversion")){
-	                		annotation += "@Type(type=\"yes_no\")\n\t@Column(name=\"${f.column}\"${nullable})"
+		                if (f.conversion.contains("OjbCharBooleanConversion")){
+	                		annotation += "@Type(type=\"yes_no\")\n\t"
 		                	text = addOtherImport(text, "org.hibernate.annotations.Type")
-							text = annotate(text, "(private|protected).*(\\b${f.name})(\\s).*;", annotation)
+	                	} else if (f.conversion.contains("OjbCharBooleanFieldTFConversion")) {
+	                		annotation += "@Type(type=\"true_false\")\n\t"
+	    		            text = addOtherImport(text, "org.hibernate.annotations.Type")
 	                	} else {
 	                		println "UNHANDLED CONVERSION FOUND "+f.column
 	                		println "conversion="+f.conversion
@@ -285,7 +287,7 @@ public class ${cpkClassName} extends CompositePrimaryKeyBase implements Serializ
 	                if (f.nullable) nullable = ", nullable=${f.nullable}"
 	                annotation += "@Column(name=\"${f.column}\"${nullable})"
 	                text = addImport(text, "Column")                    
-	                text = annotate(text, "(private|protected).*(\\b${f.name})(\\s)*;", annotation)
+	                text = annotate(text, "(private|protected).*(\\b${f.name})((\\s)*|(\\s)+.*);", annotation)
 	        }
 			try{
 	        c.referenceDescriptors.values().each {

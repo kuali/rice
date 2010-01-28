@@ -21,6 +21,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
@@ -30,6 +31,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -71,10 +73,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	@Transient
 	protected boolean editing;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(targetEntity = GroupDocumentMember.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn(name="FDOC_NBR")
 	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(targetEntity = GroupDocumentQualifier.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="FDOC_NBR")
 	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
 

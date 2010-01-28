@@ -84,11 +84,12 @@ if (mysql) {
 if (clean) {
 	actions+=' Clean up backup file.'
 } 
-if (pkClasses){
-	actions+=' Generate Composite Primary Key Classes.'
-}
 if (createBOs){
 	actions+=' Generate JPA annotated BO files.'
+}
+// Primary Key Classes need to be created AFTER the BO classes
+if (pkClasses){
+	actions+=' Generate Composite Primary Key Classes.'
 }
 
 System.in.withReader { reader ->
@@ -114,35 +115,34 @@ if (something.toString().toUpperCase().equals( 'Y'))
 	if (persistenceXml) {
 		println ''
 		println 'Generating persistence.xml...'
-    	generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir+metainf);
+    	generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir+metainf)
 	} 
 
 	//for handling sequence in mysql
 	if (mysql) {
 		println ''
 		println 'Generating MySQL sequence annotations...'
-		generateMySQLSequence(classes, schemaName);
+		generateMySQLSequence(classes, schemaName)
 	}
 
 	//clean back up
 	if (clean) {
 		println ''
 		println 'Cleaning up backup files...'
-		cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension);
+		cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension)
 	} 
 
+	//generate  sounre code for bo in JPA style
+	if (createBOs)	{
+		println ''
+		println 'Generating Business Object POJOs with JPA Annotations...'
+		generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger,  false)
+	}
 	// generate composite primary key classes
 	if (pkClasses){
 		println ''
 		println 'Generating Composite Primary Key Classes...'
-		generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger,  pkClasses);
-	}
-	//generate  sounre code for bo in JPA style
-	if (createBOs) 
-	{
-		println ''
-		println 'Generating Business Object POJOs with JPA Annotations...'
-		generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger,  false);
+		generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger,  pkClasses)
 	}
 }
 else
@@ -265,6 +265,17 @@ public class ${cpkClassName} extends CompositePrimaryKeyBase implements Serializ
 	                    annotation += "@Temporal(TemporalType.DATE)\n\t"
 	                    text = addImport(text, "Temporal")                    
 	                    text = addImport(text, "TemporalType")
+	                }
+	                if (f.conversion?.toString()?.size() > 0){
+	                	if (f.conversion.contains("OjbCharBooleanConversion")){
+	                		annotation += "@Type(type=\"yes_no\")\n\t@Column(name=\"${f.column}\"${nullable})"
+		                	text = addOtherImport(text, "org.hibernate.annotations.Type")
+							text = annotate(text, "(private|protected).*(\\b${f.name})(\\s).*;", annotation)
+	                	} else {
+	                		println "UNHANDLED CONVERSION FOUND "+f.column
+	                		println "conversion="+f.conversion
+	                		println "name="+f.name
+	                	}
 	                }
 	                //if (f.jdbcType?.equalsIgnoreCase("timestamp")) {
 	                //    annotation += "@Temporal(TemporalType.TIMESTAMP)\n\t"
@@ -461,6 +472,14 @@ This function adds the import statement to the java source file.
 */
 def addImport(javaText, importText) {
     importText = "import javax.persistence.${importText};"
+    if (!javaText.contains(importText)) {
+        javaText = javaText.replaceFirst("package.*;", "\$0\n" + importText)
+    }
+    javaText 
+}
+
+def addOtherImport(javaText, importText) {
+    importText = "import ${importText};"
     if (!javaText.contains(importText)) {
         javaText = javaText.replaceFirst("package.*;", "\$0\n" + importText)
     }

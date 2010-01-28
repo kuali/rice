@@ -18,12 +18,13 @@ package org.kuali.rice.kew.engine.node;
 
 import java.io.Serializable;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -33,14 +34,19 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-@Sequence(name="KREW_RTE_NODE_S", property="stateId")
+//@Sequence(name="KREW_RTE_NODE_S", property="stateId")
 public abstract class State extends KeyValuePair implements Serializable {
     @Id
+    @GeneratedValue(generator="KREW_RTE_NODE_S")
+	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	protected Long stateId;
 
     public State() {}
 
-    @PrePersist
+    //@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }

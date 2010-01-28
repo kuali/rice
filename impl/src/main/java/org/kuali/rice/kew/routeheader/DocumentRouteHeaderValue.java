@@ -27,6 +27,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -44,7 +45,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
@@ -117,7 +119,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  */
 @Entity
 @Table(name="KREW_DOC_HDR_T")
-@Sequence(name="KREW_DOC_HDR_S", property="routeHeaderId")
+//@Sequence(name="KREW_DOC_HDR_S", property="routeHeaderId")
 @NamedQueries({
 	@NamedQuery(name="DocumentRouteHeaderValue.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValue as d where d.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(routeHeaderId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC"),
@@ -165,18 +167,24 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 	private java.sql.Timestamp appDocStatusDate;
 	
     @Id
+    @GeneratedValue(generator="KREW_DOC_HDR_S")
+	@GenericGenerator(name="KREW_DOC_HDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_DOC_HDR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
     
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE}, mappedBy="routeHeader")
+    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
     
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="routeHeader")
+    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
+    @OrderBy("actionDate ASC")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
     
-    @OneToMany(cascade={CascadeType.REMOVE}, mappedBy="routeHeader")
+    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     
     /**
@@ -184,13 +192,15 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      * for the document.  It tracks the previous status, the new status, and a timestamp of the 
      * transition for each status transition.
      */
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST}, mappedBy="routeHeaderId")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy="routeHeaderId")
+    //@JoinColumn(referencedColumnName="DOC_HDR_ID")
     @OrderBy("statusTransitionId ASC")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<DocumentStatusTransition> appDocStatusHistory = new ArrayList<DocumentStatusTransition>();
     
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name="DOC_HDR_ID")
+    @OrderBy("noteId ASC")
     private List<Note> notes = new ArrayList<Note>();
     
     @Transient
@@ -205,7 +215,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     protected static final HashMap<String,String> stateTransitionMap;
 
     /* New Workflow 2.1 Field */
-    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
     @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))    
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 

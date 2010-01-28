@@ -23,24 +23,24 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.jdbc.SqlBuilder;
-import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
@@ -55,7 +55,7 @@ import org.kuali.rice.kew.util.Utilities;
  */
 @Entity
 @Table(name="KREW_DOC_HDR_EXT_DT_T")
-@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
+//@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
 	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByRouteHeaderId", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
@@ -72,6 +72,11 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_DATE;
 
     @Id
+    @GeneratedValue(generator="KREW_SRCH_ATTR_S")
+	@GenericGenerator(name="KREW_SRCH_ATTR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_SRCH_ATTR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_HDR_EXT_DT_ID")
 	private Long searchableAttributeValueId;
     @Column(name="KEY_CD")
@@ -260,7 +265,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
         return null;
     }
 
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}

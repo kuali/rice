@@ -16,14 +16,12 @@
  */
 package org.kuali.rice.kew.routeheader;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
@@ -33,8 +31,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-//@Entity
-//@Table(name="KREW_DOC_HDR_T")
+@Entity
+@Table(name="KREW_DOC_HDR_T")
 public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHeaderValue {
 
 	private static final long serialVersionUID = 8458532812557846684L;

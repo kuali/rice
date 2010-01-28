@@ -23,12 +23,12 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -36,7 +36,8 @@ import javax.persistence.Version;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
@@ -65,7 +66,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @Entity
 //@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_ACTN_ITM_T")
-@Sequence(name="KREW_ACTN_ITM_S",property="actionItemId")
+//@Sequence(name="KREW_ACTN_ITM_S",property="actionItemId")
 @NamedQueries({
     @NamedQuery(name="ActionItem.QuickLinks.FindActionListStatsByPrincipalId", query="SELECT docName, COUNT(*) FROM ActionItem WHERE principalId = :principalId " +
         "AND (delegationType IS null OR delegationType != '" + KEWConstants.DELEGATION_SECONDARY + "') GROUP BY docName")
@@ -75,6 +76,11 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     private static final long serialVersionUID = -1079562205125660151L;
 
     @Id
+    @GeneratedValue(generator="KREW_ACTN_ITM_S")
+	@GenericGenerator(name="KREW_ACTN_ITM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_ACTN_ITM_S"),
+			@Parameter(name="value_column",value="id")
+	})
     @Column(name="ACTN_ITM_ID")
 	private Long actionItemId;
     @Column(name="PRNCPL_ID")
@@ -112,8 +118,10 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	private String delegationType;
     @Column(name="RQST_LBL")
     private String requestLabel;
-    
-	private transient DocumentRouteHeaderValue routeHeader;
+
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="DOC_HDR_ID")
+	private DocumentRouteHeaderValue routeHeader;
 	
     @Transient
     private Timestamp lastApprovedDate;
@@ -129,131 +137,103 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     private String rowStyleClass;
 
 
-    @PrePersist
+    //@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
     
-    @Id
-    @Column(name="ACTN_ITM_ID")
     public Long getActionItemId() {
         return actionItemId;
     }
     
-    @Column(name="PRNCPL_ID")
     public String getPrincipalId() {
         return principalId;
     }
     
-    @Column(name="ASND_DT")
     public Timestamp getDateAssigned() {
         return dateAssigned;
     }
     
-    @Column(name="RQST_CD")
     public String getActionRequestCd() {
         return actionRequestCd;
     }
     
-    @Column(name="ACTN_RQST_ID", nullable=false)
     public Long getActionRequestId() {
         return actionRequestId;
     }
     
-    @Column(name="DOC_HDR_ID", insertable=false, updatable=false)
     public Long getRouteHeaderId() {
         return routeHeaderId;
     }
     
-    @Column(name="GRP_ID")
     public String getGroupId() {
         return groupId;
     }
 
-    @Column(name="DOC_HDR_TTL")
     public String getDocTitle() {
         return docTitle;
     }
     
-    @Column(name="DOC_TYP_LBL")
     public String getDocLabel() {
         return docLabel;
     }
     
-    @Column(name="DOC_HDLR_URL")
     public String getDocHandlerURL() {
         return docHandlerURL;
     }
     
-    @Version
-    @Column(name="VER_NBR")
     public Integer getLockVerNbr() {
         return lockVerNbr;
     }
 
-    @Column(name="DOC_TYP_NM")
     public String getDocName() {
         return docName;
     }
 
-    @Column(name="RSP_ID")
     public Long getResponsibilityId() {
         return responsibilityId;
     }
 
-    @Column(name="ROLE_NM")
     public String getRoleName() {
         return roleName;
     }
 
-    @Column(name="DLGN_PRNCPL_ID")
     public String getDelegatorWorkflowId() {
         return delegatorWorkflowId;
     }
 
-    @Column(name="DLGN_GRP_ID")
     public String getDelegatorGroupId() {
         return delegatorGroupId;
     }
 
-    @Column(name="DLGN_TYP")
     public String getDelegationType() {
         return delegationType;
     }
 
-    @Column(name="RQST_LBL")
     public String getRequestLabel() {
         return this.requestLabel;
     }
-    
     
     /**
      * @deprecated as of Rice 1.0.1 (KULRICE-1652), Use {@link #getRouteHeaderId()} instead. 
      */
     @Deprecated
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="DOC_HDR_ID")
     public DocumentRouteHeaderValue getRouteHeader() {
         return routeHeader;
     }
-
     
-    @Transient
     public Timestamp getLastApprovedDate() {
         return this.lastApprovedDate;
     }
 
-    @Transient
     public Integer getActionItemIndex() {
         return actionItemIndex;
     }
     
-    @Transient
     public Map getCustomActions() {
         return customActions;
     }
 
-    @Transient
     public String getDateAssignedString() {
         if(dateAssignedString == null || dateAssignedString.trim().equals("")){
             return RiceConstants.getDefaultDateFormat().format(getDateAssigned());
@@ -262,23 +242,19 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         }
     }
 
-    @Transient
     public String getActionToTake() {
         return actionToTake;
     }
 
-    @Transient
     public String getRowStyleClass() {
         return rowStyleClass;
     }
 
-    
     private Group getGroup(String groupId) {
     	if( groupId ==null )	return null;
     	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
 
-    @Transient
     public Group getGroup(){
     	return getGroup(groupId.toString());
     }
@@ -290,17 +266,14 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     	return KIMServiceLocator.getPersonService().getPerson(workflowId);
     }
 
-    @Transient
     public Person getPerson() {
         return getPerson(principalId);
     }
 
-    @Transient
     public Person getDelegatorPerson() {
         return getPerson(delegatorWorkflowId);
     }
 
-    @Transient
     public String getRecipientTypeCode() {
         String recipientTypeCode = KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD;
         if (getRoleName() != null) {
@@ -312,7 +285,6 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
         return recipientTypeCode;
     }
     
-    @Transient
     public String getActionRequestLabel() {
     	if (StringUtils.isNotBlank(getRequestLabel())) {
     		return getRequestLabel();
@@ -320,16 +292,13 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     	return CodeTranslator.getActionRequestLabel(getActionRequestCd());
     }
 
-    @Transient
     public boolean isWorkgroupItem() {
         return getGroupId() != null;
     }
     
-    @Transient
     public KimPrincipal getPrincipal(){
         return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     }
-
 
     public Object copy(boolean preserveKeys) {
         ActionItem clone = new ActionItem();

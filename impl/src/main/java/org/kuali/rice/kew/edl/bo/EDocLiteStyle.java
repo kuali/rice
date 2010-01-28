@@ -22,11 +22,14 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
@@ -36,13 +39,18 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_STYLE_T")
-@Sequence(name="KREW_EDL_S", property="edocLiteStyleId")
+//@Sequence(name="KREW_EDL_S", property="edocLiteStyleId")
 public class EDocLiteStyle  extends KewPersistableBusinessObjectBase{
     private static final long serialVersionUID = 2020611019976731725L;
     /**
      * edoclt_style_id
      */
     @Id
+    @GeneratedValue(generator="KREW_EDL_S")
+	@GenericGenerator(name="KREW_EDL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_EDL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="STYLE_ID")
 	private Long edocLiteStyleId;
     /**
@@ -60,6 +68,7 @@ public class EDocLiteStyle  extends KewPersistableBusinessObjectBase{
     /**
      * edoclt_style_actv_ind
      */
+    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
 

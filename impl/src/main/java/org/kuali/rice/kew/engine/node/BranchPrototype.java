@@ -20,12 +20,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -37,12 +38,17 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  */
 @Entity
 @Table(name="KREW_RTE_BRCH_PROTO_T")
-@Sequence(name="KREW_RTE_NODE_S", property="branchId")
+//@Sequence(name="KREW_RTE_NODE_S", property="branchId")
 public class BranchPrototype implements Serializable {
 
 	private static final long serialVersionUID = 8645994738204838275L;
     
     @Id
+    @GeneratedValue(generator="KREW_RTE_NODE_S")
+	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RTE_BRCH_PROTO_ID")
 	private Long branchId;
 	@Column(name="BRCH_NM")
@@ -75,7 +81,7 @@ public class BranchPrototype implements Serializable {
 		this.lockVerNbr = lockVerNbr;
 	}
 	
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

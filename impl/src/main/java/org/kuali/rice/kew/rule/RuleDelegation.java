@@ -22,14 +22,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -45,11 +45,16 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @Entity
 @Table(name="KREW_DLGN_RSP_T")
-@Sequence(name="KREW_RTE_TMPL_S", property="ruleDelegationId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="ruleDelegationId")
 public class RuleDelegation extends KewPersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
+	@GeneratedValue(generator="KREW_RTE_TMPL_S")
+	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DLGN_RULE_ID")
 	private Long ruleDelegationId;
     @Column(name="RSP_ID", insertable=false, updatable=false)

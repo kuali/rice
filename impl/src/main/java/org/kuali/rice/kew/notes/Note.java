@@ -28,16 +28,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
@@ -54,7 +55,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @Entity(name="org.kuali.rice.kew.notes.Note")
 @Table(name="KREW_DOC_NTE_T")
-@Sequence(name="KREW_DOC_NTE_S",property="noteId")
+//@Sequence(name="KREW_DOC_NTE_S",property="noteId")
 @NamedQueries({
 	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from org.kuali.rice.kew.notes.Note as n where n.noteId = :noteId"),
 	@NamedQuery(name="KewNote.FindNoteByRouteHeaderId", query="select n from org.kuali.rice.kew.notes.Note as n where n.routeHeaderId = :routeHeaderId order by n.noteId")
@@ -63,6 +64,11 @@ public class Note implements WorkflowPersistable {
 
 	private static final long serialVersionUID = -6136544551121011531L;
 	@Id
+	@GeneratedValue(generator="KREW_DOC_NTE_S")
+	@GenericGenerator(name="KREW_DOC_NTE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_DOC_NTE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_NTE_ID")
 	private Long noteId;
     @Column(name="DOC_HDR_ID")
@@ -76,7 +82,7 @@ public class Note implements WorkflowPersistable {
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-        
+    
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
     	targetEntity=org.kuali.rice.kew.notes.Attachment.class, mappedBy="note")
     private List<Attachment> attachments = new ArrayList<Attachment>();
@@ -230,7 +236,7 @@ public class Note implements WorkflowPersistable {
 		this.attachments = attachments;
 	}
 	
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

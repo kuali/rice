@@ -21,11 +21,14 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
@@ -35,7 +38,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_EDL_ASSCTN_T")
-@Sequence(name="KREW_EDL_S", property="edocLiteAssocId")
+//@Sequence(name="KREW_EDL_S", property="edocLiteAssocId")
 public class EDocLiteAssociation  extends KewPersistableBusinessObjectBase implements Serializable{
 
 	private static final long serialVersionUID = 7300251507982374010L;
@@ -43,6 +46,11 @@ public class EDocLiteAssociation  extends KewPersistableBusinessObjectBase imple
      * edoclt_assoc_id
      */
     @Id
+    @GeneratedValue(generator="KREW_EDL_S")
+	@GenericGenerator(name="KREW_EDL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_EDL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="EDOCLT_ASSOC_ID")
 	private Long edocLiteAssocId;
     /**
@@ -63,6 +71,7 @@ public class EDocLiteAssociation  extends KewPersistableBusinessObjectBase imple
     /**
      * edoclt_assoc_actv_ind
      */
+    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
 

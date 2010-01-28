@@ -25,6 +25,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -34,7 +35,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -43,7 +43,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -62,7 +64,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_T")
-@Sequence(name="KREW_RTE_NODE_S", property="routeNodeId")
+//@Sequence(name="KREW_RTE_NODE_S", property="routeNodeId")
 @NamedQueries({
 	@NamedQuery(name="RouteNode.FindByRouteNodeId",query="select r from RouteNode as r where r.routeNodeId = :routeNodeId"),
 	@NamedQuery(name="RouteNode.FindRouteNodeByName", query="select r from RouteNode as r where r.routeNodeName = :routeNodeName and r.documentTypeId = :documentTypeId"),
@@ -76,6 +78,11 @@ public class RouteNode implements Serializable {
     public static final String RULE_SELECTOR_CFG_KEY = "ruleSelector";
 
     @Id
+    @GeneratedValue(generator="KREW_RTE_NODE_S")
+	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RTE_NODE_ID")
 	private Long routeNodeId;
     @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
@@ -84,8 +91,10 @@ public class RouteNode implements Serializable {
 	private String routeNodeName;
     @Column(name="RTE_MTHD_NM")
 	private String routeMethodName;
+    @Type(type="yes_no")
     @Column(name="FNL_APRVR_IND")
 	private Boolean finalApprovalInd;
+    @Type(type="yes_no")
     @Column(name="MNDTRY_RTE_IND")
 	private Boolean mandatoryRouteInd;
     @Column(name="GRP_ID")
@@ -116,18 +125,18 @@ public class RouteNode implements Serializable {
     @Column(name="TYP")
     private String nodeType = RequestsNode.class.getName();
     
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy="nextNodes")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="nextNodes")
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"))
     private List<RouteNode> previousNodes = new ArrayList<RouteNode>();
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"))
     private List<RouteNode> nextNodes = new ArrayList<RouteNode>();
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_PROTO_ID")
 	private BranchPrototype branch;
-    @OneToMany(fetch=FetchType.EAGER,mappedBy="routeNode",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(fetch=FetchType.EAGER,mappedBy="routeNode",cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<RouteNodeConfigParam> configParams  = new ArrayList<RouteNodeConfigParam>(0);
 
@@ -376,7 +385,7 @@ public class RouteNode implements Serializable {
         this.branch = branch;
     }
 
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

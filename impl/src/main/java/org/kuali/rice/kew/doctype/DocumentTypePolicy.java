@@ -20,16 +20,13 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -45,11 +42,12 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 	private static final long serialVersionUID = -4612246888683336474L;
 
 	@Id
-	@Column(name="DOC_TYP_ID")
+	@Column(name="DOC_TYP_ID",insertable=false,updatable=false)
 	private Long documentTypeId;
     @Id
-	@Column(name="DOC_PLCY_NM")
+	@Column(name="DOC_PLCY_NM",insertable=false,updatable=false)
 	private String policyName;
+    @Type(type="yes_no")
     @Column(name="PLCY_NM")
 	private Boolean policyValue;
     @Column(name="PLCY_VAL")

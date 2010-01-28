@@ -20,14 +20,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -40,12 +41,17 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 @Entity
 @Table(name="KREW_EDL_FLD_DMP_T")
-@Sequence(name="KREW_EDL_FLD_DMP_T", property="fieldId")
+//@Sequence(name="KREW_EDL_FLD_DMP_S", property="fieldId")
 public class Fields {
 
 	private static final long serialVersionUID = -6136544551121011531L;
 
     @Id
+    @GeneratedValue(generator="KREW_EDL_FLD_DMP_S")
+	@GenericGenerator(name="KREW_EDL_FLD_DMP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_EDL_FLD_DMP_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="EDL_FIELD_DMP_ID")
 	private Long fieldId;
     @Column(name="DOC_HDR_ID")
@@ -62,7 +68,7 @@ public class Fields {
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
 	private Dump dump;
 
-    @PrePersist
+    //@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
     }

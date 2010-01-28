@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.bo;
 
+import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -26,15 +27,16 @@ import org.kuali.rice.kns.util.Guid;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@MappedSuperclass
 public abstract class KewPersistableBusinessObjectBase extends PersistableBusinessObjectBase {
 
     @Override
     @PrePersist
     public void beforeInsert() {
-//        if (!isAutoIncrementSet()) {
-//            OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-//            setAutoIncrementSet(true);
-//        }
+        //if (!isAutoIncrementSet()) {
+        //    OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+        //    setAutoIncrementSet(true);
+        //}
         
         this.setObjectId(new Guid().toString());
     }

@@ -23,15 +23,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * A route node definition configuration parameter.  RouteNodeConfigParameters are
@@ -52,8 +51,12 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
      */
     @Id
 	@Column(name="RTE_NODE_CFG_PARM_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO, generator="KREW_RTE_NODE_CFG_PARM_SEQ_GEN")
-    @SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")	
+	@GeneratedValue(generator="KREW_RTE_NODE_CFG_PARM_S")
+	@GenericGenerator(name="KREW_RTE_NODE_CFG_PARM_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_NODE_CFG_PARM_S"),
+			@Parameter(name="value_column",value="id")
+	})
+    //@SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")	
 	private Long id;
     /**
      * Foreign key to routenode table

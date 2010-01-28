@@ -18,22 +18,22 @@ package org.kuali.rice.kew.docsearch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -46,7 +46,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  */
 @Entity
 @Table(name="KREW_DOC_HDR_EXT_T")
-@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
+//@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
 	@NamedQuery(name="SearchableAttributeStringValue.FindByRouteHeaderId", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="SearchableAttributeStringtValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
@@ -63,6 +63,11 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
     private static final int STRING_MAX_LENGTH = 2000; // should match table creation
 
     @Id
+    @GeneratedValue(generator="KREW_SRCH_ATTR_S")
+	@GenericGenerator(name="KREW_SRCH_ATTR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_SRCH_ATTR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_HDR_EXT_ID")
 	private Long searchableAttributeValueId;
     @Column(name="KEY_CD")
@@ -220,7 +225,7 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
         return null;
     }
 
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}

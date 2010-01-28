@@ -19,14 +19,15 @@ package org.kuali.rice.kew.rule;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -44,11 +45,16 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_OPTN_T")
-@Sequence(name="KREW_RULE_TMPL_OPTN_S", property="ruleTemplateOptionId")
+//@Sequence(name="KREW_RULE_TMPL_OPTN_S", property="ruleTemplateOptionId")
 public class RuleTemplateOption implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8913119135197149224L;
 	@Id
+	@GeneratedValue(generator="KREW_RULE_TMPL_OPTN_S")
+	@GenericGenerator(name="KREW_RULE_TMPL_OPTN_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RULE_TMPL_OPTN_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_TMPL_OPTN_ID")
 	private Long ruleTemplateOptionId;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
@@ -72,7 +78,7 @@ public class RuleTemplateOption implements WorkflowPersistable {
         this.value = value;
     }
 
-    @PrePersist
+    //@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }

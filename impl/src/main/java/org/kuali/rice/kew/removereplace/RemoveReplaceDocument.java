@@ -54,11 +54,9 @@ public class RemoveReplaceDocument implements Serializable {
 	private String replacementUserWorkflowId;
     @Column(name="OPRN")
 	private String operation;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.removereplace.WorkgroupTarget.class, mappedBy="removeReplaceDocument")
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="removeReplaceDocument")
 	private List<WorkgroupTarget> workgroupTargets;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.removereplace.RuleTarget.class, mappedBy="removeReplaceDocument")
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="removeReplaceDocument")
 	private List<RuleTarget> ruleTargets;
     @Version
 	@Column(name="VER_NBR")

@@ -45,10 +45,10 @@ import org.kuali.rice.kew.preferences.Preferences;
 public class UserOptions implements Comparable {
 
 	@Id
-	@Column(name="PRNCPL_ID")
+	@Column(name="PRNCPL_ID",insertable=false,updatable=false)
 	private String workflowId;
 	@Id
-	@Column(name="PRSN_OPTN_ID")
+	@Column(name="PRSN_OPTN_ID",insertable=false,updatable=false)
 	private String optionId;
 	@Column(name="VAL")
 	private String optionVal;

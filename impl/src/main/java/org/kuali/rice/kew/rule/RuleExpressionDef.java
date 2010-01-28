@@ -19,11 +19,13 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
@@ -32,13 +34,18 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_RULE_EXPR_T")
-@Sequence(name="KREW_RULE_EXPR_S", property="id")
+//@Sequence(name="KREW_RULE_EXPR_S", property="id")
 public class RuleExpressionDef extends KewPersistableBusinessObjectBase {
     
     /**
      * Primary key
      */
     @Id
+    @GeneratedValue(generator="KREW_RULE_EXPR_S")
+	@GenericGenerator(name="KREW_RULE_EXPR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RULE_EXPR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_EXPR_ID")
 	private Long id;
     /**

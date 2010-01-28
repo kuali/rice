@@ -22,15 +22,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -45,12 +46,17 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  */
 @Entity
 @Table(name="KREW_DOC_TYP_PROC_T")
-@Sequence(name="KREW_RTE_NODE_S",property="processId")
+//@Sequence(name="KREW_RTE_NODE_S",property="processId")
 public class Process implements Serializable {
 
 	private static final long serialVersionUID = -6338857095673479752L;
     
     @Id
+    @GeneratedValue(generator="KREW_RTE_NODE_S")
+	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_TYP_PROC_ID")
 	private Long processId;
 	@Column(name="NM")
@@ -104,7 +110,7 @@ public class Process implements Serializable {
 		this.lockVerNbr = lockVerNbr;
 	}
 
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

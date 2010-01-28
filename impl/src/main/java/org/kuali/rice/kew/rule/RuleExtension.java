@@ -16,34 +16,30 @@
  */
 package org.kuali.rice.kew.rule;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.util.Guid;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -59,12 +55,17 @@ import java.util.List;
  */
 @Entity
 @Table(name="KREW_RULE_EXT_T")
-@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionId")
 public class RuleExtension implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 8178135296413950516L;
 
 	@Id
+	@GeneratedValue(generator="KREW_RTE_TMPL_S")
+	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_EXT_ID")
 	private Long ruleExtensionId;
 
@@ -86,15 +87,14 @@ public class RuleExtension implements WorkflowPersistable {
 	@JoinColumn(name="RULE_TMPL_ATTR_ID")
 	private RuleTemplateAttribute ruleTemplateAttribute;
 
-	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           mappedBy="extension")
+	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="extension")
 	private List<RuleExtensionValue> extensionValues;
 
 	public RuleExtension() {
 		extensionValues = new ArrayList<RuleExtensionValue>();
 	}
 
-	@PrePersist
+	//@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }

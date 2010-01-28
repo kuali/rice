@@ -27,6 +27,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
@@ -40,7 +41,8 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.Role;
@@ -59,7 +61,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_T")
-@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateId")
 @NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplate rt ORDER BY rt.name ASC")})
 public class RuleTemplate  extends KewPersistableBusinessObjectBase implements WorkflowPersistable  {
 
@@ -78,6 +80,11 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
     };
     
     @Id
+    @GeneratedValue(generator="KREW_RTE_TMPL_S")
+	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_TMPL_ID")
 	private Long ruleTemplateId;
     @Column(name="NM")
@@ -94,7 +101,7 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate")
 	private List<RuleTemplateAttribute> ruleTemplateAttributes;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate")
 	private List<RuleTemplateOption> ruleTemplateOptions;
 

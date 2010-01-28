@@ -17,11 +17,12 @@ package org.kuali.rice.kew.documentlink;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -35,12 +36,17 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 
 @Entity
 @Table(name="KREW_DOC_LNK_T")
-@Sequence(name="KREW_DOC_LNK_S",property="docLinkId")
+//@Sequence(name="KREW_DOC_LNK_S",property="docLinkId")
 public class DocumentLink implements WorkflowPersistable {
 
 	private static final long serialVersionUID = 551926904795633010L;
 	
 	@Id
+	@GeneratedValue(generator="KREW_DOC_LNK_S")
+	@GenericGenerator(name="KREW_DOC_LNK_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_DOC_LNK_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_LNK_ID")
 	private Long docLinkId;
     @Column(name="ORGN_DOC_ID")
@@ -99,7 +105,7 @@ public class DocumentLink implements WorkflowPersistable {
 		return null;
 	}
 	
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

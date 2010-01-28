@@ -22,14 +22,16 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
@@ -51,19 +53,26 @@ import org.kuali.rice.kns.bo.Inactivateable;
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_ATTR_T")
-@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateAttributeId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateAttributeId")
 public class RuleTemplateAttribute extends KewPersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id
+    @GeneratedValue(generator="KREW_RTE_TMPL_S")
+	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_TMPL_ATTR_ID")
 	private Long ruleTemplateAttributeId;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private Long ruleTemplateId;
     @Column(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private Long ruleAttributeId;
+    @Type(type="yes_no")
     @Column(name="REQ_IND")
 	private Boolean required;
+    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean active;
     @Column(name="DSPL_ORD")
@@ -77,7 +86,7 @@ public class RuleTemplateAttribute extends KewPersistableBusinessObjectBase impl
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
-    @OneToMany(mappedBy="ruleTemplateAttribute")
+    @OneToMany(fetch=FetchType.LAZY,mappedBy="ruleTemplateAttribute")
 	private List<RuleExtension> ruleExtensions;
     
     

@@ -22,13 +22,15 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -52,11 +54,16 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 @Entity
 @Table(name="KREW_RULE_RSP_T")
-@Sequence(name="KREW_RSP_S", property="ruleResponsibilityKey")
+//@Sequence(name="KREW_RSP_S", property="ruleResponsibilityKey")
 public class RuleResponsibility extends KewPersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
+	@GeneratedValue(generator="KREW_RSP_S")
+	@GenericGenerator(name="KREW_RSP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RSP_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_RSP_ID")
 	private Long ruleResponsibilityKey;
     @Column(name="RSP_ID")

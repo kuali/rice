@@ -25,18 +25,19 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -46,13 +47,18 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Sequence(name="KREW_RTE_NODE_S",property="branchId")
+//@Sequence(name="KREW_RTE_NODE_S",property="branchId")
 @Table(name="KREW_RTE_BRCH_T")
 public class Branch implements Serializable {
 
 	private static final long serialVersionUID = 7164561979112939112L;
 	
 	@Id
+	@GeneratedValue(generator="KREW_RTE_NODE_S")
+	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RTE_BRCH_ID")
 	private Long branchId;
 	@OneToOne(fetch=FetchType.EAGER)
@@ -60,7 +66,7 @@ public class Branch implements Serializable {
 	private Branch parentBranch;
 	@Column(name="NM")
 	private String name;
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch")
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch")
     @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})    
     @Fetch(value=FetchMode.SUBSELECT)
 	private List<BranchState> branchState = new ArrayList<BranchState>();
@@ -71,13 +77,13 @@ public class Branch implements Serializable {
 //					return new BranchState();
 //				}
 //			});
-    @OneToOne(cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST})
 	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance initialNode;
-    @OneToOne
+    @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance splitNode;
-	@OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance joinNode;
 		
@@ -166,7 +172,7 @@ public class Branch implements Serializable {
                       "]";
     }
     
-    @PrePersist
+    //@PrePersist
     public void beforeInsert(){
     	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }    

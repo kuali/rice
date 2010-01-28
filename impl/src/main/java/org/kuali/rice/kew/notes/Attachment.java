@@ -26,12 +26,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -44,13 +44,17 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 @Entity(name="org.kuali.rice.kew.notes.Attachment")
 @Table(name="KREW_ATT_T")
-@Sequence(name="KREW_DOC_NTE_S",property="attachmentId")
+//@Sequence(name="KREW_DOC_NTE_S",property="attachmentId")
 @NamedQueries({
 	@NamedQuery(name="Attachment.FindAttachmentById",query="select a from org.kuali.rice.kew.notes.Attachment as a where a.attachmentId = :attachmentId")
 })
 public class Attachment {
 
 	@Id
+	@GenericGenerator(name="KREW_DOC_NTE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_DOC_NTE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="ATTACHMENT_ID")
 	private Long attachmentId;
 	@Transient
@@ -123,7 +127,7 @@ public class Attachment {
 		this.attachedObject = attachedObject;
 	}
 	
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

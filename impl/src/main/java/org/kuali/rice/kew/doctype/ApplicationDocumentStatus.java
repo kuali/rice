@@ -51,10 +51,10 @@ public class ApplicationDocumentStatus extends KewPersistableBusinessObjectBase 
 	private static final long serialVersionUID = -2212481684546954746L;
 
 	@Id
-	@Column(name="DOC_TYP_ID")
+	@Column(name="DOC_TYP_ID",insertable=false,updatable=false)
 	private Long documentTypeId;
 	@Id
-	@Column(name="DOC_STAT_NM")
+	@Column(name="DOC_STAT_NM",insertable=false,updatable=false)
 	private String statusName;
  	
 	

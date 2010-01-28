@@ -24,18 +24,20 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -46,10 +48,8 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -62,7 +62,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Sequence(name="KREW_ACTN_TKN_S", property="actionTakenId")
+//@Sequence(name="KREW_ACTN_TKN_S", property="actionTakenId")
 @Table(name="KREW_ACTN_TKN_T")
 public class ActionTakenValue implements WorkflowPersistable {
 
@@ -71,6 +71,11 @@ public class ActionTakenValue implements WorkflowPersistable {
 	 */
 	private static final long serialVersionUID = -81505450567067594L;
 	@Id
+	@GeneratedValue(generator="KREW_ACTN_TKN_S")
+	@GenericGenerator(name="KREW_ACTN_TKN_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_ACTN_TKN_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="ACTN_TKN_ID")
     private Long actionTakenId;
     @Column(name="DOC_HDR_ID",insertable=false, updatable=false)
@@ -97,6 +102,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     private DocumentRouteHeaderValue routeHeader;
     @OneToMany(mappedBy="actionTaken")
 	private Collection<ActionRequestValue> actionRequests;
+    @Type(type="yes_no")
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
     @Transient
@@ -106,7 +112,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     	return getPrincipalForId( principalId );
     }
     
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

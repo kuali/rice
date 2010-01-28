@@ -25,6 +25,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -33,7 +34,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -41,12 +41,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -58,7 +59,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_INSTN_T")
-@Sequence(name="KREW_RTE_NODE_S",property="routeNodeInstanceId")
+//@Sequence(name="KREW_RTE_NODE_S",property="routeNodeInstanceId")
 @NamedQueries({
 	@NamedQuery(name="RouteNodeInstance.FindByRouteNodeInstanceId",query="select r from RouteNodeInstance r where r.routeNodeInstanceId = :routeNodeInstanceId"),
 	@NamedQuery(name="RouteNodeInstance.FindActiveNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = true"),
@@ -72,6 +73,11 @@ public class RouteNodeInstance implements Serializable {
 	private static final long serialVersionUID = 7183670062805580420L;
 	
 	@Id
+	@GeneratedValue(generator="KREW_RTE_NODE_S")
+	@GenericGenerator(name="KREW_RTE_NODE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RTE_NODE_INSTN_ID")
 	private Long routeNodeInstanceId;
     @Column(name="DOC_HDR_ID")
@@ -82,10 +88,13 @@ public class RouteNodeInstance implements Serializable {
     @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_ID")
     private RouteNode routeNode;
+    @Type(type="yes_no")
     @Column(name="ACTV_IND")
     private boolean active = false;
+    @Type(type="yes_no")
     @Column(name="CMPLT_IND")
     private boolean complete = false;
+    @Type(type="yes_no")
     @Column(name="INIT_IND")
     private boolean initial = true;
     @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -285,7 +294,7 @@ public class RouteNodeInstance implements Serializable {
             .toString();
     }
     
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

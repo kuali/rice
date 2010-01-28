@@ -25,6 +25,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -33,7 +34,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 
@@ -46,7 +48,7 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
  */
 @Entity
 @Table(name="KREW_RULE_ATTR_T")
-@Sequence(name="KREW_RTE_TMPL_S", property="ruleAttributeId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="ruleAttributeId")
 @NamedQueries({
   @NamedQuery(name="RuleAttribute.FindById",  query="select ra from RuleAttribute ra where ra.ruleAttributeId = :ruleAttributeId"),
   @NamedQuery(name="RuleAttribute.FindByName",  query="select ra from RuleAttribute ra where ra.name = :name"),
@@ -57,6 +59,11 @@ public class RuleAttribute extends KewPersistableBusinessObjectBase implements W
 
 	private static final long serialVersionUID = 1027673603158346349L;
 	@Id
+	@GeneratedValue(generator="KREW_RTE_TMPL_S")
+	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_ATTR_ID")
 	private Long ruleAttributeId;
     @Column(name="NM")

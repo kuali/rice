@@ -23,12 +23,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -45,13 +44,18 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  *
  */
 @Entity
-@Sequence(name="KREW_DOC_TYP_ATTR_S", property="documentTypeAttributeId")
+//@Sequence(name="KREW_DOC_TYP_ATTR_S", property="documentTypeAttributeId")
 @Table(name="KREW_DOC_TYP_ATTR_T")
 public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 
 	private static final long serialVersionUID = -4429421648373903566L;
 
 	@Id
+	@GeneratedValue(generator="KREW_DOC_TYP_ATTR_S")
+	@GenericGenerator(name="KREW_DOC_TYP_ATTR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_DOC_TYP_ATTR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_TYP_ATTRIB_ID")
 	private Long documentTypeAttributeId; 
     @Column(name="RULE_ATTR_ID",insertable=false, updatable=false)
@@ -69,7 +73,7 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
     @Transient
     private Integer lockVerNbr;
     
-	@PrePersist
+	//@PrePersist
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
 	}

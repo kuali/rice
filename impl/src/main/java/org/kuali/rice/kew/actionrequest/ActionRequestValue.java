@@ -25,14 +25,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -42,7 +41,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -56,10 +57,8 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -74,7 +73,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  */
 @Entity
 @Table(name="KREW_ACTN_RQST_T")
-@Sequence(name="KREW_ACTN_RQST_S", property="actionRequestId")
+//@Sequence(name="KREW_ACTN_RQST_S", property="actionRequestId")
 @NamedQueries({
   @NamedQuery(name="ActionRequestValue.FindByRouteHeaderId", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId"),
   @NamedQuery(name="ActionRequestValue.GetUserRequestCount", query="select count(arv) from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.recipientTypeCd = :recipientTypeCd and arv.principalId = :principalId and arv.currentIndicator = :currentIndicator"),
@@ -105,6 +104,11 @@ public class ActionRequestValue implements WorkflowPersistable {
     private static final String DELEGATION_TYPE_RANK = "SPN";
 
     @Id
+    @GeneratedValue(generator="KREW_ACTN_RQST_S")
+	@GenericGenerator(name="KREW_ACTN_RQST_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_ACTN_RQST_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="ACTN_RQST_ID")
 	private Long actionRequestId;
     @Column(name="ACTN_RQST_CD")
@@ -137,6 +141,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Integer jrfVerNbr;
     @Column(name="PRNCPL_ID")
 	private String principalId;
+    @Type(type="yes_no")
     @Column(name="FRC_ACTN")
 	private Boolean forceAction;
     @Column(name="PARNT_ID", insertable=false, updatable=false)
@@ -161,7 +166,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	@JoinColumn(name="PARNT_ID")
 	private ActionRequestValue parentActionRequest;
     @Fetch(value = FetchMode.SUBSELECT)
-    @ManyToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
     private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ACTN_TKN_ID")
@@ -170,8 +175,9 @@ public class ActionRequestValue implements WorkflowPersistable {
 	@JoinColumn(name="DOC_HDR_ID")
 	private DocumentRouteHeaderValue routeHeader;
     @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(fetch=FetchType.EAGER,mappedBy="actionRequestId")
+    @OneToMany(fetch=FetchType.LAZY,mappedBy="actionRequestId")
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
+    @Type(type="yes_no")
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
     @Transient
@@ -195,7 +201,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         createDate = new Timestamp(System.currentTimeMillis());
     }
     
-    @PrePersist
+    //@PrePersist
     public void beforeInsert(){
     	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }

@@ -30,19 +30,23 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
@@ -92,7 +96,7 @@ import org.kuali.rice.kns.web.format.FormatException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")
+//@Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")
 @Table(name="KREW_DOC_TYP_T")
 @NamedQueries({
     @NamedQuery(name="DocumentType.QuickLinks.FindLabelByTypeName", query="SELECT label FROM DocumentType WHERE name = :docTypeName AND currentInd = 1"),
@@ -106,6 +110,11 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     private static final long serialVersionUID = 1312830153583125069L;
 
     @Id
+    @GeneratedValue(generator="KREW_DOC_HDR_S")
+	@GenericGenerator(name="KREW_DOC_HDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_DOC_HDR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="DOC_TYP_ID")
 	private Long documentTypeId;
     @Column(name="PARNT_ID")
@@ -114,8 +123,10 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 	private String name;
     @Column(name="DOC_TYP_VER_NBR")
     private Integer version = new Integer(0);
+    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean active;
+    @Type(type="yes_no")
     @Column(name="CUR_IND")
 	private Boolean currentInd;
     @Column(name="DOC_TYP_DESC")
@@ -166,7 +177,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Transient
     private Group defaultExceptionWorkgroup;
 
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="documentTypeId")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
     @Fetch(value=FetchMode.SUBSELECT)
     private Collection<DocumentTypePolicy> policies;
     
@@ -185,14 +196,13 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Transient
     private Collection childrenDocTypes;
     @Fetch(value=FetchMode.SUBSELECT)
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
-           mappedBy="documentType")
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
+    @OrderBy("orderIndex ASC")
 	private List<DocumentTypeAttribute> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
     @Fetch(value=FetchMode.SUBSELECT)
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
-            mappedBy="documentType")
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
     private List<Process> processes = new ArrayList();
     @Column(name="RTE_VER_NBR")
     private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;

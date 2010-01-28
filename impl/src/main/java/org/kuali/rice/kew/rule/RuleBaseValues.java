@@ -29,6 +29,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,7 +40,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -67,11 +70,16 @@ import org.kuali.rice.kns.web.ui.Row;
  */
 @Entity
 @Table(name="KREW_RULE_T")
-@Sequence(name="KREW_RTE_TMPL_S", property="ruleBaseValuesId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="ruleBaseValuesId")
 public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
+    @GeneratedValue(generator="KREW_RTE_TMPL_S")
+	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREW_RTE_TMPL_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RULE_ID")
     private Long ruleBaseValuesId;
     /**
@@ -83,6 +91,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	private Long ruleTemplateId;
     @Column(name="PREV_RULE_VER_NBR")
 	private Long previousVersionId;
+    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
     @Column(name="RULE_BASE_VAL_DESC")
@@ -97,19 +106,19 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	private Timestamp toDate;
 	@Column(name="DACTVN_DT")
 	private Timestamp deactivationDate;
+	@Type(type="yes_no")
     @Column(name="CUR_IND")
 	private Boolean currentInd;
     @Column(name="RULE_VER_NBR")
 	private Integer versionNbr;
+    @Type(type="yes_no")
     @Column(name="FRC_ACTN")
 	private Boolean forceAction;
     @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.RuleResponsibility.class, mappedBy="ruleBaseValues")
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleResponsibility> responsibilities;
     @Fetch(value = FetchMode.SUBSELECT)
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.RuleExtension.class, mappedBy="ruleBaseValues")
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleExtension> ruleExtensions;
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ID")
@@ -121,12 +130,14 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     private RuleBaseValues previousVersion;
     @Column(name="ACTVN_DT")
 	private Timestamp activationDate;
+    @Type(type="yes_no")
     @Column(name="DLGN_IND")
     private Boolean delegateRule = Boolean.FALSE;
     /**
      * Indicator that signifies that this rule is a defaults/template rule which contains
      * template-defined rule defaults for other rules which use the associated template
      */
+    @Type(type="yes_no")
     @Column(name="TMPL_RULE_IND")
     private Boolean templateRuleInd = Boolean.FALSE;
 

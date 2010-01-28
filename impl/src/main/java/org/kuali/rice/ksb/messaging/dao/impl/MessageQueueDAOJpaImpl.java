@@ -123,13 +123,15 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
             throw new RiceRuntimeException("can't delete a PersistedMessage with no id");
         }
         
-        routeQueue = entityManager.merge(routeQueue);
-        entityManager.remove(routeQueue);
+//        routeQueue = entityManager.merge(routeQueue);
+//        entityManager.remove(routeQueue);
+        // doing it this way to avoid optimistic lock exceptions.  But I'm not happy about it.
+        entityManager.createQuery("delete from " + routeQueue.getClass().getSimpleName() + 
+                " where routeQueueId = ?1").setParameter(1, routeQueue.getRouteQueueId()).executeUpdate();
         if (routeQueue.getPayload() != null) {
             PersistedMessagePayload payload =  entityManager.merge(routeQueue.getPayload());
             entityManager.remove(payload);
         }
-        entityManager.flush();
     }
 
     

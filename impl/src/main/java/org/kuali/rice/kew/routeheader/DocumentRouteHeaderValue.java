@@ -184,7 +184,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      * for the document.  It tracks the previous status, the new status, and a timestamp of the 
      * transition for each status transition.
      */
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST}, mappedBy="routeHeader")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST}, mappedBy="routeHeaderId")
     @OrderBy("statusTransitionId ASC")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<DocumentStatusTransition> appDocStatusHistory = new ArrayList<DocumentStatusTransition>();

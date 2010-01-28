@@ -52,7 +52,7 @@ public class CampusImpl extends PersistableBusinessObjectBase implements Campus,
 
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="CAMPUS_TYP_CD", insertable=false, updatable=false)
-	private CampusType campusType;
+	private CampusTypeImpl campusType;
     
     /**
      * Default no-arg constructor.
@@ -144,15 +144,6 @@ public class CampusImpl extends PersistableBusinessObjectBase implements Campus,
 	 */
     public CampusType getCampusType() {
         return campusType;
-    }
-
-    /**
-     * Sets the campusType attribute value.
-     * @param campusType The campusType to set.
-     * @deprecated
-     */
-    public void setCampusType(CampusType campusType) {
-        this.campusType = campusType;
     }
 
 	/**

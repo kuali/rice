@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
@@ -34,7 +35,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 @MappedSuperclass
 public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements Inactivateable {
     private static final long serialVersionUID = 9042706897191231670L;
-	@Column(name="FDOC_NBR")
+	@Id
+    @Column(name="FDOC_NBR")
     protected String documentNumber;
 	@Type(type="yes_no")
 	@Column(name="ACTV_IND")

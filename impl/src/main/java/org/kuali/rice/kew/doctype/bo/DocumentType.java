@@ -176,7 +176,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
      * be set to any value by the client.
      */
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
-    		mappedBy="documentType")
+    		mappedBy="documentTypeId")
     @Fetch(value=FetchMode.SUBSELECT)
     private List<ApplicationDocumentStatus> validApplicationStatuses;
     

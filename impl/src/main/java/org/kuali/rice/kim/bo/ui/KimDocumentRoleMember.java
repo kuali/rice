@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -40,6 +41,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	private static final long serialVersionUID = -2463865643038170979L;
 
+	@Id
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
 	

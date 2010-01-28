@@ -98,13 +98,6 @@ public interface Campus extends ExternalizableBusinessObject {
      */
     public void setCampusTypeCode(String campusTypeCode);
 
-    /**
-     * Sets the campusType attribute value.
-     * @param campusType The campusType to set.
-     * @deprecated
-     */
-    public void setCampusType(CampusType campusType);
-
 	/**
 	 * @param active the active to set
 	 */

@@ -52,12 +52,12 @@ import org.kuali.rice.kew.util.KEWConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Entity
+@Entity(name="org.kuali.rice.kew.notes.Note")
 @Table(name="KREW_DOC_NTE_T")
 @Sequence(name="KREW_DOC_NTE_S",property="noteId")
 @NamedQueries({
-	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from Note as n where n.noteId = :noteId"),
-	@NamedQuery(name="KewNote.FindNoteByRouteHeaderId", query="select n from Note as n where n.routeHeaderId = :routeHeaderId order by n.noteId")
+	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from org.kuali.rice.kew.notes.Note as n where n.noteId = :noteId"),
+	@NamedQuery(name="KewNote.FindNoteByRouteHeaderId", query="select n from org.kuali.rice.kew.notes.Note as n where n.routeHeaderId = :routeHeaderId order by n.noteId")
 })
 public class Note implements WorkflowPersistable {
 

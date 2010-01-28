@@ -18,7 +18,6 @@ package org.kuali.rice.kew.notes;
 
 import java.io.InputStream;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,11 +42,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Entity
+@Entity(name="org.kuali.rice.kew.notes.Attachment")
 @Table(name="KREW_ATT_T")
 @Sequence(name="KREW_DOC_NTE_S",property="attachmentId")
 @NamedQueries({
-	@NamedQuery(name="Attachment.FindAttachmentById",query="select a from Attachment as a where a.attachmentId = :attachmentId")
+	@NamedQuery(name="Attachment.FindAttachmentById",query="select a from org.kuali.rice.kew.notes.Attachment as a where a.attachmentId = :attachmentId")
 })
 public class Attachment {
 

@@ -24,6 +24,7 @@ import javax.persistence.Query;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
@@ -118,29 +119,32 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Removing message " + routeQueue);
         }
-        
-        PersistedMessagePayload persistedMessagePayload = (PersistedMessagePayload) entityManager.find(PersistedMessagePayload.class, routeQueue.getRouteQueueId());
-        PersistedMessage persistedMessage = (PersistedMessage) entityManager.find(PersistedMessage.class, routeQueue.getRouteQueueId());
-        
-        if(persistedMessagePayload != null) {
-            entityManager.remove(persistedMessagePayload);
+        if (routeQueue.getRouteQueueId() == null) {
+            throw new RiceRuntimeException("can't delete a PersistedMessage with no id");
         }
         
-        if(persistedMessage != null) {
-            entityManager.remove(persistedMessage);
+        routeQueue = entityManager.merge(routeQueue);
+        entityManager.remove(routeQueue);
+        if (routeQueue.getPayload() != null) {
+            PersistedMessagePayload payload =  entityManager.merge(routeQueue.getPayload());
+            entityManager.remove(payload);
         }
+        entityManager.flush();
     }
 
     
     public void save(PersistedMessage routeQueue) {
-        if(routeQueue.getRouteQueueId() == null) {
-            entityManager.persist(routeQueue);
-            
-            routeQueue.getPayload().setRouteQueueId(routeQueue.getRouteQueueId());
-            entityManager.persist(routeQueue.getPayload());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Persisting message " + routeQueue);
         }
-        else {
-            entityManager.merge(routeQueue);
+        PersistedMessage jpaInstance = entityManager.merge(routeQueue);
+        Long routeQueueId = jpaInstance.getRouteQueueId();
+        Integer verNo = jpaInstance.getLockVerNbr();
+        routeQueue.setRouteQueueId(routeQueueId);
+        routeQueue.setLockVerNbr(verNo);
+
+        if (routeQueue.getPayload() != null) {
+            routeQueue.getPayload().setRouteQueueId(routeQueueId);
             entityManager.merge(routeQueue.getPayload());
         }
     }

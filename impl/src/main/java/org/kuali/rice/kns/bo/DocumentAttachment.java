@@ -17,13 +17,22 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Entity
+@Table(name="KRNS_MAINT_DOC_ATT_T")
 public class DocumentAttachment extends PersistableAttachmentBase {
 
     private static final long serialVersionUID = 1L;
-    
+
+    @Id
+    @Column(name="DOC_HDR_ID")
     private String documentNumber;
 
     public String getDocumentNumber() {

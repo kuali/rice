@@ -18,6 +18,14 @@ package org.kuali.rice.kns.bo;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 
@@ -25,17 +33,31 @@ import org.apache.ojb.broker.PersistenceBrokerException;
 /*
  * Defines methods a business object should implement.
  */
+@Entity
+@Table(name="KRNS_SESN_DOC_T")
 public class SessionDocument extends PersistableBusinessObjectBase{
     
 	private static final long serialVersionUID = 2866566562262830639L;
 	
+	@Id
+	@Column(name="DOC_HDR_ID")
 	protected String documentNumber;
+	@Id
+	@Column(name="SESN_DOC_ID")
 	protected String sessionId;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="LAST_UPDT_DT")
 	protected Timestamp lastUpdatedDate;
+	@Lob
+	@Column(name="SERIALZD_DOC_FRM")
 	protected byte[] serializedDocumentForm;
 	//private KualiDocumentFormBase serializedDocumentForm;
 	protected boolean encrypted = false;
+	@Id
+	@Column(name="PRNCPL_ID")
 	protected String principalId;
+	@Id
+	@Column(name="IP_ADDR")
 	protected String ipAddress;
 	
 	

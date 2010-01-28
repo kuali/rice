@@ -17,15 +17,24 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
+
 /**
  * This is a description of what this class does - chitra07 don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@MappedSuperclass
 public class PersistableAttachmentBase extends PersistableBusinessObjectBase implements PersistableAttachment {
+	@Lob
+	@Column(name="ATT_CNTNT")
     private byte[] attachmentContent;
+	@Column(name="FILE_NM")
     private String fileName;
+	@Column(name="CNTNT_TYP")
     private String contentType;
 
     /**

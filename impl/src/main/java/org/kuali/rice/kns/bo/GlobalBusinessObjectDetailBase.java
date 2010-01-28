@@ -15,9 +15,13 @@
  */
 package org.kuali.rice.kns.bo;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public abstract class GlobalBusinessObjectDetailBase extends PersistableBusinessObjectBase implements GlobalBusinessObjectDetail {
 
+	@Column(name="DOC_HDR_ID")
     private String documentNumber;
 
     public String getDocumentNumber() {

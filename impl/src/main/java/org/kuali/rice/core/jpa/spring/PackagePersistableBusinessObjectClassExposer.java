@@ -19,7 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
 import org.reflections.Reflections;
 
@@ -47,6 +49,17 @@ public abstract class PackagePersistableBusinessObjectClassExposer implements
 			final Set<Class<?>> entities = reflections.getTypesAnnotatedWith(Entity.class);
 			for (Class<?> entityClass : entities) {
 				exposedClassNames.add(entityClass.getName());
+			}
+			
+			final Set<Class<?>> mappedSuperclasses = reflections.getTypesAnnotatedWith(MappedSuperclass.class);
+			for (Class<?> mappedSuperclassClass : mappedSuperclasses) {
+				exposedClassNames.add(mappedSuperclassClass.getName());
+			}
+			
+			final Set<Class<?>> embeddables = reflections.getTypesAnnotatedWith(Embeddable.class);
+			for (Class<?> embeddableClass : embeddables) {
+				// may this loop never be entered
+				exposedClassNames.add(embeddableClass.getName());
 			}
 		}
 		return exposedClassNames;

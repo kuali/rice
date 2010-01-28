@@ -36,19 +36,30 @@ public class KNSPersistableBusinessObjectClassExposer implements
 	@Override
 	public Set<String> exposePersistableBusinessObjectClassNames() {
 		Set<String> knsBOs = new HashSet<String>();
+		knsBOs.add(org.kuali.rice.kns.document.MaintenanceDocumentBase.class.getName());
+		knsBOs.add(org.kuali.rice.kns.document.MaintenanceLock.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.AdHocRoutePerson.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.AdHocRouteRecipient.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.AdHocRouteWorkgroup.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.Attachment.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.CampusImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.CampusTypeImpl.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.DocumentAttachment.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.DocumentHeader.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.GlobalBusinessObjectDetailBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.LookupResults.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.KualiCodeBase.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.MultipleValueLookupMetadata.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.Namespace.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.Note.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.NoteType.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.Parameter.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.ParameterDetailType.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.ParameterType.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.PersistableAttachmentBase.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.PersistableBusinessObjectBase.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase.class.getName());
+		knsBOs.add(org.kuali.rice.kns.document.authorization.PessimisticLock.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.SelectedObjectIds.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.CountryImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.CountyImpl.class.getName());

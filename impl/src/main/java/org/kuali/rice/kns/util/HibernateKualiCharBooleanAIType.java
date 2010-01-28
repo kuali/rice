@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.security.GeneralSecurityException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,38 +22,41 @@ import java.sql.Types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+
 
 /**
- * Hibernate UserType to encrypt and decript data on its way to the database 
+ * This is a description of what this class does - g1zhang don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUserType implements UserType {
-	/**
-	 * Retrieves a value from the given ResultSet and decrypts it
-	 * 
-	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
-	 */
+public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUserType implements UserType
+{/**
+ * Retrieves a value from the given ResultSet
+ * 
+ * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
+ */
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
 		String value = rs.getString(names[0]);
-		String converted = null;
+		Boolean converted = null;
 
 		if (value != null) {
-	        try {
-	            converted = KNSServiceLocator.getEncryptionService().decrypt(value);
-	        }
-	        catch (GeneralSecurityException gse) {
-	            throw new RuntimeException("Unable to decrypt value from db: " + gse.getMessage());
-	        }
-	        
-	        if (converted == null) {
-				converted = value;
+			try {
+				if(value.equalsIgnoreCase("A"))
+					converted = Boolean.TRUE;
+				if(value.equalsIgnoreCase("I"))
+					converted = Boolean.FALSE;
+			}
+			catch (Exception e) {
+				throw new RuntimeException("Unable to get status value from db: " + e.getMessage());
+			}
+
+			if (converted == null) {
+				throw new RuntimeException("Unable to get status value from db: ");
 			}
 		}
 
-        return converted;
+		return converted;
 	}
 
 	/**
@@ -66,19 +68,19 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 		String converted = null;
 
 		if (value != null) {
-	        try {
-	            converted = KNSServiceLocator.getEncryptionService().encrypt(value);
-	        }
-	        catch (GeneralSecurityException gse) {
-	            throw new RuntimeException("Unable to encrypt value to db: " + gse.getMessage());
-	        }
+			try {
+				converted = ((Boolean)value).booleanValue()? "A":"I";
+			}
+			catch (Exception e) {
+				throw new RuntimeException("Unable to set status value to db: " + e.getMessage());
+			}
 		}
-        
-        if (converted == null) {
-        	st.setNull(index, Types.VARCHAR);
-        } else {
-        	st.setString(index, converted);
-        }
+
+		if (converted == null) {
+			st.setNull(index, Types.VARCHAR);
+		} else {
+			st.setString(index, converted);
+		}
 	}
 
 	/**
@@ -98,5 +100,5 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 	public int[] sqlTypes() {
 		return new int[] { Types.VARCHAR };
 	}
-
 }
+

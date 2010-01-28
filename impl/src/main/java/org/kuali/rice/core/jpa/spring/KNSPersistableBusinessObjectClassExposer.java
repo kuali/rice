@@ -36,8 +36,10 @@ public class KNSPersistableBusinessObjectClassExposer implements
 	@Override
 	public Set<String> exposePersistableBusinessObjectClassNames() {
 		Set<String> knsBOs = new HashSet<String>();
+		knsBOs.add(org.kuali.rice.kns.document.DocumentBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.document.MaintenanceDocumentBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.document.MaintenanceLock.class.getName());
+		knsBOs.add(org.kuali.rice.kns.document.TransactionalDocumentBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.AdHocRoutePerson.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.AdHocRouteRecipient.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.AdHocRouteWorkgroup.class.getName());

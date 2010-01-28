@@ -17,8 +17,20 @@ package org.kuali.rice.kim.document;
 
 import java.util.List;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.util.KimConstants;
@@ -36,10 +48,19 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@MappedSuperclass
+@AttributeOverrides({
+	@AttributeOverride(name="documentNumber",column=@Column(name="FDOC_NBR")),
+})
+@AssociationOverrides({
+	@AssociationOverride(name="documentHeader",joinColumns=@JoinColumn(name="FDOC_NBR",referencedColumnName="DOC_HDR_ID",insertable=false,updatable=false))
+})
 public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 
 	protected static final Logger LOG = Logger.getLogger(IdentityManagementKimDocument.class);
 	
+	@OneToMany(targetEntity=RoleDocumentDelegation.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
 	protected List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
 	protected List<RoleDocumentDelegationMember> delegationMembers = new TypedArrayList(RoleDocumentDelegationMember.class);
 

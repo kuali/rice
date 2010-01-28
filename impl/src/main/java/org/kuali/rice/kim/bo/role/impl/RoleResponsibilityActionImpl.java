@@ -17,6 +17,15 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -26,18 +35,31 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Entity
+@Table(name="KRIM_ROLE_RSP_ACTN_T")
 public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -2840071737863303404L;
 	
+	@Id
+	@Column(name="ROLE_RSP_ACTN_ID")
 	protected String roleResponsibilityActionId;
+	@Column(name="ROLE_RSP_ID")
 	protected String roleResponsibilityId;
+	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
+	@Column(name="ACTN_TYP_CD")
 	protected String actionTypeCode;
+	@Column(name="ACTN_PLCY_CD")
 	protected String actionPolicyCode;
+	@Column(name="FRC_ACTN")
+	@Type(type="yes_no")
 	protected boolean forceAction;
+	@Column(name="PRIORITY_NBR")
 	protected Integer priorityNumber;
 	
+	@ManyToOne(targetEntity=RoleResponsibilityImpl.class, fetch = FetchType.LAZY, cascade = {})
+	@JoinColumn(name="ROLE_RSP_ID",insertable=false, updatable=false)
 	protected RoleResponsibilityImpl roleResponsibility;
 	
 	public String getRoleResponsibilityActionId() {

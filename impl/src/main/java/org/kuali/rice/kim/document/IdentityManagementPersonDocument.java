@@ -20,10 +20,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -58,37 +72,78 @@ import org.kuali.rice.kns.util.GlobalVariables;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
+@Entity
+@Table(name="KRIM_PERSON_DOCUMENT_T")
 public class IdentityManagementPersonDocument extends IdentityManagementKimDocument {
 
     protected static final long serialVersionUID = -534993712085516925L;
     // principal data
+    
+    @GeneratedValue(generator="KRIM_PRNCPL_ID_S")
+	@GenericGenerator(name="KRIM_PRNCPL_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_PRNCPL_ID_S"),
+			@Parameter(name="value_column",value="id")
+		})
+	@Column(name="prncpl_id")
     protected String principalId;
+    @Column(name="prncpl_nm")
     protected String principalName;
+    @GeneratedValue(generator="KRIM_ENTITY_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_ID_S"),
+			@Parameter(name="value_column",value="id")
+		})
+	@Column(name="entity_id")
     protected String entityId;
+    @Type(type="rice-hash")
+    @Column(name="password")
     protected String password;
     
     // ext id - now hard coded for "tax id" & "univ id"
+    @Column(name="tax_id")
     protected String taxId = "";
+    @Column(name="univ_id")
     protected String univId = "";
     // affiliation data
+    @OneToMany(targetEntity=PersonDocumentAffiliation.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentAffiliation> affiliations;
 
+    @Transient
     protected String campusCode = "";
     // external identifier data
+    @Transient
     protected Map<String, String> externalIdentifiers = null;
 
+    @Column(name="ACTV_IND")
+	@Type(type="yes_no")
     protected boolean active;
 
     // citizenship
+    @Transient
     protected List<PersonDocumentCitizenship> citizenships;
     // protected List<DocEmploymentInfo> employmentInformations;
+    @OneToMany(targetEntity=PersonDocumentName.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentName> names;
+    @OneToMany(targetEntity=PersonDocumentAddress.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentAddress> addrs;
+    @OneToMany(targetEntity=PersonDocumentPhone.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentPhone> phones;
+    @OneToMany(targetEntity=PersonDocumentEmail.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentEmail> emails;
+    @OneToMany(targetEntity=PersonDocumentRole.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentGroup> groups;
+    @OneToMany(targetEntity=PersonDocumentGroup.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentRole> roles;
 
+    @ManyToOne(targetEntity=PersonDocumentPrivacy.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected PersonDocumentPrivacy privacy;
 
     public IdentityManagementPersonDocument() {
@@ -409,7 +464,9 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         return rulePassed;
 	}
 
+	@Transient
 	protected transient DocumentHelperService documentHelperService;
+	@Transient
 	protected transient UiDocumentService uiDocumentService;
 		
 	protected DocumentHelperService getDocumentHelperService() {

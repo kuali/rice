@@ -17,10 +17,17 @@ package org.kuali.rice.kim.bo.ui;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -36,6 +43,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  *
  */
+@IdClass(RoleDocumentDelegationMemberId.class)
 @Entity
 @Table(name="KRIM_PND_DLGN_MBR_T")
 public class RoleDocumentDelegationMember extends KimDocumentBoBase {
@@ -46,16 +54,21 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
 	
-	@Id
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
+	@Transient
 	protected String roleMemberMemberId;
+	@Transient
 	protected String roleMemberMemberTypeCode;
+	@Transient
 	protected String roleMemberName;
+	@Transient
 	protected String roleMemberNamespaceCode;
 
+	@Transient
 	private KimTypeAttributesHelper attributesHelper;
 	//For Person Document UI - flattening the delegation - delegation member hierarchy
+	@Transient
 	protected RoleImpl roleImpl = new RoleImpl();
 	
 	@Id
@@ -68,12 +81,19 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	@Column(name="MBR_TYP_CD")
 	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
 	
+	@Transient
 	protected String memberNamespaceCode;
 	
 	@Column(name="MBR_NM")
 	protected String memberName;
+	@OneToMany(targetEntity=RoleDocumentDelegationMemberQualifier.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumns({
+		@JoinColumn(name="dlgn_id",insertable=false,updatable=false),
+		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
+	})
 	protected List <RoleDocumentDelegationMemberQualifier> qualifiers = new TypedArrayList(RoleDocumentDelegationMemberQualifier.class);
 	
+	@Transient
 	protected String delegationTypeCode;
 	
 	/**

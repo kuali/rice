@@ -18,10 +18,17 @@ package org.kuali.rice.kim.bo.ui;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -32,6 +39,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  *
  */
+@IdClass(RoleDocumentDelegationId.class)
 @Entity
 @Table(name="KRIM_PND_DLGN_T")
 public class RoleDocumentDelegation extends KimDocumentBoBase {
@@ -51,10 +59,17 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 	@Column(name="DLGN_TYP_CD")
 	protected String delegationTypeCode;
 
+	@OneToMany(targetEntity=RoleDocumentDelegationMember.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumns({
+		@JoinColumn(name="dlgn_id",insertable=false,updatable=false),
+		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
+	})
 	private List<RoleDocumentDelegationMember> members = new TypedArrayList(RoleDocumentDelegationMember.class);
 
+	@Transient
 	private RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 
+	@Transient
 	protected List<KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 
 	/**

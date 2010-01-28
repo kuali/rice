@@ -65,7 +65,7 @@ public class PostalCodeImpl extends PersistableBusinessObjectBase implements Ina
     private State state;
     
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="POSTAL_CNTRY_CD")
+	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
     private Country country;
     
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})

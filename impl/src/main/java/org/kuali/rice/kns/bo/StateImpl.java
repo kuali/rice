@@ -51,7 +51,7 @@ public class StateImpl extends PersistableBusinessObjectBase implements Inactiva
     private boolean active;
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="POSTAL_CNTRY_CD")
+	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
     private Country country;
 
     /**

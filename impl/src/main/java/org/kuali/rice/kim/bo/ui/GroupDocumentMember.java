@@ -21,6 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.util.KimConstants;
@@ -44,9 +45,9 @@ public class GroupDocumentMember extends KimDocumentBoBase {
 	
 	@Column(name="MBR_ID")
 	protected String memberId;
-	
+	@Column(name="MBR_NM")
 	protected String memberName;
-	
+	@Transient
 	protected String memberNamespaceCode;
 	
 	//TODO: remove the default

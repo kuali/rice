@@ -18,6 +18,15 @@ package org.kuali.rice.kim.document;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
@@ -38,22 +47,35 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Entity
+@Table(name="KRIM_GRP_DOCUMENT_T")
 public class IdentityManagementGroupDocument extends IdentityManagementTypeAttributeTransactionalDocument {
 	private static final Logger LOG = Logger.getLogger(IdentityManagementGroupDocument.class);
 	
 	private static final long serialVersionUID = 1L;
 	
 	// principal data
+	@Column(name="GRP_ID")
 	protected String groupId;
+	@Column(name="KIM_TYP_ID")
 	protected String groupTypeId;
+	@Transient
 	protected String groupTypeName;
+	@Column(name="GRP_NMSPC")
 	protected String groupNamespace;
+	@Column(name="GRP_NM")
 	protected String groupName;
+	@Column(name="ACTV_IND")
 	protected boolean active = true;
 
+	@Transient
 	protected boolean editing;
 
+	@OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="FDOC_NBR")
 	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="FDOC_NBR")
 	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
 
 	public IdentityManagementGroupDocument() {

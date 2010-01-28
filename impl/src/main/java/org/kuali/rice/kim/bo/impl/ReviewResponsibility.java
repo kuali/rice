@@ -37,16 +37,14 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@Entity
-@Table(name="KRIM_RSP_T")
+
 public class ReviewResponsibility extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL_FIELD_NAME = "actionDetailsAtRoleMemberLevel";
 	// standard responsibility attributes 
-	@Id
-	@Column(name="RSP_ID")
+
 	protected String responsibilityId;
 	protected String namespaceCode;
 	protected String name;

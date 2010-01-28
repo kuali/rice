@@ -24,10 +24,12 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -35,15 +37,13 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Entity
-@Table(name="KRIM_PERM_T")
+
 public class GenericPermission extends PersistableBusinessObjectBase {
 //	private static final Logger LOG = Logger.getLogger(GenericPermission.class);	
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@Column(name="PERM_ID")
+
 	protected String permissionId;
 	protected String namespaceCode;
 	protected String name;

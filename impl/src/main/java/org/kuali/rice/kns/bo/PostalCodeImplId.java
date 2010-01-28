@@ -38,21 +38,9 @@ public class PostalCodeImplId extends CompositePrimaryKeyBase {
 		return this.postalCountryCode;
 	}
 	/**
-	 * @param postalCountryCode the postalCountryCode to set
-	 */
-	public void setPostalCountryCode(String postalCountryCode) {
-		this.postalCountryCode = postalCountryCode;
-	}
-	/**
 	 * @return the postalCode
 	 */
 	public String getPostalCode() {
 		return this.postalCode;
-	}
-	/**
-	 * @param postalCode the postalCode to set
-	 */
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
 	}
 }

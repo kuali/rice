@@ -38,23 +38,10 @@ public class StateImplId extends CompositePrimaryKeyBase {
 		return this.postalCountryCode;
 	}
 	/**
-	 * @param postalCountryCode the postalCountryCode to set
-	 */
-	public void setPostalCountryCode(String postalCountryCode) {
-		this.postalCountryCode = postalCountryCode;
-	}
-	/**
 	 * @return the postalStateCode
 	 */
 	public String getPostalStateCode() {
 		return this.postalStateCode;
 	}
-	/**
-	 * @param postalStateCode the postalStateCode to set
-	 */
-	public void setPostalStateCode(String postalStateCode) {
-		this.postalStateCode = postalStateCode;
-	}
-	
 	
 }

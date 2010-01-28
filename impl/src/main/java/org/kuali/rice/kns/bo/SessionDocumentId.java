@@ -44,22 +44,10 @@ public class SessionDocumentId extends CompositePrimaryKeyBase {
 		return this.documentNumber;
 	}
 	/**
-	 * @param documentNumber the documentNumber to set
-	 */
-	public void setDocumentNumber(String documentNumber) {
-		this.documentNumber = documentNumber;
-	}
-	/**
 	 * @return the sessionId
 	 */
 	public String getSessionId() {
 		return this.sessionId;
-	}
-	/**
-	 * @param sessionId the sessionId to set
-	 */
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
 	}
 	/**
 	 * @return the principalId
@@ -68,21 +56,9 @@ public class SessionDocumentId extends CompositePrimaryKeyBase {
 		return this.principalId;
 	}
 	/**
-	 * @param principalId the principalId to set
-	 */
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
-	}
-	/**
 	 * @return the ipAddress
 	 */
 	public String getIpAddress() {
 		return this.ipAddress;
-	}
-	/**
-	 * @param ipAddress the ipAddress to set
-	 */
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
 	}
 }

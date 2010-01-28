@@ -41,33 +41,15 @@ public class CountyImplId extends CompositePrimaryKeyBase {
 		return this.postalCountryCode;
 	}
 	/**
-	 * @param postalCountryCode the postalCountryCode to set
-	 */
-	public void setPostalCountryCode(String postalCountryCode) {
-		this.postalCountryCode = postalCountryCode;
-	}
-	/**
 	 * @return the countyCode
 	 */
 	public String getCountyCode() {
 		return this.countyCode;
 	}
 	/**
-	 * @param countyCode the countyCode to set
-	 */
-	public void setCountyCode(String countyCode) {
-		this.countyCode = countyCode;
-	}
-	/**
 	 * @return the stateCode
 	 */
 	public String getStateCode() {
 		return this.stateCode;
-	}
-	/**
-	 * @param stateCode the stateCode to set
-	 */
-	public void setStateCode(String stateCode) {
-		this.stateCode = stateCode;
 	}
 }

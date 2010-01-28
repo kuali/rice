@@ -79,6 +79,8 @@
     <class>org.kuali.rice.kew.edl.extract.Dump</class>
     <class>org.kuali.rice.kew.edl.extract.Fields</class>
     <class>org.kuali.rice.kew.documentlink.DocumentLink</class>
+    <class>org.kuali.rice.kew.engine.node.KeyValuePair</class>
+    <class>org.kuali.rice.kew.engine.node.State</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 

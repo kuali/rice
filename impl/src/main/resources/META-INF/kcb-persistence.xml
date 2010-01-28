@@ -22,6 +22,7 @@
   
   <persistence-unit name="kcb-unit" transaction-type="JTA">
     <mapping-file>META-INF/kcb-orm.xml</mapping-file>
+    <class>org.kuali.rice.kcb.bo.BaseLockable</class>
     <class>org.kuali.rice.kcb.bo.Message</class>
     <class>org.kuali.rice.kcb.bo.MessageDelivery</class>
     <class>org.kuali.rice.kcb.bo.RecipientPreference</class>

@@ -261,19 +261,32 @@ public class ${cpkClassName} extends CompositePrimaryKeyBase implements Serializ
 	                    text = addImport(text, "Basic")
 	                    text = addImport(text, "FetchType")
 	                }
-	                if (f.jdbcType?.equalsIgnoreCase("date")) {
-	                    annotation += "@Temporal(TemporalType.DATE)\n\t"
-	                    text = addImport(text, "Temporal")                    
-	                    text = addImport(text, "TemporalType")
-	                }
+//	                if (f.jdbcType?.equalsIgnoreCase("date")) {
+//	                    annotation += "@Temporal(TemporalType.DATE)\n\t"
+//	                    text = addImport(text, "Temporal")                    
+//	                    text = addImport(text, "TemporalType")
+//	                }
 	                if (f.conversion?.toString()?.size() > 0){
 		                if (f.conversion.contains("OjbCharBooleanConversion")){
 	                		annotation += "@Type(type=\"yes_no\")\n\t"
 		                	text = addOtherImport(text, "org.hibernate.annotations.Type")
 	                	} else if (f.conversion.contains("OjbCharBooleanFieldTFConversion")) {
 	                		annotation += "@Type(type=\"true_false\")\n\t"
-	    		            text = addOtherImport(text, "org.hibernate.annotations.Type")
-	                	} else {
+	    		            text = addOtherImport(text, "org.hibernateorg.kuali.rice.kns.util.HibernateKualiHashType.annotations.Type")
+	                	} else if (f.conversion.contains("OjbCharBooleanFieldAIConversion")) {
+	                		annotation += "@Type(type=\"rice_active_inactive\")\n\t"
+		    		        text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiCharBooleanAIType")
+		                } else if (f.conversion.contains("OjbKualiHashFieldConversion")) {
+		                	annotation += "@Type(type=\"rice_hash\")\n\t"
+		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiHashType")
+		                } else if (f.conversion.contains("OjbKualiEncryptDecryptFieldConversion")) {
+		                	annotation += "@Type(type=\"rice_encrypt_decrypt\")\n\t"
+		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiEncryptDecryptUserType")
+//		                } else if (f.conversion.contains("OjbKualiDecimalFieldConversion")) {
+//		                	annotation += "@Type(type=\"rice_decimal\")\n\t"
+//		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiHashType")
+		                } 
+	                	else {
 	                		println "UNHANDLED CONVERSION FOUND "+f.column
 	                		println "conversion="+f.conversion
 	                		println "name="+f.name

@@ -71,11 +71,11 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     private static transient NoteService noteService;
     
     // This is only a flag if a @Sequence is used and is set up explicitly on Maint Doc creation
-    @Transient
-    private boolean autoIncrementSet;
+    //@Transient
+    //private boolean autoIncrementSet;
     
     public PersistableBusinessObjectBase() {
-        autoIncrementSet = false;
+        //autoIncrementSet = true;
     }
     
     public boolean isBoNotesSupport() {
@@ -208,10 +208,10 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     
     @PrePersist
     public void beforeInsert() {
-    	if (!isAutoIncrementSet()) {
-    		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-    		setAutoIncrementSet(true);
-    	}
+//    	if (!isAutoIncrementSet()) {
+//    		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+//    		setAutoIncrementSet(true);
+//    	}
     	setObjectId(new Guid().toString());
     }
 
@@ -362,13 +362,13 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 		this.extension = extension;
 	}
 
-	public boolean isAutoIncrementSet() {
-		return autoIncrementSet;
-	}
-
-	public void setAutoIncrementSet(boolean autoIncrementSet) {
-		this.autoIncrementSet = autoIncrementSet;
-	}
+//	public boolean isAutoIncrementSet() {
+//		return autoIncrementSet;
+//	}
+//
+//	public void setAutoIncrementSet(boolean autoIncrementSet) {
+//		this.autoIncrementSet = autoIncrementSet;
+//	}
 
 	/**
 	 * @return the attachmentService

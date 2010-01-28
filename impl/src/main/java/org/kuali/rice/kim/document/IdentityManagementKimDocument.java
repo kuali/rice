@@ -30,7 +30,6 @@ import javax.persistence.OneToMany;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.util.KimConstants;
@@ -50,7 +49,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
  */
 @MappedSuperclass
 @AttributeOverrides({
-	@AttributeOverride(name="documentNumber",column=@Column(name="FDOC_NBR")),
+	@AttributeOverride(name="documentNumber",column=@Column(name="FDOC_NBR"))
 })
 @AssociationOverrides({
 	@AssociationOverride(name="documentHeader",joinColumns=@JoinColumn(name="FDOC_NBR",referencedColumnName="DOC_HDR_ID",insertable=false,updatable=false))

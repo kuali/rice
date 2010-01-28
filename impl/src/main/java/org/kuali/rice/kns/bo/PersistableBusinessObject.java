@@ -102,5 +102,5 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
 
     public PersistableBusinessObjectExtension getExtension();
     public void setExtension(PersistableBusinessObjectExtension extension);
-    public void setAutoIncrementSet(boolean autoIncrementSet);
+    //public void setAutoIncrementSet(boolean autoIncrementSet);
 }

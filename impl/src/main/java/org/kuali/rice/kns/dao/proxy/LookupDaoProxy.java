@@ -39,16 +39,11 @@ public class LookupDaoProxy implements LookupDao {
 //	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoProxy.class);
     
 	private LookupDao lookupDaoJpa;
-	private LookupDao lookupDaoOjb;
     private static KualiModuleService kualiModuleService;
     private static Map<String, LookupDao> lookupDaoValues = Collections.synchronizedMap(new HashMap<String, LookupDao>());
 	
     public void setLookupDaoJpa(LookupDao lookupDaoJpa) {
 		this.lookupDaoJpa = lookupDaoJpa;
-	}
-
-	public void setLookupDaoOjb(LookupDao lookupDaoOjb) {
-		this.lookupDaoOjb = lookupDaoOjb;
 	}
 	
     private LookupDao getDao(Class clazz) {
@@ -66,32 +61,32 @@ public class LookupDaoProxy implements LookupDao {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
                 } else {
-                    if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
-                        //using JPA
-                        LookupDaoJpa classSpecificLookupDaoJpa = new LookupDaoJpa();
-                        if (entityManager != null) {
-                        	classSpecificLookupDaoJpa.setEntityManager(entityManager);
-                        	classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-                            lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
-                            return classSpecificLookupDaoJpa;
-                        } else {
-                            throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                        }
-
-                    } else {
+                	
+                	// TODO - temporary until we get the other modules converted
+                	if ("kimDataSource,enWorkflowDataSource".contains(dataSourceName)) {
                         //using OJB
-                        LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
+                		LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
                         classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
                         classSpecificLookupDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
                         lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
                         return classSpecificLookupDaoOjb;
                     }
+                	
+                	LookupDaoJpa classSpecificLookupDaoJpa = new LookupDaoJpa();
+                	if (entityManager != null) {
+                		classSpecificLookupDaoJpa.setEntityManager(entityManager);
+                		classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                		lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
+                		return classSpecificLookupDaoJpa;
+                	} else {
+                		throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
+                	}
 
                 }
 
             }
         }
-        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? lookupDaoJpa : lookupDaoOjb;
+        return lookupDaoJpa;
     }
     
 	/**

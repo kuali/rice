@@ -17,8 +17,6 @@ package org.kuali.rice.kew.bo;
 
 import javax.persistence.PrePersist;
 
-import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.Guid;
 
@@ -33,10 +31,10 @@ public abstract class KewPersistableBusinessObjectBase extends PersistableBusine
     @Override
     @PrePersist
     public void beforeInsert() {
-        if (!isAutoIncrementSet()) {
-            OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-            setAutoIncrementSet(true);
-        }
+//        if (!isAutoIncrementSet()) {
+//            OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+//            setAutoIncrementSet(true);
+//        }
         
         this.setObjectId(new Guid().toString());
     }

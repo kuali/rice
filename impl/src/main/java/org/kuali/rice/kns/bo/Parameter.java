@@ -80,7 +80,10 @@ public class Parameter extends PersistableBusinessObjectBase {
 	private ParameterType parameterType;
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumns({@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false), @JoinColumn(name="PARM_DTL_TYP_CD", insertable=false, updatable=false)})
+	@JoinColumns({
+		@JoinColumn(name="NMSPC_CD", referencedColumnName="NMSPC_CD", insertable=false, updatable=false),
+		@JoinColumn(name="PARM_DTL_TYP_CD", referencedColumnName="PARM_DTL_TYP_CD", insertable=false, updatable=false)
+	})
 	private ParameterDetailType parameterDetailType;
 
 	public Parameter() {

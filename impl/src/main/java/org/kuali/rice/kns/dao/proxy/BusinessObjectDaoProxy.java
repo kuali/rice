@@ -24,7 +24,6 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
@@ -41,7 +40,6 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoProxy.class);
 
 	private BusinessObjectDao businessObjectDaoJpa;
-	private BusinessObjectDao businessObjectDaoOjb;
     private static KualiModuleService kualiModuleService;
     private static HashMap<String, BusinessObjectDao> boDaoValues = new HashMap<String, BusinessObjectDao>();
 
@@ -60,19 +58,9 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                 if (boDaoValues.get(dataSourceName) != null) {
                     return boDaoValues.get(dataSourceName);
                 } else {
-                    if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
-                        //using JPA
-                        BusinessObjectDaoJpa boDaoJpa = new BusinessObjectDaoJpa();
-                        if (entityManager != null) {
-                            boDaoJpa.setEntityManager(entityManager);
-                            boDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-                            boDaoValues.put(dataSourceName, boDaoJpa);
-                            return boDaoJpa;
-                        } else {
-                            throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                        }
-
-                    } else {
+                	
+                	// TODO - temporary until we get the other modules converted
+                	if ("kimDataSource,enWorkflowDataSource".contains(dataSourceName)) {
                         //using OJB
                         BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb();
                         boDaoOjb.setJcdAlias(dataSourceName);
@@ -80,12 +68,21 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                         boDaoValues.put(dataSourceName, boDaoOjb);
                         return boDaoOjb;
                     }
-
+                	
+                	BusinessObjectDaoJpa boDaoJpa = new BusinessObjectDaoJpa();
+                	if (entityManager != null) {
+                		boDaoJpa.setEntityManager(entityManager);
+                		boDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                		boDaoValues.put(dataSourceName, boDaoJpa);
+                		return boDaoJpa;
+                	} else {
+                		throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
+                	}
                 }
 
             }
         }
-        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? businessObjectDaoJpa : businessObjectDaoOjb;
+        return businessObjectDaoJpa;
     }
 
 	/**
@@ -229,10 +226,6 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 
 	public void setBusinessObjectDaoJpa(BusinessObjectDao businessObjectDaoJpa) {
 		this.businessObjectDaoJpa = businessObjectDaoJpa;
-	}
-
-	public void setBusinessObjectDaoOjb(BusinessObjectDao businessObjectDaoOjb) {
-		this.businessObjectDaoOjb = businessObjectDaoOjb;
 	}
 
 }

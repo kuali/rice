@@ -88,6 +88,7 @@
 		<oro.version>2.0.8</oro.version>
 		<oscache.version>2.3.2</oscache.version>
 		<quartz.version>1.6.0</quartz.version>
+		<reflections.version>0.9.5-RC1</reflections.version>
 		<servlet-api.version>2.4</servlet-api.version>
 		<spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
 		<spring.version>2.0.4</spring.version>
@@ -313,6 +314,11 @@
 			<id>kuali</id>
 			<name>Kuali Repository</name>
 			<url>https://test.kuali.org/maven</url>
+		</repository>
+		<repository>
+		    <id>reflections-repo</id>
+		    <name>Reflections Maven2 Repository</name>
+		    <url>http://reflections.googlecode.com/svn/repo</url>
 		</repository>
 	</repositories>
 
@@ -773,6 +779,11 @@
 				<groupId>jaxen</groupId>
 				<artifactId>jaxen</artifactId>
 				<version>${jaxen.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>${reflections.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

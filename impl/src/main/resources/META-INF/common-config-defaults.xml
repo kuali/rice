@@ -182,7 +182,7 @@
 	<param name="rice.ksb.message.jpa.GenerateDdl" override="false">true</param>
 	<!-- End KSB-specific JPA parameters -->
 
-	<!-- KNS-specific JPA parameters 
+	<!-- KNS-specific JPA parameters -->
 	<param name="rice.kns.jpa.enabled" override="false">true</param>
 	<param name="rice.kns.application.jpa.PersistenceXmlLocation" override="false">META-INF/kns-persistence.xml</param>
 	<param name="rice.kns.application.jpa.PersistenceUnitName" override="false">kns-application-unit</param>
@@ -190,7 +190,7 @@
 	<param name="rice.kns.server.jpa.PersistenceXmlLocation" override="false">META-INF/kns-persistence.xml</param>
 	<param name="rice.kns.server.jpa.PersistenceUnitName" override="false">kns-server-unit</param>
 	<param name="rice.kns.server.jpa.GenerateDdl" override="false">false</param>
-	End KSB-specific JPA parameters -->
+	<!-- End KSB-specific JPA parameters -->
 
 
 	<!-- KIM -->

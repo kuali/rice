@@ -61,7 +61,7 @@ public class PostalCodeImpl extends PersistableBusinessObjectBase implements Ina
     private String countyCode;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD"),@JoinColumn(name="POSTAL_STATE_CD")})
+	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",referencedColumnName="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
@@ -69,7 +69,7 @@ public class PostalCodeImpl extends PersistableBusinessObjectBase implements Ina
     private Country country;
     
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD"),@JoinColumn(name="POSTAL_STATE_CD"),@JoinColumn(name="COUNTY_CD")})
+	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",referencedColumnName="POSTAL_STATE_CD",insertable=false,updatable=false),@JoinColumn(name="COUNTY_CD",referencedColumnName="COUNTY_CD",insertable=false,updatable=false)})
     private County county;
     /**
      * Default no-arg constructor.

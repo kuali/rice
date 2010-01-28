@@ -52,11 +52,11 @@ public class CountyImpl extends PersistableBusinessObjectBase implements Inactiv
     private boolean active;
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD"),@JoinColumn(name="POSTAL_STATE_CD")})
+	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",referencedColumnName="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="POSTAL_CNTRY_CD")
+	@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false)
     private Country country;
 
     public State getState() {

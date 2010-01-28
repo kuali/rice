@@ -70,7 +70,7 @@ public class GlobalKCBServiceLocator {
      * Returns the KCBServiceLocator singleton
      * @return the KCBServiceLocator singleton
      */
-    public static KCBServiceLocator getInstance() {
+    public static synchronized KCBServiceLocator getInstance() {
         return locator;
     }
 }

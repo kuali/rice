@@ -15,7 +15,7 @@ def repositories = []
 def classes = []
 def files = []
 
-def CLEAN = false
+//def CLEAN = true
 
 def getRespositoryFiles(String resourcejHome, ojbMappingPattern, ArrayList repositories, ArrayList sourceDirectories){
 	repositories.clear()
@@ -95,6 +95,8 @@ def removeAnnotatonLine(files){
 			javaFile.eachLine{
 				line->
 				def cur = line.toString().trim();
+				if(skip.equals("true"))
+					cur = "@" + cur;	
 				if(!cur.startsWith("@")){
 					if(!skip.equals("true")){
 						println("******get this line*****\t" + line)
@@ -105,6 +107,7 @@ def removeAnnotatonLine(files){
 				else{
 					if(!cur.endsWith(")")|| cur.endsWith(","))//!Character.isLetter(cur.charAt(cur.length() - 1)))
 					{skip = "true"}
+					else skip = "false"
 					}
 			}
 			generateFile(file, text);
@@ -160,6 +163,12 @@ def addTransient(files){
 	
 	}
 
+
+if(args.size() == 0)
+	{println("USAGE:\t>groovy ~/jpaconversion/jpa_makeup.groovy [CLEAN | TRANSIENT]");
+	System.exit(0)
+}
+
 getRespositoryFiles(resourceHome, ojbMappingPattern, repositories, sourceDirectories)
 
 println 'Found '+repositories.size().toString()+' OJB mapping files:'
@@ -169,11 +178,11 @@ loadClasses(repositories, classes)
 
 findExistingBOs(srcHome, classes, files )
 
-if(CLEAN)
+if("CLEAN".equals(args[0]))
 	removeAnnotatonLine(files)
-	
-else
+else if("TRANSIENT".equals(args[0]))
 	addTransient(files)
+
 
 
 

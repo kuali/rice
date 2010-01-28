@@ -23,6 +23,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -32,6 +33,7 @@ import org.hibernate.annotations.Type;
 /**
  * 
  */
+@IdClass(org.kuali.rice.kns.bo.StateImplId.class)
 @Entity
 @Table(name="KR_STATE_T")
 public class StateImpl extends PersistableBusinessObjectBase implements Inactivateable, State {

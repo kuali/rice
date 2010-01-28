@@ -38,6 +38,8 @@
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue</class>
     <class>org.kuali.rice.kew.doctype.bo.DocumentType</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypePolicy</class>
+    <class>org.kuali.rice.kew.doctype.ApplicationDocumentStatus</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentStatusTransition</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
     <class>org.kuali.rice.kew.useroptions.UserOptions</class>
     <class>org.kuali.rice.kew.rule.bo.RuleTemplate</class>
@@ -62,6 +64,7 @@
     <class>org.kuali.rice.kew.edl.bo.EDocLiteStyle</class>
     <class>org.kuali.rice.kew.edl.bo.EDocLiteDefinition</class>
     <class>org.kuali.rice.kew.edl.bo.EDocLiteAssociation</class>
+    <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
     <!-- 
     <class>org.kuali.rice.kew.role.QualifiedRole</class>
     <class>org.kuali.rice.kew.role.QualifiedRoleMember</class>
@@ -75,6 +78,7 @@
     <class>org.kuali.rice.kew.removereplace.WorkgroupTarget</class>
     <class>org.kuali.rice.kew.edl.extract.Dump</class>
     <class>org.kuali.rice.kew.edl.extract.Fields</class>
+    <class>org.kuali.rice.kew.documentlink.DocumentLink</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
   </persistence-unit>
 

@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -33,6 +34,7 @@ import org.apache.ojb.broker.PersistenceBrokerException;
 /*
  * Defines methods a business object should implement.
  */
+@IdClass(org.kuali.rice.kns.bo.SessionDocumentId.class)
 @Entity
 @Table(name="KRNS_SESN_DOC_T")
 public class SessionDocument extends PersistableBusinessObjectBase{

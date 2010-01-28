@@ -23,6 +23,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -34,6 +35,7 @@ import org.hibernate.annotations.Type;
 /**
  * 
  */
+@IdClass(org.kuali.rice.kns.bo.PostalCodeImplId.class)
 @Entity
 @Table(name="KR_POSTAL_CODE_T")
 public class PostalCodeImpl extends PersistableBusinessObjectBase implements Inactivateable, PostalCode {

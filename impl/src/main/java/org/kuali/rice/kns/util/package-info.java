@@ -16,21 +16,25 @@
 		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalType.class
 	),
 	@org.hibernate.annotations.TypeDef(
-		name="rice_percent",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiPercentType.class
+		name="rice_decimal_percent"
+		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalPercentType.class
 	),
 	@org.hibernate.annotations.TypeDef(
-		name="rice_percentage",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiPercentageType.class
+		name="rice_decimal_percentage",
+		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalPercentageType.class
 	),
 	@org.hibernate.annotations.TypeDef(
 		name="rice_integer",
 		typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerType.class
 	),
 	@org.hibernate.annotations.TypeDef(
-		name="rice_integer_percentage",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerPercentageType.class
-	)
+		name="rice_integer_percent",
+		typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerPercentType.class
+	),
+	@org.hibernate.annotations.TypeDef(
+			name="rice_integer_percentage",
+			typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerPercentageType.class
+		)
 })
 
 package org.kuali.rice.kns.util;

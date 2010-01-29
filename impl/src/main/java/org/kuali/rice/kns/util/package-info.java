@@ -16,7 +16,7 @@
 		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalType.class
 	),
 	@org.hibernate.annotations.TypeDef(
-		name="rice_decimal_percent"
+		name="rice_decimal_percent",
 		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalPercentType.class
 	),
 	@org.hibernate.annotations.TypeDef(

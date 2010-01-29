@@ -25,6 +25,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 
 /**
@@ -181,14 +182,32 @@ public class Criteria {
     }
 
 	public String toQuery(QueryByCriteriaType type) {
+		return toQuery(type, new String[0]);
+	}
+	
+	public String toQuery(QueryByCriteriaType type, String[] queryAttr) {
 		String queryType = type.toString();
 		if (type.equals(QueryByCriteriaType.SELECT)) {
 			if(distinct){
 				queryType += " " + "DISTINCT";
 			}
-			
+		}
+
+		if (queryAttr.length == 0) {
 			queryType += " " + alias;
 		}
+		else {
+			queryType += " "; // leading space
+			for (int i = 0; i < queryAttr.length; i++) {
+				if (StringUtils.isNotBlank(queryAttr[i])) {
+					queryType += alias + "." + queryAttr[i];
+                    if (i < queryAttr.length - 1) {
+                        queryType += ", ";
+                    }
+				}
+			}
+		}
+
 		String queryString = queryType + " FROM " + entityName + " AS " + alias;
 		if (!tokens.isEmpty()) {
 			queryString += " WHERE " + buildWhere();
@@ -200,12 +219,13 @@ public class Criteria {
 				Object token = (Object) iterator.next();
 				if (count == 0) {
 					count++;
-				} else {
+				}
+				else {
 					queryString += ", ";
 				}
 				queryString += (String) token;
 			}
-		}		
+		}
 		return fix(queryString);
 	}
 	

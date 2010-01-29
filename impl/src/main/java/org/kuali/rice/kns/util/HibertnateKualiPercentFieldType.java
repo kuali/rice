@@ -83,7 +83,7 @@ public class HibertnateKualiPercentFieldType extends
 	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#returnedClass()
 	 */
 	public Class returnedClass() {
-		return String.class;
+		return BigDecimal.class;
 	}
 
 	/**

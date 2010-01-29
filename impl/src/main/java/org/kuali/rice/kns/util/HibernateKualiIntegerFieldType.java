@@ -80,7 +80,7 @@ public class HibernateKualiIntegerFieldType extends
 	 * @see org.hibernate.usertype.UserType#returnedClass()
 	 */
 	public Class returnedClass() {
-		return String.class;
+		return Long.class;
 	}
 
 	/**

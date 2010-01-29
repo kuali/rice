@@ -18,9 +18,13 @@ package org.kuali.rice.kim.bo.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -58,6 +62,11 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	@Column(name="MBR_NMSPC")
 	protected String memberNamespaceCode;
 
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumns({
+	    @JoinColumn(name="ROLE_MBR_ID"), 
+	    @JoinColumn(name="FDOC_NBR")
+	})
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 	protected String qualifiersToDisplay;
 	

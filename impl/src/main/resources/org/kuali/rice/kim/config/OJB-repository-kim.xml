@@ -1126,10 +1126,10 @@
   <!-- GroupDocument -->
   <class-descriptor class="org.kuali.rice.kim.document.IdentityManagementGroupDocument" table="KRIM_GRP_DOCUMENT_T">
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"  />
-    <field-descriptor name="groupId" column="grp_id" jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_GRP_ID_S" />
-    <field-descriptor name="groupTypeId" column="kim_typ_id" jdbc-type="VARCHAR"/>
-    <field-descriptor name="groupNamespace" column="grp_nmspc" jdbc-type="VARCHAR"  />
-    <field-descriptor name="groupName" column="grp_nm" jdbc-type="VARCHAR"  />
+    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_GRP_ID_S" />
+    <field-descriptor name="groupTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR"/>
+    <field-descriptor name="groupNamespace" column="GRP_NMSPC" jdbc-type="VARCHAR"  />
+    <field-descriptor name="groupName" column="GRP_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />

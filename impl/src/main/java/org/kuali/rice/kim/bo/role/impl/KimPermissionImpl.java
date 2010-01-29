@@ -26,6 +26,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.log4j.Logger;
@@ -69,9 +70,15 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
 	protected List<PermissionAttributeDataImpl> detailObjects = new TypedArrayList(PermissionAttributeDataImpl.class);
 
+	@Column(name="PERM_TMPL_ID")
 	protected String templateId;
+	
+	@OneToOne(targetEntity=KimPermissionTemplateImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+    @JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
 	protected KimPermissionTemplateImpl template;
 
+	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+    @JoinColumn(name="PERM_ID", insertable=false, updatable=false)
 	protected List<RolePermissionImpl> rolePermissions = new TypedArrayList(RolePermissionImpl.class);
 
 	/**

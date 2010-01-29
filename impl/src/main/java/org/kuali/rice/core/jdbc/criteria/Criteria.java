@@ -298,6 +298,10 @@ public class Criteria {
 		tokens.add(new OrCriteria(or));
 	}
 
+	public void exists(Criteria exists) {
+        tokens.add(new ExistsCriteria(exists));
+    }
+	
 	public String toQuery(QueryByCriteriaType type) {
 		String queryType = type.toString();
 		if (type.equals(QueryByCriteriaType.SELECT)) {
@@ -355,7 +359,9 @@ public class Criteria {
 					logic = " AND ";
 				} else if (i>0 && token instanceof OrCriteria) {
 					logic = " OR ";
-				}
+				} else if (i>0 && token instanceof ExistsCriteria) {
+                    logic = " EXISTS ";
+                }
 			queryString += logic + " (" + ((Criteria) token).buildWhere(((Criteria) token)) + ") ";
 			} else {
 				if(i>0){
@@ -435,6 +441,14 @@ public class Criteria {
 			this.params = new HashMap(or.params);
 		}
 	}
+	
+	private class ExistsCriteria extends Criteria {
+        public ExistsCriteria(Criteria exists) {
+            super(exists.entityName, exists.alias);
+            this.tokens = new ArrayList(exists.tokens);
+            this.params = new HashMap(exists.params);
+        }       
+    }
 
 	public Integer getSearchLimit() {
 		return this.searchLimit;

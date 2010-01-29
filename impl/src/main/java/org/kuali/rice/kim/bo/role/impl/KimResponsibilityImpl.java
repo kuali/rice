@@ -26,6 +26,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
@@ -67,9 +68,14 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
 	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
 	
+	@Column(name="RSP_TMPL_ID")
 	protected String templateId;
+	@OneToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+    @JoinColumn(name="RSP_TMPL_ID", insertable=false, updatable=false)
 	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
 	
+	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+    @JoinColumn(name="RSP_ID", insertable=false, updatable=false)
 	protected List<RoleResponsibilityImpl> roleResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 	
 	/**

@@ -272,7 +272,7 @@ public class ${cpkClassName} extends CompositePrimaryKeyBase implements Serializ
 		                	text = addOtherImport(text, "org.hibernate.annotations.Type")
 	                	} else if (f.conversion.contains("OjbCharBooleanFieldTFConversion")) {
 	                		annotation += "@Type(type=\"true_false\")\n\t"
-	    		            text = addOtherImport(text, "org.hibernateorg.kuali.rice.kns.util.HibernateKualiHashType.annotations.Type")
+	    		            text = addOtherImport(text, "org.hibernate.annotations.Type")
 	                	} else if (f.conversion.contains("OjbCharBooleanFieldAIConversion")) {
 	                		annotation += "@Type(type=\"rice_active_inactive\")\n\t"
 		    		        text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiCharBooleanAIType")
@@ -286,10 +286,10 @@ public class ${cpkClassName} extends CompositePrimaryKeyBase implements Serializ
 		                	annotation += "@Type(type=\"rice_decimal\")\n\t"
 		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiDecimalType")
 		                } else if (f.conversion.contains("OjbDecimalKualiPercentFieldConversion")) {
-		                	annotation += "@Type(type=\"rice_percent\")\n\t"
+		                	annotation += "@Type(type=\"rice_decimal_percent\")\n\t"
 		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiPercentType")
 		                } else if (f.conversion.contains("OjbDecimalPercentageFieldConversion")) {
-		                	annotation += "@Type(type=\"rice_percentage\")\n\t"
+		                	annotation += "@Type(type=\"rice_decimal_percentage\")\n\t"
 		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiPercentageType")
 		                } else if (f.conversion.contains("OjbKualiIntegerFieldConversion")) {
 		                	annotation += "@Type(type=\"rice_integer\")\n\t"
@@ -297,6 +297,9 @@ public class ${cpkClassName} extends CompositePrimaryKeyBase implements Serializ
 		                } else if (f.conversion.contains("OjbKualiIntegerPercentageFieldConversion")) {
 		                	annotation += "@Type(type=\"rice_integer_percentage\")\n\t"
 		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiIntegerPercentageType")
+		                } else if (f.conversion.contains("OjbKualiPercentFieldConversion")) {
+		                	annotation += "@Type(type=\"rice_percent\")\n\t"
+		                	text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiPercentType")
 		                } else {
 	                		println "UNHANDLED CONVERSION FOUND "+f.column
 	                		println "conversion="+f.conversion

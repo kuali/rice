@@ -17,6 +17,10 @@ package org.kuali.rice.core.jpa.spring;
 
 import java.util.Map;
 
+import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.Cache;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -55,5 +59,29 @@ public class NullEntityManagerFactory implements EntityManagerFactory {
     public boolean isOpen() {
         throw new UnsupportedOperationException("JPA is not enabled, this should not be called.");
     }
+    
+    public PersistenceUnitUtil getPersistenceUnitUtil()
+    {
+    	return null;
+    }
+    
+    public Cache getCache()
+    {
+    	return null;
+    }
 
+    public Map<String, Object> getProperties()
+    {
+    	return null;
+    }
+    
+    public CriteriaBuilder getCriteriaBuilder()
+    {
+    	return null;
+    }
+    
+    public Metamodel getMetamodel()
+    {
+    	return null;
+    }
 }

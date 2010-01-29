@@ -33,6 +33,7 @@ package org.kuali.rice.core.jta;
 
 import java.util.Properties;
 
+import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
 
 import org.hibernate.HibernateException;
@@ -61,4 +62,8 @@ public class AtomikosTransactionManagerLookup implements TransactionManagerLooku
         return "java:comp/UserTransaction";
     }
 
+    public Object getTransactionIdentifier( Transaction t)
+    {
+    	return null;
+    }
 }

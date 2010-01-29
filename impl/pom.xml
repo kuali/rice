@@ -372,7 +372,7 @@
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
+			<artifactId>hibernate-core</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>cglib</groupId>
@@ -381,6 +381,10 @@
 			</exclusions>			
 		</dependency>
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -392,7 +396,6 @@
 			</exclusions>
 		</dependency>
 
-		<!-- Needed by hibernate above until 3.3.2 is released -->
 		<dependency>
 			<groupId>concurrent</groupId>
 			<artifactId>concurrent</artifactId>
@@ -482,6 +485,11 @@
 			<artifactId>servlet-api</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>

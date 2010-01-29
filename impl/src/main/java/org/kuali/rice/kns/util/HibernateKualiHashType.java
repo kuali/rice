@@ -21,8 +21,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
@@ -37,48 +39,40 @@ public class HibernateKualiHashType extends HibernateImmutableValueUserType impl
 	 * 
 	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
-	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
-		String value = rs.getString(names[0]);
-		String converted = null;
+	public Object nullSafeGet(ResultSet rs, String[] names, Object source) throws HibernateException, SQLException {
 
-		if (value != null) {
-	        try {
-	            converted = KNSServiceLocator.getEncryptionService().decrypt(value);
-	        }
-	        catch (GeneralSecurityException gse) {
-	            throw new RuntimeException("Unable to decrypt value from db: " + gse.getMessage());
-	        }
-	        
-	        if (converted == null) {
-				converted = value;
-			}
+		if ( source == null ) {
+			return "";
 		}
-
-        return converted;
+		return source.toString() + EncryptionService.HASH_POST_PREFIX;
 	}
 
 	/**
-	 * Encrypts the value if possible and then sets that on the PreparedStatement
+	 * sets the hash value on the PreparedStatement
 	 * 
 	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
 	 */
-	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
-		String converted = null;
-
-		if (value != null) {
-	        try {
-	            converted = KNSServiceLocator.getEncryptionService().encrypt(value);
-	        }
-	        catch (GeneralSecurityException gse) {
-	            throw new RuntimeException("Unable to encrypt value to db: " + gse.getMessage());
-	        }
+	public void nullSafeSet(PreparedStatement st, Object value,  int index) throws HibernateException, SQLException {
+		
+		Object converted = value;
+		if ( converted != null ) {
+			// don't convert if already a hashed value
+			if ( converted.toString().endsWith( EncryptionService.HASH_POST_PREFIX ) ) {
+				converted = StringUtils.stripEnd( converted.toString(), EncryptionService.HASH_POST_PREFIX );
+			} else {
+				try {
+					converted = KNSServiceLocator.getEncryptionService().hash(converted);
+				} catch (GeneralSecurityException e) {
+					throw new RuntimeException("Unable to hash value to db: " + e.getMessage());
+				}
+			}
 		}
-        
-        if (converted == null) {
-        	st.setNull(index, Types.VARCHAR);
-        } else {
-        	st.setString(index, converted);
-        }
+
+		if (converted == null) {
+			st.setNull(index, Types.VARCHAR);
+		} else {
+			st.setString(index, (String)converted);
+		}
 	}
 
 	/**

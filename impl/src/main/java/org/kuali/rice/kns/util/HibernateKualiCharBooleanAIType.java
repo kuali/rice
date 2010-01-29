@@ -60,7 +60,6 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 	}
 
 	/**
-	 * Encrypts the value if possible and then sets that on the PreparedStatement
 	 * 
 	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
 	 */
@@ -77,7 +76,7 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 		}
 
 		if (converted == null) {
-			st.setNull(index, Types.VARCHAR);
+			st.setNull(index, Types.VARCHAR); 
 		} else {
 			st.setString(index, converted);
 		}

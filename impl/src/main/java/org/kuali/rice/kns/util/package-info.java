@@ -29,7 +29,7 @@
 	),
 	@org.hibernate.annotations.TypeDef(
 		name="rice_integer_percentage",
-		typeClass=org.kuali.rice.kns.util.HibernateIntegerPercentageType.class
+		typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerPercentageType.class
 	)
 })
 

@@ -33,8 +33,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiDecimaliPercentageFieldType extends
-HibertKualiDecimalFieldType implements UserType{
+public class HibernateKualiDecimaliPercentageFieldType extends HibernateKualiDecimalFieldType implements UserType{
 
 	private static BigDecimal oneHundred = new BigDecimal(100.0000);
 

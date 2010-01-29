@@ -73,7 +73,7 @@
 		<jasper-compiler.version>5.5.15</jasper-compiler.version>
 		<jasper-runtime.version>5.5.15</jasper-runtime.version>
 		<javamail.version>1.4</javamail.version>
-		<persistence.version>2.0</persistence.version>
+		<persistence.version>2.0-SNAPSHOT</persistence.version>
 		<jaxen.version>1.1.1</jaxen.version>
 		<jdom.version>1.0</jdom.version>
 		<jetty.version>6.1.1</jetty.version>
@@ -326,6 +326,11 @@
 			<name>JBoss Repository</name>	
 			<url>http://repository.jboss.org/maven2</url>
 		</repository>
+		<repository>
+			<id>Persistence</id>
+			<name>Eclipse Mirror</name>
+			<url>http://mirror.csclub.uwaterloo.ca/eclipse/rt/eclipselink/maven.repo</url>	
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -423,7 +428,7 @@
 			</dependency>
 			<dependency>
 				<groupId>javax.persistence</groupId>
-				<artifactId>persistence-api</artifactId>
+				<artifactId>javax.persistence</artifactId>
 				<version>${persistence.version}</version>
 			</dependency>
 			<dependency>

@@ -15,71 +15,69 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.security.GeneralSecurityException;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
-import org.hibernate.usertype.UserType;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
- * Hibernate UserType to encrypt and decript data on its way to the database 
+ * This is a description of what this class does - g1zhang don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiDecimalFieldType extends HibernateImmutableValueUserType implements UserType {
-	/**
-	 * Retrieves a value from the given ResultSet and decrypts it
-	 * 
-	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
-	 */
-	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
-		String value = rs.getString(names[0]);
-		String converted = null;
+public class HibernateKualiDecimalFieldType extends
+HibernateImmutableValueUserType {
 
-		if (value != null) {
-	        try {
-	            converted = KNSServiceLocator.getEncryptionService().decrypt(value);
-	        }
-	        catch (GeneralSecurityException gse) {
-	            throw new RuntimeException("Unable to decrypt value from db: " + gse.getMessage());
-	        }
-	        
-	        if (converted == null) {
-				converted = value;
-			}
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
+	 */
+	@Override
+	public Object nullSafeGet(ResultSet rs, String[] names, Object source)
+	throws HibernateException, SQLException {
+		Object converted = source;
+
+		if (source instanceof BigDecimal) {
+			converted = new KualiDecimal((BigDecimal) source);
 		}
 
-        return converted;
+		return converted;
 	}
 
 	/**
-	 * Encrypts the value if possible and then sets that on the PreparedStatement
+	 * This overridden method ...
 	 * 
-	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
+	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
 	 */
-	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
-		String converted = null;
+	@Override
+	public void nullSafeSet(PreparedStatement st, Object source, int index)
+	throws HibernateException, SQLException {
+		
+		Object converted =getConverted(source);
 
-		if (value != null) {
-	        try {
-	            converted = KNSServiceLocator.getEncryptionService().encrypt(value);
-	        }
-	        catch (GeneralSecurityException gse) {
-	            throw new RuntimeException("Unable to encrypt value to db: " + gse.getMessage());
-	        }
+		if (converted == null) {
+			st.setNull(index, Types.DECIMAL);
+		} else {
+			st.setBigDecimal(index, (BigDecimal)converted);
 		}
-        
-        if (converted == null) {
-        	st.setNull(index, Types.VARCHAR);
-        } else {
-        	st.setString(index, converted);
-        }
+
 	}
+
+	public Object getConverted(Object value){
+
+		Object source = null;
+
+		if (value instanceof KualiDecimal) {
+			source = ((KualiDecimal) value).bigDecimalValue();
+		}
+		return source;
+	}
+
 
 	/**
 	 * Returns String.class
@@ -87,7 +85,7 @@ public class HibernateKualiDecimalFieldType extends HibernateImmutableValueUserT
 	 * @see org.hibernate.usertype.UserType#returnedClass()
 	 */
 	public Class returnedClass() {
-		return String.class;
+		return BigDecimal.class;
 	}
 
 	/**
@@ -96,7 +94,7 @@ public class HibernateKualiDecimalFieldType extends HibernateImmutableValueUserT
 	 * @see org.hibernate.usertype.UserType#sqlTypes()
 	 */
 	public int[] sqlTypes() {
-		return new int[] { Types.VARCHAR };
+		return new int[] { Types.DECIMAL };
 	}
 
 }

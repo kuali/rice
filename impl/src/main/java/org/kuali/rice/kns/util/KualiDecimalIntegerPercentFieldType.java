@@ -31,7 +31,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiDecimalPercentFieldType extends HibernateImmutableValueUserType implements UserType {
+public class KualiDecimalIntegerPercentFieldType extends HibernateImmutableValueUserType implements UserType {
 	/**
 	 * Retrieves a value from the given ResultSet and decrypts it
 	 * 

@@ -58,16 +58,14 @@ import org.kuali.rice.kns.web.struts.pojo.PojoForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
- * This class is the base action class for all kuali actions. Overrides execute to set methodToCall for image submits. Other setup
- * for framework calls.
- *
- *
- */
-/**
- * This is a description of what this class does - ctdang don't forget to fill this in. 
+ * <p>The base {@link org.apache.struts.action.Action} class for all KNS-based Actions. Extends from the standard 
+ * {@link org.apache.struts.actions.DispatchAction} which allows for a <i>methodToCall</i> request parameter to
+ * be used to indicate which method to invoke.</p>
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * <p>This Action overrides #execute to set methodToCall for image submits.  Also performs other setup
+ * required for KNS framework calls.</p>
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class KualiAction extends DispatchAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiAction.class);

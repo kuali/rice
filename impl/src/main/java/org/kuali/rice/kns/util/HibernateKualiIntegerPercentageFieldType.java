@@ -29,7 +29,7 @@ import org.hibernate.HibernateException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiIntegerPercentageFieldType extends HibernateKualiDecimaliPercentageFieldType {
+public class HibernateKualiIntegerPercentageFieldType extends HibernateKualiDecimalPercentageFieldType {
 
 	/**
 	 * This overridden method ...

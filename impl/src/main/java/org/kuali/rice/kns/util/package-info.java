@@ -11,30 +11,26 @@
 		name="rice_hash",
 		typeClass=org.kuali.rice.kns.util.HibernateKualiHashType.class
 	),
-	@org.hibernate.annotations.TypeDef(
+	/*@org.hibernate.annotations.TypeDef(
 		name="rice_decimal",
 		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalFieldType.class
-	),
+	),*/
 	@org.hibernate.annotations.TypeDef(
-		name="rice_decimal_percent",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalPercentFieldType.class
+		name="rice_percent",
+		typeClass=org.kuali.rice.kns.util.HibernateKualiPercentFieldType.class
 	),
-	@org.hibernate.annotations.TypeDef(
-		name="rice_decimal_percentage",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalPercentageFieldType.class
-	),
+	/*@org.hibernate.annotations.TypeDef(
+		name="rice_percentage",
+		typeClass=org.kuali.rice.kns.util.HibernateKualiPercentageFieldType.class
+	),*/
 	@org.hibernate.annotations.TypeDef(
 		name="rice_integer",
 		typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerFieldType.class
 	),
 	@org.hibernate.annotations.TypeDef(
-		name="rice_integer_percent",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerPercentFieldType.class
-	),
-	@org.hibernate.annotations.TypeDef(
-			name="rice_integer_percentage",
-			typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerPercentageFieldType.class
-		)
+		name="rice_integer_percentage",
+		typeClass=org.kuali.rice.kns.util.HibernateKualiIntegerPercentageFieldType.class
+	)
 })
 
 package org.kuali.rice.kns.util;

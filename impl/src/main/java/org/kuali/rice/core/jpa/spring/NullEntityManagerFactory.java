@@ -17,8 +17,13 @@ package org.kuali.rice.core.jpa.spring;
 
 import java.util.Map;
 
+import javax.persistence.Cache;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.metamodel.Metamodel;
+
 
 /**
  * Null EntityManagerFactory that enables SharedEntityManagerBean to create a proxy when jpa is not enabled. 
@@ -56,4 +61,28 @@ public class NullEntityManagerFactory implements EntityManagerFactory {
         throw new UnsupportedOperationException("JPA is not enabled, this should not be called.");
     }
     
+    public PersistenceUnitUtil getPersistenceUnitUtil()
+    {
+    	return null;
+    }
+    
+    public Cache getCache()
+    {
+    	return null;
+    }
+
+    public Map<String, Object> getProperties()
+    {
+    	return null;
+    }
+    
+    public CriteriaBuilder getCriteriaBuilder()
+    {
+    	return null;
+    }
+    
+    public Metamodel getMetamodel()
+    {
+    	return null;
+    }
 }

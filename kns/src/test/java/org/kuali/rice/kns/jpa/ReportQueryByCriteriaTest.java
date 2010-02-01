@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jpa;
+package org.kuali.rice.kns.jpa;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;

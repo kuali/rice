@@ -297,7 +297,7 @@ public class KualiInquirableImpl implements Inquirable {
                 if (isPkReference) {
                     keyConversion = keyName;
                 }
-                else {
+                else if (businessObjectRelationship != null) {
                 	//Using BusinessObjectMetaDataService instead of PersistenceStructureService
                 	//since otherwise, relationship information from datadictionary is not used at all
                 	//Also, BOMDS.getBusinessObjectRelationship uses PersistenceStructureService,

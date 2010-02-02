@@ -135,4 +135,19 @@ public interface RoleUpdateService {
     		@WebParam(name="roleName") String roleName, 
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications) throws UnsupportedOperationException;
 
+    /**
+     * Creates or updates role with given attributes
+     */
+    void saveRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "roleName") String roleName, @WebParam(name = "roleDescription") String roleDescription, @WebParam(name = "active") boolean active, @WebParam(name = "kimTypeId") String kimTypeId,
+            @WebParam(name = "namespaceCode") String namespaceCode) throws UnsupportedOperationException;
+
+    /**
+     * Returns id available for a new role
+     */
+    String getNextAvailableRoleId() throws UnsupportedOperationException;
+
+    /**
+     * Assigns the given permission to the given role
+     */
+    void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException;
 }

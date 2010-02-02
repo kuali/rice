@@ -55,6 +55,7 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -2882,4 +2883,51 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 			return this.cacheKey;
 		}
 	}
+	
+    public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
+        // look for existing role
+        RoleImpl role = getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, roleId);
+        if (role == null) {
+            role = new RoleImpl();
+            role.setRoleId(roleId);
+        }
+
+        role.setRoleName(roleName);
+        role.setRoleDescription(roleDescription);
+        role.setActive(active);
+        role.setKimTypeId(kimTypeId);
+        role.setNamespaceCode(namespaceCode);
+
+        getBusinessObjectService().save(role);
+    }
+
+    public String getNextAvailableRoleId() throws UnsupportedOperationException {
+        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleImpl.class);
+
+        if (nextSeq == null) {
+            LOG.error("Unable to get new role id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S);
+            throw new RuntimeException("Unable to get new role id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S);
+        }
+
+        return nextSeq.toString();
+    }
+
+    public void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException {
+        RolePermissionImpl newRolePermission = new RolePermissionImpl();
+
+        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, RolePermissionImpl.class);
+
+        if (nextSeq == null) {
+            LOG.error("Unable to get new role permission id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);
+            throw new RuntimeException("Unable to get new role permission id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);
+        }
+
+        newRolePermission.setRolePermissionId(nextSeq.toString());
+        newRolePermission.setRoleId(roleId);
+        newRolePermission.setPermissionId(permissionId);
+        newRolePermission.setActive(true);
+
+        getBusinessObjectService().save(newRolePermission);
+        getIdentityManagementNotificationService().roleUpdated();
+    }
 }

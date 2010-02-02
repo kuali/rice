@@ -840,4 +840,16 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public void flushInternalDelegationMemberCache() {
 		getRoleService().flushInternalDelegationMemberCache();
 	}
+
+    public void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException {
+        getRoleUpdateService().assignPermissionToRole(permissionId, roleId);
+    }
+
+    public String getNextAvailableRoleId() throws UnsupportedOperationException {
+        return getRoleUpdateService().getNextAvailableRoleId();
+    }
+
+    public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
+        getRoleUpdateService().saveRole(roleId, roleName, roleDescription, active, kimTypeId, namespaceCode);
+    }
 }

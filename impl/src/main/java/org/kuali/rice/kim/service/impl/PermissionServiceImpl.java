@@ -726,4 +726,54 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 		return cacheAdministrator;
 	}
 	
+
+    public String getNextAvailablePermissionId() throws UnsupportedOperationException {
+        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, KimPermissionImpl.class);
+
+        if (nextSeq == null) {
+            LOG.error("Unable to get new permission id from sequence " + KimConstants.SequenceNames.KRIM_PERM_ID_S);
+            throw new RuntimeException("Unable to get new permission id from sequence " + KimConstants.SequenceNames.KRIM_PERM_ID_S);
+        }
+
+        return nextSeq.toString();
+    }
+
+    public List<String> getRoleIdsForPermissionId(String permissionId) {
+        KimPermissionInfo permissionInfo = getPermission(permissionId);
+
+        List<KimPermissionInfo> applicablePermissions = new ArrayList<KimPermissionInfo>();
+        applicablePermissions.add(permissionInfo);
+
+        List<String> roleIds = getRolesForPermissionsFromCache(applicablePermissions);
+        if (roleIds == null) {
+            roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
+            addRolesForPermissionsToCache(applicablePermissions, roleIds);
+        }
+
+        return roleIds;
+    }
+
+    public List<KimPermissionInfo> getPermissionsByNameIncludingInactive(String namespaceCode, String permissionName) {
+        List<KimPermissionImpl> impls = getPermissionImplsByNameIncludingInactive(namespaceCode, permissionName);
+        List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>(impls.size());
+        for (KimPermissionImpl impl : impls) {
+            results.add(impl.toSimpleInfo());
+        }
+        return results;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected List<KimPermissionImpl> getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
+        String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName + "inactive");
+        List<KimPermissionImpl> permissions = (List<KimPermissionImpl>) getCacheAdministrator().getFromCache(cacheKey);
+        if (permissions == null) {
+            HashMap<String, Object> pk = new HashMap<String, Object>(2);
+            pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
+            pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
+            permissions = (List<KimPermissionImpl>) getBusinessObjectService().findMatching(KimPermissionImpl.class, pk);
+            getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
+        }
+        return permissions;
+    }
+
 }

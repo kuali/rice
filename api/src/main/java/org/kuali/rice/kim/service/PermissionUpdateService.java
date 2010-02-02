@@ -41,5 +41,10 @@ public interface PermissionUpdateService {
 			 @WebParam(name="description") String description,
 			 @WebParam(name="active") boolean active,
 			 @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails );
+
+    /**
+     * Returns id available for a new permission
+     */
+    String getNextAvailablePermissionId() throws UnsupportedOperationException;
 	
 }
